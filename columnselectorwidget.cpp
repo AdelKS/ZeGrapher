@@ -121,11 +121,11 @@ void ColumnSelectorWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if(event->x() >= width() - draggedSelector->image.width()/2)
     {
-        draggedSelector->pos.setX(width() - draggedSelector->image.width()/2);
+        draggedSelector->pos.setX(width() - draggedSelector->image.width());
     }
     else if(event->x() <= draggedSelector->image.width()/2)
     {
-         draggedSelector->pos.setX(draggedSelector->image.width()/2);
+         draggedSelector->pos.setX(0);
     }
     else
     {

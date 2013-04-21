@@ -50,7 +50,7 @@
         </size>
        </property>
        <property name="title">
-        <string>Actions sur la colonne:</string>
+        <string>Actions sur la colonne :</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -170,7 +170,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>738</width>
+          <width>734</width>
           <height>513</height>
          </rect>
         </property>

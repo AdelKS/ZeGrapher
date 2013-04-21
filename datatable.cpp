@@ -83,3 +83,13 @@ QSize DataTable::getHorizontalHeaderSize()
 {
     return tableWidget->horizontalHeader()->size();
 }
+
+int DataTable::getColumnCount()
+{
+    return tableWidget->columnCount();
+}
+
+int DataTable::getRowCount()
+{
+    return tableWidget->rowCount();
+}

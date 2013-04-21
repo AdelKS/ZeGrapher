@@ -99,7 +99,7 @@ void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
         shownWidgets.clear();
 
         if(selectorPos.betweenColumns)
-        {
+        {            
             insertColumn->show();
             shownWidgets << insertColumn;
         }

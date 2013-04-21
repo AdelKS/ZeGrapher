@@ -1,6 +1,4 @@
-Ce qu'il reste:
-Programmer les selecteurs
-Tout inclure dans datawindow.cpp
+Remplir rowactionswidget
 L'import/export
 programmer datavaluestable:
   * ajout automatique de ligne/colonnes

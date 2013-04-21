@@ -48,10 +48,12 @@ void RowSelectorWidget::askedForSelector()
 void RowSelectorWidget::updateAnimationProgress()
 {
     selector.animation.progress += ANIMATION_PERIOD;
-    selector.pos.setY(selector.animation.departureOrdinate + selector.animation.progress*(selector.animation.arrivalOrdinate - selector.animation.departureOrdinate)/ANIMATION_TIME);
+    selector.pos.setY(selector.animation.departureOrdinate + selector.animation.progress*(selector.animation.arrivalOrdinate - selector.animation.departureOrdinate)/ROW_ANIMATION_TIME);
 
-    if(selector.animation.progress == ANIMATION_TIME)
+    if(selector.animation.progress == ROW_ANIMATION_TIME)
         timer.stop();
+
+    repaint();
 }
 
 
@@ -61,7 +63,6 @@ void RowSelectorWidget::paintEvent(QPaintEvent *event)
 
     painter.begin(this);
 
-    painter.drawRect(1,1,width()-2,height()-2);
     if(selector.draw)
         painter.drawImage(selector.pos, selector.image);
 
@@ -72,11 +73,11 @@ void RowSelectorWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if(event->y() >= height() - selector.image.height()/2)
     {
-        selector.pos.setY(height() - selector.image.height()/2);
+        selector.pos.setY(height() - selector.image.height());
     }
-    else if(event->y() <= selector.image.height()/2)
+    else if(event->y() <= 0)
     {
-        selector.pos.setY(selector.image.height()/2);
+        selector.pos.setY(0);
     }
     else
     {
@@ -118,7 +119,7 @@ void RowSelectorWidget::mouseReleaseEvent(QMouseEvent *event)
     int index = y * rowCount / height();
     int ordinate = index * height() / rowCount + height()/rowCount/2;
 
-    if((index == 0 && y <= 3*height()/rowCount/4) || (index == rowCount-1 && y >= height()-3*height()/rowCount/4) || abs(y - ordinate) <= height()/rowCount/4) //nearest to column
+    if((index == 0 && y <= 3*height()/rowCount/4) || (index == rowCount-1 && y >= height()-3*height()/rowCount/4) || abs(y - ordinate) <= height()/rowCount/4) //nearest to the center of the column
     {
         selector.index = index;
         selector.betweenRows = false;
@@ -126,7 +127,7 @@ void RowSelectorWidget::mouseReleaseEvent(QMouseEvent *event)
         selector.animation.departureOrdinate = selector.pos.y();
         selector.animation.arrivalOrdinate = ordinate - selector.image.height()/2;
     }
-    if(y - ordinate < 0) // nearer to index
+    else if(y - ordinate < 0) // nearer to index
     {
         selector.index = index;
         selector.betweenRows = true;

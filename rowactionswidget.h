@@ -18,37 +18,21 @@
 **
 ****************************************************************************/
 
-#ifndef DATATABLE_H
-#define DATATABLE_H
+#ifndef ROWACTIONSWIDGET_H
+#define ROWACTIONSWIDGET_H
 
-#include <QtGui>
-#include "Structures.h"
-#include "informations.h"
+#include <QWidget>
 
-class DataTable : public QWidget
+class rowactionswidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
-    QSize getVerticalHeaderSize();
-    QSize getHorizontalHeaderSize();
-
-    int getColumnCount();
-    int getRowCount();
-
+    explicit rowactionswidget(QWidget *parent = 0);
+    
 signals:
-    void newPosCorrections();
-
-protected:
-    void resizeColumns(int columnWidth);
-    void resizeRows(int rowHeight);
-
-    int cellHeight, cellWidth;
-    Informations *informations;
-    QTableWidget *tableWidget;
-    QList<QList<double> > values;
-
+    
+public slots:
     
 };
 
-#endif // DATATABLE_H
+#endif // ROWACTIONSWIDGET_H

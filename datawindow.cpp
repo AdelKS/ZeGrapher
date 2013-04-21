@@ -29,6 +29,7 @@ DataWindow::DataWindow(Informations *info)
     ui->actionsGroupBox->setFixedWidth(350);
 
     informations = info;
+    selectorSide = COLUMN_SELECTION;
 
     columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT);
     columnActionsWidget = new ColumnActionsWidget();
@@ -87,8 +88,48 @@ DataWindow::DataWindow(Informations *info)
 
 }
 
+void DataWindow::selectorInColumnSelection()
+{
+    selectorSide = COLUMN_SELECTION;
+}
+
+void DataWindow::selectorInRowSelection()
+{
+    selectorSide = ROW_SELECTION;
+}
+
+void DataWindow::selectorPosChanged(bool inBetween, int index)
+{
+    if(selectorSide == ROW_SELECTION)
+    {
+        if(inBetween)
+        {
+            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));
+        }
+        else
+        {
+            ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
+        }
+    }
+    else
+    {
+        if(inBetween)
+        {
+            ui->actionsGroupBox->setTitle(tr("Actions entre deux lignes :"));
+        }
+        else
+        {
+            ui->actionsGroupBox->setTitle(tr("Actions sur la ligne :"));
+        }
+
+    }
+}
+
 void DataWindow::updateSpacerWidgets()
 {
-    columnSelector->setFixedWidth(dataTable->getHorizontalHeaderSize().width());
-    rowSelector->setFixedHeight(dataTable->getVerticalHeaderSize().height());
+    columnSelectorSpacer->setFixedWidth(ROW_SELECTOR_WIDTH + dataTable->getVerticalHeaderSize().width());
+    rowSelectorSpacer->setFixedHeight(dataTable->getHorizontalHeaderSize().height());
+
+    columnSelector->setFixedWidth(dataTable->getColumnCount()*COLUMN_WIDTH);
+    rowSelector->setFixedHeight(dataTable->getRowCount()*ROW_HEIGHT);
 }

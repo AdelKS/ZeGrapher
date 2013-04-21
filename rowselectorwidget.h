@@ -30,7 +30,7 @@
 #define POLAR 0
 #define CARTESIAN 1
 
-#define ANIMATION_TIME 390 //in ms
+#define ROW_ANIMATION_TIME 240 //in ms
 #define ANIMATION_PERIOD 15
 
 struct RowAnimation

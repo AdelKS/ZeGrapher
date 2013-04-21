@@ -27,10 +27,13 @@
 #include "columnactionswidget.h"
 #include "rowselectorwidget.h"
 
+#define COLUMN_SELECTION true
+#define ROW_SELECTION false
+
 #define STARTING_COLUMN_COUNT 3
 #define STARTING_ROW_COUNT 20
-#define COLUMN_WIDTH 120
-#define ROW_HEIGHT 25
+#define COLUMN_WIDTH 140
+#define ROW_HEIGHT 30
 #define ROW_SELECTOR_WIDTH 40
 #define COLUMN_SELECTOR_HEIGHT 40
 
@@ -46,6 +49,9 @@ public:
 
 protected slots:
     void updateSpacerWidgets();
+    void selectorInColumnSelection();
+    void selectorInRowSelection();
+    void selectorPosChanged(bool inBetween, int index);
 
 protected:
 
@@ -57,6 +63,7 @@ protected:
     ColumnSelectorWidget *columnSelector;
     ColumnActionsWidget *columnActionsWidget;
     RowSelectorWidget *rowSelector;
+    bool selectorSide;
 };
 
 #endif // DATAWINDOW_H

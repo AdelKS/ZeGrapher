@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     columnselectorwidget.cpp \
     rowselectorwidget.cpp \
     columnactionswidget.cpp \
-    datatable.cpp
+    datatable.cpp \
+    rowactionswidget.cpp
 
 HEADERS  += \
     Structures.h \
@@ -100,7 +101,8 @@ HEADERS  += \
     columnselectorwidget.h \
     rowselectorwidget.h \
     columnactionswidget.h \
-    datatable.h
+    datatable.h \
+    rowactionswidget.h
 
 
 FORMS    += \
