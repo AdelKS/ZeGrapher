@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/bornes.png</file>
+        <file>icons/enregistrerImage.png</file>
+        <file>icons/logoLogiciel.png</file>
+        <file>icons/print.png</file>
+        <file>icons/quadrillage.png</file>
+        <file>icons/tableauDeValeurs.png</file>
+        <file>icons/zoom-in-icon.png</file>
+        <file>icons/zoom-out-icon.png</file>
+        <file>icons/fonctions.png</file>
+        <file>icons/remove.png</file>
+        <file>icons/keyboard.png</file>
+        <file>icons/loop.png</file>
+        <file>icons/pause.png</file>
+        <file>icons/play.png</file>
+        <file>icons/go&amp;return.png</file>
+        <file>ZeGrapher_en.qm</file>
+        <file>icons/chooseStyle.png</file>
+        <file>icons/quitter.png</file>
+        <file>icons/roundPoint.png</file>
+        <file>icons/squarePoint.png</file>
+        <file>icons/rhombusPoint.png</file>
+        <file>icons/trianglePoint.png</file>
+        <file>icons/dashLine.png</file>
+        <file>icons/dotLine.png</file>
+        <file>icons/solidLine.png</file>
+        <file>icons/dashDotLine.png</file>
+        <file>icons/crossPoint.png</file>
+        <file>icons/help.png</file>
+        <file>icons/Xpin.png</file>
+        <file>icons/Ypin.png</file>
+        <file>icons/Rpin.png</file>
+        <file>icons/Tetapin.png</file>
+        <file>icons/selector.png</file>
+        <file>icons/rotatedselector.png</file>
+    </qresource>
+</RCC>

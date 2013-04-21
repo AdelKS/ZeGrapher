@@ -1,0 +1,8 @@
+Ce qu'il reste:
+Programmer les selecteurs
+Tout inclure dans datawindow.cpp
+L'import/export
+programmer datavaluestable:
+  * ajout automatique de ligne/colonnes
+  * verification de ce qui est saisi et son calcul: changement couleur d'arriere plan
+  * connection avec columactionswidget et rowactionswidget
