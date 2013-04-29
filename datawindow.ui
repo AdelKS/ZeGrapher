@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Saisie de données</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="ressources.qrc">
+    <normaloff>:/icons/data.png</normaloff>:/icons/data.png</iconset>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -170,8 +174,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>734</width>
-          <height>513</height>
+          <width>751</width>
+          <height>528</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -202,7 +206,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="buttonGroup"/>

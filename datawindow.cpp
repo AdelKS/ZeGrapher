@@ -34,6 +34,7 @@ DataWindow::DataWindow(Informations *info)
     columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT);
     columnActionsWidget = new ColumnActionsWidget();
     rowSelector = new RowSelectorWidget(STARTING_ROW_COUNT);
+    rowActionsWidget = new RowActionsWidget();
     dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
 
     QHBoxLayout *columnSelectorLayout = new QHBoxLayout();
@@ -81,25 +82,44 @@ DataWindow::DataWindow(Informations *info)
     rowSelectorSpacer->setFixedHeight(dataTable->getHorizontalHeaderSize().height());
 
     ui->actionsLayout->addWidget(columnActionsWidget);
+    ui->actionsLayout->addWidget(rowActionsWidget);
+
+    rowActionsWidget->hide();
 
     connect(columnSelector, SIGNAL(newSelectorPos(bool,int)), columnActionsWidget, SLOT(setSelectorPos(bool,int)));
     connect(columnSelector, SIGNAL(askForSelector()), rowSelector, SLOT(askedForSelector()));
+    connect(columnSelector, SIGNAL(askForSelector()), this, SLOT(selectorInColumnSelection()));
+    connect(columnSelector, SIGNAL(newSelectorPos(bool,int)), this, SLOT(selectorPosChanged(bool,int)));
+
+    connect(rowSelector, SIGNAL(askForSelector()), this, SLOT(selectorInRowSelection()));
     connect(rowSelector, SIGNAL(askForSelector()), columnSelector, SLOT(askedForSelector()));
+    connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));
+
+    connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));
+    //connect to row actions widget
 
 }
 
 void DataWindow::selectorInColumnSelection()
 {
-    selectorSide = COLUMN_SELECTION;
+    selectorSide = COLUMN_SELECTION;    
+
+    columnActionsWidget->show();
+    rowActionsWidget->hide();
 }
 
 void DataWindow::selectorInRowSelection()
 {
-    selectorSide = ROW_SELECTION;
+    selectorSide = ROW_SELECTION;    
+
+    columnActionsWidget->hide();
+    rowActionsWidget->show();
 }
 
 void DataWindow::selectorPosChanged(bool inBetween, int index)
 {
+    Q_UNUSED(index);
+
     if(selectorSide == ROW_SELECTION)
     {
         if(inBetween)

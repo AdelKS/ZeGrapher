@@ -26,6 +26,7 @@
 #include "columnselectorwidget.h"
 #include "columnactionswidget.h"
 #include "rowselectorwidget.h"
+#include "rowactionswidget.h"
 
 #define COLUMN_SELECTION true
 #define ROW_SELECTION false
@@ -63,6 +64,7 @@ protected:
     ColumnSelectorWidget *columnSelector;
     ColumnActionsWidget *columnActionsWidget;
     RowSelectorWidget *rowSelector;
+    RowActionsWidget *rowActionsWidget;
     bool selectorSide;
 };
 

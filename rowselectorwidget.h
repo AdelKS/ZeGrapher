@@ -27,9 +27,6 @@
 #define YSELECTOR 1
 #define SELECTOR 2
 
-#define POLAR 0
-#define CARTESIAN 1
-
 #define ROW_ANIMATION_TIME 240 //in ms
 #define ANIMATION_PERIOD 15
 

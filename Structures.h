@@ -149,6 +149,12 @@ struct ParEqValues
     QList<double> tValues, xValues, yValues;
 };
 
+struct SelectorPos
+{
+    bool betweenColumns;
+    int index;
+};
+
 
 
 #endif // STRUCTURES_H

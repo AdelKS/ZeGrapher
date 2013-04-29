@@ -21,17 +21,26 @@
 #ifndef ROWACTIONSWIDGET_H
 #define ROWACTIONSWIDGET_H
 
-#include <QWidget>
+#include "Structures.h"
 
-class rowactionswidget : public QWidget
+class RowActionsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit rowactionswidget(QWidget *parent = 0);
-    
-signals:
-    
+    explicit RowActionsWidget();
+
 public slots:
+    void setSelectorPos(bool betweenRows, int index);
+
+protected slots:
+    void applyRemoval();
+    void insertRowClicked();
+
+protected:
+
+    SelectorPos selectorPos;
+    QPushButton *removeRow, *insertRow;
+
     
 };
 

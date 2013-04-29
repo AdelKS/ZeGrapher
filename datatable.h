@@ -21,7 +21,6 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include <QtGui>
 #include "Structures.h"
 #include "informations.h"
 
@@ -39,6 +38,9 @@ public:
 signals:
     void newPosCorrections();
 
+protected slots:
+    void renameColumn(int index);
+
 protected:
     void resizeColumns(int columnWidth);
     void resizeRows(int rowHeight);
@@ -47,6 +49,8 @@ protected:
     Informations *informations;
     QTableWidget *tableWidget;
     QList<QList<double> > values;
+    QStringList columnNames;
+    QRegExp nameValidator;
 
     
 };

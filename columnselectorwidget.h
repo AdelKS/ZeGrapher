@@ -27,8 +27,8 @@
 #define YSELECTOR 1
 #define SELECTOR 2
 
-#define POLAR 0
-#define CARTESIAN 1
+#define POLAR false
+#define CARTESIAN true
 
 #define ANIMATION_TIME 240 //in ms
 #define ANIMATION_PERIOD 15
@@ -52,13 +52,13 @@ class ColumnSelectorWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ColumnSelectorWidget(int count);
-    void setCoordinateSystem(short sys);
+    explicit ColumnSelectorWidget(int count);    
     void updateSelectorsPos();
 
 public slots:
     void setColumnCount(int count);
     void askedForSelector();
+    void setCoordinateSystem(bool cartesian);
     
 signals:
     void newXIndex(int index);
@@ -83,7 +83,7 @@ protected:
     QPainter painter;
     QTimer timer;
     int columnCount;
-    short coordinateSystem;
+    bool coordinateSystem;
     bool hasSelector;
     Selector xselector, yselector, selector;
     Selector *draggedSelector;

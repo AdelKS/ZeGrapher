@@ -78,9 +78,9 @@ void ColumnSelectorWidget::updateAnimationProgress()
     repaint();
 }
 
-void ColumnSelectorWidget::setCoordinateSystem(short sys)
+void ColumnSelectorWidget::setCoordinateSystem(bool cartesian)
 {
-    coordinateSystem = sys;
+    coordinateSystem = cartesian;
 
     if(coordinateSystem == POLAR)
     {
@@ -92,6 +92,8 @@ void ColumnSelectorWidget::setCoordinateSystem(short sys)
         xselector.image.load(":/icons/Xpin.png");
         yselector.image.load(":/icons/Ypin.png");
     }
+
+    repaint();
 }
 
 void ColumnSelectorWidget::paintEvent(QPaintEvent *event)

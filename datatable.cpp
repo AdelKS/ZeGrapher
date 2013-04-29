@@ -39,6 +39,7 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
 
     connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
     connect(tableWidget->horizontalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
+    connect(tableWidget->horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(renameColumn(int)));
 
     mainLayout->addWidget(tableWidget);
     mainLayout->addStretch();
@@ -46,7 +47,28 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
 
     QStringList list;
     list << tr("Renommez moi!") << tr("Renommez moi!") << "";
+    columnNames << "" << "" << "";
     tableWidget->setHorizontalHeaderLabels(list);
+
+    nameValidator.setPattern("^([a-z]+|_*|[A-Z]+)+$");
+
+}
+
+void DataTable::renameColumn(int index)
+{
+    bool ok = true;
+    QString name = QInputDialog::getText(this, tr("Nouveau nom de colonne"), tr("Veuillez entrer un nom pour cette colonne :"), QLineEdit::Normal, "", &ok);
+
+    if(!ok)
+        return;
+    if(!nameValidator.exactMatch(name))
+    {
+        QMessageBox::information(this, tr("Erreur"), tr("Les noms ne peuvent contenir que des lettres et \"_\" "));
+        return;
+    }
+
+    columnNames[index] = name;
+    tableWidget->horizontalHeaderItem(index)->setText(name);
 
 }
 

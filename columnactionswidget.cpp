@@ -57,9 +57,9 @@ ColumnActionsWidget::ColumnActionsWidget()
     insertColumn = new QWidget();
     QHBoxLayout *insertColumnLayout = new QHBoxLayout();
     QPushButton *insertButton = new QPushButton(tr("Insérer colonne"));
-    insertColumnLayout->addStretch();
+
     insertColumnLayout->addWidget(insertButton);
-    insertColumnLayout->addStretch();
+
     connect(insertButton, SIGNAL(released()), this, SLOT(insertColumnClicked()));
     insertColumn->setLayout(insertColumnLayout);
 

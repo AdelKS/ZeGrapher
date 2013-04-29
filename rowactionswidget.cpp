@@ -20,7 +20,46 @@
 
 #include "rowactionswidget.h"
 
-rowactionswidget::rowactionswidget(QWidget *parent) :
-    QWidget(parent)
+RowActionsWidget::RowActionsWidget()
 {
+    insertRow = new QPushButton(tr("Insérer ligne"));
+    removeRow = new QPushButton(tr("Supprimer ligne"));
+
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    mainLayout->addWidget(insertRow);
+    mainLayout->addWidget(removeRow);
+
+    insertRow->hide();
+
+    setLayout(mainLayout);
+
+    connect(insertRow, SIGNAL(released()), this, SLOT(insertRowClicked()));
+    connect(removeRow, SIGNAL(released()), this, SLOT(applyRemoval()));
+}
+
+void RowActionsWidget::setSelectorPos(bool betweenRows, int index)
+{
+    selectorPos.betweenColumns = betweenRows;
+    selectorPos.index = index;
+
+    if(betweenRows)
+    {
+        insertRow->show();
+        removeRow->hide();
+    }
+    else
+    {
+        insertRow->hide();
+        removeRow->show();
+    }
+}
+
+void RowActionsWidget::applyRemoval()
+{
+
+}
+
+void RowActionsWidget::insertRowClicked()
+{
+
 }

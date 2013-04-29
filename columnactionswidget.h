@@ -30,12 +30,6 @@ class ConfirmDelete;
 class StartingActions;
 }
 
-struct SelectorPos
-{
-    bool betweenColumns;
-    int index;
-};
-
 class ColumnActionsWidget : public QWidget
 {
     Q_OBJECT
