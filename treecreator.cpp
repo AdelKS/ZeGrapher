@@ -32,8 +32,13 @@ TreeCreator::TreeCreator(short callingObjectType)
     antiderivatives << "F" << "G" << "H" << "P" << "R" << "M";
     derivatives << "f'" << "g'" << "h'" << "p'" << "r'" << "m'";
     sequences << "u" << "v" << "l" << "w" << "q" << "z";
-    vars << "x" << "t" << "n" << "k" << "π" << "pi" << "Pi" << "PI";
-    authorizedVars << false << false << false << false << true << true << true << true;
+
+    constants << "π" << "pi" << "Pi" << "PI";
+    constantsVals << M_PI << M_PI << M_PI << M_PI ;
+
+    vars << "x" << "t" << "n" << "k";
+    authorizedVars << false << false << false << false;
+
     operators << '^' << '*' << '/' << '+' << '-';
     operatorsPriority << POW << OP_HIGH << OP_HIGH << OP_LOW << OP_LOW;
     operatorsTypes << POW << MULTIPLY << DIVIDE << PLUS << MINUS;
@@ -54,6 +59,10 @@ void TreeCreator::refreshAuthorizedVars()
     else if(funcType == PARAMETRIC_EQ)
     {
         authorizedVars[1] = authorizedVars[3] = true; // k and t
+    }
+    else if(funcType == DATA_TABLE_EXPR)
+    {
+        authorizedVars[0] = true; // only x, which is the old cell value.
     }
 }
 
@@ -225,7 +234,7 @@ bool TreeCreator::check(QString formule)
         {
             int letterPosStart = i;
 
-            while(formule[i+1].isLetter() && i+1 < formule.size()) { i++ ; }
+            while(i+1 < formule.size() && (formule[i+1].isLetter() || formule[i+1] == '_')) { i++ ; }
 
             if(i != formule.size() && formule[i+1] == '\'')
                 i++;
@@ -248,30 +257,40 @@ bool TreeCreator::check(QString formule)
 
             if(refFunctions.contains(name))
             {
-                decompTypes << refFunctions.indexOf(name) + REF_FUNC_START;
+                decompTypes << refFunctions.indexOf(name) + REF_FUNC_START + 1;
 
                 if(name == "E" || name == "e")
                     chiffre = numberSign = ouvrepth = true;
             }
 
             else if(antiderivatives.contains(name) && funcType == FUNCTION)            
-                decompTypes << antiderivatives.indexOf(name) + INTEGRATION_FUNC_START;
+                decompTypes << antiderivatives.indexOf(name) + INTEGRATION_FUNC_START + 1;
 
             else if(functions.contains(name))
-                decompTypes << functions.indexOf(name) + FUNC_START;
+                decompTypes << functions.indexOf(name) + FUNC_START + 1;
 
             else if(derivatives.contains(name))
-                decompTypes << derivatives.indexOf(name) + DERIV_START;
+                decompTypes << derivatives.indexOf(name) + DERIV_START + 1;
 
             else if(sequences.contains(name) && funcType == SEQUENCE)
-                decompTypes << sequences.indexOf(name) + SEQUENCES_START;
+                decompTypes << sequences.indexOf(name) + SEQUENCES_START + 1;
+
+            else if(constants.contains(name))
+            {
+                decompPriorites << NOMBRE;
+                decompTypes << NOMBRE;
+                decompValeurs << constantsVals[constants.indexOf(name)];
+
+                varOrFunc = numberSign = false;
+                ouvrepth = chiffre = operateur = fermepth = canEnd = true;
+            }
 
             else if(vars.contains(name))
             {
                 if(!authorizedVars[vars.indexOf(name)])
                     return false;
 
-                decompTypes << vars.indexOf(name) + VARS_START;
+                decompTypes << vars.indexOf(name) + VARS_START + 1;
                 decompPriorites << VAR;
                 decompValeurs << 0.0;
 

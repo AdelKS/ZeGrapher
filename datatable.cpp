@@ -34,6 +34,8 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     tableWidget->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 
+    tableWidget->horizontalHeader()->setFixedHeight(25);
+
     resizeColumns(columnWidth);
     resizeRows(rowHeight);
 
@@ -50,7 +52,7 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     columnNames << "" << "" << "";
     tableWidget->setHorizontalHeaderLabels(list);
 
-    nameValidator.setPattern("^([a-z]+|_*|[A-Z]+)+$");
+    nameValidator.setPattern("^([a-z]|[A-Z])([a-z]|[A-Z]|_)+([a-z]|[A-Z])$");
 
 }
 

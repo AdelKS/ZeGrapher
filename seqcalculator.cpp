@@ -413,21 +413,21 @@ double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
     {
         return pow(calculateFromTree(tree->left, x, ok), calculateFromTree(tree->right, x, ok));
     }
-    else if(REF_FUNC_START <= tree->type && tree->type <= REF_FUNC_END)
+    else if(REF_FUNC_START < tree->type && tree->type < REF_FUNC_END)
     {
-        return (*refFuncs[tree->type - REF_FUNC_START])(calculateFromTree(tree->right, x, ok));
+        return (*refFuncs[tree->type - REF_FUNC_START - 1])(calculateFromTree(tree->right, x, ok));
     }
-    else if(FUNC_START <= tree->type && tree->type <= FUNC_END)
+    else if(FUNC_START < tree->type && tree->type < FUNC_END)
     {
-        int id = tree->type - FUNC_START;
+        int id = tree->type - FUNC_START - 1;
         return funcCalculatorsList[id]->getFuncValue(calculateFromTree(tree->right, x, ok), k);
     }
-    else if(DERIV_START <= tree->type && tree->type <= DERIV_END)
+    else if(DERIV_START < tree->type && tree->type < DERIV_END)
     {
-        int id = tree->type - DERIV_START;
+        int id = tree->type - DERIV_START - 1;
         return funcCalculatorsList[id]->getDerivativeValue(calculateFromTree(tree->right, x, ok), k);
     }
-    else if(tree->type == seqNum + SEQUENCES_START)
+    else if(tree->type == seqNum + SEQUENCES_START + 1)
     {
         double asked_n = calculateFromTree(tree->right, x, ok);
         ok = verifyAskedTerm(asked_n);
@@ -435,19 +435,16 @@ double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
             return seqValues[kPos][asked_n];
         else return NAN;
     }
-    else if(SEQUENCES_START <= tree->type && tree->type <= SEQUENCES_END)
+    else if(SEQUENCES_START < tree->type && tree->type < SEQUENCES_END)
     {
-        int id = tree->type - SEQUENCES_START;
+        int id = tree->type - SEQUENCES_START - 1;
         double asked_n = calculateFromTree(tree->right, x, ok);
         ok = verifyOtherSeqAskedTerm(asked_n, id);
         if(ok)
             return seqCalculatorsList[id]->getCustomSeqValue(asked_n, ok, k);
         else return NAN;
     }
-    else if(CONST_Pi_NAMES_START <= tree->type && tree->type <= CONST_Pi_NAMES_END)
-    {
-        return M_PI;
-    }
+
     else return NAN;
 }
 

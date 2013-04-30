@@ -454,13 +454,12 @@ void MainGraph::paintEvent(QPaintEvent *event)
        resaveGraph = true;       
        recalculate = true;
     }
+
     if(!moving && (typeCurseur == NORMAL || hWidgetHideTransition.isActive() || vWidgetHideTransition.isActive() ||
             hWidgetShowTransition.isActive() || vWidgetShowTransition.isActive() || hWidgetState || vWidgetState ||
                    animationUpdate))
         indirectPaint();
-    else directPaint();
-
-    painter.end();
+    else directPaint();    
 
     event->accept();
 }
@@ -473,6 +472,7 @@ void MainGraph::indirectPaint()
         resaveImageBuffer();
 
     painter.begin(this);
+
     painter.drawImage(QPoint(0,0), *savedGraph);
     painter.translate(QPointF(centre.x, centre.y));
 
@@ -487,6 +487,8 @@ void MainGraph::indirectPaint()
 
     if(mouseState.hovering)
         drawHoveringConsequence();
+
+    painter.end();
 
 }
 
@@ -529,6 +531,8 @@ void MainGraph::directPaint()
 
     if(dispPoint)
         afficherPoint();    
+
+    painter.end();
 }
 
 void MainGraph::drawHoveringConsequence()
@@ -906,6 +910,8 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 
 void MainGraph::mouseMoveEvent(QMouseEvent *event)
 {    
+    bool refresh = false;
+
     mouseX = event->x();
     mouseY = event->y();
 
@@ -939,22 +945,31 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
         double y = - (mouseY - centre.y) / uniteY;
 
         if(selectedCurve.isSomethingSelected)
+        {
             mouseMoveWithActiveSelection(x, y);
+            refresh = true;
+        }
 
         mouseState.hovering = false;
 
         mouseTangentHoverTest(x, y);
 
         if(!mouseState.hovering)
+        {
             mouseSeqHoverTest(x, y);
+            refresh = refresh || mouseState.hovering;
+        }
 
         if(!mouseState.hovering)
+        {
             mouseFuncHoverTest(x, y);
+            refresh = refresh || mouseState.hovering;
+        }
 
         if(!mouseState.hovering && mouseState.id != -1)
-        {         
+        {
             mouseState.id = -1;
-            update();
+            refresh = true;
         }
 
         if(boutonPresse && !(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection))
@@ -980,17 +995,20 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
                 funcValuesSaver->move(dx);
 
             moving = true;
-            update();
+            refresh = true;
         }
     }  
     else if(typeCurseur == ZOOMBOX)
     {
         rectReel.setBottomRight(QPoint(event->x(), event->y()));
-        update();
+        refresh = true;
     }   
 
     lastPosSouris.x = event->x();
     lastPosSouris.y = event->y();
+
+    if(refresh)
+        update();
 
 
 }
@@ -1055,9 +1073,6 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
     {
          tangents->at(selectedCurve.id)->move(x);
     }
-
-    update();
-
 }
 
 void MainGraph::mouseFuncHoverTest(double x, double y)
@@ -1092,8 +1107,8 @@ void MainGraph::mouseFuncHoverTest(double x, double y)
                         mouseState.isParametric = funcs[i]->isFuncParametric();
                         mouseState.kPos = draw;
                         mouseState.id = i;
-                        //recalculate = false;
-                        update();
+                        recalculate = false;
+
                         return;
                     }
                 }
@@ -1154,8 +1169,7 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
                         mouseState.isParametric = seqs[i]->isSeqParametric();
                         mouseState.kPos = draw;
                         mouseState.id = i;
-                        //recalculate = false;
-                        update();
+                        recalculate = false;
                         return;
                     }
                 }

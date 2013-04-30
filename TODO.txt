@@ -1,4 +1,6 @@
-Remplir rowactionswidget
+Lier les noms de colonnes aux a columnActionsWidget pour pouvoir appliquer une fonction aux cellules de la colonne:
+ - il manque une calculatrice a creer pour ce but
+ - il faut pouvoir envoyer la fonction ou expression a dataTable pour qu'elle l'applique sur la colonne effectivement, comment ?
 L'import/export
 programmer datavaluestable:
   * ajout automatique de ligne/colonnes

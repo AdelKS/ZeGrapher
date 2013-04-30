@@ -75,7 +75,7 @@ void RowSelectorWidget::mouseMoveEvent(QMouseEvent *event)
     {
         selector.pos.setY(height() - selector.image.height());
     }
-    else if(event->y() <= 0)
+    else if(event->y() <= selector.image.height()/2)
     {
         selector.pos.setY(0);
     }

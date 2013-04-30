@@ -288,28 +288,25 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
     {
         return pow(calculateFromTree(tree->left, x), calculateFromTree(tree->right, x));
     }
-    else if(REF_FUNC_START <= tree->type && tree->type <= REF_FUNC_END)
+    else if(REF_FUNC_START < tree->type && tree->type < REF_FUNC_END)
     {
-        return (*refFuncs[tree->type - REF_FUNC_START])(calculateFromTree(tree->right, x));
+        return (*refFuncs[tree->type - REF_FUNC_START - 1])(calculateFromTree(tree->right, x));
     }
-    else if(FUNC_START <= tree->type && tree->type <= FUNC_END)
+    else if(FUNC_START < tree->type && tree->type < FUNC_END)
     {
-        int id = tree->type - FUNC_START;
+        int id = tree->type - FUNC_START - 1;
         return funcCalculatorsList[id]->getFuncValue(calculateFromTree(tree->right, x), k);
     }
-    else if(DERIV_START <= tree->type && tree->type <= DERIV_END)
+    else if(DERIV_START < tree->type && tree->type < DERIV_END)
     {             
-        int id = tree->type - DERIV_START;
+        int id = tree->type - DERIV_START - 1;
         return funcCalculatorsList[id]->getDerivativeValue(calculateFromTree(tree->right, x), k);
     }   
-    else if(INTEGRATION_FUNC_START <= tree->type && tree->type <= INTEGRATION_FUNC_END)
+    else if(INTEGRATION_FUNC_START < tree->type && tree->type < INTEGRATION_FUNC_END)
     {
-        int id = tree->type - INTEGRATION_FUNC_START;
+        int id = tree->type - INTEGRATION_FUNC_START - 1;
         return funcCalculatorsList[id]->getAntiderivativeValue(calculateFromTree(tree->right, x), integrationPoints[id]);
     }
-    else if(CONST_Pi_NAMES_START <= tree->type && tree->type <= CONST_Pi_NAMES_END)
-    {
-        return M_PI;
-    }
+
     else return NAN;
 }

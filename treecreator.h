@@ -37,6 +37,7 @@ public:
 
     void allow_k(bool state);
     void deleteFastTree(FastTree *tree);
+    void setCustomVars(QStringList cvars);
 
 protected:
     bool check(QString formula);    
@@ -45,11 +46,13 @@ protected:
     FastTree* createFastTree(int debut, int fin);
 
     short funcType;
-    QStringList refFunctions, functions, sequences, antiderivatives, derivatives, vars;
+    QStringList refFunctions, functions, sequences, antiderivatives, derivatives, constants, vars, customVars;
+    QList<double> constantsVals;
+
     QList<QChar> operators;
     QList<short> decompPriorites, decompTypes, operatorsPriority, operatorsTypes;
     QList<double> decompValeurs;
-    QList<double> authorizedVars;
+    QList<bool> authorizedVars;
     QString pi;
 
 };

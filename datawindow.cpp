@@ -124,24 +124,23 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
     {
         if(inBetween)
         {
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));
-        }
-        else
-        {
-            ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
-        }
-    }
-    else
-    {
-        if(inBetween)
-        {
             ui->actionsGroupBox->setTitle(tr("Actions entre deux lignes :"));
         }
         else
         {
             ui->actionsGroupBox->setTitle(tr("Actions sur la ligne :"));
         }
-
+    }
+    else
+    {
+        if(inBetween)
+        {
+            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));
+        }
+        else
+        {
+            ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
+        }
     }
 }
 
