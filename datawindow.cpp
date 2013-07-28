@@ -31,11 +31,12 @@ DataWindow::DataWindow(Informations *info)
     informations = info;
     selectorSide = COLUMN_SELECTION;
 
+    dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
     columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT);
-    columnActionsWidget = new ColumnActionsWidget();
+    columnActionsWidget = new ColumnActionsWidget(dataTable);
     rowSelector = new RowSelectorWidget(STARTING_ROW_COUNT);
     rowActionsWidget = new RowActionsWidget();
-    dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
+
 
     QHBoxLayout *columnSelectorLayout = new QHBoxLayout();
     columnSelectorLayout->setMargin(0);
@@ -73,7 +74,7 @@ DataWindow::DataWindow(Informations *info)
 
     updateSpacerWidgets();
 
-    connect(dataTable, SIGNAL(newPosCorrections()), this, SLOT(updateSpacerWidgets()));
+    connect(dataTable, SIGNAL(newPosCorrections()), this, SLOT(updateSpacerWidgets()));    
 
     columnSelector->updateSelectorsPos();
     rowSelector->updateSelectorsPos();
@@ -94,6 +95,7 @@ DataWindow::DataWindow(Informations *info)
     connect(rowSelector, SIGNAL(askForSelector()), this, SLOT(selectorInRowSelection()));
     connect(rowSelector, SIGNAL(askForSelector()), columnSelector, SLOT(askedForSelector()));
     connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));
+    connect(rowSelector, SIGNAL(newIndex(bool,int)), rowActionsWidget, SLOT(setSelectorPos(bool,int)));
 
     connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));
     //connect to row actions widget

@@ -24,8 +24,10 @@
 #include "ui_filloptions.h"
 #include "ui_startingactions.h"
 
-ColumnActionsWidget::ColumnActionsWidget()
+ColumnActionsWidget::ColumnActionsWidget(DataTable *table)
 {
+    dataTable = table;
+
     signalMapper = new QSignalMapper(this);
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));
 

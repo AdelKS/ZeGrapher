@@ -66,9 +66,11 @@ void TreeCreator::refreshAuthorizedVars()
     }
 }
 
-FastTree* TreeCreator::getTreeFromExpr(QString expr, bool &ok)
+FastTree* TreeCreator::getTreeFromExpr(QString expr, bool &ok, QStringList additionnalVars)
 {    
     FastTree *tree = NULL;
+
+    customVars = additionnalVars;
 
     insertMultiplySigns(expr);
     ok = check(expr);
@@ -199,7 +201,7 @@ bool TreeCreator::check(QString formule)
 
     for(int i = 0 ; i < formule.size(); i++)
     {
-        if((formule[i].isDigit() && chiffre) || ((formule[i]=='-' || formule[i] == '+') && numberSign && i < formule.size() -1 && formule[i+1].isDigit()))
+        if((formule[i].isDigit() && chiffre) || ((formule[i]=='-' || formule[i] == '+') && numberSign && i+1 < formule.size() && formule[i+1].isDigit()))
         {
             bool ok = false, dejavirgule = false;
             int numStart = i, numDigits = 1;
@@ -246,57 +248,66 @@ bool TreeCreator::check(QString formule)
             if(refFunctions.contains(name) || antiderivatives.contains(name) || functions.contains(name) ||
                     derivatives.contains(name) || sequences.contains(name))
             {
-                if(i+1 >= formule.size() || formule[i+1] != '(')
+                if(i+1 >= formule.size() || (formule[i+1] != '(' && formule[i] != 'e' && formule[i] != 'E'))
                     return false;
 
                 decompPriorites << FONC;
                 decompValeurs << 0.0;
                 ouvrepth = true;
                 chiffre = operateur = canEnd = fermepth = varOrFunc = numberSign = false;
+
+                if(refFunctions.contains(name))
+                {
+                    decompTypes << refFunctions.indexOf(name) + REF_FUNC_START + 1;
+
+                    if(name == "E" || name == "e")
+                        chiffre = numberSign = ouvrepth = true;
+                }
+
+                else if(antiderivatives.contains(name) && funcType == FUNCTION)
+                    decompTypes << antiderivatives.indexOf(name) + INTEGRATION_FUNC_START + 1;
+
+                else if(functions.contains(name))
+                    decompTypes << functions.indexOf(name) + FUNC_START + 1;
+
+                else if(derivatives.contains(name))
+                    decompTypes << derivatives.indexOf(name) + DERIV_START + 1;
+
+                else if(sequences.contains(name) && funcType == SEQUENCE)
+                    decompTypes << sequences.indexOf(name) + SEQUENCES_START + 1;
+
+                else return false;
             }
 
-            if(refFunctions.contains(name))
+            else if(constants.contains(name) || customVars.contains(name) || vars.contains(name))
             {
-                decompTypes << refFunctions.indexOf(name) + REF_FUNC_START + 1;
-
-                if(name == "E" || name == "e")
-                    chiffre = numberSign = ouvrepth = true;
-            }
-
-            else if(antiderivatives.contains(name) && funcType == FUNCTION)            
-                decompTypes << antiderivatives.indexOf(name) + INTEGRATION_FUNC_START + 1;
-
-            else if(functions.contains(name))
-                decompTypes << functions.indexOf(name) + FUNC_START + 1;
-
-            else if(derivatives.contains(name))
-                decompTypes << derivatives.indexOf(name) + DERIV_START + 1;
-
-            else if(sequences.contains(name) && funcType == SEQUENCE)
-                decompTypes << sequences.indexOf(name) + SEQUENCES_START + 1;
-
-            else if(constants.contains(name))
-            {
-                decompPriorites << NOMBRE;
-                decompTypes << NOMBRE;
-                decompValeurs << constantsVals[constants.indexOf(name)];
-
                 varOrFunc = numberSign = false;
                 ouvrepth = chiffre = operateur = fermepth = canEnd = true;
+
+                if(vars.contains(name) && authorizedVars[vars.indexOf(name)])
+                {
+                    decompTypes << vars.indexOf(name) + VARS_START + 1;
+                    decompPriorites << VAR;
+                    decompValeurs << 0.0;
+                }
+
+                else if(constants.contains(name))
+                {
+                    decompPriorites << NOMBRE;
+                    decompTypes << NOMBRE;
+                    decompValeurs << constantsVals[constants.indexOf(name)];
+                }
+
+                else if(customVars.contains(name))
+                {
+                    decompTypes << ADDITIONNAL_VARS_START + customVars.indexOf(name);
+                    decompPriorites << VAR;
+                    decompValeurs << customVars.indexOf(name);
+                }
+
+                else return false;
             }
 
-            else if(vars.contains(name))
-            {
-                if(!authorizedVars[vars.indexOf(name)])
-                    return false;
-
-                decompTypes << vars.indexOf(name) + VARS_START + 1;
-                decompPriorites << VAR;
-                decompValeurs << 0.0;
-
-                varOrFunc = numberSign = false;
-                ouvrepth = chiffre = operateur = fermepth = canEnd = true;
-            }
             else return false;
 
         }       

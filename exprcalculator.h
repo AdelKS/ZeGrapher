@@ -32,6 +32,7 @@ public:
     explicit ExprCalculator(bool allowK, QList<FuncCalculator*> otherFuncs);
 
     double calculateExpression(QString expr, bool &ok, double k_val = 0);
+    void setAdditionnalVarsValues(QList<double> values);
     void setK(double val);
 
     double calculateFromTree(FastTree *tree, double x = 0);
@@ -45,6 +46,7 @@ protected:
     TreeCreator treeCreator;
     QList<FuncCalculator*> funcCalculatorsList;
     QList<double (*)(double)> refFuncs;
+    QList<double> additionnalVarsValues;
 };
 
 #endif // EXPRCALCULATOR_H

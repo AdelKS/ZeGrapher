@@ -56,6 +56,11 @@ double ExprCalculator::calculateExpression(QString expr, bool &ok, double k_val)
     return result;
 }
 
+void ExprCalculator::setAdditionnalVarsValues(QList<double> values)
+{
+    additionnalVarsValues = values;
+}
+
 void ExprCalculator::setK(double val)
 {
     k = val;
@@ -126,6 +131,10 @@ double ExprCalculator::calculateFromTree(FastTree *tree, double x)
     {
         int id = tree->type - DERIV_START - 1;
         return funcCalculatorsList[id]->getDerivativeValue(calculateFromTree(tree->right, x), k);
+    }
+    else if(tree->type >= ADDITIONNAL_VARS_START)
+    {
+        return additionnalVarsValues.at(tree->type - ADDITIONNAL_VARS_START);
     }
 
     else return NAN;

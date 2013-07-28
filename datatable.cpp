@@ -72,6 +72,8 @@ void DataTable::renameColumn(int index)
     columnNames[index] = name;
     tableWidget->horizontalHeaderItem(index)->setText(name);
 
+    emit newColumnNames(columnNames);
+
 }
 
 void DataTable::resizeColumns(int columnWidth)

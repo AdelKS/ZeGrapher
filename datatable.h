@@ -37,6 +37,7 @@ public:
 
 signals:
     void newPosCorrections();
+    void newColumnNames(QStringList names);
 
 protected slots:
     void renameColumn(int index);

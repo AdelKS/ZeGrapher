@@ -22,6 +22,7 @@
 #define COLUMNACTIONSWIDGET_H
 
 #include "Structures.h"
+#include "datatable.h"
 
 namespace Ui {
 class FillOptions;
@@ -34,7 +35,7 @@ class ColumnActionsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ColumnActionsWidget();
+    explicit ColumnActionsWidget(DataTable *table);
 
 public slots:
     void setSelectorPos(bool betweenColumns, int index);
@@ -52,6 +53,7 @@ protected:
     QSignalMapper *signalMapper;
     QWidget *startingActions, *fillOptions, *sortOptions, *confirmDelete, *insertColumn;
     QList<QWidget*> shownWidgets;
+    DataTable *dataTable;
 
     SelectorPos selectorPos;
 

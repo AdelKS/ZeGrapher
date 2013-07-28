@@ -30,14 +30,13 @@ class TreeCreator
 public:
     TreeCreator(short callingObjectType);
 
-    FastTree* getTreeFromExpr(QString expr, bool &ok);
+    FastTree* getTreeFromExpr(QString expr, bool &ok, QStringList additionnalVars = QStringList());
 
     QList<int> getCalledFuncs(QString expr);
     QList<int> getCalledSeqs(QString expr);
 
     void allow_k(bool state);
-    void deleteFastTree(FastTree *tree);
-    void setCustomVars(QStringList cvars);
+    void deleteFastTree(FastTree *tree);    
 
 protected:
     bool check(QString formula);    

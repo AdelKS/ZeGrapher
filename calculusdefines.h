@@ -39,8 +39,6 @@ enum {
  VAR_T ,
  VAR_N ,
  PAR_K ,
- VAR_CUSTOM,
-
 
  PLUS ,
  MINUS ,
@@ -112,7 +110,9 @@ enum {
  E , // E n = ^n like E or e+ or e = *^
  e , // same as E
 
- REF_FUNC_END
+ REF_FUNC_END ,
+
+ ADDITIONNAL_VARS_START
 
 };
 
