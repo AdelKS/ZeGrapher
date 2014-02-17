@@ -23,12 +23,12 @@
 #define INFORMATIONS_H
 
 #include <Structures.h>
-#include "pareqwidget.h"
-#include "seqcalculator.h"
-#include "funccalculator.h"
-#include "straightlinewidget.h"
-#include "tangentwidget.h"
-#include "colorsaver.h"
+#include "Widgets/pareqwidget.h"
+#include "Calculus/seqcalculator.h"
+#include "Calculus/funccalculator.h"
+#include "Widgets/straightlinewidget.h"
+#include "Widgets/tangentwidget.h"
+#include "Calculus/colorsaver.h"
 
 class Informations: public QObject
 {

@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "maingraph.h"
+#include "GraphDraw/maingraph.h"
 
 static double fipart(double x)
 {

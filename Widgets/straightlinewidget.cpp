@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "straightlinewidget.h"
+#include "Widgets/straightlinewidget.h"
 
 StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList)
 {

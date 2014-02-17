@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "pareqwidget.h"
+#include "Widgets/pareqwidget.h"
 
 ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list) : treeCreator(PARAMETRIC_EQ)
 {

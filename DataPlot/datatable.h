@@ -23,7 +23,7 @@
 
 #include "Structures.h"
 #include "informations.h"
-#include "exprcalculator.h"
+#include "Calculus/exprcalculator.h"
 
 class DataTable : public QWidget
 {
@@ -61,9 +61,11 @@ protected:
     int cellHeight, cellWidth;
     Informations *informations;
     QTableWidget *tableWidget;
-    QList<QList<double> > values;
+    QList<QList<double> > values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
+                                    row insertion will be implemented */
     QStringList columnNames;
     QRegExp nameValidator;
+    QPalette invalidPalette, validPalette;
 
     
 };

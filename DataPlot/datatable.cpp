@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "datatable.h"
+#include "DataPlot/datatable.h"
 
 DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth)
 {
@@ -27,6 +27,13 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     mainLayout->setMargin(0);
     setMinimumSize(0,0);
     calculator = new ExprCalculator(false, informations->getFuncsList());
+
+    QColor color;
+    color.setNamedColor(VALID_COLOR);
+    validPalette.setColor(QPalette::Base, color);
+
+    color.setNamedColor(INVALID_COLOR);
+    invalidPalette.setColor(QPalette::Base, color);
 
     tableWidget = new QTableWidget(rowCount,columnCount);
 
@@ -38,8 +45,16 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
 
     tableWidget->horizontalHeader()->setFixedHeight(25);
 
+    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(checkCell(QTableWidgetItem*)));
+
     resizeColumns(columnWidth);
     resizeRows(rowHeight);
+
+    for(int col = 0 ; col < columnCount ; col++)
+    {
+        values << QList<double>();
+        for(int row = 0 ; row < rowCount ; row++) { values[col] << NAN ; }
+    }
 
     connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
     connect(tableWidget->horizontalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
@@ -56,12 +71,31 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
 
 }
 
+void DataTable::checkCell(QTableWidgetItem *item)
+{
+    QString expr = item->text();
+    bool ok = false;
+    double val = calculator->calculateExpression(expr, ok);
+
+    if(ok)
+    {
+        item->setBackgroundColor(VALID_COLOR);
+        values[item->column()][item->row()] = val;
+        item->setText(QString::number(val, 'g', 12));
+    }
+    else
+    {
+        item->setBackgroundColor(INVALID_COLOR);
+        values[item->column()][item->row()] = NAN;
+    }
+}
+
 void DataTable::insertRow(int index)
 {
     tableWidget->insertRow(index);
     tableWidget->setRowHeight(index, cellHeight);
 
-    //tableWidget->setFixedHeight(tableWidget->rowCount() * cellHeight + tableWidget->horizontalHeader()->height() + 10);
+    for(int col = 0 ; col < values.size() ; col++) { values[col].insert(index, NAN); }
 
     emit newRowCount(tableWidget->rowCount());
 }
@@ -73,6 +107,10 @@ void DataTable::insertColumn(int index)
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
     tableWidget->setColumnWidth(index, cellWidth);
+    int rowCount = values[0].size();
+    values.insert(index, QList<double>());
+
+    for(int row = 0 ; row < rowCount ; row++) { values[index] << NAN ; }
 
     tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 
@@ -84,6 +122,8 @@ void DataTable::removeRow(int index)
 {
     tableWidget->removeRow(index);
 
+    for(col = 0 ; col < values.size() ; col++) { values[col].removeAt(index); }
+
     emit newRowCount(tableWidget->rowCount());
 }
 
@@ -91,6 +131,8 @@ void DataTable::removeColumn(int index)
 {
     tableWidget->removeColumn(index);
     columnNames.removeAt(index);
+
+    values.removeAt(index);
 
     tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 

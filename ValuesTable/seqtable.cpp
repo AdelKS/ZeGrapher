@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "seqtable.h"
+#include "ValuesTable/seqtable.h"
 
 static double fipart(double x)
 {

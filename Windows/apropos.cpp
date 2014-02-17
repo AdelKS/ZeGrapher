@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "apropos.h"
+#include "Windows/apropos.h"
 #include "ui_apropos.h"
 
 apropos::apropos(QWidget *parent) :

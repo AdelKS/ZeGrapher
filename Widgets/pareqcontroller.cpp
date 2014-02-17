@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "pareqcontroller.h"
+#include "Widgets/pareqcontroller.h"
 
 ParEqController::ParEqController(QList<ParEqWidget *> *list)
 {

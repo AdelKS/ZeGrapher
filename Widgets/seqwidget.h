@@ -23,10 +23,10 @@
 #define SEQWIDGET_H
 
 #include "Structures.h"
-#include "abstractfuncwidget.h"
-#include "seqcalculator.h"
-#include "colorsaver.h"
-#include "funcwidget.h"
+#include "Widgets/abstractfuncwidget.h"
+#include "Calculus/seqcalculator.h"
+#include "Calculus/colorsaver.h"
+#include "Widgets/funcwidget.h"
 
 class SeqWidget : public AbstractFuncWidget
 {

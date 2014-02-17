@@ -23,8 +23,8 @@
 #define PARCONFWIDGET_H
 
 #include "Structures.h"
-#include "treecreator.h"
-#include "exprcalculator.h"
+#include "Calculus/treecreator.h"
+#include "Calculus/exprcalculator.h"
 
 class ParConfWidget : public QGroupBox
 {

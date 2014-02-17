@@ -6,3 +6,5 @@ programmer datavaluestable:
   * ajout automatique de ligne/colonnes
   * verification de ce qui est saisi et son calcul: changement couleur d'arriere plan
   * connection avec columactionswidget et rowactionswidget
+
+Aggrandir/retricr les widgets quand des colonnes et lignes sont ajoutes/supprimes

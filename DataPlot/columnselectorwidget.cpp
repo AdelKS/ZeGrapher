@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "columnselectorwidget.h"
+#include "DataPlot/columnselectorwidget.h"
 
 ColumnSelectorWidget::ColumnSelectorWidget(int count)
 {      

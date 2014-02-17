@@ -22,17 +22,17 @@
 #ifndef ZEGRAPHER_H
 #define ZEGRAPHER_H
 
-#include "Structures.h" // les includes sont dans ce header
-#include "maingraph.h"
-#include "fenetrebornes.h"
-#include "fenetrefonctions.h"
-#include "fenetreoptions.h"
-#include "fentableauvaleurs.h"
+#include "Structures.h"
+#include "GraphDraw/maingraph.h"
+#include "Windows/fenetrebornes.h"
+#include "Windows/fenetrefonctions.h"
+#include "Windows/fenetreoptions.h"
+#include "Windows/fentableauvaleurs.h"
 #include "apropos.h"
-#include "imagesave.h"
-#include "printpreview.h"
-#include "print.h"
-#include "keyboard.h"
+#include "Export/imagesave.h"
+#include "GraphDraw//printpreview.h"
+#include "Export/print.h"
+#include "Widgets/keyboard.h"
 
 
 class MainWindow : public QMainWindow

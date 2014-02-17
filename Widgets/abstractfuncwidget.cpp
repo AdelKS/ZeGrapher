@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "abstractfuncwidget.h"
+#include "Widgets/abstractfuncwidget.h"
 
 AbstractFuncWidget::AbstractFuncWidget() : treeCreator(FUNCTION)
 {

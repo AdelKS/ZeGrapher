@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "functable.h"
+#include "ValuesTable/functable.h"
 
 static double fipart(double x)
 {

@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "fenetrefonctions.h"
+#include "Windows/fenetrefonctions.h"
 #include "ui_fenetrefonctions.h"
 
 

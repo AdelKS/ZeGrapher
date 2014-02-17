@@ -24,7 +24,7 @@
 
 #include "Structures.h"
 #include "informations.h"
-#include "exprcalculator.h"
+#include "Calculus/exprcalculator.h"
 
 class ValuesTableConf : public QWidget
 {

@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "fenetreoptions.h"
+#include "Windows/fenetreoptions.h"
 #include "ui_fenetreoptions.h"
 
 FenetreOptions::FenetreOptions(Informations *info)

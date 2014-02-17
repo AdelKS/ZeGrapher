@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "abstracttable.h"
+#include "ValuesTable/abstracttable.h"
 
 AbstractTable::AbstractTable(QWidget *parent) :
     QWidget(parent)

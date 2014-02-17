@@ -18,15 +18,16 @@
 **
 ****************************************************************************/
 
-#include "columnactionswidget.h"
+#include "DataPlot/columnactionswidget.h"
 #include "ui_sortoptions.h"
 #include "ui_confirmdelete.h"
 #include "ui_filloptions.h"
 #include "ui_startingactions.h"
 
-ColumnActionsWidget::ColumnActionsWidget(DataTable *table)
+ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum)
 {
     dataTable = table;
+    columnCount = columnnum;
 
     signalMapper = new QSignalMapper(this);
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));
@@ -34,6 +35,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table)
     startingActions = new QWidget();
     startingActionsUi = new Ui::StartingActions;
     startingActionsUi->setupUi(startingActions);
+    startingActionsUi->remove->hide();
 
     shownWidgets << startingActions;
 
@@ -105,13 +107,25 @@ void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
             insertColumn->show();
             shownWidgets << insertColumn;
         }
+        else if (columnCount > 3)
+        {
+            startingActionsUi->remove->show();
+            startingActions->show();
+            shownWidgets << startingActions;
+        }
         else
         {
+            startingActionsUi->remove->hide();
             startingActions->show();
             shownWidgets << startingActions;
         }
 
     }
+}
+
+void ColumnActionsWidget::setColumnCount(int count)
+{
+    columnCount = count;
 }
 
 void ColumnActionsWidget::showNextWidget(QWidget *widget)

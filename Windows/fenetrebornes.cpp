@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "fenetrebornes.h"
+#include "Windows/fenetrebornes.h"
 #include "ui_fenetrebornes.h"
 
 FenetreBornes::FenetreBornes(Informations *info)

@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "seqwidget.h"
+#include "Widgets/seqwidget.h"
 
 static double fipart(double x)
 {

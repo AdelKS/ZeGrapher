@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "keyboard.h"
+#include "Widgets/keyboard.h"
 #include "ui_keyboard.h"
 
 Keyboard::Keyboard(QWidget *parent) :

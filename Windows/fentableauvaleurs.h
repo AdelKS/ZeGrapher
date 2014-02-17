@@ -24,7 +24,7 @@
 
 
 #include "informations.h"
-#include "valuestable.h"
+#include "ValuesTable/valuestable.h"
 
 namespace Ui {
     class FenTableauValeurs;

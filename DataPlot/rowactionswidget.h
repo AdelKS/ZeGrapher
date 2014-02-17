@@ -27,7 +27,7 @@ class RowActionsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RowActionsWidget();
+    explicit RowActionsWidget(int rownum);
 
 public slots:
     void setSelectorPos(bool betweenRows, int index);

@@ -24,7 +24,7 @@
 
 #include "abstracttable.h"
 #include "informations.h"
-#include "exprcalculator.h"
+#include "Calculus/exprcalculator.h"
 
 
 class FuncTable : public AbstractTable

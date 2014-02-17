@@ -22,10 +22,10 @@
 #ifndef SEQTABLE_H
 #define SEQTABLE_H
 
-#include "abstracttable.h"
+#include "ValuesTable/abstracttable.h"
 #include "informations.h"
-#include "seqcalculator.h"
-#include "exprcalculator.h"
+#include "Calculus/seqcalculator.h"
+#include "Calculus/exprcalculator.h"
 
 class SeqTable : public AbstractTable
 {

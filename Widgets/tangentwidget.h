@@ -23,10 +23,10 @@
 #define TANGENTWIDGET_H
 
 #include "Structures.h"
-#include "qcolorbutton.h"
-#include "funccalculator.h"
-#include "exprcalculator.h"
-#include "funcwidget.h"
+#include "Widgets/qcolorbutton.h"
+#include "Calculus/funccalculator.h"
+#include "Calculus/exprcalculator.h"
+#include "Widgets/funcwidget.h"
 
 class TangentWidget : public QWidget
 {

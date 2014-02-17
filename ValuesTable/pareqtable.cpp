@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "pareqtable.h"
+#include "ValuesTable/pareqtable.h"
 
 ParEqTable::ParEqTable(Informations *info) : AbstractTable()
 {

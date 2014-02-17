@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "imagesave.h"
+#include "Export/imagesave.h"
 #include "ui_imagesave.h"
 
 ImageSave::ImageSave(Informations *info) : ui(new Ui::ImageSave)

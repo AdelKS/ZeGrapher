@@ -20,7 +20,7 @@
 
 
 #include <QtGui/QApplication>
-#include "zegrapher.h"
+#include "Windows/zegrapher.h"
 #include <QLocale>
 #include <QTranslator>
 #include <QTextCodec>

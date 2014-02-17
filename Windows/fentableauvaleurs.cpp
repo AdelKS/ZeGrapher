@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "fentableauvaleurs.h"
+#include "Windows/fentableauvaleurs.h"
 
 FenTableauValeurs::FenTableauValeurs(Informations *info)
 {

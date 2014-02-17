@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "graphdraw.h"
+#include "GraphDraw/graphdraw.h"
 #include <iostream>
 
 using namespace std;

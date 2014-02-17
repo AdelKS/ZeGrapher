@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "funcwidget.h"
+#include "Widgets/funcwidget.h"
 
 static double fipart(double x)
 {

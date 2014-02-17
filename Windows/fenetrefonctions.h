@@ -23,10 +23,10 @@
 #define FENETREFONCTIONS_H
 
 #include "informations.h"
-#include "funcwidget.h"
-#include "seqwidget.h"
-#include "pareqcontroller.h"
-#include "datawidget.h"
+#include "Widgets/funcwidget.h"
+#include "Widgets/seqwidget.h"
+#include "Widgets/pareqcontroller.h"
+#include "Widgets/datawidget.h"
 
 namespace Ui {
     class FenetreFonctions;

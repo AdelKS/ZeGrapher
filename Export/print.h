@@ -23,7 +23,7 @@
 #define PRINT_H
 
 #include <QWidget>
-#include "printpreview.h"
+#include "GraphDraw/printpreview.h"
 
 #define PORTRAIT true
 #define PAYSAGE false

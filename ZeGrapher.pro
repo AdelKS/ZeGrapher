@@ -12,113 +12,118 @@ TRANSLATIONS = ZeGrapher_en.ts
 CONFIG += separate_debug_info
 
 
-SOURCES += main.cpp\
-    fenetrebornes.cpp \
-    fenetrefonctions.cpp \
-    fenetreoptions.cpp \
-    apropos.cpp \
-    fentableauvaleurs.cpp \
-    imagesave.cpp \
-    print.cpp \
-    printpreview.cpp \
-    imagepreview.cpp \
-    zegrapher.cpp \
+SOURCES += \
+    main.cpp \
     informations.cpp \
-    keyboard.cpp \
-    integrationwidget.cpp \
-    pareqwidget.cpp \
-    valuestable.cpp \
-    valuestableconf.cpp \
-    functable.cpp \
-    seqtable.cpp \
-    abstracttable.cpp \
-    pareqtable.cpp \
-    funcwidget.cpp \
-    seqwidget.cpp \
-    treecreator.cpp \
-    funccalculator.cpp \
-    seqcalculator.cpp \
-    abstractfuncwidget.cpp \
-    parconfwidget.cpp \
-    qcolorbutton.cpp \
-    exprcalculator.cpp \
-    tangentwidget.cpp \
-    straightlinewidget.cpp \
-    graphdraw.cpp \
-    funcvaluessaver.cpp \
-    colorsaver.cpp \
-    maingraph.cpp \
-    pareqcontroller.cpp \
-    datawindow.cpp \
-    datawidget.cpp \
-    columnselectorwidget.cpp \
-    rowselectorwidget.cpp \
-    columnactionswidget.cpp \
-    datatable.cpp \
-    rowactionswidget.cpp
+    Windows/zegrapher.cpp \
+    Windows/fentableauvaleurs.cpp \
+    Windows/fenetreoptions.cpp \
+    Windows/fenetrefonctions.cpp \
+    Windows/fenetrebornes.cpp \
+    Windows/apropos.cpp \
+    Widgets/tangentwidget.cpp \
+    Widgets/straightlinewidget.cpp \
+    Widgets/seqwidget.cpp \
+    Widgets/qcolorbutton.cpp \
+    Widgets/pareqwidget.cpp \
+    Widgets/pareqcontroller.cpp \
+    Widgets/parconfwidget.cpp \
+    Widgets/keyboard.cpp \
+    Widgets/integrationwidget.cpp \
+    Widgets/funcwidget.cpp \
+    Widgets/abstractfuncwidget.cpp \
+    ValuesTable/valuestableconf.cpp \
+    ValuesTable/valuestable.cpp \
+    ValuesTable/seqtable.cpp \
+    ValuesTable/pareqtable.cpp \
+    ValuesTable/functable.cpp \
+    ValuesTable/abstracttable.cpp \
+    GraphDraw/printpreview.cpp \
+    GraphDraw/maingraph.cpp \
+    GraphDraw/imagepreview.cpp \
+    GraphDraw/graphdraw.cpp \
+    Export/print.cpp \
+    Export/imagesave.cpp \
+    DataPlot/rowselectorwidget.cpp \
+    DataPlot/rowactionswidget.cpp \
+    DataPlot/datawindow.cpp \    
+    DataPlot/datatable.cpp \
+    DataPlot/columnselectorwidget.cpp \
+    DataPlot/columnactionswidget.cpp \
+    Calculus/treecreator.cpp \
+    Calculus/seqcalculator.cpp \
+    Calculus/funcvaluessaver.cpp \
+    Calculus/funccalculator.cpp \
+    Calculus/exprcalculator.cpp \
+    Calculus/colorsaver.cpp \
+    Widgets/datawidget.cpp
 
 HEADERS  += \
     Structures.h \
-    fenetrebornes.h \
-    fenetrefonctions.h \
-    fenetreoptions.h \
-    apropos.h \
-    fentableauvaleurs.h \
-    imagesave.h \
-    print.h \
-    printpreview.h \
-    imagepreview.h \
-    zegrapher.h \
     informations.h \
-    keyboard.h \
-    integrationwidget.h \
-    pareqwidget.h \
-    valuestable.h \
-    valuestableconf.h \
-    functable.h \
-    seqtable.h \
-    abstracttable.h \
-    pareqtable.h \
-    funcwidget.h \
-    seqwidget.h \
-    treecreator.h \
-    funccalculator.h \
-    calculusdefines.h \
-    seqcalculator.h \
-    abstractfuncwidget.h \
-    parconfwidget.h \
-    qcolorbutton.h \
-    exprcalculator.h \
-    tangentwidget.h \
-    straightlinewidget.h \
-    graphdraw.h \
-    funcvaluessaver.h \
-    colorsaver.h \
-    maingraph.h \
-    pareqcontroller.h \
-    datawindow.h \
-    datawidget.h \
-    columnselectorwidget.h \
-    rowselectorwidget.h \
-    columnactionswidget.h \
-    datatable.h \
-    rowactionswidget.h
+    Windows/zegrapher.h \
+    Windows/fentableauvaleurs.h \
+    Windows/fenetreoptions.h \
+    Windows/fenetrefonctions.h \
+    Windows/fenetrebornes.h \
+    Windows/apropos.h \
+    Widgets/tangentwidget.h \
+    Widgets/straightlinewidget.h \
+    Widgets/seqwidget.h \
+    Widgets/qcolorbutton.h \
+    Widgets/pareqwidget.h \
+    Widgets/pareqcontroller.h \
+    Widgets/parconfwidget.h \
+    Widgets/keyboard.h \
+    Widgets/integrationwidget.h \
+    Widgets/funcwidget.h \
+    Widgets/abstractfuncwidget.h \
+    ValuesTable/valuestableconf.h \
+    ValuesTable/valuestable.h \
+    ValuesTable/seqtable.h \
+    ValuesTable/pareqtable.h \
+    ValuesTable/functable.h \
+    ValuesTable/abstracttable.h \
+    GraphDraw/printpreview.h \
+    GraphDraw/maingraph.h \
+    GraphDraw/imagepreview.h \
+    GraphDraw/graphdraw.h \
+    Export/print.h \
+    Export/imagesave.h \
+    DataPlot/rowselectorwidget.h \
+    DataPlot/rowactionswidget.h \
+    DataPlot/datawindow.h \   
+    DataPlot/datatable.h \
+    DataPlot/columnselectorwidget.h \
+    DataPlot/columnactionswidget.h \
+    Calculus/treecreator.h \
+    Calculus/seqcolorssaver.h \
+    Calculus/seqcalculator.h \
+    Calculus/funcvaluessaver.h \
+    Calculus/funccalculator.h \
+    Calculus/exprcalculator.h \
+    Calculus/colorsaver.h \
+    Calculus/calculusdefines.h \
+    Widgets/datawidget.h
 
 
 FORMS    += \
-    fenetrebornes.ui \
-    fenetrefonctions.ui \
-    fenetreoptions.ui \
-    apropos.ui \
-    imagesave.ui \
-    print.ui \
-    keyboard.ui \
-    datawidget.ui \
-    confirmdelete.ui \
-    filloptions.ui \
-    sortoptions.ui \
-    startingactions.ui \
-    datawindow.ui
+    Windows/zgrapher.ui \
+    Windows/window.ui \
+    Windows/fenetreoptions.ui \
+    Windows/fenetrefonctions.ui \
+    Windows/fenetrebornes.ui \
+    Windows/apropos.ui \
+    Widgets/keyboard.ui \
+    Widgets/datawidget.ui \
+    Export/print.ui \
+    Export/imagesave.ui \
+    DataPlot/startingactions.ui \
+    DataPlot/sortoptions.ui \
+    DataPlot/filloptions.ui \
+    DataPlot/datawindow.ui \   
+    DataPlot/confirmdelete.ui
+
 
 RESOURCES += \
     ressources.qrc
@@ -127,7 +132,8 @@ RC_FILE += \
     ressources.rc
 
 OTHER_FILES += \
-    TODO.txt
+    TODO.txt \
+    DataPlot/filloptionswidget.ui.autosave
 
 
 

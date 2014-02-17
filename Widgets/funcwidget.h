@@ -23,10 +23,10 @@
 #define FUNCWIDGET_H
 
 #include "Structures.h"
-#include "funccalculator.h"
-#include "abstractfuncwidget.h"
-#include "integrationwidget.h"
-#include "colorsaver.h"
+#include "Calculus/funccalculator.h"
+#include "Widgets/abstractfuncwidget.h"
+#include "Widgets/integrationwidget.h"
+#include "Calculus/colorsaver.h"
 
 class FuncWidget : public AbstractFuncWidget
 {

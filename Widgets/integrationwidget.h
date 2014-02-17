@@ -23,7 +23,7 @@
 #define INTEGRATIONWIDGET_H
 
 #include "Structures.h"
-#include "exprcalculator.h"
+#include "Calculus/exprcalculator.h"
 
 class IntegrationWidget : public QGroupBox
 {

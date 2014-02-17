@@ -21,8 +21,8 @@
 #ifndef COLUMNACTIONSWIDGET_H
 #define COLUMNACTIONSWIDGET_H
 
-#include "exprcalculator.h"
-#include "datatable.h"
+#include "Calculus/exprcalculator.h"
+#include "DataPlot/datatable.h"
 
 namespace Ui {
 class FillOptions;
@@ -35,7 +35,7 @@ class ColumnActionsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ColumnActionsWidget(DataTable *table);
+    explicit ColumnActionsWidget(DataTable *table, int columnnum);
 
 public slots:
     void setSelectorPos(bool betweenColumns, int index);

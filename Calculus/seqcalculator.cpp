@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "seqcalculator.h"
+#include "Calculus/seqcalculator.h"
 
 static double fipart(double x)
 {

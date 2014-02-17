@@ -24,12 +24,12 @@
 
 #include <QWidget>
 #include "Structures.h"
-#include "parconfwidget.h"
-#include "funccalculator.h"
-#include "treecreator.h"
-#include "exprcalculator.h"
-#include "qcolorbutton.h"
-#include "colorsaver.h"
+#include "Widgets/parconfwidget.h"
+#include "Calculus/funccalculator.h"
+#include "Calculus/treecreator.h"
+#include "Calculus/exprcalculator.h"
+#include "Widgets/qcolorbutton.h"
+#include "Calculus/colorsaver.h"
 
 class ParEqWidget : public QWidget
 {

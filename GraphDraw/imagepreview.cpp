@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "imagepreview.h"
+#include "GraphDraw/imagepreview.h"
 
 ImagePreview::ImagePreview(Informations *info) : GraphDraw(info)
 {

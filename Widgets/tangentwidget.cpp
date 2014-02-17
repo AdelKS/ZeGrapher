@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "tangentwidget.h"
+#include "Widgets/tangentwidget.h"
 
 TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list)
 {

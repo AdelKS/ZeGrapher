@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "treecreator.h"
+#include "Calculus/treecreator.h"
 
 TreeCreator::TreeCreator(short callingObjectType)
 {

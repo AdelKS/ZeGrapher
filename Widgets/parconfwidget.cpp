@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "parconfwidget.h"
+#include "Widgets/parconfwidget.h"
 
 ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKeepTracksButton) : QGroupBox(), treeCreator(NORMAL_EXPR)
 {

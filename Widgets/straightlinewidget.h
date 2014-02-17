@@ -23,9 +23,9 @@
 #define STRAIGHTLINEWIDGET_H
 
 #include "Structures.h"
-#include "funccalculator.h"
-#include "qcolorbutton.h"
-#include "exprcalculator.h"
+#include "Calculus/funccalculator.h"
+#include "Widgets/qcolorbutton.h"
+#include "Calculus/exprcalculator.h"
 
 class StraightLineWidget : public QWidget
 {

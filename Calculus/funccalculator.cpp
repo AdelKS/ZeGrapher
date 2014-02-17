@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "funccalculator.h"
+#include "Calculus/funccalculator.h"
 
 static double fipart(double x)
 {

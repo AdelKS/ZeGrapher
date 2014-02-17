@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "qcolorbutton.h"
+#include "Widgets/qcolorbutton.h"
 
 QColorButton::QColorButton(QColor color)
 {

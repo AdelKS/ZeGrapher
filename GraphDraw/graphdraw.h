@@ -24,12 +24,12 @@
 
 #include <QWidget>
 #include "Structures.h"
-#include "funccalculator.h"
-#include "tangentwidget.h"
-#include "straightlinewidget.h"
-#include "pareqwidget.h"
+#include "Calculus/funccalculator.h"
+#include "Widgets/tangentwidget.h"
+#include "Widgets/straightlinewidget.h"
+#include "Widgets/pareqwidget.h"
 #include "informations.h"
-#include "funcvaluessaver.h"
+#include "Calculus/funcvaluessaver.h"
 
 class GraphDraw : public QWidget // Abstract class
 {

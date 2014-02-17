@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "rowselectorwidget.h"
+#include "DataPlot/rowselectorwidget.h"
 
 RowSelectorWidget::RowSelectorWidget(int count)
 {

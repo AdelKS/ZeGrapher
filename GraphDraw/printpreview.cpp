@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "printpreview.h"
+#include "GraphDraw/printpreview.h"
 
 PrintPreview::PrintPreview(Informations *info) : ImagePreview(info)
 {

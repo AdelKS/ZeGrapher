@@ -22,7 +22,7 @@
 #define DATAWIDGET_H
 
 #include "qcolorbutton.h"
-#include "datawindow.h"
+#include "DataPlot/datawindow.h"
 
 namespace Ui {
 class DataWidget;

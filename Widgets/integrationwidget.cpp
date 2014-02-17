@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "integrationwidget.h"
+#include "Widgets/integrationwidget.h"
 
 IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsList) : exprCalc(true, funcsList)
 {

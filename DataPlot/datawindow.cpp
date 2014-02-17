@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "datawindow.h"
+#include "DataPlot/datawindow.h"
 #include "ui_datawindow.h"
 
 DataWindow::DataWindow(Informations *info)
@@ -33,9 +33,9 @@ DataWindow::DataWindow(Informations *info)
 
     dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
     columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT);
-    columnActionsWidget = new ColumnActionsWidget(dataTable);
+    columnActionsWidget = new ColumnActionsWidget(dataTable, STARTING_COLUMN_COUNT);
     rowSelector = new RowSelectorWidget(STARTING_ROW_COUNT);
-    rowActionsWidget = new RowActionsWidget();
+    rowActionsWidget = new RowActionsWidget(STARTING_ROW_COUNT);
 
 
     QHBoxLayout *columnSelectorLayout = new QHBoxLayout();
@@ -108,7 +108,9 @@ DataWindow::DataWindow(Informations *info)
     connect(columnActionsWidget, SIGNAL(removeColumnClicked(int)), dataTable, SLOT(removeColumn(int)));
 
     connect(dataTable, SIGNAL(newColumnCount(int)), columnSelector, SLOT(setColumnCount(int)));
+    connect(dataTable, SIGNAL(newColumnCount(int)), columnActionsWidget, SLOT(setColumnCount(int)));
     connect(dataTable, SIGNAL(newRowCount(int)), rowSelector, SLOT(setRowCount(int)));
+    connect(dataTable, SIGNAL(newRowCount(int)), rowActionsWidget, SLOT(setRowCount(int)));
 
 
     connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));

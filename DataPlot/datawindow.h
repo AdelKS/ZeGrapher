@@ -22,11 +22,11 @@
 #define DATAWINDOW_H
 
 #include "informations.h"
-#include "datatable.h"
-#include "columnselectorwidget.h"
-#include "columnactionswidget.h"
-#include "rowselectorwidget.h"
-#include "rowactionswidget.h"
+#include "./datatable.h"
+#include "./columnselectorwidget.h"
+#include "./columnactionswidget.h"
+#include "./rowselectorwidget.h"
+#include "./rowactionswidget.h"
 
 #define COLUMN_SELECTION true
 #define ROW_SELECTION false

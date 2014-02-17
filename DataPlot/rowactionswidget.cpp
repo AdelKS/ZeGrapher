@@ -18,9 +18,9 @@
 **
 ****************************************************************************/
 
-#include "rowactionswidget.h"
+#include "DataPlot/rowactionswidget.h"
 
-RowActionsWidget::RowActionsWidget()
+RowActionsWidget::RowActionsWidget(int rownum)
 {
     insertRow = new QPushButton(tr("Insérer ligne"));
     removeRow = new QPushButton(tr("Supprimer ligne"));
@@ -32,6 +32,7 @@ RowActionsWidget::RowActionsWidget()
     insertRow->hide();
 
     setLayout(mainLayout);
+    rowCount = rownum;
 
     connect(insertRow, SIGNAL(released()), this, SLOT(emitInsertRowSignal()));
     connect(removeRow, SIGNAL(released()), this, SLOT(emitRemoveRowSignal()));
@@ -47,19 +48,29 @@ void RowActionsWidget::setSelectorPos(bool betweenRows, int index)
         insertRow->show();
         removeRow->hide();
     }
-    else
+    else if(rowCount > 10)
     {
         insertRow->hide();
         removeRow->show();
     }
+    else
+    {
+        insertRow->hide();
+        removeRow->hide();
+    }
+}
+
+void RowActionsWidget::setRowCount(int count)
+{
+    rowCount = count;
 }
 
 void RowActionsWidget::emitInsertRowSignal()
-{
+{    
     emit insertRowClicked(selectorPos.index);
 }
 
 void RowActionsWidget::emitRemoveRowSignal()
-{
+{    
     emit removeRowClicked(selectorPos.index);
 }

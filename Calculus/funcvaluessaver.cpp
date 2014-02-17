@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "funcvaluessaver.h"
+#include "Calculus/funcvaluessaver.h"
 
 static double fipart(double x)
 {

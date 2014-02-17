@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "print.h"
+#include "Export/print.h"
 #include "ui_print.h"
 
 Print::Print(Informations *info) : ui(new Ui::Print)

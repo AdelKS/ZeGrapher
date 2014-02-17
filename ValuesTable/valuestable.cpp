@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "valuestable.h"
+#include "ValuesTable/valuestable.h"
 
 ValuesTable::ValuesTable(Informations *info, QWidget *parent) :
     QWidget(parent)
