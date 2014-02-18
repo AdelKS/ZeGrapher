@@ -23,6 +23,8 @@
 
 #include "Calculus/exprcalculator.h"
 #include "DataPlot/datatable.h"
+#include "informations.h"
+#include "Calculus/exprcalculator.h"
 
 namespace Ui {
 class FillOptions;
@@ -35,7 +37,7 @@ class ColumnActionsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ColumnActionsWidget(DataTable *table, int columnnum);
+    explicit ColumnActionsWidget(DataTable *table, Informations *info, int columnnum);
 
 public slots:
     void setSelectorPos(bool betweenColumns, int index);
@@ -52,11 +54,14 @@ protected slots:
     void emitInsertColumnSignal();
     void showNextWidget(QWidget*);
     void showPreviousWidget();
+    void resetPalette(QWidget *widget);
 
 protected:
 
+    Informations *informations;
+    ExprCalculator *calculator;
     int columnCount;
-    QSignalMapper *signalMapper;
+    QSignalMapper *signalMapper, *lineEditsMapper;
     QWidget *startingActions, *fillOptions, *sortOptions, *confirmDelete, *insertColumn;
     QList<QWidget*> shownWidgets;
     DataTable *dataTable;
@@ -67,6 +72,8 @@ protected:
     Ui::FillOptions *fillOptionsUi;
     Ui::SortOptions *sortOptionsUi;
     Ui::StartingActions *startingActionsUi;
+
+    QPalette invalidPalette, validPalette, neutralPalette;
 
 };
 

@@ -33,7 +33,7 @@ DataWindow::DataWindow(Informations *info)
 
     dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
     columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT);
-    columnActionsWidget = new ColumnActionsWidget(dataTable, STARTING_COLUMN_COUNT);
+    columnActionsWidget = new ColumnActionsWidget(dataTable, info, STARTING_COLUMN_COUNT);
     rowSelector = new RowSelectorWidget(STARTING_ROW_COUNT);
     rowActionsWidget = new RowActionsWidget(STARTING_ROW_COUNT);
 

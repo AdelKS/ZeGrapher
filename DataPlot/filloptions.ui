@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>316</width>
-    <height>202</height>
+    <width>399</width>
+    <height>214</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -70,12 +70,15 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="expression">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
               <height>25</height>
              </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -101,7 +104,7 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="ressources.qrc">
+          <iconset resource="../ressources.qrc">
            <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
          </property>
          <property name="iconSize">
@@ -172,7 +175,7 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="spacing">
-           <number>1</number>
+           <number>3</number>
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -184,7 +187,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_2">
+             <widget class="QLineEdit" name="start">
               <property name="minimumSize">
                <size>
                 <width>90</width>
@@ -196,6 +199,9 @@
                 <width>16777215</width>
                 <height>25</height>
                </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -207,7 +213,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_3">
+             <widget class="QLineEdit" name="end">
               <property name="minimumSize">
                <size>
                 <width>90</width>
@@ -219,6 +225,9 @@
                 <width>16777215</width>
                 <height>25</height>
                </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -247,12 +256,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_4">
+             <widget class="QLineEdit" name="step">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
                 <height>25</height>
                </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -324,7 +336,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="ressources.qrc"/>
+  <include location="../ressources.qrc"/>
  </resources>
  <connections>
   <connection>

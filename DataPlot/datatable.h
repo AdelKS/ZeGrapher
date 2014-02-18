@@ -36,6 +36,8 @@ public:
     int getColumnCount();
     int getRowCount();
 
+    void fillColumnFromRange(int col, Range range);
+
 public slots:
     void insertRow(int index);
     void insertColumn(int index);
@@ -52,11 +54,15 @@ signals:
 protected slots:
     void renameColumn(int index);
     void checkCell(QTableWidgetItem *item);
+    void columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
 protected:
     void resizeColumns(int columnWidth);
     void resizeRows(int rowHeight);
+    void addRow();
+    void addColumn();
 
+    bool disableChecking;
     ExprCalculator *calculator;
     int cellHeight, cellWidth;
     Informations *informations;

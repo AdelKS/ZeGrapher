@@ -42,6 +42,7 @@
 #define PARAMETRIC_EQ 3
 #define NORMAL_EXPR 4
 #define DATA_TABLE_EXPR 5 // expression to apply to a column: example: x' = 2 * x multiplies every column's cell value by 2.
+#define MAX_DOUBLE_PREC 15
 
 #define MIN_RANGE 0.000001
 #define NUM_PREC 7 // default precision while displaying decimal numbers

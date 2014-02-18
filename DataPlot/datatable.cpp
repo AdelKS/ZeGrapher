@@ -43,19 +43,32 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     tableWidget->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 
-    tableWidget->horizontalHeader()->setFixedHeight(25);
+    tableWidget->horizontalHeader()->setMovable(true);
+    connect(tableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(columnMoved(int,int,int)));
 
-    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(checkCell(QTableWidgetItem*)));
+    tableWidget->horizontalHeader()->setFixedHeight(25);    
+
+
 
     resizeColumns(columnWidth);
     resizeRows(rowHeight);
 
+    disableChecking = true;
+
     for(int col = 0 ; col < columnCount ; col++)
     {
         values << QList<double>();
-        for(int row = 0 ; row < rowCount ; row++) { values[col] << NAN ; }
+        for(int row = 0 ; row < rowCount ; row++)
+        {
+            QTableWidgetItem *item = new QTableWidgetItem(" ");
+            tableWidget->setItem(row, col, item);
+            values[col] << NAN ;
+        }
     }
 
+    disableChecking = false;
+
+    connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(checkCell(QTableWidgetItem*)));
     connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
     connect(tableWidget->horizontalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(renameColumn(int)));
@@ -71,9 +84,62 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
 
 }
 
+void DataTable::fillColumnFromRange(int col, Range range)
+{
+    double val = range.start;
+    int row = 0;
+    QTableWidgetItem *item;
+    while(val <= range.end)
+    {
+        values[col][row] = val;
+
+        item = tableWidget->item(row, col);
+        item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
+        item->setBackgroundColor(VALID_COLOR);
+
+        val += range.step;
+        row++;
+
+        if(tableWidget->rowCount() == row+1)
+            addRow();
+    }
+}
+
+void DataTable::addRow()
+{
+    insertRow(tableWidget->rowCount());
+}
+
+void DataTable::addColumn()
+{
+    insertColumn(tableWidget->columnCount());
+}
+
+void DataTable::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    Q_UNUSED(logicalIndex);
+    values.move(oldVisualIndex, newVisualIndex);
+    columnNames.move(oldVisualIndex, newVisualIndex);
+}
+
 void DataTable::checkCell(QTableWidgetItem *item)
 {
+    if(disableChecking)
+        return;
+
+    if(item->column()+1 == tableWidget->columnCount())
+        addColumn();
+    if(item->row()+1 == tableWidget->rowCount())
+        addRow();
+
     QString expr = item->text();
+
+    if(expr.isEmpty())
+    {
+        item->setBackgroundColor(Qt::white);
+        return;
+    }
+
     bool ok = false;
     double val = calculator->calculateExpression(expr, ok);
 
@@ -81,7 +147,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
     {
         item->setBackgroundColor(VALID_COLOR);
         values[item->column()][item->row()] = val;
-        item->setText(QString::number(val, 'g', 12));
+        item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
     }
     else
     {
@@ -95,7 +161,16 @@ void DataTable::insertRow(int index)
     tableWidget->insertRow(index);
     tableWidget->setRowHeight(index, cellHeight);
 
-    for(int col = 0 ; col < values.size() ; col++) { values[col].insert(index, NAN); }
+    disableChecking = true;
+
+    for(int col = 0 ; col < values.size() ; col++)
+    {
+        QTableWidgetItem *item = new QTableWidgetItem(" ");
+        tableWidget->setItem(index, col, item);
+        values[col].insert(index, NAN);
+    }
+
+    disableChecking = false;
 
     emit newRowCount(tableWidget->rowCount());
 }
@@ -110,7 +185,16 @@ void DataTable::insertColumn(int index)
     int rowCount = values[0].size();
     values.insert(index, QList<double>());
 
-    for(int row = 0 ; row < rowCount ; row++) { values[index] << NAN ; }
+    disableChecking = true;
+
+    for(int row = 0 ; row < rowCount ; row++)
+    {
+        QTableWidgetItem *item = new QTableWidgetItem(" ");
+        tableWidget->setItem(row, index, item);
+        values[index] << NAN ;
+    }
+
+    disableChecking = false;
 
     tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 
@@ -122,7 +206,7 @@ void DataTable::removeRow(int index)
 {
     tableWidget->removeRow(index);
 
-    for(col = 0 ; col < values.size() ; col++) { values[col].removeAt(index); }
+    for(int col = 0 ; col < values.size() ; col++) { values[col].removeAt(index); }
 
     emit newRowCount(tableWidget->rowCount());
 }

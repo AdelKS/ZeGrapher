@@ -63,6 +63,8 @@ void RowActionsWidget::setSelectorPos(bool betweenRows, int index)
 void RowActionsWidget::setRowCount(int count)
 {
     rowCount = count;
+    if(rowCount <= 10)
+        removeRow->hide();
 }
 
 void RowActionsWidget::emitInsertRowSignal()

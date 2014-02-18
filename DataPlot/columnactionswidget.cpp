@@ -24,13 +24,25 @@
 #include "ui_filloptions.h"
 #include "ui_startingactions.h"
 
-ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum)
+ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, int columnnum)
 {
+    informations = info;
+    calculator = new ExprCalculator(false, info->getFuncsList());
     dataTable = table;
     columnCount = columnnum;
 
+    selectorPos.index = 2;
+    selectorPos.betweenColumns = false;
+
+    QColor color;
+    color.setNamedColor(VALID_COLOR);
+    validPalette.setColor(QPalette::Base, color);
+
+    color.setNamedColor(INVALID_COLOR);
+    invalidPalette.setColor(QPalette::Base, color);
+
     signalMapper = new QSignalMapper(this);
-    connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));
+    connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));   
 
     startingActions = new QWidget();
     startingActionsUi = new Ui::StartingActions;
@@ -44,6 +56,21 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum)
     fillOptionsUi->setupUi(fillOptions);
     connect(fillOptionsUi->previous, SIGNAL(released()), this, SLOT(showPreviousWidget()));
     connect(fillOptionsUi->apply, SIGNAL(released()), this, SLOT(applyFill()));
+
+    lineEditsMapper = new QSignalMapper(this);
+    connect(lineEditsMapper, SIGNAL(mapped(QWidget*)), this, SLOT(resetPalette(QWidget*)));
+
+    connect(fillOptionsUi->start, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
+    lineEditsMapper->setMapping(fillOptionsUi->start, fillOptionsUi->start);
+
+    connect(fillOptionsUi->end, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
+    lineEditsMapper->setMapping(fillOptionsUi->end, fillOptionsUi->end);
+
+    connect(fillOptionsUi->step, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
+    lineEditsMapper->setMapping(fillOptionsUi->step, fillOptionsUi->step);
+
+    connect(fillOptionsUi->expression, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
+    lineEditsMapper->setMapping(fillOptionsUi->expression, fillOptionsUi->expression);
 
     sortOptions = new QWidget();
     sortOptionsUi = new Ui::SortOptions;
@@ -90,6 +117,12 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum)
     sortOptions->hide();
     confirmDelete->hide();
     insertColumn->hide();
+}
+
+void ColumnActionsWidget::resetPalette(QWidget *widget)
+{
+    QLineEdit *lineEdit = (QLineEdit*)widget;
+    lineEdit->setPalette(neutralPalette);
 }
 
 void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
@@ -144,7 +177,38 @@ void ColumnActionsWidget::showPreviousWidget()
 
 void ColumnActionsWidget::applyFill()
 {
+    if(fillOptionsUi->predefined->isChecked())
+    {
+        Range range;
+        bool goodEntry = true, ok = false;
 
+        range.start = calculator->calculateExpression(fillOptionsUi->start->text(), ok);
+        if(ok)
+            fillOptionsUi->start->setPalette(validPalette);
+        else fillOptionsUi->start->setPalette(invalidPalette);
+        goodEntry &= ok;
+
+        range.end = calculator->calculateExpression(fillOptionsUi->end->text(), ok);
+        if(ok)
+            fillOptionsUi->end->setPalette(validPalette);
+        else fillOptionsUi->end->setPalette(invalidPalette);
+        goodEntry &= ok;
+
+        range.step = calculator->calculateExpression(fillOptionsUi->step->text(), ok);
+        if(ok)
+            fillOptionsUi->step->setPalette(validPalette);
+        else fillOptionsUi->step->setPalette(invalidPalette);
+        goodEntry &= ok;
+
+        if(goodEntry)
+        {
+            dataTable->fillColumnFromRange(selectorPos.index, range);
+            shownWidgets.last()->hide();
+            shownWidgets.clear();
+            startingActions->show();
+            shownWidgets << startingActions;
+        }
+    }
 }
 
 void ColumnActionsWidget::applySort()
