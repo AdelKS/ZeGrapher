@@ -21,18 +21,6 @@
 
 #include "Calculus/funcvaluessaver.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 FuncValuesSaver::FuncValuesSaver(Informations *info)
 {
     informations = info;
@@ -56,10 +44,10 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
     int k_pos = 0, end;
 
     deplacement = 0;
-    startAbscissa_unit = fipart(graphRange.Xmin / unitStep) * unitStep - unitStep;
+    startAbscissa_unit = trunc(graphRange.Xmin / unitStep) * unitStep - unitStep;
     startAbscissa_pixel = startAbscissa_unit * xUnit;
 
-    endAbscissa_unit = fipart(graphRange.Xmax / unitStep) * unitStep + unitStep;
+    endAbscissa_unit = trunc(graphRange.Xmax / unitStep) * unitStep + unitStep;
     endAbscissa_pixel = endAbscissa_unit * xUnit;
 
     Range range;
@@ -72,7 +60,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
         funcVals[i].clear();
 
         range = funcs[i]->getParametricRange();
-        end = fipart((range.end - range.start)/range.step) + 1;
+        end = trunc((range.end - range.start)/range.step) + 1;
         k = range.start;
 
         for(k_pos = 0 ; k_pos < end ; k_pos++)
@@ -95,7 +83,7 @@ void FuncValuesSaver::move(double pixels)
     int k_pos;
 
     deplacement += pixels;
-    double limite = fipart(deplacement / pixelStep);
+    double limite = trunc(deplacement / pixelStep);
 
     if(limite == 0)
         return;

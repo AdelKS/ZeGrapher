@@ -94,8 +94,7 @@ void TreeCreator::insertMultiplySigns(QString &formule)
                 (formule[i].isLetter() && formule[i+1].isDigit()) ||
                 (formule[i].isDigit() && formule[i+1] == '(') ||
                 (formule[i] == ')' && formule[i+1] == '(') ||               
-                (formule[i] == ')' && (formule[i+1].isDigit() || formule[i+1].isLetter())) ||
-                (vars.contains(QString(formule[i])) && vars.contains(QString(formule[i+1]))) ||
+                (formule[i] == ')' && (formule[i+1].isDigit() || formule[i+1].isLetter())) ||                
                 (i != 0 && !formule[i-1].isLetter() && vars.contains(QString(formule[i])) && formule[i+1] == '('))
         {
             formule.insert(i+1, QString("*"));
@@ -284,26 +283,25 @@ bool TreeCreator::check(QString formule)
                 varOrFunc = numberSign = false;
                 ouvrepth = chiffre = operateur = fermepth = canEnd = true;
 
-                if(vars.contains(name) && authorizedVars[vars.indexOf(name)])
+                if(customVars.contains(name)) /* customVars comes at first because of overriding policy, customvars come from dataplot, and user can redefine
+                                                n t or x or k */
                 {
-                    decompTypes << vars.indexOf(name) + VARS_START + 1;
+                    decompTypes << ADDITIONNAL_VARS_START + customVars.indexOf(name);
                     decompPriorites << VAR;
-                    decompValeurs << 0.0;
+                    decompValeurs << customVars.indexOf(name);
                 }
-
                 else if(constants.contains(name))
                 {
                     decompPriorites << NOMBRE;
                     decompTypes << NOMBRE;
                     decompValeurs << constantsVals[constants.indexOf(name)];
                 }
-
-                else if(customVars.contains(name))
+                else if(vars.contains(name) && authorizedVars[vars.indexOf(name)])
                 {
-                    decompTypes << ADDITIONNAL_VARS_START + customVars.indexOf(name);
+                    decompTypes << vars.indexOf(name) + VARS_START + 1;
                     decompPriorites << VAR;
-                    decompValeurs << customVars.indexOf(name);
-                }
+                    decompValeurs << 0.0;
+                }                           
 
                 else return false;
             }

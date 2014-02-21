@@ -24,9 +24,7 @@
 DataWindow::DataWindow(Informations *info)
 {
     ui = new Ui::DataWindow;
-    ui->setupUi(this);
-
-    ui->actionsGroupBox->setFixedWidth(350);
+    ui->setupUi(this);   
 
     informations = info;
     selectorSide = COLUMN_SELECTION;

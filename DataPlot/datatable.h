@@ -34,9 +34,13 @@ public:
     QSize getHorizontalHeaderSize();
 
     int getColumnCount();
-    int getRowCount();
+    int getRowCount();   
 
     void fillColumnFromRange(int col, Range range);
+    bool fillColumnFromExpr(int col, QString expr);
+
+    void sortColumnSwapCells(int col, bool ascending);
+    void sortColumnSwapRows(int column, bool ascending);
 
 public slots:
     void insertRow(int index);
@@ -46,8 +50,7 @@ public slots:
     void removeColumn(int index);
 
 signals:
-    void newPosCorrections();
-    void newColumnNames(QStringList names);
+    void newPosCorrections();   
     void newColumnCount(int count);
     void newRowCount(int count);
 
@@ -62,8 +65,11 @@ protected:
     void addRow();
     void addColumn();
 
+
+
     bool disableChecking;
     ExprCalculator *calculator;
+    TreeCreator *treeCreator;
     int cellHeight, cellWidth;
     Informations *informations;
     QTableWidget *tableWidget;

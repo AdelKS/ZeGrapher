@@ -21,18 +21,6 @@
 
 #include "Calculus/seqcalculator.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 static double tenPower(double x)
 {
      return pow(10, x);
@@ -111,7 +99,7 @@ void SeqCalculator::setParametricInfo(bool parametric, Range parRange)
 {
     isParametric = parametric;
     kRange = parRange;
-    drawsNum = fipart((kRange.end - kRange.start)/kRange.step) + 1;
+    drawsNum = trunc((kRange.end - kRange.start)/kRange.step) + 1;
 
     isKRangeValid = drawsNum > 0;
 
@@ -302,7 +290,7 @@ double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
 
 void SeqCalculator::updateSeqValuesSize()
 {
-    int size = fipart((kRange.end - kRange.start)/kRange.step) + 2;
+    int size = trunc((kRange.end - kRange.start)/kRange.step) + 2;
 
     for(int i = seqValues.size() ; i < size ; i++)
         seqValues << QList<double>();

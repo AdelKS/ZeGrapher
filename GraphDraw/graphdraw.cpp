@@ -24,18 +24,6 @@
 
 using namespace std;
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 GraphDraw::GraphDraw(Informations *info)
 {
     informations = info;
@@ -153,7 +141,7 @@ void GraphDraw::drawFunctions()
 
 void GraphDraw::drawOneSequence(int i, int width)
 {
-    if(graphRange.Xmax <= seqs[0]->get_nMin() || fipart(graphRange.Xmax) <= graphRange.Xmin || !seqs[i]->getDrawState())
+    if(graphRange.Xmax <= seqs[0]->get_nMin() || trunc(graphRange.Xmax) <= graphRange.Xmin || !seqs[i]->getDrawState())
         return;
 
      painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
@@ -163,13 +151,13 @@ void GraphDraw::drawOneSequence(int i, int width)
      double posX;
 
      if(graphRange.Xmin >  seqs[0]->get_nMin())
-         posX = fipart(graphRange.Xmin);
+         posX = trunc(graphRange.Xmin);
      else posX = seqs[0]->get_nMin();
 
      double step = 1;
 
      if(uniteX < 1)
-         step = 5 * fipart(1/uniteX);
+         step = 5 * trunc(1/uniteX);
 
 
      double result;
@@ -177,7 +165,7 @@ void GraphDraw::drawOneSequence(int i, int width)
      int end = seqs[i]->getDrawsNum();
      ColorSaver *colorSaver;
 
-     seqs[i]->getSeqValue(fipart(graphRange.Xmax), ok);
+     seqs[i]->getSeqValue(trunc(graphRange.Xmax), ok);
      colorSaver = seqs[i]->getColorSaver();
 
      for(int k = 0; k < end; k++)

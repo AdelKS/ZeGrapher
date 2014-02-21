@@ -209,18 +209,6 @@ void ImagePreview::writeLegends()
     }
 }
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 void ImagePreview::placerGraduations()
 {
     double fontSize = informations->getOptions().numSize;
@@ -238,7 +226,7 @@ void ImagePreview::placerGraduations()
 
     double space, pos;
 
-    double Xpos = fipart(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale * uniteX;
+    double Xpos = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale * uniteX;
     double end = graphRange.Xmax * uniteX;
     double pas = graphRange.Xscale * uniteX;
 

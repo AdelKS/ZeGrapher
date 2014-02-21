@@ -21,18 +21,6 @@
 
 #include "GraphDraw/maingraph.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 MainGraph::MainGraph(Informations *info) : GraphDraw(info)
 {   
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
@@ -165,8 +153,8 @@ void MainGraph::addOtherWidgets()
 
     yTextLabel = new QLabel();
     yTextLabel->setFixedHeight(25);
-    yTextLabel->setMaximumWidth(35);
-    yTextLabel->setMinimumWidth(25);
+    yTextLabel->setMaximumWidth(45);
+    yTextLabel->setMinimumWidth(35);
 
     hSlider = new QSlider(Qt::Horizontal);
     hSlider->setFixedSize(250,20);
@@ -191,11 +179,11 @@ void MainGraph::addOtherWidgets()
     connect(vSlider, SIGNAL(sliderReleased()), this, SLOT(stop_Y_Zoom()));
 
     lineX = new QLineEdit();
-    lineX->setFixedSize(150,25);
+    lineX->setFixedSize(150,25);    
     connect(lineX, SIGNAL(returnPressed()), this, SLOT(lineXReturnPressed()));
 
     lineY = new QLineEdit();   
-    lineY->setReadOnly(true);
+    lineY->setReadOnly(true);    
     lineY->setFixedSize(150,25);
 
     QVBoxLayout *verLayout = new QVBoxLayout();
@@ -219,6 +207,7 @@ void MainGraph::addOtherWidgets()
     hbox1->addWidget(xTextLabel);
     hbox1->addWidget(lineX);
     xWidget->setLayout(hbox1);
+    xWidget->setAutoFillBackground(true);
 
 
     yWidget = new QWidget(this);
@@ -226,6 +215,7 @@ void MainGraph::addOtherWidgets()
     hbox2->addWidget(yTextLabel);
     hbox2->addWidget(lineY);
     yWidget->setLayout(hbox2);
+    yWidget->setAutoFillBackground(true);
 
     vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF); border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
 
@@ -377,10 +367,10 @@ void MainGraph::afficherPtX(double x)
         }
         else if(selectedCurve.funcType == SEQ_HOVER)
         {
-            if(fipart(x) >= seqs[selectedCurve.id]->get_nMin())
+            if(trunc(x) >= seqs[selectedCurve.id]->get_nMin())
             {
                 bool ok = true;
-                x = fipart(x);
+                x = trunc(x);
                 pointUnit.x = x;
                 pointUnit.y = seqs[selectedCurve.id]->getSeqValue(x, ok, selectedCurve.kPos);               
                 dispPoint = true;
@@ -471,7 +461,7 @@ void MainGraph::indirectPaint()
     if(resaveGraph)
         resaveImageBuffer();
 
-    painter.begin(this);
+    painter.begin(this);   
 
     painter.drawImage(QPoint(0,0), *savedGraph);
     painter.translate(QPointF(centre.x, centre.y));
@@ -647,7 +637,7 @@ void MainGraph::determinerCentreEtUnites()
     bool scaleChanged = false;
 
     QFontMetrics fontMeter(font);
-    double last = fipart(graphRange.Xmax / graphRange.Xscale) * graphRange.Xscale;
+    double last = trunc(graphRange.Xmax / graphRange.Xscale) * graphRange.Xscale;
     double numberSize = fontMeter.width(QString::number(last, 'g', NUM_PREC)) + 5;
 
     if(uniteX * graphRange.Xscale < numberSize + 10)
@@ -1011,6 +1001,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
         update();
 
 
+
 }
 
 void MainGraph::mouseMoveWithActiveSelection(double x, double y)
@@ -1043,15 +1034,15 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
         bool ok = true;
 
         if(graphRange.Xmin > seqs[0]->get_nMin())
-            start = fipart(graphRange.Xmin);
+            start = trunc(graphRange.Xmin);
         else start = seqs[0]->get_nMin();
 
         if(uniteX < 1)
-            step = 5*fipart(1/uniteX);
+            step = 5*trunc(1/uniteX);
 
-        if(fabs(fipart((x-start)/step) - (x-start)/step) < 0.5*step)
-            pointUnit.x = fipart((x-start)/step) * step + start;
-        else pointUnit.x = fipart((x-start)/step) * step + start + step;
+        if(fabs(trunc((x-start)/step) - (x-start)/step) < 0.5*step)
+            pointUnit.x = trunc((x-start)/step) * step + start;
+        else pointUnit.x = trunc((x-start)/step) * step + start + step;
 
         pointUnit.y = seqs[selectedCurve.id]->getSeqValue(pointUnit.x, ok, k_pos);
 
@@ -1132,14 +1123,14 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
         double start, step = 1;
 
         if(graphRange.Xmin > nMin)
-            start = fipart(graphRange.Xmin);
+            start = trunc(graphRange.Xmin);
         else start = nMin;
 
         if(uniteX < 1)
-             step = 5*fipart(1/uniteX);
+             step = 5*trunc(1/uniteX);
 
-        if(fabs((fipart((x-start)/step) - (x-start)/step) * uniteX) < (double)(parametres.epaisseurDesCourbes) + 2)
-            intAbscissa = fipart((x-start)/step) * step + start;
+        if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < (double)(parametres.epaisseurDesCourbes) + 2)
+            intAbscissa = trunc((x-start)/step) * step + start;
 
         if(isnan(intAbscissa))
             return;
@@ -1260,7 +1251,7 @@ void MainGraph::placerGraduations()
         posTxt = Ypos + parametres.numSize + 3;
     }
 
-    double Xreal = fipart(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale;
+    double Xreal = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
@@ -1326,7 +1317,7 @@ void MainGraph::placerGraduations()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = fipart(graphRange.Ymax / graphRange.Yscale) * graphRange.Yscale;
+    double Yreal = trunc(graphRange.Ymax / graphRange.Yscale) * graphRange.Yscale;
     Ypos = -Yreal * uniteY + centre.y;
     pas = graphRange.Yscale * uniteY;
 

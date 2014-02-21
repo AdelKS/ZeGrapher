@@ -107,7 +107,7 @@ enum {
  COSH ,
  SINH ,
  TANH ,
- E , // E n = ^n like E or e+ or e = *^
+ E , // E for 1.2E10 or 1.2E+10 also 1.2E-3
  e , // same as E
 
  REF_FUNC_END ,

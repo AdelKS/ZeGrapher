@@ -49,6 +49,8 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, i
     startingActionsUi->setupUi(startingActions);
     startingActionsUi->remove->hide();
 
+    startingActions->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
     shownWidgets << startingActions;
 
     fillOptions = new QWidget();
@@ -56,6 +58,8 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, i
     fillOptionsUi->setupUi(fillOptions);
     connect(fillOptionsUi->previous, SIGNAL(released()), this, SLOT(showPreviousWidget()));
     connect(fillOptionsUi->apply, SIGNAL(released()), this, SLOT(applyFill()));
+
+    fillOptions->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     lineEditsMapper = new QSignalMapper(this);
     connect(lineEditsMapper, SIGNAL(mapped(QWidget*)), this, SLOT(resetPalette(QWidget*)));
@@ -207,13 +211,41 @@ void ColumnActionsWidget::applyFill()
             shownWidgets.clear();
             startingActions->show();
             shownWidgets << startingActions;
+
+            fillOptionsUi->start->clear();
+            fillOptionsUi->step->clear();
+            fillOptionsUi->end->clear();
+            fillOptionsUi->expression->clear();
         }
+    }
+    else
+    {
+        if(dataTable->fillColumnFromExpr(selectorPos.index, fillOptionsUi->expression->text()))
+        {
+            shownWidgets.last()->hide();
+            shownWidgets.clear();
+            startingActions->show();
+            shownWidgets << startingActions;
+
+            fillOptionsUi->start->clear();
+            fillOptionsUi->step->clear();
+            fillOptionsUi->end->clear();
+            fillOptionsUi->expression->clear();
+        }
+        else fillOptionsUi->expression->setPalette(invalidPalette);
     }
 }
 
 void ColumnActionsWidget::applySort()
 {
+    if(sortOptionsUi->swapCells->isChecked())
+        dataTable->sortColumnSwapCells(selectorPos.index, sortOptionsUi->ascending->isChecked());
+    else dataTable->sortColumnSwapRows(selectorPos.index, sortOptionsUi->ascending->isChecked());
 
+    shownWidgets.last()->hide();
+    shownWidgets.clear();
+    startingActions->show();
+    shownWidgets << startingActions;
 }
 
 void ColumnActionsWidget::emitInsertColumnSignal()

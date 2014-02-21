@@ -20,6 +20,8 @@
 
 #include "DataPlot/datatable.h"
 
+int refCol;
+
 DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth)
 {
     informations = info;
@@ -27,6 +29,7 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     mainLayout->setMargin(0);
     setMinimumSize(0,0);
     calculator = new ExprCalculator(false, informations->getFuncsList());
+    treeCreator = new TreeCreator(DATA_TABLE_EXPR);
 
     QColor color;
     color.setNamedColor(VALID_COLOR);
@@ -46,9 +49,7 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     tableWidget->horizontalHeader()->setMovable(true);
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(columnMoved(int,int,int)));
 
-    tableWidget->horizontalHeader()->setFixedHeight(25);    
-
-
+    tableWidget->horizontalHeader()->setFixedHeight(25);
 
     resizeColumns(columnWidth);
     resizeRows(rowHeight);
@@ -80,8 +81,100 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     for(int i = 0 ; i < columnCount ; i++) { columnNames << tr("Renommez moi!") ; }
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
-    nameValidator.setPattern("^([a-z]|[A-Z])([a-z]|[A-Z]|_)+([a-z]|[A-Z])$");
+    nameValidator.setPattern("^([a-z]|[A-Z])+(_([a-z]|[A-Z])+)*$");
 
+}
+
+int doubleCompareAscend(double a, double b)
+{
+    if(isnan(b))
+        return -1;
+    else return a<b;
+}
+
+int doubleCompareDescend(double a, double b)
+{
+    if(isnan(b))
+        return 1;
+    else return a>b;
+}
+
+void DataTable::sortColumnSwapCells(int col, bool ascending)
+{
+    if(ascending)
+        qSort(values[col].begin(), values[col].end(), doubleCompareAscend);
+    else qSort(values[col].begin(), values[col].end(), doubleCompareDescend);
+
+    disableChecking = true;
+
+    for(int row = 0 ; row < tableWidget->rowCount(); row++)
+    {
+        if(isnan(values[col][row]))
+        {
+            tableWidget->item(row,col)->setText("");
+            tableWidget->item(row,col)->setBackgroundColor(Qt::white);
+        }
+        else
+        {
+            tableWidget->item(row,col)->setText(QString::number(values[col][row], 'g', MAX_DOUBLE_PREC));
+            tableWidget->item(row,col)->setBackgroundColor(VALID_COLOR);
+        }
+    }
+
+    disableChecking = false;
+}
+
+int listCompareAscend(QList<double> a, QList<double>b)
+{
+    if(isnan(b[refCol]))
+        return -1;
+    else return a[refCol] < b[refCol];
+}
+
+int listCompareDescend(QList<double> a, QList<double>b)
+{
+    if(isnan(b[refCol]))
+        return 1;
+    else return a[refCol] > b[refCol];
+}
+
+void DataTable::sortColumnSwapRows(int column, bool ascending)
+{
+    QList<QList<double> > vals; //this time it will be vals[row][column] just to apply qSort on it, since QSorting values can be made only on columns...
+
+    for(int row = 0 ; row < tableWidget->rowCount(); row++)
+    {
+        vals << QList<double>();
+        for(int col = 0 ; col < tableWidget->columnCount(); col++)
+            vals[row] << values[col][row];
+    }
+
+    refCol = column;
+    if(ascending)
+        qSort(vals.begin(), vals.end(), listCompareAscend);
+    else qSort(vals.begin(), vals.end(), listCompareDescend);
+
+    disableChecking = true;
+
+    for(int row = 0 ; row < tableWidget->rowCount(); row++)
+    {
+        for(int col = 0 ; col < tableWidget->columnCount(); col++)
+        {
+            values[col][row] = vals[row][col];
+            if(isnan(values[col][row]))
+            {
+                tableWidget->item(row,col)->setText("");
+                tableWidget->item(row,col)->setBackgroundColor(Qt::white);
+            }
+            else
+            {
+                tableWidget->item(row,col)->setText(QString::number(values[col][row], 'g', MAX_DOUBLE_PREC));
+                tableWidget->item(row,col)->setBackgroundColor(VALID_COLOR);
+            }
+        }
+    }
+
+    disableChecking = false;
 }
 
 void DataTable::fillColumnFromRange(int col, Range range)
@@ -89,20 +182,67 @@ void DataTable::fillColumnFromRange(int col, Range range)
     double val = range.start;
     int row = 0;
     QTableWidgetItem *item;
-    while(val <= range.end)
+
+    int end = trunc((range.end - range.start)/range.step) + 1;
+
+    for(int i = 0 ; i < end ; i++)
     {
         values[col][row] = val;
 
         item = tableWidget->item(row, col);
         item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
-        item->setBackgroundColor(VALID_COLOR);
-
-        val += range.step;
-        row++;
+        item->setBackgroundColor(VALID_COLOR);        
 
         if(tableWidget->rowCount() == row+1)
             addRow();
+
+        val += range.step;
+        row++;
     }
+}
+
+bool DataTable::fillColumnFromExpr(int col, QString expr)
+{
+    bool ok = false;
+    FastTree *tree = treeCreator->getTreeFromExpr(expr, ok, columnNames);
+
+    if(!ok)
+        return false;
+
+    disableChecking = true;
+
+    double val;
+    QTableWidgetItem *item;
+    QList<double> rowVals;
+
+    for(int row = 0 ; row < tableWidget->rowCount() ; row++)
+    {
+        rowVals.clear();
+        for(int column = 0 ; column < tableWidget->columnCount() ; column++) { rowVals << values[column][row];}
+
+        calculator->setAdditionnalVarsValues(rowVals);
+        val = calculator->calculateFromTree(tree, values[col][row]);
+        values[col][row] = val;
+        item = tableWidget->item(row, col);
+
+        if(isnan(val))
+        {
+            item->setText("");
+            item->setBackgroundColor(Qt::white);
+        }
+        else
+        {
+            item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
+            item->setBackgroundColor(VALID_COLOR);
+        }
+
+    }
+
+    disableChecking = false;
+    treeCreator->deleteFastTree(tree);
+
+    return true;
+
 }
 
 void DataTable::addRow()
@@ -198,7 +338,6 @@ void DataTable::insertColumn(int index)
 
     tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 
-    emit newColumnNames(columnNames);
     emit newColumnCount(tableWidget->columnCount());
 }
 
@@ -220,8 +359,7 @@ void DataTable::removeColumn(int index)
 
     tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 
-    emit newColumnNames(columnNames);
-    emit newRowCount(tableWidget->rowCount());
+    emit newColumnCount(tableWidget->rowCount());
 
 }
 
@@ -240,8 +378,6 @@ void DataTable::renameColumn(int index)
 
     columnNames[index] = name;
     tableWidget->horizontalHeaderItem(index)->setText(name);
-
-    emit newColumnNames(columnNames);
 
 }
 
