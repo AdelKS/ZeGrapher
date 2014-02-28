@@ -53,7 +53,7 @@ public:
 
 public slots:
     void setRowCount(int count);
-    void askedForSelector();
+    void askedForSelector();   
 
 signals:
     void newIndex(bool betweenRows, int index);

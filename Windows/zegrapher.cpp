@@ -145,7 +145,10 @@ void MainWindow::makeConnects()
 void MainWindow::closeEvent(QCloseEvent *evenement)
 {
     fenBornes->close();
+
+    fenFonctions->closeAllOpenedWindows();
     fenFonctions->close();
+
     fenOptions->close();
     fenAPropos->close();
     fenValeurs->close();

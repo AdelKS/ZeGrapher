@@ -56,7 +56,8 @@ SOURCES += \
     Calculus/funccalculator.cpp \
     Calculus/exprcalculator.cpp \
     Calculus/colorsaver.cpp \
-    Widgets/datawidget.cpp
+    Widgets/datawidget.cpp \
+    DataPlot/csvhandler.cpp
 
 HEADERS  += \
     Structures.h \
@@ -104,7 +105,8 @@ HEADERS  += \
     Calculus/exprcalculator.h \
     Calculus/colorsaver.h \
     Calculus/calculusdefines.h \
-    Widgets/datawidget.h
+    Widgets/datawidget.h \
+    DataPlot/csvhandler.h
 
 
 FORMS    += \
@@ -122,7 +124,8 @@ FORMS    += \
     DataPlot/sortoptions.ui \
     DataPlot/filloptions.ui \
     DataPlot/datawindow.ui \   
-    DataPlot/confirmdelete.ui
+    DataPlot/confirmdelete.ui \
+    DataPlot/csvconfig.ui
 
 
 RESOURCES += \

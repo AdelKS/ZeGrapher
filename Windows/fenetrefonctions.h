@@ -38,6 +38,7 @@ class FenetreFonctions : public QWidget
 
 public:
     explicit FenetreFonctions(Informations *info);
+    void closeAllOpenedWindows();
      ~FenetreFonctions();  
 
 public slots:
@@ -70,7 +71,7 @@ protected slots:
 
 protected:
     void addFunctions();
-    void addSequences();
+    void addSequences();    
 
 private:
     Informations *informations;

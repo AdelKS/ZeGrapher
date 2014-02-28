@@ -43,6 +43,7 @@ public slots:
     void setSelectorPos(bool betweenColumns, int index);
     void setColumnCount(int count);
 
+
 signals:
     void removeColumnClicked(int index);
     void insertColumnClicked(int index);

@@ -25,6 +25,9 @@
 #include "informations.h"
 #include "Calculus/exprcalculator.h"
 
+#define MIN_ROW_COUNT 10
+#define MIN_COLUMN_COUNT 3
+
 class DataTable : public QWidget
 {
     Q_OBJECT
@@ -34,7 +37,9 @@ public:
     QSize getHorizontalHeaderSize();
 
     int getColumnCount();
-    int getRowCount();   
+    int getRowCount();
+
+    QList<QStringList> getData();
 
     void fillColumnFromRange(int col, Range range);
     bool fillColumnFromExpr(int col, QString expr);
@@ -48,6 +53,8 @@ public slots:
 
     void removeRow(int index);
     void removeColumn(int index);
+
+    void addData(QList<QStringList> data);
 
 signals:
     void newPosCorrections();   
@@ -64,6 +71,7 @@ protected:
     void resizeRows(int rowHeight);
     void addRow();
     void addColumn();
+    void removeUnnecessaryRowsColumns();
 
 
 

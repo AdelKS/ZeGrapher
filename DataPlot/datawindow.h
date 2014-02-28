@@ -27,6 +27,7 @@
 #include "./columnactionswidget.h"
 #include "./rowselectorwidget.h"
 #include "./rowactionswidget.h"
+#include "./csvhandler.h"
 
 #define COLUMN_SELECTION true
 #define ROW_SELECTION false
@@ -53,6 +54,8 @@ protected slots:
     void selectorInColumnSelection();
     void selectorInRowSelection();
     void selectorPosChanged(bool inBetween, int index);
+    void openData();
+    void saveData();
 
 protected:
 
@@ -65,6 +68,7 @@ protected:
     ColumnActionsWidget *columnActionsWidget;
     RowSelectorWidget *rowSelector;
     RowActionsWidget *rowActionsWidget;
+    CSVhandler *csvHandler;
     bool selectorSide;
 };
 

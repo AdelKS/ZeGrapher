@@ -89,6 +89,13 @@ DataWindow::DataWindow(Informations *info)
 
     rowActionsWidget->hide();
 
+    csvHandler = new CSVhandler(this);
+    connect(csvHandler, SIGNAL(dataFromCSV(QList<QStringList>)), dataTable, SLOT(addData(QList<QStringList>)));
+
+    connect(ui->open, SIGNAL(released()), this, SLOT(openData()));
+    connect(ui->save, SIGNAL(released()), this, SLOT(saveData()));
+
+
     connect(columnSelector, SIGNAL(newSelectorPos(bool,int)), columnActionsWidget, SLOT(setSelectorPos(bool,int)));
     connect(columnSelector, SIGNAL(askForSelector()), rowSelector, SLOT(askedForSelector()));
     connect(columnSelector, SIGNAL(askForSelector()), this, SLOT(selectorInColumnSelection()));
@@ -96,11 +103,10 @@ DataWindow::DataWindow(Informations *info)
 
     connect(rowSelector, SIGNAL(askForSelector()), this, SLOT(selectorInRowSelection()));
     connect(rowSelector, SIGNAL(askForSelector()), columnSelector, SLOT(askedForSelector()));
-    connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));
-    connect(rowSelector, SIGNAL(newIndex(bool,int)), rowActionsWidget, SLOT(setSelectorPos(bool,int)));
+    connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));  
 
     connect(rowActionsWidget, SIGNAL(insertRowClicked(int)), dataTable, SLOT(insertRow(int)));
-    connect(rowActionsWidget, SIGNAL(removeRowClicked(int)), dataTable, SLOT(removeRow(int)));
+    connect(rowActionsWidget, SIGNAL(removeRowClicked(int)), dataTable, SLOT(removeRow(int))); 
 
     connect(columnActionsWidget, SIGNAL(insertColumnClicked(int)), dataTable, SLOT(insertColumn(int)));
     connect(columnActionsWidget, SIGNAL(removeColumnClicked(int)), dataTable, SLOT(removeColumn(int)));
@@ -114,6 +120,16 @@ DataWindow::DataWindow(Informations *info)
     connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));
     //connect to row actions widget
 
+}
+
+void DataWindow::openData()
+{
+    csvHandler->getDataFromCSV();
+}
+
+void DataWindow::saveData()
+{
+    csvHandler->saveCSV(dataTable->getData());
 }
 
 void DataWindow::selectorInColumnSelection()

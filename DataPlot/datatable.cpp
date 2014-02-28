@@ -99,6 +99,109 @@ int doubleCompareDescend(double a, double b)
     else return a>b;
 }
 
+QList<QStringList> DataTable::getData()
+{
+    QList<QStringList> data;
+
+    data << columnNames;
+
+    for(int i = 1 ; i < tableWidget->rowCount(); i++)
+    {
+        data << QStringList();
+        for(int j = 0 ; j < tableWidget->columnCount(); j++)
+            data[i] << tableWidget->item(i,j)->text();
+    }
+
+    return data;
+}
+
+void DataTable::removeUnnecessaryRowsColumns()
+{
+    //removing unnecessary columns but not the last one
+
+    bool unnecessary = false;
+
+    int col = 0;
+
+    while(col < tableWidget->columnCount()-1 && tableWidget->columnCount() > MIN_COLUMN_COUNT)
+    {
+        if(columnNames[col] != tr("Renommez moi!"))
+        {
+            col++;
+            continue;
+        }
+
+        unnecessary = true;
+
+        for(int row = 0 ; row < tableWidget->rowCount() && unnecessary; row++)
+            unnecessary = tableWidget->item(row, col)->text().isEmpty() || tableWidget->item(row, col)->text() == " ";
+
+        if(unnecessary && tableWidget->columnCount() > MIN_COLUMN_COUNT)
+            removeColumn(col);
+        else col++;
+    }
+
+    //removing rows, but not the last one
+
+    int row = 0;
+
+    while(row < tableWidget->rowCount()-1 && tableWidget->rowCount() > MIN_ROW_COUNT)
+    {
+        unnecessary = true;
+
+        for(col = 0 ; col < tableWidget->columnCount() && unnecessary; col++)
+            unnecessary = tableWidget->item(row, col)->text().isEmpty() || tableWidget->item(row, col)->text() == " ";
+
+        if(unnecessary && tableWidget->rowCount() > MIN_ROW_COUNT)
+            removeRow(row);
+        else row++;
+    }
+}
+
+void DataTable::addData(QList<QStringList> data)
+{
+    //the first line of the CSV file must contain column names, matching the validator, or left blank
+
+    int indexOfLastInsertedColumn = 0;    
+
+    if(!data.isEmpty())
+    {
+        for(int column = 0 ; column < data[0].size(); column++)
+        {
+            if(column == indexOfLastInsertedColumn)
+            {
+                insertColumn(column);
+                indexOfLastInsertedColumn++;
+            }
+
+            if(nameValidator.exactMatch(data[0][column]))
+                columnNames[column] = data[0][column];
+        }
+    }
+
+    tableWidget->setHorizontalHeaderLabels(columnNames);
+
+
+    for(int row = 1 ; row < data.size(); row++)
+    {
+        if(tableWidget->rowCount() == row)
+            addRow();
+
+        for(int column = 0 ; column < data[row].size(); column++)
+        {
+            if(column == indexOfLastInsertedColumn)
+            {
+                insertColumn(column);
+                indexOfLastInsertedColumn++;
+            }
+
+            tableWidget->item(row-1, column)->setText(data[row][column]);
+        }
+    }
+
+    removeUnnecessaryRowsColumns();
+}
+
 void DataTable::sortColumnSwapCells(int col, bool ascending)
 {
     if(ascending)
@@ -357,10 +460,9 @@ void DataTable::removeColumn(int index)
 
     values.removeAt(index);
 
-    tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
+    tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);    
 
-    emit newColumnCount(tableWidget->rowCount());
-
+    emit newColumnCount(tableWidget->columnCount());
 }
 
 void DataTable::renameColumn(int index)

@@ -35,5 +35,6 @@
         <file>icons/selector.png</file>
         <file>icons/rotatedselector.png</file>
         <file>icons/data.png</file>
+        <file>icons/csv.png</file>
     </qresource>
 </RCC>

@@ -153,7 +153,7 @@ struct ParEqValues
 
 struct SelectorPos
 {
-    bool betweenColumns;
+    bool inbetween;
     int index;
 };
 

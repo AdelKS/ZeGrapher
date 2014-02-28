@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2013, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
+**  Copyright (c) 2014, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
 **
 **  This file is part of the ZeGrapher project, version 2.1.
 **
@@ -18,36 +18,42 @@
 **
 ****************************************************************************/
 
-#ifndef DATAWIDGET_H
-#define DATAWIDGET_H
+#ifndef CSVHANDLER_H
+#define CSVHANDLER_H
 
-#include "qcolorbutton.h"
-#include "DataPlot/datawindow.h"
+#include <QtGui>
 
-namespace Ui {
-class DataWidget;
-}
+#include "ui_csvconfig.h"
 
-class DataWidget : public QWidget
+
+
+class CSVhandler : public QDialog
 {
     Q_OBJECT
-    
-public:
-    explicit DataWidget(int num, Informations *info, QWidget *parent = 0);
-    void setWidgetNum(int num);
-    void closeDataWindow();
-    ~DataWidget();
 
-protected slots:
-    void emitRemoveSignal();
+    enum Job {FILE_SAVE, FILE_OPEN, NONE};
+
+public:
+    CSVhandler(QWidget *parent);
+
+    void getDataFromCSV();
+    void saveCSV(QList<QStringList> data);
 
 signals:
-    void removeMe(DataWidget *widget);
-    
-private:
-    Ui::DataWidget *ui;
-    QColorButton *colorButton;
-    DataWindow *dataWindow;
+    void dataFromCSV(QList<QStringList>);
+
+protected slots:
+    void askForFileLocation();
+    void apply();
+
+protected:
+    void removeUnnecessaryCells();
+
+    Ui::CSVconfig *ui;
+    Job job;
+    QList<QStringList> values;
+    QFileDialog *fileDialog;
+
 };
 
-#endif // DATAWIDGET_H
+#endif // CSVHANDLER_H

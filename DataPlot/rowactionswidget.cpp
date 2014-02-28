@@ -40,7 +40,7 @@ RowActionsWidget::RowActionsWidget(int rownum)
 
 void RowActionsWidget::setSelectorPos(bool betweenRows, int index)
 {
-    selectorPos.betweenColumns = betweenRows;
+    selectorPos.inbetween = betweenRows;
     selectorPos.index = index;
 
     if(betweenRows)
@@ -48,7 +48,7 @@ void RowActionsWidget::setSelectorPos(bool betweenRows, int index)
         insertRow->show();
         removeRow->hide();
     }
-    else if(rowCount > 10)
+    else if(rowCount > 10 && selectorPos.index != rowCount-1)
     {
         insertRow->hide();
         removeRow->show();
@@ -63,8 +63,7 @@ void RowActionsWidget::setSelectorPos(bool betweenRows, int index)
 void RowActionsWidget::setRowCount(int count)
 {
     rowCount = count;
-    if(rowCount <= 10)
-        removeRow->hide();
+    setSelectorPos(selectorPos.inbetween, selectorPos.index);
 }
 
 void RowActionsWidget::emitInsertRowSignal()

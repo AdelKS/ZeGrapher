@@ -32,7 +32,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, i
     columnCount = columnnum;
 
     selectorPos.index = 2;
-    selectorPos.betweenColumns = false;
+    selectorPos.inbetween = false;
 
     QColor color;
     color.setNamedColor(VALID_COLOR);
@@ -131,20 +131,20 @@ void ColumnActionsWidget::resetPalette(QWidget *widget)
 
 void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
 {
-    if(selectorPos.betweenColumns != betweenColumns || selectorPos.index != index)
+    if(selectorPos.inbetween != betweenColumns || selectorPos.index != index)
     {
-        selectorPos.betweenColumns = betweenColumns;
+        selectorPos.inbetween = betweenColumns;
         selectorPos.index = index;
 
         shownWidgets.last()->hide();
         shownWidgets.clear();
 
-        if(selectorPos.betweenColumns)
+        if(selectorPos.inbetween)
         {            
             insertColumn->show();
             shownWidgets << insertColumn;
         }
-        else if (columnCount > 3)
+        else if (columnCount > 3 && selectorPos.index != columnCount-1)
         {
             startingActionsUi->remove->show();
             startingActions->show();
@@ -163,6 +163,7 @@ void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
 void ColumnActionsWidget::setColumnCount(int count)
 {
     columnCount = count;
+    setSelectorPos(selectorPos.inbetween, selectorPos.index);
 }
 
 void ColumnActionsWidget::showNextWidget(QWidget *widget)

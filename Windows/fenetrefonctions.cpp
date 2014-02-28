@@ -285,7 +285,14 @@ void FenetreFonctions::removeDataWidget(DataWidget *widget)
     delete widget;
 }
 
+ void FenetreFonctions::closeAllOpenedWindows()
+ {
+     for(int i = 0 ; i < dataWidgets.size(); i++)
+     {
+         dataWidgets[i]->closeDataWindow();
+     }
+ }
+
 FenetreFonctions::~FenetreFonctions()
 {
-    delete ui;   
 }

@@ -46,14 +46,14 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="open">
           <property name="text">
            <string>Importer</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="save">
           <property name="text">
            <string>Exporter</string>
           </property>
@@ -138,8 +138,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>380</width>
-              <height>448</height>
+              <width>372</width>
+              <height>433</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -316,8 +316,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>463</width>
-          <height>526</height>
+          <width>455</width>
+          <height>511</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">

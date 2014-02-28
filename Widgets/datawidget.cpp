@@ -61,6 +61,11 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
     connect(ui->showDataWindow, SIGNAL(released()), dataWindow, SLOT(show()));
 }
 
+void DataWidget::closeDataWindow()
+{
+    dataWindow->close();
+}
+
 void DataWidget::setWidgetNum(int num)
 {
     ui->nameLabel->setText("(" + tr("Données") + " " + QString::number(num) + ") :");
