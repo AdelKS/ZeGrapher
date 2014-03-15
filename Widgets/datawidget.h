@@ -40,14 +40,26 @@ public:
 
 protected slots:
     void emitRemoveSignal();
+    void drawSegments(bool draw);
+    void drawPoints(bool draw);
+    void changeDrawState(bool draw);
+    void newPointStyle(int index);
+    void newLineStyle(int index);
+    void setColor(QColor color);
 
 signals:
     void removeMe(DataWidget *widget);
     
 private:
+
+    int widgetNum;
+    QList<PointStyle> pointStyleMap;
+    QList<Qt::PenStyle> lineStyleMap;
+    Informations *informations;
     Ui::DataWidget *ui;
     QColorButton *colorButton;
     DataWindow *dataWindow;
+    DataStyle style;
 };
 
 #endif // DATAWIDGET_H

@@ -40,6 +40,7 @@ public:
     int getRowCount();
 
     QList<QStringList> getData();
+    const QList<QList<double> > &getValues();
 
     void fillColumnFromRange(int col, Range range);
     bool fillColumnFromExpr(int col, QString expr);
@@ -60,6 +61,7 @@ signals:
     void newPosCorrections();   
     void newColumnCount(int count);
     void newRowCount(int count);
+    void valEdited(int row, int column);
 
 protected slots:
     void renameColumn(int index);

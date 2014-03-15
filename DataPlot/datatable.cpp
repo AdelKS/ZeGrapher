@@ -365,6 +365,11 @@ void DataTable::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualI
     columnNames.move(oldVisualIndex, newVisualIndex);
 }
 
+const QList<QList<double> > &DataTable::getValues()
+{
+    return values;
+}
+
 void DataTable::checkCell(QTableWidgetItem *item)
 {
     if(disableChecking)
@@ -377,12 +382,6 @@ void DataTable::checkCell(QTableWidgetItem *item)
 
     QString expr = item->text();
 
-    if(expr.isEmpty())
-    {
-        item->setBackgroundColor(Qt::white);
-        return;
-    }
-
     bool ok = false;
     double val = calculator->calculateExpression(expr, ok);
 
@@ -390,13 +389,17 @@ void DataTable::checkCell(QTableWidgetItem *item)
     {
         item->setBackgroundColor(VALID_COLOR);
         values[item->column()][item->row()] = val;
+        disableChecking = true;
         item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
+        disableChecking = false;
     }
     else
     {
         item->setBackgroundColor(INVALID_COLOR);
         values[item->column()][item->row()] = NAN;
     }
+
+    emit valEdited(item->row(), item->column());
 }
 
 void DataTable::insertRow(int index)

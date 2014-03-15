@@ -52,8 +52,10 @@ class ColumnSelectorWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ColumnSelectorWidget(int count);    
+    explicit ColumnSelectorWidget(int count, int xindex, int yindex, int selectorindex);
     void updateSelectorsPos();
+    int getXindex();
+    int getYindex();
 
 public slots:
     void setColumnCount(int count);

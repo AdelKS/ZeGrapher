@@ -42,6 +42,15 @@ public:
     bool isOrthonormal();
     Options getOptions();  
 
+    void addDataList();
+    void removeDataList(int index);
+    void setData(int index, QList<QPointF> list);
+    void setDataStyle(int index, DataStyle style);
+
+    int getDataListsCount();
+    QList<QPointF> getDataList(int index);
+    DataStyle getDataStyle(int index);
+
     void setParEqsListPointer(QList<ParEqWidget*> *list);
     QList<ParEqWidget*>* getParEqsList();
 
@@ -67,6 +76,7 @@ public slots:
 signals:
 
     void newOrthonormalityState(bool orth);
+    void dataUpdated();
     void updateOccured();
     void drawStateUpdateOccured();
     void animationUpdate();
@@ -79,6 +89,9 @@ public slots:
     void setOptions(Options opt);  
 
 private:
+
+    QList<QList<QPointF> > data;
+    QList<DataStyle> dataStyle;
 
     QList<TangentWidget*> *tangents;
     QList<StraightLineWidget*> *lines;

@@ -26,9 +26,18 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
     ui(new Ui::DataWidget)
 {
     ui->setupUi(this);
-    ui->styleWidget->hide();
+    ui->styleWidget->hide();   
 
-    setWidgetNum(num);
+    style.color = Qt::black;
+    style.drawLines = false;
+    style.drawPoints = true;
+    style.lineStyle = Qt::SolidLine;
+    style.pointStyle = Rhombus;
+    style.draw = true;
+
+    info->setDataStyle(num, style);
+
+    informations = info;
 
     colorButton = new QColorButton();
     ui->mainLayout->addWidget(colorButton);
@@ -42,11 +51,15 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
     ui->pointStyleCombo->addItem(QIcon(":/icons/trianglePoint.png"), "");
     ui->pointStyleCombo->addItem(QIcon(":/icons/crossPoint.png"), "");
 
+    pointStyleMap << Rhombus << Disc << Square << Triangle << Cross;
+
     ui->linesStyleCombo->setIconSize(ui->linesStyleCombo->size());
     ui->linesStyleCombo->addItem(QIcon(":/icons/solidLine.png"), "");
     ui->linesStyleCombo->addItem(QIcon(":/icons/dashLine.png"), "");
     ui->linesStyleCombo->addItem(QIcon(":/icons/dotLine.png"), "");
     ui->linesStyleCombo->addItem(QIcon(":/icons/dashDotLine.png"), "");
+
+    lineStyleMap << Qt::SolidLine << Qt::DashLine << Qt::DotLine << Qt::DashDotLine;
 
     QPushButton *removeButton = new QPushButton;
     removeButton->setFixedSize(25,25);
@@ -57,8 +70,67 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
     connect(removeButton, SIGNAL(released()), this, SLOT(emitRemoveSignal()));
     ui->mainLayout->addWidget(removeButton);
 
-    dataWindow = new DataWindow(info);
+    dataWindow = new DataWindow(info, num);
     connect(ui->showDataWindow, SIGNAL(released()), dataWindow, SLOT(show()));
+
+    connect(colorButton, SIGNAL(colorChanged(QColor)), this, SLOT(setColor(QColor)));
+    connect(ui->pointStyleCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(newPointStyle(int)));
+    connect(ui->linesStyleCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(newLineStyle(int)));
+    connect(ui->draw, SIGNAL(toggled(bool)), this, SLOT(changeDrawState(bool)));
+
+     setWidgetNum(num);
+}
+
+void DataWidget::drawSegments(bool draw)
+{
+    if(style.drawLines != draw)
+    {
+        style.drawLines = draw;
+        informations->setDataStyle(widgetNum, style);
+    }
+}
+
+void DataWidget::drawPoints(bool draw)
+{
+    if(style.drawPoints != draw)
+    {
+        style.drawPoints = draw;
+        informations->setDataStyle(widgetNum, style);
+    }
+}
+
+void DataWidget::setColor(QColor color)
+{
+    if(style.color != color)
+    {
+        style.color = color;
+        informations->setDataStyle(widgetNum, style);
+    }
+}
+
+void DataWidget::newLineStyle(int index)
+{
+    if(style.lineStyle != lineStyleMap[index])
+    {
+        style.lineStyle = lineStyleMap[index];
+        informations->setDataStyle(widgetNum, style);
+    }
+}
+
+void DataWidget::newPointStyle(int index)
+{
+    if(style.pointStyle != pointStyleMap[index])
+    {
+        style.pointStyle = pointStyleMap[index];
+        informations->setDataStyle(widgetNum, style);
+    }
+
+}
+
+void DataWidget::changeDrawState(bool draw)
+{
+    style.draw = draw;
+    informations->setDataStyle(widgetNum, style);
 }
 
 void DataWidget::closeDataWindow()
@@ -68,7 +140,9 @@ void DataWidget::closeDataWindow()
 
 void DataWidget::setWidgetNum(int num)
 {
-    ui->nameLabel->setText("(" + tr("Données") + " " + QString::number(num) + ") :");
+    widgetNum = num;
+    ui->nameLabel->setText("(" + tr("Données") + " " + QString::number(num+1) + ") :");
+    dataWindow->changeIndex(num);
 }
 
 void DataWidget::emitRemoveSignal()

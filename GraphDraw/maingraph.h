@@ -55,6 +55,7 @@ public slots:
     void reactivateSmoothing();
     void updateParEq();
     void updateGraph();
+    void updateData();
 
 protected slots:
 
@@ -80,6 +81,7 @@ protected:
     void mouseSeqHoverTest(double x, double y);
     void mouseTangentHoverTest(double x, double y);
     void resaveImageBuffer();
+    void resaveDataBuffer();
     void addTangentToBuffer();
     void drawHoveringConsequence();  
 
@@ -101,7 +103,7 @@ protected:
     QLineEdit *lineX, *lineY;
     double y1, y2, mouseX, mouseY;
 
-    bool dispPoint, boutonPresse, sourisSurUneCourbe,
+    bool dispPoint, boutonPresse, sourisSurUneCourbe, resaveDataImage,
          dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,
          hHideStarted, vHideStarted, hoveredCurveType, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;
@@ -116,7 +118,7 @@ protected:
     MouseState mouseState;
 
     QRect rectReel, hWidgetRect, vWidgetRect;
-    QImage *savedGraph;
+    QImage *savedGraph, *dataImage;
     QList <QString> customFunctions;
     QList <QString> customSequences;
 

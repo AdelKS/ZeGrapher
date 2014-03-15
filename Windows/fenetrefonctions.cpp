@@ -270,7 +270,9 @@ void FenetreFonctions::removeParEq(ParEqWidget *widget)
 
 void FenetreFonctions::addDataWidget()
 {
-    DataWidget *widget = new DataWidget(dataWidgets.size()+1, informations);
+    informations->addDataList();
+
+    DataWidget *widget = new DataWidget(dataWidgets.size(), informations);
     connect(widget, SIGNAL(removeMe(DataWidget*)), this, SLOT(removeDataWidget(DataWidget*)));
 
     dataWidgets << widget;
@@ -279,6 +281,11 @@ void FenetreFonctions::addDataWidget()
 
 void FenetreFonctions::removeDataWidget(DataWidget *widget)
 {
+    informations->removeDataList(dataWidgets.indexOf(widget));
+
+    for(int i = dataWidgets.indexOf(widget)+1; i < dataWidgets.size(); i++)
+        dataWidgets[i]->setWidgetNum(i-1);
+
     dataWidgets.removeOne(widget);
     widget->close();
 

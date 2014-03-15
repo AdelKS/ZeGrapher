@@ -38,6 +38,48 @@ Informations::Informations()
     parametres.lissage = true;
 }
 
+void Informations::addDataList()
+{
+    data << QList<QPointF>();
+
+    DataStyle style;
+    dataStyle << style;
+}
+
+void Informations::removeDataList(int index)
+{
+    data.removeAt(index);
+    dataStyle.removeAt(index);
+    emit updateOccured();
+}
+
+void Informations::setDataStyle(int index, DataStyle style)
+{
+    dataStyle[index] = style;
+    emit dataUpdated();
+}
+
+void Informations::setData(int index, QList<QPointF> list)
+{
+    data[index] = list;
+    emit dataUpdated();
+}
+
+int Informations::getDataListsCount()
+{
+    return data.size();
+}
+
+QList<QPointF> Informations::getDataList(int index)
+{
+    return data[index];
+}
+
+DataStyle Informations::getDataStyle(int index)
+{
+    return dataStyle[index];
+}
+
 void Informations::setParEqsListPointer(QList<ParEqWidget*> *list)
 {
     parEqWidgets = list;

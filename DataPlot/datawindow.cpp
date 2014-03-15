@@ -21,8 +21,12 @@
 #include "DataPlot/datawindow.h"
 #include "ui_datawindow.h"
 
-DataWindow::DataWindow(Informations *info)
+DataWindow::DataWindow(Informations *info, int ind)
 {
+    index = ind;
+    xindex = STARTING_XPIN_INDEX;
+    yindex = STARTING_YPIN_INDEX;
+
     ui = new Ui::DataWindow;
     ui->setupUi(this);   
 
@@ -30,7 +34,7 @@ DataWindow::DataWindow(Informations *info)
     selectorSide = COLUMN_SELECTION;
 
     dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
-    columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT);
+    columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT, STARTING_XPIN_INDEX, STARTING_YPIN_INDEX, STARTING_SELECTOR_INDEX);
     columnActionsWidget = new ColumnActionsWidget(dataTable, info, STARTING_COLUMN_COUNT);
     rowSelector = new RowSelectorWidget(STARTING_ROW_COUNT);
     rowActionsWidget = new RowActionsWidget(STARTING_ROW_COUNT);
@@ -100,6 +104,8 @@ DataWindow::DataWindow(Informations *info)
     connect(columnSelector, SIGNAL(askForSelector()), rowSelector, SLOT(askedForSelector()));
     connect(columnSelector, SIGNAL(askForSelector()), this, SLOT(selectorInColumnSelection()));
     connect(columnSelector, SIGNAL(newSelectorPos(bool,int)), this, SLOT(selectorPosChanged(bool,int)));
+    connect(columnSelector, SIGNAL(newXIndex(int)), this, SLOT(dataChanged()));
+    connect(columnSelector, SIGNAL(newYIndex(int)), this, SLOT(dataChanged()));
 
     connect(rowSelector, SIGNAL(askForSelector()), this, SLOT(selectorInRowSelection()));
     connect(rowSelector, SIGNAL(askForSelector()), columnSelector, SLOT(askedForSelector()));
@@ -115,11 +121,63 @@ DataWindow::DataWindow(Informations *info)
     connect(dataTable, SIGNAL(newColumnCount(int)), columnActionsWidget, SLOT(setColumnCount(int)));
     connect(dataTable, SIGNAL(newRowCount(int)), rowSelector, SLOT(setRowCount(int)));
     connect(dataTable, SIGNAL(newRowCount(int)), rowActionsWidget, SLOT(setRowCount(int)));
+    connect(dataTable, SIGNAL(valEdited(int,int)), this, SLOT(cellValChanged(int,int)));
 
 
     connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));
     //connect to row actions widget
 
+}
+
+void DataWindow::changeIndex(int ind)
+{
+    index = ind;
+}
+
+void DataWindow::dataChanged()
+{
+    if(!(xindex == columnSelector->getXindex() && yindex == columnSelector->getYindex()))
+    {
+        xindex = columnSelector->getXindex();
+        yindex = columnSelector->getYindex();
+        remakeDataList();
+    }
+}
+
+void DataWindow::cellValChanged(int row, int col)
+{
+    Q_UNUSED(row);
+
+    if(col == xindex || col == yindex)
+        remakeDataList();
+}
+
+void DataWindow::remakeDataList()
+{
+    const QList<QList<double> > &values = dataTable->getValues();
+    QList<QPointF> dataList;
+    QPointF point;
+
+    for(int row = 0 ; row < values.size(); row++)
+    {
+        if(!isnan(values[row][xindex]) && !isnan(values[row][yindex]))
+        {
+            if(ui->polar->isChecked())
+            {
+                point.setX(values[row][xindex] * cos( values[row][yindex]));
+                point.setY(values[row][xindex] * sin( values[row][yindex]));
+            }
+            else
+            {
+                point.setX(values[row][xindex]);
+                point.setY(values[row][yindex]);
+            }
+
+            dataList << point;
+        }
+    }
+
+    informations->setData(index, dataList);
 }
 
 void DataWindow::openData()
@@ -154,25 +212,15 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
 
     if(selectorSide == ROW_SELECTION)
     {
-        if(inBetween)
-        {
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux lignes :"));
-        }
-        else
-        {
-            ui->actionsGroupBox->setTitle(tr("Actions sur la ligne :"));
-        }
+        if(inBetween)        
+            ui->actionsGroupBox->setTitle(tr("Actions entre deux lignes :"));        
+        else ui->actionsGroupBox->setTitle(tr("Actions sur la ligne :"));
     }
     else
     {
-        if(inBetween)
-        {
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));
-        }
-        else
-        {
-            ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
-        }
+        if(inBetween)        
+            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));        
+        else ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
     }
 }
 

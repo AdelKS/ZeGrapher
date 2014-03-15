@@ -20,21 +20,21 @@
 
 #include "DataPlot/columnselectorwidget.h"
 
-ColumnSelectorWidget::ColumnSelectorWidget(int count)
+ColumnSelectorWidget::ColumnSelectorWidget(int count, int xindex, int yindex, int selectorindex)
 {      
     setCoordinateSystem(CARTESIAN);
 
     columnCount = count;
 
-    xselector.index = 0;
+    xselector.index = xindex;
     xselector.draw = true;
     xselector.betweenColumns = false;   
 
-    yselector.index = 1;
+    yselector.index = yindex;
     yselector.draw = true;
     yselector.betweenColumns = false;  
 
-    selector.index = 2;
+    selector.index = selectorindex;
     selector.draw = true;
     selector.betweenColumns = false;
     selector.image.load(":icons/selector.png");
@@ -46,6 +46,16 @@ ColumnSelectorWidget::ColumnSelectorWidget(int count)
 
     timer.setInterval(ANIMATION_PERIOD);
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateAnimationProgress()));  
+}
+
+int ColumnSelectorWidget::getXindex()
+{
+    return xselector.index;
+}
+
+int ColumnSelectorWidget::getYindex()
+{
+    return yselector.index;
 }
 
 void ColumnSelectorWidget::updateSelectorsPos()
@@ -244,4 +254,19 @@ void ColumnSelectorWidget::mouseReleaseEvent(QMouseEvent *event)
 void ColumnSelectorWidget::setColumnCount(int count)
 {
     columnCount = count;
+
+    if(xselector.index >= count)
+    {
+        if(yselector.index != count-1)
+            xselector.index = count-1;
+        else xselector.index = count-2;
+    }
+    else if(yselector.index >= count)
+    {
+        if(xselector.index != count-1)
+            yselector.index = count-1;
+        else yselector.index = count-2;
+    }
+
+    updateSelectorsPos();
 }

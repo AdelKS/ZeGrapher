@@ -151,11 +151,23 @@ struct ParEqValues
     QList<double> tValues, xValues, yValues;
 };
 
+
+enum PointStyle { Rhombus, Disc, Square, Triangle, Cross };
+
+struct DataStyle
+{
+    bool draw, drawLines, drawPoints;
+    QColor color;
+    PointStyle pointStyle;
+    Qt::PenStyle lineStyle;
+};
+
 struct SelectorPos
 {
     bool inbetween;
     int index;
 };
+
 
 
 

@@ -28,10 +28,13 @@ GraphDraw::GraphDraw(Informations *info)
 {
     informations = info;
 
+    coef = sqrt(3)/2;
+
     parametres = info->getOptions();
     graphRange = info->getRange();
 
     pen.setCapStyle(Qt::RoundCap);
+    brush.setStyle(Qt::SolidPattern);
 
     straightLines = info->getStraightLinesList();
     tangents = info->getTangentsList();
@@ -44,6 +47,106 @@ GraphDraw::GraphDraw(Informations *info)
 
     funcValuesSaver = new FuncValuesSaver(info);
     funcVals = funcValuesSaver->getFuncValsListPointer();
+}
+
+void GraphDraw::drawRhombus(QPointF pt, double w)
+{
+    QPolygonF polygon;
+    polygon << pt + QPointF(-w,0) << pt + QPointF(0,w) << pt + QPointF(w,0) << pt + QPointF(0,-w);
+
+    painter.drawPolygon(polygon);
+}
+
+void GraphDraw::drawDisc(QPointF pt, double w)
+{
+    painter.drawEllipse(pt, w, w);
+}
+
+void GraphDraw::drawSquare(QPointF pt, double w)
+{
+    QRectF rect;
+    rect.setTopLeft(pt + QPointF(-w,-w));
+    rect.setBottomRight(pt + QPointF(w,w));
+
+    painter.drawRect(rect);
+}
+
+void GraphDraw::drawTriangle(QPointF pt, double w)
+{
+    QPolygonF polygon;
+    double d  = w*coef;
+    double b = w/2;
+
+    polygon << pt + QPointF(0, w) << pt + QPointF(d, b) << pt + QPointF(-d,b);
+
+    painter.drawPolygon(polygon);
+}
+
+void GraphDraw::drawCross(QPointF pt, double w)
+{
+    pen.setWidth(w);
+
+    painter.drawLine(pt+QPointF(0,2*w), pt+QPointF(0, -2*w));
+    painter.drawLine(pt+QPointF(-2*w, 0), pt+QPointF(2*w, 0));
+}
+
+void GraphDraw::drawDataSet(int id, int width)
+{
+    QList<QPointF> list = informations->getDataList(id);
+    DataStyle style = informations->getDataStyle(id);
+
+    for(int i = 0 ; i < list.size(); i++)
+    {
+        list[i].rx() *= uniteX;
+        list[i].ry() *= - uniteY;
+    }
+
+    pen.setColor(style.color);
+
+    if(style.drawLines)
+    {
+        QPolygonF polygon;
+        pen.setStyle(style.lineStyle);
+        painter.setPen(pen);
+        painter.drawPolyline(polygon.fromList(list));
+    }
+
+    brush.setColor(style.color);
+    painter.setBrush(brush);
+
+    if(style.drawPoints)
+    {
+        for(int i = 0 ; i < list.size() ; i++)
+            switch(style.pointStyle)
+            {
+            case Rhombus:
+                drawRhombus(list[i], width);
+                break;
+            case Disc:
+                drawDisc(list[i], width);
+                break;
+            case Square:
+                drawSquare(list[i], width);
+                break;
+            case Triangle:
+                drawTriangle(list[i], width);
+                break;
+            case Cross:
+                drawCross(list[i], width);
+                break;
+            }
+    }
+
+
+}
+
+void GraphDraw::drawData()
+{
+    for(int i = 0 ; i < informations->getDataListsCount(); i++)
+    {
+        if(informations->getDataStyle(i).draw)
+            drawDataSet(i, parametres.epaisseurDesCourbes+2);
+    }
 }
 
 void GraphDraw::drawOneFunction(int i, int width, int curveNum)

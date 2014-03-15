@@ -31,6 +31,7 @@
 #include "informations.h"
 #include "Calculus/funcvaluessaver.h"
 
+
 class GraphDraw : public QWidget // Abstract class
 {
     Q_OBJECT
@@ -39,11 +40,20 @@ public:
     ~GraphDraw();
 
 protected:
+
+    void drawRhombus(QPointF pt,double w); inline
+    void drawDisc(QPointF pt, double w); inline
+    void drawSquare(QPointF pt, double w); inline
+    void drawTriangle(QPointF pt, double w); inline
+    void drawCross(QPointF pt, double w); inline
+
     void drawOneFunction(int id, int width, int curveNum = -1);
     void drawOneSequence(int id, int width);
+    void drawDataSet(int id, int width);
     void drawOneTangent(int id);
 
     void drawFunctions();
+    void drawData();
     void drawSequences();
     void drawTangents(); //except the exception :) designed by tangentDrawException
     void drawStraightLines();
@@ -57,8 +67,11 @@ protected:
     Options parametres;
     QPolygonF polygon;
     QPen pen;
+    QBrush brush;
     Point centre;
     GraphRange graphRange;
+
+    double coef;
 
     double uniteX, uniteY;
     bool moving, recalculate;

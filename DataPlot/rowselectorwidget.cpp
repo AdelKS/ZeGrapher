@@ -151,6 +151,6 @@ void RowSelectorWidget::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void RowSelectorWidget::setRowCount(int count)
-{
+{    
     rowCount = count;
 }

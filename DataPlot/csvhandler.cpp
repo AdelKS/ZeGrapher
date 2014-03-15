@@ -39,7 +39,12 @@ CSVhandler::CSVhandler(QWidget *parent): QDialog(parent), ui(new Ui::CSVconfig)
 void CSVhandler::askForFileLocation()
 {
     if(fileDialog->exec())
+    {
         ui->fileLocation->setText(fileDialog->selectedFiles().first());
+        if(job == FILE_SAVE && !ui->fileLocation->text().endsWith(".csv"))
+            ui->fileLocation->setText(ui->fileLocation->text()+".csv");
+
+    }
 }
 
 void CSVhandler::getDataFromCSV()
@@ -69,16 +74,23 @@ void CSVhandler::saveCSV(QList<QStringList> data)
 
 void CSVhandler::removeUnnecessaryCells()
 {
-    //start by removing unnecessary columns, at first, "values" is a square matrix, that's why it's possbile to ask for values[0].size()
-
     bool unnecessary = true;
     int col = 0, row = 1;
+
+    for(row = 0 ; row < values.size(); row++)
+        for(col = 0 ; col < values[row].size(); col++)
+            if(values[row][col] == " ")
+                values[row][col].clear();
+
+    //start by removing unnecessary columns, at first, "values" is a square matrix, that's why it's possbile to ask for values[0].size()
+    col = 0;
+    row = 1;
 
     while(col < values[0].size())
     {
         unnecessary = true;
         for(row = 1 ; row < values.size() && unnecessary ; row++)
-            unnecessary = values[row][col].isEmpty() || values[row][col] == " ";
+            unnecessary = values[row][col].isEmpty();
 
         if(unnecessary)
             for(row = 0 ; row < values.size() ; row++)
@@ -94,7 +106,7 @@ void CSVhandler::removeUnnecessaryCells()
     {
         unnecessary = true;
         for(col = 0 ; col < values[0].size() && unnecessary ; col++)
-            unnecessary = values[row][col].isEmpty() || values[row][col] == " ";
+            unnecessary = values[row][col].isEmpty();
 
         if(unnecessary)
             values.removeAt(row);
@@ -104,7 +116,7 @@ void CSVhandler::removeUnnecessaryCells()
     //removing empty cells at the end of each line
 
     for(row = 0 ; row < values.size(); row++)
-        while(values[row].last().isEmpty() || values[row].last() == " ") {values[row].removeLast();}
+        while(values[row].last().isEmpty()) {values[row].removeLast();}
 }
 
 void CSVhandler::apply()

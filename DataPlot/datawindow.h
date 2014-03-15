@@ -32,6 +32,10 @@
 #define COLUMN_SELECTION true
 #define ROW_SELECTION false
 
+#define STARTING_XPIN_INDEX 0
+#define STARTING_YPIN_INDEX 1
+#define STARTING_SELECTOR_INDEX 2
+
 #define STARTING_COLUMN_COUNT 3
 #define STARTING_ROW_COUNT 20
 #define COLUMN_WIDTH 170
@@ -47,7 +51,9 @@ class DataWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataWindow(Informations *info);
+    explicit DataWindow(Informations *info, int ind);
+
+    void changeIndex(int ind);
 
 protected slots:
     void updateSelectorsSize();
@@ -56,9 +62,13 @@ protected slots:
     void selectorPosChanged(bool inBetween, int index);
     void openData();
     void saveData();
+    void cellValChanged(int row, int col);
+    void dataChanged();
 
 protected:
+    void remakeDataList();    
 
+    int index, xindex, yindex;
     Ui::DataWindow *ui;
     Informations *informations;
     QGroupBox *actionsGroupBox;
