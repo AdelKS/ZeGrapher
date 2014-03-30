@@ -225,6 +225,8 @@ void DataTable::sortColumnSwapCells(int col, bool ascending)
     }
 
     disableChecking = false;
+
+    emit valEdited(0, col);
 }
 
 int listCompareAscend(QList<double> a, QList<double>b)
@@ -278,6 +280,8 @@ void DataTable::sortColumnSwapRows(int column, bool ascending)
     }
 
     disableChecking = false;
+
+    emit valEdited(0,column);
 }
 
 void DataTable::fillColumnFromRange(int col, Range range)
@@ -287,6 +291,8 @@ void DataTable::fillColumnFromRange(int col, Range range)
     QTableWidgetItem *item;
 
     int end = trunc((range.end - range.start)/range.step) + 1;
+
+    disableChecking = true;
 
     for(int i = 0 ; i < end ; i++)
     {
@@ -302,6 +308,9 @@ void DataTable::fillColumnFromRange(int col, Range range)
         val += range.step;
         row++;
     }
+
+    disableChecking = false;
+    emit valEdited(item->row(), item->column());
 }
 
 bool DataTable::fillColumnFromExpr(int col, QString expr)
@@ -344,6 +353,7 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
     disableChecking = false;
     treeCreator->deleteFastTree(tree);
 
+    emit valEdited(item->row(), item->column());
     return true;
 
 }

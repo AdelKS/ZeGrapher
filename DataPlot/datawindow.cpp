@@ -158,19 +158,19 @@ void DataWindow::remakeDataList()
     QList<QPointF> dataList;
     QPointF point;
 
-    for(int row = 0 ; row < values.size(); row++)
+    for(int row = 0 ; row < values[0].size(); row++)
     {
-        if(!isnan(values[row][xindex]) && !isnan(values[row][yindex]))
+        if(!isnan(values[xindex][row]) && !isnan(values[yindex][row]))
         {
             if(ui->polar->isChecked())
             {
-                point.setX(values[row][xindex] * cos( values[row][yindex]));
-                point.setY(values[row][xindex] * sin( values[row][yindex]));
+                point.setX(values[xindex][row] * cos( values[yindex][row]));
+                point.setY(values[xindex][row] * sin( values[yindex][row]));
             }
             else
             {
-                point.setX(values[row][xindex]);
-                point.setY(values[row][yindex]);
+                point.setX(values[xindex][row]);
+                point.setY(values[yindex][row]);
             }
 
             dataList << point;

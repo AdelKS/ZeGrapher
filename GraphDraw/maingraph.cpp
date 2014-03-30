@@ -92,8 +92,7 @@ MainGraph::MainGraph(Informations *info) : GraphDraw(info)
     kLabel.setParent(this);
     kLabel.hide();
 
-    savedGraph = NULL;
-    dataImage = NULL;
+    savedGraph = NULL;   
 
     setMouseTracking(true);
     typeCurseur = NORMAL;
@@ -129,8 +128,7 @@ void MainGraph::updateGraph()
 void MainGraph::updateData()
 {
     resaveGraph = false;
-    recalculate = false;
-    resaveDataImage = true;
+    recalculate = false;    
     update();
 }
 
@@ -452,8 +450,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     {
        newWindowSize();
        resaveGraph = true;       
-       recalculate = true;
-       resaveDataImage = true;
+       recalculate = true;       
     }
 
     if(!moving && (typeCurseur == NORMAL || hWidgetHideTransition.isActive() || vWidgetHideTransition.isActive() ||
@@ -470,17 +467,15 @@ void MainGraph::indirectPaint()
     if(resaveTangent)
         addTangentToBuffer();
     if(resaveGraph)
-        resaveImageBuffer();
-    if(resaveDataImage)
-        resaveDataBuffer();
+        resaveImageBuffer();  
 
     painter.begin(this);   
 
-    painter.drawImage(QPoint(0,0), *savedGraph);
-    painter.drawImage(QPoint(0,0), *dataImage);
+    painter.drawImage(QPoint(0,0), *savedGraph);    
     painter.translate(QPointF(centre.x, centre.y));
 
     drawAnimatedParEq();
+    drawData();
     animationUpdate = false;
 
     if(dispPoint)
@@ -499,7 +494,6 @@ void MainGraph::indirectPaint()
 void MainGraph::directPaint()
 {
     resaveGraph = true;
-    resaveDataImage = true;
 
     painter.begin(this);
     //trace du background
@@ -625,22 +619,6 @@ void MainGraph::resaveImageBuffer()
     drawTangents();
     drawStaticParEq();
 
-    painter.end();
-}
-
-void MainGraph::resaveDataBuffer()
-{
-    resaveDataImage = false;
-
-    delete dataImage;
-    dataImage = new QImage(size(), QImage::Format_ARGB32);
-
-    painter.begin(dataImage);
-
-    determinerCentreEtUnites();
-
-    painter.translate(QPointF(centre.x, centre.y));
-    drawData();
     painter.end();
 }
 

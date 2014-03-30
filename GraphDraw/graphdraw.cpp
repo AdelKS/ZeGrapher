@@ -50,7 +50,7 @@ GraphDraw::GraphDraw(Informations *info)
 }
 
 void GraphDraw::drawRhombus(QPointF pt, double w)
-{
+{   
     QPolygonF polygon;
     polygon << pt + QPointF(-w,0) << pt + QPointF(0,w) << pt + QPointF(w,0) << pt + QPointF(0,-w);
 
@@ -64,6 +64,8 @@ void GraphDraw::drawDisc(QPointF pt, double w)
 
 void GraphDraw::drawSquare(QPointF pt, double w)
 {
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
     QRectF rect;
     rect.setTopLeft(pt + QPointF(-w,-w));
     rect.setBottomRight(pt + QPointF(w,w));
@@ -73,17 +75,20 @@ void GraphDraw::drawSquare(QPointF pt, double w)
 
 void GraphDraw::drawTriangle(QPointF pt, double w)
 {
+    w*=2;
     QPolygonF polygon;
     double d  = w*coef;
     double b = w/2;
 
-    polygon << pt + QPointF(0, w) << pt + QPointF(d, b) << pt + QPointF(-d,b);
+    polygon << pt + QPointF(0, -w) << pt + QPointF(d, b) << pt + QPointF(-d,b);
 
     painter.drawPolygon(polygon);
 }
 
 void GraphDraw::drawCross(QPointF pt, double w)
 {
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
     pen.setWidth(w);
 
     painter.drawLine(pt+QPointF(0,2*w), pt+QPointF(0, -2*w));
@@ -102,6 +107,7 @@ void GraphDraw::drawDataSet(int id, int width)
     }
 
     pen.setColor(style.color);
+    painter.setPen(pen);
 
     if(style.drawLines)
     {
@@ -112,7 +118,7 @@ void GraphDraw::drawDataSet(int id, int width)
     }
 
     brush.setColor(style.color);
-    painter.setBrush(brush);
+    painter.setBrush(brush);    
 
     if(style.drawPoints)
     {

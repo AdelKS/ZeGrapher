@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>399</width>
-    <height>201</height>
+    <width>428</width>
+    <height>227</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -362,12 +362,76 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>104</x>
-     <y>86</y>
+     <x>114</x>
+     <y>121</y>
     </hint>
     <hint type="destinationlabel">
-     <x>183</x>
-     <y>109</y>
+     <x>193</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>expression</sender>
+   <signal>returnPressed()</signal>
+   <receiver>apply</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>387</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>step</sender>
+   <signal>returnPressed()</signal>
+   <receiver>apply</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>353</x>
+     <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>end</sender>
+   <signal>returnPressed()</signal>
+   <receiver>apply</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>341</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>364</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>start</sender>
+   <signal>returnPressed()</signal>
+   <receiver>apply</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>192</y>
     </hint>
    </hints>
   </connection>
