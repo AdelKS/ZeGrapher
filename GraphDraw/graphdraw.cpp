@@ -115,6 +115,8 @@ void GraphDraw::drawDataSet(int id, int width)
         pen.setStyle(style.lineStyle);
         painter.setPen(pen);
         painter.drawPolyline(polygon.fromList(list));
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
     }
 
     brush.setColor(style.color);
@@ -172,13 +174,14 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
 
     double posX, delta1, delta2, delta3, y1, y2, y3, y4;;
     bool pointDepasse= false;
-    int end = funcVals->at(i)[0].size();
+    int end;
     ColorSaver* colorSaver = funcs[i]->getColorSaver();
 
     pen.setWidth(width);
 
     for(short draw = drawStart ; draw < drawsNum; draw++)
     {
+        end = funcVals->at(i)[draw].size();
         posX = funcValuesSaver->getStartAbscissaPixel();
         polygon.clear();
 

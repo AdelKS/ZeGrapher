@@ -49,6 +49,16 @@ protected:
     void createMenus();
     void createZoomWidgets();
 
+protected slots:
+    void showFuncsWin();
+    void showRangeWin();
+    void showOptionsWin();
+    void showValuesTabWin();
+    void showKeyboard();
+    void showPrintWin();
+    void showImageSaveWin();
+    void showAboutWin();
+
 private:
 
     Informations *informations;

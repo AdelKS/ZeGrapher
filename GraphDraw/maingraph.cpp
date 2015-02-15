@@ -203,9 +203,10 @@ void MainGraph::addOtherWidgets()
     vWidget->setLayout(verLayout);
 
     QHBoxLayout *horLayout = new QHBoxLayout();
-    horLayout->addWidget(zoom2);
-    horLayout->addWidget(hSlider);
     horLayout->addWidget(unZoom2);
+    horLayout->addWidget(hSlider);
+    horLayout->addWidget(zoom2);
+
 
     hWidget = new QWidget(this);
     hWidget->setLayout(horLayout);
@@ -1431,8 +1432,8 @@ void MainGraph::zoomX()
 
     double valeur = (graphRange.Xmax- graphRange.Xmin) * (double)(hSlider->value()) * 0.0016;
 
-    graphRange.Xmin -= valeur;
-    graphRange.Xmax += valeur;
+    graphRange.Xmin += valeur;
+    graphRange.Xmax -= valeur;
     moving = true;
     informations->setRange(graphRange);
 
@@ -1454,14 +1455,14 @@ void MainGraph::zoomY()
 
     if(!informations->isOrthonormal())
     {        
-        graphRange.Ymin -= valeur;
-        graphRange.Ymax += valeur;
+        graphRange.Ymin += valeur;
+        graphRange.Ymax -= valeur;
         recalculate = false;
     }
     else
     {
-        graphRange.Xmin -= valeur;
-        graphRange.Xmax += valeur;
+        graphRange.Xmin += valeur;
+        graphRange.Xmax -= valeur;
         recalculate = true;
     }
 

@@ -125,6 +125,7 @@ DataWindow::DataWindow(Informations *info, int ind)
 
 
     connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));
+    connect(ui->cartesian, SIGNAL(toggled(bool)), this, SLOT(remakeDataList()));
     //connect to row actions widget
 
 }

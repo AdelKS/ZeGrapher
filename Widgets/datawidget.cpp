@@ -77,6 +77,8 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
     connect(ui->pointStyleCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(newPointStyle(int)));
     connect(ui->linesStyleCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(newLineStyle(int)));
     connect(ui->draw, SIGNAL(toggled(bool)), this, SLOT(changeDrawState(bool)));
+    connect(ui->drawPoints, SIGNAL(toggled(bool)), this, SLOT(drawPoints(bool)));
+    connect(ui->drawSegments, SIGNAL(toggled(bool)), this, SLOT(drawSegments(bool)));
 
      setWidgetNum(num);
 }

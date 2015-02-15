@@ -64,9 +64,9 @@ protected slots:
     void saveData();
     void cellValChanged(int row, int col);
     void dataChanged();
+    void remakeDataList();
 
-protected:
-    void remakeDataList();    
+protected:    
 
     int index, xindex, yindex;
     Ui::DataWindow *ui;

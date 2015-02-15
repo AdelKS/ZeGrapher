@@ -37,7 +37,7 @@ MainWindow::MainWindow()
     keyboard = new Keyboard();
 
     setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
-    setMinimumSize(800,600);
+    setMinimumSize(700,450);
     setWindowTitle("ZeGrapher");
 
     createMenus();
@@ -69,19 +69,19 @@ void MainWindow::createMenus()
     connect(informations, SIGNAL(newOrthonormalityState(bool)), actionRepereOrthonorme, SLOT(setChecked(bool)));
 
     QAction *afficherFenAPropos = menuAide->addAction(tr("à Propos..."));
-    connect(afficherFenAPropos, SIGNAL(triggered()), fenAPropos, SLOT(show()));
+    connect(afficherFenAPropos, SIGNAL(triggered()), this, SLOT(showAboutWin()));
 
     QAction *print = menuFichier->addAction(QIcon(":/icons/print.png"), tr("Imprimer..."));
     print->setShortcut(QKeySequence("Ctrl+P"));
-    connect(print, SIGNAL(triggered()), fenPrint, SLOT(show()));
+    connect(print, SIGNAL(triggered()), this, SLOT(showPrintWin()));
 
     QAction *saveImage = menuFichier->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Enregistrer image..."));
     saveImage->setShortcut(QKeySequence("Ctrl+S"));
-    connect(saveImage, SIGNAL(triggered()), fenImage, SLOT(show()));
+    connect(saveImage, SIGNAL(triggered()), this, SLOT(showImageSaveWin()));
 
     QAction *actionAfficherFenOptions = menuFichier->addAction(tr("Options"));
     actionAfficherFenOptions->setShortcut(QKeySequence("Ctrl+O"));
-    connect(actionAfficherFenOptions, SIGNAL(triggered()), fenOptions, SLOT(show()));
+    connect(actionAfficherFenOptions, SIGNAL(triggered()), this, SLOT(showOptionsWin()));
 
     menuFichier->addSeparator();
 
@@ -91,19 +91,19 @@ void MainWindow::createMenus()
 
     QAction *actionAfficherFenFonctions = menuAffichage->addAction(QIcon(":/icons/fonctions.png"), tr("Fonctions"));
     actionAfficherFenFonctions->setShortcut(QKeySequence("Ctrl+F"));
-    connect(actionAfficherFenFonctions, SIGNAL(triggered()), fenFonctions, SLOT(show()));
+    connect(actionAfficherFenFonctions, SIGNAL(triggered()), this, SLOT(showFuncsWin()));
 
     QAction *actionAfficherFenBornes = menuAffichage->addAction(QIcon(":/icons/bornes.png"), tr("Bornes"));
     actionAfficherFenBornes->setShortcut(QKeySequence("Ctrl+B"));
-    connect(actionAfficherFenBornes, SIGNAL(triggered()), fenBornes, SLOT(show()));
+    connect(actionAfficherFenBornes, SIGNAL(triggered()), this, SLOT(showRangeWin()));
 
     QAction *tabValeurs = menuAffichage->addAction(QIcon(":/icons/tableauDeValeurs.png"), tr("Tableau de valeurs"));
     tabValeurs->setShortcut(QKeySequence("Ctrl+Tab"));
-    connect(tabValeurs, SIGNAL(triggered()), fenValeurs, SLOT(show()));
+    connect(tabValeurs, SIGNAL(triggered()), this, SLOT(showValuesTabWin()));
 
     QAction *dispKeyboard = menuAffichage->addAction(QIcon(":/icons/keyboard.png"), tr("Clavier numérique"));
     dispKeyboard->setShortcut(QKeySequence("Ctrl+K"));
-    connect(dispKeyboard, SIGNAL(triggered()), keyboard, SLOT(show()));
+    connect(dispKeyboard, SIGNAL(triggered()), this, SLOT(showKeyboard()));
 
     QToolBar *toolBar = addToolBar("fenetres");
 
@@ -140,6 +140,54 @@ void MainWindow::makeConnects()
     connect(boutonGrille, SIGNAL(triggered(bool)), informations, SLOT(setGridState(bool)));
     connect(scene, SIGNAL(sizeChanged(int,int)), fenImage, SLOT(setSize(int,int)));
     connect(fenFonctions, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
+}
+
+void MainWindow::showFuncsWin()
+{
+    fenFonctions->move(this->pos() - QPoint(fenFonctions->width(),0));
+    fenFonctions->show();
+}
+
+void MainWindow::showRangeWin()
+{
+    fenBornes->move(this->pos() + QPoint(this->width() + 20,0));
+    fenBornes->show();
+}
+
+void MainWindow::showOptionsWin()
+{
+    fenOptions->move(this->pos() - QPoint(fenOptions->width(),0));
+    fenOptions->show();
+}
+
+void MainWindow::showValuesTabWin()
+{
+    fenValeurs->move(this->pos());
+    fenValeurs->show();
+}
+
+void MainWindow::showKeyboard()
+{
+    keyboard->move(fenFonctions->pos() + QPoint(0,fenFonctions->height()));
+    keyboard->show();
+}
+
+void MainWindow::showPrintWin()
+{
+    fenPrint->move(this->pos());
+    fenPrint->show();
+}
+
+void MainWindow::showImageSaveWin()
+{
+    fenImage->move(this->pos());
+    fenImage->show();
+}
+
+void MainWindow::showAboutWin()
+{
+    fenAPropos->move(this->pos() + QPoint(width()/2, height()/2));
+    fenAPropos->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *evenement)
