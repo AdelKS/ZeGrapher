@@ -46,8 +46,7 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     tableWidget->verticalHeader()->setResizeMode(QHeaderView::Fixed);
 
-    tableWidget->horizontalHeader()->setMovable(true);
-    connect(tableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(columnMoved(int,int,int)));
+    tableWidget->horizontalHeader()->setMovable(true);    
 
     tableWidget->horizontalHeader()->setFixedHeight(25);
 
@@ -290,6 +289,8 @@ void DataTable::fillColumnFromRange(int col, Range range)
     int row = 0;
     QTableWidgetItem *item;
 
+    col = tableWidget->horizontalHeader()->logicalIndex(col);
+
     int end = trunc((range.end - range.start)/range.step) + 1;
 
     disableChecking = true;
@@ -320,6 +321,8 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
 
     if(!ok)
         return false;
+
+    col = tableWidget->horizontalHeader()->logicalIndex(col);
 
     disableChecking = true;
 
@@ -366,13 +369,6 @@ void DataTable::addRow()
 void DataTable::addColumn()
 {
     insertColumn(tableWidget->columnCount());
-}
-
-void DataTable::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
-{
-    Q_UNUSED(logicalIndex);
-    values.move(oldVisualIndex, newVisualIndex);
-    columnNames.move(oldVisualIndex, newVisualIndex);
 }
 
 const QList<QList<double> > &DataTable::getValues()

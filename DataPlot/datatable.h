@@ -65,8 +65,7 @@ signals:
 
 protected slots:
     void renameColumn(int index);
-    void checkCell(QTableWidgetItem *item);
-    void columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+    void checkCell(QTableWidgetItem *item);    
 
 protected:
     void resizeColumns(int columnWidth);

@@ -29,13 +29,6 @@ Informations::Informations()
 
     gridState = orthonormal = updatingLock = false;
 
-    parametres.couleurDuFond = QColor(Qt::white);
-    parametres.couleurDesAxes = QColor(Qt::black);
-    parametres.couleurQuadrillage = QColor(Qt::gray);
-    parametres.epaisseurDesCourbes = 1;
-    parametres.distanceEntrePoints = 2.625;
-    parametres.numSize = 11;
-    parametres.lissage = true;
 }
 
 void Informations::addDataList()

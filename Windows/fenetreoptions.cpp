@@ -31,62 +31,54 @@ FenetreOptions::FenetreOptions(Informations *info)
 
     setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
 
-    parametres.couleurDuFond = QColor(Qt::white);
-    parametres.couleurDesAxes = QColor(Qt::black);
-    parametres.couleurQuadrillage = QColor(Qt::gray);
+    couleurAxes = new QColorButton(Qt::black);
+    couleurAxes->setFixedSize(25,25);
+    ui->axesColorLayout->addWidget(couleurAxes);
 
+    couleurFond = new QColorButton(Qt::white);
+    couleurFond->setFixedSize(25,25);
+    ui->backgroundColorLayout->addWidget(couleurFond);
 
-    connect(ui->appliquer, SIGNAL(clicked()), this, SLOT(appliquer()));
-    connect(ui->couleurAxes, SIGNAL(clicked()), this, SLOT(changerCouleurAxes()));
-    connect(ui->couleurFond, SIGNAL(clicked()), this, SLOT(changerCouleurFond()));
-    connect(ui->couleurQuadrillage, SIGNAL(clicked()), this, SLOT(changerCouleurQuadrillage()));
+    couleurQuadrillage = new QColorButton(Qt::gray);
+    couleurQuadrillage->setFixedSize(25,25);
+    ui->gridColorLayout->addWidget(couleurQuadrillage);
+
+    parametres.couleurDuFond = couleurFond->getCurrentColor();
+    parametres.couleurDesAxes = couleurAxes->getCurrentColor();
+    parametres.couleurQuadrillage = couleurQuadrillage->getCurrentColor();
+
+    connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(appliquer()));
+    connect(ui->epaisseurWidget, SIGNAL(valueChanged(int)), this, SLOT(appliquer()));
+    connect(ui->numSize, SIGNAL(valueChanged(int)), this, SLOT(appliquer()));
+    connect(ui->lissage, SIGNAL(toggled(bool)), this, SLOT(appliquer()));
+    connect(couleurAxes, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
+    connect(couleurFond, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
+    connect(couleurQuadrillage, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
+
+    appliquer();
 
 }
 
 void FenetreOptions::appliquer()
 {
-    if(parametres.couleurDesAxes == parametres.couleurDuFond)
+    if(couleurAxes->getCurrentColor() == couleurFond->getCurrentColor())
         QMessageBox::warning(this, tr("Attention"), tr("Les couleurs du fond et des axes sont identiques"));
-    else if(parametres.couleurDuFond == parametres.couleurQuadrillage)
+    else if(couleurFond->getCurrentColor() == couleurQuadrillage->getCurrentColor())
         QMessageBox::warning(this, tr("Attention"), tr("Les couleurs du fond et du quadrillage sont identiques"));
     else
     {
         double dist = ui->distanceWidget->value();
 
         parametres.lissage = ui->lissage->isChecked();
-        parametres.distanceEntrePoints = 0.5 * (10.25 - dist);
+        parametres.distanceEntrePoints = pow(2, 2-dist/2);
         parametres.epaisseurDesCourbes = ui->epaisseurWidget->value();
+        parametres.couleurDesAxes = couleurAxes->getCurrentColor();
+        parametres.couleurDuFond = couleurFond->getCurrentColor();
+        parametres.couleurQuadrillage = couleurQuadrillage->getCurrentColor();
         parametres.numSize = ui->numSize->value();     
 
         informations->setOptions(parametres);
     }
-}
-
-void FenetreOptions::changerCouleurAxes()
-{
-    parametres.couleurDesAxes = QColorDialog::getColor(parametres.couleurDesAxes, this);
-    ui->couleurAxes->setStyleSheet("background-color: rgb("+
-                              QString::number(parametres.couleurDesAxes.red())+","+
-                                   QString::number(parametres.couleurDesAxes.green())+","+
-                                   QString::number(parametres.couleurDesAxes.blue())+")");
-}
-
-void FenetreOptions::changerCouleurFond()
-{
-    parametres.couleurDuFond = QColorDialog::getColor(parametres.couleurDuFond, this);
-    ui->couleurFond->setStyleSheet("background-color: rgb("+
-                              QString::number(parametres.couleurDuFond.red())+","+
-                                   QString::number(parametres.couleurDuFond.green())+","+
-                                   QString::number(parametres.couleurDuFond.blue())+")");
-}
-
-void FenetreOptions::changerCouleurQuadrillage()
-{
-    parametres.couleurQuadrillage = QColorDialog::getColor(parametres.couleurQuadrillage, this);
-    ui->couleurQuadrillage->setStyleSheet("background-color: rgb("+
-                              QString::number(parametres.couleurQuadrillage.red())+","+
-                                   QString::number(parametres.couleurQuadrillage.green())+","+
-                                   QString::number(parametres.couleurQuadrillage.blue())+")");
 }
 
 FenetreOptions::~FenetreOptions()

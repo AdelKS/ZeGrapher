@@ -26,15 +26,17 @@ MainWindow::MainWindow()
 {      
     informations = new Informations();
 
-    fenFonctions = new FenetreFonctions(informations);
-    fenBornes = new FenetreBornes(informations);
     fenOptions = new FenetreOptions(informations);
+    fenBornes = new FenetreBornes(informations);
+    fenFonctions = new FenetreFonctions(informations);      
     fenAPropos = new apropos();
     fenImage = new ImageSave(informations);
     fenValeurs = new FenTableauValeurs(informations);
     fenPrint = new Print(informations);
-    scene = new MainGraph(informations);
     keyboard = new Keyboard();
+
+    scene = new MainGraph(informations); // it has to be the last thing to create.
+
 
     setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
     setMinimumSize(700,450);

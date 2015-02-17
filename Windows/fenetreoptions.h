@@ -24,6 +24,7 @@
 
 #include "Structures.h"
 #include "informations.h"
+#include "Widgets/qcolorbutton.h"
 
 
 namespace Ui {
@@ -40,20 +41,13 @@ public:
 
 private slots:
     void appliquer();
-    void changerCouleurAxes();
-    void changerCouleurFond();
-    void changerCouleurQuadrillage();
-
-signals:
-    void optionsChangent(Options opt);
-    void precisionChange(short prec);
-    void nouveauTypeRendu(bool type);
 
 private:
 
     Informations *informations;
     Ui::fenetreoptions *ui;   
     Options parametres;
+    QColorButton *couleurAxes, *couleurFond, *couleurQuadrillage;
 
 };
 
