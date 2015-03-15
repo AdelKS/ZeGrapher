@@ -1,7 +1,7 @@
 /****************************************************************************
-**  Copyright (c) 2013, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
+**  Copyright (c) 2015, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
 **
-**  This file is part of the ZeGrapher project, version 2.0.
+**  This file is part of the ZeGrapher project, version 2.1.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
 **  under the terms of the GNU General Public License as published by the
@@ -18,47 +18,25 @@
 **
 ****************************************************************************/
 
+#ifndef POLYNOMIALMODELWIDGET_H
+#define POLYNOMIALMODELWIDGET_H
 
-#ifndef FENETREBORNES_H
-#define FENETREBORNES_H
-
-#include "Structures.h"
-#include "informations.h"
-#include "Calculus/exprcalculator.h"
-
+#include <QWidget>
 
 namespace Ui {
-    class FenetreBornes;
+class PolynomialModelWidget;
 }
 
-class FenetreBornes : public QWidget
+class PolynomialModelWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreBornes(Informations *info);
-    ~FenetreBornes();
-
-public slots:
-    void resetToStandardView();
-    void updateWidgets();
-
-
-private slots:
-    void standardView();
-    void orthonormal(bool state);
-    void appliquer();
-
-signals:
-    void nouvelleFenetre(GraphRange fenetre);
-    void orthonormalBasis(bool state);
+    explicit PolynomialModelWidget(QWidget *parent = 0);
+    ~PolynomialModelWidget();
 
 private:
-
-    Informations *informations;
-    Ui::FenetreBornes *ui;
-    QMessageBox *messageBox;    
-    ExprCalculator *calculator;
+    Ui::PolynomialModelWidget *ui;
 };
 
-#endif // FENETREBORNES_H
+#endif // POLYNOMIALMODELWIDGET_H

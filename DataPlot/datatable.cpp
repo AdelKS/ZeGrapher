@@ -203,6 +203,8 @@ void DataTable::addData(QList<QStringList> data)
 
 void DataTable::sortColumnSwapCells(int col, bool ascending)
 {
+    col = tableWidget->horizontalHeader()->logicalIndex(col);
+
     if(ascending)
         qSort(values[col].begin(), values[col].end(), doubleCompareAscend);
     else qSort(values[col].begin(), values[col].end(), doubleCompareDescend);
@@ -244,6 +246,8 @@ int listCompareDescend(QList<double> a, QList<double>b)
 
 void DataTable::sortColumnSwapRows(int column, bool ascending)
 {
+    column = tableWidget->horizontalHeader()->logicalIndex(column);
+
     QList<QList<double> > vals; //this time it will be vals[row][column] just to apply qSort on it, since QSorting values can be made only on columns...
 
     for(int row = 0 ; row < tableWidget->rowCount(); row++)
@@ -387,22 +391,29 @@ void DataTable::checkCell(QTableWidgetItem *item)
         addRow();
 
     QString expr = item->text();
-
-    bool ok = false;
-    double val = calculator->calculateExpression(expr, ok);
-
-    if(ok)
+    if(expr.isEmpty())
     {
-        item->setBackgroundColor(VALID_COLOR);
-        values[item->column()][item->row()] = val;
-        disableChecking = true;
-        item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
-        disableChecking = false;
+        item->setBackgroundColor(Qt::white);
+        values[item->column()][item->row()] = NAN;
     }
     else
     {
-        item->setBackgroundColor(INVALID_COLOR);
-        values[item->column()][item->row()] = NAN;
+        bool ok = false;
+        double val = calculator->calculateExpression(expr, ok);
+
+        if(ok)
+        {
+            item->setBackgroundColor(VALID_COLOR);
+            values[item->column()][item->row()] = val;
+            disableChecking = true;
+            item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
+            disableChecking = false;
+        }
+        else
+        {
+            item->setBackgroundColor(INVALID_COLOR);
+            values[item->column()][item->row()] = NAN;
+        }
     }
 
     emit valEdited(item->row(), item->column());

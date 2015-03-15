@@ -96,6 +96,8 @@ protected:
     void placerGraduations();
     void afficherPoint();
 
+    void checkIfActiveSelectionConflicts();
+
     ExprCalculator *exprCalculator;
     Point lastPosSouris, pointPx, pointUnit;
     QSlider *hSlider, *vSlider;

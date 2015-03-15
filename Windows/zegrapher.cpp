@@ -70,6 +70,9 @@ void MainWindow::createMenus()
     connect(actionRepereOrthonorme, SIGNAL(triggered(bool)), informations, SLOT(setOrthonormal(bool)));
     connect(informations, SIGNAL(newOrthonormalityState(bool)), actionRepereOrthonorme, SLOT(setChecked(bool)));
 
+    QAction *resetView = menuOutils->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Rétablir vue par défaut"));
+    connect(resetView, SIGNAL(triggered()), fenBornes, SLOT(resetToStandardView()));
+
     QAction *afficherFenAPropos = menuAide->addAction(tr("à Propos..."));
     connect(afficherFenAPropos, SIGNAL(triggered()), this, SLOT(showAboutWin()));
 
@@ -107,20 +110,17 @@ void MainWindow::createMenus()
     dispKeyboard->setShortcut(QKeySequence("Ctrl+K"));
     connect(dispKeyboard, SIGNAL(triggered()), this, SLOT(showKeyboard()));
 
-    QToolBar *toolBar = addToolBar("fenetres");
+    QToolBar *toolBar = new QToolBar(tr("fenêtres et actions"));
+    addToolBar(Qt::LeftToolBarArea, toolBar);
 
     toolBar->addAction(boutonGrille);
+    toolBar->addAction(resetView);
     toolBar->addSeparator();
-    toolBar->addAction(actionAfficherFenFonctions);
-    toolBar->addSeparator();
-    toolBar->addAction(actionAfficherFenBornes);
-    toolBar->addSeparator();
-    toolBar->addAction(tabValeurs);
-    toolBar->addSeparator();
-    toolBar->addAction(saveImage);
-    toolBar->addSeparator();
-    toolBar->addAction(print);
-    toolBar->addSeparator();
+    toolBar->addAction(actionAfficherFenFonctions);    
+    toolBar->addAction(actionAfficherFenBornes);  
+    toolBar->addAction(tabValeurs);    
+    toolBar->addAction(saveImage);    
+    toolBar->addAction(print);  
     toolBar->addAction(dispKeyboard);
 
     statusBar();
@@ -130,6 +130,7 @@ void MainWindow::createMenus()
     actionQuitter->setStatusTip(tr("Quitte l'application."));
     actionAfficherFenOptions->setStatusTip(tr("Affiche la fenêtre où l'on peut modifier les options de représentation."));
     tabValeurs->setStatusTip(tr("Affiche une fenêtre contenant le tableau de valeurs pour chaque fonction."));
+    resetView->setStatusTip(tr("Rétablit la vue par défaut: Xmin = Ymin = -10 , Xmax = Ymax = 10"));
     boutonGrille->setStatusTip(tr("Afficher/Cacher le quadrillage."));
     saveImage->setStatusTip(tr("Enregistrer le graphique dans une image."));
     dispKeyboard->setStatusTip(tr("Affiche un clavier numérique virtuel."));
@@ -147,25 +148,29 @@ void MainWindow::makeConnects()
 void MainWindow::showFuncsWin()
 {
     fenFonctions->move(this->pos() - QPoint(fenFonctions->width(),0));
-    fenFonctions->show();
+    fenFonctions->show();    
+    fenFonctions->activateWindow();
 }
 
 void MainWindow::showRangeWin()
 {
     fenBornes->move(this->pos() + QPoint(this->width() + 20,0));
     fenBornes->show();
+    fenBornes->activateWindow();
 }
 
 void MainWindow::showOptionsWin()
 {
     fenOptions->move(this->pos() - QPoint(fenOptions->width(),0));
     fenOptions->show();
+    fenOptions->activateWindow();
 }
 
 void MainWindow::showValuesTabWin()
 {
     fenValeurs->move(this->pos());
     fenValeurs->show();
+    fenValeurs->activateWindow();
 }
 
 void MainWindow::showKeyboard()
@@ -178,18 +183,21 @@ void MainWindow::showPrintWin()
 {
     fenPrint->move(this->pos());
     fenPrint->show();
+    fenPrint->activateWindow();
 }
 
 void MainWindow::showImageSaveWin()
 {
     fenImage->move(this->pos());
     fenImage->show();
+    fenImage->activateWindow();
 }
 
 void MainWindow::showAboutWin()
 {
     fenAPropos->move(this->pos() + QPoint(width()/2, height()/2));
     fenAPropos->show();
+    fenAPropos->activateWindow();
 }
 
 void MainWindow::closeEvent(QCloseEvent *evenement)

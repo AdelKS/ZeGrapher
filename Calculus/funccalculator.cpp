@@ -305,7 +305,7 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
     else if(INTEGRATION_FUNC_START < tree->type && tree->type < INTEGRATION_FUNC_END)
     {
         int id = tree->type - INTEGRATION_FUNC_START - 1;
-        return funcCalculatorsList[id]->getAntiderivativeValue(calculateFromTree(tree->right, x), integrationPoints[id]);
+        return funcCalculatorsList[id]->getAntiderivativeValue(calculateFromTree(tree->right, x), integrationPoints[id], k);
     }
 
     else return NAN;

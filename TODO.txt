@@ -1,10 +1,2 @@
-Lier les noms de colonnes aux a columnActionsWidget pour pouvoir appliquer une fonction aux cellules de la colonne:
-  - il manque une calculatrice a creer pour ce but
-  - il faut pouvoir envoyer la fonction ou expression a dataTable pour qu'elle l'applique sur la colonne effectivement, comment ?
-L'import/export
-programmer datavaluestable:
-  * ajout automatique de ligne/colonnes
-  * verification de ce qui est saisi et son calcul: changement couleur d'arriere plan
-  * connection avec columactionswidget et rowactionswidget
-
-Aggrandir/retricr les widgets quand des colonnes et lignes sont ajoutes/supprimes
+Lors de deplacements de colonnes, on peut changer qui est X et qui Y, a regler
+Quand les points sont ralies par des segemnts alors qu'un tri a ete effectue, c'est le bordel

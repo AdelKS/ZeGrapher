@@ -591,7 +591,9 @@ void MainGraph::addTangentToBuffer()
 
 void MainGraph::resaveImageBuffer()
 {
-    resaveGraph = false;
+    resaveGraph = false;    
+
+    checkIfActiveSelectionConflicts();
 
     delete savedGraph;
     savedGraph = new QImage(size(), QImage::Format_RGB32);
@@ -690,6 +692,31 @@ void MainGraph::determinerCentreEtUnites()
        recalculate = true;
     }
 
+}
+
+void MainGraph::checkIfActiveSelectionConflicts()
+{
+    if(selectedCurve.isSomethingSelected) //or else there would be problems if a function has been modified (for example, parametric range has changed)
+    {
+        bool removeSelection = false;
+
+        if(selectedCurve.isParametric)
+        {
+            if((selectedCurve.funcType == FUNC_HOVER && selectedCurve.kPos >= funcVals->at(selectedCurve.id).size()) ||
+                    (selectedCurve.funcType == SEQ_HOVER && selectedCurve.kPos >= seqs[selectedCurve.id]->getDrawsNum()))
+                removeSelection = true;
+        }
+        if((selectedCurve.funcType == FUNC_HOVER && !funcs[selectedCurve.id]->getDrawState()) ||
+                    (selectedCurve.funcType == SEQ_HOVER && !seqs[selectedCurve.id]->getDrawState()))
+                    removeSelection = true;
+
+        if(removeSelection)
+        {
+            selectedCurve.isSomethingSelected = false;
+            xyWidgetsHideTransition.start();
+            kLabel.hide();
+        }
+    }
 }
 
 void MainGraph::drawAllParEq()
@@ -893,6 +920,8 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
     else if(typeCurseur == ZOOMBOX)
     {
         dispRectangle = false;
+        rectReel = rectReel.normalized();
+
         if(rectReel.height() > 10 && rectReel.width() > 10)
         {
             GraphRange fen = graphRange;
@@ -1082,18 +1111,20 @@ void MainGraph::mouseFuncHoverTest(double x, double y)
     double calcY = 0;   
     double k = 0;
     int draw;
+    double rangeLimit;
     Range kRange;
 
     for(short i = 0; i < funcs.size(); i++)
     {
-        if(!funcs[i]->isFuncValid())
+        if(!funcs[i]->getDrawState())
             continue;
 
         kRange = funcs[i]->getParametricRange();
         k = kRange.start;
         draw = 0;
+        rangeLimit = kRange.start + kRange.step * PAR_DRAW_LIMIT;
 
-        while(k <= kRange.end)
+        while(k <= kRange.end && k < rangeLimit )
         {
             calcY = funcs[i]->getFuncValue(x, k);
 

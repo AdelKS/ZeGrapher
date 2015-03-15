@@ -57,6 +57,12 @@ void FenetreBornes::orthonormal(bool state)
     ui->Ypas->setEnabled(!state);
 }
 
+void FenetreBornes::resetToStandardView()
+{
+    standardView();
+    appliquer();
+}
+
 void FenetreBornes::standardView()
 {
     ui->Xmax->setText("10");

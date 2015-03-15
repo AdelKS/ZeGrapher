@@ -30,6 +30,8 @@ DataWindow::DataWindow(Informations *info, int ind)
     ui = new Ui::DataWindow;
     ui->setupUi(this);   
 
+    setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
+
     informations = info;
     selectorSide = COLUMN_SELECTION;
 

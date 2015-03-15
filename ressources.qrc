@@ -36,5 +36,7 @@
         <file>icons/rotatedselector.png</file>
         <file>icons/data.png</file>
         <file>icons/csv.png</file>
+        <file>icons/resetToDefaultView.png</file>
+        <file>icons/polynomial.png</file>
     </qresource>
 </RCC>

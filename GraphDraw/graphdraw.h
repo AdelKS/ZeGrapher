@@ -55,7 +55,7 @@ protected:
     void drawFunctions();
     void drawData();
     void drawSequences();
-    void drawTangents(); //except the exception :) designed by tangentDrawException
+    void drawTangents(); //except the exception :) indicated by tangentDrawException
     void drawStraightLines();
     void drawStaticParEq();
 

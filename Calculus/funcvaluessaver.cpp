@@ -63,7 +63,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
         end = trunc((range.end - range.start)/range.step) + 1;
         k = range.start;
 
-        for(k_pos = 0 ; k_pos < end ; k_pos++)
+        for(k_pos = 0 ; k_pos < end && k_pos < PAR_DRAW_LIMIT ; k_pos++)
         {            
             funcVals[i] << QList<double>();
 
@@ -101,7 +101,7 @@ void FuncValuesSaver::move(double pixels)
 
     for(short i = 0 ; i < funcs.size(); i++)
     {
-        if(!funcs[i]->getDrawState())
+        if(!funcs[i]->isFuncValid())
             continue;
 
         k_step = funcs[i]->getParametricRange().step;

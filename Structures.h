@@ -65,6 +65,11 @@ struct GraphRange
 struct Point
 {
     double x, y;
+
+    bool operator<(const Point &a, const Point &b)
+    {
+        return a.x < b.y;
+    }
 };
 struct Rectangle
 {

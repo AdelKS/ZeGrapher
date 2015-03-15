@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
     QTranslator translator;
     translator.load(QString("qt_") + localeString, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 
-    //if(locale.language() != QLocale::French)
-      // translator.load(":/ZeGrapher_en.qm");
+    if(locale.language() != QLocale::French)
+        translator.load(":/ZeGrapher_en.qm");
 
 
     a.installTranslator(&translator);
