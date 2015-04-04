@@ -24,23 +24,24 @@
 #include <QList>
 #include "Structures.h"
 
+
 class Polynomial
 {
+
 public:
     Polynomial(const Polynomial &pol);    
     Polynomial(int monicMonomialDegree);
-    Polynomial();
+    Polynomial();    
 
-    double eval(double x);
+    void resetToZero();
+
     double getCoef(int degree);
     int degree();
     Polynomial product(const Polynomial &otherPol);
     Polynomial sum(const Polynomial &otherPol);
     Polynomial antiderivative();
 
-    void setAffine(Point a, Point b);
-
-    QList<double> getCoefsList();
+    void setAffine(Point A, Point B);
 
     void operator+=(const Polynomial &P);
     void operator*=(double scal);

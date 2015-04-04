@@ -73,6 +73,21 @@ DataStyle Informations::getDataStyle(int index)
     return dataStyle[index];
 }
 
+void Informations::addDataRegression(Regression *reg)
+{
+    regressions << reg;
+}
+
+void Informations::removeDataRegression(Regression *reg)
+{
+    regressions.removeOne(reg);
+}
+
+QList<Regression*> Informations::getRegressionsList()
+{
+    return regressions;
+}
+
 void Informations::setParEqsListPointer(QList<ParEqWidget*> *list)
 {
     parEqWidgets = list;

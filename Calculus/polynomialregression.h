@@ -23,17 +23,26 @@
 
 #include "polynomial.h"
 #include "Structures.h"
+#include "regression.h"
 #include <QList>
 
 enum ApproxMethod { ApproachPoints, ApproachSegments};
 
-class PolynomialRegression
+class PolynomialRegression : public Regression
 {
 public:
-    PolynomialRegression();
+    PolynomialRegression(int dataNumber);
+
+    void setDataNumber(int num);
+
+    double eval(double x);
+    QString getAbscissaName();
+    QString getOrdinateName();
+    QString getInfo();
+    bool getDrawState();
 
     void setData(const QList<Point> &data);
-    Polynomial getPolynomialRegression(int polynomialDegree, ApproxMethod method);
+    void calculatePolynomialRegression(int polynomialDegree, ApproxMethod method);
 
     ~PolynomialRegression();
 
@@ -42,6 +51,8 @@ protected:
     double continuousNorm(const Polynomial &P);
     double discreteNorm(const Polynomial &P);
 
+    int dataNum;
+    Polynomial pol;
     ApproxMethod approxMethod;
     double min, max; //integration segment for dot product: integrate between min and max
     QList<Point> dataPoints;

@@ -60,7 +60,9 @@ SOURCES += \
     DataPlot/csvhandler.cpp \
     Widgets/polynomialmodelwidget.cpp \
     Calculus/polynomial.cpp \
-    Calculus/polynomialregression.cpp
+    Calculus/polynomialregression.cpp \
+    Calculus/regression.cpp \
+    Calculus/regressionvaluessaver.cpp
 
 HEADERS  += \
     Structures.h \
@@ -112,7 +114,9 @@ HEADERS  += \
     DataPlot/csvhandler.h \
     Widgets/polynomialmodelwidget.h \
     Calculus/polynomial.h \
-    Calculus/polynomialregression.h
+    Calculus/polynomialregression.h \
+    Calculus/regression.h \
+    Calculus/regressionvaluessaver.h
 
 
 FORMS    += \

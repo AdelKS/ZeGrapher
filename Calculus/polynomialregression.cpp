@@ -20,9 +20,15 @@
 
 #include "polynomialregression.h"
 
-PolynomialRegression::PolynomialRegression()
+PolynomialRegression::PolynomialRegression(int dataNumber)
 {
     approxMethod = ApproachSegments;
+    dataNum = dataNumber;
+}
+
+void PolynomialRegression::setDataNumber(int num)
+{
+    dataNum = num;
 }
 
 void PolynomialRegression::setData(const QList<Point> &data)
@@ -36,28 +42,23 @@ void PolynomialRegression::setData(const QList<Point> &data)
     orthonormalBasis.clear();
 }
 
-Polynomial PolynomialRegression::getPolynomialRegression(int polynomialDegree, ApproxMethod method)
+void PolynomialRegression::calculatePolynomialRegression(int polynomialDegree, ApproxMethod method)
 {
     if(approxMethod != method)
         orthonormalBasis.clear();
 
     approxMethod = method;
 
-    updateOrthonormalBasis(polynomialDegree);
+    updateOrthonormalBasis(polynomialDegree);   
 
-    QList<double> coefs;
-    coefs.reserve(polynomialDegree+1);
-
-    Polynomial pol;
+    pol.resetToZero();
 
     for(int n = 0 ; n <= polynomialDegree ; n++)
     {
         if(approxMethod == ApproachSegments)
             pol += continuousScalarProduct(data, orthonormalBasis.at(n))*orthonormalBasis.at(n);
-        else pol += discreteScalarProduct(data, orthonormalBasis.at(n))*orthonormalBasis.at(n)*orthonormalBasis.at(n);
-    }
-
-    return pol;
+        else pol += discreteScalarProduct(data, orthonormalBasis.at(n))*orthonormalBasis.at(n);
+    }    
 }
 
 void PolynomialRegression::updateOrthonormalBasis(int maxDegree)

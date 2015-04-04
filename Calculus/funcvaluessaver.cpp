@@ -25,7 +25,7 @@ FuncValuesSaver::FuncValuesSaver(Informations *info)
 {
     informations = info;
     funcs = info->getFuncsList();
-    info->getRange();
+    graphRange = info->getRange();
     deplacement = 0;
 
     for(short i = 0 ; i < funcs.size() ; i++)
