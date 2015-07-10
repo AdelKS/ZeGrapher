@@ -107,6 +107,9 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
     }
 }
 
+double discreteScalarProduct(const QList<Point> &data, const Polynomial &P);
+double continuousScalarProduct(const QList<Point> &data, const Polynomial &P);
+
 PolynomialRegression::~PolynomialRegression()
 {
 

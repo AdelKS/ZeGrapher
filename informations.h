@@ -54,7 +54,8 @@ public:
 
     void addDataRegression(Regression *reg);
     void removeDataRegression(Regression *reg);
-    QList<Regression*> getRegressionsList();
+    Regression* getRegression(int id);
+    int getRegressionsCount();
 
     void setParEqsListPointer(QList<ParEqWidget*> *list);
     QList<ParEqWidget*>* getParEqsList();

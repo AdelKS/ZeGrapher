@@ -50,14 +50,17 @@ protected:
     void drawOneFunction(int id, int width, int curveNum = -1);
     void drawOneSequence(int id, int width);
     void drawDataSet(int id, int width);
+    void drawRegression(int reg);
     void drawOneTangent(int id);
 
     void drawFunctions();
+    void drawRegressions();
     void drawData();
     void drawSequences();
     void drawTangents(); //except the exception :) indicated by tangentDrawException
     void drawStraightLines();
     void drawStaticParEq();
+
 
 
     int graphWidth, graphHeight;

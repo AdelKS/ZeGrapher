@@ -22,6 +22,7 @@
 #define REGRESSION_H
 
 #include <QString>
+#include <QColor>
 
 class Regression
 {
@@ -32,6 +33,7 @@ public:
     virtual QString getAbscissaName();
     virtual QString getOrdinateName();
     virtual QString getInfo();
+    virtual QColor getColor();
     virtual bool getDrawState();
 
 

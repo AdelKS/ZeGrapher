@@ -1,2 +1,2 @@
 Lors de deplacements de colonnes, on peut changer qui est X et qui Y, a regler
-Quand les points sont ralies par des segemnts alors qu'un tri a ete effectue, c'est le bordel
+Quand les points sont ralies par des segemnts alors qu'un tri a ete effectue, ca affiche du grand n'importe quoi

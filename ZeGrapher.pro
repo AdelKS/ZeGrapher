@@ -146,8 +146,7 @@ RC_FILE += \
     ressources.rc
 
 OTHER_FILES += \
-    TODO.txt \
-    DataPlot/filloptionswidget.ui.autosave
+    TODO.txt
 
 
 

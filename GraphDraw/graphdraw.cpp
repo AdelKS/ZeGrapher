@@ -157,6 +157,100 @@ void GraphDraw::drawData()
     }
 }
 
+void GraphDraw::drawRegression(int reg, int width)
+{
+    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+
+    short drawsNum = funcVals->at(i).size(), drawStart = 0;
+
+    if(curveNum != -1)
+    {
+        drawStart = curveNum;
+        drawsNum = curveNum + 1
+    }
+
+    double posX, delta1, delta2, delta3, y1, y2, y3, y4;;
+    bool pointDepasse= false;
+    int end;
+    ColorSaver* colorSaver = funcs[i]->getColorSaver();
+
+    pen.setWidth(width);
+
+    for(short draw = drawStart ; draw < drawsNum; draw++)
+    {
+        end = funcVals->at(i)[draw].size();
+        posX = funcValuesSaver->getStartAbscissaPixel();
+        polygon.clear();
+
+        pen.setColor(colorSaver->getColor(draw));
+        painter.setPen(pen);
+
+        for(int pos = 0; pos < end; pos++)
+        {
+            y1 = funcVals->at(i)[draw][pos];
+
+            if(!isnan(y1) && !isinf(y1))
+            {
+                if(y1 < graphRange.Ymin || y1 > graphRange.Ymax)
+                {
+                    if(!pointDepasse)
+                    {
+                        polygon << QPointF(posX, -y1*uniteY);
+                        painter.drawPolyline(polygon);
+                        polygon.clear();
+                        pointDepasse = true;
+                    }
+                }
+                else
+                {
+                    if(pointDepasse)
+                    {
+                       polygon << QPointF(posX - parametres.distanceEntrePoints, - funcVals->at(i)[draw][pos-1]*uniteY);
+                    }
+                    polygon << QPointF(posX, -y1*uniteY);
+                    pointDepasse = false;
+                }
+
+                if(0 < pos && pos < end-2)
+                {
+                    y1 = funcVals->at(i)[draw][pos-1];
+                    y2 = funcVals->at(i)[draw][pos];
+                    y3 = funcVals->at(i)[draw][pos+1];
+                    y4 = funcVals->at(i)[draw][pos+2];
+
+                    delta1 = fabs(y2 - y1);
+                    delta2 = fabs(y3 - y2);
+                    delta3 = fabs(y4 - y3);
+
+                    if(delta2 != 0 && delta2 > 2*delta1 && delta2 > 2*delta3)
+                    {
+                        painter.drawPolyline(polygon);
+                        polygon.clear();
+                    }
+                }
+            }
+            else
+            {
+                painter.drawPolyline(polygon);
+                polygon.clear();
+            }
+            posX += parametres.distanceEntrePoints;
+        }
+
+        painter.drawPolyline(polygon);
+        pointDepasse = false;
+    }
+}
+
+void GraphDraw::drawRegressions()
+{
+    for(int i = 0 ; i < informations->getRegressionsCount() ; i++)
+    {
+        if(informations->getRegression(i)->getDrawState())
+            drawRegression(i);
+    }
+}
+
 void GraphDraw::drawOneFunction(int i, int width, int curveNum)
 {
     if(!funcs[i]->getDrawState())

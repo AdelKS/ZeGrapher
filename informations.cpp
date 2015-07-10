@@ -83,9 +83,14 @@ void Informations::removeDataRegression(Regression *reg)
     regressions.removeOne(reg);
 }
 
-QList<Regression*> Informations::getRegressionsList()
+Regression* Informations::getRegression(int id)
 {
-    return regressions;
+    return regressions.at(id);
+}
+
+int Informations::getRegressionsCount()
+{
+    return regressions.size();
 }
 
 void Informations::setParEqsListPointer(QList<ParEqWidget*> *list)

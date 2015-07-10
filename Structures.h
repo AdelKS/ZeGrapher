@@ -66,9 +66,9 @@ struct Point
 {
     double x, y;
 
-    bool operator<(const Point &a, const Point &b)
+    bool operator<(const Point &b)
     {
-        return a.x < b.y;
+        return x < b.y;
     }
 };
 struct Rectangle
