@@ -31,21 +31,23 @@ class Polynomial
 public:
     Polynomial(const Polynomial &pol);    
     Polynomial(int monicMonomialDegree);
+    Polynomial(QList<double> coefs);
     Polynomial();    
 
     void resetToZero();
 
+    double eval(double x);
+
     double getCoef(int degree);
-    int degree();
-    Polynomial product(const Polynomial &otherPol);
-    Polynomial sum(const Polynomial &otherPol);
+    int degree();     
     Polynomial antiderivative();
 
     void setAffine(Point A, Point B);
 
-    void operator+=(const Polynomial &P);
-    void operator*=(double scal);
-    void operator-=(const Polynomial &P);
+    Polynomial& operator+=(const Polynomial &P);
+    Polynomial& operator*=(double scal);
+    Polynomial& operator*=(const Polynomial &P);
+    Polynomial& operator-=(const Polynomial &P);
 
     ~Polynomial();
 

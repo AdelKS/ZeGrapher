@@ -26,9 +26,59 @@ PolynomialRegression::PolynomialRegression(int dataNumber)
     dataNum = dataNumber;
 }
 
+void PolynomialRegression::setAbscissaName(QString name)
+{
+    abscissa = name;
+}
+
+void PolynomialRegression::setOrdinateName(QString name)
+{
+    ordinate = name;
+}
+
+void PolynomialRegression::setInfo(QString info)
+{
+    infos = info;
+}
+
+void PolynomialRegression::setDrawState(bool state)
+{
+    drawState = state;
+}
+
 void PolynomialRegression::setDataNumber(int num)
 {
     dataNum = num;
+}   
+
+double PolynomialRegression::eval(double x)
+{
+    return pol.eval(x);
+}
+
+QString PolynomialRegression::getAbscissaName()
+{
+    return abscissa;
+}
+
+QString PolynomialRegression::getOrdinateName()
+{
+    return ordinate;
+}
+
+QString PolynomialRegression::getInfo()
+{
+    return infos;
+}
+
+bool PolynomialRegression::getDrawState()
+{
+    return drawState;
+}
+
+int PolynomialRegression::getDataNum()
+{
+    return dataNum;
 }
 
 void PolynomialRegression::setData(const QList<Point> &data)
@@ -36,8 +86,8 @@ void PolynomialRegression::setData(const QList<Point> &data)
     dataPoints = data;
     qSort(dataPoints);
 
-    min = dataPoints.first().x;
-    max = dataPoints.last().x;
+    xmin = dataPoints.first().x;
+    xmax = dataPoints.last().x;
 
     orthonormalBasis.clear();
 }
@@ -70,7 +120,7 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
         if(orthonormalBasis.isEmpty())
         {
             Polynomial P(0);
-            P *= 1/continuousNorm(P);
+            P *= 1/continuousNorm(P, xmin, xmax);
             orthonormalBasis << P;
         }
 
@@ -81,7 +131,7 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
             for(int i = 0 ; i < orthonormalBasis.size(); i++)
                 P -= continuousScalarProduct(P, orthonormalBasis.at(i), min, max)*orthonormalBasis.at(i);
 
-            P *= 1/continuousNorm(P);
+            P *= 1/continuousNorm(P, xmin, xmax);
             orthonormalBasis << P;
         }
     }
@@ -90,7 +140,7 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
         if(orthonormalBasis.isEmpty())
         {
             Polynomial P(0);
-            P *= 1/discreteNorm(P);
+            P *= 1/discreteNorm(P, dataPoints);
             orthonormalBasis << P;
         }
 
@@ -99,16 +149,57 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
             Polynomial P(n);
 
             for(int i = 0 ; i < orthonormalBasis.size(); i++)
-                P -= discreteScalarProduct(P, orthonormalBasis.at(i), dataPoints)*orthonormalBasis.at(i);
+                P -= discreteScalarProduct(P, orthonormalBasis.at(i), dataPoints) * orthonormalBasis.at(i);
 
-            P *= 1/discreteNorm(P);
+            P *= 1/discreteNorm(P, dataPoints);
             orthonormalBasis << P;
         }
     }
 }
 
-double discreteScalarProduct(const QList<Point> &data, const Polynomial &P);
-double continuousScalarProduct(const QList<Point> &data, const Polynomial &P);
+double discreteScalarProduct(const QList<Point> &data, const Polynomial &P)
+{
+    double res = 0;
+
+    for(int i = 0 ; i < data.size() ; i++)
+        res += data[i].y * P.eval(data[i].x);
+
+    return res;
+
+}
+
+double continuousScalarProduct(const QList<Point> &data, const Polynomial &P)
+{
+    double res = 0;
+    Polynomial segment, prod;
+
+    for(int i = 0 ; i < data.size() - 1 ; i++)
+    {
+        segment.setAffine(data[i], data[i+1]);
+        prod = segment * P;
+        res = prod.eval(data[i+1].x) - prod.eval(data[i].x);
+    }
+
+    return res;
+}
+
+double continuousNorm(const Polynomial &P, double xmin, double xmax)
+{
+    Polynomial Q = (P*P).antiderivative();
+
+    return sqrt(Q.eval(xmax) - Q.eval(xmin));
+}
+
+double discreteNorm(const Polynomial &P, const QList<Point> &data)
+{
+    Polynomial Q = P*P;
+    double res = 0;
+
+    for(int i = 0 ; i < data.size() ; i++)
+        res += Q.eval(data[i].x);
+
+    return sqrt(res);
+}
 
 PolynomialRegression::~PolynomialRegression()
 {

@@ -35,6 +35,7 @@ public:
     virtual QString getInfo();
     virtual QColor getColor();
     virtual bool getDrawState();
+    virtual int getDataNum();
 
 
     ~Regression();

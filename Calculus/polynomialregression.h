@@ -31,8 +31,12 @@ enum ApproxMethod { ApproachPoints, ApproachSegments};
 class PolynomialRegression : public Regression
 {
 public:
-    PolynomialRegression(int dataNumber);
+    PolynomialRegression(int dataNumber);   
 
+    void setAbscissaName(QString name);
+    void setOrdinateName(QString name);
+    void setInfo(QString info);
+    void setDrawState(bool state);
     void setDataNumber(int num);
 
     double eval(double x);
@@ -40,6 +44,7 @@ public:
     QString getOrdinateName();
     QString getInfo();
     bool getDrawState();
+    int getDataNum();
 
     void setData(const QList<Point> &data);
     void calculatePolynomialRegression(int polynomialDegree, ApproxMethod method);
@@ -47,19 +52,23 @@ public:
     ~PolynomialRegression();
 
 protected:
-    void updateOrthonormalBasis(int maxDegree);
-    double continuousNorm(const Polynomial &P);
-    double discreteNorm(const Polynomial &P);
+    void updateOrthonormalBasis(int maxDegree);    
 
     int dataNum;
+    QString abscissa, ordinate, infos;
+    bool drawState;
+
     Polynomial pol;
     ApproxMethod approxMethod;
-    double min, max; //integration segment for dot product: integrate between min and max
+    double xmin, xmax; //integration segment for dot product: integrate between min and max
     QList<Point> dataPoints;
     QList<Polynomial> orthonormalBasis;
 };
 
 double discreteScalarProduct(const QList<Point> &data, const Polynomial &P);
 double continuousScalarProduct(const QList<Point> &data, const Polynomial &P);
+
+double continuousNorm(const Polynomial &P, double xmin, double xmax);
+double discreteNorm(const Polynomial &P, const QList<Point> &data);
 
 #endif // POLYNOMIALREGRESSION_H
