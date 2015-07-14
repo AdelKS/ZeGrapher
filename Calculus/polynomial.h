@@ -22,7 +22,9 @@
 #define POLYNOMIAL_H
 
 #include <QList>
+#include <algorithm>
 #include "Structures.h"
+
 
 
 class Polynomial
@@ -36,10 +38,10 @@ public:
 
     void resetToZero();
 
-    double eval(double x);
+    double eval(double x) const;
 
     double getCoef(int degree);
-    int degree();     
+    int degree() const;
     Polynomial antiderivative();
 
     void setAffine(Point A, Point B);

@@ -3,7 +3,7 @@
  <comment/>
  <exportmacro/>
  <class>PolynomialModelWidget</class>
- <widget name="PolynomialModelWidget" class="QWidget">
+ <widget class="QWidget" name="PolynomialModelWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

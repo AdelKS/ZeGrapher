@@ -49,15 +49,17 @@ void Polynomial::resetToZero()
     coefficients << 0;
 }
 
-double Polynomial::eval(double x)
+double Polynomial::eval(double x) const
 {
     double val = 1, res = 0;
 
     for(int i = 0 ; i <= degree() ; i++)
     {
-        res = val * coefficients[i];
+        res += val * coefficients[i];
         val *= x;
     }
+
+    return res;
 }
 
 double Polynomial::getCoef(int deg)
@@ -67,7 +69,7 @@ double Polynomial::getCoef(int deg)
     else return 0;
 }
 
-int Polynomial::degree()
+int Polynomial::degree() const
 {
     return coefficients.size() - 1;
 }
@@ -99,7 +101,7 @@ void Polynomial::setAffine(Point A, Point B)
 Polynomial& Polynomial::operator+=(const Polynomial &P)
 {
     QList<double> coefs;
-    int deg = max(degree(), P.degree());
+    int deg = std::max(degree(), P.degree());
 
     for(int i = 0 ; i <= deg ; i++)
         coefs << coefficients[i] + P.coefficients[i];
@@ -120,14 +122,14 @@ Polynomial& Polynomial::operator*=(double scal)
 Polynomial& Polynomial::operator*=(const Polynomial &P)
 {
     QList<double> coefs;
-    int deg = degree() + otherPol.degree();
+    int deg = degree() + P.degree();
 
     for(int i = 0 ; i <  deg ; i++)
         coefs << 0;
 
     for(int i = 0 ; i <= degree() ; i++)
-        for(int j = 0 ; j <= otherPol.degree() ; j++)
-            coefs[i+j] += coefficients[i] * otherPol.coefficients[j];
+        for(int j = 0 ; j <= P.degree() ; j++)
+            coefs[i+j] += coefficients[i] * P.coefficients[j];
 
     coefficients = coefs;
 
@@ -151,22 +153,50 @@ Polynomial::~Polynomial()
 
 Polynomial operator+(const Polynomial &P, const Polynomial &Q)
 {
-
+    Polynomial D(P);
+    D += Q;
+    return D;
 }
 
 Polynomial operator-(const Polynomial &P, const Polynomial &Q)
 {
-
+    Polynomial D(P);
+    D -= Q;
+    return D;
 }
 
 Polynomial operator*(const Polynomial &P, const Polynomial &Q)
 {
-
+    Polynomial D(P);
+    D *= Q;
+    return D;
 }
 
 Polynomial operator*(double scal, const Polynomial &Q)
 {
-
+    Polynomial D(Q);
+    D *= scal;
+    return D;
 }
 
+double continuousScalarProduct(const Polynomial &P, const Polynomial &Q, double a, double b)
+{
+    Polynomial D(P * Q);
+
+    D = D.antiderivative();
+
+    return D.eval(b) - D.eval(a);
+}
+
+double discreteScalarProduct(const Polynomial &P, const Polynomial &Q, const QList<Point> &data)
+{
+    Polynomial D(P);
+    D *= Q;
+
+    double res = 0;
+    for(int i = 0 ; i < data.size() ; i++)
+        res += D.eval(data[i].x);
+
+    return res;
+}
 

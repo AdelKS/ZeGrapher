@@ -30,6 +30,7 @@
 #include "Widgets/pareqwidget.h"
 #include "informations.h"
 #include "Calculus/funcvaluessaver.h"
+#include "Calculus/regressionvaluessaver.h"
 
 
 class GraphDraw : public QWidget // Abstract class
@@ -50,7 +51,7 @@ protected:
     void drawOneFunction(int id, int width, int curveNum = -1);
     void drawOneSequence(int id, int width);
     void drawDataSet(int id, int width);
-    void drawRegression(int reg);
+    void drawRegression(int reg, int width);
     void drawOneTangent(int id);
 
     void drawFunctions();
@@ -66,6 +67,7 @@ protected:
     int graphWidth, graphHeight;
     Informations *informations;
     FuncValuesSaver *funcValuesSaver;
+    RegressionValuesSaver *regValuesSaver;
     QPainter painter;
     Options parametres;
     QPolygonF polygon;
@@ -86,6 +88,7 @@ protected:
     QList<TangentWidget*> *tangents;
     QList<ParEqWidget*> *parEqs;
     QList< QList< QList<double> > > *funcVals;
+    QList< QList<double> > *regVals;
 
     QFont font;
 };

@@ -44,20 +44,20 @@ void RegressionValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
     endAbscissa_unit = trunc(graphRange.Xmax / unitStep) * unitStep + unitStep;
     endAbscissa_pixel = endAbscissa_unit * xUnit;
 
-    regressions = informations->getRegressionsList();
+
     regressionVals.clear();
-    regressionVals.reserve(regressions.size());
+    regressionVals.reserve(informations->getRegressionsCount());
 
-    for(short i = 0; i < regressions.size(); i++)
+    QList<double> list;
+
+    for(int i = 0; i < informations->getRegressionsCount(); i++)
     {
-        QList<double> list;
+        list.clear();
 
-        for(x = startAbscissa_unit ; x <= endAbscissa_unit ; x += unitStep)
-        {
-            list << regressions.at(i)->eval(x);
-        }
+        for(x = startAbscissa_unit ; x <= endAbscissa_unit ; x += unitStep)        
+            list << informations->getRegression(i)->eval(x);
 
-        regressions << list;
+        regressionVals << list;
     }
 }
 
@@ -82,7 +82,7 @@ void RegressionValuesSaver::move(double pixels)
         x_start = startAbscissa_unit;
     }
 
-    for(short i = 0 ; i < regressions.size(); i++)
+    for(short i = 0 ; i < informations->getRegressionsCount(); i++)
     {
         x = x_start;
 
@@ -92,12 +92,12 @@ void RegressionValuesSaver::move(double pixels)
 
             if(deplacement < 0)
             {
-                regressionVals[i].append(regressions[i]->eval(x));
+                regressionVals[i].append(informations->getRegression(i)->eval(x));
                 regressionVals[i].removeFirst();
             }
             else
             {
-                regressionVals[i].prepend(regressions[i]->eval(x));
+                regressionVals[i].prepend(informations->getRegression(i)->eval(x));
                 regressionVals[i].removeLast();
             }
 

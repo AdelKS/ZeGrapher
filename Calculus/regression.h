@@ -29,13 +29,13 @@ class Regression
 public:
     Regression();
 
-    virtual double eval(double x);
-    virtual QString getAbscissaName();
-    virtual QString getOrdinateName();
-    virtual QString getInfo();
-    virtual QColor getColor();
-    virtual bool getDrawState();
-    virtual int getDataNum();
+    virtual double eval(double x) const = 0;
+    virtual QString getAbscissaName() const = 0;
+    virtual QString getOrdinateName() const = 0;
+    virtual QString getInfo() const = 0;
+    virtual QColor getColor() const = 0;
+    virtual bool getDrawState() const = 0;
+    virtual int getDataNum() const = 0;
 
 
     ~Regression();

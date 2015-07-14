@@ -42,8 +42,7 @@ public:
 protected:
 
     Informations *informations;
-    GraphRange graphRange;
-    QList<Regression*> regressions;
+    GraphRange graphRange;    
 
     double xUnit, yUnit, pixelStep, unitStep;
     double startAbscissa_pixel, startAbscissa_unit, endAbscissa_pixel, endAbscissa_unit;

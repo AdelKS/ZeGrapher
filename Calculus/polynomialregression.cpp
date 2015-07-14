@@ -106,8 +106,8 @@ void PolynomialRegression::calculatePolynomialRegression(int polynomialDegree, A
     for(int n = 0 ; n <= polynomialDegree ; n++)
     {
         if(approxMethod == ApproachSegments)
-            pol += continuousScalarProduct(data, orthonormalBasis.at(n))*orthonormalBasis.at(n);
-        else pol += discreteScalarProduct(data, orthonormalBasis.at(n))*orthonormalBasis.at(n);
+            pol += continuousScalarProduct(dataPoints, orthonormalBasis.at(n)) * orthonormalBasis.at(n);
+        else pol += discreteScalarProduct(dataPoints, orthonormalBasis.at(n)) * orthonormalBasis.at(n);
     }    
 }
 
@@ -124,12 +124,12 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
             orthonormalBasis << P;
         }
 
-        for(n = orthonormalBasis.size(); n <= maxDegree; n++)
+        for(int n = orthonormalBasis.size(); n <= maxDegree; n++)
         {
             Polynomial P(n);
 
             for(int i = 0 ; i < orthonormalBasis.size(); i++)
-                P -= continuousScalarProduct(P, orthonormalBasis.at(i), min, max)*orthonormalBasis.at(i);
+                P -= continuousScalarProduct(P, orthonormalBasis.at(i), xmin, xmax) * orthonormalBasis.at(i);
 
             P *= 1/continuousNorm(P, xmin, xmax);
             orthonormalBasis << P;
@@ -144,7 +144,7 @@ void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
             orthonormalBasis << P;
         }
 
-        for(n = orthonormalBasis.size(); n <= maxDegree; n++)
+        for(int n = orthonormalBasis.size(); n <= maxDegree; n++)
         {
             Polynomial P(n);
 

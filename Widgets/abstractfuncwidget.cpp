@@ -46,6 +46,7 @@ void AbstractFuncWidget::addMainWidgets()
 
     drawCheckBox = new QCheckBox();
     drawCheckBox->setChecked(true);
+    drawCheckBox->setMinimumSize(25, 25);
 
     nameLabel = new QLabel;
 

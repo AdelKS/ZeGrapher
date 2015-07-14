@@ -58,11 +58,13 @@ SOURCES += \
     Calculus/colorsaver.cpp \
     Widgets/datawidget.cpp \
     DataPlot/csvhandler.cpp \
-    Widgets/polynomialmodelwidget.cpp \
     Calculus/polynomial.cpp \
     Calculus/polynomialregression.cpp \
     Calculus/regression.cpp \
-    Calculus/regressionvaluessaver.cpp
+    Calculus/regressionvaluessaver.cpp \
+    DataPlot/modelchoicewidget.cpp \
+    DataPlot/modelwidget.cpp \
+    DataPlot/polynomialmodelwidget.cpp
 
 HEADERS  += \
     Structures.h \
@@ -112,11 +114,13 @@ HEADERS  += \
     Calculus/calculusdefines.h \
     Widgets/datawidget.h \
     DataPlot/csvhandler.h \
-    Widgets/polynomialmodelwidget.h \
     Calculus/polynomial.h \
     Calculus/polynomialregression.h \
     Calculus/regression.h \
-    Calculus/regressionvaluessaver.h
+    Calculus/regressionvaluessaver.h \
+    DataPlot/modelchoicewidget.h \
+    DataPlot/modelwidget.h \
+    DataPlot/polynomialmodelwidget.h
 
 
 FORMS    += \
@@ -136,7 +140,8 @@ FORMS    += \
     DataPlot/datawindow.ui \   
     DataPlot/confirmdelete.ui \
     DataPlot/csvconfig.ui \
-    Widgets/polynomialmodelwidget.ui
+    DataPlot/modelchoicewidget.ui \
+    DataPlot/polynomialmodelwidget.ui
 
 
 RESOURCES += \
