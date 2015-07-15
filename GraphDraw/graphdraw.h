@@ -63,7 +63,6 @@ protected:
     void drawStaticParEq();
 
 
-
     int graphWidth, graphHeight;
     Informations *informations;
     FuncValuesSaver *funcValuesSaver;

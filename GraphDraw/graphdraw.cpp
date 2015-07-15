@@ -47,6 +47,8 @@ GraphDraw::GraphDraw(Informations *info)
 
     funcValuesSaver = new FuncValuesSaver(info);
     funcVals = funcValuesSaver->getFuncValsListPointer();
+
+    regValuesSaver = new RegressionValuesSaver(info);
 }
 
 void GraphDraw::drawRhombus(QPointF pt, double w)
@@ -159,75 +161,14 @@ void GraphDraw::drawData()
 
 void GraphDraw::drawRegression(int reg, int width)
 {
-    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);   
-
-    double posX, delta1, delta2, delta3, y1, y2, y3, y4;;
-    bool pointDepasse= false;
-    int end;
+    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
 
     pen.setWidth(width);
     pen.setColor(informations->getRegression(reg)->getColor());
     painter.setPen(pen);
 
-    end = regVals->at(reg).size();
-    posX = regValuesSaver->getStartAbscissaPixel();
-    polygon.clear();
 
-
-    for(int pos = 0; pos < end; pos++)
-    {
-        y1 = regVals->at(reg)[pos];
-
-        if(!isnan(y1) && !isinf(y1))
-        {
-            if(y1 < graphRange.Ymin || y1 > graphRange.Ymax)
-            {
-                if(!pointDepasse)
-                {
-                    polygon << QPointF(posX, -y1*uniteY);
-                    painter.drawPolyline(polygon);
-                    polygon.clear();
-                    pointDepasse = true;
-                }
-            }
-            else
-            {
-                if(pointDepasse)
-                {
-                   polygon << QPointF(posX - parametres.distanceEntrePoints, - regVals->at(reg)[pos-1]*uniteY);
-                }
-                polygon << QPointF(posX, -y1*uniteY);
-                pointDepasse = false;
-            }
-
-            if(0 < pos && pos < end-2)
-            {
-                y1 = regVals->at(reg)[pos-1];
-                y2 = regVals->at(reg)[pos];
-                y3 = regVals->at(reg)[pos+1];
-                y4 = regVals->at(reg)[pos+2];
-
-                delta1 = fabs(y2 - y1);
-                delta2 = fabs(y3 - y2);
-                delta3 = fabs(y4 - y3);
-
-                if(delta2 != 0 && delta2 > 2*delta1 && delta2 > 2*delta3)
-                {
-                    painter.drawPolyline(polygon);
-                    polygon.clear();
-                }
-            }
-        }
-        else
-        {
-            painter.drawPolyline(polygon);
-            polygon.clear();
-        }
-        posX += parametres.distanceEntrePoints;
-    }
-
-    painter.drawPolyline(polygon);
-    pointDepasse = false;
+    painter.drawPolyline(regValuesSaver->getCurve(reg));
 }
 
 void GraphDraw::drawRegressions()

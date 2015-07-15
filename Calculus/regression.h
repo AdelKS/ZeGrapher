@@ -24,6 +24,8 @@
 #include <QString>
 #include <QColor>
 
+#include "Structures.h"
+
 class Regression
 {
 public:
@@ -36,6 +38,11 @@ public:
     virtual QColor getColor() const = 0;
     virtual bool getDrawState() const = 0;
     virtual int getDataNum() const = 0;
+    virtual bool isPolar() const = 0;
+    virtual Range getDrawRange() const = 0;
+
+protected:
+    bool polar;
 
 
     ~Regression();

@@ -41,6 +41,11 @@ void PolynomialRegression::setInfo(QString info)
     infos = info;
 }
 
+void PolynomialRegression::setPolar(bool state)
+{
+    polar = state;
+}
+
 void PolynomialRegression::setDrawState(bool state)
 {
     drawState = state;
@@ -69,6 +74,11 @@ QString PolynomialRegression::getOrdinateName()
 QString PolynomialRegression::getInfo()
 {
     return infos;
+}
+
+bool PolynomialRegression::isPolar()
+{
+    return polar;
 }
 
 bool PolynomialRegression::getDrawState()

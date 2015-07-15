@@ -9,29 +9,36 @@
 #include "./modelchoicewidget.h"
 #include "./polynomialmodelwidget.h"
 
-enum State{Choice, Polynomial};
+enum State {ChoiceWidget, PolynomialWidget};
 
 class ModelWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ModelWidget(const QList<Point> &dat, Informations *info, QWidget *parent = 0);
+    explicit ModelWidget(const QList<Point> &dat, Informations *info, bool isPolar, QString xname, QString yname, QWidget *parent = 0);
     ~ModelWidget();
 
 public slots:
-    void setNewData(const QList<Point> &dat);
+
+    void setPolar(bool state);
+    void setData(const QList<Point> &data);
+    void setAbscissaName(QString name);
+    void setOrdinateName(QString name);
 
 protected slots:
     void displaySelectedModel(ModelType type);
+    void emitRemoveMeSignal();
 
 signals:
-    void removeMe();
+    void removeMe(ModelWidget *model);
 
 private:
     State currentState;
     QList<Point> data;
     Informations *informations;
+    bool polar;
+    QString abscissa, ordinate;
 
     QVBoxLayout *layout;
     ModelChoiceWidget *modelChoice;

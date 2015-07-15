@@ -28,6 +28,7 @@
 #include "./rowselectorwidget.h"
 #include "./rowactionswidget.h"
 #include "./csvhandler.h"
+#include "./modelwidget.h"
 
 #define COLUMN_SELECTION true
 #define ROW_SELECTION false
@@ -65,6 +66,11 @@ protected slots:
     void cellValChanged(int row, int col);
     void dataChanged();
     void remakeDataList();
+    void addModel();
+    void removeModelWidget(ModelWidget* w);
+    void coordinateSystemChanged(bool polar);
+    void columnNameChanged(int index);
+    void columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
 protected:    
 
@@ -80,6 +86,9 @@ protected:
     RowActionsWidget *rowActionsWidget;
     CSVhandler *csvHandler;
     bool selectorSide;
+
+    QList<Point> modelData;
+    QList<ModelWidget*> modelWidgets;
 };
 
 #endif // DATAWINDOW_H

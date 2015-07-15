@@ -57,7 +57,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -195,7 +195,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>413</width>
+            <width>483</width>
             <height>294</height>
            </rect>
           </property>
@@ -342,7 +342,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>415</width>
+            <width>485</width>
             <height>296</height>
            </rect>
           </property>
@@ -372,7 +372,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>413</width>
+                <width>483</width>
                 <height>294</height>
                </rect>
               </property>
@@ -513,7 +513,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>413</width>
+            <width>483</width>
             <height>294</height>
            </rect>
           </property>
@@ -749,7 +749,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>413</width>
+            <width>483</width>
             <height>294</height>
            </rect>
           </property>
@@ -774,6 +774,18 @@
              </item>
              <item>
               <widget class="QPushButton" name="addDataWidget">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>

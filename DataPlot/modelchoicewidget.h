@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-enum ModelType{Polynomial};
+enum ModelType{PolynomialModel};
 
 namespace Ui {
 class ModelChoiceWidget;

@@ -8,7 +8,7 @@ ModelChoiceWidget::ModelChoiceWidget(QWidget *parent) :
     ui->setupUi(this);
     ui->remove->setIcon(QIcon(":/icons/remove.png"));
 
-    models << ModelType::Polynomial;
+    models << PolynomialModel;
 
     connect(ui->Apply, SIGNAL(released()), this, SLOT(apply()));
     connect(ui->remove, SIGNAL(released()), this, SIGNAL(removeMe()));

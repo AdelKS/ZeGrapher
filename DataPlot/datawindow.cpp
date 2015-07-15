@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "DataPlot/datawindow.h"
+#include "./datawindow.h"
 #include "ui_datawindow.h"
 
 DataWindow::DataWindow(Informations *info, int ind)
@@ -112,6 +112,7 @@ DataWindow::DataWindow(Informations *info, int ind)
     connect(rowSelector, SIGNAL(askForSelector()), this, SLOT(selectorInRowSelection()));
     connect(rowSelector, SIGNAL(askForSelector()), columnSelector, SLOT(askedForSelector()));
     connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));  
+    connect(rowSelector, SIGNAL(newIndex(bool,int)), rowActionsWidget, SLOT(setSelectorPos(bool,int)));
 
     connect(rowActionsWidget, SIGNAL(insertRowClicked(int)), dataTable, SLOT(insertRow(int)));
     connect(rowActionsWidget, SIGNAL(removeRowClicked(int)), dataTable, SLOT(removeRow(int))); 
@@ -124,12 +125,63 @@ DataWindow::DataWindow(Informations *info, int ind)
     connect(dataTable, SIGNAL(newRowCount(int)), rowSelector, SLOT(setRowCount(int)));
     connect(dataTable, SIGNAL(newRowCount(int)), rowActionsWidget, SLOT(setRowCount(int)));
     connect(dataTable, SIGNAL(valEdited(int,int)), this, SLOT(cellValChanged(int,int)));
+    connect(dataTable, SIGNAL(newColumnName(int)), this, SLOT(columnNameChanged(int)));
+    connect(dataTable, SIGNAL(columnMoved(int,int,int)), this, SLOT(columnMoved(int,int,int)));
 
 
     connect(ui->cartesian, SIGNAL(toggled(bool)), columnSelector, SLOT(setCoordinateSystem(bool)));
     connect(ui->cartesian, SIGNAL(toggled(bool)), this, SLOT(remakeDataList()));
     //connect to row actions widget
 
+    connect(ui->addModel, SIGNAL(released()), this, SLOT(addModel()));
+    connect(ui->polar, SIGNAL(toggled(bool)), this, SLOT(coordinateSystemChanged(bool)));
+
+}
+
+void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    Q_UNUSED(logicalIndex);
+    Q_UNUSED(newVisualIndex);
+
+    if(oldVisualIndex == xindex || oldVisualIndex == yindex)
+        remakeDataList();
+}
+
+void DataWindow::addModel()
+{
+    QString xname = dataTable->getColumnName(xindex);
+    QString yname = dataTable->getColumnName(yindex);
+
+    ModelWidget *modelWidget = new ModelWidget(modelData, informations, ui->polar->isChecked(), xname, yname);
+    modelWidgets << modelWidget;
+
+    ui->modelsLayout->addWidget(modelWidget);
+
+    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), this, SLOT(removeModelWidget(ModelWidget*)));
+}
+
+void DataWindow::columnNameChanged(int index)
+{
+    if(index == xindex)
+        for(int i = 0 ; i < modelWidgets.size() ; i++)
+            modelWidgets[i]->setAbscissaName(dataTable->getColumnName(xindex));
+    else if(index == yindex)
+        for(int i = 0 ; i < modelWidgets.size() ; i++)
+            modelWidgets[i]->setOrdinateName(dataTable->getColumnName(yindex));
+}
+
+void DataWindow::coordinateSystemChanged(bool polar)
+{
+    for(int i = 0 ; i < modelWidgets.size() ; i++)
+        modelWidgets[i]->setPolar(polar);
+}
+
+void DataWindow::removeModelWidget(ModelWidget *w)
+{
+    w->hide();
+    modelWidgets.removeOne(w);
+
+    delete w;
 }
 
 void DataWindow::changeIndex(int ind)
@@ -161,17 +213,31 @@ void DataWindow::remakeDataList()
     QList<QPointF> dataList;
     QPointF point;
 
+    Point dataPt;
+
+    modelData.clear();
+
     for(int row = 0 ; row < values[0].size(); row++)
     {
         if(!isnan(values[xindex][row]) && !isnan(values[yindex][row]))
         {
             if(ui->polar->isChecked())
             {
+                dataPt.x = values[yindex][row];
+                dataPt.y = values[xindex][row];
+
+                modelData << dataPt;
+
                 point.setX(values[xindex][row] * cos( values[yindex][row]));
                 point.setY(values[xindex][row] * sin( values[yindex][row]));
             }
             else
             {
+                dataPt.x = values[yindex][row];
+                dataPt.y = values[xindex][row];
+
+                modelData << dataPt;
+
                 point.setX(values[xindex][row]);
                 point.setY(values[yindex][row]);
             }
@@ -179,6 +245,14 @@ void DataWindow::remakeDataList()
             dataList << point;
         }
     }
+
+    for(int i = 0 ; i < modelWidgets.size() ; i++)
+    {
+        modelWidgets[i]->setData(modelData);
+        modelWidgets[i]->setAbscissaName(dataTable->getColumnName(xindex));
+        modelWidgets[i]->setOrdinateName(dataTable->getColumnName(yindex));
+    }
+
 
     informations->setData(index, dataList);
 }

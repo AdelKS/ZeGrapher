@@ -69,9 +69,12 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     disableChecking = false;
 
     connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(checkCell(QTableWidgetItem*)));
+
     connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
+
     connect(tableWidget->horizontalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(renameColumn(int)));
+    connect(tableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SIGNAL(columnMoved(int, int, int)));
 
     mainLayout->addWidget(tableWidget);
     mainLayout->addStretch();
@@ -82,6 +85,11 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
 
     nameValidator.setPattern("^([a-z]|[A-Z])+(_([a-z]|[A-Z])+)*$");
 
+}
+
+QString DataTable::getColumnName(int visualIndex)
+{
+    return tableWidget->horizontalHeaderItem(tableWidget->horizontalHeader()->logicalIndex(visualIndex))->text();
 }
 
 int doubleCompareAscend(double a, double b)
@@ -102,7 +110,11 @@ QList<QStringList> DataTable::getData()
 {
     QList<QStringList> data;
 
-    data << columnNames;
+    QStringList columnNamesVisualOrder;
+    for(int i = 0 ; i < tableWidget->horizontalHeader()->count() ; i++)
+        columnNamesVisualOrder << tableWidget->horizontalHeaderItem(i)->text();
+
+    data << columnNamesVisualOrder;
 
     for(int i = 1 ; i < tableWidget->rowCount(); i++)
     {
@@ -375,7 +387,7 @@ void DataTable::addColumn()
     insertColumn(tableWidget->columnCount());
 }
 
-const QList<QList<double> > &DataTable::getValues()
+QList<QList<double> > &DataTable::getValues()
 {
     return values;
 }
@@ -500,6 +512,8 @@ void DataTable::renameColumn(int index)
 
     columnNames[index] = name;
     tableWidget->horizontalHeaderItem(index)->setText(name);
+
+    emit newColumnName(index);
 
 }
 

@@ -29,26 +29,21 @@ class RegressionValuesSaver
 public:
     RegressionValuesSaver(Informations *info);
 
-    void calculateAll(double new_xUnit, double new_yUnit);
-    void move(double pixels);
+    void recalculate(double new_xUnit, double new_yUnit);
 
-    double getStartAbsicssaUnit();
-    double getStartAbscissaPixel();
-
-    QList< QList<double> >* getRegressionValsListPointer();
+    QPolygonF& getCurve(int reg);
 
     ~RegressionValuesSaver();
 
 protected:
+    void calculatePolarRegressionCurve(Regression *reg);
+    void calculateCartesianRegressionCurve(Regression *reg);
 
-    Informations *informations;
-    GraphRange graphRange;    
+    Informations *informations;      
 
-    double xUnit, yUnit, pixelStep, unitStep;
-    double startAbscissa_pixel, startAbscissa_unit, endAbscissa_pixel, endAbscissa_unit;
-    double deplacement;
+    double xUnit, yUnit, pixelStep, xUnitStep;
 
-    QList< QList<double> > regressionVals;
+    QList< QPolygonF > regressionCurves;
 };
 
 #endif // REGRESSIONVALUESSAVER_H

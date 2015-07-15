@@ -519,7 +519,10 @@ void MainGraph::directPaint()
     }
 
     if(recalculate)
+    {
         funcValuesSaver->calculateAll(uniteX, uniteY);
+        regValuesSaver->recalculate(uniteX, uniteY);
+    }
 
     painter.translate(QPointF(centre.x, centre.y));
 
@@ -612,7 +615,10 @@ void MainGraph::resaveImageBuffer()
     placerGraduations();
 
     if(recalculate)
+    {
         funcValuesSaver->calculateAll(uniteX, uniteY);
+        regValuesSaver->recalculate(uniteX, uniteY);
+    }
 
     painter.translate(QPointF(centre.x, centre.y));
 

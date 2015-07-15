@@ -38,6 +38,7 @@ public:
     void setInfo(QString info);
     void setDrawState(bool state);
     void setDataNumber(int num);
+    void setPolar(bool state);
 
     double eval(double x);
     QString getAbscissaName();
@@ -45,6 +46,7 @@ public:
     QString getInfo();
     bool getDrawState();
     int getDataNum();
+    bool isPolar();
 
     void setData(const QList<Point> &data);
     void calculatePolynomialRegression(int polynomialDegree, ApproxMethod method);
@@ -56,7 +58,7 @@ protected:
 
     int dataNum;
     QString abscissa, ordinate, infos;
-    bool drawState;
+    bool drawState, polar;
 
     Polynomial pol;
     ApproxMethod approxMethod;

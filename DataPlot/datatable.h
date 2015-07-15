@@ -36,11 +36,13 @@ public:
     QSize getVerticalHeaderSize();
     QSize getHorizontalHeaderSize();
 
+    QString getColumnName(int visualIndex);
+
     int getColumnCount();
     int getRowCount();
 
     QList<QStringList> getData();
-    const QList<QList<double> > &getValues();
+    QList<QList<double> > &getValues();
 
     void fillColumnFromRange(int col, Range range);
     bool fillColumnFromExpr(int col, QString expr);
@@ -61,7 +63,9 @@ signals:
     void newPosCorrections();   
     void newColumnCount(int count);
     void newRowCount(int count);
+    void newColumnName(int visualIndex);
     void valEdited(int row, int column);
+    void columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
 protected slots:
     void renameColumn(int index);

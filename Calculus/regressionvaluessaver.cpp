@@ -22,108 +22,60 @@
 
 RegressionValuesSaver::RegressionValuesSaver(Informations *info)
 {
-    informations = info;
-    graphRange = info->getRange();
-    deplacement = 0;
+    informations = info;       
 }
 
-void RegressionValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
-{
-    graphRange = informations->getRange();
+void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit)
+{   
     xUnit = new_xUnit;
     yUnit = new_yUnit;
     pixelStep = informations->getOptions().distanceEntrePoints;
-    unitStep = pixelStep / xUnit;
-
-    double x = 0;
-
-    deplacement = 0;
-    startAbscissa_unit = trunc(graphRange.Xmin / unitStep) * unitStep - unitStep;
-    startAbscissa_pixel = startAbscissa_unit * xUnit;
-
-    endAbscissa_unit = trunc(graphRange.Xmax / unitStep) * unitStep + unitStep;
-    endAbscissa_pixel = endAbscissa_unit * xUnit;
+    xUnitStep = pixelStep / xUnit;
 
 
-    regressionVals.clear();
-    regressionVals.reserve(informations->getRegressionsCount());
+    regressionCurves.clear();
+    regressionCurves.reserve(informations->getRegressionsCount());
 
-    QList<double> list;
+    Regression *reg;
 
     for(int i = 0; i < informations->getRegressionsCount(); i++)
-    {
-        list.clear();
+    {       
+        reg = informations->getRegression(i);
 
-        for(x = startAbscissa_unit ; x <= endAbscissa_unit ; x += unitStep)        
-            list << informations->getRegression(i)->eval(x);
-
-        regressionVals << list;
+        if(reg->isPolar())
+            calculatePolarRegressionCurve(reg);
+        else calculateCartesianRegressionCurve(reg);
     }
 }
 
-void RegressionValuesSaver::move(double pixels)
+QPolygonF& RegressionValuesSaver::getCurve(int reg)
 {
-    double x = 0, x_start = 0, x_step = 0;
+    return regressionCurves[reg];
+}
 
-    deplacement += pixels;
-    double limite = trunc(deplacement / pixelStep);
+void RegressionValuesSaver::calculateCartesianRegressionCurve(Regression *reg)
+{
+    Range range = reg->getDrawRange();
+    double x = range.start;
 
-    if(limite == 0)
-        return;
+    QPolygonF curve;
+    curve.reserve((int)((range.end - range.start)/xUnitStep));
 
-    if(deplacement < 0)
+    while(x <= range.end)
     {
-        x_step = unitStep;
-        x_start = endAbscissa_unit;
-    }
-    else
-    {
-        x_step = - unitStep;
-        x_start = startAbscissa_unit;
+        curve << QPointF(x * xUnit, reg->eval(x) * yUnit);
+        x += xUnitStep;
     }
 
-    for(short i = 0 ; i < informations->getRegressionsCount(); i++)
-    {
-        x = x_start;
-
-        for(double j = 0; j < abs(limite); j++)
-        {
-            x += x_step;
-
-            if(deplacement < 0)
-            {
-                regressionVals[i].append(informations->getRegression(i)->eval(x));
-                regressionVals[i].removeFirst();
-            }
-            else
-            {
-                regressionVals[i].prepend(informations->getRegression(i)->eval(x));
-                regressionVals[i].removeLast();
-            }
-
-        }
-    }
-
-    deplacement -= pixelStep * limite;
-    startAbscissa_pixel -= pixelStep * limite;
-    endAbscissa_unit -= limite * unitStep;
-    startAbscissa_unit -= limite * unitStep;
+    regressionCurves << curve;
 }
 
-double RegressionValuesSaver::getStartAbsicssaUnit()
+void RegressionValuesSaver::calculatePolarRegressionCurve(Regression *reg)
 {
-    return startAbscissa_unit;
+    // need to finish implementing this
+    regressionCurves << QPolygonF();
 }
 
-double RegressionValuesSaver::getStartAbscissaPixel()
-{
-    return startAbscissa_pixel;
-}
-
-QList< QList<double> >* RegressionValuesSaver::getRegressionValsListPointer()
-{
-    return &regressionVals;
-}
 
 RegressionValuesSaver::~RegressionValuesSaver()
 {

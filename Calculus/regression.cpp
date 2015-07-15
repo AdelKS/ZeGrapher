@@ -22,7 +22,7 @@
 
 Regression::Regression()
 {
-
+    polar = false;
 }
 
 Regression::~Regression()
