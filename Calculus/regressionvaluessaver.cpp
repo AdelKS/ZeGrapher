@@ -22,7 +22,15 @@
 
 RegressionValuesSaver::RegressionValuesSaver(Informations *info)
 {
-    informations = info;       
+    informations = info;
+    connect(informations, SIGNAL(regressionAdded()), this, SLOT(calculateNewCurves()));
+    connect(informations, SIGNAL(regressionRemoved()), this, SLOT(calculateNewCurves()));
+    connect(informations, SIGNAL(dataUpdated()), this, SLOT(calculateNewCurves()));
+}
+
+void RegressionValuesSaver::calculateNewCurves()
+{
+    recalculate(xUnit, yUnit);
 }
 
 void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit)
@@ -55,7 +63,10 @@ QPolygonF& RegressionValuesSaver::getCurve(int reg)
 
 void RegressionValuesSaver::calculateCartesianRegressionCurve(Regression *reg)
 {
-    Range range = reg->getDrawRange();
+    Range range;
+    range.start = std::max(informations->getRange().Xmin, reg->getDrawRange().start);
+    range.end = std::min(informations->getRange().Xmax, reg->getDrawRange().end);
+
     double x = range.start;
 
     QPolygonF curve;
@@ -63,7 +74,7 @@ void RegressionValuesSaver::calculateCartesianRegressionCurve(Regression *reg)
 
     while(x <= range.end)
     {
-        curve << QPointF(x * xUnit, reg->eval(x) * yUnit);
+        curve << QPointF(x * xUnit, - reg->eval(x) * yUnit);
         x += xUnitStep;
     }
 

@@ -94,8 +94,8 @@ void ColumnSelectorWidget::setCoordinateSystem(bool cartesian)
 
     if(coordinateSystem == POLAR)
     {
-        xselector.image.load(":/icons/Rpin.png");
-        yselector.image.load(":/icons/Tetapin.png");
+        xselector.image.load(":/icons/Tetapin.png");
+        yselector.image.load(":/icons/Rpin.png");
     }
     else if(coordinateSystem == CARTESIAN)
     {

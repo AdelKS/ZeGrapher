@@ -76,11 +76,13 @@ DataStyle Informations::getDataStyle(int index)
 void Informations::addDataRegression(Regression *reg)
 {
     regressions << reg;
+    emit regressionAdded();
 }
 
 void Informations::removeDataRegression(Regression *reg)
 {
     regressions.removeOne(reg);
+    emit regressionRemoved();
 }
 
 Regression* Informations::getRegression(int id)

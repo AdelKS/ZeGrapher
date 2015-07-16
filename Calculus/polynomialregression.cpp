@@ -20,149 +20,162 @@
 
 #include "polynomialregression.h"
 
-PolynomialRegression::PolynomialRegression(int dataNumber)
+PolynomialRegression::PolynomialRegression(int polynomialDegree, ApproxMethod method, DrawRange drawRange, double rangecoef, bool draw, bool isPolar) : Regression()
 {
-    approxMethod = ApproachSegments;
-    dataNum = dataNumber;
+    approxMethod = method;
+    regressionDegree = polynomialDegree;
+    rangeOption = drawRange;
+    rangeCoef = rangecoef;
+    drawState = draw;
+    polar = isPolar;
+
+    range.step = 1; //this variable is useless in this class
 }
 
-void PolynomialRegression::setAbscissaName(QString name)
+double PolynomialRegression::eval(double x) const
 {
-    abscissa = name;
+    if(approxMethod == ApproachPoints)
+        return discretePol.eval(x);
+    else return continuousPol.eval(x);
 }
 
-void PolynomialRegression::setOrdinateName(QString name)
+QString PolynomialRegression::getInfo() const
 {
-    ordinate = name;
-}
-
-void PolynomialRegression::setInfo(QString info)
-{
-    infos = info;
-}
-
-void PolynomialRegression::setPolar(bool state)
-{
-    polar = state;
-}
-
-void PolynomialRegression::setDrawState(bool state)
-{
-    drawState = state;
-}
-
-void PolynomialRegression::setDataNumber(int num)
-{
-    dataNum = num;
-}   
-
-double PolynomialRegression::eval(double x)
-{
-    return pol.eval(x);
-}
-
-QString PolynomialRegression::getAbscissaName()
-{
-    return abscissa;
-}
-
-QString PolynomialRegression::getOrdinateName()
-{
-    return ordinate;
-}
-
-QString PolynomialRegression::getInfo()
-{
-    return infos;
-}
-
-bool PolynomialRegression::isPolar()
-{
-    return polar;
-}
-
-bool PolynomialRegression::getDrawState()
-{
-    return drawState;
-}
-
-int PolynomialRegression::getDataNum()
-{
-    return dataNum;
+    return QString(); // need to be implemented
 }
 
 void PolynomialRegression::setData(const QList<Point> &data)
 {
+    if(data.size() <= 1)
+    {
+        valid = false;
+        return;
+    }
+
+    valid = true;
+
     dataPoints = data;
     qSort(dataPoints);
 
     xmin = dataPoints.first().x;
     xmax = dataPoints.last().x;
 
-    orthonormalBasis.clear();
+    updateDrawRange();
+
+    recalculateOrthonormalBasis();
+    calculateRegressionPolynomials();
 }
 
-void PolynomialRegression::calculatePolynomialRegression(int polynomialDegree, ApproxMethod method)
+void PolynomialRegression::updateDrawRange()
 {
-    if(approxMethod != method)
-        orthonormalBasis.clear();
-
-    approxMethod = method;
-
-    updateOrthonormalBasis(polynomialDegree);   
-
-    pol.resetToZero();
-
-    for(int n = 0 ; n <= polynomialDegree ; n++)
+    if(rangeOption == LimitedToData)
     {
-        if(approxMethod == ApproachSegments)
-            pol += continuousScalarProduct(dataPoints, orthonormalBasis.at(n)) * orthonormalBasis.at(n);
-        else pol += discreteScalarProduct(dataPoints, orthonormalBasis.at(n)) * orthonormalBasis.at(n);
-    }    
+        range.start = xmin;
+        range.end = xmax;
+    }
+    else if(rangeOption == RelativeExtrapolation)
+    {
+        double amplitude = xmax - xmin;
+        range.start = xmin - amplitude * rangeCoef;
+        range.end = xmax + amplitude * rangeCoef;
+    }
+    else if(rangeOption == DrawAll)
+    {
+        range.start = - HUGE_VAL;
+        range.end = HUGE_VAL;
+    }
 }
 
-void PolynomialRegression::updateOrthonormalBasis(int maxDegree)
+void PolynomialRegression::setDrawRangeCalculusMethod(DrawRange option)
+{
+    rangeOption = option;
+    updateDrawRange();
+}
+
+void PolynomialRegression::setRange(Range rg)
+{
+    range = rg;
+}
+
+void PolynomialRegression::setRelativeRangeCoef(double coef)
+{
+    rangeCoef = coef;
+}
+
+void PolynomialRegression::calculateRegressionPolynomials()
+{
+    continuousPol.resetToZero();
+    discretePol.resetToZero();
+
+    for(int n = 0 ; n <= regressionDegree ; n++)
+    {
+         continuousPol += continuousScalarProduct(dataPoints, orthonormalBasisContinuous.at(n)) * orthonormalBasisContinuous.at(n);
+         discretePol += discreteScalarProduct(dataPoints, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
+    }
+}
+
+void PolynomialRegression::setPolynomialRegressionDegree(int deg)
+{
+    regressionDegree = deg;
+    updateOrthonormalBasis();
+    calculateRegressionPolynomials();
+}
+
+void PolynomialRegression::setApproxMethod(ApproxMethod method)
+{
+    approxMethod = method;
+}
+
+void PolynomialRegression::recalculateOrthonormalBasis()
+{
+    orthonormalBasisContinuous.clear();
+    orthonormalBasisDiscrete.clear();
+
+    updateOrthonormalBasis();
+}
+
+void PolynomialRegression::updateOrthonormalBasis()
 {
     //we use Gram-Schmidt orthonormalisation process
 
-    if(approxMethod == ApproachSegments)
+    if(regressionDegree > orthonormalBasisContinuous.size() - 1)
     {
-        if(orthonormalBasis.isEmpty())
+        if(orthonormalBasisContinuous.isEmpty())
         {
             Polynomial P(0);
             P *= 1/continuousNorm(P, xmin, xmax);
-            orthonormalBasis << P;
+            orthonormalBasisContinuous << P;
         }
 
-        for(int n = orthonormalBasis.size(); n <= maxDegree; n++)
+        for(int n = orthonormalBasisContinuous.size(); n <= regressionDegree; n++)
         {
             Polynomial P(n);
 
-            for(int i = 0 ; i < orthonormalBasis.size(); i++)
-                P -= continuousScalarProduct(P, orthonormalBasis.at(i), xmin, xmax) * orthonormalBasis.at(i);
+            for(int i = 0 ; i < orthonormalBasisContinuous.size(); i++)
+                P -= continuousScalarProduct(P, orthonormalBasisContinuous.at(i), xmin, xmax) * orthonormalBasisContinuous.at(i);
 
             P *= 1/continuousNorm(P, xmin, xmax);
-            orthonormalBasis << P;
+            orthonormalBasisContinuous << P;
         }
     }
-    else if(approxMethod == ApproachPoints)
+    if(regressionDegree > orthonormalBasisDiscrete.size() - 1)
     {
-        if(orthonormalBasis.isEmpty())
+        if(orthonormalBasisDiscrete.isEmpty())
         {
             Polynomial P(0);
             P *= 1/discreteNorm(P, dataPoints);
-            orthonormalBasis << P;
+            orthonormalBasisDiscrete << P;
         }
 
-        for(int n = orthonormalBasis.size(); n <= maxDegree; n++)
+        for(int n = orthonormalBasisDiscrete.size(); n <= regressionDegree; n++)
         {
             Polynomial P(n);
 
-            for(int i = 0 ; i < orthonormalBasis.size(); i++)
-                P -= discreteScalarProduct(P, orthonormalBasis.at(i), dataPoints) * orthonormalBasis.at(i);
+            for(int i = 0 ; i < orthonormalBasisDiscrete.size(); i++)
+                P -= discreteScalarProduct(P, orthonormalBasisDiscrete.at(i), dataPoints) * orthonormalBasisDiscrete.at(i);
 
             P *= 1/discreteNorm(P, dataPoints);
-            orthonormalBasis << P;
+            orthonormalBasisDiscrete << P;
         }
     }
 }

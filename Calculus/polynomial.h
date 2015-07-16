@@ -40,7 +40,7 @@ public:
 
     double eval(double x) const;
 
-    double getCoef(int degree);
+    double getCoef(int degree) const;
     int degree() const;
     Polynomial antiderivative();
 

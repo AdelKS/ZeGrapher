@@ -62,7 +62,7 @@ double Polynomial::eval(double x) const
     return res;
 }
 
-double Polynomial::getCoef(int deg)
+double Polynomial::getCoef(int deg) const
 {
     if(deg <= degree())
         return coefficients[deg];
@@ -104,7 +104,7 @@ Polynomial& Polynomial::operator+=(const Polynomial &P)
     int deg = std::max(degree(), P.degree());
 
     for(int i = 0 ; i <= deg ; i++)
-        coefs << coefficients[i] + P.coefficients[i];
+        coefs << getCoef(i) + P.getCoef(i);
 
     coefficients = coefs;
 
@@ -124,7 +124,7 @@ Polynomial& Polynomial::operator*=(const Polynomial &P)
     QList<double> coefs;
     int deg = degree() + P.degree();
 
-    for(int i = 0 ; i <  deg ; i++)
+    for(int i = 0 ; i <=  deg ; i++)
         coefs << 0;
 
     for(int i = 0 ; i <= degree() ; i++)

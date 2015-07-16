@@ -21,17 +21,17 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="valuesTab">
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="documentMode">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="config">
+     <widget class="QWidget" name="configTab">
       <attribute name="title">
        <string>Réglages</string>
       </attribute>
@@ -59,7 +59,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QRadioButton" name="radioButton">
+           <widget class="QRadioButton" name="approachPoints">
             <property name="text">
              <string>Le plus proche des points</string>
             </property>
@@ -69,7 +69,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="radioButton_2">
+           <widget class="QRadioButton" name="approachSegments">
             <property name="text">
              <string>Le plus proche des segments</string>
             </property>
@@ -88,7 +88,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox">
+          <widget class="QSpinBox" name="degree">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -148,10 +148,118 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="draw">
+     <widget class="QWidget" name="drawTab">
       <attribute name="title">
        <string>Tracé</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="drawOptionsLayout">
+         <item>
+          <widget class="QCheckBox" name="drawModel">
+           <property name="text">
+            <string>Tracer</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Intervalle de représentation:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QRadioButton" name="dataInterval">
+            <property name="text">
+             <string>Étalement des données</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QRadioButton" name="relativeExtrapolation">
+              <property name="text">
+               <string>Extrapolation relative de </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="relativeExtrapol">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>25</height>
+               </size>
+              </property>
+              <property name="prefix">
+               <string>x</string>
+              </property>
+              <property name="decimals">
+               <number>2</number>
+              </property>
+              <property name="singleStep">
+               <double>0.100000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.200000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="manualEntryLayout">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <item>
+             <widget class="QRadioButton" name="manualInterval">
+              <property name="text">
+               <string>Définition manuelle:</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="alwaysRepresent">
+            <property name="text">
+             <string>Toujours représenter</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="vals">
       <attribute name="title">
@@ -163,5 +271,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>relativeExtrapolation</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>relativeExtrapol</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>150</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>284</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

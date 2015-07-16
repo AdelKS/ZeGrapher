@@ -64,7 +64,8 @@ SOURCES += \
     Calculus/regressionvaluessaver.cpp \
     DataPlot/modelchoicewidget.cpp \
     DataPlot/modelwidget.cpp \
-    DataPlot/polynomialmodelwidget.cpp
+    DataPlot/polynomialmodelwidget.cpp \
+    Widgets/numberlineedit.cpp
 
 HEADERS  += \
     Structures.h \
@@ -120,7 +121,8 @@ HEADERS  += \
     Calculus/regressionvaluessaver.h \
     DataPlot/modelchoicewidget.h \
     DataPlot/modelwidget.h \
-    DataPlot/polynomialmodelwidget.h
+    DataPlot/polynomialmodelwidget.h \
+    Widgets/numberlineedit.h
 
 
 FORMS    += \

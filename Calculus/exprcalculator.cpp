@@ -69,12 +69,22 @@ void ExprCalculator::setK(double val)
 bool ExprCalculator::checkCalledFuncsValidity(QString expr)
 {
     QList<int> calledFuncs = treeCreator.getCalledFuncs(expr);
-    bool validity = true;
 
-    for(int i = 0; i < calledFuncs.size() && validity ; i++)
-        validity = funcCalculatorsList[calledFuncs[i]]->isFuncValid();
+    if(funcCalculatorsList.isEmpty())
+    {
+        return calledFuncs.isEmpty();
+    }
+    else
+    {
+        bool validity = true;
 
-    return validity;
+        for(int i = 0; i < calledFuncs.size() && validity ; i++)
+            validity = funcCalculatorsList[calledFuncs[i]]->isFuncValid();
+
+        return validity;
+    }
+
+    return false;
 }
 
 void ExprCalculator::addRefFuncsPointers()

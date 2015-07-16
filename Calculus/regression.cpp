@@ -23,6 +23,73 @@
 Regression::Regression()
 {
     polar = false;
+    color = Qt::black;
+    valid = false;
+}
+
+void Regression::setAbscissaName(QString name)
+{
+    abscissa = name;
+}
+
+void Regression::setOrdinateName(QString name)
+{
+    ordinate = name;
+}
+
+QString Regression::getAbscissaName()
+{
+    return abscissa;
+}
+
+QString Regression::getOrdinateName()
+{
+    return ordinate;
+}
+
+void Regression::setPolar(bool state)
+{
+    polar = state;
+}
+
+void Regression::setDrawState(bool state)
+{
+    drawState = state;
+}
+
+void Regression::setDataNumber(int num)
+{
+    dataNum = num;
+}
+
+void Regression::setColor(QColor col)
+{
+    color = col;
+}
+
+bool Regression::isPolar()
+{
+    return polar;
+}
+
+bool Regression::getDrawState()
+{
+    return drawState && valid;
+}
+
+int Regression::getDataNum()
+{
+    return dataNum;
+}
+
+Range Regression::getDrawRange()
+{
+    return range;
+}
+
+QColor Regression::getColor()
+{
+    return color;
 }
 
 Regression::~Regression()

@@ -26,26 +26,41 @@
 
 #include "Structures.h"
 
-class Regression
+class Regression : public QObject
 {
+    Q_OBJECT
+
 public:
-    Regression();
+    explicit Regression();
+    ~Regression();
 
     virtual double eval(double x) const = 0;
-    virtual QString getAbscissaName() const = 0;
-    virtual QString getOrdinateName() const = 0;
     virtual QString getInfo() const = 0;
-    virtual QColor getColor() const = 0;
-    virtual bool getDrawState() const = 0;
-    virtual int getDataNum() const = 0;
-    virtual bool isPolar() const = 0;
-    virtual Range getDrawRange() const = 0;
+
+    QString getAbscissaName();
+    QString getOrdinateName();
+    bool getDrawState();
+    int getDataNum();
+    bool isPolar();
+    Range getDrawRange();
+    QColor getColor();
+
+public slots:
+    void setAbscissaName(QString name);
+    void setOrdinateName(QString name);
+    void setColor(QColor col);
+    void setDrawState(bool state);
+    void setDataNumber(int num);
+    void setPolar(bool state);
 
 protected:
-    bool polar;
 
+    QColor color;
+    int dataNum;
+    Range range;
+    QString abscissa, ordinate;
+    bool drawState, polar, valid;
 
-    ~Regression();
 };
 
 #endif // REGRESSION_H

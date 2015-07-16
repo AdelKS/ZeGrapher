@@ -21,19 +21,26 @@
 #ifndef REGRESSIONVALUESSAVER_H
 #define REGRESSIONVALUESSAVER_H
 
+#include <algorithm>
+
 #include "informations.h"
 
 
-class RegressionValuesSaver
+
+class RegressionValuesSaver : public QObject
 {
+    Q_OBJECT
+
 public:
     RegressionValuesSaver(Informations *info);
+    ~RegressionValuesSaver();
 
     void recalculate(double new_xUnit, double new_yUnit);
 
     QPolygonF& getCurve(int reg);
 
-    ~RegressionValuesSaver();
+public slots:
+     void calculateNewCurves();
 
 protected:
     void calculatePolarRegressionCurve(Regression *reg);

@@ -9,7 +9,6 @@ ModelWidget::ModelWidget(const QList<Point> &dat, Informations *info, bool isPol
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
 
-
     abscissa = xname;
     ordinate = yname;
     polar = isPolar;
@@ -75,7 +74,7 @@ void ModelWidget::displaySelectedModel(ModelType model)
 
   if(model == PolynomialModel)
   {
-        polynomialModel = new PolynomialModelWidget(data, informations, abscissa, ordinate);
+        polynomialModel = new PolynomialModelWidget(data, informations, abscissa, ordinate, polar);
         layout->addWidget(polynomialModel);
         currentState = PolynomialWidget;
 

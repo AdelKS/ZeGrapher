@@ -5,6 +5,9 @@
 
 #include "Structures.h"
 #include "informations.h"
+#include "Widgets/numberlineedit.h"
+#include "Widgets/qcolorbutton.h"
+#include "Calculus/polynomialregression.h"
 
 namespace Ui {
 class PolynomialModelWidget;
@@ -15,7 +18,7 @@ class PolynomialModelWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit PolynomialModelWidget(const QList<Point> &dat, Informations *info, QString xname, QString yname, QWidget *parent = 0);
+    explicit PolynomialModelWidget(const QList<Point> &dat, Informations *info, QString xname, QString yname, bool pol, QWidget *parent = 0);
     void setAbscissaName(QString name);
     void setOrdinateName(QString name);
     void setData(const QList<Point> &dat);
@@ -24,8 +27,14 @@ public:
 
 signals:
     void removeMe();
+    void regressionEdited();
+
+protected slots:
+    void updateApproxMethod();
+    void updateRangeOption();
 
 protected:
+    void addWidgetsToUI();
     void updateDescriptionText();
 
     Ui::PolynomialModelWidget *ui;
@@ -33,6 +42,10 @@ protected:
     Informations *informations;
     bool polar;
     QList<Point> data;
+    NumberLineEdit *startVal, *endVal;
+    QColorButton *colorButton;
+
+    PolynomialRegression *regression;
 };
 
 #endif // POLYNOMIALMODELWIDGET_H

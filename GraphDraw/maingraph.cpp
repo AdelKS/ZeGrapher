@@ -476,6 +476,7 @@ void MainGraph::indirectPaint()
     painter.translate(QPointF(centre.x, centre.y));
 
     drawAnimatedParEq();
+    drawRegressions();
     drawData();
     animationUpdate = false;
 
@@ -531,6 +532,7 @@ void MainGraph::directPaint()
     drawStraightLines();
     drawTangents();
     drawAllParEq();
+    drawRegressions();
     drawData();
 
     if(dispPoint)

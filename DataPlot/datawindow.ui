@@ -279,6 +279,18 @@
        </item>
        <item>
         <widget class="QPushButton" name="cartesian">
+         <property name="minimumSize">
+          <size>
+           <width>110</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>110</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="text">
           <string>Cartésiennes</string>
          </property>
@@ -298,6 +310,18 @@
        </item>
        <item>
         <widget class="QPushButton" name="polar">
+         <property name="minimumSize">
+          <size>
+           <width>110</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>110</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="text">
           <string>Polaires</string>
          </property>
@@ -350,7 +374,7 @@
           <x>0</x>
           <y>0</y>
           <width>455</width>
-          <height>511</height>
+          <height>512</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">

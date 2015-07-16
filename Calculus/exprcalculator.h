@@ -29,7 +29,7 @@ class ExprCalculator
 {
 public:
 
-    explicit ExprCalculator(bool allowK, QList<FuncCalculator*> otherFuncs);
+    explicit ExprCalculator(bool allowK = false, QList<FuncCalculator*> otherFuncs = QList<FuncCalculator*>());
 
     double calculateExpression(QString expr, bool &ok, double k_val = 0);
     void setAdditionnalVarsValues(QList<double> values);

@@ -86,6 +86,8 @@ signals:
     void updateOccured();
     void drawStateUpdateOccured();
     void animationUpdate();
+    void regressionAdded();
+    void regressionRemoved();
 
 public slots:
 

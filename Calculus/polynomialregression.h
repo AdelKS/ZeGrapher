@@ -26,45 +26,47 @@
 #include "regression.h"
 #include <QList>
 
-enum ApproxMethod { ApproachPoints, ApproachSegments};
+enum ApproxMethod { ApproachPoints = true, ApproachSegments = false};
+enum DrawRange {Manual, LimitedToData, RelativeExtrapolation, DrawAll};
 
 class PolynomialRegression : public Regression
 {
+    Q_OBJECT
+
 public:
-    PolynomialRegression(int dataNumber);   
-
-    void setAbscissaName(QString name);
-    void setOrdinateName(QString name);
-    void setInfo(QString info);
-    void setDrawState(bool state);
-    void setDataNumber(int num);
-    void setPolar(bool state);
-
-    double eval(double x);
-    QString getAbscissaName();
-    QString getOrdinateName();
-    QString getInfo();
-    bool getDrawState();
-    int getDataNum();
-    bool isPolar();
-
-    void setData(const QList<Point> &data);
-    void calculatePolynomialRegression(int polynomialDegree, ApproxMethod method);
-
+    explicit PolynomialRegression(int polynomialDegree, ApproxMethod method, DrawRange drawRange, double rangecoef, bool draw, bool isPolar);
     ~PolynomialRegression();
 
+    double eval(double x) const;
+    QString getInfo() const;
+
+    void setData(const QList<Point> &data);
+    void setDrawRangeCalculusMethod(DrawRange option);
+    void setRange(Range rg);
+
+
+public slots:
+    void setApproxMethod(ApproxMethod method);
+    void setRelativeRangeCoef(double coef);
+    void setPolynomialRegressionDegree(int deg);
+
+
 protected:
-    void updateOrthonormalBasis(int maxDegree);    
+    void updateOrthonormalBasis();
+    void updateDrawRange();
+    void recalculateOrthonormalBasis();
+    void calculateRegressionPolynomials();
 
-    int dataNum;
-    QString abscissa, ordinate, infos;
-    bool drawState, polar;
+    int regressionDegree;
 
-    Polynomial pol;
+    DrawRange rangeOption;
+    double rangeCoef;
+
+    Polynomial continuousPol, discretePol;
     ApproxMethod approxMethod;
     double xmin, xmax; //integration segment for dot product: integrate between min and max
     QList<Point> dataPoints;
-    QList<Polynomial> orthonormalBasis;
+    QList<Polynomial> orthonormalBasisDiscrete, orthonormalBasisContinuous;
 };
 
 double discreteScalarProduct(const QList<Point> &data, const Polynomial &P);

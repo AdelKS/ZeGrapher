@@ -222,27 +222,22 @@ void DataWindow::remakeDataList()
         if(!isnan(values[xindex][row]) && !isnan(values[yindex][row]))
         {
             if(ui->polar->isChecked())
-            {
-                dataPt.x = values[yindex][row];
-                dataPt.y = values[xindex][row];
-
-                modelData << dataPt;
-
+            {               
                 point.setX(values[xindex][row] * cos( values[yindex][row]));
                 point.setY(values[xindex][row] * sin( values[yindex][row]));
             }
             else
             {
-                dataPt.x = values[yindex][row];
-                dataPt.y = values[xindex][row];
-
-                modelData << dataPt;
-
                 point.setX(values[xindex][row]);
                 point.setY(values[yindex][row]);
             }
 
             dataList << point;
+
+            dataPt.x = values[xindex][row];
+            dataPt.y = values[yindex][row];
+
+            modelData << dataPt;
         }
     }
 

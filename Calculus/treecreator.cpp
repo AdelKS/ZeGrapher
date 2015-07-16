@@ -115,7 +115,6 @@ QList<int> TreeCreator::getCalledFuncs(QString expr)
     if(expr.isEmpty())
         return calledFuncs;
 
-    bool doesContain = false;
     int i = 0, letterStart;
 
     QStringList calledObjects;
@@ -136,12 +135,8 @@ QList<int> TreeCreator::getCalledFuncs(QString expr)
 
     for(i = 0 ; i < functions.size() ; i++)
     {
-        doesContain = false;
-        doesContain = doesContain || calledObjects.contains(antiderivatives[i]);
-        doesContain = doesContain || calledObjects.contains(functions[i]);
-        doesContain = doesContain || calledObjects.contains(derivatives[i]);
-
-        if(doesContain && !calledFuncs.contains(i))
+        if((calledObjects.contains(antiderivatives[i]) || calledObjects.contains(functions[i]) || calledObjects.contains(derivatives[i]))
+                && !calledFuncs.contains(i))
             calledFuncs << i;
     }
 

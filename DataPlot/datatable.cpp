@@ -309,6 +309,9 @@ void DataTable::fillColumnFromRange(int col, Range range)
 
     int end = trunc((range.end - range.start)/range.step) + 1;
 
+    if(end <= 0)
+        return;
+
     disableChecking = true;
 
     for(int i = 0 ; i < end ; i++)
