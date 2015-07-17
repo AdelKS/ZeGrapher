@@ -29,7 +29,7 @@
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/tangentwidget.h"
 #include "Calculus/colorsaver.h"
-#include "Calculus/regression.h"
+#include "Calculus/regressionvaluessaver.h"
 
 class Informations: public QObject
 {
@@ -52,9 +52,10 @@ public:
     QList<QPointF> getDataList(int index);
     DataStyle getDataStyle(int index);
 
-    void addDataRegression(Regression *reg);
-    void removeDataRegression(Regression *reg);
-    Regression* getRegression(int id);
+    void recalculateRegressionCurves(double xUnit, double yUnit, GraphRange range);
+    void addDataRegression(RegressionValuesSaver *reg);
+    void removeDataRegression(RegressionValuesSaver *reg);
+    RegressionValuesSaver* getRegression(int index);
     int getRegressionsCount();
 
     void setParEqsListPointer(QList<ParEqWidget*> *list);
@@ -101,7 +102,7 @@ private:
     QList<QList<QPointF> > data;
     QList<DataStyle> dataStyle;
 
-    QList<Regression*> regressions;
+    QList<RegressionValuesSaver*> regressions;
 
     QList<TangentWidget*> *tangents;
     QList<StraightLineWidget*> *lines;

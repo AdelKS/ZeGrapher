@@ -20,71 +20,76 @@
 
 #include "regressionvaluessaver.h"
 
-RegressionValuesSaver::RegressionValuesSaver(Informations *info)
+RegressionValuesSaver::RegressionValuesSaver(Regression *reg, Options opt, GraphRange range)
 {
-    informations = info;
-    connect(informations, SIGNAL(regressionAdded()), this, SLOT(calculateNewCurves()));
-    connect(informations, SIGNAL(regressionRemoved()), this, SLOT(calculateNewCurves()));
-    connect(informations, SIGNAL(dataUpdated()), this, SLOT(calculateNewCurves()));
+    regression = reg;
+    options = opt;
+    graphRange = range;
 }
 
-void RegressionValuesSaver::calculateNewCurves()
+void RegressionValuesSaver::recalculate()
 {
-    recalculate(xUnit, yUnit);
+    recalculate(xUnit, yUnit, graphRange);
 }
 
-void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit)
+void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit, GraphRange range)
 {   
+    graphRange = range;
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    pixelStep = informations->getOptions().distanceEntrePoints;
+    pixelStep = options.distanceEntrePoints;
     xUnitStep = pixelStep / xUnit;
 
+    curve.clear();
 
-    regressionCurves.clear();
-    regressionCurves.reserve(informations->getRegressionsCount());
+    if(regression->isPolar())
+        calculatePolarRegressionCurve();
+    else calculateCartesianRegressionCurve();
 
-    Regression *reg;
-
-    for(int i = 0; i < informations->getRegressionsCount(); i++)
-    {       
-        reg = informations->getRegression(i);
-
-        if(reg->isPolar())
-            calculatePolarRegressionCurve(reg);
-        else calculateCartesianRegressionCurve(reg);
-    }
 }
 
-QPolygonF& RegressionValuesSaver::getCurve(int reg)
+bool RegressionValuesSaver::getDrawState()
 {
-    return regressionCurves[reg];
+    return regression->getDrawState();
 }
 
-void RegressionValuesSaver::calculateCartesianRegressionCurve(Regression *reg)
+QColor RegressionValuesSaver::getColor()
 {
-    Range range;
-    range.start = std::max(informations->getRange().Xmin, reg->getDrawRange().start);
-    range.end = std::min(informations->getRange().Xmax, reg->getDrawRange().end);
+    return regression->getColor();
+}
 
-    double x = range.start;
+void RegressionValuesSaver::setOptions(Options opt)
+{
+    options = opt;
+    recalculate();
+}
 
-    QPolygonF curve;
-    curve.reserve((int)((range.end - range.start)/xUnitStep));
+QPolygonF& RegressionValuesSaver::getCurve()
+{
+    return curve;
+}
 
-    while(x <= range.end)
+void RegressionValuesSaver::calculateCartesianRegressionCurve()
+{    
+    drawnRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
+    drawnRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
+
+    double x = drawnRange.start - xUnitStep;
+
+    curve.clear();
+    curve.reserve((int)((drawnRange.end - drawnRange.start)/xUnitStep));
+
+    while(x <= drawnRange.end + xUnitStep)
     {
-        curve << QPointF(x * xUnit, - reg->eval(x) * yUnit);
+        curve << QPointF(x * xUnit, - regression->eval(x) * yUnit);
         x += xUnitStep;
     }
-
-    regressionCurves << curve;
 }
 
-void RegressionValuesSaver::calculatePolarRegressionCurve(Regression *reg)
+void RegressionValuesSaver::calculatePolarRegressionCurve()
 {
     // need to finish implementing this
-    regressionCurves << QPolygonF();
+    curve.clear();
 }
 
 

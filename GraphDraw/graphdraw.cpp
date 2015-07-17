@@ -47,8 +47,6 @@ GraphDraw::GraphDraw(Informations *info)
 
     funcValuesSaver = new FuncValuesSaver(info);
     funcVals = funcValuesSaver->getFuncValsListPointer();
-
-    regValuesSaver = new RegressionValuesSaver(info);
 }
 
 void GraphDraw::drawRhombus(QPointF pt, double w)
@@ -167,8 +165,7 @@ void GraphDraw::drawRegression(int reg, int width)
     pen.setColor(informations->getRegression(reg)->getColor());
     painter.setPen(pen);
 
-
-    painter.drawPolyline(regValuesSaver->getCurve(reg));
+    painter.drawPolyline(informations->getRegression(reg)->getCurve());
 }
 
 void GraphDraw::drawRegressions()

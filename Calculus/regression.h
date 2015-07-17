@@ -43,7 +43,10 @@ public:
     int getDataNum();
     bool isPolar();
     Range getDrawRange();
-    QColor getColor();
+    QColor getColor();    
+
+signals:
+    void regressionModified();
 
 public slots:
     void setAbscissaName(QString name);

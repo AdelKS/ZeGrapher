@@ -79,6 +79,7 @@ MainGraph::MainGraph(Informations *info) : GraphDraw(info)
 
     dispPoint = false;
     boutonPresse = false;
+    recalculateRegressions = false;
 
     sourisSurUneCourbe = dispRectangle = recalculate = false;
     hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;   
@@ -128,7 +129,8 @@ void MainGraph::updateGraph()
 void MainGraph::updateData()
 {
     resaveGraph = false;
-    recalculate = false;    
+    recalculate = false;
+    recalculateRegressions = true;
     update();
 }
 
@@ -469,6 +471,11 @@ void MainGraph::indirectPaint()
         addTangentToBuffer();
     if(resaveGraph)
         resaveImageBuffer();  
+    if(recalculateRegressions)
+    {
+        recalculateRegressions = false;
+        informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+    }
 
     painter.begin(this);   
 
@@ -522,7 +529,7 @@ void MainGraph::directPaint()
     if(recalculate)
     {
         funcValuesSaver->calculateAll(uniteX, uniteY);
-        regValuesSaver->recalculate(uniteX, uniteY);
+        informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
     }
 
     painter.translate(QPointF(centre.x, centre.y));
@@ -619,7 +626,7 @@ void MainGraph::resaveImageBuffer()
     if(recalculate)
     {
         funcValuesSaver->calculateAll(uniteX, uniteY);
-        regValuesSaver->recalculate(uniteX, uniteY);
+        informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
     }
 
     painter.translate(QPointF(centre.x, centre.y));
@@ -1030,7 +1037,10 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             determinerCentreEtUnites();
 
             if(dx != 0)
+            {
                 funcValuesSaver->move(dx);
+                informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+            }
 
             moving = true;
             refresh = true;

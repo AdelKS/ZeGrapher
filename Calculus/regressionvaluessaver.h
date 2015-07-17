@@ -23,8 +23,8 @@
 
 #include <algorithm>
 
-#include "informations.h"
-
+#include "regression.h"
+#include "Structures.h"
 
 
 class RegressionValuesSaver : public QObject
@@ -32,25 +32,30 @@ class RegressionValuesSaver : public QObject
     Q_OBJECT
 
 public:
-    RegressionValuesSaver(Informations *info);
-    ~RegressionValuesSaver();
+    RegressionValuesSaver(Regression *reg, Options opt, GraphRange range);
+    ~RegressionValuesSaver();    
 
-    void recalculate(double new_xUnit, double new_yUnit);
+    void setOptions(Options opt);
+    bool getDrawState();
+    QColor getColor();
 
-    QPolygonF& getCurve(int reg);
+    QPolygonF& getCurve();
 
 public slots:
-     void calculateNewCurves();
+     void recalculate();
+     void recalculate(double new_xUnit, double new_yUnit, GraphRange range);
 
 protected:
-    void calculatePolarRegressionCurve(Regression *reg);
-    void calculateCartesianRegressionCurve(Regression *reg);
+    void calculatePolarRegressionCurve();
+    void calculateCartesianRegressionCurve();
 
-    Informations *informations;      
-
+    Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
+    GraphRange graphRange;
+    Options options;
+    Range drawnRange;
 
-    QList< QPolygonF > regressionCurves;
+    QPolygonF curve;
 };
 
 #endif // REGRESSIONVALUESSAVER_H

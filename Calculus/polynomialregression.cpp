@@ -71,7 +71,7 @@ void PolynomialRegression::updateDrawRange()
     if(rangeOption == LimitedToData)
     {
         range.start = xmin;
-        range.end = xmax;
+        range.end = xmax;        
     }
     else if(rangeOption == RelativeExtrapolation)
     {
@@ -79,17 +79,14 @@ void PolynomialRegression::updateDrawRange()
         range.start = xmin - amplitude * rangeCoef;
         range.end = xmax + amplitude * rangeCoef;
     }
-    else if(rangeOption == DrawAll)
-    {
-        range.start = - HUGE_VAL;
-        range.end = HUGE_VAL;
-    }
 }
 
 void PolynomialRegression::setDrawRangeCalculusMethod(DrawRange option)
 {
     rangeOption = option;
     updateDrawRange();
+
+    emit regressionModified();
 }
 
 void PolynomialRegression::setRange(Range rg)
@@ -100,6 +97,9 @@ void PolynomialRegression::setRange(Range rg)
 void PolynomialRegression::setRelativeRangeCoef(double coef)
 {
     rangeCoef = coef;
+    updateDrawRange();
+
+    emit regressionModified();
 }
 
 void PolynomialRegression::calculateRegressionPolynomials()
@@ -119,11 +119,15 @@ void PolynomialRegression::setPolynomialRegressionDegree(int deg)
     regressionDegree = deg;
     updateOrthonormalBasis();
     calculateRegressionPolynomials();
+
+    emit regressionModified();
 }
 
 void PolynomialRegression::setApproxMethod(ApproxMethod method)
 {
     approxMethod = method;
+
+    emit regressionModified();
 }
 
 void PolynomialRegression::recalculateOrthonormalBasis()

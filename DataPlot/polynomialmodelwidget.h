@@ -8,6 +8,7 @@
 #include "Widgets/numberlineedit.h"
 #include "Widgets/qcolorbutton.h"
 #include "Calculus/polynomialregression.h"
+#include "Calculus/regressionvaluessaver.h"
 
 namespace Ui {
 class PolynomialModelWidget;
@@ -46,6 +47,7 @@ protected:
     QColorButton *colorButton;
 
     PolynomialRegression *regression;
+    RegressionValuesSaver *regValSaver;
 };
 
 #endif // POLYNOMIALMODELWIDGET_H

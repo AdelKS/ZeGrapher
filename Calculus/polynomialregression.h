@@ -27,7 +27,7 @@
 #include <QList>
 
 enum ApproxMethod { ApproachPoints = true, ApproachSegments = false};
-enum DrawRange {Manual, LimitedToData, RelativeExtrapolation, DrawAll};
+enum DrawRange {Manual, LimitedToData, RelativeExtrapolation};
 
 class PolynomialRegression : public Regression
 {
@@ -48,7 +48,7 @@ public:
 public slots:
     void setApproxMethod(ApproxMethod method);
     void setRelativeRangeCoef(double coef);
-    void setPolynomialRegressionDegree(int deg);
+    void setPolynomialRegressionDegree(int deg);  
 
 
 protected:

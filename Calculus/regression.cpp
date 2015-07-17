@@ -50,11 +50,13 @@ QString Regression::getOrdinateName()
 void Regression::setPolar(bool state)
 {
     polar = state;
+    emit regressionModified();
 }
 
 void Regression::setDrawState(bool state)
 {
     drawState = state;
+    emit regressionModified();
 }
 
 void Regression::setDataNumber(int num)
@@ -65,6 +67,7 @@ void Regression::setDataNumber(int num)
 void Regression::setColor(QColor col)
 {
     color = col;
+    emit regressionModified();
 }
 
 bool Regression::isPolar()

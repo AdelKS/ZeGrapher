@@ -65,8 +65,7 @@ protected:
 
     int graphWidth, graphHeight;
     Informations *informations;
-    FuncValuesSaver *funcValuesSaver;
-    RegressionValuesSaver *regValuesSaver;
+    FuncValuesSaver *funcValuesSaver;    
     QPainter painter;
     Options parametres;
     QPolygonF polygon;
@@ -78,7 +77,7 @@ protected:
     double coef;
 
     double uniteX, uniteY;
-    bool moving, recalculate;
+    bool moving, recalculate, recalculateRegressions;
     int tangentDrawException;
 
     QList<FuncCalculator*> funcs;

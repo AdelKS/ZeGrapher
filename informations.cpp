@@ -73,21 +73,27 @@ DataStyle Informations::getDataStyle(int index)
     return dataStyle[index];
 }
 
-void Informations::addDataRegression(Regression *reg)
+void Informations::recalculateRegressionCurves(double xUnit, double yUnit, GraphRange range)
+{
+    for(int i = 0 ; i < regressions.size() ; i++)
+        regressions[i]->recalculate(xUnit, yUnit, range);
+}
+
+void Informations::addDataRegression(RegressionValuesSaver *reg)
 {
     regressions << reg;
     emit regressionAdded();
 }
 
-void Informations::removeDataRegression(Regression *reg)
+void Informations::removeDataRegression(RegressionValuesSaver *reg)
 {
     regressions.removeOne(reg);
     emit regressionRemoved();
 }
 
-Regression* Informations::getRegression(int id)
+RegressionValuesSaver *Informations::getRegression(int index)
 {
-    return regressions.at(id);
+    return regressions.at(index);
 }
 
 int Informations::getRegressionsCount()

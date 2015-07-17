@@ -6,11 +6,6 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 {
     ui->setupUi(this);
 
-    regression = new PolynomialRegression(ui->degree->value(), (ApproxMethod)ui->approachPoints->isChecked(), LimitedToData,
-                                          ui->relativeExtrapol->value(), ui->drawModel->isChecked(), pol);
-    regression->setData(dat);
-
-
     abscissa = xname;
     ordinate = yname; //of course the abscissa and ordinate would mean the polar angle and radius respectively
     updateDescriptionText();
@@ -19,9 +14,17 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     data = dat;
     informations = info;
 
-    informations->addDataRegression(regression);
-
     addWidgetsToUI();
+
+    regression = new PolynomialRegression(ui->degree->value(), (ApproxMethod)ui->approachPoints->isChecked(), LimitedToData,
+                                          ui->relativeExtrapol->value(), ui->drawModel->isChecked(), pol);
+    regression->setData(dat);
+
+    regValSaver = new RegressionValuesSaver(regression, informations->getOptions(), informations->getRange());
+
+    connect(regression, SIGNAL(regressionModified()), informations, SIGNAL(dataUpdated()));
+
+    informations->addDataRegression(regValSaver);
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));
     connect(colorButton, SIGNAL(colorChanged(QColor)), regression, SLOT(setColor(QColor)));
@@ -32,7 +35,6 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     connect(ui->dataInterval, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
     connect(ui->relativeExtrapolation, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
     connect(ui->manualInterval, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
-    connect(ui->alwaysRepresent, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
 }
 
 void PolynomialModelWidget::updateApproxMethod()
@@ -52,8 +54,6 @@ void PolynomialModelWidget::updateRangeOption()
 
     else if(ui->manualInterval->isChecked())
         regression->setDrawRangeCalculusMethod(Manual);
-
-    else regression->setDrawRangeCalculusMethod(DrawAll);
 }
 
 void PolynomialModelWidget::addWidgetsToUI()
@@ -123,7 +123,7 @@ void PolynomialModelWidget::setData(const QList<Point> &dat)
 }
 
 void PolynomialModelWidget::setPolar(bool pol)
-{
+{   
     polar = pol;
     regression->setPolar(pol);
 }
@@ -132,7 +132,8 @@ PolynomialModelWidget::~PolynomialModelWidget()
 {
     delete ui;
 
-    informations->removeDataRegression(regression);
+    informations->removeDataRegression(regValSaver);
 
     delete regression;
+    delete regValSaver;
 }
