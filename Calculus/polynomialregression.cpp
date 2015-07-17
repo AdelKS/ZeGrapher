@@ -203,8 +203,8 @@ double continuousScalarProduct(const QList<Point> &data, const Polynomial &P)
     for(int i = 0 ; i < data.size() - 1 ; i++)
     {
         segment.setAffine(data[i], data[i+1]);
-        prod = segment * P;
-        res = prod.eval(data[i+1].x) - prod.eval(data[i].x);
+        prod = (segment * P).antiderivative();
+        res += prod.eval(data[i+1].x) - prod.eval(data[i].x);
     }
 
     return res;
