@@ -22,7 +22,8 @@
 #ifndef QCOLORBUTTON_H
 #define QCOLORBUTTON_H
 
-#include <QtGui>
+#include <QPushButton>
+#include <QColorDialog>
 
 class QColorButton : public QPushButton
 {

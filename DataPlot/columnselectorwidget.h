@@ -21,7 +21,7 @@
 #ifndef COLUMNSELECTORWIDGET_H
 #define COLUMNSELECTORWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 #define XSELECTOR 0
 #define YSELECTOR 1

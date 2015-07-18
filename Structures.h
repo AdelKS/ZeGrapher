@@ -23,7 +23,11 @@
 #define STRUCTURES_H
 
 #include <cmath>
-#include <QtGui>
+
+
+#include <QtWidgets>
+#include <QtPrintSupport>
+
 
 #define FROM_CURRENT_GRAPHIC 0
 #define MANUAL_ENTRY 1

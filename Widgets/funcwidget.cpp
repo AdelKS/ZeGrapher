@@ -95,8 +95,8 @@ void FuncWidget::updateParametricState()
 
     isParametric = isExprParametric || areCalledFuncsParametric;
 
-    kConfWidget->setShown(isParametric);
-    secondColorButton->setShown(isParametric);
+    kConfWidget->setHidden(!isParametric);
+    secondColorButton->setHidden(!isParametric);
 
     if(oldParState != isParametric)
         emit newParametricState(funcNum);

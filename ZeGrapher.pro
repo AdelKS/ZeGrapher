@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+
+QT += widgets printsupport
 
 TARGET = ZeGrapher
 TEMPLATE = app

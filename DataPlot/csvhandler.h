@@ -21,11 +21,9 @@
 #ifndef CSVHANDLER_H
 #define CSVHANDLER_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "ui_csvconfig.h"
-
-
 
 class CSVhandler : public QDialog
 {

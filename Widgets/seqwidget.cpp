@@ -125,8 +125,8 @@ void SeqWidget::updateParametricState()
 
     isParametric = isExprParametric || areFirstValsParametric || areCalledFuncsSeqsParametric;
 
-    kConfWidget->setShown(isParametric);
-    secondColorButton->setShown(isParametric);
+    kConfWidget->setHidden(!isParametric);
+    secondColorButton->setHidden(!isParametric);
 
     if(oldParState != isParametric)
         emit newParametricState();

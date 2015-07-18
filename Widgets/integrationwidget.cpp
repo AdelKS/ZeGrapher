@@ -109,11 +109,11 @@ void IntegrationWidget::updateWidgetsShownState(QString expr)
             continue;
 
         doesContain = expr.contains(antiderivatives[i]);
-        containerWidgetsList[i]->setShown(doesContain);
+        containerWidgetsList[i]->setHidden(!doesContain);
         isOneShown = isOneShown || doesContain;
     }
 
-    setShown(isOneShown);
+    setHidden(!isOneShown);
 }
 
 QList<Point> IntegrationWidget::getIntegrationPoints(bool &ok)

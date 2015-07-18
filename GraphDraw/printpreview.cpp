@@ -358,28 +358,28 @@ void PrintPreview::assignGraphSize()
 
 void PrintPreview::mousePressEvent(QMouseEvent *event)
 {
-    if(topLeft.contains(event->posF()))
+    if(topLeft.contains(event->pos()))
         moveType = TOPLEFT_CORNER;
-    else if(topRight.contains(event->posF()))
+    else if(topRight.contains(event->pos()))
         moveType = TOPRIGHT_CORNER;
-    else if(top.contains(event->posF()))
+    else if(top.contains(event->pos()))
         moveType = TOP_SIDE;
-    else if(bottomLeft.contains(event->posF()))
+    else if(bottomLeft.contains(event->pos()))
         moveType = BOTTOMLEFT_CORNER;
-    else if(bottomRight.contains(event->posF()))
+    else if(bottomRight.contains(event->pos()))
         moveType = BOTTOMRIGHT_CORNER;
-    else if(bottom.contains(event->posF()))
+    else if(bottom.contains(event->pos()))
         moveType = BOTTOM_SIDE;
-    else if(left.contains(event->posF()))
+    else if(left.contains(event->pos()))
         moveType = LEFT_SIDE;
-    else if(right.contains(event->posF()))
+    else if(right.contains(event->pos()))
         moveType = RIGHT_SIDE;
-    else if(graphRect.contains(event->posF()))    
+    else if(graphRect.contains(event->pos()))
         moveType = ALL;    
     else moveType = NOTHING;
 
     if(moveType != NOTHING)
-        lastMousePos = event->posF();
+        lastMousePos = event->pos();
 }
 
 void PrintPreview::mouseMoveEvent(QMouseEvent *event)
@@ -391,21 +391,21 @@ void PrintPreview::mouseMoveEvent(QMouseEvent *event)
     rect.setBottom(rect.bottom() - 5);
     if(moveType == NOTHING)
     {
-        if(topLeft.contains(event->posF()) || bottomRight.contains(event->posF()))
+        if(topLeft.contains(event->pos()) || bottomRight.contains(event->pos()))
             setCursor(Qt::SizeFDiagCursor);
-        else if(topRight.contains(event->posF()) || bottomLeft.contains(event->posF()))
+        else if(topRight.contains(event->pos()) || bottomLeft.contains(event->pos()))
             setCursor(Qt::SizeBDiagCursor);
-        else if(top.contains(event->posF()) || bottom.contains(event->posF()))
+        else if(top.contains(event->pos()) || bottom.contains(event->pos()))
             setCursor(Qt::SizeVerCursor);
-        else if(left.contains(event->posF()) || right.contains(event->posF()))
+        else if(left.contains(event->pos()) || right.contains(event->pos()))
             setCursor(Qt::SizeHorCursor);
-        else if(graphRect.contains(event->posF()))
+        else if(graphRect.contains(event->pos()))
             setCursor(Qt::SizeAllCursor);
         else setCursor(Qt::ArrowCursor);
     }
-    else if(rect.contains(event->posF()))
+    else if(rect.contains(event->pos()))
     {
-        double dx = event->posF().x() - lastMousePos.x(), dy = event->posF().y() - lastMousePos.y(), dxCm, dyCm;
+        double dx = event->pos().x() - lastMousePos.x(), dy = event->pos().y() - lastMousePos.y(), dxCm, dyCm;
 
         if(viewType == PORTRAIT)
         {
@@ -466,7 +466,7 @@ void PrintPreview::mouseMoveEvent(QMouseEvent *event)
 
 
 
-        lastMousePos = event->posF();
+        lastMousePos = event->pos();
     }
 }
 

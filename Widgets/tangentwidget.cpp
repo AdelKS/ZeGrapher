@@ -47,8 +47,8 @@ TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<Fu
 
 void TangentWidget::newFuncChoosen(int funcNum)
 {
-    kTextLabel->setShown(funcWidgets[funcNum]->isFuncParametric());
-    kValueLineEdit->setShown(funcWidgets[funcNum]->isFuncParametric());
+    kTextLabel->setHidden(!funcWidgets[funcNum]->isFuncParametric());
+    kValueLineEdit->setHidden(!funcWidgets[funcNum]->isFuncParametric());
 }
 
 void TangentWidget::newFuncParState(int funcNum)
@@ -56,8 +56,8 @@ void TangentWidget::newFuncParState(int funcNum)
     if(funcNum != functionsComboBox->currentIndex())
         return;
 
-    kTextLabel->setShown(funcWidgets[funcNum]->isFuncParametric());
-    kValueLineEdit->setShown(funcWidgets[funcNum]->isFuncParametric());
+    kTextLabel->setHidden(!funcWidgets[funcNum]->isFuncParametric());
+    kValueLineEdit->setHidden(!funcWidgets[funcNum]->isFuncParametric());
 }
 
 void TangentWidget::changeID(int id)
@@ -146,13 +146,13 @@ void TangentWidget::addWidgets()
 
     kValueLineEdit = new QLineEdit;
     kValueLineEdit->setMaximumHeight(25);
-    kValueLineEdit->setShown(funcWidgets[0]->isFuncParametric());
+    kValueLineEdit->setHidden(!funcWidgets[0]->isFuncParametric());
     connect(kValueLineEdit, SIGNAL(textChanged(QString)), this, SLOT(kValueLineEdited()));
     connect(kValueLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
     kTextLabel = new QLabel(tr("Pour k ="));
     kTextLabel->setMaximumHeight(25);
-    kTextLabel->setShown(funcWidgets[0]->isFuncParametric());
+    kTextLabel->setHidden(!funcWidgets[0]->isFuncParametric());
 
     layout4->addStretch();
     layout4->addWidget(kTextLabel);

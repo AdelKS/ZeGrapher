@@ -42,7 +42,7 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
     colorButton = new QColorButton();
     ui->mainLayout->addWidget(colorButton);
 
-    connect(ui->styleButton, SIGNAL(toggled(bool)), ui->styleWidget, SLOT(setShown(bool)));
+    connect(ui->styleButton, SIGNAL(toggled(bool)), ui->styleWidget, SLOT(setVisible(bool)));
 
     ui->pointStyleCombo->setIconSize(ui->pointStyleCombo->size());
     ui->pointStyleCombo->addItem(QIcon(":/icons/rhombusPoint.png"), "");

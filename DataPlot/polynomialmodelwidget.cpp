@@ -37,6 +37,11 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     connect(ui->manualInterval, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
 }
 
+void PolynomialModelWidget::updatePolynomialCoefs()
+{
+
+}
+
 void PolynomialModelWidget::updateApproxMethod()
 {
     if(ui->approachPoints->isChecked())
@@ -93,7 +98,10 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
     colorButton = new QColorButton();
+    QLabel *colorLabel = new QLabel(tr("Couleur:"));
+    ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);
+    ui->drawOptionsLayout->addStretch();
 
     connect(colorButton, SIGNAL(colorChanged(QColor)), this, SIGNAL(regressionEdited()));
 }

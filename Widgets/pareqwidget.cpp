@@ -395,7 +395,7 @@ void ParEqWidget::sliderMoved(int pos)
 void ParEqWidget::animateKtoggled(bool checked)
 {    
     tWidget->setAnimationEnabled(!checked);
-    animationControlWidget->setShown(checked);
+    animationControlWidget->setHidden(!checked);
     playState = false;
     play->setIcon(QIcon(":/icons/play.png"));
 
@@ -418,7 +418,7 @@ void ParEqWidget::animateKtoggled(bool checked)
 void ParEqWidget::animateTtoggled(bool checked)
 {   
     kWidget->setAnimationEnabled(!checked);
-    animationControlWidget->setShown(checked);
+    animationControlWidget->setHidden(!checked);
     playState = false;
     play->setIcon(QIcon(":/icons/play.png"));
     updateAnimationSlider();
@@ -439,8 +439,8 @@ void ParEqWidget::checkExpr()
 {
     are_expr_parametric = xLine->text().contains('k') || yLine->text().contains('k');
     isParametric = are_expr_parametric || is_t_range_parametric;
-    kWidget->setShown(isParametric);
-    lastColorButton->setShown(isParametric);  
+    kWidget->setHidden(!isParametric);
+    lastColorButton->setHidden(!isParametric);
 
     if(!isParametric && kWidget->isAnimateChecked())
         kWidget->setAnimationChecked(false);

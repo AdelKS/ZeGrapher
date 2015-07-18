@@ -33,6 +33,7 @@ signals:
 protected slots:
     void updateApproxMethod();
     void updateRangeOption();
+    void updatePolynomialCoefs();
 
 protected:
     void addWidgetsToUI();

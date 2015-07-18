@@ -22,7 +22,6 @@
 #ifndef GRAPHDRAW_H
 #define GRAPHDRAW_H
 
-#include <QWidget>
 #include "Structures.h"
 #include "Calculus/funccalculator.h"
 #include "Widgets/tangentwidget.h"
@@ -42,11 +41,11 @@ public:
 
 protected:
 
-    void drawRhombus(QPointF pt,double w); inline
-    void drawDisc(QPointF pt, double w); inline
-    void drawSquare(QPointF pt, double w); inline
-    void drawTriangle(QPointF pt, double w); inline
-    void drawCross(QPointF pt, double w); inline
+    inline void drawRhombus(QPointF pt,double w);
+    inline void drawDisc(QPointF pt, double w);
+    inline void drawSquare(QPointF pt, double w);
+    inline void drawTriangle(QPointF pt, double w);
+    inline void drawCross(QPointF pt, double w);
 
     void drawOneFunction(int id, int width, int curveNum = -1);
     void drawOneSequence(int id, int width);

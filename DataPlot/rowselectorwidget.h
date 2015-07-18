@@ -21,7 +21,7 @@
 #ifndef ROWSELECTORWIDGET_H
 #define ROWSELECTORWIDGET_H
 
-#include <QtGui>
+#include <QtWidgets>
 
 #define XSELECTOR 0
 #define YSELECTOR 1

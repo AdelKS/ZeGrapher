@@ -43,10 +43,10 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    tableWidget->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
-    tableWidget->verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
-    tableWidget->horizontalHeader()->setMovable(true);    
+    tableWidget->horizontalHeader()->setSectionsMovable(true);
 
     tableWidget->horizontalHeader()->setFixedHeight(25);
 

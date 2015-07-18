@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));  
+    //QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    //QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
     QLocale locale;
     QString localeString = locale.system().name().section("_",0,0);
