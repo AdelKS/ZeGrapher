@@ -75,8 +75,12 @@ public:
     void setFunctionsList(QList<FuncCalculator*> list);
     QList<FuncCalculator*> getFuncsList();
 
+    void setUnits(Point vec);
+    Point getUnits();
+
 public slots:
     void emitUpdateSignal();
+    void emitDataUpdate();
     void emitDrawStateUpdate();
     void emitAnimationUpdate();
 
@@ -113,6 +117,7 @@ private:
     GraphRange range;
     Options parametres;   
     bool orthonormal, gridState, updatingLock;   
+    Point units;
     QList<ParEqWidget*> *parEqWidgets;
 };
 

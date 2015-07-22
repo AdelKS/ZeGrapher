@@ -18,13 +18,18 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     regression = new PolynomialRegression(ui->degree->value(), (ApproxMethod)ui->approachPoints->isChecked(), LimitedToData,
                                           ui->relativeExtrapol->value(), ui->drawModel->isChecked(), pol);
-    regression->setData(dat);
 
-    regValSaver = new RegressionValuesSaver(regression, informations->getOptions(), informations->getRange());
+    connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
 
+
+    regValSaver = new RegressionValuesSaver(regression, informations->getOptions(), informations->getRange(), informations->getUnits());
+
+    connect(regression, SIGNAL(regressionModified()), regValSaver, SLOT(recalculate()));
     connect(regression, SIGNAL(regressionModified()), informations, SIGNAL(dataUpdated()));
 
     informations->addDataRegression(regValSaver);
+
+    regression->setData(dat); //
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));
     connect(colorButton, SIGNAL(colorChanged(QColor)), regression, SLOT(setColor(QColor)));
@@ -37,9 +42,82 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     connect(ui->manualInterval, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
 }
 
-void PolynomialModelWidget::updatePolynomialCoefs()
+void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
 {
+    for(int pos = 0 ; pos < coefs.size() && pos < coefWidgets.size() ; pos++)
+    {
+        coefWidgets[pos].container->show();
+        coefWidgets[pos].line->setText(QString::number(coefs[pos]));
+    }
 
+    for(int pos = coefWidgets.size()-1 ; pos > coefs.size()-1 ; pos--)
+    {
+        coefWidgets[pos].container->hide();
+    }
+
+    for(int pos = coefWidgets.size() ; pos < coefs.size() ; pos++)
+    {
+        CoefWidgetStruct coefWidget;
+        coefWidget.container = new QWidget();
+        coefWidget.name = new QLabel("a<sub>" + QString::number(pos) + "</sub> =");
+        coefWidget.line = new QLineEdit();
+
+        coefWidget.line->setText(QString::number(coefs[pos]));
+        coefWidget.line->setMaximumHeight(25);
+        coefWidget.line->setReadOnly(true);
+        coefWidget.line->setAlignment(Qt::AlignLeft);
+
+        QHBoxLayout *layout = new QHBoxLayout();
+        layout->setMargin(3);
+
+        layout->addWidget(coefWidget.name);
+        layout->addWidget(coefWidget.line);
+
+        coefWidget.container->setLayout(layout);
+
+        ui->coefWidgetsLayout_2->addWidget(coefWidget.container);
+
+        coefWidgets << coefWidget;
+    }
+
+    QString genericExpr = "P = a<sub>0</sub> + ";
+    if(coefs.size() == 2)
+        genericExpr += "a<sub>1</sub> X";
+    else if(coefs.size() > 1)
+        genericExpr += "a<sub>1</sub> X + ";
+    if(coefs.size() == 3)
+        genericExpr += "a<sub>2</sub> X<sup>2</sup>";
+    else if(coefs.size() > 2)
+        genericExpr += "a<sub>2</sub> X<sup>2</sup>";
+    if(coefs.size() > 3)
+    {
+        if(coefs.size() > 4)
+        {
+            genericExpr += "... + ";
+            genericExpr += "a<sub>" + QString::number(coefs.size()-2) + "</sub> X<sup>" + QString::number(coefs.size()-2) + "</sup> + ";
+        }
+
+        genericExpr += "a<sub>" + QString::number(coefs.size()-1) + "</sub> X<sup>" + QString::number(coefs.size()-1) + "</sup>";
+    }
+
+    ui->polynomialGenericExpression->setText(genericExpr);
+
+    QString calculableExpr = QString::number(coefs.first(), 'g', 8);
+    if(coefs.size() > 1)
+    {
+        if(coefs[1] < 0)
+            calculableExpr += " " + QString::number(coefs[1], 'g', 8) + "*x";
+        else calculableExpr += " + " + QString::number(coefs[1], 'g', 8) + "*x";
+    }
+
+    for(int coef = 2 ; coef < coefs.size() ; coef++)
+    {
+        if(coefs[coef] < 0)
+            calculableExpr += " " + QString::number(coefs[coef], 'g', 8) + "*x^" + QString::number(coef);
+        else calculableExpr += " + " + QString::number(coefs[coef], 'g', 8) + "*x^" + QString::number(coef);
+    }
+
+    ui->expressionLineEdit->setText(calculableExpr);
 }
 
 void PolynomialModelWidget::updateApproxMethod()
@@ -104,6 +182,14 @@ void PolynomialModelWidget::addWidgetsToUI()
     ui->drawOptionsLayout->addStretch();
 
     connect(colorButton, SIGNAL(colorChanged(QColor)), this, SIGNAL(regressionEdited()));
+
+    QPushButton *removeButton = new QPushButton();
+    removeButton->setIcon(QIcon(":/icons/remove.png"));
+    removeButton->setFlat(true);
+
+    ui->valuesTab->setCornerWidget(removeButton);
+
+    connect(removeButton, SIGNAL(released()), this, SIGNAL(removeMe()));
 }
 
 void PolynomialModelWidget::updateDescriptionText()

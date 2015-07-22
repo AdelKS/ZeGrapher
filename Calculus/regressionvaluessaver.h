@@ -32,8 +32,8 @@ class RegressionValuesSaver : public QObject
     Q_OBJECT
 
 public:
-    RegressionValuesSaver(Regression *reg, Options opt, GraphRange range);
-    ~RegressionValuesSaver();    
+    RegressionValuesSaver(Regression *reg, Options opt, GraphRange range, Point graphUnits);
+    ~RegressionValuesSaver();
 
     void setOptions(Options opt);
     bool getDrawState();

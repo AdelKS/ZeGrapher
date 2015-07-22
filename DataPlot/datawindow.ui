@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>883</width>
+    <width>1043</width>
     <height>572</height>
    </rect>
   </property>
@@ -20,9 +20,21 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QWidget" name="widget_3" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
-       <width>400</width>
+       <width>430</width>
        <height>16777215</height>
       </size>
      </property>
@@ -55,6 +67,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Données:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="open">
           <property name="text">
            <string>Importer</string>
@@ -84,6 +103,13 @@
        </layout>
       </item>
       <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="actionsGroupBox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -106,7 +132,22 @@
         <property name="title">
          <string>Actions sur la colonne :</string>
         </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="leftMargin">
+          <number>3</number>
+         </property>
+         <property name="topMargin">
+          <number>3</number>
+         </property>
+         <property name="rightMargin">
+          <number>3</number>
+         </property>
+         <property name="bottomMargin">
+          <number>3</number>
+         </property>
          <item>
           <layout class="QVBoxLayout" name="actionsLayout"/>
          </item>
@@ -138,16 +179,16 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="leftMargin">
-          <number>9</number>
+          <number>3</number>
          </property>
          <property name="topMargin">
-          <number>9</number>
+          <number>3</number>
          </property>
          <property name="rightMargin">
-          <number>9</number>
+          <number>3</number>
          </property>
          <property name="bottomMargin">
-          <number>9</number>
+          <number>3</number>
          </property>
          <item>
           <widget class="QScrollArea" name="scrollArea_2">
@@ -157,6 +198,9 @@
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
            </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
            <property name="widgetResizable">
             <bool>true</bool>
            </property>
@@ -165,8 +209,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>374</width>
-              <height>435</height>
+              <width>416</width>
+              <height>444</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -373,7 +417,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>455</width>
+          <width>585</width>
           <height>512</height>
          </rect>
         </property>

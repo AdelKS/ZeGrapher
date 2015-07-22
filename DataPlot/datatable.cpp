@@ -343,13 +343,14 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
 
     col = tableWidget->horizontalHeader()->logicalIndex(col);
 
+    int row = 0;
+
     disableChecking = true;
 
-    double val;
-    QTableWidgetItem *item;
+    double val;   
     QList<double> rowVals;
 
-    for(int row = 0 ; row < tableWidget->rowCount() ; row++)
+    for(row = 0 ; row < tableWidget->rowCount() ; row++)
     {
         rowVals.clear();
         for(int column = 0 ; column < tableWidget->columnCount() ; column++) { rowVals << values[column][row];}
@@ -357,7 +358,7 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
         calculator->setAdditionnalVarsValues(rowVals);
         val = calculator->calculateFromTree(tree, values[col][row]);
         values[col][row] = val;
-        item = tableWidget->item(row, col);
+        QTableWidgetItem *item = tableWidget->item(row, col);
 
         if(isnan(val))
         {
@@ -375,7 +376,7 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
     disableChecking = false;
     treeCreator->deleteFastTree(tree);
 
-    emit valEdited(item->row(), item->column());
+    emit valEdited(row, col);
     return true;
 
 }

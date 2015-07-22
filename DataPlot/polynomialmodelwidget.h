@@ -14,6 +14,13 @@ namespace Ui {
 class PolynomialModelWidget;
 }
 
+struct CoefWidgetStruct
+{
+    QWidget *container;
+    QLabel *name;
+    QLineEdit *line;
+};
+
 class PolynomialModelWidget : public QWidget
 {
     Q_OBJECT
@@ -33,7 +40,7 @@ signals:
 protected slots:
     void updateApproxMethod();
     void updateRangeOption();
-    void updatePolynomialCoefs();
+    void updatePolynomialCoefs(QList<double> coefs);
 
 protected:
     void addWidgetsToUI();
@@ -46,6 +53,8 @@ protected:
     QList<Point> data;
     NumberLineEdit *startVal, *endVal;
     QColorButton *colorButton;
+
+    QList<CoefWidgetStruct> coefWidgets;
 
     PolynomialRegression *regression;
     RegressionValuesSaver *regValSaver;

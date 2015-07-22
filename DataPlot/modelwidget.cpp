@@ -85,5 +85,5 @@ void ModelWidget::displaySelectedModel(ModelType model)
 
 ModelWidget::~ModelWidget()
 {
-    delete modelChoice;
+
 }

@@ -79,7 +79,6 @@ MainGraph::MainGraph(Informations *info) : GraphDraw(info)
 
     dispPoint = false;
     boutonPresse = false;
-    recalculateRegressions = false;
 
     sourisSurUneCourbe = dispRectangle = recalculate = false;
     hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;   
@@ -130,7 +129,6 @@ void MainGraph::updateData()
 {
     resaveGraph = false;
     recalculate = false;
-    recalculateRegressions = true;
     update();
 }
 
@@ -470,12 +468,7 @@ void MainGraph::indirectPaint()
     if(resaveTangent)
         addTangentToBuffer();
     if(resaveGraph)
-        resaveImageBuffer();  
-    if(recalculateRegressions)
-    {
-        recalculateRegressions = false;
-        informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
-    }
+        resaveImageBuffer();
 
     painter.begin(this);   
 
@@ -644,6 +637,12 @@ void MainGraph::determinerCentreEtUnites()
 {
     uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
     uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
+
+    Point pt;
+    pt.x = uniteX;
+    pt.y = uniteY;
+
+    informations->setUnits(pt);
 
     bool orthonormal = informations->isOrthonormal();
 

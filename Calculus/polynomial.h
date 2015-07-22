@@ -41,6 +41,7 @@ public:
     double eval(double x) const;
 
     double getCoef(int degree) const;
+    QList<double> getCoefs();
     int degree() const;
     Polynomial antiderivative();
 

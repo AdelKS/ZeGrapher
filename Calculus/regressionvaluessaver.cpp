@@ -20,8 +20,10 @@
 
 #include "regressionvaluessaver.h"
 
-RegressionValuesSaver::RegressionValuesSaver(Regression *reg, Options opt, GraphRange range)
+RegressionValuesSaver::RegressionValuesSaver(Regression *reg, Options opt, GraphRange range, Point graphUnits)
 {
+    xUnit = graphUnits.x;
+    yUnit = graphUnits.y;
     regression = reg;
     options = opt;
     graphRange = range;

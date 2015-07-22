@@ -25,7 +25,7 @@
 FenetreBornes::FenetreBornes(Informations *info)
 {
     informations = info;
-    connect(info, SIGNAL(updateOccured()), this, SLOT(updateWidgets()));
+
 
     calculator = new ExprCalculator(false, informations->getFuncsList());
 
@@ -45,9 +45,11 @@ FenetreBornes::FenetreBornes(Informations *info)
     connect(ui->Ypas, SIGNAL(returnPressed()), this, SLOT(appliquer()));
 
     connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
-    connect(ui->orthonormal, SIGNAL(toggled(bool)), this, SLOT(orthonormal(bool)));
+    connect(ui->orthonormal, SIGNAL(clicked(bool)), informations, SLOT(setOrthonormal(bool)));
 
     connect(ui->boutonAppliquer, SIGNAL(released()), this, SLOT(appliquer()));
+
+    connect(info, SIGNAL(updateOccured()), this, SLOT(updateWidgets()));
 }
 
 void FenetreBornes::orthonormal(bool state)

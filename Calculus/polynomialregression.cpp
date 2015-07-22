@@ -64,6 +64,8 @@ void PolynomialRegression::setData(const QList<Point> &data)
 
     recalculateOrthonormalBasis();
     calculateRegressionPolynomials();
+
+    emit regressionModified();
 }
 
 void PolynomialRegression::updateDrawRange()
@@ -112,6 +114,10 @@ void PolynomialRegression::calculateRegressionPolynomials()
          continuousPol += continuousScalarProduct(dataPoints, orthonormalBasisContinuous.at(n)) * orthonormalBasisContinuous.at(n);
          discretePol += discreteScalarProduct(dataPoints, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
     }
+
+    if(approxMethod == ApproachPoints)
+        emit coefsUpdated(discretePol.getCoefs());
+    else emit coefsUpdated(continuousPol.getCoefs());
 }
 
 void PolynomialRegression::setPolynomialRegressionDegree(int deg)
@@ -128,6 +134,11 @@ void PolynomialRegression::setApproxMethod(ApproxMethod method)
     approxMethod = method;
 
     emit regressionModified();
+
+    if(approxMethod == ApproachPoints)
+        emit coefsUpdated(discretePol.getCoefs());
+    else emit coefsUpdated(continuousPol.getCoefs());
+
 }
 
 void PolynomialRegression::recalculateOrthonormalBasis()

@@ -44,6 +44,8 @@ public:
     void setDrawRangeCalculusMethod(DrawRange option);
     void setRange(Range rg);
 
+signals:
+    void coefsUpdated(QList<double> coefs);
 
 public slots:
     void setApproxMethod(ApproxMethod method);

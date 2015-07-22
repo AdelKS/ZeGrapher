@@ -22,6 +22,9 @@
 #ifndef PRINTPREVIEW_H
 #define PRINTPREVIEW_H
 
+#include <QPrinterInfo>
+#include <QPrinter>
+
 #include "imagepreview.h"
 
 #define PORTRAIT true

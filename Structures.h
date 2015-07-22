@@ -26,7 +26,6 @@
 
 
 #include <QtWidgets>
-#include <QtPrintSupport>
 
 
 #define FROM_CURRENT_GRAPHIC 0
@@ -56,8 +55,8 @@
 #define INIT_INCR_PERIOD 100 //animation incremental period
 #define PAR_DRAW_LIMIT 100
 
-#define INVALID_COLOR "#FF3030"
-#define VALID_COLOR "#70FF55"
+#define INVALID_COLOR "#FF9980"
+#define VALID_COLOR "#B2FFB2"
 
 #define EPSILON 0.001
 

@@ -31,6 +31,21 @@ Informations::Informations()
 
 }
 
+void Informations::setUnits(Point vec)
+{
+    units = vec;
+}
+
+Point Informations::getUnits()
+{
+    return units;
+}
+
+void Informations::emitDataUpdate()
+{
+    emit dataUpdated();
+}
+
 void Informations::addDataList()
 {
     data << QList<QPointF>();

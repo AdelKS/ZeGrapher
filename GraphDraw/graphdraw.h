@@ -76,7 +76,7 @@ protected:
     double coef;
 
     double uniteX, uniteY;
-    bool moving, recalculate, recalculateRegressions;
+    bool moving, recalculate;
     int tangentDrawException;
 
     QList<FuncCalculator*> funcs;

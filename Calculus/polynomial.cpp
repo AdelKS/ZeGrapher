@@ -38,6 +38,11 @@ Polynomial::Polynomial(QList<double> coefs)
     coefficients = coefs;
 }
 
+QList<double> Polynomial::getCoefs()
+{
+    return coefficients;
+}
+
 Polynomial::Polynomial()
 {
     coefficients << 0;

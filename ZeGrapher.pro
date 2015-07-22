@@ -127,8 +127,6 @@ HEADERS  += \
 
 
 FORMS    += \
-    Windows/zgrapher.ui \
-    Windows/window.ui \
     Windows/fenetreoptions.ui \
     Windows/fenetrefonctions.ui \
     Windows/fenetrebornes.ui \

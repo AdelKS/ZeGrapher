@@ -158,6 +158,7 @@ void DataWindow::addModel()
     ui->modelsLayout->addWidget(modelWidget);
 
     connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), this, SLOT(removeModelWidget(ModelWidget*)));
+    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), informations, SIGNAL(updateOccured()));
 }
 
 void DataWindow::columnNameChanged(int index)
@@ -180,8 +181,9 @@ void DataWindow::removeModelWidget(ModelWidget *w)
 {
     w->hide();
     modelWidgets.removeOne(w);
-
     delete w;
+
+    informations->emitDataUpdate();
 }
 
 void DataWindow::changeIndex(int ind)
