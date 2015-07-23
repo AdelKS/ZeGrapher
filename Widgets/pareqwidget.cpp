@@ -77,25 +77,13 @@ void ParEqWidget::recalculatePointsList()
         calculatePointsList();
 }
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 void ParEqWidget::setRatio(double r)
 {    
     ratio = r;
 
     if(tWidget->isAnimateChecked() && valid)
     {
-        if(2*fipart(tRange.step * ratio) > fipart(tRange.end - tRange.start))
+        if(2*trunc(tRange.step * ratio) > trunc(tRange.end - tRange.start))
             blockAnimation = true;
         else
         {
@@ -108,14 +96,14 @@ void ParEqWidget::setRatio(double r)
     }
     else if(kWidget->isAnimateChecked() && valid)
     {         
-        if(2*fipart(kRange.step * ratio) > fipart(kRange.end - kRange.start))
+        if(2*trunc(kRange.step * ratio) > trunc(kRange.end - kRange.start))
             blockAnimation = true;
         else
         {
             blockAnimation = false;
-            current_kPos = fipart((current_k - kRange.start) / (kRange.step * ratio));
+            current_kPos = trunc((current_k - kRange.start) / (kRange.step * ratio));
             current_k = kRange.step + (double)current_kPos * kRange.step * ratio;
-            curvesNum_current = fipart((kRange.end - kRange.start) / (kRange.step * ratio)) + 1;
+            curvesNum_current = trunc((kRange.end - kRange.start) / (kRange.step * ratio)) + 1;
             colorSaver.setCurvesNum(curvesNum_current);
             updateAnimationSlider();
         }
@@ -251,7 +239,7 @@ void ParEqWidget::addTConfWidgets()
  {
      ParEqValues vals;
 
-     int end = fipart((t_range.end - t_range.start)/t_range.step) + 1;
+     int end = trunc((t_range.end - t_range.start)/t_range.step) + 1;
      double t = t_range.start;
 
      calculator->setK(k);
@@ -528,9 +516,9 @@ void ParEqWidget::updateTRange(double k)
         hasSomethingChanged = true;
 
     tRange = tWidget->getRange(k);
-    tPos_end = fipart((tRange.end - tRange.start)/(tRange.step * ratio)) + 1;
+    tPos_end = trunc((tRange.end - tRange.start)/(tRange.step * ratio)) + 1;
 
-    int pointsNum = fipart((tRange.end - tRange.start)/tRange.step) + 1;
+    int pointsNum = trunc((tRange.end - tRange.start)/tRange.step) + 1;
 
     isTRangeGood = tWidget->isValid() && 20000 > pointsNum && pointsNum > 0;
     if(!isTRangeGood)
@@ -553,9 +541,9 @@ void ParEqWidget::updateKRange()
 
     kRange = kWidget->getRange();
 
-    curvesNum_original = curvesNum_current = fipart((kRange.end - kRange.start)/kRange.step) + 1;
+    curvesNum_original = curvesNum_current = trunc((kRange.end - kRange.start)/kRange.step) + 1;
     if(kWidget->isAnimateChecked())
-        curvesNum_current = fipart((kRange.end - kRange.start)/(kRange.step*ratio)) + 1;
+        curvesNum_current = trunc((kRange.end - kRange.start)/(kRange.step*ratio)) + 1;
     else curvesNum_current = curvesNum_original;
 
     colorSaver.setCurvesNum(curvesNum_current);
@@ -598,7 +586,7 @@ void ParEqWidget::calculatePointsList()
             return;
 
         tStep = tRange.step * tRatio;
-        end = fipart((tRange.end - tRange.start)/tStep) + 1;
+        end = trunc((tRange.end - tRange.start)/tStep) + 1;
         t = tRange.start;
 
         for(int i = 0 ; i < end ; i++)
@@ -724,7 +712,7 @@ void ParEqWidget::nextFrameKchecked()
     calculator->setK(current_k);
 
     double t = tRange.start;
-    int end = fipart((tRange.end - tRange.start)/tRange.step)+ 1;
+    int end = trunc((tRange.end - tRange.start)/tRange.step)+ 1;
     Point point;
 
     for(int i = 0 ; i < end ; i++)

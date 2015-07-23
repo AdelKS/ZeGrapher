@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "Windows/zegrapher.h"
 #include <QLocale>
 #include <QTranslator>

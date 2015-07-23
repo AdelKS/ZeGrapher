@@ -27,7 +27,7 @@ CSVhandler::CSVhandler(QWidget *parent): QDialog(parent), ui(new Ui::CSVconfig)
     fileDialog = new QFileDialog(this);
     fileDialog->setNameFilter(tr("Données (*.csv)"));
 
-    job = NONE;
+    job = CSV_NO_FILE;
 
     setWindowIcon(QIcon(":/icons/csv.png"));
 
@@ -41,7 +41,7 @@ void CSVhandler::askForFileLocation()
     if(fileDialog->exec())
     {
         ui->fileLocation->setText(fileDialog->selectedFiles().first());
-        if(job == FILE_SAVE && !ui->fileLocation->text().endsWith(".csv"))
+        if(job == CSV_FILE_SAVE && !ui->fileLocation->text().endsWith(".csv"))
             ui->fileLocation->setText(ui->fileLocation->text()+".csv");
 
     }
@@ -52,7 +52,7 @@ void CSVhandler::getDataFromCSV()
     setWindowTitle(tr("Ouvrir données"));
     ui->apply->setText(tr("Ouvrir"));
     ui->fileLocation->clear();
-    job = FILE_OPEN;
+    job = CSV_FILE_OPEN;
     fileDialog->setFileMode(QFileDialog::ExistingFile);
 
     exec();
@@ -66,7 +66,7 @@ void CSVhandler::saveCSV(QList<QStringList> data)
     setWindowTitle(tr("Enregistrer données"));
     ui->apply->setText(tr("Enregistrer"));
     ui->fileLocation->clear();
-    job = FILE_SAVE;
+    job = CSV_FILE_SAVE;
     fileDialog->setFileMode(QFileDialog::AnyFile);
 
     exec();
@@ -134,7 +134,7 @@ void CSVhandler::apply()
     }
 
 
-    if(job == FILE_SAVE)
+    if(job == CSV_FILE_SAVE)
     {
         QFile file(ui->fileLocation->text());
         if(file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text))
@@ -146,7 +146,7 @@ void CSVhandler::apply()
             file.close();
         }
     }
-    else if(job == FILE_OPEN)
+    else if(job == CSV_FILE_OPEN)
     {
         QFile file(ui->fileLocation->text());
         values.clear();

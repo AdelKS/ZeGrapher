@@ -221,7 +221,7 @@ void DataWindow::remakeDataList()
 
     for(int row = 0 ; row < values[0].size(); row++)
     {
-        if(!isnan(values[xindex][row]) && !isnan(values[yindex][row]))
+        if(!std::isnan(values[xindex][row]) && !std::isnan(values[yindex][row]))
         {
             if(ui->polar->isChecked())
             {               

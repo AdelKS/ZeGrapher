@@ -247,21 +247,9 @@ void ValuesTableConf::updateNameCombo()
     nameCombo->setCurrentIndex(0);
 }
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 bool ValuesTableConf::verifySeqInfo(double start, double step)
 {
-    if(start != fipart(start))
+    if(start != trunc(start))
     {
         QMessageBox::warning(window(), tr("Erreur"), tr("La valeur de départ doit être un entier."));
         return false;
@@ -271,7 +259,7 @@ bool ValuesTableConf::verifySeqInfo(double start, double step)
         QMessageBox::warning(window(), tr("Erreur"), tr("La valeur de départ doit être supérieure à n<sub>min</sub>."));
         return false;
     }
-    if(step != fipart(step) || step < 0)
+    if(step != trunc(step) || step < 0)
     {
         QMessageBox::warning(window(), tr("Erreur"), tr("La valeur du pas doit être un entier positif."));
         return false;

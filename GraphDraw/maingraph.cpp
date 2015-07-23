@@ -332,7 +332,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
 
     double valeur = (double)event->delta() / 1200;
 
-    if(isinf(valeur))
+    if(std::isinf(valeur))
         return;
 
     if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
@@ -1145,7 +1145,7 @@ void MainGraph::mouseFuncHoverTest(double x, double y)
         {
             calcY = funcs[i]->getFuncValue(x, k);
 
-            if(!(isnan(calcY) || isinf(calcY)))
+            if(!(std::isnan(calcY) || std::isinf(calcY)))
             {
                 if(!(selectedCurve.isSomethingSelected && selectedCurve.funcType == FUNCTION && draw == selectedCurve.kPos && i == selectedCurve.id))
                 {
@@ -1191,7 +1191,7 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
         if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < (double)(parametres.epaisseurDesCourbes) + 2)
             intAbscissa = trunc((x-start)/step) * step + start;
 
-        if(isnan(intAbscissa))
+        if(std::isnan(intAbscissa))
             return;
 
         for(short i = 0; i < 6; i++)

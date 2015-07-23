@@ -25,11 +25,13 @@
 
 #include "ui_csvconfig.h"
 
+
+enum Job {CSV_FILE_SAVE, CSV_FILE_OPEN, CSV_NO_FILE};
+
 class CSVhandler : public QDialog
 {
     Q_OBJECT
 
-    enum Job {FILE_SAVE, FILE_OPEN, NONE};
 
 public:
     CSVhandler(QWidget *parent);

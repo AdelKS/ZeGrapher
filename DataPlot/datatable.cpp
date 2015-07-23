@@ -94,14 +94,14 @@ QString DataTable::getColumnName(int visualIndex)
 
 int doubleCompareAscend(double a, double b)
 {
-    if(isnan(b))
+    if(std::isnan(b))
         return -1;
     else return a<b;
 }
 
 int doubleCompareDescend(double a, double b)
 {
-    if(isnan(b))
+    if(std::isnan(b))
         return 1;
     else return a>b;
 }
@@ -225,7 +225,7 @@ void DataTable::sortColumnSwapCells(int col, bool ascending)
 
     for(int row = 0 ; row < tableWidget->rowCount(); row++)
     {
-        if(isnan(values[col][row]))
+        if(std::isnan(values[col][row]))
         {
             tableWidget->item(row,col)->setText("");
             tableWidget->item(row,col)->setBackgroundColor(Qt::white);
@@ -244,14 +244,14 @@ void DataTable::sortColumnSwapCells(int col, bool ascending)
 
 int listCompareAscend(QList<double> a, QList<double>b)
 {
-    if(isnan(b[refCol]))
+    if(std::isnan(b[refCol]))
         return -1;
     else return a[refCol] < b[refCol];
 }
 
 int listCompareDescend(QList<double> a, QList<double>b)
 {
-    if(isnan(b[refCol]))
+    if(std::isnan(b[refCol]))
         return 1;
     else return a[refCol] > b[refCol];
 }
@@ -281,7 +281,7 @@ void DataTable::sortColumnSwapRows(int column, bool ascending)
         for(int col = 0 ; col < tableWidget->columnCount(); col++)
         {
             values[col][row] = vals[row][col];
-            if(isnan(values[col][row]))
+            if(std::isnan(values[col][row]))
             {
                 tableWidget->item(row,col)->setText("");
                 tableWidget->item(row,col)->setBackgroundColor(Qt::white);
@@ -360,7 +360,7 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
         values[col][row] = val;
         QTableWidgetItem *item = tableWidget->item(row, col);
 
-        if(isnan(val))
+        if(std::isnan(val))
         {
             item->setText("");
             item->setBackgroundColor(Qt::white);

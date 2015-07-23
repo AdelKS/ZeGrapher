@@ -21,18 +21,6 @@
 
 #include "Widgets/seqwidget.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 SeqWidget::SeqWidget(QChar name, int id, QColor color) : colorSaver(color)
 {    
     seqName = name;
@@ -167,7 +155,7 @@ void SeqWidget::firstValidation()
     Range range = kConfWidget->getRange();
 
     calculator->setParametricInfo(isParametric, range);
-    colorSaver.setCurvesNum(fipart((range.end - range.start)/range.step) + 1);
+    colorSaver.setCurvesNum(trunc((range.end - range.start)/range.step) + 1);
 
     bool firstValsValidated = calculator->validateFirstValsExpr(firstValsLine->text());
     if(firstValsValidated)

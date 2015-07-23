@@ -21,18 +21,6 @@
 
 #include "ValuesTable/functable.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 FuncTable::FuncTable(Informations *info) : AbstractTable()
 {
     informations = info;   
@@ -81,7 +69,7 @@ void FuncTable::precisionEdited()
 
     for(int i = 0; i < xValues.size(); i++)
     {
-        if(!isnan(xValues[i]))
+        if(!std::isnan(xValues[i]))
         {
             model->item(i+1, 0)->setText(QString::number(xValues[i], 'g', precision->value()));
             model->item(i+1, 1)->setText(QString::number(yValues[i], 'g', precision->value()));
@@ -142,7 +130,7 @@ void FuncTable::fillFromRange()
     {
         GraphRange range = informations->getRange();
 
-        parameters.range.start = fipart(range.Xmin / range.Xscale) * range.Xscale;
+        parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
         parameters.range.step = range.Xscale;
         parameters.range.end = range.Xmax;
     }

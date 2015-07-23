@@ -72,7 +72,7 @@ void ParEqTable::precisionEdited()
 
     for(int i = 0; i < parEqValues.tValues.size(); i++)
     {
-        if(!isnan(parEqValues.tValues[i]))
+        if(!std::isnan(parEqValues.tValues[i]))
         {
             model->item(i+1, 0)->setText(QString::number(parEqValues.tValues[i], 'g', precision->value()));
             model->item(i+1, 1)->setText(QString::number(parEqValues.xValues[i], 'g', precision->value()));

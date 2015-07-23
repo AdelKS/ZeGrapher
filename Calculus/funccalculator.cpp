@@ -21,18 +21,6 @@
 
 #include "Calculus/funccalculator.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
-
 static double tenPower(double x)
 {
      return pow(10, x);
@@ -123,7 +111,7 @@ unsigned long int_pow(unsigned long a, unsigned long b)
 
 double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
 {   
-    double nDiv = fipart(fabs(A.x - b) * 100);
+    double nDiv = trunc(fabs(A.x - b) * 100);
     Point pt1, pt2;
     double newIntegral = 0, oldIntegral = 1, pos;
     double precision = tenPower(-NUM_PREC);

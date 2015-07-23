@@ -21,17 +21,6 @@
 
 #include "Widgets/funcwidget.h"
 
-static double fipart(double x)
-{
-    if(x < 0)
-    {
-        return ceil(x);
-    }
-    else
-    {
-        return floor(x);
-    }
-}
 
 FuncWidget::FuncWidget(QChar name, int id, QColor color, QWidget *parentWindow) : AbstractFuncWidget(), colorSaver(color)
 {
@@ -147,7 +136,7 @@ void FuncWidget::firstValidation()
     Range range = kConfWidget->getRange();
 
     calculator->setParametricRange(range);
-    colorSaver.setCurvesNum(fipart((range.end - range.start)/range.step) + 1);
+    colorSaver.setCurvesNum(trunc((range.end - range.start)/range.step) + 1);
 
     if(isValid)
         expressionLineEdit->setPalette(validPalette);
