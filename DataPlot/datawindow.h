@@ -30,6 +30,8 @@
 #include "./csvhandler.h"
 #include "./modelwidget.h"
 
+#define WIDGET_ANIMATION_TIME 250
+
 #define COLUMN_SELECTION true
 #define ROW_SELECTION false
 
@@ -43,6 +45,8 @@
 #define ROW_HEIGHT 30
 #define ROW_SELECTOR_WIDTH 40
 #define COLUMN_SELECTOR_HEIGHT 40
+
+enum RetractableWidgetState { WIDGET_OPENED, WIDGET_RETRACTED };
 
 namespace Ui {
 class DataWindow;
@@ -71,6 +75,8 @@ protected slots:
     void coordinateSystemChanged(bool polar);
     void columnNameChanged(int index);
     void columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
+    void animationFinished();
+    void startAnimation();
 
 protected:    
 
@@ -86,7 +92,11 @@ protected:
     RowActionsWidget *rowActionsWidget;
     CSVhandler *csvHandler;
     bool selectorSide;
+    RetractableWidgetState widgetState;
+    int animation_width;
 
+    QPropertyAnimation *windowCloseAnimation, *windowOpenAnimation, *widgetCloseAnimation, *widgetOpenAnimation;
+    QParallelAnimationGroup *openAnimation, *closeAnimation;
     QList<Point> modelData;
     QList<ModelWidget*> modelWidgets;
 };

@@ -21,6 +21,7 @@
 #include "./datawindow.h"
 #include "ui_datawindow.h"
 
+
 DataWindow::DataWindow(Informations *info, int ind)
 {
     index = ind;
@@ -28,7 +29,39 @@ DataWindow::DataWindow(Informations *info, int ind)
     yindex = STARTING_YPIN_INDEX;
 
     ui = new Ui::DataWindow;
-    ui->setupUi(this);   
+    ui->setupUi(this);
+
+    widgetState = WIDGET_OPENED;
+
+    widgetOpenAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
+    widgetOpenAnimation->setDuration(WIDGET_ANIMATION_TIME);
+    widgetOpenAnimation->setEasingCurve(QEasingCurve::OutCubic);
+
+    widgetCloseAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
+    widgetCloseAnimation->setDuration(WIDGET_ANIMATION_TIME);
+    widgetCloseAnimation->setEasingCurve(QEasingCurve::OutCubic);
+
+    windowOpenAnimation = new QPropertyAnimation(this, "geometry", this);
+    windowOpenAnimation->setDuration(WIDGET_ANIMATION_TIME);
+    windowOpenAnimation->setEasingCurve(QEasingCurve::OutCubic);
+
+    windowCloseAnimation = new QPropertyAnimation(this, "geometry", this);
+    windowCloseAnimation->setDuration(WIDGET_ANIMATION_TIME);
+    windowCloseAnimation->setEasingCurve(QEasingCurve::OutCubic);
+
+    openAnimation = new QParallelAnimationGroup(this);
+    openAnimation->addAnimation(widgetOpenAnimation);
+    openAnimation->addAnimation(windowOpenAnimation);
+
+    connect(openAnimation, SIGNAL(finished()), this, SLOT(animationFinished()));
+
+    closeAnimation = new QParallelAnimationGroup(this);
+    closeAnimation->addAnimation(widgetCloseAnimation);
+    closeAnimation->addAnimation(windowCloseAnimation);
+
+    connect(closeAnimation, SIGNAL(finished()), this, SLOT(animationFinished()));
+
+    connect(ui->retractionButton, SIGNAL(released()), this, SLOT(startAnimation()));
 
     setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
 
@@ -145,6 +178,58 @@ void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisual
 
     if(oldVisualIndex == xindex || oldVisualIndex == yindex)
         remakeDataList();
+}
+
+void DataWindow::animationFinished()
+{
+    if(widgetState == WIDGET_OPENED)
+        ui->retractionButton->setIcon(QIcon(":/icons/arrow_right.png"));
+    else ui->retractionButton->setIcon(QIcon(":/icons/arrow_left.png"));
+
+}
+
+void DataWindow::startAnimation()
+{
+    QRect rect;
+
+    if(widgetState == WIDGET_OPENED)
+    {
+        widgetState = WIDGET_RETRACTED;
+
+        closeAnimation->stop();
+
+        animation_width = ui->actionsContainerWidget->width();
+
+        widgetCloseAnimation->setStartValue(QVariant(animation_width));
+        widgetCloseAnimation->setEndValue(QVariant(0));
+
+        rect = geometry();
+        rect.setWidth(rect.width() - animation_width);
+        rect.translate(animation_width, 0);
+
+        windowCloseAnimation->setStartValue(QVariant(geometry()));
+        windowCloseAnimation->setEndValue(QVariant(rect));
+
+        closeAnimation->start();
+    }
+    else // WIDGET_RETRACTED
+    {
+        widgetState = WIDGET_OPENED;
+
+        openAnimation->stop();
+
+        widgetOpenAnimation->setStartValue(QVariant(0));
+        widgetOpenAnimation->setEndValue(QVariant(animation_width));
+
+        rect = geometry();
+        rect.setWidth(rect.width() + animation_width);
+        rect.translate(- animation_width, 0);
+
+        windowOpenAnimation->setStartValue(QVariant(geometry()));
+        windowOpenAnimation->setEndValue(QVariant(rect));
+
+        openAnimation->start();
+    }
 }
 
 void DataWindow::addModel()

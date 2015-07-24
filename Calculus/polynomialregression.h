@@ -26,7 +26,7 @@
 #include "regression.h"
 #include <QList>
 
-enum ApproxMethod { ApproachPoints, ApproachSegments};
+enum ApproxMethod { ApproachPoints = true, ApproachSegments = false};
 enum DrawRange {Manual, LimitedToData, RelativeExtrapolation};
 
 class PolynomialRegression : public Regression
