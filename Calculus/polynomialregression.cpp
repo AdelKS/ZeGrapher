@@ -109,11 +109,11 @@ void PolynomialRegression::calculateRegressionPolynomials()
     continuousPol.resetToZero();
     discretePol.resetToZero();
 
-    for(int n = 0 ; n <= regressionDegree ; n++)
-    {
+    for(int n = 0 ; n < orthonormalBasisContinuous.size() && n <= regressionDegree ; n++)
          continuousPol += continuousScalarProduct(dataPoints, orthonormalBasisContinuous.at(n)) * orthonormalBasisContinuous.at(n);
-         discretePol += discreteScalarProduct(dataPoints, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
-    }
+    for(int n = 0 ; n < orthonormalBasisDiscrete.size() && n <= regressionDegree ; n++)
+        discretePol += discreteScalarProduct(dataPoints, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
+
 
     if(approxMethod == ApproachPoints)
         emit coefsUpdated(discretePol.getCoefs());
@@ -162,7 +162,7 @@ void PolynomialRegression::updateOrthonormalBasis()
             orthonormalBasisContinuous << P;
         }
 
-        for(int n = orthonormalBasisContinuous.size(); n <= regressionDegree; n++)
+        for(int n = orthonormalBasisContinuous.size(); n <= regressionDegree ; n++)
         {
             Polynomial P(n);
 
@@ -171,6 +171,7 @@ void PolynomialRegression::updateOrthonormalBasis()
 
             P *= 1/continuousNorm(P, xmin, xmax);
             orthonormalBasisContinuous << P;
+
         }
     }
     if(regressionDegree > orthonormalBasisDiscrete.size() - 1)
@@ -182,7 +183,7 @@ void PolynomialRegression::updateOrthonormalBasis()
             orthonormalBasisDiscrete << P;
         }
 
-        for(int n = orthonormalBasisDiscrete.size(); n <= regressionDegree; n++)
+        for(int n = orthonormalBasisDiscrete.size(); n <= regressionDegree && n < dataPoints.size(); n++)
         {
             Polynomial P(n);
 
@@ -229,12 +230,14 @@ double continuousNorm(const Polynomial &P, double xmin, double xmax)
 }
 
 double discreteNorm(const Polynomial &P, const QList<Point> &data)
-{
-    Polynomial Q = P*P;
-    double res = 0;
+{    
+    double res = 0, tmp;
 
     for(int i = 0 ; i < data.size() ; i++)
-        res += Q.eval(data[i].x);
+    {
+        tmp = P.eval(data[i].x);
+        res += tmp * tmp;
+    }
 
     return sqrt(res);
 }

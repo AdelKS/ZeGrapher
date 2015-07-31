@@ -57,6 +57,7 @@ class DataWindow : public QWidget
     Q_OBJECT
 public:
     explicit DataWindow(Informations *info, int ind);
+    ~DataWindow();
 
     void changeIndex(int ind);
 

@@ -48,6 +48,9 @@ public slots:
 protected:
     void calculatePolarRegressionCurve();
     void calculateCartesianRegressionCurve();
+    inline double squareLength(QPointF pt);
+    inline double length(QPointF pt);
+    QPointF orthogonalVector(const QPointF &pt);
 
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;

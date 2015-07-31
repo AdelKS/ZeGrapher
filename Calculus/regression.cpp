@@ -27,6 +27,11 @@ Regression::Regression()
     valid = false;
 }
 
+QList<Point> Regression::getData()
+{
+    return dataPoints;
+}
+
 void Regression::setAbscissaName(QString name)
 {
     abscissa = name;

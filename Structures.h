@@ -74,6 +74,7 @@ struct Point
         return x < b.x;
     }
 };
+
 struct Rectangle
 {
     Point pt1, pt2;

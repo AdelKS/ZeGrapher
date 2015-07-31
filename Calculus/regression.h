@@ -37,6 +37,7 @@ public:
     virtual double eval(double x) const = 0;
     virtual QString getInfo() const = 0;
 
+    QList<Point> getData();
     QString getAbscissaName();
     QString getOrdinateName();
     bool getDrawState();
@@ -58,6 +59,7 @@ public slots:
 
 protected:
 
+    QList<Point> dataPoints;
     QColor color;
     int dataNum;
     Range range;

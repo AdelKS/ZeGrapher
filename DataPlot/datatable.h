@@ -33,6 +33,8 @@ class DataTable : public QWidget
     Q_OBJECT
 public:
     explicit DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
+    ~DataTable();
+
     QSize getVerticalHeaderSize();
     QSize getHorizontalHeaderSize();
 
@@ -49,6 +51,9 @@ public:
 
     void sortColumnSwapCells(int col, bool ascending);
     void sortColumnSwapRows(int column, bool ascending);
+
+    int colVisualIndex(int logicalIndex);
+    int colLogicalIndex(int visualIndex);
 
 public slots:
     void insertRow(int index);

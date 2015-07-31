@@ -154,5 +154,5 @@ void DataWidget::emitRemoveSignal()
 
 DataWidget::~DataWidget()
 {
-    delete ui;
+    delete dataWindow;
 }

@@ -176,7 +176,7 @@ void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisual
     Q_UNUSED(logicalIndex);
     Q_UNUSED(newVisualIndex);
 
-    if(oldVisualIndex == xindex || oldVisualIndex == yindex)
+    if(oldVisualIndex == xindex || oldVisualIndex == yindex || newVisualIndex == xindex || newVisualIndex == yindex)
         remakeDataList();
 }
 
@@ -304,25 +304,28 @@ void DataWindow::remakeDataList()
 
     modelData.clear();
 
+    int logicalX = dataTable->colLogicalIndex(xindex);
+    int logicalY = dataTable->colLogicalIndex(yindex);
+
     for(int row = 0 ; row < values[0].size(); row++)
     {
-        if(!std::isnan(values[xindex][row]) && !std::isnan(values[yindex][row]))
+        if(!std::isnan(values[logicalX][row]) && !std::isnan(values[logicalY][row]))
         {
             if(ui->polar->isChecked())
             {               
-                point.setX(values[xindex][row] * cos( values[yindex][row]));
-                point.setY(values[xindex][row] * sin( values[yindex][row]));
+                point.setX(values[logicalY][row] * cos( values[logicalX][row]));
+                point.setY(values[logicalY][row] * sin( values[logicalX][row]));
             }
             else
             {
-                point.setX(values[xindex][row]);
-                point.setY(values[yindex][row]);
+                point.setX(values[logicalX][row]);
+                point.setY(values[logicalY][row]);
             }
 
             dataList << point;
 
-            dataPt.x = values[xindex][row];
-            dataPt.y = values[yindex][row];
+            dataPt.x = values[logicalX][row];
+            dataPt.y = values[logicalY][row];
 
             modelData << dataPt;
         }
@@ -390,4 +393,10 @@ void DataWindow::updateSelectorsSize()
 
     columnSelector->setFixedWidth(dataTable->getColumnCount()*COLUMN_WIDTH);
     rowSelector->setFixedHeight(dataTable->getRowCount()*ROW_HEIGHT);
+}
+
+DataWindow::~DataWindow()
+{
+    delete dataTable;
+    delete csvHandler;
 }

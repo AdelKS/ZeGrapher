@@ -66,8 +66,7 @@ protected:
 
     Polynomial continuousPol, discretePol;
     ApproxMethod approxMethod;
-    double xmin, xmax; //integration segment for dot product: integrate between min and max
-    QList<Point> dataPoints;
+    double xmin, xmax; //integration segment for dot product: integrate between min and max    
     QList<Polynomial> orthonormalBasisDiscrete, orthonormalBasisContinuous;
 };
 

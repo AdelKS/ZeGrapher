@@ -145,7 +145,7 @@ void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
             insertColumn->show();
             shownWidgets << insertColumn;
         }
-        else if (columnCount > 3 && selectorPos.index != columnCount-1)
+        else if (columnCount > 3)
         {
             startingActionsUi->remove->show();
             startingActions->show();

@@ -88,10 +88,48 @@ void RegressionValuesSaver::calculateCartesianRegressionCurve()
     }
 }
 
+double RegressionValuesSaver::squareLength(QPointF pt)
+{
+    return pt.x()*pt.x() + pt.y()*pt.y();
+}
+
+double RegressionValuesSaver::length(QPointF pt)
+{
+    return sqrt(squareLength(pt));
+}
+
+QPointF orthogonalVector(const QPointF &pt)
+{
+    return QPointF(pt.y(), -pt.x());
+}
+
 void RegressionValuesSaver::calculatePolarRegressionCurve()
 {
-    // need to finish implementing this
+    Range range = regression->getDrawRange();
+    double angle = range.start, radius = 0, deltaAngle;
+    QPointF nextPt, delta;
+
     curve.clear();
+
+    while(angle < range.end)
+    {
+        radius = regression->eval(angle);
+        curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
+
+        //we evaluate now de step to add to angle to make the next point "pixelStep" farther than this one on the screen
+        angle += EPSILON;
+        //radius = regression->eval(angle);
+        //nextPt = QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
+
+        //delta = nextPt - curve.last();
+        //delta *= pixelStep / length(delta);
+
+        //deltaAngle by al-kashi formula plus we take in count that the xScale and yScake are different
+
+        //deltaAngle = fabs(acos(yUnit/xUnit * ( squareLength(curve.last()) + squareLength(nextPt) - squareLength(delta) ) / ( 2 * length(curve.last()) * length(nextPt) )));
+
+        //angle += deltaAngle - EPSILON;
+    }
 }
 
 

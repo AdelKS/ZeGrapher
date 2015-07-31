@@ -112,15 +112,15 @@ QList<QStringList> DataTable::getData()
 
     QStringList columnNamesVisualOrder;
     for(int i = 0 ; i < tableWidget->horizontalHeader()->count() ; i++)
-        columnNamesVisualOrder << tableWidget->horizontalHeaderItem(i)->text();
+        columnNamesVisualOrder << tableWidget->horizontalHeaderItem(tableWidget->horizontalHeader()->logicalIndex(i))->text();
 
     data << columnNamesVisualOrder;
 
-    for(int i = 1 ; i < tableWidget->rowCount(); i++)
+    for(int i = 0 ; i < tableWidget->rowCount(); i++)
     {
         data << QStringList();
         for(int j = 0 ; j < tableWidget->columnCount(); j++)
-            data[i] << tableWidget->item(i,j)->text();
+            data[i+1] << tableWidget->item(i,tableWidget->horizontalHeader()->logicalIndex(j))->text();
     }
 
     return data;
@@ -401,7 +401,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
     if(disableChecking)
         return;
 
-    if(item->column()+1 == tableWidget->columnCount())
+    if(tableWidget->horizontalHeader()->visualIndex(item->column()) + 1 == tableWidget->columnCount())
         addColumn();
     if(item->row()+1 == tableWidget->rowCount())
         addRow();
@@ -432,7 +432,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
         }
     }
 
-    emit valEdited(item->row(), item->column());
+    emit valEdited(item->row(), tableWidget->horizontalHeader()->visualIndex(item->column()));
 }
 
 void DataTable::insertRow(int index)
@@ -543,6 +543,16 @@ void DataTable::resizeRows(int rowHeight)
     }    
 }
 
+int DataTable::colVisualIndex(int logicalIndex)
+{
+    return tableWidget->horizontalHeader()->visualIndex(logicalIndex);
+}
+
+int DataTable::colLogicalIndex(int visualIndex)
+{
+    return tableWidget->horizontalHeader()->logicalIndex(visualIndex);
+}
+
 QSize DataTable::getVerticalHeaderSize()
 {
     return tableWidget->verticalHeader()->size();
@@ -561,4 +571,10 @@ int DataTable::getColumnCount()
 int DataTable::getRowCount()
 {
     return tableWidget->rowCount();
+}
+
+DataTable::~DataTable()
+{
+    delete calculator;
+    delete treeCreator;
 }
