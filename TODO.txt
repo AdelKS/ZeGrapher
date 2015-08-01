@@ -1,4 +1,2 @@
-Quand les points sont ralies par des segemnts alors qu'un tri a ete effectue, ca affiche du grand n'importe quoi
 Ajouter les nouvelles fonctions mathematiques dans c++11 (erf et compagnie)
-Ajouter le choix de la fenetre sur laquelle on trace les modelisations
-Calcul de la courbe des modeles en polaire
+Enregister les preferences utilisateur avec QSettings

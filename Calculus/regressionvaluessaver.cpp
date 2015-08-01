@@ -20,6 +20,10 @@
 
 #include "regressionvaluessaver.h"
 
+#include <iostream>
+
+using namespace std;
+
 RegressionValuesSaver::RegressionValuesSaver(Regression *reg, Options opt, GraphRange range, Point graphUnits)
 {
     xUnit = graphUnits.x;
@@ -98,7 +102,7 @@ double RegressionValuesSaver::length(QPointF pt)
     return sqrt(squareLength(pt));
 }
 
-QPointF orthogonalVector(const QPointF &pt)
+QPointF RegressionValuesSaver::orthogonalVector(const QPointF &pt)
 {
     return QPointF(pt.y(), -pt.x());
 }
@@ -117,18 +121,17 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
         curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
 
         //we evaluate now de step to add to angle to make the next point "pixelStep" farther than this one on the screen
-        angle += EPSILON;
-        //radius = regression->eval(angle);
-        //nextPt = QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
 
-        //delta = nextPt - curve.last();
-        //delta *= pixelStep / length(delta);
+        delta = orthogonalVector(curve.last());
+        delta *= pixelStep / length(delta);
+
+        nextPt = curve.last() + delta;
 
         //deltaAngle by al-kashi formula plus we take in count that the xScale and yScake are different
 
-        //deltaAngle = fabs(acos(yUnit/xUnit * ( squareLength(curve.last()) + squareLength(nextPt) - squareLength(delta) ) / ( 2 * length(curve.last()) * length(nextPt) )));
+        deltaAngle = fabs(acos(( squareLength(curve.last()) + squareLength(nextPt) - pixelStep*pixelStep ) / ( 2 * length(curve.last()) * length(nextPt) )));
 
-        //angle += deltaAngle - EPSILON;
+        angle += deltaAngle;
     }
 }
 

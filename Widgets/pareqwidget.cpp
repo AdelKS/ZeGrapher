@@ -287,10 +287,8 @@ void ParEqWidget::addAnimationControllWidgets()
 {
     animationControlWidget = new QWidget;
 
-    QVBoxLayout *animCtrLayout = new QVBoxLayout;
-
-    QHBoxLayout *layout3 = new QHBoxLayout;
-    layout3->setMargin(0);
+    QGridLayout *animCtrLayout = new QGridLayout;
+    animCtrLayout->setMargin(2);
 
     play = new QPushButton;
     play->setFixedSize(25,25);
@@ -312,41 +310,23 @@ void ParEqWidget::addAnimationControllWidgets()
     loopRound->setIcon(QIcon(":/icons/go&return.png"));
 
     connect(loopFromStart, SIGNAL(toggled(bool)), this, SLOT(loopFromStartToggled()));
-    connect(loopRound, SIGNAL(toggled(bool)), this, SLOT(loopRoundToggled()));
-
-    layout3->addStretch();
-    layout3->addWidget(play);
-    layout3->addWidget(loopFromStart);
-    layout3->addWidget(loopRound);
-    layout3->addStretch();
-
-    QVBoxLayout *layout4 = new QVBoxLayout;
-    layout4->setMargin(0);
-    layout4->setSpacing(0);
+    connect(loopRound, SIGNAL(toggled(bool)), this, SLOT(loopRoundToggled()));       
 
     parSlider = new QSlider(Qt::Horizontal);
-    connect(parSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));
-
-    QHBoxLayout *layout5 = new QHBoxLayout;
-    layout5->setMargin(0);
-    layout5->setSpacing(3);
+    connect(parSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));    
 
     parCharLabel = new QLabel();
     parCurrentValLineEdit = new QLineEdit();
     parCurrentValLineEdit->setFrame(false);
     parCurrentValLineEdit->setReadOnly(true);
-    parCurrentValLineEdit->setMaximumHeight(25);
+    parCurrentValLineEdit->setMaximumHeight(25);    
 
-    layout5->addStretch();
-    layout5->addWidget(parCharLabel);
-    layout5->addWidget(parCurrentValLineEdit);
-    layout5->addStretch();
-
-    layout4->addWidget(parSlider);
-    layout4->addLayout(layout5);
-
-    animCtrLayout->addLayout(layout3);
-    animCtrLayout->addLayout(layout4);
+    animCtrLayout->addWidget(play, 0, 0, 1, 1);
+    animCtrLayout->addWidget(loopFromStart, 0, 1, 1, 1);
+    animCtrLayout->addWidget(loopRound, 0, 2, 1, 1);
+    animCtrLayout->addWidget(parSlider, 0, 3, 1, 3);
+    animCtrLayout->addWidget(parCharLabel, 1, 4, 1, 1);
+    animCtrLayout->addWidget(parCurrentValLineEdit, 1, 5, 1, 1);
 
     animationControlWidget->setLayout(animCtrLayout);
 
