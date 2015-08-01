@@ -759,7 +759,7 @@ void MainGraph::drawAnimatedParEq()
         parWidget = parEqs->at(i);
         colorSaver = parWidget->getColorSaver();
 
-        if(parWidget->isAnimated())
+        if(parWidget->isAnimated() && parWidget->getDrawState())
         {
             if(parWidget->is_t_Animated())
                 list = parWidget->getPointsList();
@@ -790,7 +790,7 @@ void MainGraph::drawAnimatedParEq()
 
                 if(parWidget->is_t_Animated())
                 {
-                    pen.setWidth(parametres.epaisseurDesCourbes + 3);
+                    pen.setWidth(parametres.epaisseurDesCourbes + 4);
                     painter.setPen(pen);
 
                     painter.drawPoint(polygon.last());
