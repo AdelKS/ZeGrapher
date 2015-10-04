@@ -1,7 +1,7 @@
 /****************************************************************************
-**  Copyright (c) 2013, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
+**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
-**  This file is part of the ZeGrapher project, version 2.0.
+**  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
 **  under the terms of the GNU General Public License as published by the
@@ -17,6 +17,8 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
+
+
 
 
 #include "Calculus/seqcalculator.h"
@@ -470,7 +472,9 @@ void SeqCalculator::addRefFuncsPointers()
 {
     refFuncs << acos << asin << atan << cos << sin << tan << sqrt
              << log10 << log << fabs << exp << floor << ceil << cosh
-             << sinh << tanh << tenPower << tenPower;
+             << sinh << tanh << tenPower << tenPower << acosh << asinh
+             << atanh << erf << erfc << tgamma << tgamma << cosh
+             << sinh << tanh << acosh << asinh << atanh;
 }
 
 bool SeqCalculator::check_called_funcs_and_seqs_validity()

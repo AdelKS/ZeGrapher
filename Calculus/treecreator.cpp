@@ -1,7 +1,7 @@
 /****************************************************************************
-**  Copyright (c) 2013, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
+**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
-**  This file is part of the ZeGrapher project, version 2.0.
+**  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
 **  under the terms of the GNU General Public License as published by the
@@ -19,6 +19,8 @@
 ****************************************************************************/
 
 
+
+
 #include "Calculus/treecreator.h"
 
 TreeCreator::TreeCreator(short callingObjectType)
@@ -27,7 +29,9 @@ TreeCreator::TreeCreator(short callingObjectType)
 
     refFunctions << "acos" << "asin" << "atan" << "cos" << "sin" << "tan" << "sqrt"
                  << "log" << "ln" << "abs" << "exp" << "floor" << "ceil" << "cosh"
-                 << "sinh" << "tanh" << "E" << "e";
+                 << "sinh" << "tanh" << "E" << "e" << "acosh" << "asinh" << "atanh"
+                 << "erf" << "erfc" << "gamma" << "Γ" << "ch" << "sh" << "th" << "ach"
+                 << "ash" << "ath";
     functions << "f" << "g" << "h" << "p" << "r" << "m";
     antiderivatives << "F" << "G" << "H" << "P" << "R" << "M";
     derivatives << "f'" << "g'" << "h'" << "p'" << "r'" << "m'";

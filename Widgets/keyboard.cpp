@@ -1,7 +1,7 @@
 /****************************************************************************
-**  Copyright (c) 2013, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
+**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
-**  This file is part of the ZeGrapher project, version 2.0.
+**  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
 **  under the terms of the GNU General Public License as published by the
@@ -17,6 +17,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
+
 
 #include "Widgets/keyboard.h"
 #include "ui_keyboard.h"
@@ -38,7 +39,8 @@ void Keyboard::makeKeyboardConnects()
             << ui->exp << ui->f << ui->five << ui->floor << ui->four << ui->g << ui->h << ui->ln << ui->log << ui->m
             << ui->minus << ui->multiply << ui->nine << ui->one << ui->p << ui->par_k << ui->pi << ui->plus << ui->power
             << ui->pthf << ui->ptho << ui->r << ui->seven << ui->sin << ui->six << ui->sqrt << ui->tan << ui->three
-            << ui->two << ui->var_x << ui->zero << ui->cosh << ui->sinh << ui->tanh << ui->square << ui->var_n;
+            << ui->two << ui->var_x << ui->zero << ui->cosh << ui->sinh << ui->tanh << ui->square << ui->var_n << ui->cosh
+            << ui->sinh << ui->tanh << ui->erf << ui->erfc << ui->gamma;
 
     for(short i = 0 ; i < buttons.size(); i++)
     {

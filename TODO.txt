@@ -1,3 +1,4 @@
 Ajouter les nouvelles fonctions mathematiques dans c++11 (erf et compagnie)
 Enregister les preferences utilisateur avec QSettings
 Prendre en compte les widgets d'etalement manuel de l'affichage des regressions
+Ajouter les fenêtres d'aide là où il ya les boutons d'aide: il faudra aussi traduire et voir là où il y a un réel besoin d'aide pour y mettre des boutons d'aide.
