@@ -38,6 +38,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     regression = new PolynomialRegression(ui->degree->value(), (ApproxMethod)ui->approachPoints->isChecked(), LimitedToData,
                                           ui->relativeExtrapol->value(), ui->drawModel->isChecked(), pol);
+    connect(regression, SIGNAL(rangeUpdated()), this, SLOT(updateManualRangeFields()));
 
     connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
 
@@ -60,6 +61,19 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     connect(ui->dataInterval, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
     connect(ui->relativeExtrapolation, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
     connect(ui->manualInterval, SIGNAL(clicked(bool)), this, SLOT(updateRangeOption()));
+}
+
+void PolynomialModelWidget::manualRangeEdited()
+{
+    if(startVal->isValid() && endVal->isValid())
+    {
+        Range range;
+        range.step = 1;
+        range.start = startVal->getValue();
+        range.end = endVal->getValue();
+
+        regression->setRange(range);
+    }
 }
 
 void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
@@ -140,6 +154,12 @@ void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
     ui->expressionLineEdit->setText(calculableExpr);
 }
 
+void PolynomialModelWidget::updateManualRangeFields()
+{
+    startVal->setNumber(regression->getDrawRange().start);
+    endVal->setNumber(regression->getDrawRange().end);
+}
+
 void PolynomialModelWidget::updateApproxMethod()
 {
     if(ui->approachPoints->isChecked())
@@ -169,10 +189,14 @@ void PolynomialModelWidget::addWidgetsToUI()
     startVal->setMaximumHeight(22);
     startVal->setMaximumWidth(150);
 
+    connect(startVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
+
     endVal = new NumberLineEdit(false, informations->getFuncsList());
     endVal->setEnabled(false);
     endVal->setMaximumHeight(22);
     endVal->setMaximumWidth(150);
+
+    connect(endVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
 
     QLabel *start = new QLabel(tr("Début:"));
     start->setEnabled(false);

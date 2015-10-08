@@ -51,6 +51,7 @@ public:
 
 signals:
     void regressionModified();
+    void rangeUpdated();
 
 public slots:
     void setAbscissaName(QString name);

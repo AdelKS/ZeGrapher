@@ -29,18 +29,34 @@ NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) :
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
 
+    valid = false;
+    value = NAN;
+
     connect(this, SIGNAL(returnPressed()), this, SLOT(checkVal()));
     connect(this, SIGNAL(editingFinished()), this, SLOT(checkVal()));
+}
+
+bool NumberLineEdit::isValid()
+{
+    return valid;
+}
+
+double NumberLineEdit::getValue()
+{
+    return value;
 }
 
 void NumberLineEdit::setNumber(double num)
 {
     setText(QString::number(num));
+    value = num;
     setPalette(validPalette);
+    valid = true;
 }
 
 void NumberLineEdit::checkVal()
 {
+    valid = false;
     if(text().isEmpty())
     {
         setPalette(neutralPalette);
@@ -53,6 +69,8 @@ void NumberLineEdit::checkVal()
     if(ok)
     {
         setNumber(num);
+        value = num;
+        valid = true;
         emit newVal(num);
     }
     else setPalette(invalidPalette);

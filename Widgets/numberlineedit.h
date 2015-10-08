@@ -33,6 +33,8 @@ class NumberLineEdit : public QLineEdit
 public:
     NumberLineEdit(bool allowK = false, QList<FuncCalculator*> otherFuncs = QList<FuncCalculator*>());
     void setNumber(double num);
+    bool isValid();
+    double getValue();
 
 protected slots:
     void checkVal();
@@ -42,6 +44,8 @@ signals:
 
 protected:
     ExprCalculator calculator;
+    bool valid;
+    double value;
     QPalette validPalette, invalidPalette, neutralPalette;
 };
 

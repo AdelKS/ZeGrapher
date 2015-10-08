@@ -33,6 +33,7 @@ PolynomialRegression::PolynomialRegression(int polynomialDegree, ApproxMethod me
     polar = isPolar;
 
     range.step = 1; //this variable is useless in this class
+    range.start = range.end = 1; //to avoid bugs
 }
 
 double PolynomialRegression::eval(double x) const
@@ -76,13 +77,15 @@ void PolynomialRegression::updateDrawRange()
     if(rangeOption == LimitedToData)
     {
         range.start = xmin;
-        range.end = xmax;        
+        range.end = xmax;
+        emit rangeUpdated();
     }
     else if(rangeOption == RelativeExtrapolation)
     {
         double amplitude = xmax - xmin;
         range.start = xmin - amplitude * rangeCoef;
         range.end = xmax + amplitude * rangeCoef;
+        emit rangeUpdated();
     }
 }
 
@@ -97,6 +100,8 @@ void PolynomialRegression::setDrawRangeCalculusMethod(DrawRange option)
 void PolynomialRegression::setRange(Range rg)
 {
     range = rg;
+
+    emit regressionModified();
 }
 
 void PolynomialRegression::setRelativeRangeCoef(double coef)
