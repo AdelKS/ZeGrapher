@@ -60,6 +60,7 @@ protected slots:
     void showImageSaveWin();
     void showAboutWin();
 
+
 private:
 
     Informations *informations;

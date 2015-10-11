@@ -29,7 +29,7 @@ namespace Ui {
     class Keyboard;
 }
 
-class Keyboard : public QDialog
+class Keyboard : public QWidget
 {
     Q_OBJECT
 
@@ -40,6 +40,7 @@ public:
 
 public slots:
      void keyboardPressed(QWidget *widget);
+     void funcButtonPressed(QWidget *widget);
      void changeFuncButtonsText();
      void removeChar();
      void clearLine();
@@ -47,8 +48,10 @@ public slots:
 private:
     Ui::Keyboard *ui;
     QSignalMapper *keyboardButtons;
+    QSignalMapper *funcsMapper;
 
     QList <QPushButton*> buttons;
+    QList <QPushButton*> funcButtons;
 };
 
 #endif // KEYBOARD_H

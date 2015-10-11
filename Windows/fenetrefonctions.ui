@@ -36,6 +36,21 @@
     <normaloff>:/icons/fonctions.png</normaloff>:/icons/fonctions.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
@@ -89,8 +104,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>483</width>
-            <height>294</height>
+            <width>98</width>
+            <height>28</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="Layout_2">
@@ -195,8 +210,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>483</width>
-            <height>294</height>
+            <width>139</width>
+            <height>47</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -342,8 +357,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>485</width>
-            <height>296</height>
+            <width>98</width>
+            <height>75</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -372,8 +387,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>483</width>
-                <height>294</height>
+                <width>252</width>
+                <height>46</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -513,8 +528,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>483</width>
-            <height>294</height>
+            <width>340</width>
+            <height>161</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -755,8 +770,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>483</width>
-            <height>294</height>
+            <width>495</width>
+            <height>312</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -847,6 +862,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="keyboardButton">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="text">
         <string>Clavier</string>
        </property>
@@ -878,6 +896,9 @@
          <width>16777215</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
         <string>Tracer</string>

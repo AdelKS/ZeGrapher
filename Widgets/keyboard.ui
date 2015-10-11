@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Keyboard</class>
- <widget class="QDialog" name="Keyboard">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
+ <widget class="QWidget" name="Keyboard">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>199</height>
+    <width>588</width>
+    <height>183</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>622</width>
+    <width>16777215</width>
     <height>16777215</height>
    </size>
   </property>
-  <property name="focusPolicy">
-   <enum>Qt::NoFocus</enum>
-  </property>
-  <property name="contextMenuPolicy">
-   <enum>Qt::DefaultContextMenu</enum>
-  </property>
   <property name="windowTitle">
-   <string>Clavier</string>
-  </property>
-  <property name="windowIcon">
-   <iconset resource="../ressources.qrc">
-    <normaloff>:/icons/keyboard.png</normaloff>:/icons/keyboard.png</iconset>
+   <string>Clavier Virtuel</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="3" column="3">
@@ -54,25 +53,6 @@
        </property>
        <property name="text">
         <string notr="true">/</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="10">
-      <widget class="QPushButton" name="cosh">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(12, 150, 206)</string>
-       </property>
-       <property name="text">
-        <string>cosh</string>
        </property>
       </widget>
      </item>
@@ -98,66 +78,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="10">
-      <widget class="QPushButton" name="tanh">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(12, 150, 206)</string>
-       </property>
-       <property name="text">
-        <string>tanh</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="f">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:green;</string>
-       </property>
-       <property name="text">
-        <string notr="true">f(</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="10">
-      <widget class="QPushButton" name="sinh">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(12, 150, 206)</string>
-       </property>
-       <property name="text">
-        <string>sinh</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="7">
       <widget class="QPushButton" name="nine">
        <property name="maximumSize">
@@ -177,50 +97,6 @@
        </property>
        <property name="text">
         <string notr="true">9</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="p">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: green;
-</string>
-       </property>
-       <property name="text">
-        <string notr="true">p(</string>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>16</width>
-         <height>16</height>
-        </size>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-       <property name="default">
-        <bool>false</bool>
-       </property>
-       <property name="flat">
-        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -293,88 +169,6 @@
        </property>
        <property name="text">
         <string notr="true">8</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="r">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:green;</string>
-       </property>
-       <property name="text">
-        <string notr="true">r(</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="m">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:green;</string>
-       </property>
-       <property name="text">
-        <string notr="true">m(</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QPushButton" name="exp">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string notr="true">exp</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QPushButton" name="h">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:green;</string>
-       </property>
-       <property name="text">
-        <string notr="true">h(</string>
        </property>
       </widget>
      </item>
@@ -488,28 +282,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="8">
-      <widget class="QPushButton" name="cos">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(230, 111, 30);</string>
-       </property>
-       <property name="text">
-        <string notr="true">cos</string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="3">
       <widget class="QPushButton" name="power">
        <property name="maximumSize">
@@ -532,113 +304,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="9">
-      <widget class="QPushButton" name="asin">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(230, 111, 30);</string>
-       </property>
-       <property name="text">
-        <string notr="true">asin</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="8">
-      <widget class="QPushButton" name="sin">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(230, 111, 30);</string>
-       </property>
-       <property name="text">
-        <string notr="true">sin</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="9">
-      <widget class="QPushButton" name="atan">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(230, 111, 30);</string>
-       </property>
-       <property name="text">
-        <string notr="true">atan</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="8">
-      <widget class="QPushButton" name="tan">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(230, 111, 30);</string>
-       </property>
-       <property name="text">
-        <string notr="true">tan</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="log">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string notr="true">log</string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="7">
       <widget class="QPushButton" name="pthf">
        <property name="maximumSize">
@@ -655,25 +320,6 @@
        </property>
        <property name="text">
         <string notr="true">)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="ln">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string notr="true">ln</string>
        </property>
       </widget>
      </item>
@@ -699,28 +345,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="9">
-      <widget class="QPushButton" name="acos">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(230, 111, 30);</string>
-       </property>
-       <property name="text">
-        <string notr="true">acos</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="6">
       <widget class="QPushButton" name="two">
        <property name="maximumSize">
@@ -743,31 +367,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="antiderivative">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Primitive</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="7">
       <widget class="QPushButton" name="three">
        <property name="maximumSize">
@@ -787,113 +386,6 @@
        </property>
        <property name="text">
         <string notr="true">3</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="function">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Fonction</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="derivative">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Dérivée</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="remove">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string>Effacer</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="g">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:green;</string>
-       </property>
-       <property name="text">
-        <string notr="true">g(</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QPushButton" name="clear">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string>Vider</string>
        </property>
       </widget>
      </item>
@@ -951,66 +443,6 @@
        </property>
        <property name="text">
         <string notr="true">,</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QPushButton" name="square">
-       <property name="maximumSize">
-        <size>
-         <width>30</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="text">
-        <string>²</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="10">
-      <widget class="QPushButton" name="floor">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="toolTip">
-        <string>arrondie à l'entier inférieur</string>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string notr="true">floor</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="9">
-      <widget class="QPushButton" name="ceil">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="toolTip">
-        <string>arrondie à l'entier supérieur</string>
-       </property>
-       <property name="whatsThis">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string notr="true">ceil</string>
        </property>
       </widget>
      </item>
@@ -1081,61 +513,25 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="11">
-      <widget class="QPushButton" name="acosh">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(12, 150, 206)</string>
-       </property>
-       <property name="text">
-        <string>acosh</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="11">
-      <widget class="QPushButton" name="atanh">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(12, 150, 206)</string>
-       </property>
-       <property name="text">
-        <string>atanh</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="11">
-      <widget class="QPushButton" name="asinh">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(12, 150, 206)</string>
-       </property>
-       <property name="text">
-        <string>asinh</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="12">
       <widget class="QPushButton" name="erf">
        <property name="minimumSize">
         <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
          <width>40</width>
          <height>30</height>
         </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>fonction d'erreur.</string>
        </property>
        <property name="text">
         <string>erf</string>
@@ -1150,32 +546,19 @@
          <height>30</height>
         </size>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>fonction d'erreur complémentaire.</string>
+       </property>
        <property name="text">
         <string>erfc</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="12">
-      <widget class="QPushButton" name="gamma">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Nimbus Roman No9 L</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Γ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="10">
-      <widget class="QPushButton" name="abs">
+     <item row="0" column="9">
+      <widget class="QPushButton" name="ceil">
        <property name="maximumSize">
         <size>
          <width>40</width>
@@ -1185,15 +568,18 @@
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
        </property>
+       <property name="toolTip">
+        <string>arrondie à l'entier supérieur</string>
+       </property>
        <property name="whatsThis">
         <string notr="true"/>
        </property>
        <property name="text">
-        <string notr="true">abs</string>
+        <string notr="true">ceil</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="9">
+     <item row="1" column="9">
       <widget class="QPushButton" name="sqrt">
        <property name="maximumSize">
         <size>
@@ -1212,12 +598,674 @@
        </property>
       </widget>
      </item>
+     <item row="4" column="4">
+      <widget class="QPushButton" name="square">
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string>²</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="10">
+      <widget class="QPushButton" name="ln">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string notr="true">ln</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="10">
+      <widget class="QPushButton" name="exp">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string notr="true">exp</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="backspace">
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="8">
+      <widget class="QPushButton" name="clear">
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="antiderivative">
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Primitive</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="f">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:green;</string>
+       </property>
+       <property name="text">
+        <string notr="true">f</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="p">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: green;
+</string>
+       </property>
+       <property name="text">
+        <string notr="true">p</string>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="r">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:green;</string>
+       </property>
+       <property name="text">
+        <string notr="true">r</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="g">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:green;</string>
+       </property>
+       <property name="text">
+        <string notr="true">g</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="function">
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Fonction</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="derivative">
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Dérivée</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="h">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:green;</string>
+       </property>
+       <property name="text">
+        <string notr="true">h</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="m">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color:green;</string>
+       </property>
+       <property name="text">
+        <string notr="true">m</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QPushButton" name="floor">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>arrondie à l'entier inférieur</string>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string notr="true">floor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="11">
+      <widget class="QPushButton" name="log">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string notr="true">log</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="abs">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>valeur abosolue</string>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string notr="true">abs</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="11">
+      <widget class="QPushButton" name="gamma">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Nimbus Roman No9 L</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>fonction gamma d'Euler.</string>
+       </property>
+       <property name="text">
+        <string>Γ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="12">
+      <widget class="QPushButton" name="acosh">
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>cosinus hyperbolique réciproque.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(12, 150, 206)</string>
+       </property>
+       <property name="text">
+        <string>acosh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="12">
+      <widget class="QPushButton" name="asinh">
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>sinus hyperbolique réciproque.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(12, 150, 206)</string>
+       </property>
+       <property name="text">
+        <string>asinh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="12">
+      <widget class="QPushButton" name="atanh">
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>tangente hyperbolique réciproque.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(12, 150, 206)</string>
+       </property>
+       <property name="text">
+        <string>atanh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="11">
+      <widget class="QPushButton" name="cosh">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(12, 150, 206)</string>
+       </property>
+       <property name="text">
+        <string>cosh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="11">
+      <widget class="QPushButton" name="sinh">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(12, 150, 206)</string>
+       </property>
+       <property name="text">
+        <string>sinh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="11">
+      <widget class="QPushButton" name="tanh">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(12, 150, 206)</string>
+       </property>
+       <property name="text">
+        <string>tanh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="10">
+      <widget class="QPushButton" name="acos">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(230, 111, 30);</string>
+       </property>
+       <property name="text">
+        <string notr="true">acos</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="10">
+      <widget class="QPushButton" name="atan">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(230, 111, 30);</string>
+       </property>
+       <property name="text">
+        <string notr="true">atan</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="10">
+      <widget class="QPushButton" name="asin">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(230, 111, 30);</string>
+       </property>
+       <property name="text">
+        <string notr="true">asin</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="9">
+      <widget class="QPushButton" name="tan">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(230, 111, 30);</string>
+       </property>
+       <property name="text">
+        <string notr="true">tan</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="9">
+      <widget class="QPushButton" name="sin">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(230, 111, 30);</string>
+       </property>
+       <property name="text">
+        <string notr="true">sin</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="9">
+      <widget class="QPushButton" name="cos">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="whatsThis">
+        <string notr="true"/>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(230, 111, 30);</string>
+       </property>
+       <property name="text">
+        <string notr="true">cos</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../ressources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

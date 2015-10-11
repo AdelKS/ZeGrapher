@@ -40,5 +40,7 @@
         <file>icons/polynomial.png</file>
         <file>icons/arrow_left.png</file>
         <file>icons/arrow_right.png</file>
+        <file>icons/backspace.png</file>
+        <file>icons/clear.png</file>
     </qresource>
 </RCC>

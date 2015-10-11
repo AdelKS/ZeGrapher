@@ -131,7 +131,6 @@ FORMS    += \
     Windows/fenetrefonctions.ui \
     Windows/fenetrebornes.ui \
     Windows/apropos.ui \
-    Widgets/keyboard.ui \
     Widgets/datawidget.ui \
     Export/print.ui \
     Export/imagesave.ui \
@@ -142,7 +141,8 @@ FORMS    += \
     DataPlot/confirmdelete.ui \
     DataPlot/csvconfig.ui \
     DataPlot/modelchoicewidget.ui \
-    DataPlot/polynomialmodelwidget.ui
+    DataPlot/polynomialmodelwidget.ui \
+    Widgets/keyboard.ui
 
 
 RESOURCES += \

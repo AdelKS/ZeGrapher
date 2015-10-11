@@ -143,7 +143,7 @@ void MainWindow::makeConnects()
 {   
     connect(boutonGrille, SIGNAL(triggered(bool)), informations, SLOT(setGridState(bool)));
     connect(scene, SIGNAL(sizeChanged(int,int)), fenImage, SLOT(setSize(int,int)));
-    connect(fenFonctions, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
+    connect(fenFonctions, SIGNAL(displayKeyboard()), this, SLOT(showKeyboard()));
 }
 
 void MainWindow::showFuncsWin()
@@ -176,7 +176,7 @@ void MainWindow::showValuesTabWin()
 
 void MainWindow::showKeyboard()
 {
-    keyboard->move(fenFonctions->pos() + QPoint(0,fenFonctions->height()));
+    keyboard->move(fenFonctions->frameGeometry().bottomLeft());
     keyboard->show();
 }
 
