@@ -40,8 +40,12 @@ public:
     explicit FenetreOptions(Informations *info);
     ~FenetreOptions();   
 
+public slots:
+    void saveSettings();
+
 private slots:
     void appliquer();
+    void readSavedSettings();
 
 private:
 

@@ -42,5 +42,6 @@
         <file>icons/arrow_right.png</file>
         <file>icons/backspace.png</file>
         <file>icons/clear.png</file>
+        <file>icons/settings.png</file>
     </qresource>
 </RCC>

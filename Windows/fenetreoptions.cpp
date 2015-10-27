@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 
-
 #include "Windows/fenetreoptions.h"
 #include "ui_fenetreoptions.h"
 
@@ -30,19 +29,9 @@ FenetreOptions::FenetreOptions(Informations *info)
     ui = new Ui::fenetreoptions;
     ui->setupUi(this);
 
-    setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
+    setWindowIcon(QIcon(":/icons/settings.png"));
 
-    couleurAxes = new QColorButton(Qt::black);
-    couleurAxes->setFixedSize(25,25);
-    ui->axesColorLayout->addWidget(couleurAxes);
-
-    couleurFond = new QColorButton(Qt::white);
-    couleurFond->setFixedSize(25,25);
-    ui->backgroundColorLayout->addWidget(couleurFond);
-
-    couleurQuadrillage = new QColorButton(Qt::gray);
-    couleurQuadrillage->setFixedSize(25,25);
-    ui->gridColorLayout->addWidget(couleurQuadrillage);
+    readSavedSettings();
 
     parametres.couleurDuFond = couleurFond->getCurrentColor();
     parametres.couleurDesAxes = couleurAxes->getCurrentColor();
@@ -57,6 +46,75 @@ FenetreOptions::FenetreOptions(Informations *info)
     connect(couleurQuadrillage, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
 
     appliquer();
+
+}
+
+void FenetreOptions::readSavedSettings()
+{
+    QSettings settings;
+
+    couleurAxes = new QColorButton(Qt::black);
+    couleurAxes->setFixedSize(25,25);
+    ui->axesColorLayout->addWidget(couleurAxes);
+
+    couleurFond = new QColorButton(Qt::white);
+    couleurFond->setFixedSize(25,25);
+    ui->backgroundColorLayout->addWidget(couleurFond);
+
+    couleurQuadrillage = new QColorButton(Qt::gray);
+    couleurQuadrillage->setFixedSize(25,25);
+    ui->gridColorLayout->addWidget(couleurQuadrillage);
+
+    settings.beginGroup("graph");
+
+    if(settings.contains("background_color"))
+        couleurFond->setColor(settings.value("background_color").value<QColor>());
+    if(settings.contains("axes_color"))
+        couleurAxes->setColor(settings.value("axes_color").value<QColor>());
+    if(settings.contains("grid_color"))
+        couleurQuadrillage->setColor(settings.value("grid_color").value<QColor>());
+    if(settings.contains("antiasliasing"))
+        ui->lissage->setChecked(settings.value("antialiasing").toBool());
+
+    settings.endGroup();
+
+    settings.beginGroup("graph/font");
+
+    if(settings.contains("pixel_size"))
+        ui->numSize->setValue(settings.value("pixel_size").toInt());
+
+
+    settings.endGroup();
+
+    settings.beginGroup("graph/curves");
+
+    if(settings.contains("quality"))
+        ui->distanceWidget->setValue(settings.value("quality").toInt());
+    if(settings.contains("thickness"))
+        ui->epaisseurWidget->setValue(settings.value("thickness").toInt());
+
+    settings.endGroup();
+
+}
+
+void FenetreOptions::saveSettings()
+{
+    QSettings settings;
+    settings.beginGroup("graph");
+
+    settings.setValue("background_color", couleurFond->getCurrentColor());
+    settings.setValue("axes_color", couleurAxes->getCurrentColor());
+    settings.setValue("grid_color", couleurQuadrillage->getCurrentColor());
+    settings.setValue("antialiasing", ui->lissage->isChecked());
+
+    settings.endGroup();
+
+    settings.beginGroup("graph/curves");
+
+    settings.setValue("quality", ui->distanceWidget->value());
+    settings.setValue("thickness", ui->epaisseurWidget->value());
+
+    settings.endGroup();
 
 }
 

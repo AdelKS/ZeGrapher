@@ -77,15 +77,15 @@ void MainWindow::createMenus()
     QAction *afficherFenAPropos = menuAide->addAction(tr("à Propos..."));
     connect(afficherFenAPropos, SIGNAL(triggered()), this, SLOT(showAboutWin()));
 
-    QAction *print = menuFichier->addAction(QIcon(":/icons/print.png"), tr("Imprimer..."));
+    QAction *print = menuFichier->addAction(QIcon(":/icons/print.png"), tr("Imprimer"));
     print->setShortcut(QKeySequence("Ctrl+P"));
     connect(print, SIGNAL(triggered()), this, SLOT(showPrintWin()));
 
-    QAction *saveImage = menuFichier->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Enregistrer image..."));
+    QAction *saveImage = menuFichier->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Enregistrer en image"));
     saveImage->setShortcut(QKeySequence("Ctrl+S"));
     connect(saveImage, SIGNAL(triggered()), this, SLOT(showImageSaveWin()));
 
-    QAction *actionAfficherFenOptions = menuFichier->addAction(tr("Options"));
+    QAction *actionAfficherFenOptions = menuFichier->addAction(QIcon(":/icons/settings.png"), tr("Options"));
     actionAfficherFenOptions->setShortcut(QKeySequence("Ctrl+O"));
     connect(actionAfficherFenOptions, SIGNAL(triggered()), this, SLOT(showOptionsWin()));
 
@@ -208,7 +208,9 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
     fenFonctions->closeAllOpenedWindows();
     fenFonctions->close();
 
+    fenOptions->saveSettings();
     fenOptions->close();
+
     fenAPropos->close();
     fenValeurs->close();
     fenImage->close();

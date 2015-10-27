@@ -18,10 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 #include "Calculus/colorsaver.h"
 
 ColorSaver::ColorSaver(QColor firstANDlast)
