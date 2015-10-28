@@ -85,7 +85,8 @@ MainGraph::MainGraph(Informations *info) : GraphDraw(info)
     hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;   
     moving = false;
 
-    kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF); border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
+    kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF);"
+                         " border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
 
     customFunctions << "f(x) =" << "g(x) =" << "h(x) =" << "p(x) =" << "r(x) =" << "m(x) =";
     customSequences << "u<sub>n</sub> =" << "v<sub>n</sub> =" << "l<sub>n</sub> =" << "w<sub>n</sub> =" << "q<sub>n</sub> =" << "t<sub>n</sub> =";
@@ -136,22 +137,22 @@ void MainGraph::updateData()
 void MainGraph::addOtherWidgets()
 {
     QLabel *zoom1 = new QLabel();
-    zoom1->setFixedSize(25,25);
+    zoom1->setFixedSize(22,22);
     zoom1->setScaledContents(true);
     zoom1->setPixmap(QPixmap(":/icons/zoom-in-icon.png"));
 
     QLabel *zoom2 = new QLabel();
-    zoom2->setFixedSize(25,25);
+    zoom2->setFixedSize(22,22);
     zoom2->setScaledContents(true);
     zoom2->setPixmap(QPixmap(":/icons/zoom-in-icon.png"));
 
     QLabel *unZoom1 = new QLabel();
-    unZoom1->setFixedSize(25,25);
+    unZoom1->setFixedSize(22,22);
     unZoom1->setScaledContents(true);
     unZoom1->setPixmap(QPixmap(":/icons/zoom-out-icon.png"));
 
     QLabel *unZoom2 = new QLabel();
-    unZoom2->setFixedSize(25,25);
+    unZoom2->setFixedSize(22,22);
     unZoom2->setScaledContents(true);
     unZoom2->setPixmap(QPixmap(":/icons/zoom-out-icon.png"));
 
@@ -227,9 +228,11 @@ void MainGraph::addOtherWidgets()
     yWidget->setLayout(hbox2);
     yWidget->setAutoFillBackground(true);
 
-    vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF); border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
+    vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
+                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-style: solid; border-top-left-radius: 10; border-bottom-right-radius: 10;");
 
-    hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 1 #FFFFFF); border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
+    hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
+                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-top-left-radius: 10; border-bottom-right-radius: 10;");
     hSlider->setStyleSheet("background-color: none; border: none;");
     zoom2->setStyleSheet("background-color: none; border: none;");
     unZoom2->setStyleSheet("background-color: none; border: none;");

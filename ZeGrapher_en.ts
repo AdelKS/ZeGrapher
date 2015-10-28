@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.1" language="en_US">
 <context>
     <name>AbstractTable</name>
     <message>
@@ -29,7 +29,7 @@
 </context>
 <context>
     <name>FenetreBornes</name>
-    <message utf8="true">
+    <message>
         <location filename="fenetrebornes.ui" line="26"/>
         <source>Bornes de représentation</source>
         <translation>Representation range</translation>
@@ -132,7 +132,7 @@
         <source>Form</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetrefonctions.ui" line="67"/>
         <source>Fonctions numériques</source>
         <oldsource>fonctins numériques</oldsource>
@@ -143,7 +143,7 @@
         <source>Suites</source>
         <translation>Sequences</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetrefonctions.ui" line="131"/>
         <source>Suites numériques</source>
         <oldsource>suites numériques</oldsource>
@@ -180,20 +180,20 @@
         <source>Tangente</source>
         <translation>Tangent</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetrefonctions.ui" line="428"/>
         <source>Paramètrique</source>
         <translation>Parametric</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetrefonctions.ui" line="466"/>
         <source>Contrôle de l&apos;animation:</source>
         <translation>Animation control:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetrefonctions.ui" line="475"/>
         <source>Période d&apos;incrémentation :</source>
-        <translation>Increase period :</translation>
+        <translation>Iteration period :</translation>
     </message>
     <message>
         <location filename="fenetrefonctions.ui" line="509"/>
@@ -205,7 +205,7 @@
         <source>ms/pas</source>
         <translation>ms/step</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetrefonctions.ui" line="521"/>
         <source>Fréquence :</source>
         <translation>Refresh rate :</translation>
@@ -330,7 +330,7 @@
         <source>Hauteur:</source>
         <translation>Height:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="imagesave.ui" line="191"/>
         <source>Précision :</source>
         <translation>Precision :</translation>
@@ -340,7 +340,7 @@
         <source> chiffres</source>
         <translation> digits</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="imagesave.ui" line="238"/>
         <source>Légendes</source>
         <translation>Legends</translation>
@@ -350,7 +350,7 @@
         <source>Abscisses :</source>
         <translation>x-axis :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="imagesave.ui" line="273"/>
         <source>Ordonnées :</source>
         <translation>y-axis :</translation>
@@ -406,7 +406,7 @@
         <source>Fonction</source>
         <translation>Function</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="803"/>
         <source>Dérivée</source>
         <translation>Derivative</translation>
@@ -426,22 +426,22 @@
         <source>variable des fonctions</source>
         <translation>function&apos;s variable</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="936"/>
         <source>²</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="952"/>
         <source>arrondie à l&apos;entier inférieur</source>
         <translation>rounds to lower integer</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="993"/>
         <source>arrondie à l&apos;entier supérieur</source>
         <translation>rounds to upper integer</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="1015"/>
         <source>racine carrée</source>
         <translation>square root</translation>
@@ -461,7 +461,7 @@
         <source>n</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="1059"/>
         <source>paramètre</source>
         <translation>parameter</translation>
@@ -471,7 +471,7 @@
         <source>k</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="keyboard.ui" line="1085"/>
         <source>π</source>
         <translation></translation>
@@ -684,7 +684,7 @@
         <source>Imprimer</source>
         <translation>Print</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="33"/>
         <source>Paramètres globaux:</source>
         <translation>Global parameters:</translation>
@@ -719,12 +719,12 @@
         <source>Niveaux de gris</source>
         <translation>Grayscale</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="136"/>
         <source>Résolution:</source>
         <translation>Resolution:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="145"/>
         <source>Celle de l&apos;écran</source>
         <translation>Screen&apos;s resolution</translation>
@@ -734,7 +734,7 @@
         <source>Orientation:</source>
         <translation>Page orientation:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="157"/>
         <source>Prédifinie:</source>
         <translation>Custom:</translation>
@@ -774,7 +774,7 @@
         <source>Graphique</source>
         <translation>Graph</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="360"/>
         <source>Précision :</source>
         <translation>Precision :</translation>
@@ -800,7 +800,7 @@
         <source>Largeur</source>
         <translation>Width</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="481"/>
         <source>Échelle:</source>
         <translation>Scale:</translation>
@@ -810,23 +810,23 @@
         <source>Abscisses:</source>
         <translation>Abscissa:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="517"/>
         <location filename="print.ui" line="556"/>
         <source> cm/unité</source>
         <translation>cm/unit</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="543"/>
         <source>Ordonées:</source>
         <translation>Ordinate:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="574"/>
         <source>Repère non orthonormal</source>
         <translation>Non-orthonormal basis</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="585"/>
         <location filename="print.ui" line="591"/>
         <source>Légendes</source>
@@ -837,7 +837,7 @@
         <source>Abscisses :</source>
         <translation>x-axis :</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="print.ui" line="626"/>
         <source>Ordonnées :</source>
         <translation>y-axis :</translation>
@@ -1160,12 +1160,12 @@
 </context>
 <context>
     <name>apropos</name>
-    <message utf8="true">
+    <message>
         <location filename="apropos.ui" line="14"/>
         <source>À Propos...</source>
         <translation>About...</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="apropos.ui" line="45"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1214,7 +1214,7 @@ p, li { white-space: pre-wrap; }
         <source>Options</source>
         <translation>Preferences</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetreoptions.ui" line="57"/>
         <source>la qualité est améliorée au détriment de la vitesse, et inversement.</source>
         <oldsource>quand cette distance augmente, 
@@ -1223,7 +1223,7 @@ la qualité de la courbe diminue</oldsource>
         <translation>Higher value for higher quality,
 lower value for higher speed.</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetreoptions.ui" line="60"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curve&apos;s quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -1258,7 +1258,7 @@ lower value for higher speed.</translation>
         <source>&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Grid color:&lt;/strong&gt;</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="fenetreoptions.ui" line="247"/>
         <source>Taille des nombres affichés sur le graphique</source>
         <translation>Numbers font size on the graph</translation>

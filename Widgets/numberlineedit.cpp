@@ -36,6 +36,12 @@ NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) :
     connect(this, SIGNAL(editingFinished()), this, SLOT(checkVal()));
 }
 
+void NumberLineEdit::clear()
+{
+    setPalette(neutralPalette);
+    QLineEdit::clear();
+}
+
 bool NumberLineEdit::isValid()
 {
     return valid;

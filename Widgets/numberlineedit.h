@@ -36,6 +36,9 @@ public:
     bool isValid();
     double getValue();
 
+public slots:
+    void clear();
+
 protected slots:
     void checkVal();
 

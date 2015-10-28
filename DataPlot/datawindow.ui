@@ -357,6 +357,18 @@
       </sizepolicy>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -451,6 +463,35 @@
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QPushButton" name="help">
+          <property name="maximumSize">
+           <size>
+            <width>26</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../ressources.qrc">
+            <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -465,7 +506,7 @@
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
+         <enum>QFrame::Raised</enum>
         </property>
         <property name="widgetResizable">
          <bool>true</bool>
@@ -475,8 +516,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>566</width>
-           <height>521</height>
+           <width>568</width>
+           <height>523</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">

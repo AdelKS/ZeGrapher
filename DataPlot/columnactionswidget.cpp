@@ -57,7 +57,14 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, i
     fillOptions = new QWidget();
     fillOptionsUi = new Ui::FillOptions;
     fillOptionsUi->setupUi(fillOptions);
+
     connect(fillOptionsUi->previous, SIGNAL(released()), this, SLOT(showPreviousWidget()));
+
+
+    connect(fillOptionsUi->start, SIGNAL(returnPressed()), this, SLOT(applyFill()));
+    connect(fillOptionsUi->step, SIGNAL(returnPressed()), this, SLOT(applyFill()));
+    connect(fillOptionsUi->end, SIGNAL(returnPressed()), this, SLOT(applyFill()));
+    connect(fillOptionsUi->expression, SIGNAL(returnPressed()), this, SLOT(applyFill()));
     connect(fillOptionsUi->apply, SIGNAL(released()), this, SLOT(applyFill()));
 
     fillOptions->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -215,10 +222,7 @@ void ColumnActionsWidget::applyFill()
             startingActions->show();
             shownWidgets << startingActions;
 
-            fillOptionsUi->start->clear();
-            fillOptionsUi->step->clear();
-            fillOptionsUi->end->clear();
-            fillOptionsUi->expression->clear();
+            resetFillForms();
         }
     }
     else
@@ -230,13 +234,23 @@ void ColumnActionsWidget::applyFill()
             startingActions->show();
             shownWidgets << startingActions;
 
-            fillOptionsUi->start->clear();
-            fillOptionsUi->step->clear();
-            fillOptionsUi->end->clear();
-            fillOptionsUi->expression->clear();
+            resetFillForms();
         }
         else fillOptionsUi->expression->setPalette(invalidPalette);
     }
+}
+
+void ColumnActionsWidget::resetFillForms()
+{
+    fillOptionsUi->start->clear();
+    fillOptionsUi->step->clear();
+    fillOptionsUi->end->clear();
+    fillOptionsUi->expression->clear();
+
+    fillOptionsUi->start->setPalette(neutralPalette);
+    fillOptionsUi->step->setPalette(neutralPalette);
+    fillOptionsUi->end->setPalette(neutralPalette);
+    fillOptionsUi->expression->setPalette(neutralPalette);
 }
 
 void ColumnActionsWidget::applySort()

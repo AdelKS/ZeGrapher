@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
-    <height>186</height>
+    <width>622</width>
+    <height>175</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,33 +19,71 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>4</number>
+    <number>6</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="topMargin">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="bottomMargin">
-    <number>0</number>
+    <number>3</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="spacing">
+      <number>2</number>
+     </property>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <property name="spacing">
-        <number>2</number>
+      <widget class="QRadioButton" name="fromExpression">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>à partir d'une expression :</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QRadioButton" name="fromExpression">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>30</width>
+           <height>25</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -53,120 +91,32 @@
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>26</height>
+           <height>16777215</height>
           </size>
          </property>
          <property name="text">
-          <string>à partir d'une expression :</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
+          <string>x' =</string>
          </property>
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>30</width>
-             <height>25</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>x' =</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="expression">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>25</height>
-            </size>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetMinimumSize</enum>
-       </property>
-       <item>
-        <widget class="QPushButton" name="help">
+        <widget class="QLineEdit" name="expression">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="maximumSize">
           <size>
-           <width>30</width>
-           <height>30</height>
+           <width>16777215</width>
+           <height>25</height>
           </size>
          </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../ressources.qrc">
-           <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>30</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
+         <property name="autoFillBackground">
+          <bool>false</bool>
          </property>
         </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </item>
@@ -401,74 +351,8 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../ressources.qrc"/>
- </resources>
+ <resources/>
  <connections>
-  <connection>
-   <sender>expression</sender>
-   <signal>returnPressed()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>363</x>
-     <y>65</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>468</x>
-     <y>184</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>step</sender>
-   <signal>returnPressed()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>613</x>
-     <y>138</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>468</x>
-     <y>184</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>end</sender>
-   <signal>returnPressed()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>423</x>
-     <y>138</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>468</x>
-     <y>184</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>start</sender>
-   <signal>returnPressed()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>141</x>
-     <y>137</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>468</x>
-     <y>184</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>fromExpression</sender>
    <signal>toggled(bool)</signal>
@@ -497,7 +381,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>50</y>
+     <y>80</y>
     </hint>
    </hints>
   </connection>
@@ -508,12 +392,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>97</x>
-     <y>100</y>
+     <x>101</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
      <x>51</x>
-     <y>116</y>
+     <y>190</y>
     </hint>
    </hints>
   </connection>
@@ -524,12 +408,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>102</y>
+     <x>197</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
-     <x>186</x>
-     <y>124</y>
+     <x>270</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -540,12 +424,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>315</x>
-     <y>107</y>
+     <x>319</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
-     <x>320</x>
-     <y>121</y>
+     <x>494</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -556,12 +440,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>440</x>
-     <y>98</y>
+     <x>444</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
-     <x>499</x>
-     <y>123</y>
+     <x>740</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -572,12 +456,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>408</x>
-     <y>102</y>
+     <x>412</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
-     <x>445</x>
-     <y>116</y>
+     <x>620</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -588,60 +472,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>233</x>
-     <y>95</y>
+     <x>237</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
-     <x>255</x>
-     <y>123</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>start</sender>
-   <signal>selectionChanged()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>213</x>
-     <y>125</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>414</x>
-     <y>171</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>end</sender>
-   <signal>returnPressed()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>377</x>
-     <y>132</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>416</x>
-     <y>171</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>step</sender>
-   <signal>returnPressed()</signal>
-   <receiver>apply</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>518</x>
-     <y>129</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>449</x>
-     <y>167</y>
+     <x>330</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>

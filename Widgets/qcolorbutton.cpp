@@ -25,7 +25,7 @@
 QColorButton::QColorButton(QColor color)
 {
     setColor(color);
-    setFixedSize(15, 15);
+    setFixedSize(18, 18);
     setFocusPolicy(Qt::NoFocus);
 
     connect(this, SIGNAL(released()), this, SLOT(openColorDialog()));
@@ -39,7 +39,9 @@ void QColorButton::openColorDialog()
 void QColorButton::setColor(QColor color)
 {
     currentColor = color;
-    setStyleSheet("background-color:"+color.name()+"; border-width: 1px; border-color: grey; border-style: solid; border-radius: 5;");
+    setStyleSheet("background-color:"+color.name()+"; border-width: 1px; border-color: #787878 ; border-style: solid; "
+                                                   "border-top-right-radius: 8; border-bottom-left-radius: 8;"
+                                                   "border-top-left-radius: 2; border-bottom-right-radius: 2;");
 
     emit colorChanged(currentColor);
 }

@@ -57,6 +57,7 @@ protected slots:
     void showNextWidget(QWidget*);
     void showPreviousWidget();
     void resetPalette(QWidget *widget);
+    void resetFillForms();
 
 protected:
 

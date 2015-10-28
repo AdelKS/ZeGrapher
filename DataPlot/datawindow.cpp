@@ -275,6 +275,7 @@ void DataWindow::removeModelWidget(ModelWidget *w)
 void DataWindow::changeIndex(int ind)
 {
     index = ind;
+    setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
 }
 
 void DataWindow::dataChanged()
