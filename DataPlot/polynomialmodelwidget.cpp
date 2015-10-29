@@ -131,7 +131,7 @@ void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
             genericExpr += "a<sub>" + QString::number(coefs.size()-2) + "</sub> X<sup>" + QString::number(coefs.size()-2) + "</sup> + ";
         }
 
-        genericExpr += "a<sub>" + QString::number(coefs.size()-1) + "</sub> X<sup>" + QString::number(coefs.size()-1) + "</sup>";
+        genericExpr += "+ a<sub>" + QString::number(coefs.size()-1) + "</sub> X<sup>" + QString::number(coefs.size()-1) + "</sup>";
     }
 
     ui->polynomialGenericExpression->setText(genericExpr);
@@ -238,7 +238,7 @@ void PolynomialModelWidget::addWidgetsToUI()
 
 void PolynomialModelWidget::updateDescriptionText()
 {
-    ui->description->setText(tr("calcul du meilleur polynôme P approchant l'égalité:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
+    ui->description->setText(tr("Calcul du meilleur polynôme P approchant l'égalité:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
 }
 
 void PolynomialModelWidget::setAbscissaName(QString name)

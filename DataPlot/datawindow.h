@@ -31,6 +31,8 @@
 #include "./csvhandler.h"
 #include "./modelwidget.h"
 
+#include <QtWebKitWidgets/QWebView>
+
 #define WIDGET_ANIMATION_TIME 250
 
 #define COLUMN_SELECTION true
@@ -79,10 +81,12 @@ protected slots:
     void columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
     void animationFinished();
     void startAnimation();
+    void displayHelp();
 
 protected:    
 
     int index, xindex, yindex;
+    QWebView *helpWindow;
     Ui::DataWindow *ui;
     Informations *informations;
     QGroupBox *actionsGroupBox;

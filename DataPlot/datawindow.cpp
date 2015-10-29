@@ -170,6 +170,12 @@ DataWindow::DataWindow(Informations *info, int ind)
     connect(ui->addModel, SIGNAL(released()), this, SLOT(addModel()));
     connect(ui->polar, SIGNAL(toggled(bool)), this, SLOT(coordinateSystemChanged(bool)));
 
+
+    helpWindow = new QWebView();
+    helpWindow->load(QUrl("qrc:///Help/data_help_fr.html"));
+
+    connect(ui->help, SIGNAL(released()), helpWindow, SLOT(show()));
+
 }
 
 void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
@@ -255,6 +261,11 @@ void DataWindow::columnNameChanged(int index)
     else if(index == yindex)
         for(int i = 0 ; i < modelWidgets.size() ; i++)
             modelWidgets[i]->setOrdinateName(dataTable->getColumnName(yindex));
+}
+
+void DataWindow::displayHelp()
+{
+
 }
 
 void DataWindow::coordinateSystemChanged(bool polar)
@@ -401,4 +412,5 @@ DataWindow::~DataWindow()
 {
     delete dataTable;
     delete csvHandler;
+    delete helpWindow;
 }

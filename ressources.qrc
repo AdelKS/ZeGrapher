@@ -43,5 +43,18 @@
         <file>icons/backspace.png</file>
         <file>icons/clear.png</file>
         <file>icons/settings.png</file>
+        <file>Help/data_help_fr.html</file>
+        <file>Help/basePin.png</file>
+        <file>Help/columnActions_fr.png</file>
+        <file>Help/columnFill_fr.png</file>
+        <file>Help/data_help.md</file>
+        <file>Help/lineActions_fr.png</file>
+        <file>Help/pins.png</file>
+        <file>Help/polynomialCoefVals_fr.png</file>
+        <file>Help/Rpin.png</file>
+        <file>Help/selector.png</file>
+        <file>Help/Tetapin.png</file>
+        <file>Help/Xpin.png</file>
+        <file>Help/Ypin.png</file>
     </qresource>
 </RCC>
