@@ -173,6 +173,7 @@ DataWindow::DataWindow(Informations *info, int ind)
 
     helpWindow = new QWebView();
     helpWindow->load(QUrl("qrc:///Help/data_help_fr.html"));
+    helpWindow->setWindowTitle(tr("Aide: Saisie de données."));
 
     connect(ui->help, SIGNAL(released()), helpWindow, SLOT(show()));
 

@@ -93,7 +93,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, i
     confirmDelete = new QWidget();
     confirmDeleteUi = new Ui::ConfirmDelete;
     confirmDeleteUi->setupUi(confirmDelete);
-    confirmDeleteUi->textPromptLabel->setText(tr("Etes vous sûr de supprimer cette colonne ?"));
+    confirmDeleteUi->textPromptLabel->setText(tr("Etes vous sûr de vouloir supprimer cette colonne ?"));
     connect(confirmDeleteUi->no, SIGNAL(released()), this, SLOT(showPreviousWidget()));
     connect(confirmDeleteUi->yes, SIGNAL(released()), this, SLOT(emitRemoveColumnSignal()));
 

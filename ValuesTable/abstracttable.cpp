@@ -81,7 +81,8 @@ AbstractTable::AbstractTable(QWidget *parent) :
 
     QHBoxLayout *precisionLayout = new QHBoxLayout;
     QLabel *precisionText = new QLabel(tr("Précision :"));
-    precision = new QSpinBox;
+    precision = new QSpinBox();
+    precision->setSuffix(tr(" chiffres"));
     precision->setMinimum(2);
     precision->setMaximum(8);
     precision->setValue(4);

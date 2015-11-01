@@ -78,11 +78,11 @@ void MainWindow::createMenus()
     connect(afficherFenAPropos, SIGNAL(triggered()), this, SLOT(showAboutWin()));
 
     QAction *print = menuFichier->addAction(QIcon(":/icons/print.png"), tr("Imprimer"));
-    print->setShortcut(QKeySequence("Ctrl+P"));
+    print->setShortcut(QKeySequence::Print);
     connect(print, SIGNAL(triggered()), this, SLOT(showPrintWin()));
 
     QAction *saveImage = menuFichier->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Enregistrer en image"));
-    saveImage->setShortcut(QKeySequence("Ctrl+S"));
+    saveImage->setShortcut(QKeySequence::Save);
     connect(saveImage, SIGNAL(triggered()), this, SLOT(showImageSaveWin()));
 
     QAction *actionAfficherFenOptions = menuFichier->addAction(QIcon(":/icons/settings.png"), tr("Options"));
@@ -92,7 +92,7 @@ void MainWindow::createMenus()
     menuFichier->addSeparator();
 
     QAction *actionQuitter = menuFichier->addAction(QIcon(":/icons/quitter.png"), tr("Quitter"));
-    actionQuitter->setShortcut(QKeySequence("Ctrl+Q"));
+    actionQuitter->setShortcut(QKeySequence::Quit);
     connect(actionQuitter, SIGNAL(triggered()), this, SLOT(close()));
 
     QAction *actionAfficherFenFonctions = menuAffichage->addAction(QIcon(":/icons/fonctions.png"), tr("Fonctions"));

@@ -669,6 +669,9 @@
          <height>20</height>
         </size>
        </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="1" column="8">
@@ -690,6 +693,9 @@
          <width>20</width>
          <height>20</height>
         </size>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
