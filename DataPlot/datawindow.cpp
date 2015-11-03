@@ -188,6 +188,12 @@ void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisual
         remakeDataList();
 }
 
+void DataWindow::closeEvent(QCloseEvent *event)
+{
+    helpWindow->close();
+    event->accept();
+}
+
 void DataWindow::animationFinished()
 {
     if(widgetState == WIDGET_OPENED)

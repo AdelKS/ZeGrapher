@@ -461,7 +461,7 @@
         <string>variable des suites</string>
        </property>
        <property name="text">
-        <string>n</string>
+        <string notr="true">n</string>
        </property>
       </widget>
      </item>
@@ -486,7 +486,7 @@
         <string>paramètre</string>
        </property>
        <property name="text">
-        <string>k</string>
+        <string notr="true">k</string>
        </property>
       </widget>
      </item>
@@ -509,7 +509,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>π</string>
+        <string notr="true">π</string>
        </property>
       </widget>
      </item>
@@ -534,7 +534,7 @@
         <string>fonction d'erreur.</string>
        </property>
        <property name="text">
-        <string>erf</string>
+        <string notr="true">erf</string>
        </property>
       </widget>
      </item>
@@ -553,7 +553,7 @@
         <string>fonction d'erreur complémentaire.</string>
        </property>
        <property name="text">
-        <string>erfc</string>
+        <string notr="true">erfc</string>
        </property>
       </widget>
      </item>
@@ -594,7 +594,7 @@
         <string>racine carrée</string>
        </property>
        <property name="text">
-        <string>sqrt</string>
+        <string notr="true">sqrt</string>
        </property>
       </widget>
      </item>
@@ -610,7 +610,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="text">
-        <string>²</string>
+        <string notr="true">²</string>
        </property>
       </widget>
      </item>
@@ -1015,7 +1015,7 @@
         <string>fonction gamma d'Euler.</string>
        </property>
        <property name="text">
-        <string>Γ</string>
+        <string notr="true">Γ</string>
        </property>
       </widget>
      </item>
@@ -1034,7 +1034,7 @@
         <string notr="true">color: rgb(12, 150, 206)</string>
        </property>
        <property name="text">
-        <string>acosh</string>
+        <string notr="true">acosh</string>
        </property>
       </widget>
      </item>
@@ -1053,7 +1053,7 @@
         <string notr="true">color: rgb(12, 150, 206)</string>
        </property>
        <property name="text">
-        <string>asinh</string>
+        <string notr="true">asinh</string>
        </property>
       </widget>
      </item>
@@ -1075,7 +1075,7 @@
         <string notr="true">color: rgb(12, 150, 206)</string>
        </property>
        <property name="text">
-        <string>atanh</string>
+        <string notr="true">atanh</string>
        </property>
       </widget>
      </item>
@@ -1094,7 +1094,7 @@
         <string notr="true">color: rgb(12, 150, 206)</string>
        </property>
        <property name="text">
-        <string>cosh</string>
+        <string notr="true">cosh</string>
        </property>
       </widget>
      </item>
@@ -1113,7 +1113,7 @@
         <string notr="true">color: rgb(12, 150, 206)</string>
        </property>
        <property name="text">
-        <string>sinh</string>
+        <string notr="true">sinh</string>
        </property>
       </widget>
      </item>
@@ -1132,7 +1132,7 @@
         <string notr="true">color: rgb(12, 150, 206)</string>
        </property>
        <property name="text">
-        <string>tanh</string>
+        <string notr="true">tanh</string>
        </property>
       </widget>
      </item>

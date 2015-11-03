@@ -85,35 +85,35 @@ void FenetreBornes::appliquer()
     range.Xmax = calculator->calculateExpression(ui->Xmax->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Le nombre écrit en Xmax est faux"));
+        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "X<sub>max</sub>");
         messageBox->exec();
         return;
     }
     range.Xmin = calculator->calculateExpression(ui->Xmin->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Le nombre écrit en Xmin est faux"));
+        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "X<sub>min</sub>");
         messageBox->exec();
         return;
     }
     range.Ymax = calculator->calculateExpression(ui->Ymax->text(),ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Le nombre écrit en Ymax est faux"));
+        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "Y<sub>max</sub>");
         messageBox->exec();
         return;
     }
     range.Ymin = calculator->calculateExpression(ui->Ymin->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Le nombre écrit en Ymin est faux"));
+        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "X<sub>min</sub>");
         messageBox->exec();
         return;
     }
     range.Xscale = calculator->calculateExpression(ui->Xpas->text(), ok);
     if(ok == false || range.Xscale <= 0)
     {
-        messageBox->setText(tr("Le nombre écrit dans le pas des X est faux"));
+        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite pour le pas des X."));
         messageBox->exec();
         return;
     }    
@@ -124,27 +124,27 @@ void FenetreBornes::appliquer()
     range.Yscale = calculator->calculateExpression(ui->Ypas->text(), ok);
     if(ok == false || range.Yscale <= 0)
     {
-        messageBox->setText(tr("Le nombre écrit dans le pas des Y est faux"));
+        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite pour le pas des Y."));
         messageBox->exec();
         return;
     }
 
     if(range.Xmin >= range.Xmax)
     {
-        messageBox->setText(tr("Xmin doit être plus petit que Xmax"));
+        messageBox->setText(tr("X<sub>min</sub> doit être plus petit que X<sub>max</sub>"));
         messageBox->exec();
         return;
     }
     if(range.Ymin >= range.Ymax)
     {
-        messageBox->setText(tr("Ymin doit être plus petit que Ymax"));
+        messageBox->setText(tr("Y<sub>min</sub> doit être plus petit que Y<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
     if(range.Ymax - range.Ymin < MIN_RANGE || range.Xmax - range.Xmin < MIN_RANGE)
     {
-        messageBox->setText(tr("Les bornes sont trop petites pour être appliquées au graphique."));
+        messageBox->setText(tr("Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher."));
         messageBox->exec();
         return;
     }

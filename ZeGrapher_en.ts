@@ -252,17 +252,17 @@
     <message>
         <location filename="DataPlot/datawindow.cpp" line="392"/>
         <source>Actions entre deux lignes :</source>
-        <translation type="unfinished"></translation>
+        <translation>Between two lines:</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="393"/>
         <source>Actions sur la ligne :</source>
-        <translation type="unfinished"></translation>
+        <translation>Actions on line :</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="398"/>
         <source>Actions entre deux colonnes :</source>
-        <translation type="unfinished"></translation>
+        <translation>Between two columns :</translation>
     </message>
 </context>
 <context>
@@ -331,49 +331,44 @@
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="Windows/fenetrebornes.cpp" line="88"/>
         <source>Le nombre écrit en Xmax est faux</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Can&apos;t </translation>
     </message>
     <message>
+        <location filename="Windows/fenetrebornes.cpp" line="88"/>
         <location filename="Windows/fenetrebornes.cpp" line="95"/>
-        <source>Le nombre écrit en Xmin est faux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="Windows/fenetrebornes.cpp" line="102"/>
-        <source>Le nombre écrit en Ymax est faux</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="Windows/fenetrebornes.cpp" line="109"/>
-        <source>Le nombre écrit en Ymin est faux</source>
-        <translation type="unfinished"></translation>
+        <source>Erreur lors de l&apos;evaluation de l&apos;expression écrite en </source>
+        <translation>Could not evaluate the typed expression for </translation>
     </message>
     <message>
         <location filename="Windows/fenetrebornes.cpp" line="116"/>
-        <source>Le nombre écrit dans le pas des X est faux</source>
-        <translation type="unfinished"></translation>
+        <source>Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des X.</source>
+        <translation>Could not evaluate the typed expression for X step.</translation>
     </message>
     <message>
         <location filename="Windows/fenetrebornes.cpp" line="127"/>
-        <source>Le nombre écrit dans le pas des Y est faux</source>
-        <translation type="unfinished"></translation>
+        <source>Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des Y.</source>
+        <translation>Could not evaluate the typed expression for Y step.</translation>
     </message>
     <message>
         <location filename="Windows/fenetrebornes.cpp" line="134"/>
-        <source>Xmin doit être plus petit que Xmax</source>
-        <translation type="unfinished"></translation>
+        <source>X&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que X&lt;sub&gt;max&lt;/sub&gt;</source>
+        <oldsource>Xmin doit être plus petit que Xmax</oldsource>
+        <translation>X&lt;sub&gt;min&lt;/sub&gt; must be lower than X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="Windows/fenetrebornes.cpp" line="140"/>
-        <source>Ymin doit être plus petit que Ymax</source>
-        <translation type="unfinished"></translation>
+        <source>Y&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que Y&lt;sub&gt;max&lt;/sub&gt;</source>
+        <oldsource>Ymin doit être plus petit que Ymax</oldsource>
+        <translation>Y&lt;sub&gt;min&lt;/sub&gt; must be lower than Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="Windows/fenetrebornes.cpp" line="147"/>
-        <source>Les bornes sont trop petites pour être appliquées au graphique.</source>
-        <translation type="unfinished"></translation>
+        <source>Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher.</source>
+        <oldsource>Les bornes sont trop petites pour être appliquées au graphique.</oldsource>
+        <translation>The view range is too tight for ZeGrapher to distinguish between the upper and lower values.</translation>
     </message>
     <message>
         <source>Le nombre Ã©crit en Xmax est faux</source>
@@ -511,7 +506,7 @@
     <message>
         <location filename="Windows/fenetrefonctions.ui" line="748"/>
         <source>Données</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message>
         <location filename="Windows/fenetrefonctions.ui" line="869"/>
@@ -554,47 +549,47 @@
     <message>
         <location filename="DataPlot/filloptions.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="58"/>
         <source>à partir d&apos;une expression :</source>
-        <translation type="unfinished"></translation>
+        <translation>From expression :</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="98"/>
         <source>x&apos; =</source>
-        <translation type="unfinished"></translation>
+        <translation>x&apos; =</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="133"/>
         <source>Prédéfini :</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-fill :</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="161"/>
         <source>Début :</source>
-        <translation type="unfinished"></translation>
+        <translation>Start :</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="199"/>
         <source>Fin :</source>
-        <translation type="unfinished"></translation>
+        <translation>End :</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="237"/>
         <source>Pas :</source>
-        <translation type="unfinished"></translation>
+        <translation>Step :</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="307"/>
         <source>Précédent</source>
-        <translation type="unfinished"></translation>
+        <translation>Back</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="333"/>
         <source>Appliquer</source>
-        <translation type="unfinished">Apply</translation>
+        <translation>Apply</translation>
     </message>
 </context>
 <context>
@@ -630,7 +625,7 @@
     <message>
         <location filename="ValuesTable/functable.cpp" line="154"/>
         <source>Erreur de syntaxe dans cette entrée</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax error it this entry</translation>
     </message>
     <message>
         <source>Erreur de syntaxe dans cette entrÃ©e</source>
@@ -726,39 +721,14 @@
         <translation type="vanished">Keyboard</translation>
     </message>
     <message>
-        <location filename="Widgets/keyboard.ui" line="1097"/>
-        <source>cosh</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="1135"/>
-        <source>tanh</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="1116"/>
-        <source>sinh</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="Widgets/keyboard.ui" line="534"/>
         <source>fonction d&apos;erreur.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="537"/>
-        <source>erf</source>
-        <translation type="unfinished"></translation>
+        <translation>Error function.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="553"/>
         <source>fonction d&apos;erreur complémentaire.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="556"/>
-        <source>erfc</source>
-        <translation type="unfinished"></translation>
+        <translation>Complementary error function.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="717"/>
@@ -778,47 +748,27 @@
     <message>
         <location filename="Widgets/keyboard.ui" line="987"/>
         <source>valeur abosolue</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute value</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1015"/>
         <source>fonction gamma d&apos;Euler.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="1018"/>
-        <source>Γ</source>
-        <translation type="unfinished"></translation>
+        <translation>Gamma function.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1031"/>
         <source>cosinus hyperbolique réciproque.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="1037"/>
-        <source>acosh</source>
-        <translation type="unfinished"></translation>
+        <translation>Arc hyperbolic cosine.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1050"/>
         <source>sinus hyperbolique réciproque.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="1056"/>
-        <source>asinh</source>
-        <translation type="unfinished"></translation>
+        <translation>Arc hyperbolic sine.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1072"/>
         <source>tangente hyperbolique réciproque.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="1078"/>
-        <source>atanh</source>
-        <translation type="unfinished"></translation>
+        <translation>Arc hyperbolic tangent.</translation>
     </message>
     <message>
         <source>Effacer</source>
@@ -832,11 +782,6 @@
         <location filename="Widgets/keyboard.ui" line="404"/>
         <source>variable des fonctions</source>
         <translation>function&apos;s variable</translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="613"/>
-        <source>²</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="946"/>
@@ -854,11 +799,6 @@
         <translation>square root</translation>
     </message>
     <message>
-        <location filename="Widgets/keyboard.ui" line="597"/>
-        <source>sqrt</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="Widgets/keyboard.ui" line="461"/>
         <source>variable des suites</source>
         <translation>sequence&apos;s variable</translation>
@@ -866,27 +806,12 @@
     <message>
         <location filename="Widgets/keyboard.ui" line="20"/>
         <source>Clavier Virtuel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="464"/>
-        <source>n</source>
-        <translation></translation>
+        <translation>Virtual keyboard</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="486"/>
         <source>paramètre</source>
         <translation>parameter</translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="489"/>
-        <source>k</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Widgets/keyboard.ui" line="512"/>
-        <source>π</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -904,7 +829,7 @@
     <message>
         <location filename="Windows/zegrapher.cpp" line="63"/>
         <source>Fenêtres</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="66"/>
@@ -921,62 +846,62 @@
     <message>
         <location filename="Windows/zegrapher.cpp" line="74"/>
         <source>Rétablir vue par défaut</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset to default view</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="77"/>
         <source>à Propos...</source>
-        <translation type="unfinished"></translation>
+        <translation>About...</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="80"/>
         <source>Imprimer</source>
-        <translation type="unfinished">Print</translation>
+        <translation>Print</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="84"/>
         <source>Enregistrer en image</source>
-        <translation type="unfinished"></translation>
+        <translation>Save as picture</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="110"/>
         <source>Clavier numérique</source>
-        <translation type="unfinished"></translation>
+        <translation>Virtual numeric keyboard</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="114"/>
         <source>fenêtres et actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows and actions</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="129"/>
         <source>Affiche la fenêtre où l&apos;on peut modifier les bornes de représentation: Xmin, Xmax...</source>
-        <translation type="unfinished"></translation>
+        <translation>Display graph&apos;s range edit window: Xmin, Xmax...</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="130"/>
         <source>Affiche le fenêtre où l&apos;on peut écrire les expressions des fonctions à représenter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Shows functions window.</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="132"/>
         <source>Affiche la fenêtre où l&apos;on peut modifier les options de représentation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show settings window.</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="133"/>
         <source>Affiche une fenêtre contenant le tableau de valeurs pour chaque fonction.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show table of values.</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="134"/>
         <source>Rétablit la vue par défaut: Xmin = Ymin = -10 , Xmax = Ymax = 10</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset to default view</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="137"/>
         <source>Affiche un clavier numérique virtuel.</source>
-        <translation type="unfinished"></translation>
+        <translation>Show numeric virtual keyboard.</translation>
     </message>
     <message>
         <source>Ã  Propos...</source>
@@ -1069,22 +994,22 @@
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="36"/>
         <source>Type de modèle :</source>
-        <translation type="unfinished"></translation>
+        <translation>Model type :</translation>
     </message>
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="44"/>
         <source>Polynomial</source>
-        <translation type="unfinished"></translation>
+        <translation>Polynomial</translation>
     </message>
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="60"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -1096,7 +1021,7 @@
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="27"/>
         <source>Réglages du paramètre </source>
-        <translation type="unfinished"></translation>
+        <translation>Adjustments for </translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="57"/>
@@ -1111,7 +1036,7 @@
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="90"/>
         <source>Début:</source>
-        <translation type="unfinished"></translation>
+        <translation>Start :</translation>
     </message>
     <message>
         <source>DÃ©but:</source>
@@ -1137,7 +1062,7 @@
     <message>
         <location filename="ValuesTable/pareqtable.cpp" line="55"/>
         <source>Equation paramètrique: </source>
-        <translation type="unfinished"></translation>
+        <translation>Parametric equation: </translation>
     </message>
     <message>
         <location filename="ValuesTable/pareqtable.cpp" line="151"/>
@@ -1147,7 +1072,7 @@
     <message>
         <location filename="ValuesTable/pareqtable.cpp" line="151"/>
         <source>Erreur de syntaxe dans cette entrée</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax error in this entry</translation>
     </message>
     <message>
         <source>Erreur de syntaxe dans cette entrÃ©e</source>
@@ -1166,17 +1091,17 @@
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="509"/>
         <source>La valeur du pas du paramètre t est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique</source>
-        <translation type="unfinished"></translation>
+        <translation>Step value for the &quot;t&quot; parameter is not compatible with the entered range, in parametric equation</translation>
     </message>
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="512"/>
         <source>Trop de points sont à calculer pour l&apos;équation paramétrique</source>
-        <translation type="unfinished"></translation>
+        <translation>Too many points to calculate on parametric equation</translation>
     </message>
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="536"/>
         <source>La valeur du pas du paramètre k est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique (P&lt;sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Step value for the &quot;k&quot; parameter is not compatible with the entered range, in parametric equation</translation>
     </message>
     <message>
         <source>La valeur du pas du paramÃ¨tre t est incompatible avec l&apos;intervalle saisi, dans l&apos;Ã©quation paramÃ©trique</source>
@@ -1196,97 +1121,97 @@
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="36"/>
         <source>Réglages</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuning</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="54"/>
         <source>Degré du polynôme :</source>
-        <translation type="unfinished"></translation>
+        <translation>Polynomial&apos;s degree :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="113"/>
         <source>Calcul du polynôme:</source>
-        <translation type="unfinished"></translation>
+        <translation>Approximation method :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="119"/>
         <source>Le plus proche des points</source>
-        <translation type="unfinished"></translation>
+        <translation>Nearest to the points</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="129"/>
         <source>Le plus proche des segments</source>
-        <translation type="unfinished"></translation>
+        <translation>Nearest to the segments</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="153"/>
         <source>Tracé</source>
-        <translation type="unfinished"></translation>
+        <translation>Plot</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="174"/>
         <source>Tracer</source>
-        <translation type="unfinished">Draw</translation>
+        <translation>Draw</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="199"/>
         <source>Intervalle de représentation:</source>
-        <translation type="unfinished"></translation>
+        <translation>Draw interval :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="205"/>
         <source>Étalement des données</source>
-        <translation type="unfinished"></translation>
+        <translation>Data&apos;s range</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="220"/>
         <source>Extrapolation relative de </source>
-        <translation type="unfinished"></translation>
+        <translation>Relative extrapolation of</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="236"/>
         <source>x</source>
-        <translation type="unfinished"></translation>
+        <translation>x</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="259"/>
         <source>Définition manuelle:</source>
-        <translation type="unfinished"></translation>
+        <translation>Manual input :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="285"/>
         <source>Valeurs</source>
-        <translation type="unfinished"></translation>
+        <translation>Coefficients</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="360"/>
         <source>P(x) =</source>
-        <translation type="unfinished"></translation>
+        <translation>P(x) =</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="201"/>
         <source>Début:</source>
-        <translation type="unfinished"></translation>
+        <translation>Start :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="204"/>
         <source>Fin:</source>
-        <translation type="unfinished"></translation>
+        <translation>End :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="223"/>
         <source>Couleur:</source>
-        <translation type="unfinished"></translation>
+        <translation>Color :</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="241"/>
         <source>Calcul du meilleur polynôme P approchant l&apos;égalité:</source>
-        <translation type="unfinished"></translation>
+        <translation>Evaluate the best polynomial P who can approach the equation :</translation>
     </message>
 </context>
 <context>
@@ -1479,12 +1404,12 @@
     <message>
         <location filename="Export/print.cpp" line="75"/>
         <source>Créer un PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>Create PDF</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="90"/>
         <source>Repère orthonormal</source>
-        <translation type="unfinished"></translation>
+        <translation>Orthonormal basis</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="114"/>
@@ -1499,7 +1424,7 @@
     <message>
         <location filename="Export/print.cpp" line="159"/>
         <source>Aucun emplacement n&apos;a été saisi pour le fichier PDF à créer.</source>
-        <translation type="unfinished"></translation>
+        <translation>Please select a directory to create the PDF file in.</translation>
     </message>
     <message>
         <source>Aucun emplacement n&apos;a Ã©tÃ© saisi pour le fichier PDF Ã  crÃ©er.</source>
@@ -1523,7 +1448,7 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="445"/>
         <source>Mauvaise relation de récurence saisie pour la suite </source>
-        <translation type="unfinished"></translation>
+        <translation>Wrong recurrence relation entered for sequence </translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="450"/>
@@ -1538,12 +1463,12 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="460"/>
         <source> avec un paramètre non entier.</source>
-        <translation type="unfinished"></translation>
+        <translation> with a non integer value. </translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="465"/>
         <source>Le rang demandé étant plus petit que n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>The asked term is smaller than n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
         <source> avec un paramÃ¨tre non entier.</source>
@@ -1564,12 +1489,12 @@
     <message>
         <location filename="DataPlot/rowactionswidget.cpp" line="26"/>
         <source>Insérer ligne</source>
-        <translation type="unfinished"></translation>
+        <translation>Insert line</translation>
     </message>
     <message>
         <location filename="DataPlot/rowactionswidget.cpp" line="27"/>
         <source>Supprimer ligne</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete line</translation>
     </message>
 </context>
 <context>
@@ -1586,7 +1511,7 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="68"/>
         <source>Erreur de syntaxe lors de la saisie des premiers termes de la suite </source>
-        <translation>Syntax error on the entered initial terms for sequence </translation>
+        <translation>Syntax error on the entered initial terms for the sequence </translation>
     </message>
     <message>
         <source>Note: ces termes doivent Ãªtre sÃ©parÃ©s par des &apos;;&apos; </source>
@@ -1595,7 +1520,7 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="69"/>
         <source>Note: ces termes doivent être séparés par des &apos;;&apos; </source>
-        <translation type="unfinished"></translation>
+        <translation>Note: terms must be separated with &apos;;&apos; </translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="180"/>
@@ -1636,18 +1561,18 @@
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="163"/>
         <source>Erreur de syntaxe dans cette entrée</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax error in this entry</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="169"/>
         <source>Vous devez saisir un nombre entier supérieur à n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="178"/>
         <location filename="ValuesTable/seqtable.cpp" line="270"/>
         <source>Erreur dans le calcul des termes de cette suite paramètrique, changer la valeur du paramètre pourrait résoudre le problème.</source>
-        <translation type="unfinished"></translation>
+        <translation>Error while calculating this sequence&apos;s terms, changing &quot;k&quot; value might solve the error.</translation>
     </message>
     <message>
         <source>Erreur de syntaxe dans cette entrÃ©e</source>
@@ -1667,47 +1592,47 @@
     <message>
         <location filename="DataPlot/sortoptions.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="34"/>
         <source>Ordre de tri:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorting order :</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="64"/>
         <source>Croissant</source>
-        <translation type="unfinished"></translation>
+        <translation>Increasing</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="77"/>
         <source>Décroissant</source>
-        <translation type="unfinished"></translation>
+        <translation>Decreasing</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="100"/>
         <source>Les permutations s&apos;effectuent entre :</source>
-        <translation type="unfinished"></translation>
+        <translation>Switching between :</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="130"/>
         <source>Les lignes</source>
-        <translation type="unfinished"></translation>
+        <translation>Lines</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="143"/>
         <source>Les cellules de la colonne selectionnée</source>
-        <translation type="unfinished"></translation>
+        <translation>Only column&apos;s cells</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="167"/>
         <source>Précédent</source>
-        <translation type="unfinished"></translation>
+        <translation>Back</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="193"/>
         <source>Appliquer</source>
-        <translation type="unfinished">Apply</translation>
+        <translation>Apply</translation>
     </message>
 </context>
 <context>
@@ -1715,22 +1640,22 @@
     <message>
         <location filename="DataPlot/startingactions.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="DataPlot/startingactions.ui" line="53"/>
         <source>Remplir</source>
-        <translation type="unfinished"></translation>
+        <translation>Fill</translation>
     </message>
     <message>
         <location filename="DataPlot/startingactions.ui" line="60"/>
         <source>Trier</source>
-        <translation type="unfinished"></translation>
+        <translation>Sort</translation>
     </message>
     <message>
         <location filename="DataPlot/startingactions.ui" line="67"/>
         <source>Supprimer</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete</translation>
     </message>
 </context>
 <context>
@@ -1748,7 +1673,7 @@
     <message>
         <location filename="Widgets/straightlinewidget.cpp" line="172"/>
         <source>Les coeficients des variables x et y ne peuvent être nuls simultanèment.</source>
-        <translation type="unfinished"></translation>
+        <translation>x and y coefficients can&apos;t be simultaneously equal to zero.</translation>
     </message>
     <message>
         <source>Les coeficients des variables x et y ne peuvent Ãªtre nuls simultanÃ¨ment.</source>
@@ -1764,7 +1689,7 @@
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="67"/>
         <source>tangente à :</source>
-        <translation type="unfinished"></translation>
+        <translation>tangent to :</translation>
     </message>
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="92"/>
@@ -1843,22 +1768,22 @@
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="50"/>
         <source>Equation paramétrique</source>
-        <translation type="unfinished"></translation>
+        <translation>Parametric equation</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="63"/>
         <source>Valeurs d&apos;entrée :</source>
-        <translation type="unfinished"></translation>
+        <translation>Entry values :</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="109"/>
         <source>Prédéfinis</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-fill</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="114"/>
         <source>Début:</source>
-        <translation type="unfinished"></translation>
+        <translation>Start :</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="125"/>
@@ -1889,22 +1814,22 @@
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="255"/>
         <source>La valeur de départ doit être un entier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Start value must be an integer.</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="260"/>
         <source>La valeur de départ doit être supérieure à n&lt;sub&gt;min&lt;/sub&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Start value must be greater than n&lt;sub&gt;min&lt;/sub&gt;. </translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="265"/>
         <source>La valeur du pas doit être un entier positif.</source>
-        <translation type="unfinished"></translation>
+        <translation>Step value must be positive.</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="305"/>
         <source>Erreur de saisie dans la valeur de départ.</source>
-        <translation type="unfinished"></translation>
+        <translation>Could not evaluate start value.</translation>
     </message>
     <message>
         <source>La valeur de dÃ©part doit Ãªtre un entier.</source>
@@ -2031,7 +1956,7 @@ lower value for higher speed.</translation>
     <message>
         <location filename="Windows/fenetreoptions.ui" line="213"/>
         <source>Rétablir</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset</translation>
     </message>
     <message>
         <location filename="Windows/fenetreoptions.ui" line="72"/>

@@ -47,7 +47,6 @@
         <file>Help/basePin.png</file>
         <file>Help/columnActions_fr.png</file>
         <file>Help/columnFill_fr.png</file>
-        <file>Help/data_help.md</file>
         <file>Help/lineActions_fr.png</file>
         <file>Help/pins.png</file>
         <file>Help/polynomialCoefVals_fr.png</file>
@@ -56,5 +55,7 @@
         <file>Help/Tetapin.png</file>
         <file>Help/Xpin.png</file>
         <file>Help/Ypin.png</file>
+        <file>Help/english-icon.png</file>
+        <file>Help/french-icon.png</file>
     </qresource>
 </RCC>

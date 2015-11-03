@@ -82,6 +82,7 @@ protected slots:
     void animationFinished();
     void startAnimation();
     void displayHelp();
+    void closeEvent(QCloseEvent *event);
 
 protected:    
 
