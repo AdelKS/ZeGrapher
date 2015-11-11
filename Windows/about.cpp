@@ -20,34 +20,20 @@
 
 
 
-#ifndef FENTABLEAUVALEURS_H
-#define FENTABLEAUVALEURS_H
+#include "Windows/about.h"
+#include "ui_about.h"
 
-
-#include "informations.h"
-#include "ValuesTable/valuestable.h"
-
-namespace Ui {
-    class FenTableauValeurs;
+about::about(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::about)
+{
+    ui->setupUi(this);
+    ui->logo->setPixmap(QPixmap(":/icons/logoLogiciel.png"));
+    setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
+    setFixedSize(size());
 }
 
-class FenTableauValeurs : public QWidget
+about::~about()
 {
-    Q_OBJECT
-
-public:
-    explicit FenTableauValeurs(Informations *info);
-
-protected slots:
-    void addValuesTable();
-    void removeTable(ValuesTable *table);
-
-protected:
-    QHBoxLayout *tablesLayout;
-    QList<ValuesTable*> valuesTableList;
-    Informations *informations;   
-    QWidget *widget;
-
-};
-
-#endif // FENTABLEAUVALEURS_H
+    delete ui;
+}

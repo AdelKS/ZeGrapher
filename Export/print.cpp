@@ -127,7 +127,7 @@ void Print::print()
 
     if(ui->inPaper->isChecked())
     {
-        int reponse = QMessageBox::question(this, "Attention", "Vous êtes sur le point d'imprimer, voulez vous continuer ?\n Veuillez vérifier les informations saises avant de continuer.", QMessageBox::Yes | QMessageBox::No);
+        int reponse = QMessageBox::question(this, "Attention", "Vous êtes sur le point d'imprimer, voulez vous continuer ?\n Veuillez vérifier les information saises avant de continuer.", QMessageBox::Yes | QMessageBox::No);
 
         if (reponse == QMessageBox::No)
             return;

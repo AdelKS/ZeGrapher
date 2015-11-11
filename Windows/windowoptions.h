@@ -20,20 +20,40 @@
 
 
 
-#include "Windows/apropos.h"
-#include "ui_apropos.h"
+#ifndef WINDOWOPTIONS_H
+#define WINDOWOPTIONS_H
 
-apropos::apropos(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::apropos)
-{
-    ui->setupUi(this);
-    ui->logo->setPixmap(QPixmap(":/icons/logoLogiciel.png"));
-    setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
-    setFixedSize(size());
+#include "Structures.h"
+#include "information.h"
+#include "Widgets/qcolorbutton.h"
+
+
+namespace Ui {
+    class windowoptions;
 }
 
-apropos::~apropos()
+class WindowOptions : public QWidget
 {
-    delete ui;
-}
+    Q_OBJECT
+
+public:
+    explicit WindowOptions(Informations *info);
+    ~WindowOptions();   
+
+public slots:
+    void saveSettings();
+
+private slots:
+    void appliquer();
+    void readSavedSettings();
+
+private:
+
+    Informations *information;
+    Ui::windowoptions *ui;   
+    Options parametres;
+    QColorButton *couleurAxes, *couleurFond, *couleurQuadrillage;
+
+};
+
+#endif // WINDOWOPTIONS_H

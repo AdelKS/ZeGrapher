@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FenetreBornes</class>
- <widget class="QWidget" name="FenetreBornes">
+ <class>WindowBoundary</class>
+ <widget class="QWidget" name="WindowBoundary">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Bornes de représentation</string>
+   <string>Boundarys de représentation</string>
   </property>
   <property name="windowIcon">
    <iconset resource="ressources.qrc">

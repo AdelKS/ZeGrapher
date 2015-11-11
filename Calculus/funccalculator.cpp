@@ -248,7 +248,7 @@ bool FuncCalculator::canBeCalled()
 
 double FuncCalculator::calculateFromTree(FastTree *tree, double x)
 {
-    if(tree->type == NOMBRE )
+    if(tree->type == NUMBER )
     {
         return *tree->value;
     }

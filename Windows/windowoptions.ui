@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>fenetreoptions</class>
- <widget class="QWidget" name="fenetreoptions">
+ <class>windowoptions</class>
+ <widget class="QWidget" name="windowoptions">
   <property name="geometry">
    <rect>
     <x>0</x>

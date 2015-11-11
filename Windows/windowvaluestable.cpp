@@ -20,11 +20,11 @@
 
 
 
-#include "Windows/fentableauvaleurs.h"
+#include "Windows/windowvaluestable.h"
 
-FenTableauValeurs::FenTableauValeurs(Informations *info)
+WindowValuesTable::WindowValuesTable(Informations *info)
 {
-    informations = info;    
+    information = info;    
 
     setWindowTitle(tr("Tableaux de valeurs"));
     setWindowIcon(QIcon(":/icons/tableauDeValeurs.png"));
@@ -62,9 +62,9 @@ FenTableauValeurs::FenTableauValeurs(Informations *info)
     addValuesTable();
 }
 
-void FenTableauValeurs::addValuesTable()
+void WindowValuesTable::addValuesTable()
 {
-    ValuesTable *table = new ValuesTable(informations);
+    ValuesTable *table = new ValuesTable(information);
     valuesTableList << table;
 
     connect(table, SIGNAL(remove(ValuesTable*)), this, SLOT(removeTable(ValuesTable*)));
@@ -72,7 +72,7 @@ void FenTableauValeurs::addValuesTable()
     tablesLayout->addWidget(table);
 }
 
-void FenTableauValeurs::removeTable(ValuesTable *table)
+void WindowValuesTable::removeTable(ValuesTable *table)
 {
     table->close();
     delete table;

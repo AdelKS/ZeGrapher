@@ -25,7 +25,7 @@
 
 FuncValuesSaver::FuncValuesSaver(Informations *info)
 {
-    informations = info;
+    information = info;
     funcs = info->getFuncsList();
     graphRange = info->getRange();
     deplacement = 0;
@@ -36,10 +36,10 @@ FuncValuesSaver::FuncValuesSaver(Informations *info)
 
 void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
 {
-    graphRange = informations->getRange();
+    graphRange = information->getRange();
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    pixelStep = informations->getOptions().distanceEntrePoints;
+    pixelStep = information->getOptions().distanceEntrePoints;
     unitStep = pixelStep / xUnit;
 
     double x = 0, k = 0;

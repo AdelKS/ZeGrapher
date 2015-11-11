@@ -19,14 +19,14 @@
 ****************************************************************************/
 
 
-#include "Windows/fenetreoptions.h"
-#include "ui_fenetreoptions.h"
+#include "Windows/windowoptions.h"
+#include "ui_windowoptions.h"
 
-FenetreOptions::FenetreOptions(Informations *info)
+WindowOptions::WindowOptions(Informations *info)
 {
-    informations = info;
+    information = info;
 
-    ui = new Ui::fenetreoptions;
+    ui = new Ui::windowoptions;
     ui->setupUi(this);
 
     setWindowIcon(QIcon(":/icons/settings.png"));
@@ -49,7 +49,7 @@ FenetreOptions::FenetreOptions(Informations *info)
 
 }
 
-void FenetreOptions::readSavedSettings()
+void WindowOptions::readSavedSettings()
 {
     QSettings settings;
 
@@ -97,7 +97,7 @@ void FenetreOptions::readSavedSettings()
 
 }
 
-void FenetreOptions::saveSettings()
+void WindowOptions::saveSettings()
 {
     QSettings settings;
     settings.beginGroup("graph");
@@ -118,7 +118,7 @@ void FenetreOptions::saveSettings()
 
 }
 
-void FenetreOptions::appliquer()
+void WindowOptions::appliquer()
 {
     if(couleurAxes->getCurrentColor() == couleurFond->getCurrentColor())
         QMessageBox::warning(this, tr("Attention"), tr("Les couleurs du fond et des axes sont identiques"));
@@ -136,11 +136,11 @@ void FenetreOptions::appliquer()
         parametres.couleurQuadrillage = couleurQuadrillage->getCurrentColor();
         parametres.numSize = ui->numSize->value();     
 
-        informations->setOptions(parametres);
+        information->setOptions(parametres);
     }
 }
 
-FenetreOptions::~FenetreOptions()
+WindowOptions::~WindowOptions()
 {
     delete ui;
 }

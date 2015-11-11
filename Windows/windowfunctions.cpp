@@ -20,13 +20,13 @@
 
 
 
-#include "Windows/fenetrefonctions.h"
-#include "ui_fenetrefonctions.h"
+#include "Windows/windowfunctions.h"
+#include "ui_windowfunctions.h"
 
 
-FenetreFonctions::FenetreFonctions(Informations *info)
+WindowFunctions::WindowFunctions(Informations *info)
 {   
-    ui = new Ui::FenetreFonctions;
+    ui = new Ui::WindowFunctions;
     ui->setupUi(this);   
 
     parEqController = new ParEqController(&parEqWidgets);
@@ -42,7 +42,7 @@ FenetreFonctions::FenetreFonctions(Informations *info)
     funcNames << 'f' << 'g' << 'h'<< 'p' << 'r'<< 'm';
     seqNames << 'u' << 'v' << 'l' << 'w' << 'q' << 't';
 
-    setInfoClass(info);//must be before addFunctions and addSequences, because they use informations class
+    setInfoClass(info);//must be before addFunctions and addSequences, because they use information class
     addFunctions();
     addSequences();
 
@@ -60,13 +60,13 @@ FenetreFonctions::FenetreFonctions(Informations *info)
     connect(ui->keyboardButton, SIGNAL(released()), this, SLOT(keyboardButtonClicked()));
 }
 
-void FenetreFonctions::addFunctions()
+void WindowFunctions::addFunctions()
 {   
     for(int i = 0 ; i < funcNames.size() ; i++)
     {
         FuncWidget *widget = new FuncWidget(funcNames[i], i, Qt::black, window());
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
-        connect(widget, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));
+        connect(widget, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
         connect(widget, SIGNAL(newParametricState(int)), this, SLOT(newFuncParametricState()));
 
         ui->funcWidgetsLayout->addWidget(widget);
@@ -81,7 +81,7 @@ void FenetreFonctions::addFunctions()
         ui->funcWidgetsLayout->addWidget(frame);
     }
 
-    informations->setFunctionsList(funcCalcs);
+    information->setFunctionsList(funcCalcs);
 
     for(int i = 0 ; i < funcCalcs.size() ; i++)
     {
@@ -91,13 +91,13 @@ void FenetreFonctions::addFunctions()
     }
 }
 
-void FenetreFonctions::addSequences()
+void WindowFunctions::addSequences()
 {
     for(int i = 0 ; i < seqNames.size() ; i++)
     {
         SeqWidget *widget = new SeqWidget(seqNames[i], i, Qt::black);
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
-        connect(widget, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));
+        connect(widget, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
         connect(widget, SIGNAL(newParametricState()), this, SLOT(newSeqParametricState()));
 
         ui->seqWidgetsLayout->addWidget(widget);
@@ -112,7 +112,7 @@ void FenetreFonctions::addSequences()
         ui->seqWidgetsLayout->addWidget(frame);
     }
 
-    informations->setSequencesList(seqCalcs);
+    information->setSequencesList(seqCalcs);
 
     for(int i = 0 ; i < seqCalcs.size() ; i++)
     {
@@ -125,7 +125,7 @@ void FenetreFonctions::addSequences()
     }
 }
 
-void FenetreFonctions::newFuncParametricState()
+void WindowFunctions::newFuncParametricState()
 {
     for(int i = 0 ; i < funcWidgets.size() ; i++)
         funcWidgets[i]->checkCalledFuncsParametric();
@@ -134,30 +134,30 @@ void FenetreFonctions::newFuncParametricState()
         seqWidgets[i]->checkCalledFuncsSeqsParametric();
 }
 
-void FenetreFonctions::newSeqParametricState()
+void WindowFunctions::newSeqParametricState()
 {
     for(int i = 0 ; i < seqWidgets.size() ; i++)
         seqWidgets[i]->checkCalledFuncsSeqsParametric();
 }
 
-void FenetreFonctions::setInfoClass(Informations *info)
+void WindowFunctions::setInfoClass(Informations *info)
 {
-    informations = info;   
-    informations->setParEqsListPointer(&parEqWidgets);
-    informations->setTangentsListPointer(&tangentWidgets);
-    informations->setStraightLinesListPointer(&straightlineWidgets);   
+    information = info;   
+    information->setParEqsListPointer(&parEqWidgets);
+    information->setTangentsListPointer(&tangentWidgets);
+    information->setStraightLinesListPointer(&straightlineWidgets);   
 }
 
-void FenetreFonctions::draw()
+void WindowFunctions::draw()
 {    
     validateFunctions();
     validateSequences();
     validateLines();
     validateParametricEquations();
-    informations->emitUpdateSignal();
+    information->emitUpdateSignal();
 }
 
-void FenetreFonctions::validateFunctions()
+void WindowFunctions::validateFunctions()
 {
     for(int i = 0 ; i < funcWidgets.size(); i++)
         funcWidgets[i]->firstValidation();
@@ -166,7 +166,7 @@ void FenetreFonctions::validateFunctions()
         funcWidgets[i]->secondValidation();
 }
 
-void FenetreFonctions::validateSequences()
+void WindowFunctions::validateSequences()
 {
     for(int i = 0 ; i < seqWidgets.size(); i++)
         seqWidgets[i]->firstValidation();
@@ -178,7 +178,7 @@ void FenetreFonctions::validateSequences()
         seqWidgets[i]->thirdValidation();
 }
 
-void FenetreFonctions::validateLines()
+void WindowFunctions::validateLines()
 {
     for(int i = 0 ; i < straightlineWidgets.size(); i++)
         straightlineWidgets[i]->validate();
@@ -188,30 +188,30 @@ void FenetreFonctions::validateLines()
 
 }
 
-void FenetreFonctions::validateParametricEquations()
+void WindowFunctions::validateParametricEquations()
 {
     for(int i = 0 ; i < parEqWidgets.size(); i++)
         parEqWidgets[i]->apply();
 }
 
-void FenetreFonctions::keyboardButtonClicked()
+void WindowFunctions::keyboardButtonClicked()
 {
     emit displayKeyboard();
 }
 
-void FenetreFonctions::addTangent()
+void WindowFunctions::addTangent()
 {
     TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets);
     tangentWidgets << tangent;
 
     connect(tangent, SIGNAL(removeMe(TangentWidget*)), this, SLOT(removeTangent(TangentWidget*)));
     connect(tangent, SIGNAL(returnPressed()), this, SLOT(draw()));
-    connect(tangent, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));
+    connect(tangent, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
 
     ui->linesLayout->addWidget(tangent);
 }
 
-void FenetreFonctions::removeTangent(TangentWidget *widget)
+void WindowFunctions::removeTangent(TangentWidget *widget)
 {    
     for(int i = tangentWidgets.indexOf(widget) + 1 ; i < tangentWidgets.size() ; i++)
         tangentWidgets[i]->changeID(i-1);
@@ -220,22 +220,22 @@ void FenetreFonctions::removeTangent(TangentWidget *widget)
     widget->close();
     delete widget;
 
-    informations->emitUpdateSignal();
+    information->emitUpdateSignal();
 }
 
-void FenetreFonctions::addStraightline()
+void WindowFunctions::addStraightline()
 {
     StraightLineWidget *line = new StraightLineWidget(straightlineWidgets.size(), funcCalcs);
     straightlineWidgets << line;
 
     connect(line, SIGNAL(removeMe(StraightLineWidget*)), this, SLOT(removeStraightline(StraightLineWidget*)));
     connect(line, SIGNAL(returnPressed()), this, SLOT(draw()));
-    connect(line, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));
+    connect(line, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
 
     ui->linesLayout->addWidget(line);
 }
 
-void FenetreFonctions::removeStraightline(StraightLineWidget *widget)
+void WindowFunctions::removeStraightline(StraightLineWidget *widget)
 {
     for(int i = straightlineWidgets.indexOf(widget) + 1; i < straightlineWidgets.size(); i++)
         straightlineWidgets[i]->changeID(i-1);
@@ -246,12 +246,12 @@ void FenetreFonctions::removeStraightline(StraightLineWidget *widget)
 
 }
 
-void FenetreFonctions::addParEq()
+void WindowFunctions::addParEq()
 {
     ParEqWidget *widget = new ParEqWidget(parEqWidgets.size(), funcCalcs);
     connect(widget, SIGNAL(removeClicked(ParEqWidget*)), this, SLOT(removeParEq(ParEqWidget*)));
-    connect(widget, SIGNAL(updateRequest()), informations, SLOT(emitDrawStateUpdate()));
-    connect(widget, SIGNAL(animationUpdateRequest()), informations, SLOT(emitAnimationUpdate()));
+    connect(widget, SIGNAL(updateRequest()), information, SLOT(emitDrawStateUpdate()));
+    connect(widget, SIGNAL(animationUpdateRequest()), information, SLOT(emitAnimationUpdate()));
     connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
 
     parEqWidgets << widget;
@@ -260,29 +260,29 @@ void FenetreFonctions::addParEq()
     parEqController->newParEqAdded();
 }
 
-void FenetreFonctions::removeParEq(ParEqWidget *widget)
+void WindowFunctions::removeParEq(ParEqWidget *widget)
 {
     widget->close();
     parEqWidgets.removeOne(widget);
     delete widget;
 
-    informations->emitAnimationUpdate();
+    information->emitAnimationUpdate();
 }
 
-void FenetreFonctions::addDataWidget()
+void WindowFunctions::addDataWidget()
 {
-    informations->addDataList();
+    information->addDataList();
 
-    DataWidget *widget = new DataWidget(dataWidgets.size(), informations);
+    DataWidget *widget = new DataWidget(dataWidgets.size(), information);
     connect(widget, SIGNAL(removeMe(DataWidget*)), this, SLOT(removeDataWidget(DataWidget*)));
 
     dataWidgets << widget;
     ui->dataWidgetsContainerLayout->addWidget(widget);
 }
 
-void FenetreFonctions::removeDataWidget(DataWidget *widget)
+void WindowFunctions::removeDataWidget(DataWidget *widget)
 {
-    informations->removeDataList(dataWidgets.indexOf(widget));
+    information->removeDataList(dataWidgets.indexOf(widget));
 
     for(int i = dataWidgets.indexOf(widget)+1; i < dataWidgets.size(); i++)
         dataWidgets[i]->setWidgetNum(i-1);
@@ -293,7 +293,7 @@ void FenetreFonctions::removeDataWidget(DataWidget *widget)
     delete widget;
 }
 
- void FenetreFonctions::closeAllOpenedWindows()
+ void WindowFunctions::closeAllOpenedWindows()
  {
      for(int i = 0 ; i < dataWidgets.size(); i++)
      {
@@ -301,6 +301,6 @@ void FenetreFonctions::removeDataWidget(DataWidget *widget)
      }
  }
 
-FenetreFonctions::~FenetreFonctions()
+WindowFunctions::~WindowFunctions()
 {
 }

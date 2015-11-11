@@ -849,7 +849,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Fonction</string>
+        <string>Function</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

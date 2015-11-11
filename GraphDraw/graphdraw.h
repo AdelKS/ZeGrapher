@@ -28,7 +28,7 @@
 #include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/pareqwidget.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
 
@@ -64,7 +64,7 @@ protected:
 
 
     int graphWidth, graphHeight;
-    Informations *informations;
+    Informations *information;
     FuncValuesSaver *funcValuesSaver;    
     QPainter painter;
     Options parametres;

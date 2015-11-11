@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>apropos</class>
- <widget class="QWidget" name="apropos">
+ <class>about</class>
+ <widget class="QWidget" name="about">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>apropos</receiver>
+   <receiver>about</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

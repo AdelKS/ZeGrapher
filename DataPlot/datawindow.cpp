@@ -66,7 +66,7 @@ DataWindow::DataWindow(Informations *info, int ind)
 
     setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
 
-    informations = info;
+    information = info;
     selectorSide = COLUMN_SELECTION;
 
     dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
@@ -251,13 +251,13 @@ void DataWindow::addModel()
     QString xname = dataTable->getColumnName(xindex);
     QString yname = dataTable->getColumnName(yindex);
 
-    ModelWidget *modelWidget = new ModelWidget(modelData, informations, ui->polar->isChecked(), xname, yname);
+    ModelWidget *modelWidget = new ModelWidget(modelData, information, ui->polar->isChecked(), xname, yname);
     modelWidgets << modelWidget;
 
     ui->modelsLayout->addWidget(modelWidget);
 
     connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), this, SLOT(removeModelWidget(ModelWidget*)));
-    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), informations, SIGNAL(updateOccured()));
+    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), information, SIGNAL(updateOccured()));
 }
 
 void DataWindow::columnNameChanged(int index)
@@ -287,7 +287,7 @@ void DataWindow::removeModelWidget(ModelWidget *w)
     modelWidgets.removeOne(w);
     delete w;
 
-    informations->emitDataUpdate();
+    information->emitDataUpdate();
 }
 
 void DataWindow::changeIndex(int ind)
@@ -359,7 +359,7 @@ void DataWindow::remakeDataList()
     }
 
 
-    informations->setData(index, dataList);
+    information->setData(index, dataList);
 }
 
 void DataWindow::openData()

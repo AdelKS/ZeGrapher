@@ -19,25 +19,35 @@
 ****************************************************************************/
 
 
-#ifndef APROPOS_H
-#define APROPOS_H
 
-#include "Structures.h"
+#ifndef WINDOWVALUESTABLE_H
+#define WINDOWVALUESTABLE_H
+
+
+#include "information.h"
+#include "ValuesTable/valuestable.h"
 
 namespace Ui {
-    class apropos;
+    class WindowValuesTable;
 }
 
-class apropos : public QWidget
+class WindowValuesTable : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit apropos(QWidget *parent = 0);
-    ~apropos();
+    explicit WindowValuesTable(Informations *info);
 
-private:
-    Ui::apropos *ui;
+protected slots:
+    void addValuesTable();
+    void removeTable(ValuesTable *table);
+
+protected:
+    QHBoxLayout *tablesLayout;
+    QList<ValuesTable*> valuesTableList;
+    Informations *information;   
+    QWidget *widget;
+
 };
 
-#endif // APROPOS_H
+#endif // WINDOWVALUESTABLE_H

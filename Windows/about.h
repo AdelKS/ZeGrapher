@@ -19,47 +19,25 @@
 ****************************************************************************/
 
 
-
-#ifndef FENETREBORNES_H
-#define FENETREBORNES_H
+#ifndef ABOUT_H
+#define ABOUT_H
 
 #include "Structures.h"
-#include "informations.h"
-#include "Calculus/exprcalculator.h"
-
 
 namespace Ui {
-    class FenetreBornes;
+    class about;
 }
 
-class FenetreBornes : public QWidget
+class about : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreBornes(Informations *info);
-    ~FenetreBornes();
-
-public slots:
-    void resetToStandardView();
-    void updateWidgets();
-
-
-private slots:
-    void standardView();
-    void orthonormal(bool state);
-    void appliquer();
-
-signals:
-    void nouvelleFenetre(GraphRange fenetre);
-    void orthonormalBasis(bool state);
+    explicit about(QWidget *parent = 0);
+    ~about();
 
 private:
-
-    Informations *informations;
-    Ui::FenetreBornes *ui;
-    QMessageBox *messageBox;    
-    ExprCalculator *calculator;
+    Ui::about *ui;
 };
 
-#endif // FENETREBORNES_H
+#endif // ABOUT_H

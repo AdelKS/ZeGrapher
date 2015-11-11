@@ -22,7 +22,7 @@
 #ifndef DATAWINDOW_H
 #define DATAWINDOW_H
 
-#include "informations.h"
+#include "information.h"
 #include "./datatable.h"
 #include "./columnselectorwidget.h"
 #include "./columnactionswidget.h"
@@ -89,7 +89,7 @@ protected:
     int index, xindex, yindex;
     QWebView *helpWindow;
     Ui::DataWindow *ui;
-    Informations *informations;
+    Informations *information;
     QGroupBox *actionsGroupBox;
     QWidget *columnSelectorSpacer, *rowSelectorSpacer;
     DataTable *dataTable;

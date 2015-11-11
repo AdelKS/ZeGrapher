@@ -351,12 +351,12 @@ void MainGraph::wheelEvent(QWheelEvent *event)
         if(parametres.lissage)
             repaintTimer.start();
 
-        informations->setRange(graphRange);
+        information->setRange(graphRange);
     }
 
     event->accept();
 
-    //the graph will update from the "informations" class updateoccured() signal
+    //the graph will update from the "information" class updateoccured() signal
 }
 
 void MainGraph::afficherPtX(double x)
@@ -448,8 +448,8 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphWidth = width();
     graphHeight = height();
 
-    parametres = informations->getOptions();
-    graphRange = informations->getRange();
+    parametres = information->getOptions();
+    graphRange = information->getRange();
 
     if(windowSize != size())
     {
@@ -526,7 +526,7 @@ void MainGraph::directPaint()
     if(recalculate)
     {
         funcValuesSaver->calculateAll(uniteX, uniteY);
-        informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+        information->recalculateRegressionCurves(uniteX, uniteY, graphRange);
     }
 
     painter.translate(QPointF(centre.x, centre.y));
@@ -593,7 +593,7 @@ void MainGraph::addTangentToBuffer()
     tangentDrawException = -1;
 
     cancelUpdateSignal = true;
-    informations->emitUpdateSignal();
+    information->emitUpdateSignal();
 
     painter.end();
 }
@@ -623,7 +623,7 @@ void MainGraph::resaveImageBuffer()
     if(recalculate)
     {
         funcValuesSaver->calculateAll(uniteX, uniteY);
-        informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+        information->recalculateRegressionCurves(uniteX, uniteY, graphRange);
     }
 
     painter.translate(QPointF(centre.x, centre.y));
@@ -646,9 +646,9 @@ void MainGraph::determinerCentreEtUnites()
     pt.x = uniteX;
     pt.y = uniteY;
 
-    informations->setUnits(pt);
+    information->setUnits(pt);
 
-    bool orthonormal = informations->isOrthonormal();
+    bool orthonormal = information->isOrthonormal();
 
     double rapport =  uniteY / uniteX;
     if(orthonormal && !(0.9999 < rapport && rapport < 1.0001))
@@ -658,7 +658,7 @@ void MainGraph::determinerCentreEtUnites()
         uniteY = uniteX;
 
         cancelUpdateSignal = true;
-        informations->setRange(graphRange);
+        information->setRange(graphRange);
         recalculate = true;
     }
 
@@ -706,7 +706,7 @@ void MainGraph::determinerCentreEtUnites()
     if(scaleChanged)
     {
        cancelUpdateSignal = true;
-       informations->setRange(graphRange);
+       information->setRange(graphRange);
        recalculate = true;
     }
 
@@ -949,7 +949,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             fen.Ymin = (- rectReel.bottom() + centre.y) / uniteY;
 
             if(fen.Xmax - fen.Xmin > MIN_RANGE && fen.Ymax - fen.Ymin > MIN_RANGE)
-                informations->setRange(fen);
+                information->setRange(fen);
 
             typeCurseur = NORMAL;
         }
@@ -1035,14 +1035,14 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             graphRange.Ymin += dy / uniteY;
 
             cancelUpdateSignal = true;
-            informations->setRange(graphRange);
+            information->setRange(graphRange);
 
             determinerCentreEtUnites();
 
             if(dx != 0)
             {
                 funcValuesSaver->move(dx);
-                informations->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+                information->recalculateRegressionCurves(uniteX, uniteY, graphRange);
             }
 
             moving = true;
@@ -1337,7 +1337,7 @@ void MainGraph::placerGraduations()
     {       
         if(start <= Xpos && fabs(Xpos - centre.x) > 1)
         {
-            if(start <= Xpos && informations->getGridState() && Xpos <= end)
+            if(start <= Xpos && information->getGridState() && Xpos <= end)
             {
                 pen.setColor(parametres.couleurQuadrillage);
                 pen.setWidthF(0.5);
@@ -1403,7 +1403,7 @@ void MainGraph::placerGraduations()
     {        
         if(start <= Ypos && fabs(Ypos - centre.y) > 1)
         {
-            if(informations->getGridState())
+            if(information->getGridState())
             {
                 pen.setColor(parametres.couleurQuadrillage);
                 pen.setWidthF(0.5);
@@ -1487,7 +1487,7 @@ void MainGraph::zoomX()
     graphRange.Xmin += valeur;
     graphRange.Xmax -= valeur;
     moving = true;
-    informations->setRange(graphRange);
+    information->setRange(graphRange);
 
     if(parametres.lissage)
         repaintTimer.start();
@@ -1505,7 +1505,7 @@ void MainGraph::zoomY()
 
     double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * 0.0016;
 
-    if(!informations->isOrthonormal())
+    if(!information->isOrthonormal())
     {        
         graphRange.Ymin += valeur;
         graphRange.Ymax -= valeur;
@@ -1522,7 +1522,7 @@ void MainGraph::zoomY()
     if(parametres.lissage)
         repaintTimer.start();
 
-    informations->setRange(graphRange);
+    information->setRange(graphRange);
 }
 
 void MainGraph::stop_Y_Zoom()

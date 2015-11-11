@@ -9,19 +9,22 @@ QT += widgets printsupport webkitwidgets
 
 TARGET = ZeGrapher
 TEMPLATE = app
-TRANSLATIONS = ZeGrapher_en.ts
+TRANSLATIONS = ZeGrapher_fr.ts
 CONFIG += separate_debug_info
 
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
+UI_DIR = .ui
 
 SOURCES += \
     main.cpp \
-    informations.cpp \
+    information.cpp \
     Windows/zegrapher.cpp \
-    Windows/fentableauvaleurs.cpp \
-    Windows/fenetreoptions.cpp \
-    Windows/fenetrefonctions.cpp \
-    Windows/fenetrebornes.cpp \
-    Windows/apropos.cpp \
+    Windows/windowvaluestable.cpp \
+    Windows/windowoptions.cpp \
+    Windows/windowfunctions.cpp \
+    Windows/windowboundary.cpp \
+    Windows/about.cpp \
     Widgets/tangentwidget.cpp \
     Widgets/straightlinewidget.cpp \
     Widgets/seqwidget.cpp \
@@ -70,13 +73,13 @@ SOURCES += \
 
 HEADERS  += \
     Structures.h \
-    informations.h \
+    information.h \
     Windows/zegrapher.h \
-    Windows/fentableauvaleurs.h \
-    Windows/fenetreoptions.h \
-    Windows/fenetrefonctions.h \
-    Windows/fenetrebornes.h \
-    Windows/apropos.h \
+    Windows/windowvaluestable.h \
+    Windows/windowoptions.h \
+    Windows/windowfunctions.h \
+    Windows/windowboundary.h \
+    Windows/about.h \
     Widgets/tangentwidget.h \
     Widgets/straightlinewidget.h \
     Widgets/seqwidget.h \
@@ -127,10 +130,10 @@ HEADERS  += \
 
 
 FORMS    += \
-    Windows/fenetreoptions.ui \
-    Windows/fenetrefonctions.ui \
-    Windows/fenetrebornes.ui \
-    Windows/apropos.ui \
+    Windows/windowoptions.ui \
+    Windows/windowfunctions.ui \
+    Windows/windowboundary.ui \
+    Windows/about.ui \
     Widgets/datawidget.ui \
     Export/print.ui \
     Export/imagesave.ui \
@@ -153,74 +156,5 @@ RC_FILE += \
 
 OTHER_FILES += \
     TODO.txt
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -220,10 +220,10 @@ bool TreeCreator::check(QString formule)
             numDigits = i - numStart;
             i--;
 
-            QString nombre = formule.mid(numStart, numDigits);
-            decompPriorites << NOMBRE;
-            decompTypes << NOMBRE;
-            decompValeurs << nombre.toDouble(&ok);
+            QString number = formule.mid(numStart, numDigits);
+            decompPriorites << NUMBER;
+            decompTypes << NUMBER;
+            decompValeurs << number.toDouble(&ok);
             if(!ok)
                 return false;
 
@@ -249,7 +249,7 @@ bool TreeCreator::check(QString formule)
                 if(i+1 >= formule.size() || (formule[i+1] != '(' && formule[i] != 'e' && formule[i] != 'E'))
                     return false;
 
-                decompPriorites << FONC;
+                decompPriorites << FUNC;
                 decompValeurs << 0.0;
                 ouvrepth = true;
                 chiffre = operateur = canEnd = fermepth = varOrFunc = numberSign = false;
@@ -291,8 +291,8 @@ bool TreeCreator::check(QString formule)
                 }
                 else if(constants.contains(name))
                 {
-                    decompPriorites << NOMBRE;
-                    decompTypes << NOMBRE;
+                    decompPriorites << NUMBER;
+                    decompTypes << NUMBER;
                     decompValeurs << constantsVals[constants.indexOf(name)];
                 }
                 else if(vars.contains(name) && authorizedVars[vars.indexOf(name)])
@@ -360,9 +360,9 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
 
     if(debut == fin)
     {
-        if(decompPriorites[debut] == NOMBRE)
+        if(decompPriorites[debut] == NUMBER)
         {
-            racine->type = NOMBRE;
+            racine->type = NUMBER;
             racine->value = new double;
             *racine->value = decompValeurs[debut];
         }
@@ -402,7 +402,7 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
             {
                 racine->type = decompTypes[i];
                 racine->right = createFastTree(debut, i + 1);
-                if(op != FONC)
+                if(op != FUNC)
                     racine->left = createFastTree(i - 1, fin);
                 return racine;
             }

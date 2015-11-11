@@ -27,7 +27,7 @@ using namespace std;
 
 GraphDraw::GraphDraw(Informations *info)
 {
-    informations = info;
+    information = info;
 
     coef = sqrt(3)/2;
 
@@ -98,8 +98,8 @@ void GraphDraw::drawCross(QPointF pt, double w)
 
 void GraphDraw::drawDataSet(int id, int width)
 {
-    QList<QPointF> list = informations->getDataList(id);
-    DataStyle style = informations->getDataStyle(id);
+    QList<QPointF> list = information->getDataList(id);
+    DataStyle style = information->getDataStyle(id);
 
     for(int i = 0 ; i < list.size(); i++)
     {
@@ -151,9 +151,9 @@ void GraphDraw::drawDataSet(int id, int width)
 
 void GraphDraw::drawData()
 {
-    for(int i = 0 ; i < informations->getDataListsCount(); i++)
+    for(int i = 0 ; i < information->getDataListsCount(); i++)
     {
-        if(informations->getDataStyle(i).draw)
+        if(information->getDataStyle(i).draw)
             drawDataSet(i, parametres.epaisseurDesCourbes+2);
     }
 }
@@ -163,17 +163,17 @@ void GraphDraw::drawRegression(int reg, int width)
     painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
 
     pen.setWidth(width);
-    pen.setColor(informations->getRegression(reg)->getColor());
+    pen.setColor(information->getRegression(reg)->getColor());
     painter.setPen(pen);
 
-    painter.drawPolyline(informations->getRegression(reg)->getCurve());
+    painter.drawPolyline(information->getRegression(reg)->getCurve());
 }
 
 void GraphDraw::drawRegressions()
 {
-    for(int i = 0 ; i < informations->getRegressionsCount() ; i++)
+    for(int i = 0 ; i < information->getRegressionsCount() ; i++)
     {
-        if(informations->getRegression(i)->getDrawState())
+        if(information->getRegression(i)->getDrawState())
             drawRegression(i, parametres.epaisseurDesCourbes);
     }
 }

@@ -24,7 +24,7 @@
 #define VALUESTABLECONF_H
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 class ValuesTableConf : public QWidget

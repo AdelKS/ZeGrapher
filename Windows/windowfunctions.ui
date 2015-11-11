@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FenetreFonctions</class>
- <widget class="QWidget" name="FenetreFonctions">
+ <class>WindowFunctions</class>
+ <widget class="QWidget" name="WindowFunctions">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -76,10 +76,10 @@
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Fonctions</string>
+       <string>Functions</string>
       </attribute>
       <attribute name="toolTip">
-       <string>Fonctions numériques</string>
+       <string>Functions numériques</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="leftMargin">

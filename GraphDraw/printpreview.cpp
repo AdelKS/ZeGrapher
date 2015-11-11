@@ -47,8 +47,8 @@ void PrintPreview::setPDFname(QString pdf)
 
 void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resType, int res)
 {
-    parametres = informations->getOptions();
-    graphRange = informations->getRange();
+    parametres = information->getOptions();
+    graphRange = information->getRange();
 
     printer = new QPrinter(printerInfo);
 
@@ -104,7 +104,7 @@ void PrintPreview::setScaleStatus(bool isActive)
 void PrintPreview::setxscale(double scale)
 {
     xscale = scale;
-    if(informations->isOrthonormal())
+    if(information->isOrthonormal())
         yscale = xscale;
     repaint();
 }
@@ -118,8 +118,8 @@ void PrintPreview::setyscale(double scale)
 void PrintPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    parametres = informations->getOptions();
-    graphRange = informations->getRange();
+    parametres = information->getOptions();
+    graphRange = information->getRange();
 
     painter.begin(this);
     //trace du background
@@ -191,7 +191,7 @@ void PrintPreview::determinerCentreEtUnites()
     uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
     uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
 
-    if(informations->isOrthonormal())
+    if(information->isOrthonormal())
     {
         double rapport =  uniteY / uniteX;
         graphRange.Ymin *= rapport;

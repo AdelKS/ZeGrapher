@@ -27,7 +27,7 @@
 
 ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, int columnnum)
 {
-    informations = info;
+    information = info;
     calculator = new ExprCalculator(false, info->getFuncsList());
     dataTable = table;
     columnCount = columnnum;

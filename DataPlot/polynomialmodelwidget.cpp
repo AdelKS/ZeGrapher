@@ -32,7 +32,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     polar = pol;
     data = dat;
-    informations = info;
+    information = info;
 
     addWidgetsToUI();
 
@@ -43,12 +43,12 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
 
 
-    regValSaver = new RegressionValuesSaver(regression, informations->getOptions(), informations->getRange(), informations->getUnits());
+    regValSaver = new RegressionValuesSaver(regression, information->getOptions(), information->getRange(), information->getUnits());
 
     connect(regression, SIGNAL(regressionModified()), regValSaver, SLOT(recalculate()));
-    connect(regression, SIGNAL(regressionModified()), informations, SIGNAL(dataUpdated()));
+    connect(regression, SIGNAL(regressionModified()), information, SIGNAL(dataUpdated()));
 
-    informations->addDataRegression(regValSaver);
+    information->addDataRegression(regValSaver);
 
     regression->setData(dat); //
 
@@ -184,14 +184,14 @@ void PolynomialModelWidget::addWidgetsToUI()
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setMargin(0);
 
-    startVal = new NumberLineEdit(false, informations->getFuncsList());
+    startVal = new NumberLineEdit(false, information->getFuncsList());
     startVal->setEnabled(false);
     startVal->setMaximumHeight(22);
     startVal->setMaximumWidth(150);
 
     connect(startVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
 
-    endVal = new NumberLineEdit(false, informations->getFuncsList());
+    endVal = new NumberLineEdit(false, information->getFuncsList());
     endVal->setEnabled(false);
     endVal->setMaximumHeight(22);
     endVal->setMaximumWidth(150);
@@ -270,7 +270,7 @@ PolynomialModelWidget::~PolynomialModelWidget()
 {
     delete ui;
 
-    informations->removeDataRegression(regValSaver);
+    information->removeDataRegression(regValSaver);
 
     delete regression;
     delete regValSaver;

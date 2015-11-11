@@ -24,7 +24,7 @@
 
 FuncTable::FuncTable(Informations *info) : AbstractTable()
 {
-    informations = info;   
+    information = info;   
     exprCalc = new ExprCalculator(false, info->getFuncsList());
 
     updateTimer->setInterval(2000);
@@ -39,7 +39,7 @@ FuncTable::FuncTable(Informations *info) : AbstractTable()
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
 
-    connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -49,8 +49,8 @@ FuncTable::FuncTable(Informations *info) : AbstractTable()
 void FuncTable::setTableParameters(ValuesTableParameters par)
 {
     parameters = par;
-    func = informations->getFuncsList()[parameters.id];
-    title->setText(tr("Fonction: ") + parameters.name);
+    func = information->getFuncsList()[parameters.id];
+    title->setText(tr("Function: ") + parameters.name);
 
     if(func->isFuncParametric())
     {
@@ -129,7 +129,7 @@ void FuncTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphRange range = informations->getRange();
+        GraphRange range = information->getRange();
 
         parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
         parameters.range.step = range.Xscale;

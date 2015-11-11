@@ -25,7 +25,7 @@
 #include <QVBoxLayout>
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "./modelchoicewidget.h"
 #include "./polynomialmodelwidget.h"
 
@@ -56,7 +56,7 @@ signals:
 private:
     State currentState;
     QList<Point> data;
-    Informations *informations;
+    Informations *information;
     bool polar;
     QString abscissa, ordinate;
 

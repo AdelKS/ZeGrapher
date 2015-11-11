@@ -24,7 +24,7 @@
 
 #include "Calculus/exprcalculator.h"
 #include "DataPlot/datatable.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 namespace Ui {
@@ -61,7 +61,7 @@ protected slots:
 
 protected:
 
-    Informations *informations;
+    Informations *information;
     ExprCalculator *calculator;
     int columnCount;
     QSignalMapper *signalMapper, *lineEditsMapper;

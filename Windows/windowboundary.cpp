@@ -20,17 +20,17 @@
 
 
 
-#include "Windows/fenetrebornes.h"
-#include "ui_fenetrebornes.h"
+#include "Windows/windowboundary.h"
+#include "ui_windowboundary.h"
 
-FenetreBornes::FenetreBornes(Informations *info)
+WindowBoundary::WindowBoundary(Informations *info)
 {
-    informations = info;
+    information = info;
 
 
-    calculator = new ExprCalculator(false, informations->getFuncsList());
+    calculator = new ExprCalculator(false, information->getFuncsList());
 
-    ui = new Ui::FenetreBornes;
+    ui = new Ui::WindowBoundary;
     ui->setupUi(this);
 
     messageBox = new QMessageBox(this);
@@ -46,27 +46,27 @@ FenetreBornes::FenetreBornes(Informations *info)
     connect(ui->Ypas, SIGNAL(returnPressed()), this, SLOT(appliquer()));
 
     connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
-    connect(ui->orthonormal, SIGNAL(clicked(bool)), informations, SLOT(setOrthonormal(bool)));
+    connect(ui->orthonormal, SIGNAL(clicked(bool)), information, SLOT(setOrthonormal(bool)));
 
     connect(ui->boutonAppliquer, SIGNAL(released()), this, SLOT(appliquer()));
 
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateWidgets()));
 }
 
-void FenetreBornes::orthonormal(bool state)
+void WindowBoundary::orthonormal(bool state)
 {   
     ui->Ymax->setEnabled(!state);
     ui->Ymin->setEnabled(!state);
     ui->Ypas->setEnabled(!state);
 }
 
-void FenetreBornes::resetToStandardView()
+void WindowBoundary::resetToStandardView()
 {
     standardView();
     appliquer();
 }
 
-void FenetreBornes::standardView()
+void WindowBoundary::standardView()
 {
     ui->Xmax->setText("10");
     ui->Xmin->setText("-10");
@@ -77,7 +77,7 @@ void FenetreBornes::standardView()
     ui->Ypas->setText("1");
 }
 
-void FenetreBornes::appliquer()
+void WindowBoundary::appliquer()
 {
     GraphRange range;
     bool ok = false;
@@ -149,13 +149,13 @@ void FenetreBornes::appliquer()
         return;
     }
 
-    informations->setOrthonormal(ui->orthonormal->isChecked());
-    informations->setRange(range);
+    information->setOrthonormal(ui->orthonormal->isChecked());
+    information->setRange(range);
 }
 
-void FenetreBornes::updateWidgets()
+void WindowBoundary::updateWidgets()
  {
-     GraphRange fenetre = informations->getRange();
+     GraphRange fenetre = information->getRange();
 
      ui->Xmax->setText(QString::number(fenetre.Xmax));
      ui->Xmin->setText(QString::number(fenetre.Xmin));
@@ -165,12 +165,12 @@ void FenetreBornes::updateWidgets()
      ui->Ymin->setText(QString::number(fenetre.Ymin));
      ui->Ypas->setText(QString::number(fenetre.Yscale));
 
-     ui->orthonormal->setChecked(informations->isOrthonormal());
-     orthonormal(informations->isOrthonormal());
+     ui->orthonormal->setChecked(information->isOrthonormal());
+     orthonormal(information->isOrthonormal());
  }
 
 
-FenetreBornes::~FenetreBornes()
+WindowBoundary::~WindowBoundary()
 {
     delete ui;
     delete calculator;

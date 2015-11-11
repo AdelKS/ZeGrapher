@@ -57,7 +57,7 @@
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
-#define INIT_FREQ 20 //animation update ferquence
+#define INIT_FREQ 20 //animation update frequency
 #define INIT_INCR_PERIOD 100 //animation incremental period
 #define PAR_DRAW_LIMIT 100
 

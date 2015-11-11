@@ -25,11 +25,11 @@ int refCol;
 
 DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth)
 {
-    informations = info;
+    information = info;
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->setMargin(0);
     setMinimumSize(0,0);
-    calculator = new ExprCalculator(false, informations->getFuncsList());
+    calculator = new ExprCalculator(false, information->getFuncsList());
     treeCreator = new TreeCreator(DATA_TABLE_EXPR);
 
     QColor color;

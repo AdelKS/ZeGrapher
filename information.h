@@ -20,8 +20,8 @@
 
 
 
-#ifndef INFORMATIONS_H
-#define INFORMATIONS_H
+#ifndef INFORMATION_H
+#define INFORMATION_H
 
 #include <Structures.h>
 #include "Widgets/pareqwidget.h"
@@ -97,7 +97,7 @@ signals:
 
 public slots:
 
-    void setRange(const GraphRange &newFenetre);
+    void setRange(const GraphRange &newWindow);
     void setGridState(bool etat);
     void setOrthonormal(bool state);
     void setOptions(Options opt);  
@@ -122,4 +122,4 @@ private:
     QList<ParEqWidget*> *parEqWidgets;
 };
 
-#endif // INFORMATIONS_H
+#endif // INFORMATION_H

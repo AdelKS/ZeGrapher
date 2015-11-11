@@ -1,7 +1,7 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2013, Adel Kara Slimane, the ZeGrapher project <contact@zegrapher.com>
 **
-**  This file is part of ZeGrapher's source code.
+**  This file is part of the ZeGrapher project, version 2.0.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
 **  under the terms of the GNU General Public License as published by the
@@ -19,11 +19,12 @@
 ****************************************************************************/
 
 
-
 #include "Windows/zegrapher.h"
+#include <QDebug>
 
 MainWindow::MainWindow() :
-baseName("mainwindow_geometry/")
+baseName("mainwindow_geometry/"),
+settings("AdelKS & Co.", "Zegrapher")
 {      
     information = new Informations();
 
@@ -152,7 +153,7 @@ void MainWindow::makeConnects()
 {   
     connect(boutonGrille, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
     connect(scene, SIGNAL(sizeChanged(int,int)), fenImage, SLOT(setSize(int,int)));
-    connect(fenFunctions, SIGNAL(displayKeyboard()), this, SLOT(showKeyboard()));
+    connect(fenFunctions, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
 }
 
 void MainWindow::showFuncsWin()
@@ -185,7 +186,7 @@ void MainWindow::showValuesTabWin()
 
 void MainWindow::showKeyboard()
 {
-    keyboard->move(fenFunctions->frameGeometry().bottomLeft());
+    keyboard->move(fenFunctions->pos() + QPoint(0,fenFunctions->height()));
     keyboard->show();
 }
 
@@ -217,9 +218,7 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
     fenFunctions->closeAllOpenedWindows();
     fenFunctions->close();
 
-    fenOptions->saveSettings();
     fenOptions->close();
-
     fenAPropos->close();
     fenValeurs->close();
     fenImage->close();

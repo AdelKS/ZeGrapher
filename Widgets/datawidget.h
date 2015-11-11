@@ -56,7 +56,7 @@ private:
     int widgetNum;
     QList<PointStyle> pointStyleMap;
     QList<Qt::PenStyle> lineStyleMap;
-    Informations *informations;
+    Informations *information;
     Ui::DataWidget *ui;
     QColorButton *colorButton;
     DataWindow *dataWindow;

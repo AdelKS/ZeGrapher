@@ -24,7 +24,7 @@
 #include <QWidget>
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "Widgets/numberlineedit.h"
 #include "Widgets/qcolorbutton.h"
 #include "Calculus/polynomialregression.h"
@@ -70,7 +70,7 @@ protected:
 
     Ui::PolynomialModelWidget *ui;
     QString abscissa, ordinate;
-    Informations *informations;
+    Informations *information;
     bool polar;
     QList<Point> data;
     NumberLineEdit *startVal, *endVal;

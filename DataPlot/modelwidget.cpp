@@ -37,7 +37,7 @@ ModelWidget::ModelWidget(const QList<Point> &dat, Informations *info, bool isPol
     setFrameShape(QFrame::StyledPanel);
 
     data = dat;
-    informations = info;
+    information = info;
 
     modelChoice = new ModelChoiceWidget();
     layout->addWidget(modelChoice);
@@ -94,7 +94,7 @@ void ModelWidget::displaySelectedModel(ModelType model)
 
   if(model == PolynomialModel)
   {
-        polynomialModel = new PolynomialModelWidget(data, informations, abscissa, ordinate, polar);
+        polynomialModel = new PolynomialModelWidget(data, information, abscissa, ordinate, polar);
         layout->addWidget(polynomialModel);
         currentState = PolynomialWidget;
 

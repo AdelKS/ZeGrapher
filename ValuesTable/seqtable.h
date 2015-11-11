@@ -24,7 +24,7 @@
 #define SEQTABLE_H
 
 #include "ValuesTable/abstracttable.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/exprcalculator.h"
 
@@ -50,7 +50,7 @@ protected:
     void add_parSeq_y_values();
 
     ExprCalculator exprCalculator;
-    Informations *informations;
+    Informations *information;
     SeqCalculator *seq;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;

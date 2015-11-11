@@ -25,7 +25,7 @@
 
 
 
-#include "informations.h"
+#include "information.h"
 
 Informations::Informations()
 {
@@ -177,9 +177,9 @@ QList<FuncCalculator*> Informations::getFuncsList()
     return functions;
 }
 
-void Informations::setRange(const GraphRange &newFenetre)
+void Informations::setRange(const GraphRange &newWindow)
 {
-    range = newFenetre;
+    range = newWindow;
     emit updateOccured();
 }
 

@@ -24,7 +24,7 @@
 #define PAREQTALE_H
 
 #include "abstracttable.h"
-#include "informations.h"
+#include "information.h"
 
 
 class ParEqTable : public AbstractTable
@@ -46,7 +46,7 @@ protected:
 
     void fillWithValues();
 
-    Informations *informations;
+    Informations *information;
     ParEqWidget *parEq;
     ValuesTableParameters parameters;
     ParEqValues parEqValues;

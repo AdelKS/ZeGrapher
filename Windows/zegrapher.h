@@ -25,16 +25,18 @@
 
 #include "Structures.h"
 #include "GraphDraw/maingraph.h"
-#include "Windows/fenetrebornes.h"
-#include "Windows/fenetrefonctions.h"
-#include "Windows/fenetreoptions.h"
-#include "Windows/fentableauvaleurs.h"
-#include "apropos.h"
+#include "Windows/windowboundary.h"
+#include "Windows/windowfunctions.h"
+#include "Windows/windowoptions.h"
+#include "Windows/windowvaluestable.h"
+#include "about.h"
 #include "Export/imagesave.h"
 #include "GraphDraw//printpreview.h"
 #include "Export/print.h"
 #include "Widgets/keyboard.h"
 
+#include <QSettings>
+#include <QString>
 
 class MainWindow : public QMainWindow
 {
@@ -59,25 +61,30 @@ protected slots:
     void showPrintWin();
     void showImageSaveWin();
     void showAboutWin();
-
-
+    
+private slots :
+    void resizeEvent(QResizeEvent* event);
+    void moveEvent(QMoveEvent* event);
+    
 private:
 
-    Informations *informations;
+    Informations *information;
     MainGraph *scene;
     GraphRange window;
-    FenetreFonctions *fenFonctions;
-    FenetreBornes *fenBornes;
-    FenetreOptions *fenOptions;
-    FenTableauValeurs *fenValeurs;
+    WindowFunctions *fenFunctions;
+    WindowBoundary *fenBoundarys;
+    WindowOptions *fenOptions;
+    WindowValuesTable *fenValeurs;
     Keyboard *keyboard;
     ImageSave *fenImage;
-    apropos *fenAPropos;
+    about *fenAPropos;
     Print *fenPrint;
     QAction *boutonGrille;
     ImagePreview *fenImageScene;
     PrintPreview *fenPrintScene;
-
+    QString baseName;
+    QSettings settings;
+    
 };
 
 #endif // ZEGRAPHER_H

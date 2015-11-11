@@ -24,7 +24,7 @@
 
 SeqTable::SeqTable(Informations *info) : AbstractTable(), exprCalculator(false, info->getFuncsList())
 {
-    informations = info;    
+    information = info;    
 
     updateTimer->setInterval(2000);
     updateTimer->setSingleShot(true);
@@ -36,7 +36,7 @@ SeqTable::SeqTable(Informations *info) : AbstractTable(), exprCalculator(false, 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
 
-    connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -47,10 +47,10 @@ void SeqTable::setTableParameters(ValuesTableParameters par)
     parameters = par;
     title->setText(tr("Suite: ") + "(" + parameters.name + "<sub>n</sub>)");
 
-    seq = informations->getSeqsList()[parameters.id];
+    seq = information->getSeqsList()[parameters.id];
 
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
-        connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+        connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
 
     if(seq->isSeqParametric())
     {
@@ -126,7 +126,7 @@ void SeqTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphRange range = informations->getRange();
+        GraphRange range = information->getRange();
 
         parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
         parameters.range.step = range.Xscale;
@@ -166,7 +166,7 @@ void SeqTable::cellEdited(QStandardItem *item)
 
     if(x != floor(x) || x < seq->get_nMin())
     {
-        QMessageBox::warning(this, tr("Erreur"), tr("Vous devez saisir un nombre entier supérieur à n<sub>min</sub>"));
+        QMessageBox::warning(this, tr("Erreur"), tr("Vous devez saisir un NUMBER entier supérieur à n<sub>min</sub>"));
         return;
     }
 

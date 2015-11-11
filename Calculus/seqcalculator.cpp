@@ -371,7 +371,7 @@ double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
 {
     if(!ok)
         return NAN;
-    if(tree->type == NOMBRE )
+    if(tree->type == NUMBER )
     {
         return *tree->value;
     }
@@ -447,7 +447,7 @@ bool SeqCalculator::verifyAskedTerm(double n)
     }
     else if(n < nMin)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), QObject::tr("Nombre de premiers termes insuffisant pour la suite ") + seqName);
+        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), QObject::tr("NUMBER de premiers termes insuffisant pour la suite ") + seqName);
         return false;
     }
     else return true;

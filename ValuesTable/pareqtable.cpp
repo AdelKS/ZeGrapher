@@ -24,7 +24,7 @@
 
 ParEqTable::ParEqTable(Informations *info) : AbstractTable()
 {
-    informations = info;
+    information = info;
     exprCalc = new ExprCalculator(false, info->getFuncsList());
 
     k = 0;
@@ -39,7 +39,7 @@ ParEqTable::ParEqTable(Informations *info) : AbstractTable()
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
 
-    connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -49,7 +49,7 @@ ParEqTable::ParEqTable(Informations *info) : AbstractTable()
 void ParEqTable::setTableParameters(ValuesTableParameters par)
 {
     parameters = par;
-    parEq = informations->getParEqsList()->at(parameters.id);
+    parEq = information->getParEqsList()->at(parameters.id);
     connect(parEq, SIGNAL(destroyed()), this, SIGNAL(previous()));
 
     title->setText(tr("Equation paramètrique: ") + parameters.name);

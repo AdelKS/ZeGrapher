@@ -196,7 +196,7 @@ void TangentWidget::validate()
     isValid = funcCalculators[funcID]->isFuncValid();
     if(!isValid)
     {
-        slopeLineEdit->setText(tr("Fonction choisie"));
+        slopeLineEdit->setText(tr("Function choisie"));
         ordinateAtOriginLineEdit->setText(tr("Invalide"));
         return;
     }

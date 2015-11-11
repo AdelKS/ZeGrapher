@@ -20,27 +20,27 @@
 
 
 
-#ifndef FENETREFONCTIONS_H
-#define FENETREFONCTIONS_H
+#ifndef FENETREFUNCTIONS_H
+#define FENETREFUNCTIONS_H
 
-#include "informations.h"
+#include "information.h"
 #include "Widgets/funcwidget.h"
 #include "Widgets/seqwidget.h"
 #include "Widgets/pareqcontroller.h"
 #include "Widgets/datawidget.h"
 
 namespace Ui {
-    class FenetreFonctions;
+    class WindowFunctions;
 }
 
-class FenetreFonctions : public QWidget
+class WindowFunctions : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreFonctions(Informations *info);
+    explicit WindowFunctions(Informations *info);
     void closeAllOpenedWindows();
-     ~FenetreFonctions();  
+     ~WindowFunctions();  
 
 public slots:
     void validateFunctions();
@@ -75,8 +75,8 @@ protected:
     void addSequences();    
 
 private:
-    Informations *informations;
-    Ui::FenetreFonctions *ui;    
+    Informations *information;
+    Ui::WindowFunctions *ui;    
 
     QList <QChar> funcNames;
     QList <QChar> seqNames;
@@ -96,4 +96,4 @@ private:
     QList<DataWidget*> dataWidgets;
 };
 
-#endif // FENETREFONCTIONS_H
+#endif // FENETREFUNCTIONS_H

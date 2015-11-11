@@ -24,7 +24,7 @@
 #define FUNCTABLE_H
 
 #include "abstracttable.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 
@@ -48,7 +48,7 @@ protected:
     void add_x_values();
     void add_y_values();    
 
-    Informations *informations;
+    Informations *information;
     FuncCalculator *func;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;

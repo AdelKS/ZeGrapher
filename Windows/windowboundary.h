@@ -20,40 +20,46 @@
 
 
 
-#ifndef FENETREOPTIONS_H
-#define FENETREOPTIONS_H
+#ifndef WINDOWBOUNDARY_H
+#define WINDOWBOUNDARY_H
 
 #include "Structures.h"
-#include "informations.h"
-#include "Widgets/qcolorbutton.h"
+#include "information.h"
+#include "Calculus/exprcalculator.h"
 
 
 namespace Ui {
-    class fenetreoptions;
+    class WindowBoundary;
 }
 
-class FenetreOptions : public QWidget
+class WindowBoundary : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreOptions(Informations *info);
-    ~FenetreOptions();   
+    explicit WindowBoundary(Informations *info);
+    ~WindowBoundary();
 
 public slots:
-    void saveSettings();
+    void resetToStandardView();
+    void updateWidgets();
+
 
 private slots:
+    void standardView();
+    void orthonormal(bool state);
     void appliquer();
-    void readSavedSettings();
+
+signals:
+    void nouvelleWindow(GraphRange fenetre);
+    void orthonormalBasis(bool state);
 
 private:
 
-    Informations *informations;
-    Ui::fenetreoptions *ui;   
-    Options parametres;
-    QColorButton *couleurAxes, *couleurFond, *couleurQuadrillage;
-
+    Informations *information;
+    Ui::WindowBoundary *ui;
+    QMessageBox *messageBox;    
+    ExprCalculator *calculator;
 };
 
-#endif // FENETREOPTIONS_H
+#endif // WINDOWBOUNDARY_H

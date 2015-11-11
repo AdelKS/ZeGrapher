@@ -23,7 +23,7 @@
 #define DATATABLE_H
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 #define MIN_ROW_COUNT 10
@@ -90,7 +90,7 @@ protected:
     ExprCalculator *calculator;
     TreeCreator *treeCreator;
     int cellHeight, cellWidth;
-    Informations *informations;
+    Informations *information;
     QTableWidget *tableWidget;
     QList<QList<double> > values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
                                     row insertion will be implemented */

@@ -46,8 +46,8 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    parametres = informations->getOptions();
-    graphRange = informations->getRange();
+    parametres = information->getOptions();
+    graphRange = information->getRange();
 
     painter.begin(this);
 
@@ -151,7 +151,7 @@ void ImagePreview::paint()
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.translate(leftMargin, topMargin);
 
-    pen.setColor(informations->getOptions().couleurDesAxes);
+    pen.setColor(information->getOptions().couleurDesAxes);
     painter.setPen(pen);
 
     placerGraduations();
@@ -212,7 +212,7 @@ void ImagePreview::writeLegends()
 
 void ImagePreview::placerGraduations()
 {
-    double fontSize = informations->getOptions().numSize;
+    double fontSize = information->getOptions().numSize;
     double prec = numPrec;
 
     font.setPixelSize(fontSize);
@@ -237,7 +237,7 @@ void ImagePreview::placerGraduations()
     {
         if(fabs(Xpos) > 1)
         {
-            if(informations->getGridState())
+            if(information->getGridState())
             {
                 pen.setColor(parametres.couleurQuadrillage);
                 pen.setWidthF(0.5);
@@ -279,7 +279,7 @@ void ImagePreview::placerGraduations()
     {
         if(fabs(Ypos) > 1)
         {
-            if(informations->getGridState())
+            if(information->getGridState())
             {
                 pen.setColor(parametres.couleurQuadrillage);
                 pen.setWidthF(0.5);
@@ -346,7 +346,7 @@ void ImagePreview::determinerCentreEtUnites()
     uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
 
     double rapport = uniteY / uniteX;
-    if(informations->isOrthonormal())
+    if(information->isOrthonormal())
     {
         graphRange.Ymin *= rapport;
         graphRange.Ymax *= rapport;
@@ -360,8 +360,8 @@ void ImagePreview::determinerCentreEtUnites()
 
 QImage* ImagePreview::drawImage()
 {
-    parametres = informations->getOptions();
-    graphRange = informations->getRange();
+    parametres = information->getOptions();
+    graphRange = information->getRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
     image->fill(parametres.couleurDuFond.rgb());
@@ -369,7 +369,7 @@ QImage* ImagePreview::drawImage()
     painter.begin(image);
     //trace du background  
 
-    pen.setColor(informations->getOptions().couleurDesAxes);
+    pen.setColor(information->getOptions().couleurDesAxes);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 

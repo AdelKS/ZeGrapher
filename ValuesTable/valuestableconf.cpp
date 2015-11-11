@@ -45,7 +45,7 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
 
     typeCombo = new QComboBox();
     typeCombo->addItem("");
-    typeCombo->addItem(tr("Fonction"));
+    typeCombo->addItem(tr("Function"));
     typeCombo->addItem(tr("Suite"));
     typeCombo->addItem(tr("Equation paramétrique"));
     typeCombo->setCurrentIndex(0);
