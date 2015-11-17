@@ -35,7 +35,7 @@ class SeqCalculator : public QObject
     Q_OBJECT
 
 public:
-    SeqCalculator(int id, QString name, QWidget *parent);
+    SeqCalculator(int id, QString name, QWidget *parent, QLabel *errorLabel);
 
     bool validateFirstValsExpr(QString expr);
     bool validateSeqExpr(QString expr);
@@ -85,6 +85,8 @@ protected:
     bool saveCustomSeqValues(double nMax);
     bool verifyAskedTerm(double n);
     bool verifyOtherSeqAskedTerm(double n, int id);
+
+    QLabel *errorMessageLabel;
 
     int seqNum, kPos, nMin, drawsNum;
     bool isExprValidated, areFirstValsValidated, isParametric, isValid, blockCalculatingFromTree, drawState, isKRangeValid;

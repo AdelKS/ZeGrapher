@@ -80,5 +80,23 @@ void AbstractFuncWidget::addMainWidgets()
     connect(kConfWidget, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
     principalLayout->addWidget(kConfWidget);
 
+    errorMessageWidget = new QWidget();
+    QHBoxLayout *hlayout = new QHBoxLayout(errorMessageWidget);
+    hlayout->setMargin(0);
+    hlayout->setSpacing(3);
+
+    QLabel *errorIcon = new QLabel();
+    errorIcon->setPixmap(QPixmap(":/icons/error.png"));
+    errorIcon->setScaledContents(true);
+    errorIcon->setMaximumSize(25,25);
+    hlayout->addWidget(errorIcon);
+
+    errorMessageLabel = new QLabel();
+    errorMessageLabel->setWordWrap(true);
+    hlayout->addWidget(errorMessageLabel);
+
+    principalLayout->addWidget(errorMessageWidget);
+    errorMessageWidget->hide();
+
     setLayout(principalLayout);
 }

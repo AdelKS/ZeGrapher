@@ -28,10 +28,11 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-SeqCalculator::SeqCalculator(int id, QString name, QWidget *parent) : treeCreator(SEQUENCE), firstValsTreeCreator(NORMAL_EXPR)
+SeqCalculator::SeqCalculator(int id, QString name, QWidget *parent, QLabel *errorLabel) : treeCreator(SEQUENCE), firstValsTreeCreator(NORMAL_EXPR)
 {   
     seqNum = id;
     isExprValidated = isValid = isKRangeValid = blockCalculatingFromTree = false;
+    errorMessageLabel = errorLabel;
 
     areFirstValsValidated = true;
     parentWidget = parent;
@@ -65,8 +66,9 @@ bool SeqCalculator::validateFirstValsExpr(QString expr)
         drawsNum = 1;
 
         if(!areFirstValsValidated)
-            QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur de syntaxe lors de la saisie des premiers termes de la suite ") + seqName
-                                 + "\n" + tr("Note: ces termes doivent être séparés par des ';' "));
+        {
+            errorMessageLabel->setText(tr("Note: les premiers termes doivent être séparés par des ';'"));
+        }
     }
 
     return areFirstValsValidated;
@@ -74,6 +76,8 @@ bool SeqCalculator::validateFirstValsExpr(QString expr)
 
 bool SeqCalculator::validateSeqExpr(QString expr)
 {
+    Q_UNUSED(errorMessageLabel);
+
     if(expr != expression)
     {       
         expression = expr;
@@ -83,10 +87,7 @@ bool SeqCalculator::validateSeqExpr(QString expr)
         if(seqTree != NULL)
             treeCreator.deleteFastTree(seqTree);
 
-        seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);
-
-        //if(!isExprValidated)
-          //  QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur de syntaxe lors de la saisie de l'expression de la suite ") + seqName);
+        seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);       
     }
 
     return isExprValidated;
@@ -176,8 +177,8 @@ bool SeqCalculator::checkByCalculatingFirstValuesTrees()
 
     isValid = calculateAndSaveFirstValuesTrees();
     if(!isValid)
-    {
-        QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur dans le calcul des premiers termes saisis pour la suite ") + seqName);
+    {        
+        errorMessageLabel->setText(tr("Erreur dans le calcul des premiers termes saisis."));
     }
 
     return isValid;
@@ -188,13 +189,8 @@ bool SeqCalculator::checkByCalculatingValues()
     if(!isExprValidated || !areFirstValsValidated)
         return false;
 
-    isValid = saveSeqValues(seqValues[0].size() + 10 + nMin);
-    blockCalculatingFromTree = false;
-
-    if(!isValid)
-    {
-        QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur dans le calcul des premiers termes de la suite ") + seqName);
-    }
+    isValid = saveSeqValues(3*seqValues[0].size() + 10 + nMin);
+    blockCalculatingFromTree = false;   
 
     return isValid;
 }
@@ -228,10 +224,7 @@ double SeqCalculator::getCustomSeqValue(double n, bool &ok, double k_value)
 bool SeqCalculator::saveCustomSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
-    {
-        QMessageBox::critical(parentWidget, tr("Erreur"), tr("Erreur dans les appels entre deux suites. dont ") + seqName);
-        return false;
-    }
+        return false;    
 
     blockCalculatingFromTree = true;
 
@@ -302,7 +295,7 @@ bool SeqCalculator::saveSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
     {
-        QMessageBox::critical(parentWidget, tr("Erreur"), tr("Erreur dans les appels entre deux suites, dont ") + seqName);
+        errorMessageLabel->setText(tr("Récurrence croisée invalide."));
         return false;
     }
 
@@ -442,12 +435,12 @@ bool SeqCalculator::verifyAskedTerm(double n)
 {
     if(ceil(n) != n || n-nMin >= seqValues[kPos].size())
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), QObject::tr("Mauvaise relation de récurence saisie pour la suite ") + seqName);
+        errorMessageLabel->setText(QObject::tr("Relation de récurence erronée."));
         return false;
     }
     else if(n < nMin)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), QObject::tr("Nombre de premiers termes insuffisant pour la suite ") + seqName);
+        errorMessageLabel->setText(tr("Nombre de premiers termes insuffisant."));
         return false;
     }
     else return true;
@@ -457,12 +450,12 @@ bool SeqCalculator::verifyOtherSeqAskedTerm(double n, int id)
 {
     if(ceil(n) != n)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), seqName + QObject::tr(" appelle ") + seqsNames[id] + QObject::tr(" avec un paramètre non entier."));
+        errorMessageLabel->setText(tr("Cette suite appelle ") + seqsNames[id] + tr(" avec un paramètre non entier."));
         return false;
     }
     else if(n < nMin)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), seqName + QObject::tr(" demande un terme non existant de ") + seqsNames[id] + "\n" + QObject::tr("Le rang demandé étant plus petit que n<sub>min</sub>"));
+        errorMessageLabel->setText(tr("Cette suite demande un terme non existant de ") + seqsNames[id]);
         return false;
     }
     else return true;
@@ -481,19 +474,31 @@ bool SeqCalculator::check_called_funcs_and_seqs_validity()
 {
     isValid = check_called_funcs_validity(expression);
     if(!isValid)
+    {
+        errorMessageLabel->setText(tr("Une fonction invalide ou non définie est appelée dans l'expression de cette suite."));
         return false;
+    }
 
     isValid = check_called_funcs_validity(firstValsExpr);
     if(!isValid)
+    {
+        errorMessageLabel->setText(tr("Une fonction invalide ou non définie est appelée dans les premiers termes saisis."));
         return false;
+    }
 
     isValid = check_called_seqs_validity(expression);
     if(!isValid)
+    {
+        errorMessageLabel->setText(tr("Une suite invalide ou non définie est appelée dans l'expression de cette suite"));
         return false;
+    }
 
     isValid = check_called_seqs_validity(firstValsExpr);
     if(!isValid)
+    {
+        errorMessageLabel->setText(tr("Une suite invalide ou non définie est appelée dans les premiers termes saisis."));
         return false;
+    }
 
     return true;
 }

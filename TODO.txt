@@ -1,1 +1,1 @@
-Enregister les couleurs des fonctions et suites
+Selectionner a la souris les donnees et leur modelisations

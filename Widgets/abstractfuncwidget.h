@@ -40,7 +40,8 @@ protected:
 
     QCheckBox *drawCheckBox;
     QHBoxLayout *secondContainerLayout;
-    QLabel *nameLabel;
+    QLabel *nameLabel, *errorMessageLabel;
+    QWidget *errorMessageWidget;
     QLineEdit *expressionLineEdit;
     QColorButton *colorButton, *secondColorButton;
     ParConfWidget *kConfWidget;

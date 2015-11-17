@@ -189,12 +189,12 @@ void MainGraph::addOtherWidgets()
     connect(vSlider, SIGNAL(sliderReleased()), this, SLOT(stop_Y_Zoom()));
 
     lineX = new QLineEdit();
-    lineX->setFixedSize(150,25);    
+    lineX->setFixedSize(100,25);
     connect(lineX, SIGNAL(returnPressed()), this, SLOT(lineXReturnPressed()));
 
     lineY = new QLineEdit();   
     lineY->setReadOnly(true);    
-    lineY->setFixedSize(150,25);
+    lineY->setFixedSize(100,25);
 
     QVBoxLayout *verLayout = new QVBoxLayout();
     verLayout->addWidget(zoom1);
@@ -213,18 +213,24 @@ void MainGraph::addOtherWidgets()
     hWidget = new QWidget(this);
     hWidget->setLayout(horLayout);
 
-    xWidget = new QWidget(this);
+    xWidget = new QWidget(this);    
+    xWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox1 = new QHBoxLayout();
+    hbox1->addStretch();
     hbox1->addWidget(xTextLabel);
     hbox1->addWidget(lineX);
+    hbox1->addStretch();
     xWidget->setLayout(hbox1);
     xWidget->setAutoFillBackground(true);
 
 
-    yWidget = new QWidget(this);
+    yWidget = new QWidget(this);    
+    yWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox2 = new QHBoxLayout();
+    hbox2->addStretch();
     hbox2->addWidget(yTextLabel);
     hbox2->addWidget(lineY);
+    hbox2->addStretch();
     yWidget->setLayout(hbox2);
     yWidget->setAutoFillBackground(true);
 

@@ -73,6 +73,7 @@ protected slots:
 protected:
     void addFunctions();
     void addSequences();    
+    void saveColors();
 
 private:
     Informations *informations;

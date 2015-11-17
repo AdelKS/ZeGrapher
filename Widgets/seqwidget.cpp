@@ -27,7 +27,7 @@ SeqWidget::SeqWidget(QChar name, int id, QColor color) : colorSaver(color)
     seqName = name;
     seqNum = id;
     nameLabel->setText(QString(name) + "<sub>n</sub> =");
-    calculator = new SeqCalculator(id, "(" + QString(name) + "<sub>n</sub>)", this);
+    calculator = new SeqCalculator(id, "(" + QString(name) + "<sub>n</sub>)", this, errorMessageLabel);
     calculator->setColorSaver(&colorSaver);
     defaultRange.start = 0;
     defaultRange.end = 0.5;
@@ -144,6 +144,8 @@ bool SeqWidget::isSeqParametric()
 
 void SeqWidget::firstValidation()
 {
+    errorMessageLabel->clear();
+
     if(expressionLineEdit->text().isEmpty())
     {
         isValid = false;
@@ -159,8 +161,8 @@ void SeqWidget::firstValidation()
     colorSaver.setCurvesNum(trunc((range.end - range.start)/range.step) + 1);
 
     bool firstValsValidated = calculator->validateFirstValsExpr(firstValsLine->text());
-    if(firstValsValidated)
-        firstValsLine->setPalette(validPalette);
+    if(firstValsValidated)    
+        firstValsLine->setPalette(validPalette);    
     else firstValsLine->setPalette(invalidPalette);
 
     bool seqExprValidated = calculator->validateSeqExpr(expressionLineEdit->text());
@@ -170,6 +172,8 @@ void SeqWidget::firstValidation()
 
     calculator->setParametricInfo(isParametric, kConfWidget->getRange());
 
+    if(!errorMessageLabel->text().isEmpty())
+        errorMessageWidget->show();
 
     isValid = firstValsValidated && seqExprValidated && (!isParametric || kConfWidget->isValid());
 }
@@ -184,13 +188,23 @@ void SeqWidget::secondValidation()
     if(!isValid)
         return;
 
-    isValid = calculator->checkByCalculatingFirstValuesTrees();
-    if(!isValid)
-        return;
-
     isValid = calculator->check_called_funcs_and_seqs_validity();
     if(!isValid)
+    {
+        if(!errorMessageLabel->text().isEmpty())
+            errorMessageWidget->show();
         return;
+    }
+
+    isValid = calculator->checkByCalculatingFirstValuesTrees();
+    if(!isValid)
+    {
+        if(!errorMessageLabel->text().isEmpty())
+            errorMessageWidget->show();
+        return;
+    }
+
+
 }
 
 void SeqWidget::thirdValidation()
@@ -200,7 +214,16 @@ void SeqWidget::thirdValidation()
 
     isValid = calculator->checkByCalculatingValues();
     if(!isValid)
+    {
+        if(!errorMessageLabel->text().isEmpty())
+            errorMessageWidget->show();
         return;
+    }
 
     isValid = calculator->check_called_funcs_and_seqs_validity();
+
+    if(isValid)
+        errorMessageWidget->hide();
+    else if(!errorMessageLabel->text().isEmpty())
+        errorMessageWidget->show();
 }

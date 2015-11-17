@@ -60,11 +60,29 @@ FenetreFonctions::FenetreFonctions(Informations *info)
     connect(ui->keyboardButton, SIGNAL(released()), this, SLOT(keyboardButtonClicked()));
 }
 
+QList<QColor> toColorsList(const QList<QVariant> &list)
+{
+    QList<QColor> colorsList;
+    for(int i = 0 ; i < list.size() ; i++)
+        colorsList << list.at(i).value<QColor>();
+    return colorsList;
+}
+
 void FenetreFonctions::addFunctions()
 {   
+    QSettings settings;
+    QList<QColor> funcColors;
+
+    if(settings.contains("functions/colors"))
+        funcColors = toColorsList(settings.value("functions/colors").toList());
+
     for(int i = 0 ; i < funcNames.size() ; i++)
-    {
-        FuncWidget *widget = new FuncWidget(funcNames[i], i, Qt::black, window());
+    {        
+        FuncWidget *widget;
+        if(i < funcColors.size())
+            widget = new FuncWidget(funcNames[i], i, funcColors.at(i), window());
+        else widget = new FuncWidget(funcNames[i], i, Qt::black, window());
+
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
         connect(widget, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));
         connect(widget, SIGNAL(newParametricState(int)), this, SLOT(newFuncParametricState()));
@@ -93,9 +111,20 @@ void FenetreFonctions::addFunctions()
 
 void FenetreFonctions::addSequences()
 {
+    QSettings settings;
+    QList<QColor> seqColors;
+
+    if(settings.contains("sequences/colors"))
+        seqColors = toColorsList(settings.value("sequences/colors").toList());
+
     for(int i = 0 ; i < seqNames.size() ; i++)
     {
-        SeqWidget *widget = new SeqWidget(seqNames[i], i, Qt::black);
+        SeqWidget *widget;
+
+        if(i < seqColors.size())
+            widget = new SeqWidget(seqNames[i], i, seqColors.at(i));
+        else widget = new SeqWidget(seqNames[i], i, Qt::black);
+
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
         connect(widget, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));
         connect(widget, SIGNAL(newParametricState()), this, SLOT(newSeqParametricState()));
@@ -293,8 +322,31 @@ void FenetreFonctions::removeDataWidget(DataWidget *widget)
     delete widget;
 }
 
+QList<QVariant> toVariantList(const QList<QColor> &list)
+{
+    QList<QVariant> variantList;
+    for(int i = 0 ; i < list.size() ; i++)
+        variantList << list.at(i);
+    return variantList;
+}
+
+void FenetreFonctions::saveColors()
+{
+    QSettings settings;
+    QList<QColor> funcColors, seqColors;
+    for(int i = 0 ; i < seqWidgets.size() ; i++)
+        seqColors << seqWidgets.at(i)->getCalculator()->getColorSaver()->getColor(0);
+    for(int i = 0 ; i < funcWidgets.size() ; i++)
+        funcColors << funcWidgets.at(i)->getCalculator()->getColorSaver()->getColor(0);
+
+    settings.setValue("functions/colors", toVariantList(funcColors));
+    settings.setValue("sequences/colors", toVariantList(seqColors));
+}
+
  void FenetreFonctions::closeAllOpenedWindows()
  {
+     saveColors();
+
      for(int i = 0 ; i < dataWidgets.size(); i++)
      {
          dataWidgets[i]->closeDataWindow();

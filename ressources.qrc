@@ -5,7 +5,6 @@
         <file>icons/logoLogiciel.png</file>
         <file>icons/print.png</file>
         <file>icons/quadrillage.png</file>
-        <file>icons/tableauDeValeurs.png</file>
         <file>icons/zoom-in-icon.png</file>
         <file>icons/zoom-out-icon.png</file>
         <file>icons/fonctions.png</file>
@@ -57,5 +56,7 @@
         <file>Help/Ypin.png</file>
         <file>Help/english-icon.png</file>
         <file>Help/french-icon.png</file>
+        <file>icons/tableauDeValeurs.png</file>
+        <file>icons/error.png</file>
     </qresource>
 </RCC>
