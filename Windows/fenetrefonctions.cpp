@@ -80,8 +80,8 @@ void FenetreFonctions::addFunctions()
     {        
         FuncWidget *widget;
         if(i < funcColors.size())
-            widget = new FuncWidget(funcNames[i], i, funcColors.at(i), window());
-        else widget = new FuncWidget(funcNames[i], i, Qt::black, window());
+            widget = new FuncWidget(funcNames[i], i, funcColors.at(i));
+        else widget = new FuncWidget(funcNames[i], i, Qt::black);
 
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
         connect(widget, SIGNAL(drawStateChanged()), informations, SLOT(emitDrawStateUpdate()));

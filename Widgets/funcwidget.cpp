@@ -23,7 +23,7 @@
 #include "Widgets/funcwidget.h"
 
 
-FuncWidget::FuncWidget(QChar name, int id, QColor color, QWidget *parentWindow) : AbstractFuncWidget(), colorSaver(color)
+FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(), colorSaver(color)
 {
     funcName = name;
     funcNum = id;
@@ -32,7 +32,7 @@ FuncWidget::FuncWidget(QChar name, int id, QColor color, QWidget *parentWindow) 
 
     isExprParametric = areCalledFuncsParametric = false;
 
-    calculator = new FuncCalculator(id, QString(name), parentWindow);
+    calculator = new FuncCalculator(id, QString(name), errorMessageLabel);
     calculator->setColorSaver(&colorSaver);
 
     connect(&colorSaver, SIGNAL(colorsChanged()), this, SIGNAL(drawStateChanged()));
@@ -124,6 +124,7 @@ void FuncWidget::firstValidation()
     if(expressionLineEdit->text().isEmpty())
     {
         isValid = false;
+        errorMessageWidget->hide();
         calculator->setInvalid();
         return;
     }
@@ -161,5 +162,11 @@ void FuncWidget::secondValidation()
     if(!isValid)
         return;
 
+    errorMessageLabel->clear();//must be placed before the next instruction casue it may modify it
+
     calculator->checkFuncCallingInclusions();
+
+    if(!errorMessageLabel->text().isEmpty())
+        errorMessageWidget->show();
+    else errorMessageWidget->hide();
 }

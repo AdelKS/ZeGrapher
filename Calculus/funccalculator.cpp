@@ -28,13 +28,13 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-FuncCalculator::FuncCalculator(int id, QString funcName, QWidget *parent) : treeCreator(FUNCTION)
+FuncCalculator::FuncCalculator(int id, QString funcName, QLabel *errorLabel) : treeCreator(FUNCTION)
 {
+    errorMessageLabel = errorLabel;
     funcTree = NULL;
     funcNum = id;
     isExprValidated = areCalledFuncsGood = areIntegrationPointsGood = isParametric = calledFuncsAlreadyChecked = false;
-    name = funcName;
-    parentWidget = parent;
+    name = funcName;    
 
     addRefFuncsPointers();
 
@@ -194,7 +194,10 @@ bool FuncCalculator::checkFuncCallingInclusions()
         areCalledFuncsGood = !calledFuncs.contains(funcNum);
 
         if(!areCalledFuncsGood)
+        {
+            errorMessageLabel->setText(tr("Cette fonction s'appelle elle même dans son expression."));
             return false;
+        }
 
         for(int i = 0; i < calledFuncs.size() && areCalledFuncsGood; i++)
         {
@@ -204,7 +207,7 @@ bool FuncCalculator::checkFuncCallingInclusions()
         }
 
         if(!areCalledFuncsGood) // this function calls another function, that is wether invalid or calls back the firs function
-            QMessageBox::warning(parentWidget, tr("Erreur"), tr("La fonction ") + name + tr(" appelle une autre fonction invalide, ou qui forme une boucle d'appel infine."));
+            errorMessageLabel->setText(tr("Cette fonction appelle une autre fonction qui est invalide, non définie ou forme une boucle infinie d'appels."));
     }
 
     return areCalledFuncsGood;

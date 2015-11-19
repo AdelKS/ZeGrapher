@@ -35,7 +35,7 @@ class SeqCalculator : public QObject
     Q_OBJECT
 
 public:
-    SeqCalculator(int id, QString name, QWidget *parent, QLabel *errorLabel);
+    SeqCalculator(int id, QString name, QLabel *errorLabel);
 
     bool validateFirstValsExpr(QString expr);
     bool validateSeqExpr(QString expr);
@@ -102,8 +102,7 @@ protected:
     QList<double (*)(double)> refFuncs;
 
     QList<FastTree*> firstValsTrees;
-    QList< QList<double> > seqValues;
-    QWidget *parentWidget;
+    QList< QList<double> > seqValues;    
 };
 
 #endif // SEQCALCULATOR_H

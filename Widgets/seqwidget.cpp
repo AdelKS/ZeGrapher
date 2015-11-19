@@ -27,7 +27,7 @@ SeqWidget::SeqWidget(QChar name, int id, QColor color) : colorSaver(color)
     seqName = name;
     seqNum = id;
     nameLabel->setText(QString(name) + "<sub>n</sub> =");
-    calculator = new SeqCalculator(id, "(" + QString(name) + "<sub>n</sub>)", this, errorMessageLabel);
+    calculator = new SeqCalculator(id, "(" + QString(name) + "<sub>n</sub>)", errorMessageLabel);
     calculator->setColorSaver(&colorSaver);
     defaultRange.start = 0;
     defaultRange.end = 0.5;
@@ -149,6 +149,7 @@ void SeqWidget::firstValidation()
     if(expressionLineEdit->text().isEmpty())
     {
         isValid = false;
+        errorMessageWidget->hide();
         calculator->setInvalid();
         return;
     }   

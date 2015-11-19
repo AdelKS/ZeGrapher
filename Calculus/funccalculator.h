@@ -34,7 +34,7 @@ class FuncCalculator : public QObject
     Q_OBJECT
 
 public:
-    FuncCalculator(int id, QString funcName, QWidget *parent);
+    FuncCalculator(int id, QString funcName, QLabel *errorLabel);
 
     void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
     void setIntegrationPointsList(QList<Point> list);
@@ -76,9 +76,9 @@ protected:
     FastTree *funcTree;
     QString expression, name;
     QList<FuncCalculator*> funcCalculatorsList;
-    Range kRange;
-    QWidget *parentWidget;  
+    Range kRange;    
     ColorSaver *colorSaver;
+    QLabel *errorMessageLabel;
 
     QList<Point> integrationPoints;
     QList<double (*)(double)> refFuncs;    

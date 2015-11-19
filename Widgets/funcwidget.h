@@ -33,7 +33,7 @@ class FuncWidget : public AbstractFuncWidget
 {
     Q_OBJECT
 public:
-    explicit FuncWidget(QChar name, int id, QColor color, QWidget *parentWindow);
+    explicit FuncWidget(QChar name, int id, QColor color);
     void firstValidation();
     void secondValidation();   
     void setFuncsCalcsList(QList<FuncCalculator*> list);
