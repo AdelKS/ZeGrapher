@@ -37,7 +37,7 @@ class GraphDraw : public QWidget // Abstract class
 {
     Q_OBJECT
 public:
-    explicit GraphDraw(Informations *info);
+    explicit GraphDraw(Information *info);
     ~GraphDraw();
 
 protected:
@@ -64,10 +64,10 @@ protected:
 
 
     int graphWidth, graphHeight;
-    Informations *information;
+    Information *information;
     FuncValuesSaver *funcValuesSaver;    
     QPainter painter;
-    Options parametres;
+    Options parameters;
     QPolygonF polygon;
     QPen pen;
     QBrush brush;

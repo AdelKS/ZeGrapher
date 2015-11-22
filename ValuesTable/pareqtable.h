@@ -31,7 +31,7 @@ class ParEqTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit ParEqTable(Informations *info);
+    explicit ParEqTable(Information *info);
     void setTableParameters(ValuesTableParameters par);
 
 protected slots:
@@ -46,7 +46,7 @@ protected:
 
     void fillWithValues();
 
-    Informations *information;
+    Information *information;
     ParEqWidget *parEq;
     ValuesTableParameters parameters;
     ParEqValues parEqValues;

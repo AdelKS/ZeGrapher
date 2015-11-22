@@ -28,9 +28,9 @@ ParEqController::ParEqController(QList<ParEqWidget *> *list)
     freq = INIT_FREQ;
     period = INIT_INCR_PERIOD;
 
-    ratio = (double)(1000/freq)/(double)(period);
+    ratio = (double)(1000.0/freq)/(double)(period);
 
-    animationTimer.setInterval(1000/INIT_FREQ);
+    animationTimer.setInterval(1000.0/INIT_FREQ);
 
     connect(&animationTimer, SIGNAL(timeout()), this, SLOT(nextAnimationFrame()));
 
@@ -72,15 +72,15 @@ void ParEqController::updateRatioInParEq()
 void ParEqController::setUpdateFreq(int Hz)
 {
     freq = Hz;
-    ratio = (double)(1000/freq)/(double)(period);
-    animationTimer.setInterval(1000/Hz);
+    ratio = (double)(1000.0/freq)/(double)(period);
+    animationTimer.setInterval(1000.0/Hz);
     updateRatioInParEq();
 }
 
 void ParEqController::setIncrPeriod(int msecs)
 {
     period = msecs;
-    ratio = (double)(1000/freq)/(double)(period);
+    ratio = (double)(1000.0/freq)/(double)(period);
     updateRatioInParEq();
 }
 

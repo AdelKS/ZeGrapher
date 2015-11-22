@@ -1,1 +1,3 @@
-Enregister les couleurs des fonctions et suites
+Save functions and sequences colors
+Recalculate all the sequences when one of them is modified or make a more intelligent approach to the bug
+Update where data help window is created to gain in time and memory

@@ -21,7 +21,7 @@
 #include "modelwidget.h"
 
 
-ModelWidget::ModelWidget(const QList<Point> &dat, Informations *info, bool isPolar, QString xname, QString yname, QWidget *parent) : QFrame(parent)
+ModelWidget::ModelWidget(const QList<Point> &dat, Information *info, bool isPolar, QString xname, QString yname, QWidget *parent) : QFrame(parent)
 {
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
@@ -100,7 +100,7 @@ void ModelWidget::displaySelectedModel(ModelType model)
 
         connect(polynomialModel, SIGNAL(removeMe()), this, SLOT(emitRemoveMeSignal()));
 
-    }// other cases will be added when new modelisation types would be implemented
+    }// other cases will be added when new modeling types would be implemented
 }
 
 ModelWidget::~ModelWidget()

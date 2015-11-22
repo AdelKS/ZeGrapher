@@ -37,7 +37,7 @@ class WindowBoundary : public QWidget
     Q_OBJECT
 
 public:
-    explicit WindowBoundary(Informations *info);
+    explicit WindowBoundary(Information *info);
     ~WindowBoundary();
 
 public slots:
@@ -48,15 +48,15 @@ public slots:
 private slots:
     void standardView();
     void orthonormal(bool state);
-    void appliquer();
+    void apply();
 
 signals:
-    void nouvelleWindow(GraphRange fenetre);
+    void newWindow(GraphRange window);//FIXME never emitted
     void orthonormalBasis(bool state);
 
 private:
 
-    Informations *information;
+    Information *information;
     Ui::WindowBoundary *ui;
     QMessageBox *messageBox;    
     ExprCalculator *calculator;

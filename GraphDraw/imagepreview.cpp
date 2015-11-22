@@ -22,9 +22,9 @@
 
 #include "GraphDraw/imagepreview.h"
 
-ImagePreview::ImagePreview(Informations *info) : GraphDraw(info)
+ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 {
-    parametres.distanceEntrePoints = 0.125;
+    parameters.istanceBetweenPoints = 0.125;
     leftMargin = 30;
     rightMargin = 30;
     topMargin = 20;
@@ -46,12 +46,12 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    parametres = information->getOptions();
+    parameters = information->getOptions();
     graphRange = information->getRange();
 
     painter.begin(this);
 
-    painter.setBrush(QBrush(parametres.couleurDuFond));
+    painter.setBrush(QBrush(parameters.colorBackground));
     painter.drawRect(-1, -1, width()+1, height()+1);
 
     assignGraphSize();
@@ -151,7 +151,7 @@ void ImagePreview::paint()
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.translate(leftMargin, topMargin);
 
-    pen.setColor(information->getOptions().couleurDesAxes);
+    pen.setColor(information->getOptions().colorAxes);
     painter.setPen(pen);
 
     placerGraduations();
@@ -239,12 +239,12 @@ void ImagePreview::placerGraduations()
         {
             if(information->getGridState())
             {
-                pen.setColor(parametres.couleurQuadrillage);
+                pen.setColor(parameters.colorGrid);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphHeight));
             }
-            pen.setColor(parametres.couleurDesAxes);
+            pen.setColor(parameters.colorAxes);
             pen.setWidth(1);            
             painter.setPen(pen);
 
@@ -281,13 +281,13 @@ void ImagePreview::placerGraduations()
         {
             if(information->getGridState())
             {
-                pen.setColor(parametres.couleurQuadrillage);
+                pen.setColor(parameters.colorGrid);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(0, -Ypos + centre.y), QPointF(graphWidth, -Ypos + centre.y));
             }
 
-            pen.setColor(parametres.couleurDesAxes);
+            pen.setColor(parameters.colorAxes);
             pen.setWidth(1);
             painter.setPen(pen);
 
@@ -302,13 +302,13 @@ void ImagePreview::placerGraduations()
             if(space > largestWidth)
                 largestWidth = space;
 
-            painter.drawText(QPointF(-space, pos + parametres.numSize/2), num);
+            painter.drawText(QPointF(-space, pos + parameters.numSize/2), num);
         }
         else
         {
             pos = -Ypos + centre.y;
             space = fontMetrics.width("0") + 5;
-            painter.drawText(QPointF(-space, pos + parametres.numSize/2), "0");
+            painter.drawText(QPointF(-space, pos + parameters.numSize/2), "0");
         }
 
         if(space > largestWidth)
@@ -329,7 +329,7 @@ void ImagePreview::placerGraduations()
 void ImagePreview::drawAxes()
 {   
     pen.setWidth(1);
-    pen.setColor(parametres.couleurDesAxes);
+    pen.setColor(parameters.colorAxes);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -360,16 +360,16 @@ void ImagePreview::determinerCentreEtUnites()
 
 QImage* ImagePreview::drawImage()
 {
-    parametres = information->getOptions();
+    parameters = information->getOptions();
     graphRange = information->getRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
-    image->fill(parametres.couleurDuFond.rgb());
+    image->fill(parameters.colorBackground.rgb());
 
     painter.begin(image);
     //trace du background  
 
-    pen.setColor(information->getOptions().couleurDesAxes);
+    pen.setColor(information->getOptions().colorAxes);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 

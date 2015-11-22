@@ -35,7 +35,7 @@ class MainGraph : public GraphDraw
 {
     Q_OBJECT
 public:
-    explicit MainGraph(Informations *info);
+    explicit MainGraph(Information *info);
     ~MainGraph();
 
     void afficherPtX(double x);   
@@ -105,7 +105,7 @@ protected:
     QLineEdit *lineX, *lineY;
     double y1, y2, mouseX, mouseY;
 
-    bool dispPoint, boutonPresse, sourisSurUneCourbe,
+    bool dispPoint, buttonPresse, sourisSurUneCurve,
          dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,
          hHideStarted, vHideStarted, hoveredCurveType, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;

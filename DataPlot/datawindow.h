@@ -59,7 +59,7 @@ class DataWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataWindow(Informations *info, int ind);
+    explicit DataWindow(Information *info, int ind);
     ~DataWindow();
 
     void changeIndex(int ind);
@@ -89,7 +89,7 @@ protected:
     int index, xindex, yindex;
     QWebView *helpWindow;
     Ui::DataWindow *ui;
-    Informations *information;
+    Information *information;
     QGroupBox *actionsGroupBox;
     QWidget *columnSelectorSpacer, *rowSelectorSpacer;
     DataTable *dataTable;

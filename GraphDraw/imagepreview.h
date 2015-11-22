@@ -30,7 +30,7 @@ class ImagePreview : public GraphDraw
 {
     Q_OBJECT
 public:
-    explicit ImagePreview(Informations *info);
+    explicit ImagePreview(Information *info);
     QImage* drawImage();
 
 public slots:    

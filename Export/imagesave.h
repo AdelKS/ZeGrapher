@@ -36,12 +36,12 @@ class ImageSave : public QWidget
     Q_OBJECT
 
 public:
-    explicit ImageSave(Informations *info);
+    explicit ImageSave(Information *info);
     ~ImageSave();   
 
 public slots:
     void setSize(int W, int H);
-    void setWindow(GraphRange fenetre);
+    void setWindow(GraphRange win);
     void setPrecision(short prec);   
     void setW(int W);
     void setH(int H);

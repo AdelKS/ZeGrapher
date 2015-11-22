@@ -23,7 +23,7 @@
 #include "Export/imagesave.h"
 #include "ui_imagesave.h"
 
-ImageSave::ImageSave(Informations *info) : ui(new Ui::ImageSave)
+ImageSave::ImageSave(Information *info) : ui(new Ui::ImageSave)
 {
     ui->setupUi(this);
 
@@ -57,7 +57,7 @@ void ImageSave::save()
     QString fichier;
 
 
-    fichier = fileDialog.getSaveFileName(this, tr("Enregistrer une image"), QString(), "Images (*.ppm *.tiff *.bmp *.png *.gif *.jpg *.jpeg)");
+    fichier = fileDialog.getSaveFileName(this, tr("Save picture"), QString(), "Images (*.ppm *.tiff *.bmp *.png *.gif *.jpg *.jpeg)");
     if(fichier.isEmpty())
         return;
 
@@ -95,9 +95,9 @@ void ImageSave::setH(int H)
     scene->setFixedHeight(H);
 }
 
-void ImageSave::setWindow(GraphRange fenetre)
+void ImageSave::setWindow(GraphRange win)
 {
-    window = fenetre;    
+    window = win;    
 }
 
 void ImageSave::setPrecision(short prec)

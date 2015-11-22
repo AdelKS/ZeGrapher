@@ -24,7 +24,7 @@
 #include "ui_windowfunctions.h"
 
 
-WindowFunctions::WindowFunctions(Informations *info)
+WindowFunctions::WindowFunctions(Information *info)
 {   
     ui = new Ui::WindowFunctions;
     ui->setupUi(this);   
@@ -37,7 +37,7 @@ WindowFunctions::WindowFunctions(Informations *info)
     connect(parEqController, SIGNAL(animationUpdate()), info, SLOT(emitAnimationUpdate()));
 
     setWindowTitle(tr("Tracer"));
-    setWindowIcon(QIcon(":/icons/fonctions.png"));
+    setWindowIcon(QIcon(":/icons/functions.png"));
 
     funcNames << 'f' << 'g' << 'h'<< 'p' << 'r'<< 'm';
     seqNames << 'u' << 'v' << 'l' << 'w' << 'q' << 't';
@@ -51,7 +51,7 @@ WindowFunctions::WindowFunctions(Informations *info)
 
 
 
-    connect(ui->boutonTracer, SIGNAL(released()), this, SLOT(draw()));
+    connect(ui->buttonTracer, SIGNAL(released()), this, SLOT(draw()));
     connect(ui->addLine, SIGNAL(released()), this, SLOT(addStraightline()));
     connect(ui->addTangent, SIGNAL(released()), this, SLOT(addTangent()));
     connect(ui->addParEq, SIGNAL(released()), this, SLOT(addParEq()));
@@ -140,7 +140,7 @@ void WindowFunctions::newSeqParametricState()
         seqWidgets[i]->checkCalledFuncsSeqsParametric();
 }
 
-void WindowFunctions::setInfoClass(Informations *info)
+void WindowFunctions::setInfoClass(Information *info)
 {
     information = info;   
     information->setParEqsListPointer(&parEqWidgets);

@@ -32,7 +32,7 @@ class FuncTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit FuncTable(Informations *info);
+    explicit FuncTable(Information *info);
     void setTableParameters(ValuesTableParameters par);    
     
 protected slots:
@@ -45,10 +45,10 @@ protected:
     void fillFromRange();
     void emptyCellsFill();
 
-    void add_x_values();
-    void add_y_values();    
+    void addXValues();
+    void addYValues();    
 
-    Informations *information;
+    Information *information;
     FuncCalculator *func;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;

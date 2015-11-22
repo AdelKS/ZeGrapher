@@ -35,7 +35,7 @@ class ValuesTable : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ValuesTable(Informations *info, QWidget *parent = 0);
+    explicit ValuesTable(Information *info, QWidget *parent = 0);
     ~ValuesTable();
     
 signals:
@@ -48,7 +48,7 @@ protected slots:
 
 protected:
     ValuesTableConf *confWidget;
-    Informations *infoClass;   
+    Information *infoClass;   
     SeqTable *seqTable;
     FuncTable *funcTable;
     ParEqTable *parEqTable;

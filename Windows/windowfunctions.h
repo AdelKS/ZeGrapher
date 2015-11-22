@@ -38,7 +38,7 @@ class WindowFunctions : public QWidget
     Q_OBJECT
 
 public:
-    explicit WindowFunctions(Informations *info);
+    explicit WindowFunctions(Information *info);
     void closeAllOpenedWindows();
      ~WindowFunctions();  
 
@@ -52,7 +52,7 @@ signals:
     void displayKeyboard();
 
 protected slots:
-    void setInfoClass(Informations *info);  
+    void setInfoClass(Information *info);  
     void keyboardButtonClicked();
     void newFuncParametricState();
     void newSeqParametricState();
@@ -75,7 +75,7 @@ protected:
     void addSequences();    
 
 private:
-    Informations *information;
+    Information *information;
     Ui::WindowFunctions *ui;    
 
     QList <QChar> funcNames;

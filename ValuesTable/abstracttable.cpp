@@ -25,18 +25,18 @@
 AbstractTable::AbstractTable(QWidget *parent) :
     QWidget(parent)
 {
-    QVBoxLayout *principalLayout = new QVBoxLayout;
-    principalLayout->setMargin(2);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->setMargin(2);
 
     QHBoxLayout *previousButtonLayout = new QHBoxLayout;
-    QPushButton *previousButton = new QPushButton(tr("Retour"));
+    QPushButton *previousButton = new QPushButton(tr("Back"));
 
     connect(previousButton, SIGNAL(released()), this, SIGNAL(previous()));
 
     previousButtonLayout->addWidget(previousButton);
     previousButtonLayout->addStretch();
 
-    principalLayout->addLayout(previousButtonLayout);    
+    mainLayout->addLayout(previousButtonLayout);    
 
     //-----------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ AbstractTable::AbstractTable(QWidget *parent) :
     k_parameter_widget = new QWidget;
     k_parameter_widget->setLayout(kWidgetLayout);
 
-    principalLayout->addWidget(k_parameter_widget);
+    mainLayout->addWidget(k_parameter_widget);
 
     k_parameter_widget->hide();
 
@@ -63,7 +63,7 @@ AbstractTable::AbstractTable(QWidget *parent) :
     title = new QLabel;
     title->setAlignment(Qt::AlignHCenter);
 
-    principalLayout->addWidget(title);
+    mainLayout->addWidget(title);
 
     // -------------------------------------------------------------------
 
@@ -75,14 +75,14 @@ AbstractTable::AbstractTable(QWidget *parent) :
 
     updateTimer = new QTimer(this);
 
-    principalLayout->addWidget(tableView);
+    mainLayout->addWidget(tableView);
 
     //----------------------------------------------------------------
 
     QHBoxLayout *precisionLayout = new QHBoxLayout;
-    QLabel *precisionText = new QLabel(tr("Précision :"));
+    QLabel *precisionText = new QLabel(tr("Precision:"));
     precision = new QSpinBox();
-    precision->setSuffix(tr(" chiffres"));
+    precision->setSuffix(tr(" digits"));
     precision->setMinimum(2);
     precision->setMaximum(8);
     precision->setValue(4);
@@ -92,11 +92,11 @@ AbstractTable::AbstractTable(QWidget *parent) :
     precisionLayout->addWidget(precision);
     precisionLayout->addStretch();
 
-    principalLayout->addLayout(precisionLayout);
+    mainLayout->addLayout(precisionLayout);
 
     //--------------------------------------------------------------------
 
-    setLayout(principalLayout);
+    setLayout(mainLayout);
 
     boldFont.setBold(true);
 

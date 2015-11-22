@@ -36,7 +36,7 @@ class WindowValuesTable : public QWidget
     Q_OBJECT
 
 public:
-    explicit WindowValuesTable(Informations *info);
+    explicit WindowValuesTable(Information *info);
 
 protected slots:
     void addValuesTable();
@@ -45,7 +45,7 @@ protected slots:
 protected:
     QHBoxLayout *tablesLayout;
     QList<ValuesTable*> valuesTableList;
-    Informations *information;   
+    Information *information;   
     QWidget *widget;
 
 };

@@ -64,7 +64,7 @@ void TangentWidget::newFuncParState(int funcNum)
 void TangentWidget::changeID(int id)
 {
     tangentID = id;
-    nameLabel->setText("(T<sub>" + QString::number(tangentID + 1) + "</sub>) " + tr("tangente à :"));
+    nameLabel->setText("(T<sub>" + QString::number(tangentID + 1) + "</sub>) " + tr("tangent to :"));
 }
 
 QColor TangentWidget::getColor()
@@ -89,7 +89,7 @@ void TangentWidget::addWidgets()
 
     for(int i = 0 ; i < funcNames.size(); i++){functionsComboBox->addItem(funcNames[i]);}
 
-    QLabel *label2 = new QLabel(tr("en:  a ="));
+    QLabel *label2 = new QLabel(tr("at:  a ="));
 
     tangentPos = new QLineEdit;
     tangentPos->setMaximumSize(80,25);
@@ -151,7 +151,7 @@ void TangentWidget::addWidgets()
     connect(kValueLineEdit, SIGNAL(textChanged(QString)), this, SLOT(kValueLineEdited()));
     connect(kValueLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
-    kTextLabel = new QLabel(tr("Pour k ="));
+    kTextLabel = new QLabel(tr("For k ="));
     kTextLabel->setMaximumHeight(25);
     kTextLabel->setHidden(!funcWidgets[0]->isFuncParametric());
 
@@ -196,8 +196,8 @@ void TangentWidget::validate()
     isValid = funcCalculators[funcID]->isFuncValid();
     if(!isValid)
     {
-        slopeLineEdit->setText(tr("Function choisie"));
-        ordinateAtOriginLineEdit->setText(tr("Invalide"));
+        slopeLineEdit->setText(tr("Choosen Function"));
+        ordinateAtOriginLineEdit->setText(tr("Invalid"));
         return;
     }
 

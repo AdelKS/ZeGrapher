@@ -32,12 +32,12 @@
 #include "Calculus/colorsaver.h"
 #include "Calculus/regressionvaluessaver.h"
 
-class Informations: public QObject
+class Information: public QObject
 {
     Q_OBJECT
 
 public:
-    Informations();
+    Information();
 
     GraphRange getRange();
     bool getGridState();
@@ -116,7 +116,7 @@ private:
     QList<SeqCalculator*> sequences;
 
     GraphRange range;
-    Options parametres;   
+    Options parameters;   
     bool orthonormal, gridState, updatingLock;   
     Point units;
     QList<ParEqWidget*> *parEqWidgets;

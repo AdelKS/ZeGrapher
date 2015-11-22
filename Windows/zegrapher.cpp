@@ -25,21 +25,21 @@
 MainWindow::MainWindow() :
 baseName("mainwindow_geometry/")
 {      
-    information = new Informations();
+    information = new Information();
 
-    fenOptions = new WindowOptions(information);
-    fenBoundarys = new WindowBoundary(information);
-    fenFunctions = new WindowFunctions(information);      
-    fenAPropos = new about();
-    fenImage = new ImageSave(information);
-    fenValeurs = new WindowValuesTable(information);
-    fenPrint = new Print(information);
+    winOptions = new WindowOptions(information);
+    winBoundarys = new WindowBoundary(information);
+    winFunctions = new WindowFunctions(information);      
+    winAbout = new about();
+    winImage = new ImageSave(information);
+    winValues = new WindowValuesTable(information);
+    winPrint = new Print(information);
     keyboard = new Keyboard();
 
     scene = new MainGraph(information); // it has to be the last thing to create.
 
 
-    setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
+    setWindowIcon(QIcon(":/icons/software.png"));
     setMinimumSize(700,450);
     setWindowTitle("ZeGrapher");
 
@@ -51,7 +51,7 @@ baseName("mainwindow_geometry/")
 
     setCentralWidget(scene);    
 
-    fenImage->setSize(scene->width(), scene->height());
+    winImage->setSize(scene->width(), scene->height());
 
     makeConnects();
     
@@ -67,163 +67,163 @@ baseName("mainwindow_geometry/")
 
 void MainWindow::createMenus()
 {
-    QMenu *menuFichier = menuBar()->addMenu(tr("File"));
-    QMenu *menuOutils = menuBar()->addMenu(tr("Tools"));
-    QMenu *menuAffichage = menuBar()->addMenu(tr("Windows"));
-    QMenu *menuAide = menuBar()->addMenu("?");   
+    QMenu *menuFile = menuBar()->addMenu(tr("File"));
+    QMenu *menuTools = menuBar()->addMenu(tr("Tools"));
+    QMenu *menuWindows = menuBar()->addMenu(tr("Windows"));
+    QMenu *menuHelp = menuBar()->addMenu("?");   
 
-    boutonGrille = menuOutils->addAction(QIcon(":/icons/quadrillage.png"), tr("Show/Hide the grid"));
-    boutonGrille->setCheckable(true);
+    gridButton = menuTools->addAction(QIcon(":/icons/quadrillage.png"), tr("Show/Hide the grid"));
+    gridButton->setCheckable(true);
 
-    QAction *actionRepereOrthonorme = menuOutils->addAction(tr("Orthonormal basis"));
-    actionRepereOrthonorme->setCheckable(true);
-    connect(actionRepereOrthonorme, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
-    connect(information, SIGNAL(newOrthonormalityState(bool)), actionRepereOrthonorme, SLOT(setChecked(bool)));
+    QAction *actionBasisOrthonorme = menuTools->addAction(tr("Orthonormal basis"));
+    actionBasisOrthonorme->setCheckable(true);
+    connect(actionBasisOrthonorme, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
+    connect(information, SIGNAL(newOrthonormalityState(bool)), actionBasisOrthonorme, SLOT(setChecked(bool)));
 
-    QAction *resetView = menuOutils->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
-    connect(resetView, SIGNAL(triggered()), fenBoundarys, SLOT(resetToStandardView()));
+    QAction *resetView = menuTools->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
+    connect(resetView, SIGNAL(triggered()), winBoundarys, SLOT(resetToStandardView()));
 
-    QAction *afficherFenAPropos = menuAide->addAction(tr("About..."));
-    connect(afficherFenAPropos, SIGNAL(triggered()), this, SLOT(showAboutWin()));
+    QAction *afficherwinAbout = menuHelp->addAction(tr("About..."));
+    connect(afficherwinAbout, SIGNAL(triggered()), this, SLOT(showAboutWin()));
 
-    QAction *print = menuFichier->addAction(QIcon(":/icons/print.png"), tr("Print..."));
+    QAction *print = menuFile->addAction(QIcon(":/icons/print.png"), tr("Print..."));
     print->setShortcut(QKeySequence("Ctrl+P"));
     connect(print, SIGNAL(triggered()), this, SLOT(showPrintWin()));
 
-    QAction *saveImage = menuFichier->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Save image..."));
+    QAction *saveImage = menuFile->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Save image..."));
     saveImage->setShortcut(QKeySequence("Ctrl+S"));
     connect(saveImage, SIGNAL(triggered()), this, SLOT(showImageSaveWin()));
 
-    QAction *actionAfficherFenOptions = menuFichier->addAction(tr("Options"));
-    actionAfficherFenOptions->setShortcut(QKeySequence("Ctrl+O"));
-    connect(actionAfficherFenOptions, SIGNAL(triggered()), this, SLOT(showOptionsWin()));
+    QAction *actionShowWinOptions = menuFile->addAction(tr("Options"));
+    actionShowWinOptions->setShortcut(QKeySequence("Ctrl+O"));
+    connect(actionShowWinOptions, SIGNAL(triggered()), this, SLOT(showOptionsWin()));
 
-    menuFichier->addSeparator();
+    menuFile->addSeparator();
 
-    QAction *actionQuitter = menuFichier->addAction(QIcon(":/icons/quitter.png"), tr("Quit"));
+    QAction *actionQuitter = menuFile->addAction(QIcon(":/icons/quitter.png"), tr("Quit"));
     actionQuitter->setShortcut(QKeySequence("Ctrl+Q"));
     connect(actionQuitter, SIGNAL(triggered()), this, SLOT(close()));
 
-    QAction *actionAfficherFenFunctions = menuAffichage->addAction(QIcon(":/icons/fonctions.png"), tr("Functions"));
-    actionAfficherFenFunctions->setShortcut(QKeySequence("Ctrl+F"));
-    connect(actionAfficherFenFunctions, SIGNAL(triggered()), this, SLOT(showFuncsWin()));
+    QAction *actionShowWinFunctions = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
+    actionShowWinFunctions->setShortcut(QKeySequence("Ctrl+F"));
+    connect(actionShowWinFunctions, SIGNAL(triggered()), this, SLOT(showFuncsWin()));
 
-    QAction *actionAfficherFenBoundarys = menuAffichage->addAction(QIcon(":/icons/bornes.png"), tr("Boundarys"));
-    actionAfficherFenBoundarys->setShortcut(QKeySequence("Ctrl+B"));
-    connect(actionAfficherFenBoundarys, SIGNAL(triggered()), this, SLOT(showRangeWin()));
+    QAction *actionShowWinBoundarys = menuWindows->addAction(QIcon(":/icons/bornes.png"), tr("Boundarys"));
+    actionShowWinBoundarys->setShortcut(QKeySequence("Ctrl+B"));
+    connect(actionShowWinBoundarys, SIGNAL(triggered()), this, SLOT(showRangeWin()));
 
-    QAction *tabValeurs = menuAffichage->addAction(QIcon(":/icons/tableauDeValeurs.png"), tr("Values table"));
-    tabValeurs->setShortcut(QKeySequence("Ctrl+Tab"));
-    connect(tabValeurs, SIGNAL(triggered()), this, SLOT(showValuesTabWin()));
+    QAction *tabValues = menuWindows->addAction(QIcon(":/icons/tableauDeValues.png"), tr("Values table"));
+    tabValues->setShortcut(QKeySequence("Ctrl+Tab"));
+    connect(tabValues, SIGNAL(triggered()), this, SLOT(showValuesTabWin()));
 
-    QAction *dispKeyboard = menuAffichage->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
+    QAction *dispKeyboard = menuWindows->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
     dispKeyboard->setShortcut(QKeySequence("Ctrl+K"));
     connect(dispKeyboard, SIGNAL(triggered()), this, SLOT(showKeyboard()));
 
     QToolBar *toolBar = new QToolBar(tr("Windows and actions"));
     addToolBar(Qt::LeftToolBarArea, toolBar);
 
-    toolBar->addAction(boutonGrille);
+    toolBar->addAction(gridButton);
     toolBar->addAction(resetView);
     toolBar->addSeparator();
-    toolBar->addAction(actionAfficherFenFunctions);    
-    toolBar->addAction(actionAfficherFenBoundarys);  
-    toolBar->addAction(tabValeurs);    
+    toolBar->addAction(actionShowWinFunctions);    
+    toolBar->addAction(actionShowWinBoundarys);  
+    toolBar->addAction(tabValues);    
     toolBar->addAction(saveImage);    
     toolBar->addAction(print);  
     toolBar->addAction(dispKeyboard);
 
     statusBar();
 
-    actionAfficherFenBoundarys->setStatusTip(tr("Show the window which allows to modify the shown data boundaries: Xmin, Xmax..."));
-    actionAfficherFenFunctions->setStatusTip(tr("Show the window where you can type functions to trace."));
+    actionShowWinBoundarys->setStatusTip(tr("Show the window which allows to modify the shown data boundaries: Xmin, Xmax..."));
+    actionShowWinFunctions->setStatusTip(tr("Show the window where you can type functions to trace."));
     actionQuitter->setStatusTip(tr("Quit ZeGrapher."));
-    actionAfficherFenOptions->setStatusTip(tr("Affiche la fenêtre où l'on peut modifier les options de représentation."));//TODO translation continues here
-    tabValeurs->setStatusTip(tr("Affiche une fenêtre contenant le tableau de valeurs pour chaque fonction."));
-    resetView->setStatusTip(tr("Rétablit la vue par défaut: Xmin = Ymin = -10 , Xmax = Ymax = 10"));
-    boutonGrille->setStatusTip(tr("Afficher/Cacher le quadrillage."));
-    saveImage->setStatusTip(tr("Enregistrer le graphique dans une image."));
-    dispKeyboard->setStatusTip(tr("Affiche un clavier numérique virtuel."));
-    print->setStatusTip(tr("Imprimer ou exporter le graphique vers fichier PDF."));
+    actionShowWinOptions->setStatusTip(tr("Affiche la winêtre où l'on peut modifier les options de représentation."));
+    tabValues->setStatusTip(tr("Show settings window"));
+    resetView->setStatusTip(tr("Reset to default view"));
+    gridButton->setStatusTip(tr("Show/Hide grid"));
+    saveImage->setStatusTip(tr("Save the graph on a picture."));
+    dispKeyboard->setStatusTip(tr("Show a virtual numerical keyboard."));
+    print->setStatusTip(tr("Print or export in PDF."));
 }
 
 
 void MainWindow::makeConnects()
 {   
-    connect(boutonGrille, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
-    connect(scene, SIGNAL(sizeChanged(int,int)), fenImage, SLOT(setSize(int,int)));
-    connect(fenFunctions, SIGNAL(displayKeyboard()), this, SLOT(showKeyboard()));
+    connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
+    connect(scene, SIGNAL(sizeChanged(int,int)), winImage, SLOT(setSize(int,int)));
+    connect(winFunctions, SIGNAL(displayKeyboard()), this, SLOT(showKeyboard()));
 }
 
 void MainWindow::showFuncsWin()
 {
-    fenFunctions->move(this->pos() - QPoint(fenFunctions->width(),0));
-    fenFunctions->show();    
-    fenFunctions->activateWindow();
+    winFunctions->move(this->pos() - QPoint(winFunctions->width(),0));
+    winFunctions->show();    
+    winFunctions->activateWindow();
 }
 
 void MainWindow::showRangeWin()
 {
-    fenBoundarys->move(this->pos() + QPoint(this->width() + 20,0));
-    fenBoundarys->show();
-    fenBoundarys->activateWindow();
+    winBoundarys->move(this->pos() + QPoint(this->width() + 20,0));
+    winBoundarys->show();
+    winBoundarys->activateWindow();
 }
 
 void MainWindow::showOptionsWin()
 {
-    fenOptions->move(this->pos() - QPoint(fenOptions->width(),0));
-    fenOptions->show();
-    fenOptions->activateWindow();
+    winOptions->move(this->pos() - QPoint(winOptions->width(),0));
+    winOptions->show();
+    winOptions->activateWindow();
 }
 
 void MainWindow::showValuesTabWin()
 {
-    fenValeurs->move(this->pos());
-    fenValeurs->show();
-    fenValeurs->activateWindow();
+    winValues->move(this->pos());
+    winValues->show();
+    winValues->activateWindow();
 }
 
 void MainWindow::showKeyboard()
 {
-    keyboard->move(fenFunctions->frameGeometry().bottomLeft());
+    keyboard->move(winFunctions->frameGeometry().bottomLeft());
     keyboard->show();
 }
 
 void MainWindow::showPrintWin()
 {
-    fenPrint->move(this->pos());
-    fenPrint->show();
-    fenPrint->activateWindow();
+    winPrint->move(this->pos());
+    winPrint->show();
+    winPrint->activateWindow();
 }
 
 void MainWindow::showImageSaveWin()
 {
-    fenImage->move(this->pos());
-    fenImage->show();
-    fenImage->activateWindow();
+    winImage->move(this->pos());
+    winImage->show();
+    winImage->activateWindow();
 }
 
 void MainWindow::showAboutWin()
 {
-    fenAPropos->move(this->pos() + QPoint(width()/2, height()/2));
-    fenAPropos->show();
-    fenAPropos->activateWindow();
+    winAbout->move(this->pos() + QPoint(width()/2, height()/2));
+    winAbout->show();
+    winAbout->activateWindow();
 }
 
 void MainWindow::closeEvent(QCloseEvent *evenement)
 {
-    fenBoundarys->close();
+    winBoundarys->close();
 
-    fenFunctions->closeAllOpenedWindows();
-    fenFunctions->close();
+    winFunctions->closeAllOpenedWindows();
+    winFunctions->close();
 
-    fenOptions->saveSettings();
-    fenOptions->close();
+    winOptions->saveSettings();
+    winOptions->close();
 
-    fenAPropos->close();
-    fenValeurs->close();
-    fenImage->close();
-    fenPrint->close();
+    winAbout->close();
+    winValues->close();
+    winImage->close();
+    winPrint->close();
     keyboard->close();
 
     evenement->accept();
@@ -231,17 +231,18 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 
 MainWindow::~MainWindow()
 {   
-    delete fenValeurs;
+    delete winValues;
     delete scene;   
-    delete fenBoundarys;
-    delete fenFunctions;
-    delete fenOptions;
-    delete fenAPropos;
-    delete fenImage;
+    delete winBoundarys;
+    delete winFunctions;
+    delete winOptions;
+    delete winAbout;
+    delete winImage;
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
 {
+    
    settings.setValue(baseName + "h", event->size().height());
    settings.setValue(baseName + "w", event->size().width());
 }

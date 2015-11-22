@@ -23,7 +23,7 @@
 #include "Windows/windowboundary.h"
 #include "ui_windowboundary.h"
 
-WindowBoundary::WindowBoundary(Informations *info)
+WindowBoundary::WindowBoundary(Information *info)
 {
     information = info;
 
@@ -34,21 +34,21 @@ WindowBoundary::WindowBoundary(Informations *info)
     ui->setupUi(this);
 
     messageBox = new QMessageBox(this);
-    messageBox->setWindowTitle(tr("Erreur"));
+    messageBox->setWindowTitle(tr("Error"));
     messageBox->setIcon(QMessageBox::Warning);
 
-    connect(ui->Xmax, SIGNAL(returnPressed()), this, SLOT(appliquer()));
-    connect(ui->Xmin, SIGNAL(returnPressed()), this, SLOT(appliquer()));
-    connect(ui->Xpas, SIGNAL(returnPressed()), this, SLOT(appliquer()));
+    connect(ui->Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(ui->Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(ui->Xpas, SIGNAL(returnPressed()), this, SLOT(apply()));
 
-    connect(ui->Ymax, SIGNAL(returnPressed()), this, SLOT(appliquer()));
-    connect(ui->Ymin, SIGNAL(returnPressed()), this, SLOT(appliquer()));
-    connect(ui->Ypas, SIGNAL(returnPressed()), this, SLOT(appliquer()));
+    connect(ui->Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(ui->Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(ui->Ypas, SIGNAL(returnPressed()), this, SLOT(apply()));
 
     connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
     connect(ui->orthonormal, SIGNAL(clicked(bool)), information, SLOT(setOrthonormal(bool)));
 
-    connect(ui->boutonAppliquer, SIGNAL(released()), this, SLOT(appliquer()));
+    connect(ui->buttonApply, SIGNAL(released()), this, SLOT(apply()));
 
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateWidgets()));
 }
@@ -63,7 +63,7 @@ void WindowBoundary::orthonormal(bool state)
 void WindowBoundary::resetToStandardView()
 {
     standardView();
-    appliquer();
+    apply();
 }
 
 void WindowBoundary::standardView()
@@ -77,7 +77,7 @@ void WindowBoundary::standardView()
     ui->Ypas->setText("1");
 }
 
-void WindowBoundary::appliquer()
+void WindowBoundary::apply()
 {
     GraphRange range;
     bool ok = false;
@@ -85,35 +85,35 @@ void WindowBoundary::appliquer()
     range.Xmax = calculator->calculateExpression(ui->Xmax->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "X<sub>max</sub>");
+        messageBox->setText(tr("Could not evaluate the typed expression for ") + "X<sub>max</sub>");
         messageBox->exec();
         return;
     }
     range.Xmin = calculator->calculateExpression(ui->Xmin->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "X<sub>min</sub>");
+        messageBox->setText(tr("Error lors de l'evaluation de l'expression écrite en ") + "X<sub>min</sub>");
         messageBox->exec();
         return;
     }
     range.Ymax = calculator->calculateExpression(ui->Ymax->text(),ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "Y<sub>max</sub>");
+        messageBox->setText(tr("Could not evaluate the typed expression for ") + "Y<sub>max</sub>");
         messageBox->exec();
         return;
     }
     range.Ymin = calculator->calculateExpression(ui->Ymin->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite en ") + "X<sub>min</sub>");
+        messageBox->setText(tr("Could not evaluate the typed expression for X step.") + "X<sub>min</sub>");
         messageBox->exec();
         return;
     }
     range.Xscale = calculator->calculateExpression(ui->Xpas->text(), ok);
     if(ok == false || range.Xscale <= 0)
     {
-        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite pour le pas des X."));
+        messageBox->setText(tr("Could not evaluate the typed expression for X step."));
         messageBox->exec();
         return;
     }    
@@ -124,27 +124,27 @@ void WindowBoundary::appliquer()
     range.Yscale = calculator->calculateExpression(ui->Ypas->text(), ok);
     if(ok == false || range.Yscale <= 0)
     {
-        messageBox->setText(tr("Erreur lors de l'evaluation de l'expression écrite pour le pas des Y."));
+        messageBox->setText(tr("Could not evaluate the typed expression for Y step."));
         messageBox->exec();
         return;
     }
 
     if(range.Xmin >= range.Xmax)
     {
-        messageBox->setText(tr("X<sub>min</sub> doit être plus petit que X<sub>max</sub>"));
+        messageBox->setText(tr("X<sub>min</sub> must be lower than X<sub>max</sub>"));
         messageBox->exec();
         return;
     }
     if(range.Ymin >= range.Ymax)
     {
-        messageBox->setText(tr("Y<sub>min</sub> doit être plus petit que Y<sub>max</sub>"));
+        messageBox->setText(tr("Y<sub>min</sub> must be lower than Y<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
     if(range.Ymax - range.Ymin < MIN_RANGE || range.Xmax - range.Xmin < MIN_RANGE)
     {
-        messageBox->setText(tr("Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher."));
+        messageBox->setText(tr("The view range is too tight for ZeGrapher to distinguish between the upper and lower values."));
         messageBox->exec();
         return;
     }
@@ -155,15 +155,15 @@ void WindowBoundary::appliquer()
 
 void WindowBoundary::updateWidgets()
  {
-     GraphRange fenetre = information->getRange();
+     GraphRange window = information->getRange();
 
-     ui->Xmax->setText(QString::number(fenetre.Xmax));
-     ui->Xmin->setText(QString::number(fenetre.Xmin));
-     ui->Xpas->setText(QString::number(fenetre.Xscale));
+     ui->Xmax->setText(QString::number(window.Xmax));
+     ui->Xmin->setText(QString::number(window.Xmin));
+     ui->Xpas->setText(QString::number(window.Xscale));
 
-     ui->Ymax->setText(QString::number(fenetre.Ymax));
-     ui->Ymin->setText(QString::number(fenetre.Ymin));
-     ui->Ypas->setText(QString::number(fenetre.Yscale));
+     ui->Ymax->setText(QString::number(window.Ymax));
+     ui->Ymin->setText(QString::number(window.Ymin));
+     ui->Ypas->setText(QString::number(window.Yscale));
 
      ui->orthonormal->setChecked(information->isOrthonormal());
      orthonormal(information->isOrthonormal());

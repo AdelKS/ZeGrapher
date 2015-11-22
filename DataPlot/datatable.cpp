@@ -23,7 +23,7 @@
 
 int refCol;
 
-DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth)
+DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHeight, int columnWidth)
 {
     information = info;
     QHBoxLayout *mainLayout = new QHBoxLayout;
@@ -81,7 +81,7 @@ DataTable::DataTable(Informations *info, int rowCount, int columnCount, int rowH
     mainLayout->addStretch();
     setLayout(mainLayout);
 
-    for(int i = 0 ; i < columnCount ; i++) { columnNames << tr("Renommez moi!") ; }
+    for(int i = 0 ; i < columnCount ; i++) { columnNames << tr("Rename me!") ; }
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
     nameValidator.setPattern("^([a-z]|[A-Z])+(_([a-z]|[A-Z])+)*$");
@@ -137,7 +137,7 @@ void DataTable::removeUnnecessaryRowsColumns()
 
     while(col < tableWidget->columnCount()-1 && tableWidget->columnCount() > MIN_COLUMN_COUNT)
     {
-        if(columnNames[col] != tr("Renommez moi!"))
+        if(columnNames[col] != tr("Rename me!"))
         {
             col++;
             continue;
@@ -458,7 +458,7 @@ void DataTable::insertRow(int index)
 void DataTable::insertColumn(int index)
 {
     tableWidget->insertColumn(index);
-    columnNames.insert(index, tr("Renommez moi!"));
+    columnNames.insert(index, tr("Rename me!"));
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
     tableWidget->setColumnWidth(index, cellWidth);
@@ -505,13 +505,13 @@ void DataTable::removeColumn(int index)
 void DataTable::renameColumn(int index)
 {
     bool ok = true;
-    QString name = QInputDialog::getText(this, tr("Nouveau nom de colonne"), tr("Veuillez entrer un nom pour cette colonne :"), QLineEdit::Normal, "", &ok);
+    QString name = QInputDialog::getText(this, tr("New name for column"), tr("Please enter a name for this column:"), QLineEdit::Normal, "", &ok);
 
     if(!ok)
         return;
     if(!nameValidator.exactMatch(name))
     {
-        QMessageBox::information(this, tr("Erreur"), tr("Les noms ne peuvent contenir que des lettres et \"_\" "));
+        QMessageBox::information(this, tr("Error"), tr("Column names can only have letters and \"_\""));
         return;
     }
 

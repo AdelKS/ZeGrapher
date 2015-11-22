@@ -43,7 +43,7 @@ public:
 
 protected:
     bool check(QString formula);    
-    void insertMultiplySigns(QString &formule);
+    void insertMultiplySigns(QString &formula);
     void refreshAuthorizedVars();
     FastTree* createFastTree(int debut, int fin);
 
@@ -53,7 +53,7 @@ protected:
 
     QList<QChar> operators;
     QList<short> decompPriorites, decompTypes, operatorsPriority, operatorsTypes;
-    QList<double> decompValeurs;
+    QList<double> decompValues;
     QList<bool> authorizedVars;
     QString pi;
 

@@ -21,7 +21,7 @@
 #include "polynomialmodelwidget.h"
 #include "ui_polynomialmodelwidget.h"
 
-PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informations *info, QString xname, QString yname, bool pol, QWidget *parent) :
+PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Information *info, QString xname, QString yname, bool pol, QWidget *parent) :
     QWidget(parent), ui(new Ui::PolynomialModelWidget)
 {
     ui->setupUi(this);
@@ -198,10 +198,10 @@ void PolynomialModelWidget::addWidgetsToUI()
 
     connect(endVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
 
-    QLabel *start = new QLabel(tr("Début:"));
+    QLabel *start = new QLabel(tr("Start:"));
     start->setEnabled(false);
 
-    QLabel *end = new QLabel(tr("Fin:"));
+    QLabel *end = new QLabel(tr("End:"));
     end->setEnabled(false);
 
     layout->addSpacing(30);
@@ -220,7 +220,7 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
     colorButton = new QColorButton();
-    QLabel *colorLabel = new QLabel(tr("Couleur:"));
+    QLabel *colorLabel = new QLabel(tr("color:"));
     ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);
     ui->drawOptionsLayout->addStretch();
@@ -238,7 +238,7 @@ void PolynomialModelWidget::addWidgetsToUI()
 
 void PolynomialModelWidget::updateDescriptionText()
 {
-    ui->description->setText(tr("Calcul du meilleur polynôme P approchant l'égalité:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
+    ui->description->setText(tr("Evaluate the best polynomial P who can approach the equation:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
 }
 
 void PolynomialModelWidget::setAbscissaName(QString name)

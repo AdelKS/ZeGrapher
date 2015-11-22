@@ -23,7 +23,7 @@
 #include "ui_datawindow.h"
 
 
-DataWindow::DataWindow(Informations *info, int ind)
+DataWindow::DataWindow(Information *info, int ind)
 {
     index = ind;
     xindex = STARTING_XPIN_INDEX;
@@ -64,7 +64,7 @@ DataWindow::DataWindow(Informations *info, int ind)
 
     connect(ui->retractionButton, SIGNAL(released()), this, SLOT(startAnimation()));
 
-    setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
+    setWindowTitle(tr("Data fill window: data") + QString::number(ind+1));
 
     information = info;
     selectorSide = COLUMN_SELECTION;
@@ -173,7 +173,7 @@ DataWindow::DataWindow(Informations *info, int ind)
 
     helpWindow = new QWebView();
     helpWindow->load(QUrl("qrc:///Help/data_help_fr.html"));
-    helpWindow->setWindowTitle(tr("Aide: Saisie de données."));
+    helpWindow->setWindowTitle(tr("Help: data fill window."));
 
     connect(ui->help, SIGNAL(released()), helpWindow, SLOT(show()));
 
@@ -293,7 +293,7 @@ void DataWindow::removeModelWidget(ModelWidget *w)
 void DataWindow::changeIndex(int ind)
 {
     index = ind;
-    setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
+    setWindowTitle(tr("Data fill window: data") + QString::number(ind+1));
 }
 
 void DataWindow::dataChanged()
@@ -395,14 +395,14 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
     if(selectorSide == ROW_SELECTION)
     {
         if(inBetween)        
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux lignes :"));        
-        else ui->actionsGroupBox->setTitle(tr("Actions sur la ligne :"));
+            ui->actionsGroupBox->setTitle(tr("Between two lines:"));        
+        else ui->actionsGroupBox->setTitle(tr("Actions on line:"));
     }
     else
     {
         if(inBetween)        
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));        
-        else ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
+            ui->actionsGroupBox->setTitle(tr("Between two columns:"));        
+        else ui->actionsGroupBox->setTitle(tr("Column actions:"));
     }
 }
 

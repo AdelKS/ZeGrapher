@@ -24,7 +24,7 @@
 
 ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKeepTracksButton) : QGroupBox(), treeCreator(NORMAL_EXPR)
 {
-    setTitle(tr("Réglages du paramètre ") + parName + " :");
+    setTitle(tr("Settings of ") + parName + " :");
     keepTracksButtonAvailable = withKeepTracksButton;
 
     defaultRange.start = 0;
@@ -48,13 +48,13 @@ ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKee
 
     if(withAnimateButton)
     {
-        QVBoxLayout *principalLayout = new QVBoxLayout;
-        principalLayout->setSpacing(3);
+        QVBoxLayout *mainLayout = new QVBoxLayout;
+        mainLayout->setSpacing(3);
 
-        principalLayout->addLayout(widgetsLayout);
+        mainLayout->addLayout(widgetsLayout);
 
         QHBoxLayout *animateLayout = new QHBoxLayout;
-        animate = new QCheckBox(tr("Animer"));
+        animate = new QCheckBox(tr("Animate"));
 
         connect(animate, SIGNAL(toggled(bool)), this, SIGNAL(animateToggled(bool)));
 
@@ -62,15 +62,15 @@ ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKee
 
         if(withKeepTracksButton)
         {
-            keepTracks = new QCheckBox(tr("Garder la trace"));
+            keepTracks = new QCheckBox(tr("Keep tracks"));
             animateLayout->addWidget(keepTracks);
 
             treeCreator.allow_k(true);
         }
 
         animateLayout->addStretch();
-        principalLayout->addLayout(animateLayout);
-        setLayout(principalLayout);
+        mainLayout->addLayout(animateLayout);
+        setLayout(mainLayout);
     }   
     else setLayout(widgetsLayout);
 }
@@ -87,9 +87,9 @@ bool ParConfWidget::doesKeepTracks()
 
 void ParConfWidget::addConfWidgets(QHBoxLayout *layout)
 {
-    QLabel *startTxt = new QLabel(tr("Début:"));
-    QLabel *endTxt = new QLabel(tr(" Fin:"));
-    QLabel *stepTxt = new QLabel(tr(" Pas:"));
+    QLabel *startTxt = new QLabel(tr("Start:"));
+    QLabel *endTxt = new QLabel(tr(" End:"));
+    QLabel *stepTxt = new QLabel(tr(" Step:"));
 
     start = new QLineEdit;
     start->setMaximumHeight(25);

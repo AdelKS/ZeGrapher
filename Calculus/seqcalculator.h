@@ -73,8 +73,8 @@ protected:
 
     void addRefFuncsPointers(); 
     void deleteFirstValsTrees();
-    bool check_called_funcs_validity(QString str);
-    bool check_called_seqs_validity(QString str);
+    bool checkCalledFuncsValidity(QString str);
+    bool checkCalledSeqsValidity(QString str);
     bool calculateAndSaveFirstValuesTrees();
     void updateSeqValuesSize();
 

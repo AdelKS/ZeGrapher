@@ -204,7 +204,7 @@ bool FuncCalculator::checkFuncCallingInclusions()
         }
 
         if(!areCalledFuncsGood) // this function calls another function, that is wether invalid or calls back the firs function
-            QMessageBox::warning(parentWidget, tr("Erreur"), tr("La fonction ") + name + tr(" appelle une autre fonction invalide, ou qui forme une boucle d'appel infine."));
+            QMessageBox::warning(parentWidget, tr("Error"), tr("The function ") + name + tr(" calls an invalid other function, or creates an infinite calling loop."));
     }
 
     return areCalledFuncsGood;

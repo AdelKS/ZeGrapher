@@ -22,7 +22,7 @@
 #include "Widgets/datawidget.h"
 #include "ui_datawidget.h"
 
-DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
+DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DataWidget)
 {
@@ -144,7 +144,7 @@ void DataWidget::closeDataWindow()
 void DataWidget::setWidgetNum(int num)
 {
     widgetNum = num;
-    ui->nameLabel->setText("(" + tr("Données") + " " + QString::number(num+1) + ") :");
+    ui->nameLabel->setText("(" + tr("Data") + " " + QString::number(num+1) + ") :");
     dataWindow->changeIndex(num);
 }
 

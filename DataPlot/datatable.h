@@ -33,7 +33,7 @@ class DataTable : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataTable(Informations *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
+    explicit DataTable(Information *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
     ~DataTable();
 
     QSize getVerticalHeaderSize();
@@ -90,7 +90,7 @@ protected:
     ExprCalculator *calculator;
     TreeCreator *treeCreator;
     int cellHeight, cellWidth;
-    Informations *information;
+    Information *information;
     QTableWidget *tableWidget;
     QList<QList<double> > values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
                                     row insertion will be implemented */

@@ -28,8 +28,8 @@ about::about(QWidget *parent) :
     ui(new Ui::about)
 {
     ui->setupUi(this);
-    ui->logo->setPixmap(QPixmap(":/icons/logoLogiciel.png"));
-    setWindowIcon(QIcon(":/icons/logoLogiciel.png"));
+    ui->logo->setPixmap(QPixmap(":/icons/software.png"));
+    setWindowIcon(QIcon(":/icons/software.png"));
     setFixedSize(size());
 }
 

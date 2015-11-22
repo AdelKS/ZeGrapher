@@ -22,14 +22,14 @@
 
 #include "Windows/windowvaluestable.h"
 
-WindowValuesTable::WindowValuesTable(Informations *info)
+WindowValuesTable::WindowValuesTable(Information *info)
 {
     information = info;    
 
-    setWindowTitle(tr("Tableaux de valeurs"));
-    setWindowIcon(QIcon(":/icons/tableauDeValeurs.png"));
-    QHBoxLayout *principalLayout = new QHBoxLayout();
-    QPushButton *addButton = new QPushButton(tr("Ajouter"));
+    setWindowTitle(tr("Values table"));
+    setWindowIcon(QIcon(":/icons/valuesTable.png"));
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    QPushButton *addButton = new QPushButton(tr("Add"));
     addButton->setFixedSize(80,80);
 
     connect(addButton, SIGNAL(released()), this, SLOT(addValuesTable()));
@@ -38,10 +38,10 @@ WindowValuesTable::WindowValuesTable(Informations *info)
     scrollArea->setWidgetResizable(true);
     scrollArea->setMinimumSize(400,400);
 
-    principalLayout->addWidget(scrollArea);
-    principalLayout->addWidget(addButton);
+    mainLayout->addWidget(scrollArea);
+    mainLayout->addWidget(addButton);
 
-    setLayout(principalLayout);
+    setLayout(mainLayout);
 
     widget = new QWidget();
     widget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

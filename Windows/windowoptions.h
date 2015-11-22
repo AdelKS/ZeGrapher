@@ -37,22 +37,22 @@ class WindowOptions : public QWidget
     Q_OBJECT
 
 public:
-    explicit WindowOptions(Informations *info);
+    explicit WindowOptions(Information *info);
     ~WindowOptions();   
 
 public slots:
     void saveSettings();
 
 private slots:
-    void appliquer();
+    void apply();
     void readSavedSettings();
 
 private:
 
-    Informations *information;
+    Information *information;
     Ui::windowoptions *ui;   
-    Options parametres;
-    QColorButton *couleurAxes, *couleurFond, *couleurQuadrillage;
+    Options parameters;
+    QColorButton *colorAxes, *colorFond, *colorGrid;
 
 };
 

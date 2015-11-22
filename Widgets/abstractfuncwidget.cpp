@@ -39,7 +39,7 @@ AbstractFuncWidget::AbstractFuncWidget() : treeCreator(FUNCTION)
 
 void AbstractFuncWidget::addMainWidgets()
 {
-    QVBoxLayout *principalLayout = new QVBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout;
 
     QHBoxLayout *firstContainerLayout = new QHBoxLayout;
     firstContainerLayout->setMargin(0);
@@ -66,19 +66,19 @@ void AbstractFuncWidget::addMainWidgets()
 
     secondColorButton->hide();
 
-    principalLayout->addLayout(firstContainerLayout);
+    mainLayout->addLayout(firstContainerLayout);
 
     secondContainerLayout = new QHBoxLayout;
     secondContainerLayout->setMargin(0);
     secondContainerLayout->setSpacing(4);   
 
-    principalLayout->addLayout(secondContainerLayout);
+    mainLayout->addLayout(secondContainerLayout);
 
     kConfWidget = new ParConfWidget('k');
     kConfWidget->hide();
 
     connect(kConfWidget, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
-    principalLayout->addWidget(kConfWidget);
+    mainLayout->addWidget(kConfWidget);
 
-    setLayout(principalLayout);
+    setLayout(mainLayout);
 }

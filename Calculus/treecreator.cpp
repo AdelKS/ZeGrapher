@@ -90,23 +90,23 @@ void TreeCreator::allow_k(bool state)
     authorizedVars[3] = state;
 }
 
-void TreeCreator::insertMultiplySigns(QString &formule)
+void TreeCreator::insertMultiplySigns(QString &formula)
 {
-    for(int i = 0 ; i < formule.size()-1; i++)
+    for(int i = 0 ; i < formula.size()-1; i++)
     {
-        if((formule[i].isDigit() && formule[i+1].isLetter()) ||
-                (formule[i].isLetter() && formule[i+1].isDigit()) ||
-                (formule[i].isDigit() && formule[i+1] == '(') ||
-                (formule[i] == ')' && formule[i+1] == '(') ||               
-                (formule[i] == ')' && (formule[i+1].isDigit() || formule[i+1].isLetter())) ||                
-                (i != 0 && !formule[i-1].isLetter() && vars.contains(QString(formule[i])) && formule[i+1] == '('))
+        if((formula[i].isDigit() && formula[i+1].isLetter()) ||
+                (formula[i].isLetter() && formula[i+1].isDigit()) ||
+                (formula[i].isDigit() && formula[i+1] == '(') ||
+                (formula[i] == ')' && formula[i+1] == '(') ||               
+                (formula[i] == ')' && (formula[i+1].isDigit() || formula[i+1].isLetter())) ||                
+                (i != 0 && !formula[i-1].isLetter() && vars.contains(QString(formula[i])) && formula[i+1] == '('))
         {
-            formule.insert(i+1, QString("*"));
+            formula.insert(i+1, QString("*"));
             i++;
         }
-        else if(formule[i] == '-' && formule[i+1].isLetter())
+        else if(formula[i] == '-' && formula[i+1].isLetter())
         {
-            formule.insert(i+1, QString("1*"));
+            formula.insert(i+1, QString("1*"));
             i++;
         }
     }
@@ -181,35 +181,35 @@ QList<int> TreeCreator::getCalledSeqs(QString expr)
     return calledSeqs;
 }
 
-bool TreeCreator::check(QString formule)
+bool TreeCreator::check(QString formula)
 {
-    formule.remove(' ');
-    formule.replace("²", "^2");
+    formula.remove(' ');
+    formula.replace("²", "^2");
     decompPriorites.clear();
     decompTypes.clear();
-    decompValeurs.clear();
+    decompValues.clear();
 
-    if(formule.isEmpty())
+    if(formula.isEmpty())
         return false;
 
-    bool chiffre = true, ouvrepth = true, numberSign = true, varOrFunc = true, canEnd = false,
-         operateur = false, fermepth = false;
+    bool digit = true, openpth = true, numberSign = true, varOrFunc = true, canEnd = false,
+         operator = false, digitpth = false;
 
     short pth = 0;
 
-    for(int i = 0 ; i < formule.size(); i++)
+    for(int i = 0 ; i < formula.size(); i++)
     {
-        if((formule[i].isDigit() && chiffre) || ((formule[i]=='-' || formule[i] == '+') && numberSign && i+1 < formule.size() && formule[i+1].isDigit()))
+        if((formula[i].isDigit() && digit) || ((formula[i]=='-' || formula[i] == '+') && numberSign && i+1 < formula.size() && formula[i+1].isDigit()))
         {
             bool ok = false, dejavirgule = false;
             int numStart = i, numDigits = 1;
             i++;
 
-            while(!ok && i < formule.size())
+            while(!ok && i < formula.size())
             {
-                if(formule[i].isDigit())
+                if(formula[i].isDigit())
                     i++;
-                else if((formule[i]==',' || formule[i]=='.') && !dejavirgule)
+                else if((formula[i]==',' || formula[i]=='.') && !dejavirgule)
                 {
                     dejavirgule = true;
                     i++;
@@ -220,46 +220,46 @@ bool TreeCreator::check(QString formule)
             numDigits = i - numStart;
             i--;
 
-            QString number = formule.mid(numStart, numDigits);
+            QString number = formula.mid(numStart, numDigits);
             decompPriorites << NUMBER;
             decompTypes << NUMBER;
-            decompValeurs << number.toDouble(&ok);
+            decompValues << number.toDouble(&ok);
             if(!ok)
                 return false;
 
-            ouvrepth = varOrFunc = numberSign = false;
-            chiffre = operateur = fermepth = canEnd = true;
+            openpth = varOrFunc = numberSign = false;
+            digit = operator = digitpth = canEnd = true;
         }
-        else if(formule[i].isLetter() && varOrFunc)
+        else if(formula[i].isLetter() && varOrFunc)
         {
             int letterPosStart = i;
 
-            while(i+1 < formule.size() && (formule[i+1].isLetter() || formule[i+1] == '_')) { i++ ; }
+            while(i+1 < formula.size() && (formula[i+1].isLetter() || formula[i+1] == '_')) { i++ ; }
 
-            if(i != formule.size() && formule[i+1] == '\'')
+            if(i != formula.size() && formula[i+1] == '\'')
                 i++;
 
             int numLetters = i - letterPosStart + 1;           
 
-            QString name = formule.mid(letterPosStart, numLetters);
+            QString name = formula.mid(letterPosStart, numLetters);
 
             if(refFunctions.contains(name) || antiderivatives.contains(name) || functions.contains(name) ||
                     derivatives.contains(name) || sequences.contains(name))
             {
-                if(i+1 >= formule.size() || (formule[i+1] != '(' && formule[i] != 'e' && formule[i] != 'E'))
+                if(i+1 >= formula.size() || (formula[i+1] != '(' && formula[i] != 'e' && formula[i] != 'E'))
                     return false;
 
                 decompPriorites << FUNC;
-                decompValeurs << 0.0;
-                ouvrepth = true;
-                chiffre = operateur = canEnd = fermepth = varOrFunc = numberSign = false;
+                decompValues << 0.0;
+                openpth = true;
+                digit = operator = canEnd = digitpth = varOrFunc = numberSign = false;
 
                 if(refFunctions.contains(name))
                 {
                     decompTypes << refFunctions.indexOf(name) + REF_FUNC_START + 1;
 
                     if(name == "E" || name == "e")
-                        chiffre = numberSign = ouvrepth = true;
+                        digit = numberSign = openpth = true;
                 }
 
                 else if(antiderivatives.contains(name) && funcType == FUNCTION)
@@ -280,26 +280,26 @@ bool TreeCreator::check(QString formule)
             else if(constants.contains(name) || customVars.contains(name) || vars.contains(name))
             {
                 varOrFunc = numberSign = false;
-                ouvrepth = chiffre = operateur = fermepth = canEnd = true;
+                openpth = digit = operator = digitpth = canEnd = true;
 
                 if(customVars.contains(name)) /* customVars comes at first because of overriding policy, customvars come from dataplot, and user can redefine
                                                 n t or x or k */
                 {
                     decompTypes << ADDITIONNAL_VARS_START + customVars.indexOf(name);
                     decompPriorites << VAR;
-                    decompValeurs << customVars.indexOf(name);
+                    decompValues << customVars.indexOf(name);
                 }
                 else if(constants.contains(name))
                 {
                     decompPriorites << NUMBER;
                     decompTypes << NUMBER;
-                    decompValeurs << constantsVals[constants.indexOf(name)];
+                    decompValues << constantsVals[constants.indexOf(name)];
                 }
                 else if(vars.contains(name) && authorizedVars[vars.indexOf(name)])
                 {
                     decompTypes << vars.indexOf(name) + VARS_START + 1;
                     decompPriorites << VAR;
-                    decompValeurs << 0.0;
+                    decompValues << 0.0;
                 }                           
 
                 else return false;
@@ -308,38 +308,38 @@ bool TreeCreator::check(QString formule)
             else return false;
 
         }       
-        else if(operators.contains(formule[i]) && operateur)
+        else if(operators.contains(formula[i]) && operator)
         {
-            short pos = operators.indexOf(formule[i]);
+            short pos = operators.indexOf(formula[i]);
 
             decompTypes << operatorsTypes[pos];
             decompPriorites << operatorsPriority[pos];
-            decompValeurs << 0.0 ;
+            decompValues << 0.0 ;
 
-            ouvrepth = chiffre = varOrFunc = true;
-            operateur = numberSign = fermepth = canEnd = false;
+            openpth = digit = varOrFunc = true;
+            operator = numberSign = digitpth = canEnd = false;
         }
-        else if(formule[i]=='(' && ouvrepth)
+        else if(formula[i]=='(' && openpth)
         {           
             pth++;
 
             decompTypes << PTHO ;
             decompPriorites << PTHO;
-            decompValeurs << 0.0 ;
+            decompValues << 0.0 ;
 
-            numberSign = chiffre = varOrFunc = ouvrepth = true;
-            operateur = fermepth = canEnd = false;
+            numberSign = digit = varOrFunc = openpth = true;
+            operator = digitpth = canEnd = false;
         }
-        else if(formule[i]==')' && fermepth && pth > 0)
+        else if(formule[i]==')' && digitpth && pth > 0)
         {            
             pth--;
 
             decompTypes << PTHF ;
             decompPriorites << PTHF ;
-            decompValeurs << 0.0 ;
+            decompValues << 0.0 ;
 
-            operateur = fermepth = canEnd = true;
-            chiffre = numberSign = ouvrepth = varOrFunc = false;
+            operator = digitpth = canEnd = true;
+            digit = numberSign = openpth = varOrFunc = false;
 
         }        
         else return false;
@@ -350,10 +350,10 @@ bool TreeCreator::check(QString formule)
 
 FastTree* TreeCreator::createFastTree(int debut, int fin)
 {
-    FastTree *racine = new FastTree;
-    racine->right = NULL;
-    racine->left = NULL;
-    racine->value = NULL;
+    FastTree *root = new FastTree;
+    root->right = NULL;
+    root->left = NULL;
+    root->value = NULL;
 
     short pths = 0, posPthFerme = 0, posPthOuvert = 0;
     bool debutPthFerme = false;
@@ -362,13 +362,13 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
     {
         if(decompPriorites[debut] == NUMBER)
         {
-            racine->type = NUMBER;
-            racine->value = new double;
-            *racine->value = decompValeurs[debut];
+            root->type = NUMBER;
+            root->value = new double;
+            *root->value = decompValues[debut];
         }
-        else racine->type = decompTypes[debut];
+        else root->type = decompTypes[debut];
 
-        return racine;
+        return root;
     }
 
     for(char op = 0; op < 5; op++)
@@ -392,23 +392,23 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
                     posPthOuvert = i + 1;
                     if(op == PTHO)
                     {
-                        delete racine;
-                        racine = createFastTree(posPthFerme, posPthOuvert);
-                        return racine;
+                        delete root;
+                        root = createFastTree(posPthFerme, posPthOuvert);
+                        return root;
                     }
                 }
             }
             else if(pths == 0 && decompPriorites[i] == op)
             {
-                racine->type = decompTypes[i];
-                racine->right = createFastTree(debut, i + 1);
+                root->type = decompTypes[i];
+                root->right = createFastTree(debut, i + 1);
                 if(op != FUNC)
-                    racine->left = createFastTree(i - 1, fin);
-                return racine;
+                    root->left = createFastTree(i - 1, fin);
+                return root;
             }
         }
     }
-    return racine;
+    return root;
 }
 
 void TreeCreator::deleteFastTree(FastTree *tree)

@@ -22,7 +22,7 @@
 
 #include "ValuesTable/valuestable.h"
 
-ValuesTable::ValuesTable(Informations *info, QWidget *parent) :
+ValuesTable::ValuesTable(Information *info, QWidget *parent) :
     QWidget(parent)
 {    
     infoClass = info;

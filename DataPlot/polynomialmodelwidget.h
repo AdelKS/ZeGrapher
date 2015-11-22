@@ -46,7 +46,7 @@ class PolynomialModelWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit PolynomialModelWidget(const QList<Point> &dat, Informations *info, QString xname, QString yname, bool pol, QWidget *parent = 0);
+    explicit PolynomialModelWidget(const QList<Point> &dat, Information *info, QString xname, QString yname, bool pol, QWidget *parent = 0);
     void setAbscissaName(QString name);
     void setOrdinateName(QString name);
     void setData(const QList<Point> &dat);
@@ -70,7 +70,7 @@ protected:
 
     Ui::PolynomialModelWidget *ui;
     QString abscissa, ordinate;
-    Informations *information;
+    Information *information;
     bool polar;
     QList<Point> data;
     NumberLineEdit *startVal, *endVal;

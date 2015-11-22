@@ -22,7 +22,7 @@
 #include "Windows/windowoptions.h"
 #include "ui_windowoptions.h"
 
-WindowOptions::WindowOptions(Informations *info)
+WindowOptions::WindowOptions(Information *info)
 {
     information = info;
 
@@ -33,19 +33,19 @@ WindowOptions::WindowOptions(Informations *info)
 
     readSavedSettings();
 
-    parametres.couleurDuFond = couleurFond->getCurrentColor();
-    parametres.couleurDesAxes = couleurAxes->getCurrentColor();
-    parametres.couleurQuadrillage = couleurQuadrillage->getCurrentColor();
+    parameters.colorBackground = colorFond->getCurrentColor();
+    parameters.colorAxes = colorAxes->getCurrentColor();
+    parameters.colorGrid = colorGrid->getCurrentColor();
 
-    connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(appliquer()));
-    connect(ui->epaisseurWidget, SIGNAL(valueChanged(int)), this, SLOT(appliquer()));
-    connect(ui->numSize, SIGNAL(valueChanged(int)), this, SLOT(appliquer()));
-    connect(ui->lissage, SIGNAL(toggled(bool)), this, SLOT(appliquer()));
-    connect(couleurAxes, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
-    connect(couleurFond, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
-    connect(couleurQuadrillage, SIGNAL(colorChanged(QColor)), this, SLOT(appliquer()));
+    connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->numSize, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->smoothing, SIGNAL(toggled(bool)), this, SLOT(apply()));
+    connect(colorAxes, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(colorFond, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(colorGrid, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
 
-    appliquer();
+    apply();
 
 }
 
@@ -53,28 +53,28 @@ void WindowOptions::readSavedSettings()
 {
     QSettings settings;
 
-    couleurAxes = new QColorButton(Qt::black);
-    couleurAxes->setFixedSize(25,25);
-    ui->axesColorLayout->addWidget(couleurAxes);
+    colorAxes = new QColorButton(Qt::black);
+    colorAxes->setFixedSize(25,25);
+    ui->axesColorLayout->addWidget(colorAxes);
 
-    couleurFond = new QColorButton(Qt::white);
-    couleurFond->setFixedSize(25,25);
-    ui->backgroundColorLayout->addWidget(couleurFond);
+    colorFond = new QColorButton(Qt::white);
+    colorFond->setFixedSize(25,25);
+    ui->backgroundColorLayout->addWidget(colorFond);
 
-    couleurQuadrillage = new QColorButton(Qt::gray);
-    couleurQuadrillage->setFixedSize(25,25);
-    ui->gridColorLayout->addWidget(couleurQuadrillage);
+    colorGrid = new QColorButton(Qt::gray);
+    colorGrid->setFixedSize(25,25);
+    ui->gridColorLayout->addWidget(colorGrid);
 
     settings.beginGroup("graph");
 
     if(settings.contains("background_color"))
-        couleurFond->setColor(settings.value("background_color").value<QColor>());
+        colorFond->setColor(settings.value("background_color").value<QColor>());
     if(settings.contains("axes_color"))
-        couleurAxes->setColor(settings.value("axes_color").value<QColor>());
+        colorAxes->setColor(settings.value("axes_color").value<QColor>());
     if(settings.contains("grid_color"))
-        couleurQuadrillage->setColor(settings.value("grid_color").value<QColor>());
+        colorGrid->setColor(settings.value("grid_color").value<QColor>());
     if(settings.contains("antiasliasing"))
-        ui->lissage->setChecked(settings.value("antialiasing").toBool());
+        ui->smoothing->setChecked(settings.value("antialiasing").toBool());
 
     settings.endGroup();
 
@@ -91,7 +91,7 @@ void WindowOptions::readSavedSettings()
     if(settings.contains("quality"))
         ui->distanceWidget->setValue(settings.value("quality").toInt());
     if(settings.contains("thickness"))
-        ui->epaisseurWidget->setValue(settings.value("thickness").toInt());
+        ui->thicknessWidget->setValue(settings.value("thickness").toInt());
 
     settings.endGroup();
 
@@ -102,41 +102,41 @@ void WindowOptions::saveSettings()
     QSettings settings;
     settings.beginGroup("graph");
 
-    settings.setValue("background_color", couleurFond->getCurrentColor());
-    settings.setValue("axes_color", couleurAxes->getCurrentColor());
-    settings.setValue("grid_color", couleurQuadrillage->getCurrentColor());
-    settings.setValue("antialiasing", ui->lissage->isChecked());
+    settings.setValue("background_color", colorFond->getCurrentColor());
+    settings.setValue("axes_color", colorAxes->getCurrentColor());
+    settings.setValue("grid_color", colorGrid->getCurrentColor());
+    settings.setValue("antialiasing", ui->smoothing->isChecked());
 
     settings.endGroup();
 
     settings.beginGroup("graph/curves");
 
     settings.setValue("quality", ui->distanceWidget->value());
-    settings.setValue("thickness", ui->epaisseurWidget->value());
+    settings.setValue("thickness", ui->thicknessWidget->value());
 
     settings.endGroup();
 
 }
 
-void WindowOptions::appliquer()
+void WindowOptions::apply()
 {
-    if(couleurAxes->getCurrentColor() == couleurFond->getCurrentColor())
-        QMessageBox::warning(this, tr("Attention"), tr("Les couleurs du fond et des axes sont identiques"));
-    else if(couleurFond->getCurrentColor() == couleurQuadrillage->getCurrentColor())
-        QMessageBox::warning(this, tr("Attention"), tr("Les couleurs du fond et du quadrillage sont identiques"));
+    if(colorAxes->getCurrentColor() == colorFond->getCurrentColor())
+        QMessageBox::warning(this, tr("Warning"), tr("Axes and background colors are identical"));
+    else if(colorFond->getCurrentColor() == colorGrid->getCurrentColor())
+        QMessageBox::warning(this, tr("Warning"), tr("Background and grid colors are identical"));
     else
     {
         double dist = ui->distanceWidget->value();
 
-        parametres.lissage = ui->lissage->isChecked();
-        parametres.distanceEntrePoints = pow(2, 2-dist/2);
-        parametres.epaisseurDesCourbes = ui->epaisseurWidget->value();
-        parametres.couleurDesAxes = couleurAxes->getCurrentColor();
-        parametres.couleurDuFond = couleurFond->getCurrentColor();
-        parametres.couleurQuadrillage = couleurQuadrillage->getCurrentColor();
-        parametres.numSize = ui->numSize->value();     
+        parameters.smoothing = ui->smoothing->isChecked();
+        parameters.istanceBetweenPoints = pow(2, 2-dist/2);
+        parameters.curvesThickness = ui->thicknessWidget->value();
+        parameters.colorAxes = colorAxes->getCurrentColor();
+        parameters.colorBackground = colorFond->getCurrentColor();
+        parameters.colorGrid = colorGrid->getCurrentColor();
+        parameters.numSize = ui->numSize->value();     
 
-        information->setOptions(parametres);
+        information->setOptions(parameters);
     }
 }
 

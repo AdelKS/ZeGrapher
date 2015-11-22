@@ -68,20 +68,20 @@ private slots :
     
 private:
 
-    Informations *information;
+    Information *information;
     MainGraph *scene;
     GraphRange window;
-    WindowFunctions *fenFunctions;
-    WindowBoundary *fenBoundarys;
-    WindowOptions *fenOptions;
-    WindowValuesTable *fenValeurs;
+    WindowFunctions *winFunctions;
+    WindowBoundary *winBoundarys;
+    WindowOptions *winOptions;
+    WindowValuesTable *winValues;
     Keyboard *keyboard;
-    ImageSave *fenImage;
-    about *fenAPropos;
-    Print *fenPrint;
-    QAction *boutonGrille;
-    ImagePreview *fenImageScene;
-    PrintPreview *fenPrintScene;
+    ImageSave *winImage;
+    about *winAbout;
+    Print *winPrint;
+    QAction *gridButton;
+    ImagePreview *winImageScene;
+    PrintPreview *winPrintScene;
     QString baseName;
     QSettings settings;
     

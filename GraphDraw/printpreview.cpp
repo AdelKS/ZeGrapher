@@ -22,9 +22,9 @@
 
 #include "GraphDraw/printpreview.h"
 
-PrintPreview::PrintPreview(Informations *info) : ImagePreview(info)
+PrintPreview::PrintPreview(Information *info) : ImagePreview(info)
 {
-    parametres.distanceEntrePoints = 0.125;
+    parameters.istanceBetweenPoints = 0.125;
     viewType = PORTRAIT;
     graphHeightCm = 28.7;
     graphWidthCm = 20;
@@ -47,7 +47,7 @@ void PrintPreview::setPDFname(QString pdf)
 
 void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resType, int res)
 {
-    parametres = information->getOptions();
+    parameters = information->getOptions();
     graphRange = information->getRange();
 
     printer = new QPrinter(printerInfo);
@@ -118,7 +118,7 @@ void PrintPreview::setyscale(double scale)
 void PrintPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    parametres = information->getOptions();
+    parameters = information->getOptions();
     graphRange = information->getRange();
 
     painter.begin(this);

@@ -22,7 +22,7 @@
 
 #include "ValuesTable/functable.h"
 
-FuncTable::FuncTable(Informations *info) : AbstractTable()
+FuncTable::FuncTable(Information *info) : AbstractTable()
 {
     information = info;   
     exprCalc = new ExprCalculator(false, info->getFuncsList());
@@ -136,8 +136,8 @@ void FuncTable::fillFromRange()
         parameters.range.end = range.Xmax;
     }
 
-    add_x_values();
-    add_y_values();
+    addXValues();
+    addYValues();
 
     tableView->setModel(model);
 }
@@ -151,7 +151,7 @@ void FuncTable::cellEdited(QStandardItem *item)
     double x = exprCalc->calculateExpression(item->text(), ok), y;
     if(!ok)
     {
-         QMessageBox::warning(this, tr("Erreur"), tr("Erreur de syntaxe dans cette entrée"));
+         QMessageBox::warning(this, tr("Error"), tr("Syntax error in this entry"));
          return;
     }
 
@@ -164,7 +164,7 @@ void FuncTable::cellEdited(QStandardItem *item)
 
 }
 
-void FuncTable::add_x_values()
+void FuncTable::addXValues()
 {
     QList<QStandardItem*> liste;
     liste.reserve(100);
@@ -187,7 +187,7 @@ void FuncTable::add_x_values()
     model->appendColumn(liste);
 }
 
-void FuncTable::add_y_values()
+void FuncTable::addYValues()
 {
     QList<QStandardItem*> liste;   
 

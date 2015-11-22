@@ -65,8 +65,8 @@ bool SeqCalculator::validateFirstValsExpr(QString expr)
         drawsNum = 1;
 
         if(!areFirstValsValidated)
-            QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur de syntaxe lors de la saisie des premiers termes de la suite ") + seqName
-                                 + "\n" + tr("Note: ces termes doivent être séparés par des ';' "));
+            QMessageBox::warning(parentWidget, tr("Error"), tr("Syntax error on the entered initial terms for the sequence ") + seqName
+                                 + "\n" + tr("Note: terms must be separated with ';' "));
     }
 
     return areFirstValsValidated;
@@ -86,7 +86,7 @@ bool SeqCalculator::validateSeqExpr(QString expr)
         seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);
 
         //if(!isExprValidated)
-          //  QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur de syntaxe lors de la saisie de l'expression de la suite ") + seqName);
+          //  QMessageBox::warning(parentWidget, tr("Error"), tr("Error de syntaxe lors de la saisie de l'expression de la suite ") + seqName);
     }
 
     return isExprValidated;
@@ -177,7 +177,7 @@ bool SeqCalculator::checkByCalculatingFirstValuesTrees()
     isValid = calculateAndSaveFirstValuesTrees();
     if(!isValid)
     {
-        QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur dans le calcul des premiers termes saisis pour la suite ") + seqName);
+        QMessageBox::warning(parentWidget, tr("Error"), tr("Error while calculating initial terms for sequence ") + seqName);
     }
 
     return isValid;
@@ -193,7 +193,7 @@ bool SeqCalculator::checkByCalculatingValues()
 
     if(!isValid)
     {
-        QMessageBox::warning(parentWidget, tr("Erreur"), tr("Erreur dans le calcul des premiers termes de la suite ") + seqName);
+        QMessageBox::warning(parentWidget, tr("Error"), tr("Error while calculating initial terms for sequence ") + seqName);
     }
 
     return isValid;
@@ -229,7 +229,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
     {
-        QMessageBox::critical(parentWidget, tr("Erreur"), tr("Erreur dans les appels entre deux suites. dont ") + seqName);
+        QMessageBox::critical(parentWidget, tr("Error"), tr("Error between two sequences who calls each other, one of them is ") + seqName);
         return false;
     }
 
@@ -302,7 +302,7 @@ bool SeqCalculator::saveSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
     {
-        QMessageBox::critical(parentWidget, tr("Erreur"), tr("Erreur dans les appels entre deux suites, dont ") + seqName);
+        QMessageBox::critical(parentWidget, tr("Error"), tr("Error between two sequences who calls each other, one of them is ") + seqName);
         return false;
     }
 
@@ -442,12 +442,12 @@ bool SeqCalculator::verifyAskedTerm(double n)
 {
     if(ceil(n) != n || n-nMin >= seqValues[kPos].size())
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), QObject::tr("Mauvaise relation de récurence saisie pour la suite ") + seqName);
         return false;
+        QMessageBox::critical(parentWidget, QObject::tr("Error"), QObject::tr("Wrong reccurence relation typed for the sequence ") + seqName);
     }
     else if(n < nMin)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), QObject::tr("NUMBER de premiers termes insuffisant pour la suite ") + seqName);
+        QMessageBox::critical(parentWidget, QObject::tr("Error"), QObject::tr("Not enough intial terms for the sequence ") + seqName);
         return false;
     }
     else return true;
@@ -457,12 +457,12 @@ bool SeqCalculator::verifyOtherSeqAskedTerm(double n, int id)
 {
     if(ceil(n) != n)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), seqName + QObject::tr(" appelle ") + seqsNames[id] + QObject::tr(" avec un paramètre non entier."));
+        QMessageBox::critical(parentWidget, QObject::tr("Error"), seqName + QObject::tr(" calls ") + seqsNames[id] + QObject::tr(" with a non integer parameters number."));
         return false;
     }
     else if(n < nMin)
     {
-        QMessageBox::critical(parentWidget, QObject::tr("Erreur"), seqName + QObject::tr(" demande un terme non existant de ") + seqsNames[id] + "\n" + QObject::tr("Le rang demandé étant plus petit que n<sub>min</sub>"));
+        QMessageBox::critical(parentWidget, QObject::tr("Error"), seqName + QObject::tr(" Asks for a non existing term of ") + seqsNames[id] + "\n" + QObject::tr("The required order is lower than n<sub>min</sub>"));
         return false;
     }
     else return true;
@@ -479,26 +479,26 @@ void SeqCalculator::addRefFuncsPointers()
 
 bool SeqCalculator::check_called_funcs_and_seqs_validity()
 {
-    isValid = check_called_funcs_validity(expression);
+    isValid = checkCalledFuncsValidity(expression);
     if(!isValid)
         return false;
 
-    isValid = check_called_funcs_validity(firstValsExpr);
+    isValid = checkCalledFuncsValidity(firstValsExpr);
     if(!isValid)
         return false;
 
-    isValid = check_called_seqs_validity(expression);
+    isValid = checkCalledSeqsValidity(expression);
     if(!isValid)
         return false;
 
-    isValid = check_called_seqs_validity(firstValsExpr);
+    isValid = checkCalledSeqsValidity(firstValsExpr);
     if(!isValid)
         return false;
 
     return true;
 }
 
-bool SeqCalculator::check_called_funcs_validity(QString str)
+bool SeqCalculator::checkCalledFuncsValidity(QString str)
 {
     QList<int> calledFuncsList = treeCreator.getCalledFuncs(str);
 
@@ -510,7 +510,7 @@ bool SeqCalculator::check_called_funcs_validity(QString str)
     return validity;
 }
 
-bool SeqCalculator::check_called_seqs_validity(QString str)
+bool SeqCalculator::checkCalledSeqsValidity(QString str)
 {
     QList<int> calledSeqsList = treeCreator.getCalledSeqs(str);
 

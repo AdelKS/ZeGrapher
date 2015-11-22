@@ -401,7 +401,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>variable des fonctions</string>
+        <string>variable des functions</string>
        </property>
        <property name="whatsThis">
         <string notr="true"/>
@@ -531,7 +531,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>fonction d'erreur.</string>
+        <string>function d'erreur.</string>
        </property>
        <property name="text">
         <string notr="true">erf</string>
@@ -550,7 +550,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>fonction d'erreur complémentaire.</string>
+        <string>function d'erreur complémentaire.</string>
        </property>
        <property name="text">
         <string notr="true">erfc</string>
@@ -1012,7 +1012,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>fonction gamma d'Euler.</string>
+        <string>function gamma d'Euler.</string>
        </property>
        <property name="text">
         <string notr="true">Γ</string>

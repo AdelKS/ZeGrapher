@@ -49,9 +49,9 @@ ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list) : treeCreator(PAR
 
 void ParEqWidget::createWidgets()
 {
-    principalLayout = new QVBoxLayout();
-    principalLayout->setSpacing(3);
-    principalLayout->setMargin(5);
+    mainLayout = new QVBoxLayout();
+    mainLayout->setSpacing(3);
+    mainLayout->setMargin(5);
 
     addExprWidgets();
     addTConfWidgets();
@@ -62,9 +62,9 @@ void ParEqWidget::createWidgets()
     frame->setFrameShape(QFrame::HLine);
     frame->setFrameShadow(QFrame::Sunken);
 
-    principalLayout->addWidget(frame);
+    mainLayout->addWidget(frame);
 
-    setLayout(principalLayout);
+    setLayout(mainLayout);
 }
 
 bool ParEqWidget::isParEqParametric()
@@ -202,7 +202,7 @@ void ParEqWidget::addExprWidgets()
 
     layout1->addLayout(buttonsLayout);
 
-    principalLayout->addLayout(layout1);
+    mainLayout->addLayout(layout1);
 }
 
 void ParEqWidget::addTConfWidgets()
@@ -216,8 +216,8 @@ void ParEqWidget::addTConfWidgets()
     connect(tWidget, SIGNAL(animateToggled(bool)), this, SLOT(recalculatePointsList()));
     connect(tWidget, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
-    principalLayout->addSpacing(15);
-    principalLayout->addWidget(tWidget);
+    mainLayout->addSpacing(15);
+    mainLayout->addWidget(tWidget);
 
 }
 
@@ -278,8 +278,8 @@ void ParEqWidget::addKConfWidgets()
     connect(kWidget, SIGNAL(animateToggled(bool)), this, SLOT(recalculatePointsList()));
     connect(kWidget, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
-    principalLayout->addWidget(kWidget);
-    principalLayout->addSpacing(15);
+    mainLayout->addWidget(kWidget);
+    mainLayout->addSpacing(15);
 
     kWidget->hide();
 }
@@ -331,7 +331,7 @@ void ParEqWidget::addAnimationControllWidgets()
 
     animationControlWidget->setLayout(animCtrLayout);
 
-    principalLayout->addWidget(animationControlWidget);
+    mainLayout->addWidget(animationControlWidget);
 
     animationControlWidget->hide();
 }
@@ -506,10 +506,10 @@ void ParEqWidget::updateTRange(double k)
         valid = false;
 
     if(pointsNum  <= 0)
-        QMessageBox::warning(this, tr("Erreur"),tr("La valeur du pas du paramètre t est incompatible avec l'intervalle saisi, dans l'équation paramétrique") + " (P<sub>" + QString::number(index) + "</sub>).");
+        QMessageBox::warning(this, tr("Error"),tr("Step value for the "t" parameter is not compatible with the entered range, in parametric equation") + " (P<sub>" + QString::number(index) + "</sub>).");
 
     else if(pointsNum  > 20000)
-        QMessageBox::warning(this, tr("Erreur"), tr("Trop de points sont à calculer pour l'équation paramétrique") + " (P<sub>" + QString::number(index) + "</sub>).");
+        QMessageBox::warning(this, tr("Error"), tr("Too many points to calculate on parametric equation") + " (P<sub>" + QString::number(index) + "</sub>).");
 
 }
 
@@ -532,8 +532,8 @@ void ParEqWidget::updateKRange()
     isKRangeGood = kWidget->isValid() && curvesNum_original > 0;
 
     if(curvesNum_original <= 0)
-        QMessageBox::warning(this, tr("Erreur"),
-                             tr("La valeur du pas du paramètre k est incompatible avec l'intervalle saisi, dans l'équation paramétrique (P<sub>")
+        QMessageBox::warning(this, tr("Error"),
+                             tr("Step value for the "k" parameter is not compatible with the entered range, in parametric equation (P<sub>")
                              + QString::number(index) + "</sub>).");
 }
 

@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setOrganizationName("ZeGrapher Project");
-    QCoreApplication::setOrganizationDomain("zegrapher.com");
-    QCoreApplication::setApplicationName("ZeGrapher");
+    QCoreApplication::setOrganizationName("quai lab");
+    QCoreApplication::setOrganizationDomain("quai-lab.com");
+    QCoreApplication::setApplicationName("bee remote");
 
     QLocale locale;
     QString localeString = locale.system().name().section("_",0,0);

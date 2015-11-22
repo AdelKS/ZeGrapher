@@ -26,7 +26,7 @@ CSVhandler::CSVhandler(QWidget *parent): QDialog(parent), ui(new Ui::CSVconfig)
     ui->setupUi(this);
 
     fileDialog = new QFileDialog(this);
-    fileDialog->setNameFilter(tr("Données (*.csv)"));    
+    fileDialog->setNameFilter(tr("Data (*.csv)"));    
 
     job = CSV_NO_FILE;
 
@@ -50,8 +50,8 @@ void CSVhandler::askForFileLocation()
 
 void CSVhandler::getDataFromCSV()
 {
-    setWindowTitle(tr("Ouvrir données"));
-    ui->apply->setText(tr("Ouvrir"));
+    setWindowTitle(tr("Open data from file"));
+    ui->apply->setText(tr("Open"));
     ui->fileLocation->clear();
     job = CSV_FILE_OPEN;
      fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
@@ -64,8 +64,8 @@ void CSVhandler::saveCSV(QList<QStringList> data)
     values = data;
     removeUnnecessaryCells();
 
-    setWindowTitle(tr("Enregistrer données"));
-    ui->apply->setText(tr("Enregistrer"));
+    setWindowTitle(tr("Save data"));
+    ui->apply->setText(tr("Save"));
     ui->fileLocation->clear();
     job = CSV_FILE_SAVE;
     fileDialog->setAcceptMode(QFileDialog::AcceptSave);
@@ -124,13 +124,13 @@ void CSVhandler::apply()
 {
     if(ui->fileLocation->text().isEmpty())
     {
-        QMessageBox::warning(this, tr("Erreur"), tr("Fichier cible non spécifié."));
+        QMessageBox::warning(this, tr("Error"), tr("Target file was not specified."));
         return;
     }
 
     if(ui->delimiter->text().isEmpty())
     {
-        QMessageBox::warning(this, tr("Erreur"), tr("Séparateur non spécifié."));
+        QMessageBox::warning(this, tr("Error"), tr("Separator was not specified."));
         return;
     }
 

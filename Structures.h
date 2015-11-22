@@ -96,13 +96,13 @@ struct FastTree
 
 struct Options
 {
-    QColor couleurDesAxes;
-    QColor couleurDuFond;
-    QColor couleurQuadrillage;
-    short epaisseurDesCourbes;
+    QColor colorAxes;
+    QColor colorBackground;
+    QColor colorGrid;
+    short curvesThickness;
     short numSize;
-    double distanceEntrePoints;
-    bool lissage;
+    double istanceBetweenPoints;
+    bool smoothing;
 
 };
 
