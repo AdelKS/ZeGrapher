@@ -28,7 +28,7 @@ baseName("mainwindow_geometry/")
     information = new Information();
 
     winOptions = new WindowOptions(information);
-    winBoundarys = new WindowBoundary(information);
+    winBoundaries = new WindowBoundary(information);
     winFunctions = new WindowFunctions(information);      
     winAbout = new about();
     winImage = new ImageSave(information);
@@ -72,7 +72,7 @@ void MainWindow::createMenus()
     QMenu *menuWindows = menuBar()->addMenu(tr("Windows"));
     QMenu *menuHelp = menuBar()->addMenu("?");   
 
-    gridButton = menuTools->addAction(QIcon(":/icons/quadrillage.png"), tr("Show/Hide the grid"));
+    gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
     gridButton->setCheckable(true);
 
     QAction *actionBasisOrthonorme = menuTools->addAction(tr("Orthonormal basis"));
@@ -81,7 +81,7 @@ void MainWindow::createMenus()
     connect(information, SIGNAL(newOrthonormalityState(bool)), actionBasisOrthonorme, SLOT(setChecked(bool)));
 
     QAction *resetView = menuTools->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
-    connect(resetView, SIGNAL(triggered()), winBoundarys, SLOT(resetToStandardView()));
+    connect(resetView, SIGNAL(triggered()), winBoundaries, SLOT(resetToStandardView()));
 
     QAction *afficherwinAbout = menuHelp->addAction(tr("About..."));
     connect(afficherwinAbout, SIGNAL(triggered()), this, SLOT(showAboutWin()));
@@ -90,7 +90,7 @@ void MainWindow::createMenus()
     print->setShortcut(QKeySequence("Ctrl+P"));
     connect(print, SIGNAL(triggered()), this, SLOT(showPrintWin()));
 
-    QAction *saveImage = menuFile->addAction(QIcon(":/icons/enregistrerImage.png"), tr("Save image..."));
+    QAction *saveImage = menuFile->addAction(QIcon(":/icons/saveImage.png"), tr("Save image..."));
     saveImage->setShortcut(QKeySequence("Ctrl+S"));
     connect(saveImage, SIGNAL(triggered()), this, SLOT(showImageSaveWin()));
 
@@ -108,11 +108,11 @@ void MainWindow::createMenus()
     actionShowWinFunctions->setShortcut(QKeySequence("Ctrl+F"));
     connect(actionShowWinFunctions, SIGNAL(triggered()), this, SLOT(showFuncsWin()));
 
-    QAction *actionShowWinBoundarys = menuWindows->addAction(QIcon(":/icons/bornes.png"), tr("Boundarys"));
-    actionShowWinBoundarys->setShortcut(QKeySequence("Ctrl+B"));
-    connect(actionShowWinBoundarys, SIGNAL(triggered()), this, SLOT(showRangeWin()));
+    QAction *actionShowWinBoundaries = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Boundaries"));
+    actionShowWinBoundaries->setShortcut(QKeySequence("Ctrl+B"));
+    connect(actionShowWinBoundaries, SIGNAL(triggered()), this, SLOT(showRangeWin()));
 
-    QAction *tabValues = menuWindows->addAction(QIcon(":/icons/tableauDeValues.png"), tr("Values table"));
+    QAction *tabValues = menuWindows->addAction(QIcon(":/icons/valuesTable.png"), tr("Values table"));
     tabValues->setShortcut(QKeySequence("Ctrl+Tab"));
     connect(tabValues, SIGNAL(triggered()), this, SLOT(showValuesTabWin()));
 
@@ -127,7 +127,7 @@ void MainWindow::createMenus()
     toolBar->addAction(resetView);
     toolBar->addSeparator();
     toolBar->addAction(actionShowWinFunctions);    
-    toolBar->addAction(actionShowWinBoundarys);  
+    toolBar->addAction(actionShowWinBoundaries);  
     toolBar->addAction(tabValues);    
     toolBar->addAction(saveImage);    
     toolBar->addAction(print);  
@@ -135,10 +135,10 @@ void MainWindow::createMenus()
 
     statusBar();
 
-    actionShowWinBoundarys->setStatusTip(tr("Show the window which allows to modify the shown data boundaries: Xmin, Xmax..."));
+    actionShowWinBoundaries->setStatusTip(tr("Show the window which allows to modify the shown data boundaries: Xmin, Xmax..."));
     actionShowWinFunctions->setStatusTip(tr("Show the window where you can type functions to trace."));
     actionQuitter->setStatusTip(tr("Quit ZeGrapher."));
-    actionShowWinOptions->setStatusTip(tr("Affiche la winêtre où l'on peut modifier les options de représentation."));
+    actionShowWinOptions->setStatusTip(tr("Show settings window."));
     tabValues->setStatusTip(tr("Show settings window"));
     resetView->setStatusTip(tr("Reset to default view"));
     gridButton->setStatusTip(tr("Show/Hide grid"));
@@ -164,9 +164,9 @@ void MainWindow::showFuncsWin()
 
 void MainWindow::showRangeWin()
 {
-    winBoundarys->move(this->pos() + QPoint(this->width() + 20,0));
-    winBoundarys->show();
-    winBoundarys->activateWindow();
+    winBoundaries->move(this->pos() + QPoint(this->width() + 20,0));
+    winBoundaries->show();
+    winBoundaries->activateWindow();
 }
 
 void MainWindow::showOptionsWin()
@@ -212,7 +212,7 @@ void MainWindow::showAboutWin()
 
 void MainWindow::closeEvent(QCloseEvent *evenement)
 {
-    winBoundarys->close();
+    winBoundaries->close();
 
     winFunctions->closeAllOpenedWindows();
     winFunctions->close();
@@ -233,7 +233,7 @@ MainWindow::~MainWindow()
 {   
     delete winValues;
     delete scene;   
-    delete winBoundarys;
+    delete winBoundaries;
     delete winFunctions;
     delete winOptions;
     delete winAbout;

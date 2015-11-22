@@ -36,7 +36,7 @@ WindowFunctions::WindowFunctions(Information *info)
 
     connect(parEqController, SIGNAL(animationUpdate()), info, SLOT(emitAnimationUpdate()));
 
-    setWindowTitle(tr("Tracer"));
+    setWindowTitle(tr("Plot"));
     setWindowIcon(QIcon(":/icons/functions.png"));
 
     funcNames << 'f' << 'g' << 'h'<< 'p' << 'r'<< 'm';
@@ -51,7 +51,7 @@ WindowFunctions::WindowFunctions(Information *info)
 
 
 
-    connect(ui->buttonTracer, SIGNAL(released()), this, SLOT(draw()));
+    connect(ui->buttonPlot, SIGNAL(released()), this, SLOT(draw()));
     connect(ui->addLine, SIGNAL(released()), this, SLOT(addStraightline()));
     connect(ui->addTangent, SIGNAL(released()), this, SLOT(addTangent()));
     connect(ui->addParEq, SIGNAL(released()), this, SLOT(addParEq()));

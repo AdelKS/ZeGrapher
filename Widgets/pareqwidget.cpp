@@ -506,7 +506,7 @@ void ParEqWidget::updateTRange(double k)
         valid = false;
 
     if(pointsNum  <= 0)
-        QMessageBox::warning(this, tr("Error"),tr("Step value for the "t" parameter is not compatible with the entered range, in parametric equation") + " (P<sub>" + QString::number(index) + "</sub>).");
+        QMessageBox::warning(this, tr("Error"),tr("Step value for the \"t\" parameter is not compatible with the entered range, in parametric equation") + " (P<sub>" + QString::number(index) + "</sub>).");
 
     else if(pointsNum  > 20000)
         QMessageBox::warning(this, tr("Error"), tr("Too many points to calculate on parametric equation") + " (P<sub>" + QString::number(index) + "</sub>).");
@@ -533,7 +533,7 @@ void ParEqWidget::updateKRange()
 
     if(curvesNum_original <= 0)
         QMessageBox::warning(this, tr("Error"),
-                             tr("Step value for the "k" parameter is not compatible with the entered range, in parametric equation (P<sub>")
+                             tr("Step value for the \"k\" parameter is not compatible with the entered range, in parametric equation (P<sub>")
                              + QString::number(index) + "</sub>).");
 }
 

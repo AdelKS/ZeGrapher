@@ -72,7 +72,7 @@ private:
     MainGraph *scene;
     GraphRange window;
     WindowFunctions *winFunctions;
-    WindowBoundary *winBoundarys;
+    WindowBoundary *winBoundaries;
     WindowOptions *winOptions;
     WindowValuesTable *winValues;
     Keyboard *keyboard;

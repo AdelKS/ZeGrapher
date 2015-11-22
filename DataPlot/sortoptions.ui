@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Sort options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
@@ -31,7 +31,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Ordre de tri:</string>
+        <string>Sorting order:</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
          <item>
           <widget class="QRadioButton" name="ascending">
            <property name="text">
-            <string>Croissant</string>
+            <string>Increasing</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -74,7 +74,7 @@
          <item>
           <widget class="QRadioButton" name="descending">
            <property name="text">
-            <string>Décroissant</string>
+            <string>Decreasing</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup_2</string>
@@ -97,7 +97,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Les permutations s'effectuent entre :</string>
+        <string>Switching between:</string>
        </property>
       </widget>
      </item>
@@ -127,7 +127,7 @@
          <item>
           <widget class="QRadioButton" name="swapRows">
            <property name="text">
-            <string>Les lignes</string>
+            <string>Lines</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -140,7 +140,7 @@
          <item>
           <widget class="QRadioButton" name="swapCells">
            <property name="text">
-            <string>Les cellules de la colonne selectionnée</string>
+            <string>Only column cells</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
@@ -164,7 +164,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Précédent</string>
+        <string>Back</string>
        </property>
       </widget>
      </item>
@@ -190,7 +190,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Appliquer</string>
+        <string>Apply</string>
        </property>
       </widget>
      </item>

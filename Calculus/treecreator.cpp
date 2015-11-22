@@ -193,7 +193,7 @@ bool TreeCreator::check(QString formula)
         return false;
 
     bool digit = true, openpth = true, numberSign = true, varOrFunc = true, canEnd = false,
-         operator = false, digitpth = false;
+         ope = false, digitpth = false;
 
     short pth = 0;
 
@@ -228,7 +228,7 @@ bool TreeCreator::check(QString formula)
                 return false;
 
             openpth = varOrFunc = numberSign = false;
-            digit = operator = digitpth = canEnd = true;
+            digit = ope = digitpth = canEnd = true;
         }
         else if(formula[i].isLetter() && varOrFunc)
         {
@@ -252,7 +252,7 @@ bool TreeCreator::check(QString formula)
                 decompPriorites << FUNC;
                 decompValues << 0.0;
                 openpth = true;
-                digit = operator = canEnd = digitpth = varOrFunc = numberSign = false;
+                digit = ope = canEnd = digitpth = varOrFunc = numberSign = false;
 
                 if(refFunctions.contains(name))
                 {
@@ -280,7 +280,7 @@ bool TreeCreator::check(QString formula)
             else if(constants.contains(name) || customVars.contains(name) || vars.contains(name))
             {
                 varOrFunc = numberSign = false;
-                openpth = digit = operator = digitpth = canEnd = true;
+                openpth = digit = ope = digitpth = canEnd = true;
 
                 if(customVars.contains(name)) /* customVars comes at first because of overriding policy, customvars come from dataplot, and user can redefine
                                                 n t or x or k */
@@ -308,7 +308,7 @@ bool TreeCreator::check(QString formula)
             else return false;
 
         }       
-        else if(operators.contains(formula[i]) && operator)
+        else if(operators.contains(formula[i]) && ope)
         {
             short pos = operators.indexOf(formula[i]);
 
@@ -317,7 +317,7 @@ bool TreeCreator::check(QString formula)
             decompValues << 0.0 ;
 
             openpth = digit = varOrFunc = true;
-            operator = numberSign = digitpth = canEnd = false;
+            ope = numberSign = digitpth = canEnd = false;
         }
         else if(formula[i]=='(' && openpth)
         {           
@@ -328,9 +328,9 @@ bool TreeCreator::check(QString formula)
             decompValues << 0.0 ;
 
             numberSign = digit = varOrFunc = openpth = true;
-            operator = digitpth = canEnd = false;
+            ope = digitpth = canEnd = false;
         }
-        else if(formule[i]==')' && digitpth && pth > 0)
+        else if(formula[i]==')' && digitpth && pth > 0)
         {            
             pth--;
 
@@ -338,7 +338,7 @@ bool TreeCreator::check(QString formula)
             decompPriorites << PTHF ;
             decompValues << 0.0 ;
 
-            operator = digitpth = canEnd = true;
+            ope = digitpth = canEnd = true;
             digit = numberSign = openpth = varOrFunc = false;
 
         }        

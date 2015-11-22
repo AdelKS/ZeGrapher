@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Clavier Virtuel</string>
+   <string>Virtual keyboard</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -401,7 +401,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>variable des functions</string>
+        <string>functions variables</string>
        </property>
        <property name="whatsThis">
         <string notr="true"/>
@@ -458,7 +458,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>variable des suites</string>
+        <string>sequences variable</string>
        </property>
        <property name="text">
         <string notr="true">n</string>
@@ -531,7 +531,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>function d'erreur.</string>
+        <string>error function.</string>
        </property>
        <property name="text">
         <string notr="true">erf</string>
@@ -550,7 +550,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>function d'erreur complémentaire.</string>
+        <string>complementary error function.</string>
        </property>
        <property name="text">
         <string notr="true">erfc</string>
@@ -569,7 +569,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>arrondie à l'entier supérieur</string>
+        <string>round to the nearest greater integer</string>
        </property>
        <property name="whatsThis">
         <string notr="true"/>
@@ -591,7 +591,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>racine carrée</string>
+        <string>square root</string>
        </property>
        <property name="text">
         <string notr="true">sqrt</string>
@@ -714,7 +714,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Primitive</string>
+        <string>Antiderivative</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -877,7 +877,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Dérivée</string>
+        <string>Derivative</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -943,7 +943,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>arrondie à l'entier inférieur</string>
+        <string>round to the nearest lower integer</string>
        </property>
        <property name="whatsThis">
         <string notr="true"/>
@@ -984,7 +984,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>valeur abosolue</string>
+        <string>absolute value</string>
        </property>
        <property name="whatsThis">
         <string notr="true"/>
@@ -1012,7 +1012,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="toolTip">
-        <string>function gamma d'Euler.</string>
+        <string>eulerian gamma function.</string>
        </property>
        <property name="text">
         <string notr="true">Γ</string>
@@ -1028,7 +1028,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>cosinus hyperbolique réciproque.</string>
+        <string>reciprocal hyperbolic cosinus.</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(12, 150, 206)</string>
@@ -1047,7 +1047,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>sinus hyperbolique réciproque.</string>
+        <string>reciprocal hyperbolic sinus.</string>
        </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(12, 150, 206)</string>

@@ -175,7 +175,7 @@ void SeqTable::cellEdited(QStandardItem *item)
         y = seq->getCustomSeqValue(x, ok, k);
         if(!ok)
         {
-               QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing "k" value might solve the error."));
+               QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing \"k\" value might solve the error."));
                model->item(item->row(), 1)->setText("");
                return;
         }     
@@ -267,7 +267,7 @@ void SeqTable::add_parSeq_y_values()
 
         if(!ok)
         {
-            QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing "k" value might solve the error."));
+            QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing \"k\" value might solve the error."));
             model->clear();
             return;
         }

@@ -39,11 +39,11 @@ WindowBoundary::WindowBoundary(Information *info)
 
     connect(ui->Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
     connect(ui->Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(ui->Xpas, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(ui->Xstep, SIGNAL(returnPressed()), this, SLOT(apply()));
 
     connect(ui->Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
     connect(ui->Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(ui->Ypas, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(ui->Ystep, SIGNAL(returnPressed()), this, SLOT(apply()));
 
     connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
     connect(ui->orthonormal, SIGNAL(clicked(bool)), information, SLOT(setOrthonormal(bool)));
@@ -57,7 +57,7 @@ void WindowBoundary::orthonormal(bool state)
 {   
     ui->Ymax->setEnabled(!state);
     ui->Ymin->setEnabled(!state);
-    ui->Ypas->setEnabled(!state);
+    ui->Ystep->setEnabled(!state);
 }
 
 void WindowBoundary::resetToStandardView()
@@ -70,11 +70,11 @@ void WindowBoundary::standardView()
 {
     ui->Xmax->setText("10");
     ui->Xmin->setText("-10");
-    ui->Xpas->setText("1");
+    ui->Xstep->setText("1");
 
     ui->Ymax->setText("10");
     ui->Ymin->setText("-10");
-    ui->Ypas->setText("1");
+    ui->Ystep->setText("1");
 }
 
 void WindowBoundary::apply()
@@ -92,7 +92,7 @@ void WindowBoundary::apply()
     range.Xmin = calculator->calculateExpression(ui->Xmin->text(), ok);
     if(ok == false)
     {
-        messageBox->setText(tr("Error lors de l'evaluation de l'expression écrite en ") + "X<sub>min</sub>");
+        messageBox->setText(tr("Could not evaluate the typed expression for ") + "X<sub>min</sub>");
         messageBox->exec();
         return;
     }
@@ -110,7 +110,7 @@ void WindowBoundary::apply()
         messageBox->exec();
         return;
     }
-    range.Xscale = calculator->calculateExpression(ui->Xpas->text(), ok);
+    range.Xscale = calculator->calculateExpression(ui->Xstep->text(), ok);
     if(ok == false || range.Xscale <= 0)
     {
         messageBox->setText(tr("Could not evaluate the typed expression for X step."));
@@ -119,9 +119,9 @@ void WindowBoundary::apply()
     }    
 
     if(ui->orthonormal->isChecked())
-        ui->Ypas->setText(ui->Xpas->text());
+        ui->Ystep->setText(ui->Xstep->text());
 
-    range.Yscale = calculator->calculateExpression(ui->Ypas->text(), ok);
+    range.Yscale = calculator->calculateExpression(ui->Ystep->text(), ok);
     if(ok == false || range.Yscale <= 0)
     {
         messageBox->setText(tr("Could not evaluate the typed expression for Y step."));
@@ -159,11 +159,11 @@ void WindowBoundary::updateWidgets()
 
      ui->Xmax->setText(QString::number(window.Xmax));
      ui->Xmin->setText(QString::number(window.Xmin));
-     ui->Xpas->setText(QString::number(window.Xscale));
+     ui->Xstep->setText(QString::number(window.Xscale));
 
      ui->Ymax->setText(QString::number(window.Ymax));
      ui->Ymin->setText(QString::number(window.Ymin));
-     ui->Ypas->setText(QString::number(window.Yscale));
+     ui->Ystep->setText(QString::number(window.Yscale));
 
      ui->orthonormal->setChecked(information->isOrthonormal());
      orthonormal(information->isOrthonormal());

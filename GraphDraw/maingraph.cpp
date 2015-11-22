@@ -1318,7 +1318,7 @@ void MainGraph::placerGraduations()
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double pas = graphRange.Xscale * uniteX;
+    double step = graphRange.Xscale * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1355,7 +1355,7 @@ void MainGraph::placerGraduations()
             painter.drawText(QPointF(pos, posTxt), num);
         }
 
-        Xpos += pas;
+        Xpos += step;
         Xreal += graphRange.Xscale;
     }
 
@@ -1382,7 +1382,7 @@ void MainGraph::placerGraduations()
 
     double Yreal = trunc(graphRange.Ymax / graphRange.Yscale) * graphRange.Yscale;
     Ypos = -Yreal * uniteY + centre.y;
-    pas = graphRange.Yscale * uniteY;
+    step = graphRange.Yscale * uniteY;
 
     bas =  0;
     haut =  graphWidth;
@@ -1423,13 +1423,13 @@ void MainGraph::placerGraduations()
         }
 
         Yreal -= graphRange.Yscale;
-        Ypos += pas;
+        Ypos += step;
     }
 }
 
 void MainGraph::drawAxes()
 {
-    // *********** remarque: les y sont positifs en dessous de l'axe x, pas au dessus !! ************//
+    // *********** remarque: les y sont positifs en dessous de l'axe x, step au dessus !! ************//
     pen.setWidth(1);
     pen.setColor(parameters.colorAxes);
     painter.setPen(pen);    

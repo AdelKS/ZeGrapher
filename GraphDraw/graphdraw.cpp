@@ -194,7 +194,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
     }
 
     double posX, delta1, delta2, delta3, y1, y2, y3, y4;;
-    bool pointDepasse= false;
+    bool pointOvershoot= false;
     int end;
     ColorSaver* colorSaver = funcs[i]->getColorSaver();
 
@@ -217,22 +217,22 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
             {
                 if(y1 < graphRange.Ymin || y1 > graphRange.Ymax)
                 {
-                    if(!pointDepasse)
+                    if(!pointOvershoot)
                     {
                         polygon << QPointF(posX, -y1*uniteY);
                         painter.drawPolyline(polygon);
                         polygon.clear();
-                        pointDepasse = true;
+                        pointOvershoot = true;
                     }
                 }
                 else
                 {
-                    if(pointDepasse)
+                    if(pointOvershoot)
                     {
                        polygon << QPointF(posX - parameters.istanceBetweenPoints, - funcVals->at(i)[draw][pos-1]*uniteY);
                     }
                     polygon << QPointF(posX, -y1*uniteY);
-                    pointDepasse = false;
+                    pointOvershoot = false;
                 }
 
                 if(0 < pos && pos < end-2)
@@ -262,7 +262,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
         }
 
         painter.drawPolyline(polygon);
-        pointDepasse = false;
+        pointOvershoot = false;
     }
 }
 

@@ -229,7 +229,7 @@ void ImagePreview::placerGraduations()
 
     double Xpos = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale * uniteX;
     double end = graphRange.Xmax * uniteX;
-    double pas = graphRange.Xscale * uniteX;
+    double step = graphRange.Xscale * uniteX;
 
     QString num;
 
@@ -263,14 +263,14 @@ void ImagePreview::placerGraduations()
             painter.drawText(QPointF(pos - space/2, graphHeight+15), "0");
         }
 
-        Xpos += pas;
+        Xpos += step;
     }
 
 //trace sur l'axe des Y
 
 
     double Ypos = ceil(graphRange.Ymin / graphRange.Yscale) * graphRange.Yscale * uniteY;
-    pas = graphRange.Yscale * uniteY;
+    step = graphRange.Yscale * uniteY;
     end = graphRange.Ymax * uniteY;
 
     int largestWidth = 0;
@@ -314,7 +314,7 @@ void ImagePreview::placerGraduations()
         if(space > largestWidth)
             largestWidth = space;
 
-        Ypos += pas;
+        Ypos += step;
     }
 
     if(largestWidth < leftMargin - additionalMargin || largestWidth > leftMargin - additionalMargin - 5)
