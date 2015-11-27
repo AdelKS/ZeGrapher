@@ -23,11 +23,11 @@
 #include "Export/print.h"
 #include "ui_print.h"
 
-Print::Print(Informations *info) : ui(new Ui::Print)
+Print::Print(Information *info) : ui(new Ui::Print)
 {
     ui->setupUi(this);
 
-    setWindowTitle(tr("Imprimer"));
+    setWindowTitle(tr("Print"));
 
     scene = new PrintPreview(info);
 
@@ -72,7 +72,7 @@ Print::Print(Informations *info) : ui(new Ui::Print)
 
 void Print::getPDFname()
 {
-    PDFname = QFileDialog::getSaveFileName(this, tr("Créer un PDF"), QString(), "PDF (*.pdf);;PostScript (*.ps)");
+    PDFname = QFileDialog::getSaveFileName(this, tr("Create PDF"), QString(), "PDF (*.pdf);;PostScript (*.ps)");
     if(!PDFname.isEmpty())
     {
         if(!PDFname.endsWith(".ps") && !PDFname.endsWith(".pdf"))
@@ -86,8 +86,8 @@ void Print::setOrthonormal(bool state)
 {
     orthonormal = state;    
     if(!orthonormal)
-        ui->orthInfoLabel->setText(tr("Repère non orthonormal"));
-    else ui->orthInfoLabel->setText(tr("Repère orthonormal"));
+        ui->orthInfoLabel->setText(tr("Non-orthonormal basis"));
+    else ui->orthInfoLabel->setText(tr("Orthonormal basis"));
 
     if(ui->scaleGroupBox->isChecked())
     {
@@ -111,8 +111,8 @@ void Print::checkScaleWidgets(bool state)
 void Print::setPrintButtonText(bool inFileRadioButtonState)
 {
     if(inFileRadioButtonState)
-        ui->print->setText(tr("Enregistrer"));
-    else ui->print->setText(tr("Imprimer"));
+        ui->print->setText(tr("Save"));
+    else ui->print->setText(tr("Print"));
 }
 
 void Print::enablePrintButton()
@@ -127,7 +127,7 @@ void Print::print()
 
     if(ui->inPaper->isChecked())
     {
-        int reponse = QMessageBox::question(this, "Attention", "Vous êtes sur le point d'imprimer, voulez vous continuer ?\n Veuillez vérifier les informations saises avant de continuer.", QMessageBox::Yes | QMessageBox::No);
+        int reponse = QMessageBox::question(this, tr("Warning"), tr("You are about to print, do you want to continue?\n Please check settings before printing."), QMessageBox::Yes | QMessageBox::No);
 
         if (reponse == QMessageBox::No)
             return;
@@ -156,7 +156,7 @@ void Print::print()
     {
         if(ui->PDFname->text().isEmpty())
         {
-            QMessageBox::warning(this, tr("Erreur"), tr("Aucun emplacement n'a été saisi pour le fichier PDF à créer."));
+            QMessageBox::warning(this, tr("Error"), tr("Please select a directory to create the PDF file in."));
             return;
         }
         printType = PRINT_FILE;

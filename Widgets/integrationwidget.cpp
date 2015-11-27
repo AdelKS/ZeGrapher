@@ -24,7 +24,7 @@
 
 IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsList) : exprCalc(true, funcsList)
 {
-    setTitle(tr("Conditions initiales:"));
+    setTitle(tr("Initial conditions:"));
 
     Func = funcNum;
 

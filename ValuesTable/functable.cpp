@@ -22,9 +22,9 @@
 
 #include "ValuesTable/functable.h"
 
-FuncTable::FuncTable(Informations *info) : AbstractTable()
+FuncTable::FuncTable(Information *info) : AbstractTable()
 {
-    informations = info;   
+    information = info;   
     exprCalc = new ExprCalculator(false, info->getFuncsList());
 
     updateTimer->setInterval(2000);
@@ -39,7 +39,7 @@ FuncTable::FuncTable(Informations *info) : AbstractTable()
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
 
-    connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -49,8 +49,8 @@ FuncTable::FuncTable(Informations *info) : AbstractTable()
 void FuncTable::setTableParameters(ValuesTableParameters par)
 {
     parameters = par;
-    func = informations->getFuncsList()[parameters.id];
-    title->setText(tr("Fonction: ") + parameters.name);
+    func = information->getFuncsList()[parameters.id];
+    title->setText(tr("Function: ") + parameters.name);
 
     if(func->isFuncParametric())
     {
@@ -129,15 +129,15 @@ void FuncTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphRange range = informations->getRange();
+        GraphRange range = information->getRange();
 
         parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
         parameters.range.step = range.Xscale;
         parameters.range.end = range.Xmax;
     }
 
-    add_x_values();
-    add_y_values();
+    addXValues();
+    addYValues();
 
     tableView->setModel(model);
 }
@@ -151,7 +151,7 @@ void FuncTable::cellEdited(QStandardItem *item)
     double x = exprCalc->calculateExpression(item->text(), ok), y;
     if(!ok)
     {
-         QMessageBox::warning(this, tr("Erreur"), tr("Erreur de syntaxe dans cette entrée"));
+         QMessageBox::warning(this, tr("Error"), tr("Syntax error in this entry"));
          return;
     }
 
@@ -164,7 +164,7 @@ void FuncTable::cellEdited(QStandardItem *item)
 
 }
 
-void FuncTable::add_x_values()
+void FuncTable::addXValues()
 {
     QList<QStandardItem*> liste;
     liste.reserve(100);
@@ -187,7 +187,7 @@ void FuncTable::add_x_values()
     model->appendColumn(liste);
 }
 
-void FuncTable::add_y_values()
+void FuncTable::addYValues()
 {
     QList<QStandardItem*> liste;   
 

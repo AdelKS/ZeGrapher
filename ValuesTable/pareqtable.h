@@ -24,14 +24,14 @@
 #define PAREQTALE_H
 
 #include "abstracttable.h"
-#include "informations.h"
+#include "information.h"
 
 
 class ParEqTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit ParEqTable(Informations *info);
+    explicit ParEqTable(Information *info);
     void setTableParameters(ValuesTableParameters par);
 
 protected slots:
@@ -46,7 +46,7 @@ protected:
 
     void fillWithValues();
 
-    Informations *informations;
+    Information *information;
     ParEqWidget *parEq;
     ValuesTableParameters parameters;
     ParEqValues parEqValues;

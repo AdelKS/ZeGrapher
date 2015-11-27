@@ -22,7 +22,7 @@
 #include "Widgets/datawidget.h"
 #include "ui_datawidget.h"
 
-DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
+DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DataWidget)
 {
@@ -38,7 +38,7 @@ DataWidget::DataWidget(int num, Informations *info, QWidget *parent) :
 
     info->setDataStyle(num, style);
 
-    informations = info;
+    information = info;
 
     colorButton = new QColorButton();
     ui->mainLayout->addWidget(colorButton);
@@ -89,7 +89,7 @@ void DataWidget::drawSegments(bool draw)
     if(style.drawLines != draw)
     {
         style.drawLines = draw;
-        informations->setDataStyle(widgetNum, style);
+        information->setDataStyle(widgetNum, style);
     }
 }
 
@@ -98,7 +98,7 @@ void DataWidget::drawPoints(bool draw)
     if(style.drawPoints != draw)
     {
         style.drawPoints = draw;
-        informations->setDataStyle(widgetNum, style);
+        information->setDataStyle(widgetNum, style);
     }
 }
 
@@ -107,7 +107,7 @@ void DataWidget::setColor(QColor color)
     if(style.color != color)
     {
         style.color = color;
-        informations->setDataStyle(widgetNum, style);
+        information->setDataStyle(widgetNum, style);
     }
 }
 
@@ -116,7 +116,7 @@ void DataWidget::newLineStyle(int index)
     if(style.lineStyle != lineStyleMap[index])
     {
         style.lineStyle = lineStyleMap[index];
-        informations->setDataStyle(widgetNum, style);
+        information->setDataStyle(widgetNum, style);
     }
 }
 
@@ -125,7 +125,7 @@ void DataWidget::newPointStyle(int index)
     if(style.pointStyle != pointStyleMap[index])
     {
         style.pointStyle = pointStyleMap[index];
-        informations->setDataStyle(widgetNum, style);
+        information->setDataStyle(widgetNum, style);
     }
 
 }
@@ -133,7 +133,7 @@ void DataWidget::newPointStyle(int index)
 void DataWidget::changeDrawState(bool draw)
 {
     style.draw = draw;
-    informations->setDataStyle(widgetNum, style);
+    information->setDataStyle(widgetNum, style);
 }
 
 void DataWidget::closeDataWindow()
@@ -144,7 +144,7 @@ void DataWidget::closeDataWindow()
 void DataWidget::setWidgetNum(int num)
 {
     widgetNum = num;
-    ui->nameLabel->setText("(" + tr("Données") + " " + QString::number(num+1) + ") :");
+    ui->nameLabel->setText("(" + tr("Data") + " " + QString::number(num+1) + ") :");
     dataWindow->changeIndex(num);
 }
 

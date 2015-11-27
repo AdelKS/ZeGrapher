@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Saisie de données</string>
+   <string>Data fill window</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../ressources.qrc">
@@ -113,21 +113,21 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Données:</string>
+           <string>Data:</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="open">
           <property name="text">
-           <string>Importer</string>
+           <string>Import</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="save">
           <property name="text">
-           <string>Exporter</string>
+           <string>Export</string>
           </property>
          </widget>
         </item>
@@ -174,7 +174,7 @@
          </size>
         </property>
         <property name="title">
-         <string>Actions sur la colonne :</string>
+         <string>Column actions:</string>
         </property>
         <property name="flat">
          <bool>false</bool>
@@ -226,7 +226,7 @@
          </size>
         </property>
         <property name="title">
-         <string>Modélisations :</string>
+         <string>Regressions:</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <property name="leftMargin">
@@ -308,7 +308,7 @@
                 <item>
                  <widget class="QPushButton" name="addModel">
                   <property name="text">
-                   <string>Ajouter</string>
+                   <string>Add</string>
                   </property>
                  </widget>
                 </item>
@@ -387,7 +387,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Coordonnées :</string>
+           <string>Coordinates :</string>
           </property>
          </widget>
         </item>
@@ -406,7 +406,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Cartésiennes</string>
+           <string>Cartesian</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -437,7 +437,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Polaires</string>
+           <string>Polar</string>
           </property>
           <property name="checkable">
            <bool>true</bool>

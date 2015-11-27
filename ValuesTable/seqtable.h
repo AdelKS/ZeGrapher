@@ -24,7 +24,7 @@
 #define SEQTABLE_H
 
 #include "ValuesTable/abstracttable.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/exprcalculator.h"
 
@@ -32,7 +32,7 @@ class SeqTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit SeqTable(Informations *info);
+    explicit SeqTable(Information *info);
     void setTableParameters(ValuesTableParameters par);
 
 protected slots:
@@ -45,12 +45,12 @@ protected:
     void fillFromRange();
     void emptyCellsFill();
 
-    void add_x_values();
-    void add_y_values();
+    void addXValues();
+    void addYValues();
     void add_parSeq_y_values();
 
     ExprCalculator exprCalculator;
-    Informations *informations;
+    Information *information;
     SeqCalculator *seq;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;

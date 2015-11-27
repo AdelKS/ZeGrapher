@@ -27,11 +27,11 @@ enum {
     OP_LOW,
     OP_HIGH,
     POW ,
-    FONC ,
+    FUNC ,
     PTHO ,
     PTHF ,
 
-    NOMBRE ,
+    NUMBER ,
     VAR ,
 
     VARS_START,

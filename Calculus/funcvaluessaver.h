@@ -24,12 +24,12 @@
 #ifndef FUNCVALUESSAVER_H
 #define FUNCVALUESSAVER_H
 
-#include "informations.h"
+#include "information.h"
 
 class FuncValuesSaver
 {
 public:
-    FuncValuesSaver(Informations *info);
+    FuncValuesSaver(Information *info);
 
     void calculateAll(double new_xUnit, double new_yUnit);
     void move(double pixels);
@@ -45,7 +45,7 @@ protected slots:
 protected:
     void calculateAllFuncColors();
 
-    Informations *informations;
+    Information *information;
     GraphRange graphRange;
     QList<FuncCalculator*> funcs;
 

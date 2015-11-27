@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Enregistrer</string>
+   <string>Save</string>
   </property>
   <property name="windowIcon">
    <iconset resource="ressources.qrc">
@@ -30,7 +30,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>Taille de l'image</string>
+         <string>Image size</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <property name="spacing">
@@ -51,7 +51,7 @@
          <item>
           <widget class="QRadioButton" name="defaultSize">
            <property name="text">
-            <string>Celle du graphique</string>
+            <string>Graph size</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -61,7 +61,7 @@
          <item>
           <widget class="QRadioButton" name="newSize">
            <property name="text">
-            <string>Nouvelle taille:</string>
+            <string>Custom size:</string>
            </property>
           </widget>
          </item>
@@ -82,7 +82,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Largeur:</string>
+              <string>Width:</string>
              </property>
             </widget>
            </item>
@@ -142,7 +142,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Hauteur:</string>
+              <string>Height:</string>
              </property>
             </widget>
            </item>
@@ -188,7 +188,7 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Précision :</string>
+           <string>Precision:</string>
           </property>
          </widget>
         </item>
@@ -201,7 +201,7 @@
            </size>
           </property>
           <property name="suffix">
-           <string> chiffres</string>
+           <string> digits</string>
           </property>
           <property name="prefix">
            <string/>
@@ -235,7 +235,7 @@
       <item>
        <widget class="QGroupBox" name="legendBox">
         <property name="title">
-         <string>Légendes</string>
+         <string>Legend</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -253,7 +253,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Abscisses :</string>
+            <string>X axis:</string>
            </property>
           </widget>
          </item>
@@ -270,7 +270,7 @@
          <item>
           <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Ordonnées :</string>
+            <string>Y axis:</string>
            </property>
           </widget>
          </item>
@@ -382,7 +382,7 @@
            <item>
             <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Taille de police :</string>
+              <string>Font size:</string>
              </property>
             </widget>
            </item>
@@ -441,7 +441,7 @@
         <item>
          <widget class="QPushButton" name="save">
           <property name="text">
-           <string>Enregistrer</string>
+           <string>Save</string>
           </property>
          </widget>
         </item>

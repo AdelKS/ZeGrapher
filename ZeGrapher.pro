@@ -9,19 +9,18 @@ QT += widgets printsupport webkitwidgets
 
 TARGET = ZeGrapher
 TEMPLATE = app
-TRANSLATIONS = ZeGrapher_en.ts
+TRANSLATIONS = ZeGrapher_fr.ts
 CONFIG += separate_debug_info
 
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
+UI_DIR = .ui
 
 SOURCES += \
     main.cpp \
-    informations.cpp \
+    information.cpp \
     Windows/zegrapher.cpp \
-    Windows/fentableauvaleurs.cpp \
-    Windows/fenetreoptions.cpp \
-    Windows/fenetrefonctions.cpp \
-    Windows/fenetrebornes.cpp \
-    Windows/apropos.cpp \
+    Windows/about.cpp \
     Widgets/tangentwidget.cpp \
     Widgets/straightlinewidget.cpp \
     Widgets/seqwidget.cpp \
@@ -66,17 +65,17 @@ SOURCES += \
     DataPlot/modelchoicewidget.cpp \
     DataPlot/modelwidget.cpp \
     DataPlot/polynomialmodelwidget.cpp \
-    Widgets/numberlineedit.cpp
+    Widgets/numberlineedit.cpp \
+    Windows/rangeadjustments.cpp \
+    Windows/mathobjectsinput.cpp \
+    Windows/settings.cpp \
+    Windows/values.cpp
 
 HEADERS  += \
     Structures.h \
-    informations.h \
+    information.h \
     Windows/zegrapher.h \
-    Windows/fentableauvaleurs.h \
-    Windows/fenetreoptions.h \
-    Windows/fenetrefonctions.h \
-    Windows/fenetrebornes.h \
-    Windows/apropos.h \
+    Windows/about.h \
     Widgets/tangentwidget.h \
     Widgets/straightlinewidget.h \
     Widgets/seqwidget.h \
@@ -123,14 +122,15 @@ HEADERS  += \
     DataPlot/modelchoicewidget.h \
     DataPlot/modelwidget.h \
     DataPlot/polynomialmodelwidget.h \
-    Widgets/numberlineedit.h
+    Widgets/numberlineedit.h \
+    Windows/rangeadjustments.h \
+    Windows/mathobjectsinput.h \
+    Windows/settings.h \
+    Windows/values.h
 
 
 FORMS    += \
-    Windows/fenetreoptions.ui \
-    Windows/fenetrefonctions.ui \
-    Windows/fenetrebornes.ui \
-    Windows/apropos.ui \
+    Windows/about.ui \
     Widgets/datawidget.ui \
     Export/print.ui \
     Export/imagesave.ui \
@@ -142,7 +142,10 @@ FORMS    += \
     DataPlot/csvconfig.ui \
     DataPlot/modelchoicewidget.ui \
     DataPlot/polynomialmodelwidget.ui \
-    Widgets/keyboard.ui
+    Widgets/keyboard.ui \
+    Windows/rangeadjustments.ui \
+    Windows/mathobjectsinput.ui \
+    Windows/settings.ui
 
 
 RESOURCES += \
@@ -153,74 +156,5 @@ RC_FILE += \
 
 OTHER_FILES += \
     TODO.txt
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

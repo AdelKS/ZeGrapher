@@ -20,23 +20,23 @@
 
 
 
-#ifndef FENTABLEAUVALEURS_H
-#define FENTABLEAUVALEURS_H
+#ifndef VALUES_H
+#define VALUES_H
 
 
-#include "informations.h"
+#include "information.h"
 #include "ValuesTable/valuestable.h"
 
 namespace Ui {
-    class FenTableauValeurs;
+    class Values;
 }
 
-class FenTableauValeurs : public QWidget
+class Values : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenTableauValeurs(Informations *info);
+    explicit Values(Information *info);
 
 protected slots:
     void addValuesTable();
@@ -45,9 +45,9 @@ protected slots:
 protected:
     QHBoxLayout *tablesLayout;
     QList<ValuesTable*> valuesTableList;
-    Informations *informations;   
+    Information *information;   
     QWidget *widget;
 
 };
 
-#endif // FENTABLEAUVALEURS_H
+#endif // ValuesTable_H

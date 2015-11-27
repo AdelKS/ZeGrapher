@@ -23,9 +23,9 @@
 
 #include "Calculus/funcvaluessaver.h"
 
-FuncValuesSaver::FuncValuesSaver(Informations *info)
+FuncValuesSaver::FuncValuesSaver(Information *info)
 {
-    informations = info;
+    information = info;
     funcs = info->getFuncsList();
     graphRange = info->getRange();
     deplacement = 0;
@@ -36,10 +36,10 @@ FuncValuesSaver::FuncValuesSaver(Informations *info)
 
 void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
 {
-    graphRange = informations->getRange();
+    graphRange = information->getRange();
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    pixelStep = informations->getOptions().distanceEntrePoints;
+    pixelStep = information->getOptions().istanceBetweenPoints;
     unitStep = pixelStep / xUnit;
 
     double x = 0, k = 0;

@@ -20,25 +20,25 @@
 
 
 
-#ifndef FENETREBORNES_H
-#define FENETREBORNES_H
+#ifndef RANGEADJUSTMENTS_H
+#define RANGEADJUSTMENTS_H
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 
 namespace Ui {
-    class FenetreBornes;
+    class RangeAdjustments;
 }
 
-class FenetreBornes : public QWidget
+class RangeAdjustments : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreBornes(Informations *info);
-    ~FenetreBornes();
+    explicit RangeAdjustments(Information *info);
+    ~RangeAdjustments();
 
 public slots:
     void resetToStandardView();
@@ -48,18 +48,18 @@ public slots:
 private slots:
     void standardView();
     void orthonormal(bool state);
-    void appliquer();
+    void apply();
 
 signals:
-    void nouvelleFenetre(GraphRange fenetre);
+    void newWindow(GraphRange window);//FIXME never emitted
     void orthonormalBasis(bool state);
 
 private:
 
-    Informations *informations;
-    Ui::FenetreBornes *ui;
+    Information *information;
+    Ui::RangeAdjustments *ui;
     QMessageBox *messageBox;    
     ExprCalculator *calculator;
 };
 
-#endif // FENETREBORNES_H
+#endif // RANGEADJUSTMENTS_H

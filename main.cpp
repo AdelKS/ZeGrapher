@@ -31,6 +31,7 @@
 #include <QTranslator>
 #include <QTextCodec>
 #include <QLibraryInfo>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -40,14 +41,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("zegrapher.com");
     QCoreApplication::setApplicationName("ZeGrapher");
 
-    QLocale locale;
-    QString localeString = locale.system().name().section("_",0,0);
+    QString locale = QLocale::system().name();
     QTranslator translator;
-    translator.load(QString("qt_") + localeString, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-
-    if(locale.language() != QLocale::French)
-        translator.load(":/ZeGrapher_en.qm");
-
+    translator.load(QString("ZeGrapher_") + locale);
 
     a.installTranslator(&translator);
 

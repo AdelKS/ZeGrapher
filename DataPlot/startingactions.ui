@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Starting actions</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -50,21 +50,21 @@
      <item>
       <widget class="QPushButton" name="fill">
        <property name="text">
-        <string>Remplir</string>
+        <string>Fill</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="sort">
        <property name="text">
-        <string>Trier</string>
+        <string>Sort</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="remove">
        <property name="text">
-        <string>Supprimer</string>
+        <string>Delete</string>
        </property>
       </widget>
      </item>

@@ -25,7 +25,7 @@
 #include <QVBoxLayout>
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "./modelchoicewidget.h"
 #include "./polynomialmodelwidget.h"
 
@@ -36,7 +36,7 @@ class ModelWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit ModelWidget(const QList<Point> &dat, Informations *info, bool isPolar, QString xname, QString yname, QWidget *parent = 0);
+    explicit ModelWidget(const QList<Point> &dat, Information *info, bool isPolar, QString xname, QString yname, QWidget *parent = 0);
     ~ModelWidget();
 
 public slots:
@@ -56,7 +56,7 @@ signals:
 private:
     State currentState;
     QList<Point> data;
-    Informations *informations;
+    Information *information;
     bool polar;
     QString abscissa, ordinate;
 

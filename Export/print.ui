@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Imprimer</string>
+   <string>Print</string>
   </property>
   <property name="windowIcon">
    <iconset resource="ressources.qrc">
@@ -30,7 +30,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
-         <string>Paramètres globaux:</string>
+         <string>global parameters:</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
@@ -41,7 +41,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>Nombre de copies :</string>
+              <string>Copies :</string>
              </property>
             </widget>
            </item>
@@ -83,7 +83,7 @@
              </item>
              <item>
               <property name="text">
-               <string>Paysage</string>
+               <string>Landscape</string>
               </property>
              </item>
             </widget>
@@ -105,12 +105,12 @@
              </property>
              <item>
               <property name="text">
-               <string>Couleur</string>
+               <string>Color</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Niveaux de gris</string>
+               <string>Grayscale</string>
               </property>
              </item>
             </widget>
@@ -127,13 +127,13 @@
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
-          <string>Imprimer</string>
+          <string>Print</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
-             <string>Résolution:</string>
+             <string>Resolution:</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
              <property name="spacing">
@@ -142,7 +142,7 @@
              <item>
               <widget class="QRadioButton" name="screenRes">
                <property name="text">
-                <string>Celle de l'écran</string>
+                <string>Screen resolution</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
@@ -154,7 +154,7 @@
                <item>
                 <widget class="QRadioButton" name="CustomRes">
                  <property name="text">
-                  <string>Prédifinie:</string>
+                  <string>Predefined:</string>
                  </property>
                 </widget>
                </item>
@@ -194,7 +194,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox_3">
             <property name="title">
-             <string>Impression:</string>
+             <string>Printing:</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
@@ -205,7 +205,7 @@
                <item>
                 <widget class="QRadioButton" name="inPaper">
                  <property name="text">
-                  <string>sur une feuille</string>
+                  <string>on a sheet</string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>
@@ -242,7 +242,7 @@
                     </size>
                    </property>
                    <property name="text">
-                    <string>Imprimante :</string>
+                    <string>Printer:</string>
                    </property>
                   </widget>
                  </item>
@@ -268,7 +268,7 @@
                <item>
                 <widget class="QRadioButton" name="inPDF">
                  <property name="text">
-                  <string>dans un fichier (PDF, PostScript)</string>
+                  <string>to a file (PDF, PostScript)</string>
                  </property>
                 </widget>
                </item>
@@ -336,7 +336,7 @@
         </widget>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
-          <string>Graphique</string>
+          <string>Graph</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
@@ -357,7 +357,7 @@
             <item>
              <widget class="QLabel" name="label_13">
               <property name="text">
-               <string>Précision :</string>
+               <string>Precision:</string>
               </property>
              </widget>
             </item>
@@ -398,7 +398,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox">
             <property name="title">
-             <string>Taille du graphique:</string>
+             <string>Graph size:</string>
             </property>
             <property name="flat">
              <bool>false</bool>
@@ -415,7 +415,7 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
-                  <string>Hauteur</string>
+                  <string>Height</string>
                  </property>
                 </widget>
                </item>
@@ -466,7 +466,7 @@
                <item row="1" column="0">
                 <widget class="QLabel" name="label_5">
                  <property name="text">
-                  <string>Largeur</string>
+                  <string>Width</string>
                  </property>
                 </widget>
                </item>
@@ -478,7 +478,7 @@
           <item>
            <widget class="QGroupBox" name="scaleGroupBox">
             <property name="title">
-             <string>Échelle:</string>
+             <string>Scale:</string>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -498,7 +498,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Abscisses:</string>
+                  <string>X axis:</string>
                  </property>
                 </widget>
                </item>
@@ -514,7 +514,7 @@
                   <string/>
                  </property>
                  <property name="suffix">
-                  <string> cm/unité</string>
+                  <string> cm/unit</string>
                  </property>
                  <property name="minimum">
                   <double>0.500000000000000</double>
@@ -540,7 +540,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Ordonées:</string>
+                  <string>Y axis:</string>
                  </property>
                 </widget>
                </item>
@@ -553,7 +553,7 @@
                   </size>
                  </property>
                  <property name="suffix">
-                  <string> cm/unité</string>
+                  <string> cm/unit</string>
                  </property>
                  <property name="minimum">
                   <double>0.500000000000000</double>
@@ -571,7 +571,7 @@
              <item>
               <widget class="QLabel" name="orthInfoLabel">
                <property name="text">
-                <string>Repère non orthonormal</string>
+                <string>Non orthonormal basis</string>
                </property>
               </widget>
              </item>
@@ -582,13 +582,13 @@
         </widget>
         <widget class="QWidget" name="tab_3">
          <attribute name="title">
-          <string>Légendes</string>
+          <string>Legends</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <item>
            <widget class="QGroupBox" name="legendBox">
             <property name="title">
-             <string>Légendes</string>
+             <string>Legends</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -606,7 +606,7 @@
              <item>
               <widget class="QLabel" name="label_10">
                <property name="text">
-                <string>Abscisses :</string>
+                <string>X axis :</string>
                </property>
               </widget>
              </item>
@@ -623,7 +623,7 @@
              <item>
               <widget class="QLabel" name="label_11">
                <property name="text">
-                <string>Ordonnées :</string>
+                <string>Y axis :</string>
                </property>
               </widget>
              </item>
@@ -735,7 +735,7 @@
                <item>
                 <widget class="QLabel" name="label_12">
                  <property name="text">
-                  <string>Taille de police :</string>
+                  <string>Font size:</string>
                  </property>
                 </widget>
                </item>
@@ -798,7 +798,7 @@
         <item>
          <widget class="QPushButton" name="print">
           <property name="text">
-           <string>Imprimer</string>
+           <string>Print</string>
           </property>
          </widget>
         </item>

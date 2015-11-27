@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Polynomial regression</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -33,7 +33,7 @@
      </property>
      <widget class="QWidget" name="configTab">
       <attribute name="title">
-       <string>Réglages</string>
+       <string>Settings</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="spacing">
@@ -51,7 +51,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Degré du polynôme :</string>
+            <string>Polynomial order:</string>
            </property>
           </widget>
          </item>
@@ -110,13 +110,13 @@
           </sizepolicy>
          </property>
          <property name="title">
-          <string>Calcul du polynôme:</string>
+          <string>Polynomial computation</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QRadioButton" name="approachPoints">
             <property name="text">
-             <string>Le plus proche des points</string>
+             <string>Close to the points</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -126,7 +126,7 @@
           <item>
            <widget class="QRadioButton" name="approachSegments">
             <property name="text">
-             <string>Le plus proche des segments</string>
+             <string>Close to the segments</string>
             </property>
            </widget>
           </item>
@@ -150,7 +150,7 @@
      </widget>
      <widget class="QWidget" name="drawTab">
       <attribute name="title">
-       <string>Tracé</string>
+       <string>Plot</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
@@ -171,7 +171,7 @@
          <item>
           <widget class="QCheckBox" name="drawModel">
            <property name="text">
-            <string>Tracer</string>
+            <string>Draw</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -196,13 +196,13 @@
        <item>
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>Intervalle de représentation:</string>
+          <string>Draw interval:</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <widget class="QRadioButton" name="dataInterval">
             <property name="text">
-             <string>Étalement des données</string>
+             <string>Data range</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -217,7 +217,7 @@
             <item>
              <widget class="QRadioButton" name="relativeExtrapolation">
               <property name="text">
-               <string>Extrapolation relative de </string>
+               <string>Relative extrapolation of </string>
               </property>
              </widget>
             </item>
@@ -282,7 +282,7 @@
      </widget>
      <widget class="QWidget" name="vals">
       <attribute name="title">
-       <string>Valeurs</string>
+       <string>Values</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>

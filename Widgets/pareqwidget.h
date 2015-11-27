@@ -110,7 +110,7 @@ protected:
     QCheckBox *drawCheckBox;
     QLabel *parCharLabel,*parEqNameLabel;
     QLineEdit *parCurrentValLineEdit;   
-    QVBoxLayout *principalLayout;
+    QVBoxLayout *mainLayout;
     QWidget *animationControlWidget;
     ParConfWidget *tWidget, *kWidget;
     TreeCreator treeCreator;

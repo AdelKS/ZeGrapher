@@ -23,8 +23,8 @@
 
 RowActionsWidget::RowActionsWidget(int rownum)
 {
-    insertRow = new QPushButton(tr("Insérer ligne"));
-    removeRow = new QPushButton(tr("Supprimer ligne"));
+    insertRow = new QPushButton(tr("Insert a line"));
+    removeRow = new QPushButton(tr("Remove a line"));
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     mainLayout->addWidget(insertRow);

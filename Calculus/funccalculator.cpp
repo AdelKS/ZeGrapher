@@ -206,8 +206,10 @@ bool FuncCalculator::checkFuncCallingInclusions()
                 areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->checkFuncCallingInclusions();
         }
 
-        if(!areCalledFuncsGood) // this function calls another function, that is wether invalid or calls back the firs function
-            errorMessageLabel->setText(tr("Cette fonction appelle une autre fonction qui est invalide, non définie ou forme une boucle infinie d'appels."));
+        if(!areCalledFuncsGood)
+            errorMessageLabel->setText(tr("This function calls another function that is whether undefined or makes an inifite calling loop."));
+        //"Cette fonction appelle une autre fonction qui est invalide, non définie ou forme une boucle infinie d'appels."
+
     }
 
     return areCalledFuncsGood;
@@ -251,7 +253,7 @@ bool FuncCalculator::canBeCalled()
 
 double FuncCalculator::calculateFromTree(FastTree *tree, double x)
 {
-    if(tree->type == NOMBRE )
+    if(tree->type == NUMBER )
     {
         return *tree->value;
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>fenetreoptions</class>
- <widget class="QWidget" name="fenetreoptions">
+ <class>Settings</class>
+ <widget class="QWidget" name="Settings">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../ressources.qrc">
-    <normaloff>:/icons/logoLogiciel.png</normaloff>:/icons/logoLogiciel.png</iconset>
+    <normaloff>:/icons/settings.png</normaloff>:/icons/settings.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -53,10 +53,10 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>la qualité est améliorée au détriment de la vitesse, et inversement.</string>
+        <string>If the quality is increased, the execution speed is decreased and conversely.</string>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -69,7 +69,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>distance en pixels</string>
+        <string>Distance in pixels</string>
        </property>
        <property name="minimum">
         <number>1</number>
@@ -88,12 +88,12 @@
         <string/>
        </property>
        <property name="text">
-        <string>&lt;strong&gt;Epaisseur des courbes:&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;Curves thickness:&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="epaisseurWidget">
+      <widget class="QSpinBox" name="thicknessWidget">
        <property name="maximumSize">
         <size>
          <width>50</width>
@@ -111,10 +111,10 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_7">
        <property name="toolTip">
-        <string>Taille des nombres affichés sur le graphique</string>
+        <string>Digits size shown on the graph</string>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Font size:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -127,7 +127,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>taille en pixels</string>
+        <string>Size in pixel</string>
        </property>
        <property name="minimum">
         <number>8</number>
@@ -143,7 +143,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>&lt;strong&gt;Couleur des axes:&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;Axes color:&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
@@ -153,7 +153,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>&lt;strong&gt;Couleur du fond:&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;Background color:&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
@@ -163,7 +163,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;Grid color:&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
@@ -173,12 +173,12 @@
      <item row="6" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;Curves smoothing:&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
      <item row="6" column="1">
-      <widget class="QCheckBox" name="lissage">
+      <widget class="QCheckBox" name="smoothing">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -210,7 +210,7 @@
       <item>
        <widget class="QPushButton" name="reset">
         <property name="text">
-         <string>Rétablir</string>
+         <string>Reset</string>
         </property>
        </widget>
       </item>

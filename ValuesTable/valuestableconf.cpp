@@ -22,7 +22,7 @@
 
 #include "ValuesTable/valuestableconf.h"
 
-ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
+ValuesTableConf::ValuesTableConf(Information *info, QWidget *parent) :
     QWidget(parent)
 {
     infoClass = info;
@@ -38,16 +38,16 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
     functions << "f" << "g" << "h" << "p" << "r" << "m";
     sequences << "u" << "v" << "l" << "w" << "q" << "z";
 
-    QVBoxLayout *principalLayout = new QVBoxLayout();
-    principalLayout->addStretch();
+    QVBoxLayout *mainLayout = new QVBoxLayout();
+    mainLayout->addStretch();
 
     QFormLayout *typeLayout = new QFormLayout();
 
     typeCombo = new QComboBox();
     typeCombo->addItem("");
-    typeCombo->addItem(tr("Fonction"));
-    typeCombo->addItem(tr("Suite"));
-    typeCombo->addItem(tr("Equation paramétrique"));
+    typeCombo->addItem(tr("Function"));
+    typeCombo->addItem(tr("Sequence"));
+    typeCombo->addItem(tr("Parametric equation"));
     typeCombo->setCurrentIndex(0);
 
     connect(typeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateNameCombo()));
@@ -56,17 +56,17 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
     nameCombo->setEnabled(false);
 
     typeLayout->addRow(tr("Type :"), typeCombo);
-    typeLayout->addRow(tr("Nom :"), nameCombo);
+    typeLayout->addRow(tr("Name :"), nameCombo);
 
-    principalLayout->addLayout(typeLayout);
+    mainLayout->addLayout(typeLayout);
 
-    QGroupBox *entryValues = new QGroupBox(tr("Valeurs d'entrée :"));
+    QGroupBox *entryValues = new QGroupBox(tr("Entry values:"));
 
     QVBoxLayout *entryValuesLayout = new QVBoxLayout();
 
     //------------- From current graphic
 
-    fromCurrentGraphic = new QRadioButton(tr("Valeurs du graphique."));
+    fromCurrentGraphic = new QRadioButton(tr("Graphs values."));
     fromCurrentGraphic->setChecked(true);
 
     //--------------- Manual Entry
@@ -74,13 +74,13 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
     QVBoxLayout *manualEntryLayout = new QVBoxLayout();
     manualEntryLayout->setSpacing(3);
 
-    manualEntry = new QRadioButton(tr("Manuellement."));
+    manualEntry = new QRadioButton(tr("Manul entry."));
 
     QHBoxLayout *emptyCellsNumLayout = new QHBoxLayout();
     emptyCellsNumLayout->setMargin(0);
     emptyCellsNumLayout->setSpacing(6);
 
-    QLabel *emptyCellsNumText = new QLabel(tr("Cases vides :"));
+    QLabel *emptyCellsNumText = new QLabel(tr("Empty cells :"));
     emptyCellsNumText->setEnabled(false);
 
     connect(manualEntry, SIGNAL(toggled(bool)), emptyCellsNumText, SLOT(setEnabled(bool)));
@@ -106,12 +106,12 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
     QVBoxLayout *predefinedEntryLayout = new QVBoxLayout();
     predefinedEntryLayout->setSpacing(3);
 
-    predefined = new QRadioButton(tr("Prédéfinis"));
+    predefined = new QRadioButton(tr("Auto-fill"));
 
     QHBoxLayout *start_step_Layout = new QHBoxLayout();
     start_step_Layout->setSpacing(6);
 
-    QLabel *startText = new QLabel(tr("Début:"));
+    QLabel *startText = new QLabel(tr("Start:"));
     startText->setEnabled(false);
 
     connect(predefined, SIGNAL(toggled(bool)), startText, SLOT(setEnabled(bool)));
@@ -122,7 +122,7 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
 
     connect(predefined, SIGNAL(toggled(bool)), startValue, SLOT(setEnabled(bool)));
 
-    QLabel *stepText = new QLabel(tr("Pas:"));
+    QLabel *stepText = new QLabel(tr("Step:"));
     stepText->setEnabled(false);
 
     connect(predefined, SIGNAL(toggled(bool)), stepText, SLOT(setEnabled(bool)));
@@ -143,7 +143,7 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
     QHBoxLayout *cellsNumLayout = new QHBoxLayout();
     cellsNumLayout->setSpacing(6);
 
-    QLabel *cellsNumText = new QLabel(tr("Cases :"));
+    QLabel *cellsNumText = new QLabel(tr("Cells number:"));
     cellsNumText->setEnabled(false);
 
     connect(predefined, SIGNAL(toggled(bool)), cellsNumText, SLOT(setEnabled(bool)));
@@ -174,12 +174,12 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
 
     entryValues->setLayout(entryValuesLayout);
 
-    //----------------------------------------- Add QGroupBox to the principal Layout and a "apply" button
+    //----------------------------------------- Add QGroupBox to the main Layout and a "apply" button
 
-    principalLayout->addWidget(entryValues);
+    mainLayout->addWidget(entryValues);
 
     QHBoxLayout *applyButtonLayout = new QHBoxLayout();
-    QPushButton *applyButton = new QPushButton(tr("Appliquer"));
+    QPushButton *applyButton = new QPushButton(tr("Apply"));
 
     connect(applyButton, SIGNAL(released()), this, SLOT(apply()));
 
@@ -187,10 +187,10 @@ ValuesTableConf::ValuesTableConf(Informations *info, QWidget *parent) :
     applyButtonLayout->addWidget(applyButton);
     applyButtonLayout->addStretch();
 
-    principalLayout->addLayout(applyButtonLayout);
-    principalLayout->addStretch();
+    mainLayout->addLayout(applyButtonLayout);
+    mainLayout->addStretch();
 
-    setLayout(principalLayout);
+    setLayout(mainLayout);
 }
 
 void ValuesTableConf::updateNameCombo()
@@ -252,17 +252,17 @@ bool ValuesTableConf::verifySeqInfo(double start, double step)
 {
     if(start != trunc(start))
     {
-        QMessageBox::warning(window(), tr("Erreur"), tr("La valeur de départ doit être un entier."));
+        QMessageBox::warning(window(), tr("Error"), tr("Start value must be an integer."));
         return false;
     }
     if(start < seqs[0]->get_nMin())
     {
-        QMessageBox::warning(window(), tr("Erreur"), tr("La valeur de départ doit être supérieure à n<sub>min</sub>."));
+        QMessageBox::warning(window(), tr("Error"), tr("Start value must be greater than n<sub>min</sub>."));
         return false;
     }
     if(step != trunc(step) || step < 0)
     {
-        QMessageBox::warning(window(), tr("Erreur"), tr("La valeur du pas doit être un entier positif."));
+        QMessageBox::warning(window(), tr("Error"), tr("Step value must be positive."));
         return false;
     }
 
@@ -273,12 +273,12 @@ void ValuesTableConf::apply()
 {
     if(typeCombo->currentIndex() == 0)
     {
-        QMessageBox::warning(this, tr("Erreur"), tr("Veuillez selectionner un type"));
+        QMessageBox::warning(this, tr("Error"), tr("Please select a type"));
         return;
     }
     else if(nameCombo->currentIndex() == 0)
     {
-        QMessageBox::warning(this, tr("Erreur"), tr("Veuillez selectionner un nom"));
+        QMessageBox::warning(this, tr("Error"), tr("Please select a name"));
         return;
     }
 
@@ -302,14 +302,14 @@ void ValuesTableConf::apply()
         parameters.range.start = exprCalc->calculateExpression(startValue->text(), ok);
         if(!ok)
         {
-            QMessageBox::warning(this, tr("Erreur"), tr("Erreur de saisie dans la valeur de départ."));
+            QMessageBox::warning(this, tr("Error"), tr("Could not evaluate start value."));
             return;
         }
 
         parameters.range.step = exprCalc->calculateExpression(stepValue->text(), ok);
         if(!ok)
         {
-            QMessageBox::warning(this, tr("Erreur"), tr("Erreur de saisie dans la valeur du pas."));
+            QMessageBox::warning(this, tr("Error"), tr("Syntax error on step value."));
             return;
         }
 

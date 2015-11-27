@@ -66,8 +66,9 @@ bool SeqCalculator::validateFirstValsExpr(QString expr)
 
         if(!areFirstValsValidated)
         {
-            errorMessageLabel->setText(tr("Note: les premiers termes doivent être séparés par des ';'"));
+            errorMessageLabel->setText(tr("NB: First values must be separated by ';'"));
         }
+
     }
 
     return areFirstValsValidated;
@@ -87,6 +88,7 @@ bool SeqCalculator::validateSeqExpr(QString expr)
             treeCreator.deleteFastTree(seqTree);
 
         seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);       
+
     }
 
     return isExprValidated;
@@ -175,10 +177,9 @@ bool SeqCalculator::checkByCalculatingFirstValuesTrees()
         return false;
 
     isValid = calculateAndSaveFirstValuesTrees();
+
     if(!isValid)
-    {        
-        errorMessageLabel->setText(tr("Erreur dans le calcul des premiers termes saisis."));
-    }
+        errorMessageLabel->setText(tr("An error occured while trying to calculate the entered first values."));
 
     return isValid;
 }
@@ -189,7 +190,7 @@ bool SeqCalculator::checkByCalculatingValues()
         return false;
 
     isValid = saveSeqValues(3*seqValues[0].size() + 10 + nMin);
-    blockCalculatingFromTree = false;   
+    blockCalculatingFromTree = false;
 
     return isValid;
 }
@@ -223,7 +224,7 @@ double SeqCalculator::getCustomSeqValue(double n, bool &ok, double k_value)
 bool SeqCalculator::saveCustomSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
-        return false;    
+        return false;
 
     blockCalculatingFromTree = true;
 
@@ -294,7 +295,8 @@ bool SeqCalculator::saveSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
     {
-        errorMessageLabel->setText(tr("Récurrence croisée invalide."));
+        errorMessageLabel->setText(tr("Ivalid crossed recursion between this sequence and the other(s) it calls in its expression."));
+
         return false;
     }
 
@@ -363,7 +365,7 @@ double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
 {
     if(!ok)
         return NAN;
-    if(tree->type == NOMBRE )
+    if(tree->type == NUMBER )
     {
         return *tree->value;
     }
@@ -434,12 +436,14 @@ bool SeqCalculator::verifyAskedTerm(double n)
 {
     if(ceil(n) != n || n-nMin >= seqValues[kPos].size())
     {
-        errorMessageLabel->setText(QObject::tr("Relation de récurence erronée."));
-        return false;
+        errorMessageLabel->setText(tr("Invalid recursion."));
+
+        return false;       
     }
     else if(n < nMin)
     {
-        errorMessageLabel->setText(tr("Nombre de premiers termes insuffisant."));
+        errorMessageLabel->setText(tr("Insufficient number of entered first values."));
+
         return false;
     }
     else return true;
@@ -449,12 +453,14 @@ bool SeqCalculator::verifyOtherSeqAskedTerm(double n, int id)
 {
     if(ceil(n) != n)
     {
-        errorMessageLabel->setText(tr("Cette suite appelle ") + seqsNames[id] + tr(" avec un paramètre non entier."));
+        errorMessageLabel->setText(tr("This sequence calls ") + seqsNames[id] + tr(" with a non-integral value."));
+
         return false;
     }
     else if(n < nMin)
     {
-        errorMessageLabel->setText(tr("Cette suite demande un terme non existant de ") + seqsNames[id]);
+        errorMessageLabel->setText(tr("This sequence calls ") + seqsNames[id] + tr(" with a value that is lower than n<sub>min</sub>"));
+
         return false;
     }
     else return true;
@@ -471,28 +477,28 @@ void SeqCalculator::addRefFuncsPointers()
 
 bool SeqCalculator::check_called_funcs_and_seqs_validity()
 {
-    isValid = check_called_funcs_validity(expression);
+    isValid = checkCalledFuncsValidity(expression);
     if(!isValid)
     {
         errorMessageLabel->setText(tr("Une fonction invalide ou non définie est appelée dans l'expression de cette suite."));
         return false;
     }
 
-    isValid = check_called_funcs_validity(firstValsExpr);
+    isValid = checkCalledFuncsValidity(firstValsExpr);
     if(!isValid)
     {
         errorMessageLabel->setText(tr("Une fonction invalide ou non définie est appelée dans les premiers termes saisis."));
         return false;
     }
 
-    isValid = check_called_seqs_validity(expression);
+    isValid = checkCalledSeqsValidity(expression);
     if(!isValid)
     {
         errorMessageLabel->setText(tr("Une suite invalide ou non définie est appelée dans l'expression de cette suite"));
         return false;
     }
 
-    isValid = check_called_seqs_validity(firstValsExpr);
+    isValid = checkCalledSeqsValidity(firstValsExpr);
     if(!isValid)
     {
         errorMessageLabel->setText(tr("Une suite invalide ou non définie est appelée dans les premiers termes saisis."));
@@ -502,7 +508,7 @@ bool SeqCalculator::check_called_funcs_and_seqs_validity()
     return true;
 }
 
-bool SeqCalculator::check_called_funcs_validity(QString str)
+bool SeqCalculator::checkCalledFuncsValidity(QString str)
 {
     QList<int> calledFuncsList = treeCreator.getCalledFuncs(str);
 
@@ -514,7 +520,7 @@ bool SeqCalculator::check_called_funcs_validity(QString str)
     return validity;
 }
 
-bool SeqCalculator::check_called_seqs_validity(QString str)
+bool SeqCalculator::checkCalledSeqsValidity(QString str)
 {
     QList<int> calledSeqsList = treeCreator.getCalledSeqs(str);
 

@@ -25,9 +25,9 @@
 #include "ui_filloptions.h"
 #include "ui_startingactions.h"
 
-ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, int columnnum)
+ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, int columnnum)
 {
-    informations = info;
+    information = info;
     calculator = new ExprCalculator(false, info->getFuncsList());
     dataTable = table;
     columnCount = columnnum;
@@ -93,13 +93,13 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Informations *info, i
     confirmDelete = new QWidget();
     confirmDeleteUi = new Ui::ConfirmDelete;
     confirmDeleteUi->setupUi(confirmDelete);
-    confirmDeleteUi->textPromptLabel->setText(tr("Etes vous sûr de vouloir supprimer cette colonne ?"));
+    confirmDeleteUi->textPromptLabel->setText(tr("Confirm column deletion?"));
     connect(confirmDeleteUi->no, SIGNAL(released()), this, SLOT(showPreviousWidget()));
     connect(confirmDeleteUi->yes, SIGNAL(released()), this, SLOT(emitRemoveColumnSignal()));
 
     insertColumn = new QWidget();
     QHBoxLayout *insertColumnLayout = new QHBoxLayout();
-    QPushButton *insertButton = new QPushButton(tr("Insérer colonne"));
+    QPushButton *insertButton = new QPushButton(tr("Insert column"));
 
     insertColumnLayout->addWidget(insertButton);
 

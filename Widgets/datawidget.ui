@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Data</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -97,7 +97,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Tableau</string>
+        <string>Table</string>
        </property>
       </widget>
      </item>

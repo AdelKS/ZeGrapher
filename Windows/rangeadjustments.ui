@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FenetreBornes</class>
- <widget class="QWidget" name="FenetreBornes">
+ <class>RangeAdjustments</class>
+ <widget class="QWidget" name="RangeAdjustments">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>231</width>
-    <height>192</height>
+    <width>232</width>
+    <height>194</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -23,10 +23,10 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Bornes de représentation</string>
+   <string>Representation boundaries</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ressources.qrc">
+   <iconset>
     <normaloff>:/icons/bornes.png</normaloff>:/icons/bornes.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -75,7 +75,7 @@ p, li { white-space: pre-wrap; }
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>&lt;strong&gt;&lt;em&gt;Pas&lt;/em&gt;&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;&lt;em&gt;Step&lt;/em&gt;&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
@@ -118,7 +118,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="Xpas">
+      <widget class="QLineEdit" name="Xstep">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -179,7 +179,7 @@ p, li { white-space: pre-wrap; }
      <item row="2" column="2">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>&lt;strong&gt;&lt;em&gt;Pas&lt;/em&gt;&lt;/strong&gt;</string>
+        <string>&lt;strong&gt;&lt;em&gt;Step&lt;/em&gt;&lt;/strong&gt;</string>
        </property>
       </widget>
      </item>
@@ -222,7 +222,7 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QLineEdit" name="Ypas">
+      <widget class="QLineEdit" name="Ystep">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -245,7 +245,7 @@ p, li { white-space: pre-wrap; }
    <item>
     <widget class="QCheckBox" name="orthonormal">
      <property name="text">
-      <string>Base orthonormale</string>
+      <string>Orthonormal basis</string>
      </property>
     </widget>
    </item>
@@ -260,7 +260,7 @@ p, li { white-space: pre-wrap; }
         </size>
        </property>
        <property name="text">
-        <string>Vue standard</string>
+        <string>Standard View</string>
        </property>
       </widget>
      </item>
@@ -278,7 +278,7 @@ p, li { white-space: pre-wrap; }
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="boutonAppliquer">
+      <widget class="QPushButton" name="buttonApply">
        <property name="minimumSize">
         <size>
          <width>85</width>
@@ -292,7 +292,7 @@ p, li { white-space: pre-wrap; }
         </size>
        </property>
        <property name="text">
-        <string>Appliquer</string>
+        <string>Apply</string>
        </property>
       </widget>
      </item>
@@ -300,8 +300,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="ressources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

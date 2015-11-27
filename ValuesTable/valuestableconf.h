@@ -24,14 +24,14 @@
 #define VALUESTABLECONF_H
 
 #include "Structures.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 class ValuesTableConf : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ValuesTableConf(Informations *info, QWidget *parent = 0);
+    explicit ValuesTableConf(Information *info, QWidget *parent = 0);
     ~ValuesTableConf();
     
 signals:
@@ -44,7 +44,7 @@ protected slots:
 protected:
      bool verifySeqInfo(double start, double step);
 
-     Informations *infoClass;   
+     Information *infoClass;   
 
      QStringList functions, sequences;
 

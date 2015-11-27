@@ -22,9 +22,9 @@
 
 #include "ValuesTable/seqtable.h"
 
-SeqTable::SeqTable(Informations *info) : AbstractTable(), exprCalculator(false, info->getFuncsList())
+SeqTable::SeqTable(Information *info) : AbstractTable(), exprCalculator(false, info->getFuncsList())
 {
-    informations = info;    
+    information = info;    
 
     updateTimer->setInterval(2000);
     updateTimer->setSingleShot(true);
@@ -36,7 +36,7 @@ SeqTable::SeqTable(Informations *info) : AbstractTable(), exprCalculator(false, 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
 
-    connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -45,12 +45,12 @@ SeqTable::SeqTable(Informations *info) : AbstractTable(), exprCalculator(false, 
 void SeqTable::setTableParameters(ValuesTableParameters par)
 {
     parameters = par;
-    title->setText(tr("Suite: ") + "(" + parameters.name + "<sub>n</sub>)");
+    title->setText(tr("Sequence: ") + "(" + parameters.name + "<sub>n</sub>)");
 
-    seq = informations->getSeqsList()[parameters.id];
+    seq = information->getSeqsList()[parameters.id];
 
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
-        connect(informations, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+        connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
 
     if(seq->isSeqParametric())
     {
@@ -126,7 +126,7 @@ void SeqTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphRange range = informations->getRange();
+        GraphRange range = information->getRange();
 
         parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
         parameters.range.step = range.Xscale;
@@ -142,11 +142,11 @@ void SeqTable::fillFromRange()
             parameters.range.step = ceil(parameters.range.step);
     }
 
-    add_x_values();
+    addXValues();
 
     if(seq->isSeqParametric())
         add_parSeq_y_values();
-    else add_y_values();
+    else addYValues();
 
     tableView->setModel(model);
 }
@@ -160,13 +160,13 @@ void SeqTable::cellEdited(QStandardItem *item)
     double x = exprCalculator.calculateExpression(item->text(), ok), y;
     if(!ok)
     {
-         QMessageBox::warning(this, tr("Erreur"), tr("Erreur de syntaxe dans cette entrée"));
+         QMessageBox::warning(this, tr("Error"), tr("Syntax error in this entry"));
          return;
     }
 
     if(x != floor(x) || x < seq->get_nMin())
     {
-        QMessageBox::warning(this, tr("Erreur"), tr("Vous devez saisir un nombre entier supérieur à n<sub>min</sub>"));
+        QMessageBox::warning(this, tr("Error"), tr("You must enter an integer value that is greater that n<sub>min</sub>"));
         return;
     }
 
@@ -175,7 +175,7 @@ void SeqTable::cellEdited(QStandardItem *item)
         y = seq->getCustomSeqValue(x, ok, k);
         if(!ok)
         {
-               QMessageBox::critical(this, tr("Erreur"), tr("Erreur dans le calcul des termes de cette suite paramètrique, changer la valeur du paramètre pourrait résoudre le problème."));
+               QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing \"k\" value might solve the error."));
                model->item(item->row(), 1)->setText("");
                return;
         }     
@@ -192,7 +192,7 @@ void SeqTable::cellEdited(QStandardItem *item)
 
 }
 
-void SeqTable::add_x_values()
+void SeqTable::addXValues()
 {
     QList<QStandardItem*> liste;
     liste.reserve(100);
@@ -215,7 +215,7 @@ void SeqTable::add_x_values()
     model->appendColumn(liste);
 }
 
-void SeqTable::add_y_values()
+void SeqTable::addYValues()
 {
     QList<QStandardItem*> liste;
 
@@ -267,7 +267,7 @@ void SeqTable::add_parSeq_y_values()
 
         if(!ok)
         {
-            QMessageBox::critical(this, tr("Erreur"), tr("Erreur dans le calcul des termes de cette suite paramètrique, changer la valeur du paramètre pourrait résoudre le problème."));
+            QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing \"k\" value might solve the error."));
             model->clear();
             return;
         }

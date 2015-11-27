@@ -34,7 +34,7 @@ class DataWidget : public QWidget
     Q_OBJECT
     
 public:
-    explicit DataWidget(int num, Informations *info, QWidget *parent = 0);
+    explicit DataWidget(int num, Information *info, QWidget *parent = 0);
     void setWidgetNum(int num);
     void closeDataWindow();
     ~DataWidget();
@@ -56,7 +56,7 @@ private:
     int widgetNum;
     QList<PointStyle> pointStyleMap;
     QList<Qt::PenStyle> lineStyleMap;
-    Informations *informations;
+    Information *information;
     Ui::DataWidget *ui;
     QColorButton *colorButton;
     DataWindow *dataWindow;

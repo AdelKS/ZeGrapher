@@ -1,22 +1,23 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/bornes.png</file>
-        <file>icons/enregistrerImage.png</file>
-        <file>icons/logoLogiciel.png</file>
+        <file>ZeGrapher_fr.qm</file>
+        <file>icons/boundaries.png</file>
+        <file>icons/saveImage.png</file>
+        <file>icons/software.png</file>
         <file>icons/print.png</file>
-        <file>icons/quadrillage.png</file>
+        <file>icons/grid.png</file>
+        <file>icons/valuesTable.png</file>
         <file>icons/zoom-in-icon.png</file>
         <file>icons/zoom-out-icon.png</file>
-        <file>icons/fonctions.png</file>
+        <file>icons/functions.png</file>
         <file>icons/remove.png</file>
         <file>icons/keyboard.png</file>
         <file>icons/loop.png</file>
         <file>icons/pause.png</file>
         <file>icons/play.png</file>
         <file>icons/go&amp;return.png</file>
-        <file>ZeGrapher_en.qm</file>
         <file>icons/chooseStyle.png</file>
-        <file>icons/quitter.png</file>
+        <file>icons/quit.png</file>
         <file>icons/roundPoint.png</file>
         <file>icons/squarePoint.png</file>
         <file>icons/rhombusPoint.png</file>
@@ -56,7 +57,6 @@
         <file>Help/Ypin.png</file>
         <file>Help/english-icon.png</file>
         <file>Help/french-icon.png</file>
-        <file>icons/tableauDeValeurs.png</file>
         <file>icons/error.png</file>
     </qresource>
 </RCC>

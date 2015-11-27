@@ -25,9 +25,9 @@
 
 
 
-#include "informations.h"
+#include "information.h"
 
-Informations::Informations()
+Information::Information()
 {
     range.Xmax = range.Ymax = 10;
     range.Xmin = range.Ymin = -10;
@@ -37,22 +37,22 @@ Informations::Informations()
 
 }
 
-void Informations::setUnits(Point vec)
+void Information::setUnits(Point vec)
 {
     units = vec;
 }
 
-Point Informations::getUnits()
+Point Information::getUnits()
 {
     return units;
 }
 
-void Informations::emitDataUpdate()
+void Information::emitDataUpdate()
 {
     emit dataUpdated();
 }
 
-void Informations::addDataList()
+void Information::addDataList()
 {
     data << QList<QPointF>();
 
@@ -60,176 +60,176 @@ void Informations::addDataList()
     dataStyle << style;
 }
 
-void Informations::removeDataList(int index)
+void Information::removeDataList(int index)
 {
     data.removeAt(index);
     dataStyle.removeAt(index);
     emit updateOccured();
 }
 
-void Informations::setDataStyle(int index, DataStyle style)
+void Information::setDataStyle(int index, DataStyle style)
 {
     dataStyle[index] = style;
     emit dataUpdated();
 }
 
-void Informations::setData(int index, QList<QPointF> list)
+void Information::setData(int index, QList<QPointF> list)
 {
     data[index] = list;
     emit dataUpdated();
 }
 
-int Informations::getDataListsCount()
+int Information::getDataListsCount()
 {
     return data.size();
 }
 
-QList<QPointF> Informations::getDataList(int index)
+QList<QPointF> Information::getDataList(int index)
 {
     return data[index];
 }
 
-DataStyle Informations::getDataStyle(int index)
+DataStyle Information::getDataStyle(int index)
 {
     return dataStyle[index];
 }
 
-void Informations::recalculateRegressionCurves(double xUnit, double yUnit, GraphRange range)
+void Information::recalculateRegressionCurves(double xUnit, double yUnit, GraphRange range)
 {
     for(int i = 0 ; i < regressions.size() ; i++)
         regressions[i]->recalculate(xUnit, yUnit, range);
 }
 
-void Informations::addDataRegression(RegressionValuesSaver *reg)
+void Information::addDataRegression(RegressionValuesSaver *reg)
 {
     regressions << reg;
     emit regressionAdded();
 }
 
-void Informations::removeDataRegression(RegressionValuesSaver *reg)
+void Information::removeDataRegression(RegressionValuesSaver *reg)
 {
     regressions.removeOne(reg);
     emit regressionRemoved();
 }
 
-RegressionValuesSaver *Informations::getRegression(int index)
+RegressionValuesSaver *Information::getRegression(int index)
 {
     return regressions.at(index);
 }
 
-int Informations::getRegressionsCount()
+int Information::getRegressionsCount()
 {
     return regressions.size();
 }
 
-void Informations::setParEqsListPointer(QList<ParEqWidget*> *list)
+void Information::setParEqsListPointer(QList<ParEqWidget*> *list)
 {
     parEqWidgets = list;
 }
 
-QList<ParEqWidget*>* Informations::getParEqsList()
+QList<ParEqWidget*>* Information::getParEqsList()
 {
     return parEqWidgets;
 }
 
-void Informations::emitAnimationUpdate()
+void Information::emitAnimationUpdate()
 {
     emit animationUpdate();
 }
 
-void Informations::setTangentsListPointer(QList<TangentWidget*> *list)
+void Information::setTangentsListPointer(QList<TangentWidget*> *list)
 {
     tangents = list;
 }
 
-QList<TangentWidget*>* Informations::getTangentsList()
+QList<TangentWidget*>* Information::getTangentsList()
 {
     return tangents;
 }
 
-void Informations::setStraightLinesListPointer(QList<StraightLineWidget*> *list)
+void Information::setStraightLinesListPointer(QList<StraightLineWidget*> *list)
 {
     lines = list;
 }
 
-QList<StraightLineWidget*>* Informations::getStraightLinesList()
+QList<StraightLineWidget*>* Information::getStraightLinesList()
 {
     return lines;
 }
 
-void Informations::setSequencesList(QList<SeqCalculator*> list)
+void Information::setSequencesList(QList<SeqCalculator*> list)
 {
     sequences = list;
 }
 
-QList<SeqCalculator*> Informations::getSeqsList()
+QList<SeqCalculator*> Information::getSeqsList()
 {
     return sequences;
 }
 
-void Informations::setFunctionsList(QList<FuncCalculator*> list)
+void Information::setFunctionsList(QList<FuncCalculator*> list)
 {
     functions = list;
 }
 
-QList<FuncCalculator*> Informations::getFuncsList()
+QList<FuncCalculator*> Information::getFuncsList()
 {
     return functions;
 }
 
-void Informations::setRange(const GraphRange &newFenetre)
+void Information::setRange(const GraphRange &newWindow)
 {
-    range = newFenetre;
+    range = newWindow;
     emit updateOccured();
 }
 
-void Informations::setGridState(bool etat)
+void Information::setGridState(bool etat)
 {
     gridState = etat;
     emit updateOccured();
 }
 
-void Informations::setOrthonormal(bool state)
+void Information::setOrthonormal(bool state)
 {
     orthonormal = state;
     emit newOrthonormalityState(state);
     emit updateOccured();
 }
 
-void Informations::setOptions(Options opt)
+void Information::setOptions(Options opt)
 {
-    parametres = opt;
+    parameters = opt;
 
     emit updateOccured();
 }
 
-void Informations::emitUpdateSignal()
+void Information::emitUpdateSignal()
 {
     emit updateOccured();
 }
 
-void Informations::emitDrawStateUpdate()
+void Information::emitDrawStateUpdate()
 {
     emit drawStateUpdateOccured();
 }
 
-GraphRange Informations::getRange()
+GraphRange Information::getRange()
 {
     return range;
 }
 
-bool Informations::getGridState()
+bool Information::getGridState()
 {
     return gridState;
 
 }
 
-bool Informations::isOrthonormal()
+bool Information::isOrthonormal()
 {
     return orthonormal;   
 }
 
-Options Informations::getOptions()
+Options Information::getOptions()
 {
-    return parametres;    
+    return parameters;    
 }

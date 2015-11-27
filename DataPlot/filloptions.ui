@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Representaion range</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -55,7 +55,7 @@
         </size>
        </property>
        <property name="text">
-        <string>à partir d'une expression :</string>
+        <string>From expression:</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -130,7 +130,7 @@
      <item>
       <widget class="QRadioButton" name="predefined">
        <property name="text">
-        <string>Prédéfini :</string>
+        <string>Auto-fill:</string>
        </property>
       </widget>
      </item>
@@ -158,7 +158,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Début :</string>
+          <string>Start:</string>
          </property>
         </widget>
        </item>
@@ -196,7 +196,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Fin :</string>
+          <string>End:</string>
          </property>
         </widget>
        </item>
@@ -234,7 +234,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Pas :</string>
+          <string>Step:</string>
          </property>
         </widget>
        </item>
@@ -304,7 +304,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Précédent</string>
+        <string>back</string>
        </property>
       </widget>
      </item>
@@ -330,7 +330,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Appliquer</string>
+        <string>Apply</string>
        </property>
       </widget>
      </item>

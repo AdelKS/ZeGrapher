@@ -100,7 +100,7 @@ void ExprCalculator::addRefFuncsPointers()
 
 double ExprCalculator::calculateFromTree(FastTree *tree, double x)
 {
-    if(tree->type == NOMBRE )
+    if(tree->type == NUMBER )
     {
         return *tree->value;
     }

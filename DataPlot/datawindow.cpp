@@ -23,7 +23,7 @@
 #include "ui_datawindow.h"
 
 
-DataWindow::DataWindow(Informations *info, int ind)
+DataWindow::DataWindow(Information *info, int ind)
 {
     index = ind;
     xindex = STARTING_XPIN_INDEX;
@@ -64,9 +64,9 @@ DataWindow::DataWindow(Informations *info, int ind)
 
     connect(ui->retractionButton, SIGNAL(released()), this, SLOT(startAnimation()));
 
-    setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
+    setWindowTitle(tr("Data fill window: data") + QString::number(ind+1));
 
-    informations = info;
+    information = info;
     selectorSide = COLUMN_SELECTION;
 
     dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
@@ -173,7 +173,7 @@ DataWindow::DataWindow(Informations *info, int ind)
 
     helpWindow = new QWebView();
     helpWindow->load(QUrl("qrc:///Help/data_help_fr.html"));
-    helpWindow->setWindowTitle(tr("Aide: Saisie de données."));
+    helpWindow->setWindowTitle(tr("Help: data fill window."));
 
     connect(ui->help, SIGNAL(released()), helpWindow, SLOT(show()));
 
@@ -251,13 +251,13 @@ void DataWindow::addModel()
     QString xname = dataTable->getColumnName(xindex);
     QString yname = dataTable->getColumnName(yindex);
 
-    ModelWidget *modelWidget = new ModelWidget(modelData, informations, ui->polar->isChecked(), xname, yname);
+    ModelWidget *modelWidget = new ModelWidget(modelData, information, ui->polar->isChecked(), xname, yname);
     modelWidgets << modelWidget;
 
     ui->modelsLayout->addWidget(modelWidget);
 
     connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), this, SLOT(removeModelWidget(ModelWidget*)));
-    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), informations, SIGNAL(updateOccured()));
+    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), information, SIGNAL(updateOccured()));
 }
 
 void DataWindow::columnNameChanged(int index)
@@ -287,13 +287,13 @@ void DataWindow::removeModelWidget(ModelWidget *w)
     modelWidgets.removeOne(w);
     delete w;
 
-    informations->emitDataUpdate();
+    information->emitDataUpdate();
 }
 
 void DataWindow::changeIndex(int ind)
 {
     index = ind;
-    setWindowTitle(tr("Saisie de données: Données ") + QString::number(ind+1));
+    setWindowTitle(tr("Data fill window: data") + QString::number(ind+1));
 }
 
 void DataWindow::dataChanged()
@@ -359,7 +359,7 @@ void DataWindow::remakeDataList()
     }
 
 
-    informations->setData(index, dataList);
+    information->setData(index, dataList);
 }
 
 void DataWindow::openData()
@@ -395,14 +395,14 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
     if(selectorSide == ROW_SELECTION)
     {
         if(inBetween)        
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux lignes :"));        
-        else ui->actionsGroupBox->setTitle(tr("Actions sur la ligne :"));
+            ui->actionsGroupBox->setTitle(tr("Between two lines:"));        
+        else ui->actionsGroupBox->setTitle(tr("Actions on line:"));
     }
     else
     {
         if(inBetween)        
-            ui->actionsGroupBox->setTitle(tr("Actions entre deux colonnes :"));        
-        else ui->actionsGroupBox->setTitle(tr("Actions sur la colonne :"));
+            ui->actionsGroupBox->setTitle(tr("Between two columns:"));        
+        else ui->actionsGroupBox->setTitle(tr("Column actions:"));
     }
 }
 

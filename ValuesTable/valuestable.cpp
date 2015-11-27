@@ -22,7 +22,7 @@
 
 #include "ValuesTable/valuestable.h"
 
-ValuesTable::ValuesTable(Informations *info, QWidget *parent) :
+ValuesTable::ValuesTable(Information *info, QWidget *parent) :
     QWidget(parent)
 {    
     infoClass = info;
@@ -35,7 +35,7 @@ ValuesTable::ValuesTable(Informations *info, QWidget *parent) :
     layout->setMargin(0);
 
     containerLayout = new QVBoxLayout;
-    containerLayout->setMargin(0);
+    containerLayout->setMargin(3);
 
     setFixedWidth(300);
 

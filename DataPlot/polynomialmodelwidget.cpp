@@ -21,7 +21,7 @@
 #include "polynomialmodelwidget.h"
 #include "ui_polynomialmodelwidget.h"
 
-PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informations *info, QString xname, QString yname, bool pol, QWidget *parent) :
+PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Information *info, QString xname, QString yname, bool pol, QWidget *parent) :
     QWidget(parent), ui(new Ui::PolynomialModelWidget)
 {
     ui->setupUi(this);
@@ -32,7 +32,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     polar = pol;
     data = dat;
-    informations = info;
+    information = info;
 
     addWidgetsToUI();
 
@@ -43,12 +43,12 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
 
 
-    regValSaver = new RegressionValuesSaver(regression, informations->getOptions(), informations->getRange(), informations->getUnits());
+    regValSaver = new RegressionValuesSaver(regression, information->getOptions(), information->getRange(), information->getUnits());
 
     connect(regression, SIGNAL(regressionModified()), regValSaver, SLOT(recalculate()));
-    connect(regression, SIGNAL(regressionModified()), informations, SIGNAL(dataUpdated()));
+    connect(regression, SIGNAL(regressionModified()), information, SIGNAL(dataUpdated()));
 
-    informations->addDataRegression(regValSaver);
+    information->addDataRegression(regValSaver);
 
     regression->setData(dat); //
 
@@ -184,24 +184,24 @@ void PolynomialModelWidget::addWidgetsToUI()
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setMargin(0);
 
-    startVal = new NumberLineEdit(false, informations->getFuncsList());
+    startVal = new NumberLineEdit(false, information->getFuncsList());
     startVal->setEnabled(false);
     startVal->setMaximumHeight(22);
     startVal->setMaximumWidth(150);
 
     connect(startVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
 
-    endVal = new NumberLineEdit(false, informations->getFuncsList());
+    endVal = new NumberLineEdit(false, information->getFuncsList());
     endVal->setEnabled(false);
     endVal->setMaximumHeight(22);
     endVal->setMaximumWidth(150);
 
     connect(endVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
 
-    QLabel *start = new QLabel(tr("Début:"));
+    QLabel *start = new QLabel(tr("Start:"));
     start->setEnabled(false);
 
-    QLabel *end = new QLabel(tr("Fin:"));
+    QLabel *end = new QLabel(tr("End:"));
     end->setEnabled(false);
 
     layout->addSpacing(30);
@@ -220,7 +220,7 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
     colorButton = new QColorButton();
-    QLabel *colorLabel = new QLabel(tr("Couleur:"));
+    QLabel *colorLabel = new QLabel(tr("color:"));
     ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);
     ui->drawOptionsLayout->addStretch();
@@ -238,7 +238,7 @@ void PolynomialModelWidget::addWidgetsToUI()
 
 void PolynomialModelWidget::updateDescriptionText()
 {
-    ui->description->setText(tr("Calcul du meilleur polynôme P approchant l'égalité:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
+    ui->description->setText(tr("Evaluate the best polynomial P who can approach the equation:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
 }
 
 void PolynomialModelWidget::setAbscissaName(QString name)
@@ -270,7 +270,7 @@ PolynomialModelWidget::~PolynomialModelWidget()
 {
     delete ui;
 
-    informations->removeDataRegression(regValSaver);
+    information->removeDataRegression(regValSaver);
 
     delete regression;
     delete regValSaver;

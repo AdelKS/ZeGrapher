@@ -19,41 +19,25 @@
 ****************************************************************************/
 
 
-
-#ifndef FENETREOPTIONS_H
-#define FENETREOPTIONS_H
+#ifndef ABOUT_H
+#define ABOUT_H
 
 #include "Structures.h"
-#include "informations.h"
-#include "Widgets/qcolorbutton.h"
-
 
 namespace Ui {
-    class fenetreoptions;
+    class About;
 }
 
-class FenetreOptions : public QWidget
+class about : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreOptions(Informations *info);
-    ~FenetreOptions();   
-
-public slots:
-    void saveSettings();
-
-private slots:
-    void appliquer();
-    void readSavedSettings();
+    explicit about(QWidget *parent = 0);
+    ~about();
 
 private:
-
-    Informations *informations;
-    Ui::fenetreoptions *ui;   
-    Options parametres;
-    QColorButton *couleurAxes, *couleurFond, *couleurQuadrillage;
-
+    Ui::About *ui;
 };
 
-#endif // FENETREOPTIONS_H
+#endif // ABOUT_H

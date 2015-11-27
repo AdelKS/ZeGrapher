@@ -169,7 +169,7 @@ void StraightLineWidget::validate()
     valid = !(val_a == 0 && val_b == 0);
     if(!valid)
     {
-        QMessageBox::warning(window(), tr("Erreur"), tr("Erreur dans la droite") + "D<sub>" + QString::number(lineID)+ "</sub>" +  tr("Les coeficients des variables x et y ne peuvent être nuls simultanèment."));
+        QMessageBox::warning(window(), tr("Error"), tr("Error on straight line") + "D<sub>" + QString::number(lineID)+ "</sub>" +  tr("x and y coefficients can't be simultaneously equal to zero."));
     }
 }
 

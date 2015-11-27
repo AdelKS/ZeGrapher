@@ -20,27 +20,27 @@
 
 
 
-#ifndef FENETREFONCTIONS_H
-#define FENETREFONCTIONS_H
+#ifndef MATHOBJECTSINPUT_H
+#define MATHOBJECTSINPUT_H
 
-#include "informations.h"
+#include "information.h"
 #include "Widgets/funcwidget.h"
 #include "Widgets/seqwidget.h"
 #include "Widgets/pareqcontroller.h"
 #include "Widgets/datawidget.h"
 
 namespace Ui {
-    class FenetreFonctions;
+    class MathObjectsInput;
 }
 
-class FenetreFonctions : public QWidget
+class MathObjectsInput : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit FenetreFonctions(Informations *info);
+    explicit MathObjectsInput(Information *info);
     void closeAllOpenedWindows();
-     ~FenetreFonctions();  
+     ~MathObjectsInput();
 
 public slots:
     void validateFunctions();
@@ -52,7 +52,7 @@ signals:
     void displayKeyboard();
 
 protected slots:
-    void setInfoClass(Informations *info);  
+    void setInfoClass(Information *info);  
     void keyboardButtonClicked();
     void newFuncParametricState();
     void newSeqParametricState();
@@ -76,8 +76,8 @@ protected:
     void saveColors();
 
 private:
-    Informations *informations;
-    Ui::FenetreFonctions *ui;    
+    Information *information;
+    Ui::MathObjectsInput *ui;
 
     QList <QChar> funcNames;
     QList <QChar> seqNames;
@@ -97,4 +97,4 @@ private:
     QList<DataWidget*> dataWidgets;
 };
 
-#endif // FENETREFONCTIONS_H
+#endif // MATHOBJECTSINPUT_H

@@ -56,7 +56,7 @@ class PrintPreview : public ImagePreview
     Q_OBJECT
 
 public:
-    explicit PrintPreview(Informations *info);
+    explicit PrintPreview(Information *info);
     void setViewType(bool type);  
     void setPrinter(QPrinterInfo printInfo);
     void setPDFname(QString pdf);

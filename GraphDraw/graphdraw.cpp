@@ -25,13 +25,13 @@
 
 using namespace std;
 
-GraphDraw::GraphDraw(Informations *info)
+GraphDraw::GraphDraw(Information *info)
 {
-    informations = info;
+    information = info;
 
     coef = sqrt(3)/2;
 
-    parametres = info->getOptions();
+    parameters = info->getOptions();
     graphRange = info->getRange();
 
     pen.setCapStyle(Qt::RoundCap);
@@ -98,8 +98,8 @@ void GraphDraw::drawCross(QPointF pt, double w)
 
 void GraphDraw::drawDataSet(int id, int width)
 {
-    QList<QPointF> list = informations->getDataList(id);
-    DataStyle style = informations->getDataStyle(id);
+    QList<QPointF> list = information->getDataList(id);
+    DataStyle style = information->getDataStyle(id);
 
     for(int i = 0 ; i < list.size(); i++)
     {
@@ -151,30 +151,30 @@ void GraphDraw::drawDataSet(int id, int width)
 
 void GraphDraw::drawData()
 {
-    for(int i = 0 ; i < informations->getDataListsCount(); i++)
+    for(int i = 0 ; i < information->getDataListsCount(); i++)
     {
-        if(informations->getDataStyle(i).draw)
-            drawDataSet(i, parametres.epaisseurDesCourbes+2);
+        if(information->getDataStyle(i).draw)
+            drawDataSet(i, parameters.curvesThickness+2);
     }
 }
 
 void GraphDraw::drawRegression(int reg, int width)
 {
-    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
 
     pen.setWidth(width);
-    pen.setColor(informations->getRegression(reg)->getColor());
+    pen.setColor(information->getRegression(reg)->getColor());
     painter.setPen(pen);
 
-    painter.drawPolyline(informations->getRegression(reg)->getCurve());
+    painter.drawPolyline(information->getRegression(reg)->getCurve());
 }
 
 void GraphDraw::drawRegressions()
 {
-    for(int i = 0 ; i < informations->getRegressionsCount() ; i++)
+    for(int i = 0 ; i < information->getRegressionsCount() ; i++)
     {
-        if(informations->getRegression(i)->getDrawState())
-            drawRegression(i, parametres.epaisseurDesCourbes);
+        if(information->getRegression(i)->getDrawState())
+            drawRegression(i, parameters.curvesThickness);
     }
 }
 
@@ -183,7 +183,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
     if(!funcs[i]->getDrawState())
         return;
 
-    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
 
     short drawsNum = funcVals->at(i).size(), drawStart = 0;
 
@@ -194,7 +194,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
     }
 
     double posX, delta1, delta2, delta3, y1, y2, y3, y4;;
-    bool pointDepasse= false;
+    bool pointOvershoot= false;
     int end;
     ColorSaver* colorSaver = funcs[i]->getColorSaver();
 
@@ -217,22 +217,22 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
             {
                 if(y1 < graphRange.Ymin || y1 > graphRange.Ymax)
                 {
-                    if(!pointDepasse)
+                    if(!pointOvershoot)
                     {
                         polygon << QPointF(posX, -y1*uniteY);
                         painter.drawPolyline(polygon);
                         polygon.clear();
-                        pointDepasse = true;
+                        pointOvershoot = true;
                     }
                 }
                 else
                 {
-                    if(pointDepasse)
+                    if(pointOvershoot)
                     {
-                       polygon << QPointF(posX - parametres.distanceEntrePoints, - funcVals->at(i)[draw][pos-1]*uniteY);
+                       polygon << QPointF(posX - parameters.istanceBetweenPoints, - funcVals->at(i)[draw][pos-1]*uniteY);
                     }
                     polygon << QPointF(posX, -y1*uniteY);
-                    pointDepasse = false;
+                    pointOvershoot = false;
                 }
 
                 if(0 < pos && pos < end-2)
@@ -258,18 +258,18 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
                 painter.drawPolyline(polygon);
                 polygon.clear();
             }
-            posX += parametres.distanceEntrePoints;
+            posX += parameters.istanceBetweenPoints;
         }
 
         painter.drawPolyline(polygon);
-        pointDepasse = false;
+        pointOvershoot = false;
     }
 }
 
 void GraphDraw::drawFunctions()
 {
     for(int i = 0 ; i < funcs.size(); i++)
-        drawOneFunction(i, parametres.epaisseurDesCourbes);
+        drawOneFunction(i, parameters.curvesThickness);
 }
 
 void GraphDraw::drawOneSequence(int i, int width)
@@ -277,7 +277,7 @@ void GraphDraw::drawOneSequence(int i, int width)
     if(graphRange.Xmax <= seqs[0]->get_nMin() || trunc(graphRange.Xmax) <= graphRange.Xmin || !seqs[i]->getDrawState())
         return;
 
-     painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+     painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
      pen.setWidth(width);
 
      QPointF point;
@@ -323,7 +323,7 @@ void GraphDraw::drawOneSequence(int i, int width)
 void GraphDraw::drawSequences()
 {
     for(int i = 0 ; i < seqs.size() ; i++)
-        drawOneSequence(i, parametres.epaisseurDesCourbes + 3);
+        drawOneSequence(i, parameters.curvesThickness + 3);
 }
 
 void GraphDraw::drawOneTangent(int i)
@@ -331,7 +331,7 @@ void GraphDraw::drawOneTangent(int i)
     if(!tangents->at(i)->isTangentValid())
         return;
 
-    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
 
     tangents->at(i)->calculateTangentPoints(uniteX, uniteY);
 
@@ -339,13 +339,13 @@ void GraphDraw::drawOneTangent(int i)
 
     pen.setColor(tangents->at(i)->getColor());
 
-    pen.setWidth(parametres.epaisseurDesCourbes);
+    pen.setWidth(parameters.curvesThickness);
     painter.setPen(pen);
 
     tangentPoints = tangents->at(i)->getCaracteristicPoints();
     painter.drawLine(QPointF(tangentPoints.left.x * uniteX, - tangentPoints.left.y * uniteY), QPointF(tangentPoints.right.x * uniteX, - tangentPoints.right.y * uniteY));
 
-    pen.setWidth(parametres.epaisseurDesCourbes + 3);
+    pen.setWidth(parameters.curvesThickness + 3);
     painter.setPen(pen);
 
     painter.drawPoint(QPointF(tangentPoints.left.x * uniteX, - tangentPoints.left.y * uniteY));
@@ -364,10 +364,10 @@ void GraphDraw::drawTangents()
 
 void GraphDraw::drawStraightLines()
 {
-    pen.setWidth(parametres.epaisseurDesCourbes);
+    pen.setWidth(parameters.curvesThickness);
     QPointF pt1, pt2;
 
-    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
 
     for(int i = 0 ; i < straightLines->size(); i++)
     {
@@ -405,8 +405,8 @@ void GraphDraw::drawStaticParEq()
     Point point;
     ColorSaver *colorSaver;
 
-    pen.setWidth(parametres.epaisseurDesCourbes);
-    painter.setRenderHint(QPainter::Antialiasing, parametres.lissage && !moving);
+    pen.setWidth(parameters.curvesThickness);
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
     painter.setPen(pen);
 
     for(int i = 0; i < parEqs->size(); i++)

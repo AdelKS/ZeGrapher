@@ -20,16 +20,16 @@
 
 
 
-#include "Windows/fentableauvaleurs.h"
+#include "Windows/values.h"
 
-FenTableauValeurs::FenTableauValeurs(Informations *info)
+Values::Values(Information *info)
 {
-    informations = info;    
+    information = info;    
 
-    setWindowTitle(tr("Tableaux de valeurs"));
-    setWindowIcon(QIcon(":/icons/tableauDeValeurs.png"));
-    QHBoxLayout *principalLayout = new QHBoxLayout();
-    QPushButton *addButton = new QPushButton(tr("Ajouter"));
+    setWindowTitle(tr("Values table"));
+    setWindowIcon(QIcon(":/icons/valuesTable.png"));
+    QHBoxLayout *mainLayout = new QHBoxLayout();
+    QPushButton *addButton = new QPushButton(tr("Add"));
     addButton->setFixedSize(80,80);
 
     connect(addButton, SIGNAL(released()), this, SLOT(addValuesTable()));
@@ -38,10 +38,10 @@ FenTableauValeurs::FenTableauValeurs(Informations *info)
     scrollArea->setWidgetResizable(true);
     scrollArea->setMinimumSize(400,400);
 
-    principalLayout->addWidget(scrollArea);
-    principalLayout->addWidget(addButton);
+    mainLayout->addWidget(scrollArea);
+    mainLayout->addWidget(addButton);
 
-    setLayout(principalLayout);
+    setLayout(mainLayout);
 
     widget = new QWidget();
     widget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -62,9 +62,9 @@ FenTableauValeurs::FenTableauValeurs(Informations *info)
     addValuesTable();
 }
 
-void FenTableauValeurs::addValuesTable()
+void Values::addValuesTable()
 {
-    ValuesTable *table = new ValuesTable(informations);
+    ValuesTable *table = new ValuesTable(information);
     valuesTableList << table;
 
     connect(table, SIGNAL(remove(ValuesTable*)), this, SLOT(removeTable(ValuesTable*)));
@@ -72,7 +72,7 @@ void FenTableauValeurs::addValuesTable()
     tablesLayout->addWidget(table);
 }
 
-void FenTableauValeurs::removeTable(ValuesTable *table)
+void Values::removeTable(ValuesTable *table)
 {
     table->close();
     delete table;

@@ -28,7 +28,7 @@
 #include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/pareqwidget.h"
-#include "informations.h"
+#include "information.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
 
@@ -37,7 +37,7 @@ class GraphDraw : public QWidget // Abstract class
 {
     Q_OBJECT
 public:
-    explicit GraphDraw(Informations *info);
+    explicit GraphDraw(Information *info);
     ~GraphDraw();
 
 protected:
@@ -64,10 +64,10 @@ protected:
 
 
     int graphWidth, graphHeight;
-    Informations *informations;
+    Information *information;
     FuncValuesSaver *funcValuesSaver;    
     QPainter painter;
-    Options parametres;
+    Options parameters;
     QPolygonF polygon;
     QPen pen;
     QBrush brush;

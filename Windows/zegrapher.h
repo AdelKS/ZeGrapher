@@ -25,16 +25,18 @@
 
 #include "Structures.h"
 #include "GraphDraw/maingraph.h"
-#include "Windows/fenetrebornes.h"
-#include "Windows/fenetrefonctions.h"
-#include "Windows/fenetreoptions.h"
-#include "Windows/fentableauvaleurs.h"
-#include "apropos.h"
+#include "Windows/rangeadjustments.h"
+#include "Windows/mathobjectsinput.h"
+#include "Windows/settings.h"
+#include "Windows/values.h"
+#include "about.h"
 #include "Export/imagesave.h"
-#include "GraphDraw//printpreview.h"
+#include "GraphDraw/printpreview.h"
 #include "Export/print.h"
 #include "Widgets/keyboard.h"
 
+#include <QSettings>
+#include <QString>
 
 class MainWindow : public QMainWindow
 {
@@ -53,31 +55,36 @@ protected:
 protected slots:
     void showFuncsWin();
     void showRangeWin();
-    void showOptionsWin();
-    void showValuesTabWin();
+    void showSettingsWin();
+    void showValuesWin();
     void showKeyboard();
     void showPrintWin();
     void showImageSaveWin();
     void showAboutWin();
-
-
+    
+private slots :
+    void resizeEvent(QResizeEvent* event);
+    void moveEvent(QMoveEvent* event);
+    
 private:
 
-    Informations *informations;
+    Information *information;
     MainGraph *scene;
     GraphRange window;
-    FenetreFonctions *fenFonctions;
-    FenetreBornes *fenBornes;
-    FenetreOptions *fenOptions;
-    FenTableauValeurs *fenValeurs;
+    MathObjectsInput *inputWin;
+    RangeAdjustments *rangeWin;
+    Settings *settingsWin;
+    Values *valuesWin;
     Keyboard *keyboard;
-    ImageSave *fenImage;
-    apropos *fenAPropos;
-    Print *fenPrint;
-    QAction *boutonGrille;
-    ImagePreview *fenImageScene;
-    PrintPreview *fenPrintScene;
-
+    ImageSave *imageExportWin;
+    about *aboutWin;
+    Print *printWin;
+    QAction *gridButton;
+    //ImagePreview *winImageScene;
+    //PrintPreview *winPrintScene;
+    QString baseName;
+    QSettings settings;
+    
 };
 
 #endif // ZEGRAPHER_H

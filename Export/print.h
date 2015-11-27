@@ -44,7 +44,7 @@ class Print : public QWidget
     Q_OBJECT
 
 public:
-    explicit Print(Informations *info);
+    explicit Print(Information *info);
     ~Print();  
 
 public slots:

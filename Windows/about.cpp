@@ -19,25 +19,21 @@
 ****************************************************************************/
 
 
-#ifndef APROPOS_H
-#define APROPOS_H
 
-#include "Structures.h"
+#include "Windows/about.h"
+#include "ui_about.h"
 
-namespace Ui {
-    class apropos;
+about::about(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::About)
+{
+    ui->setupUi(this);
+    ui->logo->setPixmap(QPixmap(":/icons/software.png"));
+    setWindowIcon(QIcon(":/icons/software.png"));
+    setFixedSize(size());
 }
 
-class apropos : public QWidget
+about::~about()
 {
-    Q_OBJECT
-
-public:
-    explicit apropos(QWidget *parent = 0);
-    ~apropos();
-
-private:
-    Ui::apropos *ui;
-};
-
-#endif // APROPOS_H
+    delete ui;
+}
