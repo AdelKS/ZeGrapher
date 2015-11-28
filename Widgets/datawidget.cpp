@@ -84,6 +84,11 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
      setWidgetNum(num);
 }
 
+DataWindow* DataWidget::getDataWindow()
+{
+    return dataWindow;
+}
+
 void DataWidget::drawSegments(bool draw)
 {
     if(style.drawLines != draw)

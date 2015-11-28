@@ -64,6 +64,9 @@ public:
 
     void changeIndex(int ind);
 
+signals:
+    void showHelpWindow();
+
 protected slots:
     void updateSelectorsSize();
     void selectorInColumnSelection();
@@ -82,12 +85,10 @@ protected slots:
     void animationFinished();
     void startAnimation();
     void displayHelp();
-    void closeEvent(QCloseEvent *event);
 
 protected:    
 
-    int index, xindex, yindex;
-    QWebView *helpWindow;
+    int index, xindex, yindex;    
     Ui::DataWindow *ui;
     Information *information;
     QGroupBox *actionsGroupBox;

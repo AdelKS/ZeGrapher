@@ -37,6 +37,7 @@ public:
     explicit DataWidget(int num, Information *info, QWidget *parent = 0);
     void setWidgetNum(int num);
     void closeDataWindow();
+    DataWindow *getDataWindow();
     ~DataWidget();
 
 protected slots:

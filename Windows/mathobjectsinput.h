@@ -50,6 +50,7 @@ public slots:
 
 signals:
     void displayKeyboard();
+    void showHelpWindow();
 
 protected slots:
     void setInfoClass(Information *info);  
@@ -70,6 +71,8 @@ protected slots:
     void addDataWidget();
     void removeDataWidget(DataWidget *widget);
 
+    void showDataHelpWindow();
+
 protected:
     void addFunctions();
     void addSequences();    
@@ -81,6 +84,7 @@ private:
 
     QList <QChar> funcNames;
     QList <QChar> seqNames;
+    QWebView helpWindow;
 
     QList<FuncCalculator*> funcCalcs;
     QList<SeqCalculator*> seqCalcs;

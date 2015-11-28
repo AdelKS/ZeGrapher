@@ -14,7 +14,7 @@
    <string>Save</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ressources.qrc">
+   <iconset>
     <normaloff>:/icons/enregistrerImage.png</normaloff>:/icons/enregistrerImage.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -494,7 +494,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>677</width>
+        <width>689</width>
         <height>452</height>
        </rect>
       </property>
@@ -503,9 +503,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="ressources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>newSize</sender>

@@ -171,11 +171,7 @@ DataWindow::DataWindow(Information *info, int ind)
     connect(ui->polar, SIGNAL(toggled(bool)), this, SLOT(coordinateSystemChanged(bool)));
 
 
-    helpWindow = new QWebView();
-    helpWindow->load(QUrl("qrc:///Help/data_help_fr.html"));
-    helpWindow->setWindowTitle(tr("Help: data fill window."));
-
-    connect(ui->help, SIGNAL(released()), helpWindow, SLOT(show()));
+    connect(ui->help, SIGNAL(released()), this, SIGNAL(showHelpWindow()));
 
 }
 
@@ -186,12 +182,6 @@ void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisual
 
     if(oldVisualIndex == xindex || oldVisualIndex == yindex || newVisualIndex == xindex || newVisualIndex == yindex)
         remakeDataList();
-}
-
-void DataWindow::closeEvent(QCloseEvent *event)
-{
-    helpWindow->close();
-    event->accept();
 }
 
 void DataWindow::animationFinished()
@@ -419,5 +409,4 @@ DataWindow::~DataWindow()
 {
     delete dataTable;
     delete csvHandler;
-    delete helpWindow;
 }

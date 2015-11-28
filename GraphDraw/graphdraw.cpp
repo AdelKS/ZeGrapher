@@ -229,7 +229,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
                 {
                     if(pointOvershoot)
                     {
-                       polygon << QPointF(posX - parameters.istanceBetweenPoints, - funcVals->at(i)[draw][pos-1]*uniteY);
+                       polygon << QPointF(posX - parameters.distanceBetweenPoints, - funcVals->at(i)[draw][pos-1]*uniteY);
                     }
                     polygon << QPointF(posX, -y1*uniteY);
                     pointOvershoot = false;
@@ -258,7 +258,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
                 painter.drawPolyline(polygon);
                 polygon.clear();
             }
-            posX += parameters.istanceBetweenPoints;
+            posX += parameters.distanceBetweenPoints;
         }
 
         painter.drawPolyline(polygon);

@@ -46,7 +46,7 @@ void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit, Grap
     graphRange = range;
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    pixelStep = options.istanceBetweenPoints;
+    pixelStep = options.distanceBetweenPoints;
     xUnitStep = pixelStep / xUnit;
 
     curve.clear();

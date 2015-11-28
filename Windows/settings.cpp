@@ -129,7 +129,7 @@ void Settings::apply()
         double dist = ui->distanceWidget->value();
 
         parameters.smoothing = ui->smoothing->isChecked();
-        parameters.istanceBetweenPoints = pow(2, 2-dist/2);
+        parameters.distanceBetweenPoints = pow(2, 2-dist/2);
         parameters.curvesThickness = ui->thicknessWidget->value();
         parameters.colorAxes = colorAxes->getCurrentColor();
         parameters.colorBackground = colorFond->getCurrentColor();

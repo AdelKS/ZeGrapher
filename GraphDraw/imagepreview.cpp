@@ -24,7 +24,7 @@
 
 ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 {
-    parameters.istanceBetweenPoints = 0.125;
+    parameters.distanceBetweenPoints = 0.125;
     leftMargin = 30;
     rightMargin = 30;
     topMargin = 20;

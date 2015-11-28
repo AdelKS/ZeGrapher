@@ -24,7 +24,7 @@
 
 PrintPreview::PrintPreview(Information *info) : ImagePreview(info)
 {
-    parameters.istanceBetweenPoints = 0.125;
+    parameters.distanceBetweenPoints = 0.125;
     viewType = PORTRAIT;
     graphHeightCm = 28.7;
     graphWidthCm = 20;

@@ -14,7 +14,7 @@
    <string>Print</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ressources.qrc">
+   <iconset resource="../ressources.qrc">
     <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -843,7 +843,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>236</width>
+        <width>258</width>
         <height>502</height>
        </rect>
       </property>
@@ -853,7 +853,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="ressources.qrc"/>
+  <include location="../ressources.qrc"/>
  </resources>
  <connections>
   <connection>

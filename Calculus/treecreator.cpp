@@ -192,8 +192,8 @@ bool TreeCreator::check(QString formula)
     if(formula.isEmpty())
         return false;
 
-    bool digit = true, openpth = true, numberSign = true, varOrFunc = true, canEnd = false,
-         ope = false, digitpth = false;
+    bool digit = true, openingParenthesis = true, numberSign = true, varOrFunc = true, canEnd = false,
+         ope = false, closingParenthesis = false;
 
     short pth = 0;
 
@@ -227,8 +227,8 @@ bool TreeCreator::check(QString formula)
             if(!ok)
                 return false;
 
-            openpth = varOrFunc = numberSign = false;
-            digit = ope = digitpth = canEnd = true;
+            openingParenthesis = varOrFunc = numberSign = false;
+            digit = ope = closingParenthesis = canEnd = true;
         }
         else if(formula[i].isLetter() && varOrFunc)
         {
@@ -251,15 +251,15 @@ bool TreeCreator::check(QString formula)
 
                 decompPriorites << FUNC;
                 decompValues << 0.0;
-                openpth = true;
-                digit = ope = canEnd = digitpth = varOrFunc = numberSign = false;
+                openingParenthesis = true;
+                digit = ope = canEnd = closingParenthesis = varOrFunc = numberSign = false;
 
                 if(refFunctions.contains(name))
                 {
                     decompTypes << refFunctions.indexOf(name) + REF_FUNC_START + 1;
 
                     if(name == "E" || name == "e")
-                        digit = numberSign = openpth = true;
+                        digit = numberSign = openingParenthesis = true;
                 }
 
                 else if(antiderivatives.contains(name) && funcType == FUNCTION)
@@ -280,7 +280,7 @@ bool TreeCreator::check(QString formula)
             else if(constants.contains(name) || customVars.contains(name) || vars.contains(name))
             {
                 varOrFunc = numberSign = false;
-                openpth = digit = ope = digitpth = canEnd = true;
+                openingParenthesis = digit = ope = closingParenthesis = canEnd = true;
 
                 if(customVars.contains(name)) /* customVars comes at first because of overriding policy, customvars come from dataplot, and user can redefine
                                                 n t or x or k */
@@ -316,10 +316,10 @@ bool TreeCreator::check(QString formula)
             decompPriorites << operatorsPriority[pos];
             decompValues << 0.0 ;
 
-            openpth = digit = varOrFunc = true;
-            ope = numberSign = digitpth = canEnd = false;
+            openingParenthesis = digit = varOrFunc = true;
+            ope = numberSign = closingParenthesis = canEnd = false;
         }
-        else if(formula[i]=='(' && openpth)
+        else if(formula[i]=='(' && openingParenthesis)
         {           
             pth++;
 
@@ -327,10 +327,10 @@ bool TreeCreator::check(QString formula)
             decompPriorites << PTHO;
             decompValues << 0.0 ;
 
-            numberSign = digit = varOrFunc = openpth = true;
-            ope = digitpth = canEnd = false;
+            numberSign = digit = varOrFunc = openingParenthesis = true;
+            ope = closingParenthesis = canEnd = false;
         }
-        else if(formula[i]==')' && digitpth && pth > 0)
+        else if(formula[i]==')' && closingParenthesis && pth > 0)
         {            
             pth--;
 
@@ -338,8 +338,8 @@ bool TreeCreator::check(QString formula)
             decompPriorites << PTHF ;
             decompValues << 0.0 ;
 
-            ope = digitpth = canEnd = true;
-            digit = numberSign = openpth = varOrFunc = false;
+            ope = closingParenthesis = canEnd = true;
+            digit = numberSign = openingParenthesis = varOrFunc = false;
 
         }        
         else return false;
@@ -355,7 +355,7 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
     root->left = NULL;
     root->value = NULL;
 
-    short pths = 0, posPthFerme = 0, posPthOuvert = 0;
+    short pths = 0, closingPthPos = 0, openingPthPos = 0;
     bool debutPthFerme = false;
 
     if(debut == fin)
@@ -380,7 +380,7 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
                 if(!debutPthFerme)
                 {
                     debutPthFerme = true;
-                    posPthFerme = i - 1;
+                    closingPthPos = i - 1;
                 }
                 pths--;
             }
@@ -389,11 +389,11 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
                 pths++;
                 if(pths == 0)
                 {
-                    posPthOuvert = i + 1;
+                    openingPthPos = i + 1;
                     if(op == PTHO)
                     {
                         delete root;
-                        root = createFastTree(posPthFerme, posPthOuvert);
+                        root = createFastTree(closingPthPos, openingPthPos);
                         return root;
                     }
                 }

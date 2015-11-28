@@ -49,8 +49,6 @@ MathObjectsInput::MathObjectsInput(Information *info)
     ui->periodSpinBox->setValue(INIT_INCR_PERIOD);
     ui->freqSpinBox->setValue(INIT_FREQ);
 
-
-
     connect(ui->buttonPlot, SIGNAL(released()), this, SLOT(draw()));
     connect(ui->addLine, SIGNAL(released()), this, SLOT(addStraightline()));
     connect(ui->addTangent, SIGNAL(released()), this, SLOT(addTangent()));
@@ -69,6 +67,17 @@ QList<QColor> toColorsList(const QList<QVariant> &list)
     return colorsList;
 }
 
+void MathObjectsInput::showDataHelpWindow()
+{
+    QLocale locale;
+    if(locale.language() == QLocale::French)
+        helpWindow.load(QUrl("qrc:///Help/data_help_fr.html"));
+    else helpWindow.load(QUrl("qrc:///Help/data_help_en.html"));
+
+    helpWindow.setWindowTitle(tr("Help: data fill window."));
+
+    helpWindow.show();
+}
 
 void MathObjectsInput::addFunctions()
 {   
@@ -306,6 +315,7 @@ void MathObjectsInput::addDataWidget()
 
     DataWidget *widget = new DataWidget(dataWidgets.size(), information);
     connect(widget, SIGNAL(removeMe(DataWidget*)), this, SLOT(removeDataWidget(DataWidget*)));
+    connect(widget->getDataWindow(), SIGNAL(showHelpWindow()), this, SLOT(showDataHelpWindow()));
 
     dataWidgets << widget;
     ui->dataWidgetsContainerLayout->addWidget(widget);
@@ -350,6 +360,7 @@ void MathObjectsInput::saveColors()
 void MathObjectsInput::closeAllOpenedWindows()
 {
     saveColors();
+    helpWindow.close();
 
     for(int i = 0 ; i < dataWidgets.size(); i++)
     {

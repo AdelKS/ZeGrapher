@@ -101,7 +101,7 @@ struct Options
     QColor colorGrid;
     short curvesThickness;
     short numSize;
-    double istanceBetweenPoints;
+    double distanceBetweenPoints;
     bool smoothing;
 
 };

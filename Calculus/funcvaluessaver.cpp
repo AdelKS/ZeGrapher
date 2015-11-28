@@ -39,7 +39,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
     graphRange = information->getRange();
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    pixelStep = information->getOptions().istanceBetweenPoints;
+    pixelStep = information->getOptions().distanceBetweenPoints;
     unitStep = pixelStep / xUnit;
 
     double x = 0, k = 0;
