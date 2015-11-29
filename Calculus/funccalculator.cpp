@@ -195,7 +195,8 @@ bool FuncCalculator::checkFuncCallingInclusions()
 
         if(!areCalledFuncsGood)
         {
-            errorMessageLabel->setText(tr("Cette fonction s'appelle elle même dans son expression."));
+            errorMessageLabel->setText(tr("This function calls itself in its expression."));
+            //Cette fonction s'appelle elle même dans son expression.
             return false;
         }
 

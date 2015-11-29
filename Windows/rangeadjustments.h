@@ -26,6 +26,7 @@
 #include "Structures.h"
 #include "information.h"
 #include "Calculus/exprcalculator.h"
+#include "Widgets/numberlineedit.h"
 
 
 namespace Ui {
@@ -56,6 +57,7 @@ signals:
 
 private:
 
+    NumberLineEdit *Xmin, *Xmax, *Xstep, *Ymin, *Ymax, *Ystep;
     Information *information;
     Ui::RangeAdjustments *ui;
     QMessageBox *messageBox;    

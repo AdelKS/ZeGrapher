@@ -33,17 +33,43 @@ RangeAdjustments::RangeAdjustments(Information *info)
     ui = new Ui::RangeAdjustments;
     ui->setupUi(this);
 
+    Xmin = new NumberLineEdit(false, info->getFuncsList());
+    Xmin->setMaximumHeight(27);
+
+    Xmax = new NumberLineEdit(false, info->getFuncsList());
+    Xmax->setMaximumHeight(27);
+
+    Xstep = new NumberLineEdit(false, info->getFuncsList());
+    Xstep->setMaximumHeight(27);
+
+    Ymin = new NumberLineEdit(false, info->getFuncsList());
+    Ymin->setMaximumHeight(27);
+
+    Ymax = new NumberLineEdit(false, info->getFuncsList());
+    Ymax->setMaximumHeight(27);
+
+    Ystep = new NumberLineEdit(false, info->getFuncsList());
+    Ystep->setMaximumHeight(27);
+
+    ui->gridLayout->addWidget(Xmin,0,1);
+    ui->gridLayout->addWidget(Xmax,1,1);
+    ui->gridLayout->addWidget(Xstep,2,1);
+
+    ui->gridLayout->addWidget(Ymin,0,3);
+    ui->gridLayout->addWidget(Ymax,1,3);
+    ui->gridLayout->addWidget(Ystep,2,3);
+
     messageBox = new QMessageBox(this);
     messageBox->setWindowTitle(tr("Error"));
     messageBox->setIcon(QMessageBox::Warning);
 
-    connect(ui->Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(ui->Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(ui->Xstep, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Xstep, SIGNAL(returnPressed()), this, SLOT(apply()));
 
-    connect(ui->Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(ui->Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(ui->Ystep, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Ystep, SIGNAL(returnPressed()), this, SLOT(apply()));
 
     connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
     connect(ui->orthonormal, SIGNAL(clicked(bool)), information, SLOT(setOrthonormal(bool)));
@@ -51,13 +77,15 @@ RangeAdjustments::RangeAdjustments(Information *info)
     connect(ui->buttonApply, SIGNAL(released()), this, SLOT(apply()));
 
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateWidgets()));
+
+    updateWidgets();
 }
 
 void RangeAdjustments::orthonormal(bool state)
 {   
-    ui->Ymax->setEnabled(!state);
-    ui->Ymin->setEnabled(!state);
-    ui->Ystep->setEnabled(!state);
+    Ymax->setEnabled(!state);
+    Ymin->setEnabled(!state);
+    Ystep->setEnabled(!state);
 }
 
 void RangeAdjustments::resetToStandardView()
@@ -68,76 +96,44 @@ void RangeAdjustments::resetToStandardView()
 
 void RangeAdjustments::standardView()
 {
-    ui->Xmax->setText("10");
-    ui->Xmin->setText("-10");
-    ui->Xstep->setText("1");
+    Xmax->setNumber(10);
+    Xmin->setNumber(-10);
+    Xstep->setNumber(1);
 
-    ui->Ymax->setText("10");
-    ui->Ymin->setText("-10");
-    ui->Ystep->setText("1");
+    Ymax->setNumber(10);
+    Ymin->setNumber(-10);
+    Ystep->setNumber(1);
 }
 
 void RangeAdjustments::apply()
 {
-    GraphRange range;
-    bool ok = false;
-
-    range.Xmax = calculator->calculateExpression(ui->Xmax->text(), ok);
-    if(ok == false)
-    {
-        messageBox->setText(tr("Could not evaluate the typed expression for ") + "X<sub>max</sub>");
-        messageBox->exec();
+    if(!Xmax->isValid() || !Xmin->isValid() || !Xstep->isValid() ||
+            !Ymax->isValid() || !Ymin->isValid() || !Ystep->isValid())
         return;
-    }
-    range.Xmin = calculator->calculateExpression(ui->Xmin->text(), ok);
-    if(ok == false)
-    {
-        messageBox->setText(tr("Could not evaluate the typed expression for ") + "X<sub>min</sub>");
-        messageBox->exec();
-        return;
-    }
-    range.Ymax = calculator->calculateExpression(ui->Ymax->text(),ok);
-    if(ok == false)
-    {
-        messageBox->setText(tr("Could not evaluate the typed expression for ") + "Y<sub>max</sub>");
-        messageBox->exec();
-        return;
-    }
-    range.Ymin = calculator->calculateExpression(ui->Ymin->text(), ok);
-    if(ok == false)
-    {
-        messageBox->setText(tr("Could not evaluate the typed expression for X step.") + "X<sub>min</sub>");
-        messageBox->exec();
-        return;
-    }
-    range.Xscale = calculator->calculateExpression(ui->Xstep->text(), ok);
-    if(ok == false || range.Xscale <= 0)
-    {
-        messageBox->setText(tr("Could not evaluate the typed expression for X step."));
-        messageBox->exec();
-        return;
-    }    
 
     if(ui->orthonormal->isChecked())
-        ui->Ystep->setText(ui->Xstep->text());
+        Ystep->setNumber(Xstep->getValue());
 
-    range.Yscale = calculator->calculateExpression(ui->Ystep->text(), ok);
-    if(ok == false || range.Yscale <= 0)
-    {
-        messageBox->setText(tr("Could not evaluate the typed expression for Y step."));
-        messageBox->exec();
-        return;
-    }
+    GraphRange range;
+
+    range.Xmax = Xmax->getValue();
+    range.Xmin = Xmin->getValue();
+    range.Xscale = Xstep->getValue();
+
+    range.Ymax = Ymax->getValue();
+    range.Ymin = Ymin->getValue();
+    range.Yscale = Ystep->getValue();
+
 
     if(range.Xmin >= range.Xmax)
     {
-        messageBox->setText(tr("X<sub>min</sub> must be lower than X<sub>max</sub>"));
+        messageBox->setText(tr("X<sub>min</sub> must be smaller than X<sub>max</sub>"));
         messageBox->exec();
         return;
     }
     if(range.Ymin >= range.Ymax)
     {
-        messageBox->setText(tr("Y<sub>min</sub> must be lower than Y<sub>max</sub>"));
+        messageBox->setText(tr("Y<sub>min</sub> must be smaller than Y<sub>max</sub>"));
         messageBox->exec();
         return;
     }
@@ -157,13 +153,13 @@ void RangeAdjustments::updateWidgets()
  {
      GraphRange window = information->getRange();
 
-     ui->Xmax->setText(QString::number(window.Xmax));
-     ui->Xmin->setText(QString::number(window.Xmin));
-     ui->Xstep->setText(QString::number(window.Xscale));
+     Xmax->setNumber(window.Xmax);
+     Xmin->setNumber(window.Xmin);
+     Xstep->setNumber(window.Xscale);
 
-     ui->Ymax->setText(QString::number(window.Ymax));
-     ui->Ymin->setText(QString::number(window.Ymin));
-     ui->Ystep->setText(QString::number(window.Yscale));
+     Ymax->setNumber(window.Ymax);
+     Ymin->setNumber(window.Ymin);
+     Ystep->setNumber(window.Yscale);
 
      ui->orthonormal->setChecked(information->isOrthonormal());
      orthonormal(information->isOrthonormal());

@@ -21,17 +21,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 2.0&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Basé sur Qt 4.8.4&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Distribué sous licence GPL version 3&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;basé sur Qt 5.5.1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Projet opensource distribué sous la licence GPL version 3&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3C?} {4.0/?} {3.?} {40/?} {1&quot;?} {11p?} {400;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {14p?} {600;?} {3.0&lt;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {12p?} {5.5.1&lt;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {12p?} {3&lt;?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {2&apos;?} {8p?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {2&apos;?} {8p?} {0p?} {0p?} {0p?} {0p?} {0;?} {0p?} {12p?} {12p?} {0000f?}</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel : &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="Windows/about.ui" line="89"/>
@@ -255,24 +255,24 @@ p, li { white-space: pre-wrap; }
         <translation>Modélisations :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="311"/>
+        <location filename="DataPlot/datawindow.ui" line="338"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="390"/>
+        <location filename="DataPlot/datawindow.ui" line="417"/>
         <source>Coordinates :</source>
         <oldsource>Coordonnées :</oldsource>
         <translation>Coordonnées :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="409"/>
+        <location filename="DataPlot/datawindow.ui" line="436"/>
         <source>Cartesian</source>
         <oldsource>Cartésiennes</oldsource>
         <translation>Cartésiennes</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="440"/>
+        <location filename="DataPlot/datawindow.ui" line="467"/>
         <source>Polar</source>
         <oldsource>Polaires</oldsource>
         <translation>Polaires</translation>
@@ -368,13 +368,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="Calculus/funccalculator.cpp" line="198"/>
-        <source>Cette fonction s&apos;appelle elle même dans son expression.</source>
-        <translation type="unfinished"></translation>
+        <source>This function calls itself in its expression.</source>
+        <oldsource>Cette fonction s&apos;appelle elle même dans son expression.</oldsource>
+        <translation>Cette fonction s&apos;appelle elle même dans son expression.</translation>
     </message>
     <message>
-        <location filename="Calculus/funccalculator.cpp" line="210"/>
+        <location filename="Calculus/funccalculator.cpp" line="211"/>
         <source>This function calls another function that is whether undefined or makes an inifite calling loop.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette fonction appelle une autre fonction qui est invalide, non définie ou forme une boucle infinie d&apos;appels.</translation>
     </message>
 </context>
 <context>
@@ -592,12 +593,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="Windows/zegrapher.cpp" line="79"/>
         <source>Toggle orthonormal view</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue orthonormale</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="97"/>
         <source>Image export...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en tant qu&apos;image...</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="101"/>
@@ -607,42 +608,42 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="Windows/zegrapher.cpp" line="107"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="115"/>
         <source>Range edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Règlages de la fenêtre</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="142"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier la fenêtre de représentation: x&lt;sub&gt;min&lt;/sub&gt;, x&lt;sub&gt;max&lt;/sub&gt;...</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="143"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre où l&apos;on saisi les objets mathématiques à représenter: fonctions, suites, équations paramétriques, données...</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="144"/>
         <source>Exit ZeGrapher.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter ZeGrapher.</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="145"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre des options: couleurs des axes, couleurs du fond, qualité des courbes...</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="146"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre où l&apos;on peut afficher les tableaux de valeurs des objets mathématiques saisis: fonctions, suites, équations paramétriques.</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="149"/>
         <source>Export the graph as an image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre d&apos;export du graphique en tant qu&apos;image.</translation>
     </message>
     <message>
         <location filename="Windows/zegrapher.cpp" line="150"/>
@@ -652,7 +653,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="Windows/zegrapher.cpp" line="151"/>
         <source>Print, or export in PDF.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fenêtre des options avant impression. Avec la possiblité d&apos;exporter en PDF ou en PostScript.</translation>
     </message>
     <message>
         <source>Orthonormal basis</source>
@@ -759,114 +760,118 @@ p, li { white-space: pre-wrap; }
         <location filename="Windows/mathobjectsinput.ui" line="32"/>
         <location filename="Windows/mathobjectsinput.ui" line="79"/>
         <source>Functions</source>
-        <translation type="unfinished">Fonctions</translation>
+        <translation>Fonctions</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="82"/>
         <source>Numerical functions</source>
-        <translation type="unfinished">Fonctions numériques</translation>
+        <translation>Fonctions numériques</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="161"/>
         <source>Sequences</source>
-        <translation type="unfinished">Suites</translation>
+        <translation>Suites</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="164"/>
         <source>Numerical sequences</source>
-        <translation type="unfinished">Suites numériques</translation>
+        <translation>Suites numériques</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="256"/>
         <source>n&lt;sub&gt;min&lt;/sub&gt; =</source>
-        <translation type="unfinished">n&lt;sub&gt;min&lt;/sub&gt; =</translation>
+        <translation>n&lt;sub&gt;min&lt;/sub&gt; =</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="329"/>
         <source>Straight lines</source>
-        <translation type="unfinished">Droites</translation>
+        <translation>Droites</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="332"/>
         <source>Straight lines and tangents</source>
-        <translation type="unfinished">Straight lines and tangents</translation>
+        <translation>Droites et tangentes</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="435"/>
         <source>Add :</source>
-        <translation type="unfinished">Ajouter :</translation>
+        <translation>Ajouter :</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="448"/>
         <source>Straight line</source>
-        <translation type="unfinished">Droite</translation>
+        <translation>Droite</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="461"/>
         <source>Tangent</source>
-        <translation type="unfinished">Tangente</translation>
+        <translation>Tangente</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="506"/>
         <source>Parametric</source>
-        <translation type="unfinished">Paramètrique</translation>
+        <translation>Paramètrique</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="571"/>
         <source>Animation control:</source>
-        <translation type="unfinished">Contrôle de l&apos;animation :</translation>
+        <translation>Contrôle de l&apos;animation :</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="580"/>
         <source>Increment period:</source>
-        <translation type="unfinished">Période d&apos;incrémentation :</translation>
+        <translation>Période d&apos;incrémentation :</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="614"/>
         <source>milliseconds per step.</source>
-        <translation type="unfinished">millisecondes par pas.</translation>
+        <translation>millisecondes par pas.</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="617"/>
         <source>ms/step</source>
-        <translation type="unfinished">ms/pas</translation>
+        <translation>ms/pas</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="626"/>
+        <source>Refresh rate:</source>
+        <translation>Fréquence de rafraîchissement :</translation>
+    </message>
+    <message>
         <source>Frequency:</source>
-        <translation type="unfinished">Fréquence :</translation>
+        <translation type="obsolete">Fréquence :</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="660"/>
         <source>Hz</source>
-        <translation type="unfinished">Hz</translation>
+        <translation>Hz</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="705"/>
         <location filename="Windows/mathobjectsinput.ui" line="821"/>
         <source>Add</source>
-        <translation type="unfinished">Ajouter</translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="748"/>
         <source>Data</source>
-        <translation type="unfinished">Données</translation>
+        <translation>Données</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="869"/>
         <source>Keyboard</source>
-        <translation type="unfinished">Clavier</translation>
+        <translation>Clavier</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="904"/>
         <location filename="Windows/mathobjectsinput.cpp" line="39"/>
         <source>Plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Tracer</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.cpp" line="77"/>
         <source>Help: data fill window.</source>
-        <translation type="unfinished">Aide: Saisie de données.</translation>
+        <translation>Aide: Fenêtre de saisie de données.</translation>
     </message>
 </context>
 <context>
@@ -895,9 +900,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ParConfWidget</name>
     <message>
-        <location filename="Widgets/parconfwidget.cpp" line="27"/>
         <source>Settings of </source>
-        <translation>Réglages du paramètre</translation>
+        <translation type="vanished">Réglages du paramètre</translation>
+    </message>
+    <message>
+        <location filename="Widgets/parconfwidget.cpp" line="27"/>
+        <source>Adjustments for </source>
+        <translation>Réglages du paramètre </translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="57"/>
@@ -971,83 +980,83 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PolynomialModelWidget</name>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="54"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="75"/>
         <source>Polynomial order:</source>
         <oldsource>Degré du polynôme :</oldsource>
         <translation>Degré du polynôme :</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="113"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="134"/>
         <source>Polynomial computation</source>
         <oldsource>Calcul du polynôme:</oldsource>
         <translation>Calcul du polynôme</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="119"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="140"/>
         <source>Close to the points</source>
         <oldsource>Le plus proche des points</oldsource>
         <translation>Le plus proche des points</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="129"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="150"/>
         <source>Close to the segments</source>
         <oldsource>Le plus proche des segments</oldsource>
         <translation>Le plus proche des segments</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="20"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="26"/>
         <source>Polynomial regression</source>
         <translation>Régression polynomiale</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="36"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="57"/>
         <source>Settings</source>
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="153"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="174"/>
         <source>Plot</source>
         <translation>Tracé</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="174"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="195"/>
         <source>Draw</source>
         <translation>Tracer</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="199"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="220"/>
         <source>Draw interval:</source>
         <translation>Intervalle de représentation :</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="205"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="226"/>
         <source>Data range</source>
         <translation>Étalement des données</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="220"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="241"/>
         <source>Relative extrapolation of </source>
         <oldsource>Extrapolation relative de </oldsource>
         <translation>Extrapolation relative de</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="236"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="257"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="259"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="280"/>
         <source>Définition manuelle:</source>
         <translation>Définition manuelle:</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="285"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="306"/>
         <source>Values</source>
         <oldsource>Valeurs</oldsource>
         <translation>Valeurs</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="360"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="381"/>
         <source>P(x) =</source>
         <translation>P(x) =</translation>
     </message>
@@ -1190,13 +1199,13 @@ p, li { white-space: pre-wrap; }
         <translation>Hauteur</translation>
     </message>
     <message>
-        <location filename="Export/print.ui" line="431"/>
-        <location filename="Export/print.ui" line="453"/>
+        <location filename="Export/print.ui" line="438"/>
+        <location filename="Export/print.ui" line="460"/>
         <source> cm</source>
         <translation>cm</translation>
     </message>
     <message>
-        <location filename="Export/print.ui" line="469"/>
+        <location filename="Export/print.ui" line="425"/>
         <source>Width</source>
         <translation>Largeur</translation>
     </message>
@@ -1324,85 +1333,80 @@ p, li { white-space: pre-wrap; }
     <name>RangeAdjustments</name>
     <message>
         <location filename="Windows/rangeadjustments.ui" line="26"/>
-        <source>Representation boundaries</source>
-        <translation type="unfinished">Bornes de représentation</translation>
+        <source>Representation range</source>
+        <oldsource>Representation boundaries</oldsource>
+        <translation>Bornes de représentation</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="78"/>
-        <location filename="Windows/rangeadjustments.ui" line="182"/>
+        <location filename="Windows/rangeadjustments.ui" line="118"/>
+        <location filename="Windows/rangeadjustments.ui" line="125"/>
         <source>&lt;strong&gt;&lt;em&gt;Step&lt;/em&gt;&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;&lt;em&gt;Pas&lt;/em&gt;&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;&lt;em&gt;Pas&lt;/em&gt;&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="91"/>
-        <location filename="Windows/rangeadjustments.ui" line="195"/>
+        <location filename="Windows/rangeadjustments.ui" line="140"/>
+        <source>Orthonormal view</source>
+        <translation>Vue orthonormale</translation>
+    </message>
+    <message>
         <source>-10</source>
-        <translation type="unfinished">-10</translation>
+        <translation type="vanished">-10</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="110"/>
-        <location filename="Windows/rangeadjustments.ui" line="214"/>
         <source>10</source>
-        <translation type="unfinished">10</translation>
+        <translation type="vanished">10</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="129"/>
-        <location filename="Windows/rangeadjustments.ui" line="233"/>
         <source>1</source>
-        <translation type="unfinished">1</translation>
+        <translation type="vanished">1</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="248"/>
         <source>Orthonormal basis</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Base orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="263"/>
+        <location filename="Windows/rangeadjustments.ui" line="168"/>
         <source>Standard View</source>
-        <translation type="unfinished">Vue standard</translation>
+        <translation>Vue standard</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="295"/>
+        <location filename="Windows/rangeadjustments.ui" line="200"/>
         <source>Apply</source>
-        <translation type="unfinished">Appliquer</translation>
+        <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="37"/>
+        <location filename="Windows/rangeadjustments.cpp" line="63"/>
         <source>Error</source>
-        <translation type="unfinished">Erreur</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="88"/>
-        <location filename="Windows/rangeadjustments.cpp" line="95"/>
-        <location filename="Windows/rangeadjustments.cpp" line="102"/>
         <source>Could not evaluate the typed expression for </source>
-        <translation type="unfinished">Erreur lors de l&apos;evaluation de l&apos;expression écrite en</translation>
+        <translation type="obsolete">Erreur lors de l&apos;evaluation de l&apos;expression écrite en</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="109"/>
-        <location filename="Windows/rangeadjustments.cpp" line="116"/>
         <source>Could not evaluate the typed expression for X step.</source>
-        <translation type="unfinished">Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des X.</translation>
+        <translation type="obsolete">Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des X.</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="127"/>
         <source>Could not evaluate the typed expression for Y step.</source>
-        <translation type="unfinished">Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des Y.</translation>
+        <translation type="obsolete">Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des Y.</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="134"/>
-        <source>X&lt;sub&gt;min&lt;/sub&gt; must be lower than X&lt;sub&gt;max&lt;/sub&gt;</source>
-        <translation type="unfinished">X&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que X&lt;sub&gt;max&lt;/sub&gt;</translation>
+        <location filename="Windows/rangeadjustments.cpp" line="130"/>
+        <source>X&lt;sub&gt;min&lt;/sub&gt; must be smaller than X&lt;sub&gt;max&lt;/sub&gt;</source>
+        <oldsource>X&lt;sub&gt;min&lt;/sub&gt; must be lower than X&lt;sub&gt;max&lt;/sub&gt;</oldsource>
+        <translation>X&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="140"/>
-        <source>Y&lt;sub&gt;min&lt;/sub&gt; must be lower than Y&lt;sub&gt;max&lt;/sub&gt;</source>
-        <translation type="unfinished">Y&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que Y&lt;sub&gt;max&lt;/sub&gt;</translation>
+        <location filename="Windows/rangeadjustments.cpp" line="136"/>
+        <source>Y&lt;sub&gt;min&lt;/sub&gt; must be smaller than Y&lt;sub&gt;max&lt;/sub&gt;</source>
+        <oldsource>Y&lt;sub&gt;min&lt;/sub&gt; must be lower than Y&lt;sub&gt;max&lt;/sub&gt;</oldsource>
+        <translation>Y&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="147"/>
+        <location filename="Windows/rangeadjustments.cpp" line="143"/>
         <source>The view range is too tight for ZeGrapher to distinguish between the upper and lower values.</source>
-        <translation type="unfinished">Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher.</translation>
+        <translation>Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher.</translation>
     </message>
 </context>
 <context>
@@ -1429,66 +1433,68 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Erreur de syntaxe lors de la saisie des premiers termes de la suite</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="69"/>
+        <location filename="Calculus/seqcalculator.cpp" line="66"/>
         <source>NB: First values must be separated by &apos;;&apos;</source>
         <oldsource>Note: terms must be separated with &apos;;&apos; </oldsource>
-        <translation type="unfinished">Note: ces termes doivent être séparés par des &apos;;&apos;</translation>
+        <translation>Note: Les premiers termes saisis doivent être séparés par des &apos;;&apos;</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="182"/>
+        <location filename="Calculus/seqcalculator.cpp" line="170"/>
         <source>An error occured while trying to calculate the entered first values.</source>
-        <translation type="unfinished"></translation>
+        <translation>Une erreur s&apos;est produite en calculant les premiers termes qui ont été saisis.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="298"/>
-        <source>Ivalid crossed recursion between this sequence and the other(s) it calls in its expression.</source>
-        <translation type="unfinished"></translation>
+        <location filename="Calculus/seqcalculator.cpp" line="286"/>
+        <source>Invalid crossed recursion between this sequence and the other(s) it calls in its expression.</source>
+        <oldsource>Ivalid crossed recursion between this sequence and the other(s) it calls in its expression.</oldsource>
+        <translation>Récurence croisée invalide entre cette suites et celle(s) qu&apos;elle appelle.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="439"/>
+        <location filename="Calculus/seqcalculator.cpp" line="427"/>
         <source>Invalid recursion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Relation de récurence invalide.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="445"/>
+        <location filename="Calculus/seqcalculator.cpp" line="433"/>
         <source>Insufficient number of entered first values.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nombre de premiers termes saisis est insuffisant.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="456"/>
-        <location filename="Calculus/seqcalculator.cpp" line="462"/>
+        <location filename="Calculus/seqcalculator.cpp" line="444"/>
+        <location filename="Calculus/seqcalculator.cpp" line="450"/>
         <source>This sequence calls </source>
-        <translation type="unfinished"></translation>
+        <translation>Cette suite appelle la suite </translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="456"/>
+        <location filename="Calculus/seqcalculator.cpp" line="444"/>
         <source> with a non-integral value.</source>
-        <translation type="unfinished"></translation>
+        <translation>avec un paramètre non entier.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="462"/>
+        <location filename="Calculus/seqcalculator.cpp" line="450"/>
         <source> with a value that is lower than n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Cette suite appelle la suite </translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="483"/>
-        <source>Une fonction invalide ou non définie est appelée dans l&apos;expression de cette suite.</source>
-        <translation type="unfinished"></translation>
+        <location filename="Calculus/seqcalculator.cpp" line="471"/>
+        <source>This sequence calls in its expression a function who is whether invalid or undefined.</source>
+        <oldsource>Une fonction invalide ou non définie est appelée dans l&apos;expression de cette suite.</oldsource>
+        <translation>Une fonction invalide ou non définie est appelée dans l&apos;expression de cette suite.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="490"/>
-        <source>Une fonction invalide ou non définie est appelée dans les premiers termes saisis.</source>
-        <translation type="unfinished"></translation>
+        <location filename="Calculus/seqcalculator.cpp" line="479"/>
+        <source>The entered first values use an undefined or an invalid function.</source>
+        <translation>Une fonction invalide ou non définie est appelée dans les premiers termes saisis.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="497"/>
-        <source>Une suite invalide ou non définie est appelée dans l&apos;expression de cette suite</source>
-        <translation type="unfinished"></translation>
+        <location filename="Calculus/seqcalculator.cpp" line="487"/>
+        <source>This sequence uses another sequence who is whether invalid or undefined.</source>
+        <translation>Une suite invalide ou non définie est appelée dans l&apos;expression de cette suite.</translation>
     </message>
     <message>
-        <location filename="Calculus/seqcalculator.cpp" line="504"/>
-        <source>Une suite invalide ou non définie est appelée dans les premiers termes saisis.</source>
-        <translation type="unfinished"></translation>
+        <location filename="Calculus/seqcalculator.cpp" line="495"/>
+        <source>The entered first values use an undefined or an invalid sequence.</source>
+        <translation>Une suite invalide ou non définie est appelée dans les premiers termes saisis.</translation>
     </message>
     <message>
         <source>Error while calculating initial terms for sequence </source>
@@ -1536,83 +1542,83 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="Windows/settings.ui" line="26"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="56"/>
         <source>If the quality is increased, the execution speed is decreased and conversely.</source>
-        <translation type="unfinished">la qualité est améliorée au détriment de la vitesse, et inversement.</translation>
+        <translation>la qualité est améliorée au détriment de la vitesse, et inversement.</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="59"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="72"/>
         <source>Distance in pixels</source>
-        <translation type="unfinished">distance en pixels</translation>
+        <translation>Distance en pixels</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="91"/>
         <source>&lt;strong&gt;Curves thickness:&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Epaisseur des courbes:&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Epaisseur des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="114"/>
         <source>Digits size shown on the graph</source>
-        <translation type="unfinished">Taille des nombres affichés sur le graphique</translation>
+        <translation>Taille des nombres affichés sur le graphique</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="117"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Font size:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="130"/>
         <source>Size in pixel</source>
-        <translation type="unfinished">Taille en pixels</translation>
+        <translation>Taille en pixels</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="146"/>
         <source>&lt;strong&gt;Axes color:&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Couleur des axes:&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Couleur des axes:&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="156"/>
         <source>&lt;strong&gt;Background color:&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Couleur du fond:&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Couleur du fond:&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="166"/>
         <source>&lt;strong&gt;Grid color:&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="176"/>
         <source>&lt;strong&gt;Curves smoothing:&lt;/strong&gt;</source>
-        <translation type="unfinished">&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="213"/>
         <source>Reset</source>
-        <translation type="unfinished">Rétablir</translation>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="124"/>
         <location filename="Windows/settings.cpp" line="126"/>
         <source>Warning</source>
-        <translation type="unfinished">Attention</translation>
+        <translation>Attention</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="124"/>
         <source>Axes and background colors are identical</source>
-        <translation type="unfinished">Les couleurs du fond et des axes sont identiques</translation>
+        <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="126"/>
         <source>Background and grid colors are identical</source>
-        <translation type="unfinished">Les couleurs du fond et du quadrillage sont identiques</translation>
+        <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>
 </context>
 <context>
@@ -1709,27 +1715,35 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TangentWidget</name>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="67"/>
+        <location filename="Widgets/tangentwidget.cpp" line="66"/>
         <source>tangent to :</source>
         <translation>tangente à :</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="92"/>
         <source>at:  a =</source>
-        <translation>en:  a =</translation>
+        <translation type="vanished">en:  a =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="154"/>
         <source>For k =</source>
-        <translation>Pour k =</translation>
+        <translation type="vanished">Pour k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="199"/>
+        <location filename="Widgets/tangentwidget.cpp" line="91"/>
+        <source>at:  x =</source>
+        <translation>en x =</translation>
+    </message>
+    <message>
+        <location filename="Widgets/tangentwidget.cpp" line="153"/>
+        <source>with k =</source>
+        <translation>avec k =</translation>
+    </message>
+    <message>
+        <location filename="Widgets/tangentwidget.cpp" line="198"/>
         <source>Choosen Function</source>
         <translation>Fonction choisie</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="200"/>
+        <location filename="Widgets/tangentwidget.cpp" line="199"/>
         <source>Invalid</source>
         <translation></translation>
     </message>
@@ -1739,12 +1753,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="Windows/values.cpp" line="29"/>
         <source>Values table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tableaux de valeurs</translation>
     </message>
     <message>
         <location filename="Windows/values.cpp" line="32"/>
         <source>Add</source>
-        <translation type="unfinished">Ajouter</translation>
+        <translation>Ajouter</translation>
     </message>
 </context>
 <context>

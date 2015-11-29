@@ -283,7 +283,7 @@ bool SeqCalculator::saveSeqValues(double nMax)
 {
     if(blockCalculatingFromTree)
     {
-        errorMessageLabel->setText(tr("Ivalid crossed recursion between this sequence and the other(s) it calls in its expression."));
+        errorMessageLabel->setText(tr("Invalid crossed recursion between this sequence and the other(s) it calls in its expression."));
 
         return false;
     }
@@ -468,28 +468,32 @@ bool SeqCalculator::check_called_funcs_and_seqs_validity()
     isValid = checkCalledFuncsValidity(expression);
     if(!isValid)
     {
-        errorMessageLabel->setText(tr("Une fonction invalide ou non définie est appelée dans l'expression de cette suite."));
+        errorMessageLabel->setText(tr("This sequence calls in its expression a function who is whether invalid or undefined."));
+        //Une fonction invalide ou non définie est appelée dans l'expression de cette suite.
         return false;
     }
 
     isValid = checkCalledFuncsValidity(firstValsExpr);
     if(!isValid)
     {
-        errorMessageLabel->setText(tr("Une fonction invalide ou non définie est appelée dans les premiers termes saisis."));
+        errorMessageLabel->setText(tr("The entered first values use an undefined or an invalid function."));
+        //Une fonction invalide ou non définie est appelée dans les premiers termes saisis.
         return false;
     }
 
     isValid = checkCalledSeqsValidity(expression);
     if(!isValid)
     {
-        errorMessageLabel->setText(tr("Une suite invalide ou non définie est appelée dans l'expression de cette suite"));
+        errorMessageLabel->setText(tr("This sequence uses another sequence who is whether invalid or undefined."));
+        //Une suite invalide ou non définie est appelée dans l'expression de cette suite
         return false;
     }
 
     isValid = checkCalledSeqsValidity(firstValsExpr);
     if(!isValid)
     {
-        errorMessageLabel->setText(tr("Une suite invalide ou non définie est appelée dans les premiers termes saisis."));
+        errorMessageLabel->setText(tr("The entered first values use an undefined or an invalid sequence."));
+        //Une suite invalide ou non définie est appelée dans les premiers termes saisis.
         return false;
     }
 

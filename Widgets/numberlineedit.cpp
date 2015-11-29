@@ -79,5 +79,5 @@ void NumberLineEdit::checkVal()
         valid = true;
         emit newVal(num);
     }
-    else setPalette(invalidPalette);
+    else setPalette(invalidPalette);    
 }
