@@ -61,10 +61,7 @@ protected slots:
     void showPrintWin();
     void showImageSaveWin();
     void showAboutWin();
-    
-private slots :
-    void resizeEvent(QResizeEvent* event);
-    void moveEvent(QMoveEvent* event);
+    void showAboutQtWin();
     
 private:
 

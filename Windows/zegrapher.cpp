@@ -55,6 +55,7 @@ baseName("mainwindow_geometry/")
 
     makeConnects();
     
+    /* Restore geometry */
     if(settings.allKeys().contains(baseName + "x"))
     {
         setGeometry(
@@ -85,6 +86,9 @@ void MainWindow::createMenus()
 
     QAction *showAboutWinAction = menuHelp->addAction(tr("About..."));
     connect(showAboutWinAction, SIGNAL(triggered()), this, SLOT(showAboutWin()));
+    
+    QAction *showAboutQtWinAction = menuHelp->addAction(tr("About Qt"));
+    connect(showAboutQtWinAction, SIGNAL(triggered()), this, SLOT(showAboutQtWin()));
 
     QAction *showPrintWinAction = menuFile->addAction(QIcon(":/icons/print.png"), tr("Print..."));
     showPrintWinAction->setShortcut(QKeySequence("Ctrl+P"));
@@ -210,6 +214,11 @@ void MainWindow::showAboutWin()
     aboutWin->activateWindow();
 }
 
+void MainWindow::showAboutQtWin()
+{
+    QMessageBox::aboutQt(this);
+}
+
 void MainWindow::closeEvent(QCloseEvent *evenement)
 {
     rangeWin->close();
@@ -231,6 +240,12 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 
 MainWindow::~MainWindow()
 {   
+    /* Save the window geometry */
+    settings.setValue(baseName + "h", size().height());
+    settings.setValue(baseName + "w", size().width());
+    settings.setValue(baseName + "x", pos().x());
+    settings.setValue(baseName + "y", pos().y());
+    
     delete valuesWin;
     delete scene;   
     delete rangeWin;
@@ -240,16 +255,4 @@ MainWindow::~MainWindow()
     delete imageExportWin;
 }
 
-void MainWindow::resizeEvent(QResizeEvent* event)
-{
-    
-   settings.setValue(baseName + "h", event->size().height());
-   settings.setValue(baseName + "w", event->size().width());
-}
-
-void MainWindow::moveEvent(QMoveEvent* event)
-{
-   settings.setValue(baseName + "x", event->pos().x());
-   settings.setValue(baseName + "y", event->pos().y());
-}  
 
