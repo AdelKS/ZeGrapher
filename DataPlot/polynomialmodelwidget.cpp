@@ -27,7 +27,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     ui->setupUi(this);
 
     abscissa = xname;
-    ordinate = yname; //of course the abscissa and ordinate would mean the polar angle and radius respectively
+    ordinate = yname; //the abscissa and ordinate would mean the polar angle and radius respectively
     updateDescriptionText();
 
     polar = pol;

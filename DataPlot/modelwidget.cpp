@@ -24,10 +24,10 @@
 ModelWidget::ModelWidget(const QList<Point> &dat, Information *info, bool isPolar, QString xname, QString yname, QWidget *parent) : QFrame(parent)
 {
     layout = new QVBoxLayout(this);
-    layout->setMargin(0);
+    layout->setMargin(0);    
     setLayout(layout);
 
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    setMaximumWidth(400);
 
     abscissa = xname;
     ordinate = yname;
@@ -95,7 +95,7 @@ void ModelWidget::displaySelectedModel(ModelType model)
   if(model == PolynomialModel)
   {
         polynomialModel = new PolynomialModelWidget(data, information, abscissa, ordinate, polar);
-        layout->addWidget(polynomialModel);
+        layout->addWidget(polynomialModel);        
         currentState = PolynomialWidget;
 
         connect(polynomialModel, SIGNAL(removeMe()), this, SLOT(emitRemoveMeSignal()));

@@ -243,6 +243,12 @@
          </property>
          <item>
           <widget class="QScrollArea" name="scrollArea_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
            </property>
@@ -252,8 +258,14 @@
            <property name="horizontalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
            </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustToContents</enum>
+           </property>
            <property name="widgetResizable">
             <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
            <widget class="QWidget" name="scrollAreaWidgetContents_2">
             <property name="geometry">
@@ -261,10 +273,25 @@
               <x>0</x>
               <y>0</y>
               <width>416</width>
-              <height>444</height>
+              <height>446</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMinimumSize</enum>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <layout class="QVBoxLayout" name="modelsLayout"/>
              </item>

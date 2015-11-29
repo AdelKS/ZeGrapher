@@ -1,4 +1,3 @@
-Recalculate all the sequences when one of them is modified or make a more intelligent approach to the bug
 link to Qt in about
 print and save : always use the same order between height and width
 Add/update some french translations the .ts file

@@ -24,7 +24,7 @@
 
 ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKeepTracksButton) : QGroupBox(), treeCreator(NORMAL_EXPR)
 {
-    setTitle(tr("Settings of ") + parName + " :");
+    setTitle(tr("Adjustments for ") + parName + " :");
     keepTracksButtonAvailable = withKeepTracksButton;
 
     defaultRange.start = 0;

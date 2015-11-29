@@ -56,40 +56,28 @@ SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) : treeCre
 }
 
 bool SeqCalculator::validateFirstValsExpr(QString expr)
-{
-    if(firstValsExpr != expr)
-    {
-        firstValsExpr = expr;
-        areFirstValsValidated = validateSeqFirstValsTrees();
-        seqValues.clear();
-        drawsNum = 1;
+{  
+    firstValsExpr = expr;
+    areFirstValsValidated = validateSeqFirstValsTrees();
+    seqValues.clear();
+    drawsNum = 1;
 
-        if(!areFirstValsValidated)
-        {
-            errorMessageLabel->setText(tr("NB: First values must be separated by ';'"));
-        }
-
-    }
+    if(!areFirstValsValidated)
+        errorMessageLabel->setText(tr("NB: First values must be separated by ';'"));
 
     return areFirstValsValidated;
 }
 
 bool SeqCalculator::validateSeqExpr(QString expr)
 {
-    Q_UNUSED(errorMessageLabel);
+    expression = expr;
+    drawsNum = 1;
+    seqValues.clear();
 
-    if(expr != expression)
-    {       
-        expression = expr;
-        drawsNum = 1;
-        seqValues.clear();
+    if(seqTree != NULL)
+        treeCreator.deleteFastTree(seqTree);
 
-        if(seqTree != NULL)
-            treeCreator.deleteFastTree(seqTree);
-
-        seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);       
-
-    }
+    seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);
 
     return isExprValidated;
 }

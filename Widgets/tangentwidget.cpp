@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 
-
 #include "Widgets/tangentwidget.h"
 
 TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list)
@@ -89,7 +88,7 @@ void TangentWidget::addWidgets()
 
     for(int i = 0 ; i < funcNames.size(); i++){functionsComboBox->addItem(funcNames[i]);}
 
-    QLabel *label2 = new QLabel(tr("at:  a ="));
+    QLabel *label2 = new QLabel(tr("at:  x ="));
 
     tangentPos = new QLineEdit;
     tangentPos->setMaximumSize(80,25);
@@ -151,7 +150,7 @@ void TangentWidget::addWidgets()
     connect(kValueLineEdit, SIGNAL(textChanged(QString)), this, SLOT(kValueLineEdited()));
     connect(kValueLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
-    kTextLabel = new QLabel(tr("For k ="));
+    kTextLabel = new QLabel(tr("with k ="));
     kTextLabel->setMaximumHeight(25);
     kTextLabel->setHidden(!funcWidgets[0]->isFuncParametric());
 
