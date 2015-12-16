@@ -211,7 +211,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
 
         for(int pos = 0; pos < end; pos++)
         {
-            y1 = funcVals->at(i)[draw][pos];
+            y1 = (*funcVals)[i][draw][pos];
 
             if(!isnan(y1) && !isinf(y1))
             {

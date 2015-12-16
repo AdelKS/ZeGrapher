@@ -102,6 +102,8 @@ public slots:
     void setOrthonormal(bool state);
     void setOptions(Options opt);
 
+protected:
+
     QList<QList<QPointF> > data;
     QList<DataStyle> dataStyle;
 
