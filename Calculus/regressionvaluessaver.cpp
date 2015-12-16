@@ -27,12 +27,12 @@
 
 using namespace std;
 
-RegressionValuesSaver::RegressionValuesSaver(Regression *reg, Options opt, GraphRange range, Point graphUnits)
+RegressionValuesSaver::RegressionValuesSaver(Regression *reg, double pixStep, GraphRange range, Point graphUnits)
 {
     xUnit = graphUnits.x;
     yUnit = graphUnits.y;
     regression = reg;
-    options = opt;
+    pixelStep = pixStep;
     graphRange = range;
 }
 
@@ -45,8 +45,7 @@ void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit, Grap
 {   
     graphRange = range;
     xUnit = new_xUnit;
-    yUnit = new_yUnit;
-    pixelStep = options.distanceBetweenPoints;
+    yUnit = new_yUnit;   
     xUnitStep = pixelStep / xUnit;
 
     curve.clear();
@@ -67,9 +66,9 @@ QColor RegressionValuesSaver::getColor()
     return regression->getColor();
 }
 
-void RegressionValuesSaver::setOptions(Options opt)
+void RegressionValuesSaver::setPixelStep(double dist)
 {
-    options = opt;
+    pixelStep = dist;
     recalculate();
 }
 

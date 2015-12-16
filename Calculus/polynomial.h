@@ -39,6 +39,9 @@ public:
     Polynomial(QList<double> coefs);
     Polynomial();    
 
+    void translateX(double Dx);
+    void translateY(double Dy);
+    void expand(double coef);
     void resetToZero();
 
     double eval(double x) const;

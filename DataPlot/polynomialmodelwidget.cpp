@@ -46,7 +46,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     regValSaver = new RegressionValuesSaver(regression, information->getOptions(), information->getRange(), information->getUnits());
 
     connect(regression, SIGNAL(regressionModified()), regValSaver, SLOT(recalculate()));
-    connect(regression, SIGNAL(regressionModified()), information, SIGNAL(dataUpdated()));
+    connect(regression, SIGNAL(regressionModified()), information, SIGNAL(dataUpdated()));   
 
     information->addDataRegression(regValSaver);
 

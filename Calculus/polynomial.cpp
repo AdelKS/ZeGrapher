@@ -18,9 +18,7 @@
 **
 ****************************************************************************/
 
-
-
-
+#include <boost/math/special_functions/binomial.hpp>
 #include "polynomial.h"
 
 Polynomial::Polynomial(const Polynomial &pol) : coefficients(pol.coefficients)
@@ -68,6 +66,46 @@ double Polynomial::eval(double x) const
     }
 
     return res;
+}
+
+void Polynomial::translateX(double Dx)
+{
+    Dx = -Dx;
+
+    QList<double> newCoefs;
+
+    QList<double> DxPowTable;
+    DxPowTable.reserve(coefficients.size());
+    double DxPow = 1;
+
+    for(int i = 0 ; i < coefficients.size() ; i++)
+    {
+        newCoefs << 0;
+        DxPowTable << DxPow;
+        DxPow *= Dx;
+    }
+
+    for(int n = 0 ; n < coefficients.size() ; n++)
+        for(int k = 0 ; k <= n ; k++)
+            newCoefs[k] += coefficients[n] * boost::math::binomial_coefficient<double>(n,k) * DxPowTable[n-k];
+
+    coefficients = newCoefs;
+}
+
+void Polynomial::translateY(double Dy)
+{
+    coefficients[0] += Dy;
+}
+
+void Polynomial::expand(double coef)
+{
+    double multCoef = 1;
+
+    for(double &c : coefficients)
+    {
+        c *= multCoef;
+        multCoef /= coef;
+    }
 }
 
 double Polynomial::getCoef(int deg) const

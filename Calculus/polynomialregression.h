@@ -57,10 +57,13 @@ public slots:
 
 
 protected:
+    void updateNormalisedData();
+    void updateMinMax();
     void updateOrthonormalBasis();
     void updateDrawRange();
     void recalculateOrthonormalBasis();
     void calculateRegressionPolynomials();
+    void normaliseData();
 
     int regressionDegree;
 
@@ -69,8 +72,9 @@ protected:
 
     Polynomial continuousPol, discretePol;
     ApproxMethod approxMethod;
-    double xmin, xmax; //integration segment for dot product: integrate between min and max    
+    double xmin, xmax, xamp, ymin, ymax, yamp; //integration segment for dot product: integrate between min and max
     QList<Polynomial> orthonormalBasisDiscrete, orthonormalBasisContinuous;
+    QList<Point> normalisedData;
 };
 
 double discreteScalarProduct(const QList<Point> &data, const Polynomial &P);

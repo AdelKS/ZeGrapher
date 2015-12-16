@@ -192,7 +192,16 @@ void Information::setOrthonormal(bool state)
 
 void Information::setOptions(Options opt)
 {
+    auto oldParameters = parameters;
+
     parameters = opt;
+
+    if(oldParameters.distanceBetweenPoints != parameters.distanceBetweenPoints)
+    {
+        for(auto reg : regressions)
+            reg->setPixelStep(parameters.distanceBetweenPoints);
+
+    }
 
     emit updateOccured();
 }

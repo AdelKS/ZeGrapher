@@ -10,7 +10,8 @@ QT += widgets printsupport webkitwidgets
 TARGET = ZeGrapher
 TEMPLATE = app
 TRANSLATIONS = ZeGrapher_fr.ts
-CONFIG += separate_debug_info
+CONFIG += separate_debug_info c++11
+LIBS += -lboost_system
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

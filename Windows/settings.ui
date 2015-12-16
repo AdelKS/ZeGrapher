@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Options</string>
+   <string>Settings</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../ressources.qrc">

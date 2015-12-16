@@ -62,7 +62,7 @@ protected slots:
     void updateRangeOption();
     void updatePolynomialCoefs(QList<double> coefs);
     void updateManualRangeFields();
-    void manualRangeEdited();
+    void manualRangeEdited();   
 
 protected:
     void addWidgetsToUI();

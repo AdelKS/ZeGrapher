@@ -93,16 +93,14 @@ signals:
     void drawStateUpdateOccured();
     void animationUpdate();
     void regressionAdded();
-    void regressionRemoved();
+    void regressionRemoved();    
 
 public slots:
 
     void setRange(const GraphRange &newWindow);
     void setGridState(bool etat);
     void setOrthonormal(bool state);
-    void setOptions(Options opt);  
-
-private:
+    void setOptions(Options opt);
 
     QList<QList<QPointF> > data;
     QList<DataStyle> dataStyle;

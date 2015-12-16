@@ -35,10 +35,10 @@ class RegressionValuesSaver : public QObject
     Q_OBJECT
 
 public:
-    RegressionValuesSaver(Regression *reg, Options opt, GraphRange range, Point graphUnits);
+    RegressionValuesSaver(Regression *reg, double pixStep, GraphRange range, Point graphUnits);
     ~RegressionValuesSaver();
 
-    void setOptions(Options opt);
+    void setPixelStep(double distBetweenPts);
     bool getDrawState();
     QColor getColor();
 
@@ -57,8 +57,7 @@ protected:
 
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
-    GraphRange graphRange;
-    Options options;
+    GraphRange graphRange;    
     Range drawnRange;
 
     QPolygonF curve;

@@ -61,8 +61,9 @@ void PolynomialRegression::setData(const QList<Point> &data)
     dataPoints = data;
     qSort(dataPoints);
 
-    xmin = dataPoints.first().x;
-    xmax = dataPoints.last().x;
+    updateMinMax();
+
+    updateNormalisedData();
 
     updateDrawRange();
 
@@ -70,6 +71,40 @@ void PolynomialRegression::setData(const QList<Point> &data)
     calculateRegressionPolynomials();
 
     emit regressionModified();
+}
+
+void PolynomialRegression::updateNormalisedData()
+{
+    normalisedData.clear();
+    normalisedData.reserve(dataPoints.size());
+
+    Point pt;
+    for(auto point : dataPoints)
+    {
+        pt.x = 2*(point.x - xmin)/xamp - 1;
+        pt.y = 2*(point.y - ymin)/yamp - 1;
+
+        normalisedData << pt;
+    }
+
+}
+
+void PolynomialRegression::updateMinMax()
+{
+    xmin = dataPoints.first().x;
+    xmax = dataPoints.last().x;
+    xamp = xmax - xmin;
+
+    ymin = ymax = dataPoints.first().y;
+
+    for(auto point : dataPoints)
+    {
+        if(point.y < ymin)
+            ymin = point.y;
+        else if(point.y > ymax)
+            ymax = point.y;
+    }
+    yamp = ymax - ymin;
 }
 
 void PolynomialRegression::updateDrawRange()
@@ -118,10 +153,25 @@ void PolynomialRegression::calculateRegressionPolynomials()
     discretePol.resetToZero();
 
     for(int n = 0 ; n < orthonormalBasisContinuous.size() && n <= regressionDegree ; n++)
-         continuousPol += continuousScalarProduct(dataPoints, orthonormalBasisContinuous.at(n)) * orthonormalBasisContinuous.at(n);
+         continuousPol += continuousScalarProduct(normalisedData, orthonormalBasisContinuous.at(n)) * orthonormalBasisContinuous.at(n);
     for(int n = 0 ; n < orthonormalBasisDiscrete.size() && n <= regressionDegree ; n++)
-        discretePol += discreteScalarProduct(dataPoints, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
+        discretePol += discreteScalarProduct(normalisedData, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
 
+    continuousPol.translateX(1);
+    continuousPol.expand(xamp/2);    
+    continuousPol.translateX(xmin);    
+
+    continuousPol.translateY(1);
+    continuousPol *= yamp/2;
+    continuousPol.translateY(ymin);
+
+    discretePol.translateX(1);
+    discretePol.expand(xamp/2);
+    discretePol.translateX(xmin);
+
+    discretePol.translateY(1);
+    discretePol *= yamp/2;
+    discretePol.translateY(ymin);
 
     if(approxMethod == ApproachPoints)
         emit coefsUpdated(discretePol.getCoefs());
@@ -166,7 +216,7 @@ void PolynomialRegression::updateOrthonormalBasis()
         if(orthonormalBasisContinuous.isEmpty())
         {
             Polynomial P(0);
-            P *= 1/continuousNorm(P, xmin, xmax);
+            P *= 1/continuousNorm(P, -1, 1);
             orthonormalBasisContinuous << P;
         }
 
@@ -175,9 +225,9 @@ void PolynomialRegression::updateOrthonormalBasis()
             Polynomial P(n);
 
             for(int i = 0 ; i < orthonormalBasisContinuous.size(); i++)
-                P -= continuousScalarProduct(P, orthonormalBasisContinuous.at(i), xmin, xmax) * orthonormalBasisContinuous.at(i);
+                P -= continuousScalarProduct(P, orthonormalBasisContinuous.at(i), -1, 1) * orthonormalBasisContinuous.at(i);
 
-            P *= 1/continuousNorm(P, xmin, xmax);
+            P *= 1/continuousNorm(P, -1, 1);
             orthonormalBasisContinuous << P;
 
         }
@@ -187,7 +237,7 @@ void PolynomialRegression::updateOrthonormalBasis()
         if(orthonormalBasisDiscrete.isEmpty())
         {
             Polynomial P(0);
-            P *= 1/discreteNorm(P, dataPoints);
+            P *= 1/discreteNorm(P, normalisedData);
             orthonormalBasisDiscrete << P;
         }
 
@@ -196,9 +246,9 @@ void PolynomialRegression::updateOrthonormalBasis()
             Polynomial P(n);
 
             for(int i = 0 ; i < orthonormalBasisDiscrete.size(); i++)
-                P -= discreteScalarProduct(P, orthonormalBasisDiscrete.at(i), dataPoints) * orthonormalBasisDiscrete.at(i);
+                P -= discreteScalarProduct(P, orthonormalBasisDiscrete.at(i), normalisedData) * orthonormalBasisDiscrete.at(i);
 
-            P *= 1/discreteNorm(P, dataPoints);
+            P *= 1/discreteNorm(P, normalisedData);
             orthonormalBasisDiscrete << P;
         }
     }
