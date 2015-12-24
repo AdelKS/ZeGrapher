@@ -38,10 +38,12 @@ ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list) : treeCreator(PAR
 
     QColor color;
     color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
+     validPalette.setColor(QPalette::Base, color);
+    validPalette.setColor(QPalette::Text, Qt::black);
 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
+    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     connect(xLine, SIGNAL(textChanged(QString)), this, SLOT(checkExpr()));
     connect(yLine, SIGNAL(textChanged(QString)), this, SLOT(checkExpr()));

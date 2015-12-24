@@ -42,9 +42,11 @@ ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKee
     QColor color;
     color.setNamedColor(VALID_COLOR);
     validPalette.setColor(QPalette::Base, color);
+    validPalette.setColor(QPalette::Text, Qt::black);
 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
+    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     if(withAnimateButton)
     {

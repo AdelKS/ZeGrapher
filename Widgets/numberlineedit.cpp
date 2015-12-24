@@ -25,9 +25,11 @@ NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) :
     QColor color;
     color.setNamedColor(VALID_COLOR);
     validPalette.setColor(QPalette::Base, color);
+    validPalette.setColor(QPalette::Text, Qt::black);
 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
+    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     valid = false;
     value = NAN;

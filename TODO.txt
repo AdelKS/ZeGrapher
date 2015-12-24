@@ -1,2 +1,4 @@
 Add/update some french translations the .ts file
 Test the new data module to find bugs.
+Switch to boost vars in regression for better precision ?
+Save window's position instead of calculate show position

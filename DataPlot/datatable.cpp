@@ -35,9 +35,11 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
     QColor color;
     color.setNamedColor(VALID_COLOR);
     validPalette.setColor(QPalette::Base, color);
+    validPalette.setColor(QPalette::Text, Qt::black);
 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
+    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     tableWidget = new QTableWidget(rowCount,columnCount);
 

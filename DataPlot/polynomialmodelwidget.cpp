@@ -127,8 +127,8 @@ void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
     {
         if(coefs.size() > 4)
         {
-            genericExpr += "... + ";
-            genericExpr += "a<sub>" + QString::number(coefs.size()-2) + "</sub> X<sup>" + QString::number(coefs.size()-2) + "</sup> + ";
+            genericExpr += " + ... + ";
+            genericExpr += "a<sub>" + QString::number(coefs.size()-2) + "</sub> X<sup>" + QString::number(coefs.size()-2) + "</sup> ";
         }
 
         genericExpr += "+ a<sub>" + QString::number(coefs.size()-1) + "</sub> X<sup>" + QString::number(coefs.size()-1) + "</sup>";

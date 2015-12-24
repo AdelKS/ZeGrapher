@@ -213,7 +213,7 @@ void GraphDraw::drawOneFunction(int i, int width, int curveNum)
         {
             y1 = (*funcVals)[i][draw][pos];
 
-            if(!isnan(y1) && !isinf(y1))
+            if(!std::isnan(y1) && !std::isinf(y1))
             {
                 if(y1 < graphRange.Ymin || y1 > graphRange.Ymax)
                 {

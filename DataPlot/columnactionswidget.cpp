@@ -38,9 +38,12 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     QColor color;
     color.setNamedColor(VALID_COLOR);
     validPalette.setColor(QPalette::Base, color);
+    validPalette.setColor(QPalette::Text, Qt::black);
+
 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
+    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     signalMapper = new QSignalMapper(this);
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));   
