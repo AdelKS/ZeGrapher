@@ -1,4 +1,5 @@
 Add/update some french translations the .ts file
 Test the new data module to find bugs.
-Switch to boost vars in regression for better precision ?
+Switch to boost vars in regression for better precision ? Or limit the maximum degree for polynomials
 Save window's position instead of calculate show position
+Grab keyboard input from the table in dataplot to exectude deletions and to move the focus to the next cell when the "return" key is pressed.

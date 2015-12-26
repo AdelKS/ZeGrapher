@@ -32,15 +32,6 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
     calculator = new ExprCalculator(false, information->getFuncsList());
     treeCreator = new TreeCreator(DATA_TABLE_EXPR);
 
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
-
     tableWidget = new QTableWidget(rowCount,columnCount);
 
     tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -68,6 +59,9 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
             values[col] << NAN ;
         }
     }
+
+    backgroundColor = palette().base().color();
+    textColor = palette().text().color();
 
     disableChecking = false;
 
@@ -231,12 +225,14 @@ void DataTable::sortColumnSwapCells(int col, bool ascending)
         if(std::isnan(values[col][row]))
         {
             tableWidget->item(row,col)->setText("");
-            tableWidget->item(row,col)->setBackgroundColor(Qt::white);
+            tableWidget->item(row,col)->setBackgroundColor(backgroundColor);
+            tableWidget->item(row,col)->setTextColor(textColor);
         }
         else
         {
             tableWidget->item(row,col)->setText(QString::number(values[col][row], 'g', MAX_DOUBLE_PREC));
             tableWidget->item(row,col)->setBackgroundColor(VALID_COLOR);
+            tableWidget->item(row,col)->setTextColor(Qt::black);
         }
     }
 
@@ -287,12 +283,14 @@ void DataTable::sortColumnSwapRows(int column, bool ascending)
             if(std::isnan(values[col][row]))
             {
                 tableWidget->item(row,col)->setText("");
-                tableWidget->item(row,col)->setBackgroundColor(Qt::white);
+                tableWidget->item(row,col)->setBackgroundColor(backgroundColor);
+                tableWidget->item(row,col)->setTextColor(textColor);
             }
             else
             {
                 tableWidget->item(row,col)->setText(QString::number(values[col][row], 'g', MAX_DOUBLE_PREC));
                 tableWidget->item(row,col)->setBackgroundColor(VALID_COLOR);
+                tableWidget->item(row,col)->setTextColor(Qt::black);
             }
         }
     }
@@ -323,7 +321,8 @@ void DataTable::fillColumnFromRange(int col, Range range)
 
         item = tableWidget->item(row, col);
         item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
-        item->setBackgroundColor(VALID_COLOR);        
+        item->setBackgroundColor(VALID_COLOR);
+        item->setTextColor(Qt::black);
 
         if(tableWidget->rowCount() == row+1)
             addRow();
@@ -366,12 +365,14 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
         if(std::isnan(val))
         {
             item->setText("");
-            item->setBackgroundColor(Qt::white);
+            item->setBackgroundColor(backgroundColor);
+            item->setTextColor(textColor);
         }
         else
         {
             item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
             item->setBackgroundColor(VALID_COLOR);
+            item->setTextColor(Qt::black);
         }
 
     }
@@ -412,7 +413,8 @@ void DataTable::checkCell(QTableWidgetItem *item)
     QString expr = item->text();
     if(expr.isEmpty())
     {
-        item->setBackgroundColor(Qt::white);
+        item->setBackgroundColor(backgroundColor);
+        item->setTextColor(textColor);
         values[item->column()][item->row()] = NAN;
     }
     else
@@ -423,6 +425,8 @@ void DataTable::checkCell(QTableWidgetItem *item)
         if(ok)
         {
             item->setBackgroundColor(VALID_COLOR);
+            item->setTextColor(Qt::black);
+
             values[item->column()][item->row()] = val;
             disableChecking = true;
             item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
@@ -431,6 +435,8 @@ void DataTable::checkCell(QTableWidgetItem *item)
         else
         {
             item->setBackgroundColor(INVALID_COLOR);
+            item->setTextColor(Qt::black);
+
             values[item->column()][item->row()] = NAN;
         }
     }

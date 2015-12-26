@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>339</width>
-    <height>267</height>
+    <height>281</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -63,7 +63,10 @@
        <item>
         <widget class="QLabel" name="description">
          <property name="text">
-          <string/>
+          <string>The fitting polynomial is calculated by the least squares method</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -136,8 +139,11 @@
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QRadioButton" name="approachPoints">
+            <property name="toolTip">
+             <string/>
+            </property>
             <property name="text">
-             <string>Close to the points</string>
+             <string>C&amp;lose to the points</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -147,7 +153,7 @@
           <item>
            <widget class="QRadioButton" name="approachSegments">
             <property name="text">
-             <string>Close to the segments</string>
+             <string>Close to the seg&amp;ments</string>
             </property>
            </widget>
           </item>
@@ -238,7 +244,7 @@
             <item>
              <widget class="QRadioButton" name="relativeExtrapolation">
               <property name="text">
-               <string>Relative extrapolation of </string>
+               <string>Relative e&amp;xtrapolation of </string>
               </property>
              </widget>
             </item>
@@ -277,7 +283,7 @@
             <item>
              <widget class="QRadioButton" name="manualInterval">
               <property name="text">
-               <string>Définition manuelle:</string>
+               <string>Définition &amp;manuelle:</string>
               </property>
              </widget>
             </item>
@@ -324,7 +330,7 @@
             <x>0</x>
             <y>0</y>
             <width>313</width>
-            <height>183</height>
+            <height>198</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_7">

@@ -51,16 +51,10 @@ protected:
     void makeConnects();
     void createMenus();
     void createZoomWidgets();
+    void loadWindowSavedGeomtries();
+    void saveWindowsGeometry();
 
 protected slots:
-    void showFuncsWin();
-    void showRangeWin();
-    void showSettingsWin();
-    void showValuesWin();
-    void showKeyboard();
-    void showPrintWin();
-    void showImageSaveWin();
-    void showAboutWin();
     void showAboutQtWin();
     
 private:
@@ -79,7 +73,6 @@ private:
     QAction *gridButton;
     //ImagePreview *winImageScene;
     //PrintPreview *winPrintScene;
-    QString baseName;
     QSettings settings;
     
 };

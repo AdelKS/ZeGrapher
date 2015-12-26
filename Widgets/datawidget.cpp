@@ -71,7 +71,15 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     connect(removeButton, SIGNAL(released()), this, SLOT(emitRemoveSignal()));
     ui->mainLayout->addWidget(removeButton);
 
+    QSettings settings;
     dataWindow = new DataWindow(info, num);
+
+    if(settings.contains("data_window/shrinked_actions_widget"))
+        if(settings.value("data_window/shrinked_actions_widget").toBool())
+            dataWindow->shrinkActionsWidgetContainer();
+    if(settings.contains("data_window/geometry"))
+        dataWindow->setGeometry(settings.value("data_window/geometry").value<QRect>());
+
     connect(ui->showDataWindow, SIGNAL(released()), dataWindow, SLOT(show()));
 
     connect(colorButton, SIGNAL(colorChanged(QColor)), this, SLOT(setColor(QColor)));
@@ -160,5 +168,9 @@ void DataWidget::emitRemoveSignal()
 
 DataWidget::~DataWidget()
 {
+    QSettings settings;
+    settings.setValue("data_window/geometry", dataWindow->geometry());
+    settings.setValue("data_window/shrinked_actions_widget", dataWindow->getRetractableWidgetState() == WIDGET_RETRACTED);
+
     delete dataWindow;
 }

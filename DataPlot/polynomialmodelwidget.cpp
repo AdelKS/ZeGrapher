@@ -27,8 +27,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     ui->setupUi(this);
 
     abscissa = xname;
-    ordinate = yname; //the abscissa and ordinate would mean the polar angle and radius respectively
-    updateDescriptionText();
+    ordinate = yname; //the abscissa and ordinate would mean the polar angle and radius respectively   
 
     polar = pol;
     data = dat;
@@ -236,23 +235,16 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(removeButton, SIGNAL(released()), this, SIGNAL(removeMe()));
 }
 
-void PolynomialModelWidget::updateDescriptionText()
-{
-    ui->description->setText(tr("Evaluate the best polynomial P who can approach the equation:") + "\n" + " \" " + ordinate + " = " + "P( " + abscissa + " ) \" ");
-}
-
 void PolynomialModelWidget::setAbscissaName(QString name)
 {
     abscissa = name;
-    regression->setAbscissaName(name);
-    updateDescriptionText();
+    regression->setAbscissaName(name);  
 }
 
 void PolynomialModelWidget::setOrdinateName(QString name)
 {
     ordinate = name;
-    regression->setOrdinateName(name);
-    updateDescriptionText();
+    regression->setOrdinateName(name);   
 }
 
 void PolynomialModelWidget::setData(const QList<Point> &dat)

@@ -175,6 +175,21 @@ DataWindow::DataWindow(Information *info, int ind)
 
 }
 
+void DataWindow::shrinkActionsWidgetContainer()
+{
+    widgetState = WIDGET_RETRACTED;
+    ui->actionsContainerWidget->setMaximumWidth(0);
+    ui->retractionButton->setIcon(QIcon(":/icons/arrow_left.png"));
+    animation_width = 360;
+    //taken from datawindow.ui's actionsContainerWidget. It's not the best way to do it, but it's the first thing that came to my mind...
+
+}
+
+RetractableWidgetState DataWindow::getRetractableWidgetState()
+{
+    return widgetState;
+}
+
 void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
 {
     Q_UNUSED(logicalIndex);

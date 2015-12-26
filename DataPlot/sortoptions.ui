@@ -127,7 +127,7 @@
          <item>
           <widget class="QRadioButton" name="swapRows">
            <property name="text">
-            <string>Lines</string>
+            <string>&amp;Lines</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -140,7 +140,7 @@
          <item>
           <widget class="QRadioButton" name="swapCells">
            <property name="text">
-            <string>Only column cells</string>
+            <string>Colu&amp;mn's cells only</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>

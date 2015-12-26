@@ -40,7 +40,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>25</width>
+       <width>15</width>
        <height>16777215</height>
       </size>
      </property>
@@ -56,8 +56,8 @@
      </property>
      <property name="iconSize">
       <size>
-       <width>25</width>
-       <height>25</height>
+       <width>18</width>
+       <height>18</height>
       </size>
      </property>
     </widget>
@@ -78,7 +78,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>430</width>
+       <width>360</width>
        <height>16777215</height>
       </size>
      </property>
@@ -272,8 +272,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>416</width>
-              <height>446</height>
+              <width>348</width>
+              <height>425</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -293,7 +293,21 @@
               <number>0</number>
              </property>
              <item>
-              <layout class="QVBoxLayout" name="modelsLayout"/>
+              <widget class="QWidget" name="modelsContainer" native="true">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>350</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <layout class="QVBoxLayout" name="modelsLayout"/>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="widget_2" native="true">
@@ -358,7 +372,7 @@
              <item>
               <widget class="QWidget" name="widget_4" native="true">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                  <horstretch>0</horstretch>
                  <verstretch>10</verstretch>
                 </sizepolicy>
@@ -543,7 +557,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>568</width>
+           <width>648</width>
            <height>523</height>
           </rect>
          </property>

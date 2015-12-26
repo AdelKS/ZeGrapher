@@ -22,15 +22,14 @@
 
 #include "Windows/zegrapher.h"
 
-MainWindow::MainWindow() :
-baseName("mainwindow_geometry/")
+MainWindow::MainWindow()
 {      
     information = new Information();
 
     settingsWin = new Settings(information);
     rangeWin = new RangeAdjustments(information);
     inputWin = new MathObjectsInput(information);
-    aboutWin = new about();
+    aboutWin = new about(this);
     imageExportWin = new ImageSave(information);
     valuesWin = new Values(information);
     printWin = new Print(information);
@@ -54,16 +53,9 @@ baseName("mainwindow_geometry/")
     imageExportWin->setSize(scene->width(), scene->height());
 
     makeConnects();
-    
-    /* Restore geometry */
-    if(settings.allKeys().contains(baseName + "x"))
-    {
-        setGeometry(
-            settings.value(baseName + "x").toInt(),
-            settings.value(baseName + "y").toInt(),
-            settings.value(baseName + "w").toInt(),
-            settings.value(baseName + "h").toInt());
-    }
+
+    loadWindowSavedGeomtries();
+
 }
 
 void MainWindow::createMenus()
@@ -85,22 +77,22 @@ void MainWindow::createMenus()
     connect(resetViewAction, SIGNAL(triggered()), rangeWin, SLOT(resetToStandardView()));
 
     QAction *showAboutWinAction = menuHelp->addAction(tr("About..."));
-    connect(showAboutWinAction, SIGNAL(triggered()), this, SLOT(showAboutWin()));
+    connect(showAboutWinAction, SIGNAL(triggered()), aboutWin, SLOT(exec()));
     
     QAction *showAboutQtWinAction = menuHelp->addAction(tr("About Qt"));
     connect(showAboutQtWinAction, SIGNAL(triggered()), this, SLOT(showAboutQtWin()));
 
     QAction *showPrintWinAction = menuFile->addAction(QIcon(":/icons/print.png"), tr("Print..."));
     showPrintWinAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(showPrintWinAction, SIGNAL(triggered()), this, SLOT(showPrintWin()));
+    connect(showPrintWinAction, SIGNAL(triggered()), printWin, SLOT(show()));
 
     QAction *showImageExportWinAction = menuFile->addAction(QIcon(":/icons/saveImage.png"), tr("Image export..."));
     showImageExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
-    connect(showImageExportWinAction, SIGNAL(triggered()), this, SLOT(showImageSaveWin()));
+    connect(showImageExportWinAction, SIGNAL(triggered()), imageExportWin, SLOT(show()));
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
-    connect(showSettingsWinAction, SIGNAL(triggered()), this, SLOT(showSettingsWin()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(show()));
 
     menuFile->addSeparator();
 
@@ -110,19 +102,19 @@ void MainWindow::createMenus()
 
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
-    connect(showInputWinAction, SIGNAL(triggered()), this, SLOT(showFuncsWin()));
+    connect(showInputWinAction, SIGNAL(triggered()), inputWin, SLOT(show()));
 
     QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Range edit"));
     showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));
-    connect(showRangeWinAction, SIGNAL(triggered()), this, SLOT(showRangeWin()));
+    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(show()));
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.png"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
-    connect(showValuesWinAction, SIGNAL(triggered()), this, SLOT(showValuesWin()));
+    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));
 
     QAction *showKeyboardAction = menuWindows->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
     showKeyboardAction->setShortcut(QKeySequence("Ctrl+K"));
-    connect(showKeyboardAction, SIGNAL(triggered()), this, SLOT(showKeyboard()));
+    connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));
 
     QToolBar *toolBar = new QToolBar(tr("Windows and actions"));
     addToolBar(Qt::LeftToolBarArea, toolBar);
@@ -151,67 +143,46 @@ void MainWindow::createMenus()
     showPrintWinAction->setStatusTip(tr("Print, or export in PDF."));
 }
 
+void MainWindow::loadWindowSavedGeomtries()
+{
+    /* Restore geometries */
+    if(settings.contains("main_window/geometry"))
+        setGeometry(settings.value("main_window/geometry").value<QRect>());
+    if(settings.contains("settings_window/geometry"))
+        settingsWin->setGeometry(settings.value("settings_window/geometry").value<QRect>());
+    if(settings.contains("range_window/geometry"))
+        rangeWin->setGeometry(settings.value("range_window/geometry").value<QRect>());
+    if(settings.contains("input_window/geometry"))
+        inputWin->setGeometry(settings.value("input_window/geometry").value<QRect>());
+    if(settings.contains("image_export_window/geometry"))
+        imageExportWin->setGeometry(settings.value("image_export_window/geometry").value<QRect>());
+    if(settings.contains("values_window/geometry"))
+        valuesWin->setGeometry(settings.value("values_window/geometry").value<QRect>());
+    if(settings.contains("print_window/geometry"))
+        printWin->setGeometry(settings.value("print_window/geometry").value<QRect>());
+    if(settings.contains("virtual_keyboard_window/geometry"))
+        keyboard->setGeometry(settings.value("virtual_keyboard_window/geometry").value<QRect>());
+
+}
+
+void MainWindow::saveWindowsGeometry()
+{
+    settings.setValue("main_window/geometry", geometry());
+    settings.setValue("settings_window/geometry", settingsWin->geometry());
+    settings.setValue("range_window/geometry", rangeWin->geometry());
+    settings.setValue("input_window/geometry", inputWin->geometry());
+    settings.setValue("image_export_window/geometry", imageExportWin->geometry());
+    settings.setValue("values_window/geometry", valuesWin->geometry());
+    settings.setValue("print_window/geometry", printWin->geometry());
+    settings.setValue("virtual_keyboard_window/geometry", keyboard->geometry());
+}
+
 
 void MainWindow::makeConnects()
 {   
     connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
     connect(scene, SIGNAL(sizeChanged(int,int)), imageExportWin, SLOT(setSize(int,int)));
-    connect(inputWin, SIGNAL(displayKeyboard()), this, SLOT(showKeyboard()));
-}
-
-void MainWindow::showFuncsWin()
-{
-    inputWin->move(this->pos() - QPoint(inputWin->width(),0));
-    inputWin->show();
-    inputWin->activateWindow();
-}
-
-void MainWindow::showRangeWin()
-{
-    rangeWin->move(this->pos() + QPoint(this->width() + 20,0));
-    rangeWin->show();
-    rangeWin->activateWindow();
-}
-
-void MainWindow::showSettingsWin()
-{
-    settingsWin->move(this->pos() - QPoint(settingsWin->width(),0));
-    settingsWin->show();
-    settingsWin->activateWindow();
-}
-
-void MainWindow::showValuesWin()
-{
-    valuesWin->move(this->pos());
-    valuesWin->show();
-    valuesWin->activateWindow();
-}
-
-void MainWindow::showKeyboard()
-{
-    keyboard->move(inputWin->frameGeometry().bottomLeft());
-    keyboard->show();
-}
-
-void MainWindow::showPrintWin()
-{
-    printWin->move(this->pos());
-    printWin->show();
-    printWin->activateWindow();
-}
-
-void MainWindow::showImageSaveWin()
-{
-    imageExportWin->move(this->pos());
-    imageExportWin->show();
-    imageExportWin->activateWindow();
-}
-
-void MainWindow::showAboutWin()
-{
-    aboutWin->move(this->pos() + QPoint(width()/2, height()/2));
-    aboutWin->show();
-    aboutWin->activateWindow();
+    connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
 }
 
 void MainWindow::showAboutQtWin()
@@ -240,11 +211,8 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 
 MainWindow::~MainWindow()
 {   
-    /* Save the window geometry */
-    settings.setValue(baseName + "h", size().height());
-    settings.setValue(baseName + "w", size().width());
-    settings.setValue(baseName + "x", pos().x());
-    settings.setValue(baseName + "y", pos().y());
+    /* Save windows geometry */
+    saveWindowsGeometry();
     
     delete valuesWin;
     delete scene;   

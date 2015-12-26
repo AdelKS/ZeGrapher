@@ -96,7 +96,7 @@ protected:
                                     row insertion will be implemented */
     QStringList columnNames;
     QRegExp nameValidator;
-    QPalette invalidPalette, validPalette;
+    QColor backgroundColor, textColor;
 
     
 };

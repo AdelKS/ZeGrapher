@@ -65,8 +65,7 @@ protected slots:
     void manualRangeEdited();   
 
 protected:
-    void addWidgetsToUI();
-    void updateDescriptionText();
+    void addWidgetsToUI();    
 
     Ui::PolynomialModelWidget *ui;
     QString abscissa, ordinate;

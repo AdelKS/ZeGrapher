@@ -24,13 +24,12 @@
 #include "ui_about.h"
 
 about::about(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::About)
 {
     ui->setupUi(this);
     ui->logo->setPixmap(QPixmap(":/icons/software.png"));
-    setWindowIcon(QIcon(":/icons/software.png"));
-    setFixedSize(size());
+    setWindowIcon(QIcon(":/icons/software.png"));    
 }
 
 about::~about()
