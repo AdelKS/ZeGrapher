@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>562</width>
-    <height>522</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -123,7 +123,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -843,8 +843,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>268</width>
-        <height>506</height>
+        <width>264</width>
+        <height>537</height>
        </rect>
       </property>
      </widget>
@@ -863,12 +863,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>121</x>
-     <y>363</y>
+     <x>141</x>
+     <y>295</y>
     </hint>
     <hint type="destinationlabel">
-     <x>341</x>
-     <y>362</y>
+     <x>247</x>
+     <y>295</y>
     </hint>
    </hints>
   </connection>
@@ -879,12 +879,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>110</x>
-     <y>180</y>
+     <x>143</x>
+     <y>384</y>
     </hint>
     <hint type="destinationlabel">
-     <x>120</x>
-     <y>196</y>
+     <x>154</x>
+     <y>410</y>
     </hint>
    </hints>
   </connection>
@@ -895,12 +895,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>179</x>
-     <y>174</y>
+     <x>212</x>
+     <y>384</y>
     </hint>
     <hint type="destinationlabel">
-     <x>219</x>
-     <y>195</y>
+     <x>246</x>
+     <y>410</y>
     </hint>
    </hints>
   </connection>
@@ -911,12 +911,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>78</x>
-     <y>235</y>
+     <x>111</x>
+     <y>445</y>
     </hint>
     <hint type="destinationlabel">
-     <x>99</x>
-     <y>257</y>
+     <x>164</x>
+     <y>471</y>
     </hint>
    </hints>
   </connection>
@@ -927,12 +927,44 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>285</x>
-     <y>232</y>
+     <x>247</x>
+     <y>445</y>
     </hint>
     <hint type="destinationlabel">
-     <x>330</x>
-     <y>250</y>
+     <x>246</x>
+     <y>471</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>groupBox_3</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>numPages</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>417</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>164</x>
+     <y>62</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>groupBox_3</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_2</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>64</x>
+     <y>65</y>
     </hint>
    </hints>
   </connection>

@@ -27,25 +27,46 @@
 
 using namespace std;
 
-RegressionValuesSaver::RegressionValuesSaver(Regression *reg, double pixStep, GraphRange range, Point graphUnits)
-{
-    xUnit = graphUnits.x;
-    yUnit = graphUnits.y;
+RegressionValuesSaver::RegressionValuesSaver(double pixStep, Regression *reg)
+{    
     regression = reg;
-    pixelStep = pixStep;
-    graphRange = range;
+    pixelStep = pixStep;   
+}
+
+RegressionValuesSaver::RegressionValuesSaver(const RegressionValuesSaver &other) : QObject()
+{
+    regression = other.regression;
+    pixelStep = other.pixelStep;
+}
+
+RegressionValuesSaver& RegressionValuesSaver::operator=(const RegressionValuesSaver &other)
+{
+    regression = other.regression;
+    pixelStep = other.pixelStep;
+
+    return *this;
+}
+
+Regression* RegressionValuesSaver::getRegression()
+{
+    return regression;
+}
+
+void RegressionValuesSaver::setRegression(Regression *reg)
+{
+    regression = reg;
 }
 
 void RegressionValuesSaver::recalculate()
 {
-    recalculate(xUnit, yUnit, graphRange);
+    recalculate(Point{xUnit, yUnit}, graphRange);
 }
 
-void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit, GraphRange range)
+void RegressionValuesSaver::recalculate(Point graphUnits, GraphRange range)
 {   
     graphRange = range;
-    xUnit = new_xUnit;
-    yUnit = new_yUnit;   
+    xUnit = graphUnits.x;
+    yUnit = graphUnits.y;
     xUnitStep = pixelStep / xUnit;
 
     curve.clear();
@@ -56,23 +77,13 @@ void RegressionValuesSaver::recalculate(double new_xUnit, double new_yUnit, Grap
 
 }
 
-bool RegressionValuesSaver::getDrawState()
-{
-    return regression->getDrawState();
-}
-
-QColor RegressionValuesSaver::getColor()
-{
-    return regression->getColor();
-}
-
 void RegressionValuesSaver::setPixelStep(double dist)
 {
     pixelStep = dist;
     recalculate();
 }
 
-QPolygonF& RegressionValuesSaver::getCurve()
+QPolygonF &RegressionValuesSaver::getCurve()
 {
     return curve;
 }

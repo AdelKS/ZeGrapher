@@ -22,7 +22,7 @@
 
 #include "Widgets/straightlinewidget.h"
 
-StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList)
+StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList, QColor col)
 {
     lineID = id;
     funcCalculators = calcsList;
@@ -31,14 +31,14 @@ StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList
 
     QColor color;
     color.setNamedColor(VALID_COLOR);
-     validPalette.setColor(QPalette::Base, color);
+    validPalette.setColor(QPalette::Base, color);
     validPalette.setColor(QPalette::Text, Qt::black);
 
     color.setNamedColor(INVALID_COLOR);
     invalidPalette.setColor(QPalette::Base, color);
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
-    addWidgets();
+    addWidgets(col);
 }
 
 void StraightLineWidget::changeID(int id)
@@ -67,7 +67,7 @@ void StraightLineWidget::resetPaletteForLineEditC()
     c->setPalette(neutralPalette);
 }
 
-void StraightLineWidget::addWidgets()
+void StraightLineWidget::addWidgets(QColor col)
 {
     drawCheckBox = new QCheckBox;
     drawCheckBox->setChecked(true);
@@ -97,7 +97,7 @@ void StraightLineWidget::addWidgets()
     connect(c, SIGNAL(textChanged(QString)), this, SLOT(resetPaletteForLineEditC()));
     connect(c, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
-    colorButton = new QColorButton();
+    colorButton = new QColorButton(col);
     connect(colorButton, SIGNAL(colorChanged(QColor)), this, SIGNAL(drawStateChanged()));
 
     QPushButton *removeButton = new QPushButton;

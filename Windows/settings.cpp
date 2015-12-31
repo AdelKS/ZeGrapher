@@ -31,19 +31,38 @@ Settings::Settings(Information *info)
 
     setWindowIcon(QIcon(":/icons/settings.png"));
 
+    axesColorButton = new QColorButton(Qt::black);
+    axesColorButton->setFixedSize(25,25);
+    ui->axesColorLayout->addWidget(axesColorButton);
+
+    backgroundColorButton = new QColorButton(Qt::white);
+    backgroundColorButton->setFixedSize(25,25);
+    ui->backgroundColorLayout->addWidget(backgroundColorButton);
+
+    gridColorButton = new QColorButton(Qt::gray);
+    gridColorButton->setFixedSize(25,25);
+    ui->gridColorLayout->addWidget(gridColorButton);
+
+    defaultColorButton = new QColorButton(Qt::black);
+    defaultColorButton->setFixedSize(25,25);
+    ui->defaultColorLayout->addWidget(defaultColorButton);
+
     readSavedSettings();
 
-    parameters.colorBackground = colorFond->getCurrentColor();
-    parameters.colorAxes = colorAxes->getCurrentColor();
-    parameters.colorGrid = colorGrid->getCurrentColor();
+    parameters.backgroundColor = backgroundColorButton->getCurrentColor();
+    parameters.axesColor = axesColorButton->getCurrentColor();
+    parameters.gridColor = gridColorButton->getCurrentColor();
+    parameters.defaultColor = defaultColorButton->getCurrentColor();
 
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->numSize, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->smoothing, SIGNAL(toggled(bool)), this, SLOT(apply()));
-    connect(colorAxes, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
-    connect(colorFond, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
-    connect(colorGrid, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(axesColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(backgroundColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(gridColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(defaultColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+
 
     apply();
 
@@ -53,26 +72,16 @@ void Settings::readSavedSettings()
 {
     QSettings settings;
 
-    colorAxes = new QColorButton(Qt::black);
-    colorAxes->setFixedSize(25,25);
-    ui->axesColorLayout->addWidget(colorAxes);
-
-    colorFond = new QColorButton(Qt::white);
-    colorFond->setFixedSize(25,25);
-    ui->backgroundColorLayout->addWidget(colorFond);
-
-    colorGrid = new QColorButton(Qt::gray);
-    colorGrid->setFixedSize(25,25);
-    ui->gridColorLayout->addWidget(colorGrid);
-
     settings.beginGroup("graph");
 
     if(settings.contains("background_color"))
-        colorFond->setColor(settings.value("background_color").value<QColor>());
+        backgroundColorButton->setColor(settings.value("background_color").value<QColor>());
     if(settings.contains("axes_color"))
-        colorAxes->setColor(settings.value("axes_color").value<QColor>());
+        axesColorButton->setColor(settings.value("axes_color").value<QColor>());
     if(settings.contains("grid_color"))
-        colorGrid->setColor(settings.value("grid_color").value<QColor>());
+        gridColorButton->setColor(settings.value("grid_color").value<QColor>());
+    if(settings.contains("default_color"))
+        defaultColorButton->setColor(settings.value("default_color").value<QColor>());
     if(settings.contains("antiasliasing"))
         ui->smoothing->setChecked(settings.value("antialiasing").toBool());
 
@@ -102,9 +111,11 @@ void Settings::saveSettings()
     QSettings settings;
     settings.beginGroup("graph");
 
-    settings.setValue("background_color", colorFond->getCurrentColor());
-    settings.setValue("axes_color", colorAxes->getCurrentColor());
-    settings.setValue("grid_color", colorGrid->getCurrentColor());
+    settings.setValue("background_color", backgroundColorButton->getCurrentColor());
+    settings.setValue("axes_color", axesColorButton->getCurrentColor());
+    settings.setValue("grid_color", gridColorButton->getCurrentColor());
+    settings.setValue("default_color", defaultColorButton->getCurrentColor());
+
     settings.setValue("antialiasing", ui->smoothing->isChecked());
 
     settings.endGroup();
@@ -120,9 +131,9 @@ void Settings::saveSettings()
 
 void Settings::apply()
 {
-    if(colorAxes->getCurrentColor() == colorFond->getCurrentColor())
+    if(axesColorButton->getCurrentColor() == backgroundColorButton->getCurrentColor())
         QMessageBox::warning(this, tr("Warning"), tr("Axes and background colors are identical"));
-    else if(colorFond->getCurrentColor() == colorGrid->getCurrentColor())
+    else if(backgroundColorButton->getCurrentColor() == gridColorButton->getCurrentColor())
         QMessageBox::warning(this, tr("Warning"), tr("Background and grid colors are identical"));
     else
     {
@@ -131,9 +142,10 @@ void Settings::apply()
         parameters.smoothing = ui->smoothing->isChecked();
         parameters.distanceBetweenPoints = pow(2, 2-dist/2);
         parameters.curvesThickness = ui->thicknessWidget->value();
-        parameters.colorAxes = colorAxes->getCurrentColor();
-        parameters.colorBackground = colorFond->getCurrentColor();
-        parameters.colorGrid = colorGrid->getCurrentColor();
+        parameters.axesColor = axesColorButton->getCurrentColor();
+        parameters.backgroundColor = backgroundColorButton->getCurrentColor();
+        parameters.gridColor = gridColorButton->getCurrentColor();
+        parameters.defaultColor = defaultColorButton->getCurrentColor();
         parameters.numSize = ui->numSize->value();     
 
         information->setOptions(parameters);

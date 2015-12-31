@@ -40,6 +40,10 @@ public:
     explicit GraphDraw(Information *info);
     ~GraphDraw();
 
+protected slots:
+    void addRegSaver(Regression *reg);
+    void delRegSaver(Regression *reg);
+
 protected:
 
     inline void drawRhombus(QPointF pt,double w);
@@ -62,10 +66,13 @@ protected:
     void drawStraightLines();
     void drawStaticParEq();
 
+    void recalculateRegVals();
+
 
     int graphWidth, graphHeight;
     Information *information;
     FuncValuesSaver *funcValuesSaver;    
+    QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
     Options parameters;
     QPolygonF polygon;

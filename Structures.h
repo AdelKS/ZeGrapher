@@ -96,9 +96,10 @@ struct FastTree
 
 struct Options
 {
-    QColor colorAxes;
-    QColor colorBackground;
-    QColor colorGrid;
+    QColor axesColor;
+    QColor backgroundColor;
+    QColor gridColor;
+    QColor defaultColor;
     short curvesThickness;
     short numSize;
     double distanceBetweenPoints;

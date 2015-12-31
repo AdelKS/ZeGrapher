@@ -88,25 +88,24 @@ DataStyle Information::getDataStyle(int index)
     return dataStyle[index];
 }
 
-void Information::recalculateRegressionCurves(double xUnit, double yUnit, GraphRange range)
-{
-    for(int i = 0 ; i < regressions.size() ; i++)
-        regressions[i]->recalculate(xUnit, yUnit, range);
-}
-
-void Information::addDataRegression(RegressionValuesSaver *reg)
+void Information::addDataRegression(Regression *reg)
 {
     regressions << reg;
-    emit regressionAdded();
+    emit regressionAdded(reg);
 }
 
-void Information::removeDataRegression(RegressionValuesSaver *reg)
+void Information::removeDataRegression(Regression *reg)
 {
     regressions.removeOne(reg);
-    emit regressionRemoved();
+    emit regressionRemoved(reg);
 }
 
-RegressionValuesSaver *Information::getRegression(int index)
+QList<Regression*> Information::getRegressions()
+{
+    return regressions;
+}
+
+Regression *Information::getRegression(int index)
 {
     return regressions.at(index);
 }
@@ -192,13 +191,7 @@ void Information::setOrthonormal(bool state)
 
 void Information::setOptions(Options opt)
 {
-    auto oldParameters = parameters;
-
     parameters = opt;
-
-    if(oldParameters.distanceBetweenPoints != parameters.distanceBetweenPoints)
-        for(auto reg : regressions)
-            reg->setPixelStep(parameters.distanceBetweenPoints);
 
     emit updateOccured();
 }

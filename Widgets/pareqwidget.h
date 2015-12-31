@@ -36,7 +36,7 @@ class ParEqWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ParEqWidget(int num, QList<FuncCalculator*> list);
+    explicit ParEqWidget(int num, QList<FuncCalculator*> list, QColor col);
     ~ParEqWidget();
 
     int getCurrentKPos();
@@ -85,8 +85,8 @@ protected slots:
     void loopRoundToggled();    
 
 protected:
-    void createWidgets();
-    void addExprWidgets();
+    void createWidgets(QColor col);
+    void addExprWidgets(QColor col);
     void addTConfWidgets();
     void addKConfWidgets();
     void addAnimationControllWidgets();

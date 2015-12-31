@@ -513,7 +513,7 @@ void MainGraph::directPaint()
     font.setPixelSize(parameters.numSize);
     painter.setFont(font);
 
-    painter.setBrush(QBrush(parameters.colorBackground));
+    painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
     determinerCentreEtUnites();
@@ -524,7 +524,7 @@ void MainGraph::directPaint()
     {
         painter.setBrush(Qt::NoBrush);
         pen.setWidth(1);
-        pen.setColor(parameters.colorAxes);
+        pen.setColor(parameters.axesColor);
         painter.setPen(pen);
         painter.drawRect(rectReel);
     }
@@ -532,7 +532,7 @@ void MainGraph::directPaint()
     if(recalculate)
     {
         funcValuesSaver->calculateAll(uniteX, uniteY);
-        information->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+        recalculateRegVals();
     }
 
     painter.translate(QPointF(centre.x, centre.y));
@@ -619,7 +619,7 @@ void MainGraph::resaveImageBuffer()
     font.setPixelSize(parameters.numSize);
     painter.setFont(font);
 
-    painter.setBrush(QBrush(parameters.colorBackground));
+    painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
     determinerCentreEtUnites();
@@ -629,7 +629,7 @@ void MainGraph::resaveImageBuffer()
     if(recalculate)
     {
         funcValuesSaver->calculateAll(uniteX, uniteY);
-        information->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+        recalculateRegVals();
     }
 
     painter.translate(QPointF(centre.x, centre.y));
@@ -826,8 +826,8 @@ void MainGraph::afficherPoint()
         yTextLabel->setText(customSequences[selectedCurve.id]);
     }
 
-    xTextLabel->setStyleSheet("color: " + parameters.colorAxes.name());
-    yTextLabel->setStyleSheet("color: " + parameters.colorAxes.name());
+    xTextLabel->setStyleSheet("color: " + parameters.axesColor.name());
+    yTextLabel->setStyleSheet("color: " + parameters.axesColor.name());
 
 
 
@@ -1048,7 +1048,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             if(dx != 0)
             {
                 funcValuesSaver->move(dx);
-                information->recalculateRegressionCurves(uniteX, uniteY, graphRange);
+                recalculateRegVals();
             }
 
             moving = true;
@@ -1296,7 +1296,7 @@ void MainGraph::mouseTangentHoverTest(double x, double y)
 void MainGraph::placerGraduations()
 {    
 
-    pen.setColor(parameters.colorAxes);
+    pen.setColor(parameters.axesColor);
     pen.setWidth(1);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -1345,12 +1345,12 @@ void MainGraph::placerGraduations()
         {
             if(start <= Xpos && information->getGridState() && Xpos <= end)
             {
-                pen.setColor(parameters.colorGrid);
+                pen.setColor(parameters.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(Xpos, bas), QPointF(Xpos, haut));
 
-                pen.setColor(parameters.colorAxes);
+                pen.setColor(parameters.axesColor);
                 pen.setWidth(1);
                 painter.setPen(pen);
             }
@@ -1411,12 +1411,12 @@ void MainGraph::placerGraduations()
         {
             if(information->getGridState())
             {
-                pen.setColor(parameters.colorGrid);
+                pen.setColor(parameters.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(bas, Ypos), QPointF(haut, Ypos));
 
-                pen.setColor(parameters.colorAxes);
+                pen.setColor(parameters.axesColor);
                 pen.setWidth(1);
                 painter.setPen(pen);
             }
@@ -1437,7 +1437,7 @@ void MainGraph::drawAxes()
 {
     // *********** remarque: les y sont positifs en dessous de l'axe x, step au dessus !! ************//
     pen.setWidth(1);
-    pen.setColor(parameters.colorAxes);
+    pen.setColor(parameters.axesColor);
     painter.setPen(pen);    
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -1467,7 +1467,7 @@ void MainGraph::drawAxes()
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-6), QPointF(axesIntersec.x+3, axesIntersec.y-4));
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-9), QPointF(axesIntersec.x+3, axesIntersec.y-7));
 
-        pen.setColor(parameters.colorBackground);
+        pen.setColor(parameters.backgroundColor);
         painter.setPen(pen);
 
         painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y-6), QPointF(axesIntersec.x, axesIntersec.y-7));
@@ -1477,7 +1477,7 @@ void MainGraph::drawAxes()
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+6), QPointF(axesIntersec.x+3, axesIntersec.y+4));
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+9), QPointF(axesIntersec.x+3, axesIntersec.y+7));
 
-        pen.setColor(parameters.colorBackground);
+        pen.setColor(parameters.backgroundColor);
         painter.setPen(pen);
 
         painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y+6), QPointF(axesIntersec.x, axesIntersec.y+7));

@@ -35,18 +35,22 @@ class RegressionValuesSaver : public QObject
     Q_OBJECT
 
 public:
-    RegressionValuesSaver(Regression *reg, double pixStep, GraphRange range, Point graphUnits);
+    RegressionValuesSaver(double pixStep, Regression *reg = nullptr);
+    RegressionValuesSaver(const RegressionValuesSaver &other);
     ~RegressionValuesSaver();
 
-    void setPixelStep(double distBetweenPts);
-    bool getDrawState();
-    QColor getColor();
+    RegressionValuesSaver& operator=(const RegressionValuesSaver &other);
 
-    QPolygonF& getCurve();
+    void setPixelStep(double distBetweenPts);
+
+    Regression* getRegression();
+    void setRegression(Regression *reg);
+
+    QPolygonF &getCurve();
 
 public slots:
      void recalculate();
-     void recalculate(double new_xUnit, double new_yUnit, GraphRange range);
+     void recalculate(Point graphUnits, GraphRange range);
 
 protected:
     void calculatePolarRegressionCurve();

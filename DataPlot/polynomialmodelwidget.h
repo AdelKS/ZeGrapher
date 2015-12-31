@@ -77,8 +77,7 @@ protected:
 
     QList<CoefWidgetStruct> coefWidgets;
 
-    PolynomialRegression *regression;
-    RegressionValuesSaver *regValSaver;
+    PolynomialRegression *regression;    
 };
 
 #endif // POLYNOMIALMODELWIDGET_H

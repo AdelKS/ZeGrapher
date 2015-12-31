@@ -53,10 +53,10 @@ public:
     QList<QPointF> getDataList(int index);
     DataStyle getDataStyle(int index);
 
-    void recalculateRegressionCurves(double xUnit, double yUnit, GraphRange range);
-    void addDataRegression(RegressionValuesSaver *reg);
-    void removeDataRegression(RegressionValuesSaver *reg);
-    RegressionValuesSaver* getRegression(int index);
+    void addDataRegression(Regression *reg);
+    void removeDataRegression(Regression *reg);
+    Regression* getRegression(int index);
+    QList<Regression*> getRegressions();
     int getRegressionsCount();
 
     void setParEqsListPointer(QList<ParEqWidget*> *list);
@@ -92,8 +92,8 @@ signals:
     void updateOccured();
     void drawStateUpdateOccured();
     void animationUpdate();
-    void regressionAdded();
-    void regressionRemoved();    
+    void regressionAdded(Regression *reg);
+    void regressionRemoved(Regression *reg);
 
 public slots:
 
@@ -107,7 +107,7 @@ protected:
     QList<QList<QPointF> > data;
     QList<DataStyle> dataStyle;
 
-    QList<RegressionValuesSaver*> regressions;
+    QList<Regression*> regressions;
 
     QList<TangentWidget*> *tangents;
     QList<StraightLineWidget*> *lines;

@@ -20,7 +20,6 @@
 
 
 #include "DataPlot/datatable.h"
-#include <iostream>
 
 int refCol;
 

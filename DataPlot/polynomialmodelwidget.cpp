@@ -37,17 +37,12 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     regression = new PolynomialRegression(ui->degree->value(), (ApproxMethod)ui->approachPoints->isChecked(), LimitedToData,
                                           ui->relativeExtrapol->value(), ui->drawModel->isChecked(), pol);
+
     connect(regression, SIGNAL(rangeUpdated()), this, SLOT(updateManualRangeFields()));
-
     connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
-
-
-    regValSaver = new RegressionValuesSaver(regression, information->getOptions().distanceBetweenPoints, information->getRange(), information->getUnits());
-
-    connect(regression, SIGNAL(regressionModified()), regValSaver, SLOT(recalculate()));
     connect(regression, SIGNAL(regressionModified()), information, SIGNAL(dataUpdated()));   
 
-    information->addDataRegression(regValSaver);
+    information->addDataRegression(regression);
 
     regression->setData(dat); //
 
@@ -218,7 +213,7 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), startVal, SLOT(setEnabled(bool)));
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
-    colorButton = new QColorButton();
+    colorButton = new QColorButton(information->getOptions().defaultColor);
     QLabel *colorLabel = new QLabel(tr("color:"));
     ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);
@@ -262,8 +257,7 @@ PolynomialModelWidget::~PolynomialModelWidget()
 {
     delete ui;
 
-    information->removeDataRegression(regValSaver);
+    information->removeDataRegression(regression);
 
     delete regression;
-    delete regValSaver;
 }

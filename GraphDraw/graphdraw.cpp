@@ -48,6 +48,21 @@ GraphDraw::GraphDraw(Information *info)
 
     funcValuesSaver = new FuncValuesSaver(info);
     funcVals = funcValuesSaver->getFuncValsListPointer();
+
+    connect(information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
+    connect(information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
+}
+
+void GraphDraw::addRegSaver(Regression *reg)
+{
+    regValuesSavers << RegressionValuesSaver(information->getOptions().distanceBetweenPoints, reg);
+}
+
+void GraphDraw::delRegSaver(Regression *reg)
+{
+    for(int i = 0 ; i < regValuesSavers.size() ; i++)
+        if(regValuesSavers[i].getRegression() == reg)
+            regValuesSavers.removeAt(i);
 }
 
 void GraphDraw::drawRhombus(QPointF pt, double w)
@@ -166,15 +181,23 @@ void GraphDraw::drawRegression(int reg, int width)
     pen.setColor(information->getRegression(reg)->getColor());
     painter.setPen(pen);
 
-    painter.drawPolyline(information->getRegression(reg)->getCurve());
+    painter.drawPolyline(regValuesSavers[reg].getCurve());
 }
 
 void GraphDraw::drawRegressions()
 {
-    for(int i = 0 ; i < information->getRegressionsCount() ; i++)
+    for(int i = 0 ; i < regValuesSavers.size() ; i++)
     {
         if(information->getRegression(i)->getDrawState())
             drawRegression(i, parameters.curvesThickness);
+    }
+}
+
+void GraphDraw::recalculateRegVals()
+{
+    for(auto &regValSaver : regValuesSavers)
+    {
+        regValSaver.recalculate(Point{uniteX, uniteY}, graphRange);
     }
 }
 

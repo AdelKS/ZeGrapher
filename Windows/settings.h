@@ -52,7 +52,7 @@ private:
     Information *information;
     Ui::Settings *ui;
     Options parameters;
-    QColorButton *colorAxes, *colorFond, *colorGrid;
+    QColorButton *axesColorButton, *backgroundColorButton, *gridColorButton, *defaultColorButton;
 
 };
 

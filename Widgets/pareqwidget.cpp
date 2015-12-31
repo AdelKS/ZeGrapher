@@ -22,12 +22,12 @@
 
 #include "Widgets/pareqwidget.h"
 
-ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list) : treeCreator(PARAMETRIC_EQ)
+ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : treeCreator(PARAMETRIC_EQ), colorSaver(col)
 {
     calculator = new ExprCalculator(true, list);
     index = num;
     funcCalcs = list;
-    createWidgets();   
+    createWidgets(col);
     xTree = yTree = NULL;   
     isParametric = valid = is_t_range_parametric = false;
     playState = false;
@@ -49,13 +49,13 @@ ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list) : treeCreator(PAR
     connect(yLine, SIGNAL(textChanged(QString)), this, SLOT(checkExpr()));
 }
 
-void ParEqWidget::createWidgets()
+void ParEqWidget::createWidgets(QColor col)
 {
     mainLayout = new QVBoxLayout();
     mainLayout->setSpacing(3);
     mainLayout->setMargin(5);
 
-    addExprWidgets();
+    addExprWidgets(col);
     addTConfWidgets();
     addKConfWidgets();
     addAnimationControllWidgets();
@@ -119,7 +119,7 @@ void ParEqWidget::changeID(int newID)
     parEqNameLabel = new QLabel("(P<sub>" + QString::number(index + 1) + "</sub>)");
 }
 
-void ParEqWidget::addExprWidgets()
+void ParEqWidget::addExprWidgets(QColor col)
 {
     QHBoxLayout *layout1 = new QHBoxLayout();    
 
@@ -179,8 +179,8 @@ void ParEqWidget::addExprWidgets()
     colorButtonsLayout->setMargin(5);
     colorButtonsLayout->setSpacing(3);
 
-    QColorButton *firstColorButton = new QColorButton();
-    lastColorButton = new QColorButton();
+    QColorButton *firstColorButton = new QColorButton(col);
+    lastColorButton = new QColorButton(col);
 
     connect(firstColorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setFristColor(QColor)));
     connect(lastColorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setLastColor(QColor)));
