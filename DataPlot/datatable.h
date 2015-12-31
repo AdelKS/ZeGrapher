@@ -84,6 +84,8 @@ protected:
     void addColumn();
     void removeUnnecessaryRowsColumns();
 
+    bool eventFilter(QObject *obj, QEvent *event);
+
 
 
     bool disableChecking;

@@ -20,6 +20,7 @@
 
 
 #include "DataPlot/datatable.h"
+#include <iostream>
 
 int refCol;
 
@@ -80,8 +81,38 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
     for(int i = 0 ; i < columnCount ; i++) { columnNames << tr("Rename me!") ; }
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
+    tableWidget->installEventFilter(this);
+
     nameValidator.setPattern("^([a-z]|[A-Z])+(_([a-z]|[A-Z])+)*$");
 
+}
+
+bool DataTable::eventFilter(QObject *obj, QEvent *event)
+{
+    Q_UNUSED(obj);
+
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        if(keyEvent->key() == Qt::Key_Return && tableWidget->currentItem() != nullptr)
+        {
+            QTableWidgetItem *item = tableWidget->currentItem();
+            tableWidget->setCurrentItem(tableWidget->item(item->row()+1,item->column()));
+            return true;
+        }
+        else if( (keyEvent->key() == Qt::Key_Delete || keyEvent->key() == Qt::Key_Backspace) && !tableWidget->selectedItems().empty())
+        {
+            for(auto &item : tableWidget->selectedItems())
+            {
+                item->setText("");
+            }
+            return true;
+        }
+        return false;
+
+    }
+    return false;
 }
 
 QString DataTable::getColumnName(int visualIndex)
