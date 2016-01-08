@@ -21,7 +21,7 @@
 
 #include "Widgets/tangentwidget.h"
 
-TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list)
+TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list, QColor col)
 {
    tangentID = id;
    funcNames << "f" << "g" << "h" << "p" << "r" << "m";
@@ -45,6 +45,7 @@ TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<Fu
    invalidPalette.setColor(QPalette::Text, Qt::black);
 
    addWidgets();
+   colorButton->setColor(col);
 }
 
 void TangentWidget::newFuncChoosen(int funcNum)

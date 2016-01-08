@@ -9,7 +9,38 @@
         <translation>À Propos...</translation>
     </message>
     <message>
-        <location filename="Windows/about.ui" line="45"/>
+        <location filename="Windows/about.ui" line="35"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;by Adel Kara Slimane&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Based on Qt 5&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? a crash ?  You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;par Adel Kara Slimane&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Basé sur Qt 5&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher est un logiciel libre et gratuit, distribué sous la license GNU GPLv3. Son codre source peut être téléchargé sur &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; ou &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (pour obtenir le plus récent)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Vous avez rencontré un bug ? Vous avez des suggestions pour améliorer ZeGrapher ? Quelque chose d&apos;autre ? N&apos;hésitez pas à me contacter sur &lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -21,7 +52,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Cantarell&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -34,7 +65,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel : &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/about.ui" line="89"/>
+        <location filename="Windows/about.ui" line="95"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -135,12 +166,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ColumnActionsWidget</name>
     <message>
-        <location filename="DataPlot/columnactionswidget.cpp" line="96"/>
+        <location filename="DataPlot/columnactionswidget.cpp" line="99"/>
         <source>Confirm column deletion?</source>
         <translation>Etes vous sûr de vouloir supprimer cette colonne ?</translation>
     </message>
     <message>
-        <location filename="DataPlot/columnactionswidget.cpp" line="102"/>
+        <location filename="DataPlot/columnactionswidget.cpp" line="105"/>
         <source>Insert column</source>
         <translation>Insérer colonne</translation>
     </message>
@@ -166,29 +197,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DataTable</name>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="84"/>
-        <location filename="DataPlot/datatable.cpp" line="140"/>
-        <location filename="DataPlot/datatable.cpp" line="461"/>
+        <location filename="DataPlot/datatable.cpp" line="80"/>
+        <location filename="DataPlot/datatable.cpp" line="166"/>
+        <location filename="DataPlot/datatable.cpp" line="499"/>
         <source>Rename me!</source>
         <translation>Renommez moi!</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="508"/>
+        <location filename="DataPlot/datatable.cpp" line="546"/>
         <source>New name for column</source>
         <translation>Nouveau nom de colonne</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="508"/>
+        <location filename="DataPlot/datatable.cpp" line="546"/>
         <source>Please enter a name for this column:</source>
         <translation>Veuillez entrer un nom pour cette colonne :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="514"/>
+        <location filename="DataPlot/datatable.cpp" line="552"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="514"/>
+        <location filename="DataPlot/datatable.cpp" line="552"/>
         <source>Column names can only have letters and &quot;_&quot;</source>
         <translation>Les noms ne peuvent contenir que des lettres et &quot;_&quot;</translation>
     </message>
@@ -213,7 +244,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="Widgets/datawidget.ui" line="20"/>
-        <location filename="Widgets/datawidget.cpp" line="152"/>
+        <location filename="Widgets/datawidget.cpp" line="160"/>
         <source>Data</source>
         <translation>Données</translation>
     </message>
@@ -244,7 +275,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="177"/>
-        <location filename="DataPlot/datawindow.cpp" line="395"/>
+        <location filename="DataPlot/datawindow.cpp" line="410"/>
         <source>Column actions:</source>
         <oldsource>Actions sur la colonne :</oldsource>
         <translation>Actions sur la colonne :</translation>
@@ -255,31 +286,31 @@ p, li { white-space: pre-wrap; }
         <translation>Modélisations :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="338"/>
+        <location filename="DataPlot/datawindow.ui" line="352"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="417"/>
+        <location filename="DataPlot/datawindow.ui" line="431"/>
         <source>Coordinates :</source>
         <oldsource>Coordonnées :</oldsource>
         <translation>Coordonnées :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="436"/>
+        <location filename="DataPlot/datawindow.ui" line="450"/>
         <source>Cartesian</source>
         <oldsource>Cartésiennes</oldsource>
         <translation>Cartésiennes</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="467"/>
+        <location filename="DataPlot/datawindow.ui" line="481"/>
         <source>Polar</source>
         <oldsource>Polaires</oldsource>
         <translation>Polaires</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="67"/>
-        <location filename="DataPlot/datawindow.cpp" line="286"/>
+        <location filename="DataPlot/datawindow.cpp" line="301"/>
         <source>Data fill window: data</source>
         <translation>Saisie de données: Donnée</translation>
     </message>
@@ -288,17 +319,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Aide: Saisie de données.</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="388"/>
+        <location filename="DataPlot/datawindow.cpp" line="403"/>
         <source>Between two lines:</source>
         <translation>Actions entre deux lignes :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="389"/>
+        <location filename="DataPlot/datawindow.cpp" line="404"/>
         <source>Actions on line:</source>
         <translation>Actions sur la ligne :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="394"/>
+        <location filename="DataPlot/datawindow.cpp" line="409"/>
         <source>Between two columns:</source>
         <translation>Actions entre deux colonnes :</translation>
     </message>
@@ -381,17 +412,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FuncTable</name>
     <message>
-        <location filename="ValuesTable/functable.cpp" line="53"/>
+        <location filename="ValuesTable/functable.cpp" line="55"/>
         <source>Function: </source>
         <translation>Fonction : </translation>
     </message>
     <message>
-        <location filename="ValuesTable/functable.cpp" line="154"/>
+        <location filename="ValuesTable/functable.cpp" line="156"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="ValuesTable/functable.cpp" line="154"/>
+        <location filename="ValuesTable/functable.cpp" line="156"/>
         <source>Syntax error in this entry</source>
         <translation>Erreur de syntaxe dans cette entrée</translation>
     </message>
@@ -571,87 +602,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="71"/>
+        <location filename="Windows/zegrapher.cpp" line="63"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="72"/>
+        <location filename="Windows/zegrapher.cpp" line="64"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="73"/>
+        <location filename="Windows/zegrapher.cpp" line="65"/>
         <source>Windows</source>
         <translation>Fenêtres</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="76"/>
+        <location filename="Windows/zegrapher.cpp" line="68"/>
         <source>Show/Hide the grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="79"/>
+        <location filename="Windows/zegrapher.cpp" line="71"/>
         <source>Toggle orthonormal view</source>
         <translation>Vue orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="97"/>
+        <location filename="Windows/zegrapher.cpp" line="89"/>
         <source>Image export...</source>
         <translation>Exporter en tant qu&apos;image...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="101"/>
+        <location filename="Windows/zegrapher.cpp" line="93"/>
         <source>Settings</source>
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="107"/>
+        <location filename="Windows/zegrapher.cpp" line="99"/>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="115"/>
+        <location filename="Windows/zegrapher.cpp" line="107"/>
         <source>Range edit</source>
         <translation>Règlages de la fenêtre</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="142"/>
+        <location filename="Windows/zegrapher.cpp" line="134"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
         <translation>Modifier la fenêtre de représentation: x&lt;sub&gt;min&lt;/sub&gt;, x&lt;sub&gt;max&lt;/sub&gt;...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="143"/>
+        <location filename="Windows/zegrapher.cpp" line="135"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
         <translation>Fenêtre où l&apos;on saisi les objets mathématiques à représenter: fonctions, suites, équations paramétriques, données...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="144"/>
+        <location filename="Windows/zegrapher.cpp" line="136"/>
         <source>Exit ZeGrapher.</source>
         <translation>Quitter ZeGrapher.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="145"/>
+        <location filename="Windows/zegrapher.cpp" line="137"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
         <translation>Fenêtre des options: couleurs des axes, couleurs du fond, qualité des courbes...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="146"/>
+        <location filename="Windows/zegrapher.cpp" line="138"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
         <translation>Fenêtre où l&apos;on peut afficher les tableaux de valeurs des objets mathématiques saisis: fonctions, suites, équations paramétriques.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="149"/>
+        <location filename="Windows/zegrapher.cpp" line="141"/>
         <source>Export the graph as an image.</source>
         <translation>Fenêtre d&apos;export du graphique en tant qu&apos;image.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="150"/>
+        <location filename="Windows/zegrapher.cpp" line="142"/>
         <source>Virtual keyboard.</source>
         <translation>Clavier virtuel.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="151"/>
+        <location filename="Windows/zegrapher.cpp" line="143"/>
         <source>Print, or export in PDF.</source>
         <translation>Fenêtre des options avant impression. Avec la possiblité d&apos;exporter en PDF ou en PostScript.</translation>
     </message>
@@ -660,23 +691,23 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Base orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="84"/>
-        <location filename="Windows/zegrapher.cpp" line="147"/>
+        <location filename="Windows/zegrapher.cpp" line="76"/>
+        <location filename="Windows/zegrapher.cpp" line="139"/>
         <source>Reset to default view</source>
         <translation>Rétablit la vue par défaut: Xmin = Ymin = -10 , Xmax = Ymax = 10</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="87"/>
+        <location filename="Windows/zegrapher.cpp" line="79"/>
         <source>About...</source>
         <translation>À Propos...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="90"/>
+        <location filename="Windows/zegrapher.cpp" line="82"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="93"/>
+        <location filename="Windows/zegrapher.cpp" line="85"/>
         <source>Print...</source>
         <translation>Imprimer...</translation>
     </message>
@@ -693,7 +724,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="111"/>
+        <location filename="Windows/zegrapher.cpp" line="103"/>
         <source>Functions</source>
         <translation>Fonctions</translation>
     </message>
@@ -702,17 +733,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Bornes</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="119"/>
+        <location filename="Windows/zegrapher.cpp" line="111"/>
         <source>Values table</source>
         <translation>Tableau de valeurs</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="123"/>
+        <location filename="Windows/zegrapher.cpp" line="115"/>
         <source>numeric keyboard</source>
         <translation>Clavier numérique</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="127"/>
+        <location filename="Windows/zegrapher.cpp" line="119"/>
         <source>Windows and actions</source>
         <translation>Fenêtres et actions</translation>
     </message>
@@ -737,7 +768,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Affiche la fenêtre où l&apos;on peut modifier les options de représentation</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="148"/>
+        <location filename="Windows/zegrapher.cpp" line="140"/>
         <source>Show/Hide grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
@@ -909,27 +940,27 @@ p, li { white-space: pre-wrap; }
         <translation>Réglages du paramètre </translation>
     </message>
     <message>
-        <location filename="Widgets/parconfwidget.cpp" line="57"/>
+        <location filename="Widgets/parconfwidget.cpp" line="59"/>
         <source>Animate</source>
         <translation>Animer</translation>
     </message>
     <message>
-        <location filename="Widgets/parconfwidget.cpp" line="65"/>
+        <location filename="Widgets/parconfwidget.cpp" line="67"/>
         <source>Keep tracks</source>
         <translation>Garder la trace</translation>
     </message>
     <message>
-        <location filename="Widgets/parconfwidget.cpp" line="90"/>
+        <location filename="Widgets/parconfwidget.cpp" line="92"/>
         <source>Start:</source>
         <translation>Début:</translation>
     </message>
     <message>
-        <location filename="Widgets/parconfwidget.cpp" line="91"/>
+        <location filename="Widgets/parconfwidget.cpp" line="93"/>
         <source> End:</source>
         <translation> Fin:</translation>
     </message>
     <message>
-        <location filename="Widgets/parconfwidget.cpp" line="92"/>
+        <location filename="Widgets/parconfwidget.cpp" line="94"/>
         <source> Step:</source>
         <translation> Pas:</translation>
     </message>
@@ -937,17 +968,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ParEqTable</name>
     <message>
-        <location filename="ValuesTable/pareqtable.cpp" line="55"/>
+        <location filename="ValuesTable/pareqtable.cpp" line="57"/>
         <source>Parametric equation: </source>
         <translation>Equation paramètrique:</translation>
     </message>
     <message>
-        <location filename="ValuesTable/pareqtable.cpp" line="151"/>
+        <location filename="ValuesTable/pareqtable.cpp" line="153"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="ValuesTable/pareqtable.cpp" line="151"/>
+        <location filename="ValuesTable/pareqtable.cpp" line="153"/>
         <source>Syntax error in this entry</source>
         <translation>Erreur de syntaxe dans cette entrée</translation>
     </message>
@@ -955,24 +986,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ParEqWidget</name>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="509"/>
-        <location filename="Widgets/pareqwidget.cpp" line="512"/>
-        <location filename="Widgets/pareqwidget.cpp" line="535"/>
+        <location filename="Widgets/pareqwidget.cpp" line="511"/>
+        <location filename="Widgets/pareqwidget.cpp" line="514"/>
+        <location filename="Widgets/pareqwidget.cpp" line="537"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="509"/>
+        <location filename="Widgets/pareqwidget.cpp" line="511"/>
         <source>Step value for the &quot;t&quot; parameter is not compatible with the entered range, in parametric equation</source>
         <translation>La valeur du pas du paramètre t est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="512"/>
+        <location filename="Widgets/pareqwidget.cpp" line="514"/>
         <source>Too many points to calculate on parametric equation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="536"/>
+        <location filename="Widgets/pareqwidget.cpp" line="538"/>
         <source>Step value for the &quot;k&quot; parameter is not compatible with the entered range, in parametric equation (P&lt;sub&gt;</source>
         <translation>La valeur du pas du paramètre k est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique (P&lt;sub&gt;</translation>
     </message>
@@ -980,28 +1011,26 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PolynomialModelWidget</name>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="75"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="78"/>
         <source>Polynomial order:</source>
         <oldsource>Degré du polynôme :</oldsource>
         <translation>Degré du polynôme :</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="134"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="137"/>
         <source>Polynomial computation</source>
         <oldsource>Calcul du polynôme:</oldsource>
         <translation>Calcul du polynôme</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="140"/>
         <source>Close to the points</source>
         <oldsource>Le plus proche des points</oldsource>
-        <translation>Le plus proche des points</translation>
+        <translation type="vanished">Le plus proche des points</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="150"/>
         <source>Close to the segments</source>
         <oldsource>Le plus proche des segments</oldsource>
-        <translation>Le plus proche des segments</translation>
+        <translation type="vanished">Le plus proche des segments</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="26"/>
@@ -1014,71 +1043,93 @@ p, li { white-space: pre-wrap; }
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="174"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="66"/>
+        <source>The fitting polynomial is calculated by the least squares method</source>
+        <translation>Ce polynôme est calculé par la méthode des moindre carrés.</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="146"/>
+        <source>C&amp;lose to the points</source>
+        <translation>Le plus proche des points</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="156"/>
+        <source>Close to the seg&amp;ments</source>
+        <translation>Le plus proche des segments</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="180"/>
         <source>Plot</source>
         <translation>Tracé</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="195"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="201"/>
         <source>Draw</source>
         <translation>Tracer</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="220"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="226"/>
         <source>Draw interval:</source>
         <translation>Intervalle de représentation :</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="226"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="232"/>
         <source>Data range</source>
         <translation>Étalement des données</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="241"/>
-        <source>Relative extrapolation of </source>
-        <oldsource>Extrapolation relative de </oldsource>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="247"/>
+        <source>Relative e&amp;xtrapolation of </source>
         <translation>Extrapolation relative de</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="257"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="286"/>
+        <source>Définition &amp;manuelle:</source>
+        <translation>Définition manuelle:</translation>
+    </message>
+    <message>
+        <source>Relative extrapolation of </source>
+        <oldsource>Extrapolation relative de </oldsource>
+        <translation type="vanished">Extrapolation relative de</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="263"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="280"/>
         <source>Définition manuelle:</source>
-        <translation>Définition manuelle:</translation>
+        <translation type="vanished">Définition manuelle:</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="306"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="312"/>
         <source>Values</source>
         <oldsource>Valeurs</oldsource>
         <translation>Valeurs</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.ui" line="381"/>
+        <location filename="DataPlot/polynomialmodelwidget.ui" line="387"/>
         <source>P(x) =</source>
         <translation>P(x) =</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.cpp" line="201"/>
+        <location filename="DataPlot/polynomialmodelwidget.cpp" line="195"/>
         <source>Start:</source>
         <translation>Début:</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.cpp" line="204"/>
+        <location filename="DataPlot/polynomialmodelwidget.cpp" line="198"/>
         <source>End:</source>
         <translation> Fin:</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.cpp" line="223"/>
+        <location filename="DataPlot/polynomialmodelwidget.cpp" line="217"/>
         <source>color:</source>
         <translation>couleur :</translation>
     </message>
     <message>
-        <location filename="DataPlot/polynomialmodelwidget.cpp" line="241"/>
         <source>Evaluate the best polynomial P who can approach the equation:</source>
-        <translation>Calcul du meilleur polynôme P approchant l&apos;égalité:</translation>
+        <translation type="vanished">Calcul du meilleur polynôme P approchant l&apos;égalité:</translation>
     </message>
 </context>
 <context>
@@ -1508,31 +1559,31 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SeqTable</name>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="48"/>
+        <location filename="ValuesTable/seqtable.cpp" line="50"/>
         <source>Sequence: </source>
         <translation>Suite : </translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="163"/>
-        <location filename="ValuesTable/seqtable.cpp" line="169"/>
-        <location filename="ValuesTable/seqtable.cpp" line="178"/>
-        <location filename="ValuesTable/seqtable.cpp" line="270"/>
+        <location filename="ValuesTable/seqtable.cpp" line="165"/>
+        <location filename="ValuesTable/seqtable.cpp" line="171"/>
+        <location filename="ValuesTable/seqtable.cpp" line="180"/>
+        <location filename="ValuesTable/seqtable.cpp" line="272"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="163"/>
+        <location filename="ValuesTable/seqtable.cpp" line="165"/>
         <source>Syntax error in this entry</source>
         <translation>Erreur de syntaxe dans cette entrée</translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="169"/>
+        <location filename="ValuesTable/seqtable.cpp" line="171"/>
         <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</source>
         <translation>Vous devez saisir un nombre entier supérieur à n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="178"/>
-        <location filename="ValuesTable/seqtable.cpp" line="270"/>
+        <location filename="ValuesTable/seqtable.cpp" line="180"/>
+        <location filename="ValuesTable/seqtable.cpp" line="272"/>
         <source>Error while calculating this sequence&apos;s terms, changing &quot;k&quot; value might solve the error.</source>
         <translation>Erreur dans le calcul des termes de cette suite paramètrique, changer la valeur du paramètre pourrait résoudre le problème.</translation>
     </message>
@@ -1540,9 +1591,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Settings</name>
     <message>
-        <location filename="Windows/settings.ui" line="26"/>
         <source>Options</source>
-        <translation>Options</translation>
+        <translation type="vanished">Options</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="26"/>
+        <source>Settings</source>
+        <translation>Réglages</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="56"/>
@@ -1600,23 +1655,28 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="213"/>
+        <location filename="Windows/settings.ui" line="202"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves&apos; default color:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Couleur par défaut des courbes:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="223"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="124"/>
-        <location filename="Windows/settings.cpp" line="126"/>
+        <location filename="Windows/settings.cpp" line="135"/>
+        <location filename="Windows/settings.cpp" line="137"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="124"/>
+        <location filename="Windows/settings.cpp" line="135"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="126"/>
+        <location filename="Windows/settings.cpp" line="137"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>
@@ -1651,8 +1711,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="143"/>
-        <source>Only column cells</source>
-        <translation>Les cellules de la colonne selectionnée</translation>
+        <source>Colu&amp;mn&apos;s cells only</source>
+        <oldsource>Only column cells</oldsource>
+        <translation>Les &amp;cellules de la colonne selectionnée</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="167"/>
@@ -1661,9 +1722,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="130"/>
-        <source>Lines</source>
-        <oldsource>Les lignes</oldsource>
-        <translation>Les lignes</translation>
+        <source>&amp;Lines</source>
+        <oldsource>Lines</oldsource>
+        <translation>&amp;Les lignes</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="193"/>
@@ -1697,17 +1758,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StraightLineWidget</name>
     <message>
-        <location filename="Widgets/straightlinewidget.cpp" line="172"/>
+        <location filename="Widgets/straightlinewidget.cpp" line="174"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="Widgets/straightlinewidget.cpp" line="172"/>
+        <location filename="Widgets/straightlinewidget.cpp" line="174"/>
         <source>Error on straight line</source>
         <translation>Erreur dans la droite</translation>
     </message>
     <message>
-        <location filename="Widgets/straightlinewidget.cpp" line="172"/>
+        <location filename="Widgets/straightlinewidget.cpp" line="174"/>
         <source>x and y coefficients can&apos;t be simultaneously equal to zero.</source>
         <translation>Les coeficients des variables x et y ne peuvent être nuls simultanèment.</translation>
     </message>
@@ -1715,7 +1776,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TangentWidget</name>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="66"/>
+        <location filename="Widgets/tangentwidget.cpp" line="68"/>
         <source>tangent to :</source>
         <translation>tangente à :</translation>
     </message>
@@ -1728,22 +1789,22 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Pour k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="91"/>
+        <location filename="Widgets/tangentwidget.cpp" line="93"/>
         <source>at:  x =</source>
         <translation>en x =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="153"/>
+        <location filename="Widgets/tangentwidget.cpp" line="155"/>
         <source>with k =</source>
         <translation>avec k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="198"/>
+        <location filename="Widgets/tangentwidget.cpp" line="200"/>
         <source>Choosen Function</source>
         <translation>Fonction choisie</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="199"/>
+        <location filename="Widgets/tangentwidget.cpp" line="201"/>
         <source>Invalid</source>
         <translation></translation>
     </message>

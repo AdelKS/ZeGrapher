@@ -33,7 +33,7 @@ class TangentWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list);
+    explicit TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list, QColor col);
     void calculateTangentPoints(double xUnit, double yUnit);
     void resizeTangent(double dx, double side);
     void changeID(int id);

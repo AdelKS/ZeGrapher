@@ -24,10 +24,12 @@
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
+#include <boost/math/special_functions/binomial.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
+
 #include <QList>
 #include <algorithm>
 #include "Structures.h"
-
 
 
 class Polynomial
@@ -44,10 +46,14 @@ public:
     void expand(double coef);
     void resetToZero();
 
-    double eval(double x) const;
+    double eval(double xval) const;
 
     double getCoef(int degree) const;
+    double getTranslatedCoef(int degree) const;
+    double getXTranslation() const;
+
     QList<double> getCoefs();
+    QList<double> getTranslatedCoefs();
     int degree() const;
     Polynomial antiderivative();
 
@@ -61,7 +67,9 @@ public:
     ~Polynomial();
 
 protected:
-    QList<double> coefficients;
+    double translation;
+    QList<double> coefficients, translatedCoefficients;
+
 };
 
 Polynomial operator+(const Polynomial &P, const Polynomial &Q);

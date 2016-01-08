@@ -97,6 +97,8 @@ protected:
     void placerGraduations();
     void afficherPoint();
 
+    void moveSavedRegsValues();
+
     void checkIfActiveSelectionConflicts();
 
     ExprCalculator *exprCalculator;

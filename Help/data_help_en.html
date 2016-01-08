@@ -2,7 +2,7 @@
 <html>
   <head>
       <meta charset="utf-8" />
-      <title>data_help_fr</title>
+      <title>data_help_en</title>
       <style>.markdown-preview, .markdown-preview[data-use-github-style] { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; font-size: 16px; line-height: 1.6; word-wrap: break-word; overflow: scroll; box-sizing: border-box; padding: 20px; background-color: rgb(255, 255, 255); }
 .markdown-preview > :first-child, .markdown-preview[data-use-github-style] > :first-child { margin-top: 0px !important; }
 .markdown-preview > :last-child, .markdown-preview[data-use-github-style] > :last-child { margin-bottom: 0px !important; }
@@ -462,55 +462,58 @@ pre.editor-colors .fold-marker:after,
 }
 </style>
   </head>
-  <body class='markdown-preview'><h1 id="aide-fen-tre-de-saisie-de-donn-es">Aide: fenêtre de saisie de données</h1>
-<h2 id="pr-sentation-g-n-rale">Présentation générale</h2>
-<p><a href="data_help_en.html"><strong>Go to english version <img src="qrc:///Help/english-icon.png" alt="english flag"></strong></a></p>
-<p><img src="qrc:///Help/pins.png" alt=""><br><br>La fenêtre de saisie de données présente comme élément centrale le tableau de données,
-au dessus duquel sont présents des &quot;pins&quot;, <strong>déplaplaçables à la souris</strong>, qui jouent un rôle important dans la saisie et la visualisation des données.</p>
-<h3 id="pins-noirs-pin-de-base-basepin-png-">Pins noirs <img src="qrc:///Help/basePin.png" alt="pin de base"></h3>
-<p> Le pin <img src="qrc:///Help/Xpin.png" alt="pin x"> permet de définir la colonne représentant les abscisses des points à afficher. De même pour <img src="qrc:///Help/Ypin.png" alt="pin y"> pour les ordonnées, ou bien <img src="qrc:///Help/Rpin.png" alt="pin r"> et <img src="qrc:///Help/Tetapin.png" alt="pin teta"> pour les coordonnées polaires. Il suffit alors de les positionner au-dessus des colonnes voulues pour que le logiciel affiche automatiquement les points les points en question.</p>
-<h3 id="pin-de-s-lection-pin-selecteur-selector-png-">Pin de sélection <img src="qrc:///Help/selector.png" alt="pin selecteur"></h3>
-<p>Le pin <img src="qrc:///Help/selector.png" alt="pin selecteur"> permet de choisir un endroit du tableau où effectuer des actions:  </p>
+  <body class='markdown-preview'><h1 id="help-data-window">Help: Data window</h1>
+<h2 id="overview">Overview</h2>
+<p><a href="data_help_fr.html"><strong>Aller à la version en français <img src="qrc:///Help/french-icon.png" alt="french flag"></strong></a></p>
+<p><img src="qrc:///Help/pins_en.png" alt=""><br></p>
+<p>The main widget in the window is the data table, hovered by <strong> mouse draggable pins</strong>.
+These pins play an important role for the input and visualization.</p>
+<h3 id="black-pins-base-pin-basepin-png-">Black pins <img src="qrc:///Help/basePin.png" alt="base pin"></h3>
+<p> <img src="qrc:///Help/Xpin.png" alt="pin x"> points to the colunm that contains abscissa values. The same idea applies for <img src="qrc:///Help/Ypin.png" alt="pin y">, or <img src="qrc:///Help/Rpin.png" alt="pin r"> and <img src="qrc:///Help/Tetapin.png" alt="pin teta"> with polar coordinates. Moving these pins over the wanted columns automatically updates the graph with the new chosen points.</p>
+<h3 id="selection-pin-selection-pin-selector-png-">Selection pin <img src="qrc:///Help/selector.png" alt="selection pin"></h3>
+<p>Once placed on top of a column or in the left side of a row, this pin gives the ability to execute several actions on them:</p>
 <ul>
-<li><strong>Sur les colonnes:</strong> donne la possibilité de <a href="#ColumnActions">remplir, trier ou supprimer une colonne.</a> Ou bien insérer une nouvelle colonne si placé entre deux colonnes.</li>
-<li><p><strong>Sur les lignes:</strong> donne la possibilité de supprimer une ligne ou d&#39;en insérer, si placé entre deux lignes.</p>
-<p>  <img src="qrc:///Help/lineActions_fr.png" alt=""></p>
+<li><strong>On columns:</strong> <a href="#ColumnActions">fill, sort, delete</a> or insert a new column if placed between two columns.</li>
+<li><p><strong>On lines:</strong> delete or insert a new line if placed between two lines.</p>
+<p>  <img src="qrc:///Help/lineActions_en.png" alt=""></p>
 </li>
 </ul>
-<h3 id="mod-lisations">Modélisations</h3>
-<p>Un module de calcul de régressions est disponible, qui calculera la fonction qui approche le mieux les points saisis par l&#39;utilisateur au sens des moindres carrés.<br><strong>Note:</strong> dans cette version, seule la régression polynomiale est disponible.</p>
-<h2 id="pr-cisions-pour-l-utilisation-pratique">Précisions pour l&#39;utilisation pratique</h2>
-<h3 id="-a-id-columnactions-op-rations-sur-une-colonne-a-"><a id="ColumnActions"> Opérations sur une colonne</a></h3>
-<p><img src="qrc:///Help/columnActions_fr.png" alt=""><br></p>
-<h4 id="renommer">Renommer</h4>
-<p>Pour renommer une colonne, il suffit de double-cliquer sur son entête (sur laquelle est écrite &quot;Renommez moi!&quot; à la première ouverture de la fenêtre).<br><strong>Note:</strong> Sont permis pour les noms de colonne que les lettres et les &quot;_&quot;</p>
-<h4 id="trier">Trier</h4>
-<p>Les valeurs d&#39;une colonne pointée par <img src="qrc:///Help/selector.png" alt="pin selecteur"> peuvent être triées. Lors de l&#39;échange de valeurs entre deux cellules, il possible de choisir de permuter les lignes entières ou bien uniquement les cellules concernées.</p>
-<h4 id="remplir">Remplir</h4>
-<p>Pour ce faire, il faudra sélectionner la colonne voulue avec le pin sélecteur <img src="qrc:///Help/selector.png" alt="pin selecteur"></p>
-<p>Deux méthodes de remplissage de la colonne sont proposées: à partir d&#39;une expression ou prédéfini.</p>
-<p><img src="qrc:///Help/columnFill_fr.png" alt=""><br></p>
-<h5 id="1-partir-d-une-expression">1. À partir d&#39;une expression</h5>
-<p><em>Cette expression sera appliquée à la colonne cellule par cellule.</em></p>
-<p>Il est possible d&#39;utiliser les valeurs des cellules à la même ligne des autres colonnes, en utilisant leur nom comme variable.</p>
+<h3 id="curve-fitting">Curve fitting</h3>
+<p>Fitting curves can be calculated by ZeGrapher with the linear least squares method: the curve can approach the data points or the piecewise linear function made by connecting them.</p>
+<p><strong>Note:</strong> in this version, only polynomial regression is available.</p>
+<h2 id="practical-use">Practical use</h2>
+<h3 id="-a-id-columnactions-column-actions-a-"><a id="ColumnActions"> Column actions</a></h3>
+<p>When the selector pin <img src="qrc:///Help/selector.png" alt="pin selecteur"> is dragged over a column, several actions can be made on it.</p>
+<p><img src="qrc:///Help/columnActions_en.png" alt=""><br></p>
+<h4 id="rename">Rename</h4>
+<p>To rename a column, double click on its header (where &quot;Rename me!&quot; is written at first show). A dialog will then appear to ask for a new name.</p>
+<p><strong>Note:</strong> Only letters and underscores are permitted.</p>
+<h4 id="sort">Sort</h4>
+<p>The values of the column can be sorted. When the values of two cells need to be switched, you can chose to exchange the entire rows or only the cells.</p>
+<h4 id="fill">Fill</h4>
+<p>Two filling methods are available: from an expression or an automatic fill.</p>
+<p><img src="qrc:///Help/columnFill_en.png" alt=""><br></p>
+<h5 id="1-from-an-expression">1. From an expression</h5>
+<p><em>The entered expression will be applied to each of the selected column&#39;s cells.</em></p>
+<p>Values from the same row, in other columns, can be used in the expression: you can refer to them by using their column&#39;s name as a variable.</p>
 <blockquote>
-<p><strong>exemple:</strong> x&#39; = 2 * volume (volume étant le nom d&#39;une autre colonne, déjà remplie)<br>
-Il est ainsi possible de copier une colonne dans une autre de cette manière.</p>
+<p><strong>Example:</strong> x&#39; = 2 * volume (volume here is the name of another column)<br>
+You can copy a column into another this way.</p>
 </blockquote>
-<p>Si la colonne à remplir est déjà remplie, ses valeurs peuvent être utilisées dans l&#39;expression en y référant par &quot;x&quot; ou par le nom de la colonne qui va être remplie.</p>
+<p>If the selected column has already values in it, its values can be used in the expression: you can refer to them by either &quot;x&quot; or the column&#39;s name.</p>
 <blockquote>
-<p><strong>exemple:</strong> x&#39; = cos(x) <br>
-Pour chaque cellule, remplacer sa valeur initiale par son cosinus</p>
+<p><strong>Example:</strong> x&#39; = cos(x) <br>
+For each cell: replace the value by its cosine</p>
 </blockquote>
-<p>Toutes les fonctions usuelles (présentes dans le clavier virtuel) peuvent être utilisées. Dont les fonctions définies par l&#39;utilisateur.</p>
-<h5 id="2-pr-d-fini">2. Prédéfini</h5>
-<p>Il faudra alors saisir une valeur de départ, de fin et un pas. Et le logiciel remplira la colonne en respectant cette entrée.</p>
-<h3 id="mod-lisation">Modélisation</h3>
-<p><em>Dans la version 3.0 de ZeGrapher, seule la régression polynomiale au sens des moindres carrés est proposée.</em></p>
-<p>Toute régression ajoutée approche les colonnes selectionnées par les pins <img src="qrc:///Help/Xpin.png" alt="pin x"> et <img src="qrc:///Help/Ypin.png" alt="pin y"> (ou <img src="qrc:///Help/Rpin.png" alt="pin r"> et <img src="qrc:///Help/Tetapin.png" alt="pin teta">). Si ceux-ci sont déplacés sur d&#39;autres colonnes, ou que des valeurs sont ajoutées/modifées dans les colonnes, la regression se mettra à jour automatiquement</p>
-<h4 id="r-gression-polynomiale">Régression polynomiale</h4>
-<p>Il est possible de choisir le degré du polynôme, l&#39;intervalle sur lequel il sera graphiquement représenté, sa couleur. Et surtout, les valeurs des coefficients du polynôme sont affichés dans l&#39;onglet &quot;Valeurs&quot;.</p>
-<p><img src="qrc:///Help/polynomialCoefVals_fr.png" alt=""></p>
+<p>All the common functions (present on the virtual keyboard) can be used in the expression, and also the plotted functions (f,g,h... etc).</p>
+<h5 id="2-auto-fill">2. Auto-fill</h5>
+<p>You need to enter a start value, an end value and a step. The column will then be filled automatically.</p>
+<h3 id="curve-fitting">Curve fitting</h3>
+<p><em>In the current version, only the polynomial fit is available.</em></p>
+<p>After adding a fitting curve, its will approach the values contained in the columns pointed by<img src="qrc:///Help/Xpin.png" alt="pin x"> and <img src="qrc:///Help/Ypin.png" alt="pin y"> (or <img src="qrc:///Help/Rpin.png" alt="pin r"> and <img src="qrc:///Help/Tetapin.png" alt="pin teta">). If the pins are moved to other columns, or new values are added in the columns, the fitting curve updates itself automatically.</p>
+<h4 id="polynomial-regression">Polynomial regression</h4>
+<p>The polynomial&#39;s degree can be chosen. But also its plotting interval and its color. The values of its coefficients are displayed in &quot;Values&quot; tab.</p>
+<p><img src="qrc:///Help/polynomialCoefVals_en.png" alt=""></p>
 <h3 id="feedback">Feedback</h3>
-<p>Vous avez rencontré des bugs ? Vous avez des suggestions ? d&#39;autres requêtes ? Un mail en parlant à <a href="mailto:contact@zegrapher.com">contact@zegrapher.com</a> est le bienvenu !</p></body>
+<p>Did you encounter a bug ? You have ideas to improve ZeGrapher ? Something else ? A mail talking about it to <a href="mailto:contact@zegrapher.com">contact@zegrapher.com</a> is always welcome !</p></body>
 </html>

@@ -1,3 +1,5 @@
 Add/update some french translations the .ts file
 Test the new data module to find bugs.
-Switch to boost vars in regression for better precision ? Or limit the maximum degree for polynomials
+Automatically delete rows when the user deletes the content of rows with mouse selection
+Check polar curve saving for regressions: the calculus of deltaAngle is wrong...
+Translated coefs aren't given to lineEdits for display

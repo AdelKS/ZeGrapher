@@ -241,7 +241,7 @@ void MathObjectsInput::keyboardButtonClicked()
 
 void MathObjectsInput::addTangent()
 {
-    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets);
+    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets, information->getOptions().defaultColor);
     tangentWidgets << tangent;
 
     connect(tangent, SIGNAL(removeMe(TangentWidget*)), this, SLOT(removeTangent(TangentWidget*)));

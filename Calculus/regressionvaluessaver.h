@@ -45,6 +45,7 @@ public:
 
     Regression* getRegression();
     void setRegression(Regression *reg);
+    void move(GraphRange newRange);
 
     QPolygonF &getCurve();
 
@@ -59,6 +60,7 @@ protected:
     inline double length(QPointF pt);
     QPointF orthogonalVector(const QPointF &pt);
 
+    double pixelMove;
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
     GraphRange graphRange;    

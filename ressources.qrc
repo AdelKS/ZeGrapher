@@ -58,5 +58,11 @@
         <file>Help/english-icon.png</file>
         <file>Help/french-icon.png</file>
         <file>icons/error.png</file>
+        <file>Help/columnActions_en.png</file>
+        <file>Help/columnFill_en.png</file>
+        <file>Help/data_help_en.html</file>
+        <file>Help/lineActions_en.png</file>
+        <file>Help/pins_en.png</file>
+        <file>Help/polynomialCoefVals_en.png</file>
     </qresource>
 </RCC>

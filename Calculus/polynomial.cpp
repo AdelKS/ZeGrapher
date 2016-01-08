@@ -18,15 +18,14 @@
 **
 ****************************************************************************/
 
-#include <boost/math/special_functions/binomial.hpp>
 #include "polynomial.h"
 
-Polynomial::Polynomial(const Polynomial &pol) : coefficients(pol.coefficients)
+Polynomial::Polynomial(const Polynomial &pol) : coefficients(pol.coefficients),
+    translation(pol.translation), translatedCoefficients(pol.translatedCoefficients)
 {
-
 }
 
-Polynomial::Polynomial(int monicMonomialDegree)
+Polynomial::Polynomial(int monicMonomialDegree) : translation(0)
 {
     for(int i = 0 ; i < monicMonomialDegree ; i++)
         coefficients << 0;
@@ -34,7 +33,7 @@ Polynomial::Polynomial(int monicMonomialDegree)
     coefficients << 1;
 }
 
-Polynomial::Polynomial(QList<double> coefs)
+Polynomial::Polynomial(QList<double> coefs) : translation(0)
 {
     coefficients = coefs;
 }
@@ -42,6 +41,13 @@ Polynomial::Polynomial(QList<double> coefs)
 QList<double> Polynomial::getCoefs()
 {
     return coefficients;
+}
+
+QList<double> Polynomial::getTranslatedCoefs()
+{
+    if(translation == 0)
+        return coefficients;
+    else return translatedCoefficients;
 }
 
 Polynomial::Polynomial()
@@ -55,8 +61,10 @@ void Polynomial::resetToZero()
     coefficients << 0;
 }
 
-double Polynomial::eval(double x) const
+double Polynomial::eval(double xval) const
 {
+    double x = xval + translation;
+
     double val = 1, res = 0;
 
     for(int i = 0 ; i <= degree() ; i++)
@@ -68,40 +76,57 @@ double Polynomial::eval(double x) const
     return res;
 }
 
-void Polynomial::translateX(double Dx)
+double Polynomial::getXTranslation() const
 {
-    Dx = -Dx;
+    return translation;
+}
 
-    QList<double> newCoefs;
+void Polynomial::translateX(double Dx)
+{    
+    translation += -Dx;
+
+    translatedCoefficients.clear();
+    
+    Dx = -Dx;
 
     QList<double> DxPowTable;
     DxPowTable.reserve(coefficients.size());
+
     double DxPow = 1;
 
     for(int i = 0 ; i < coefficients.size() ; i++)
     {
-        newCoefs << 0;
+        translatedCoefficients << 0;
         DxPowTable << DxPow;
         DxPow *= Dx;
     }
 
     for(int n = 0 ; n < coefficients.size() ; n++)
         for(int k = 0 ; k <= n ; k++)
-            newCoefs[k] += coefficients[n] * boost::math::binomial_coefficient<double>(n,k) * DxPowTable[n-k];
-
-    coefficients = newCoefs;
+            translatedCoefficients[k] += coefficients[n] * boost::math::binomial_coefficient<double>(n,k) * DxPowTable[n-k];
 }
 
 void Polynomial::translateY(double Dy)
 {
     coefficients[0] += Dy;
+    translatedCoefficients[0] += Dy;
 }
 
 void Polynomial::expand(double coef)
 {
     double multCoef = 1;
 
-    for(double &c : coefficients)
+    for(auto &c : coefficients)
+    {
+        c *= multCoef;
+        multCoef /= coef;
+    }
+
+    multCoef = 1;
+
+    translation *= coef;
+
+    for(auto &c : translatedCoefficients)
     {
         c *= multCoef;
         multCoef /= coef;
@@ -111,7 +136,11 @@ void Polynomial::expand(double coef)
 double Polynomial::getCoef(int deg) const
 {
     if(deg <= degree())
-        return coefficients[deg];
+    {
+        if(translation != 0)
+            return translatedCoefficients[deg];
+        else return coefficients[deg];
+    }
     else return 0;
 }
 
@@ -132,11 +161,17 @@ Polynomial Polynomial::antiderivative()
         val++;
     }
 
-    return Polynomial(coefs);
+    Polynomial pol(coefs);
+    pol.translateX(translation);
+
+    return pol;
 }
 
 void Polynomial::setAffine(Point A, Point B)
 {
+    translation = 0;
+    translatedCoefficients.clear();
+
     coefficients.clear();
     coefficients << 0 << 0;
 
@@ -149,10 +184,19 @@ Polynomial& Polynomial::operator+=(const Polynomial &P)
     QList<double> coefs;
     int deg = std::max(degree(), P.degree());
 
+    if(P.getXTranslation() != 0 || translation != 0)
+    {
+        double meanTranslation = (P.getXTranslation() + translation)/2;
+        Polynomial Q(P);
+        Q.translateX(Q.translation - meanTranslation);
+        translateX(translation - meanTranslation);
+    }
+
     for(int i = 0 ; i <= deg ; i++)
         coefs << getCoef(i) + P.getCoef(i);
 
     coefficients = coefs;
+    translation = 0;
 
     return *this;
 }
@@ -162,22 +206,34 @@ Polynomial& Polynomial::operator*=(double scal)
     for(int i = 0 ; i < coefficients.size() ; i++)
         coefficients[i] *= scal;
 
+    for(int i = 0 ; i < translatedCoefficients.size() ; i++)
+        translatedCoefficients[i] *= scal;
+
     return *this;
 }
 
 Polynomial& Polynomial::operator*=(const Polynomial &P)
 {
+    Polynomial Q(P);
     QList<double> coefs;
     int deg = degree() + P.degree();
 
     for(int i = 0 ; i <=  deg ; i++)
         coefs << 0;
 
+    if(P.getXTranslation() != 0 || translation != 0)
+    {
+        double meanTranslation = (P.getXTranslation() + translation)/2;
+        Q.translateX(meanTranslation - Q.translation);
+        translateX(meanTranslation - translation);
+    }
+
     for(int i = 0 ; i <= degree() ; i++)
         for(int j = 0 ; j <= P.degree() ; j++)
-            coefs[i+j] += coefficients[i] * P.coefficients[j];
+            coefs[i+j] += getCoef(i) * Q.getCoef(j);
 
     coefficients = coefs;
+    translation = 0;
 
     return *this;
 }

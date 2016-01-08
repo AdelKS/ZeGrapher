@@ -56,6 +56,8 @@ GraphDraw::GraphDraw(Information *info)
 void GraphDraw::addRegSaver(Regression *reg)
 {
     regValuesSavers << RegressionValuesSaver(information->getOptions().distanceBetweenPoints, reg);
+    recalculate = true;
+    repaint();
 }
 
 void GraphDraw::delRegSaver(Regression *reg)
@@ -63,6 +65,8 @@ void GraphDraw::delRegSaver(Regression *reg)
     for(int i = 0 ; i < regValuesSavers.size() ; i++)
         if(regValuesSavers[i].getRegression() == reg)
             regValuesSavers.removeAt(i);
+    recalculate = false;
+    repaint();
 }
 
 void GraphDraw::drawRhombus(QPointF pt, double w)

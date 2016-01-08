@@ -44,6 +44,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     information->addDataRegression(regression);
 
+    regression->setColor(information->getOptions().defaultColor);
     regression->setData(dat); //
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));

@@ -88,6 +88,56 @@ QPolygonF &RegressionValuesSaver::getCurve()
     return curve;
 }
 
+void RegressionValuesSaver::move(GraphRange newRange)
+{
+    if(regression->isPolar())
+        return; //nothing to do if polar: All the points have been calculated correctly previously
+
+
+    graphRange = newRange;
+
+    drawnRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
+    drawnRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
+
+    double x = curve.first().x()/xUnit - xUnitStep;
+
+    if(x >= drawnRange.start)
+    {
+        while(x >= drawnRange.start)
+        {
+            curve.prepend(QPointF(x * xUnit, - regression->eval(x) * yUnit));
+            x -= xUnitStep;
+        }
+    }
+    else
+    {
+        while(x < drawnRange.start - xUnitStep)
+        {
+            curve.removeFirst();
+            x += xUnitStep;
+        }
+    }
+
+    x = curve.last().x()/xUnit + xUnitStep;
+
+    if(x >= drawnRange.start)
+    {
+        while(x <= drawnRange.end)
+        {
+            curve << QPointF(x * xUnit, - regression->eval(x) * yUnit);
+            x += xUnitStep;
+        }
+    }
+    else
+    {
+        while(x > drawnRange.end + xUnitStep)
+        {
+            curve.removeLast();
+            x -= xUnitStep;
+        }
+    }
+}
+
 void RegressionValuesSaver::calculateCartesianRegressionCurve()
 {    
     drawnRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
@@ -140,7 +190,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
         nextPt = curve.last() + delta;
 
-        //deltaAngle by al-kashi formula plus we take in count that the xScale and yScake are different
+        //deltaAngle by al-kashi formula plus we take in count that the xScale and yScale are different
 
         deltaAngle = fabs(acos(( squareLength(curve.last()) + squareLength(nextPt) - pixelStep*pixelStep ) / ( 2 * length(curve.last()) * length(nextPt) )));
 

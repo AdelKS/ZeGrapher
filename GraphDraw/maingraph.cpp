@@ -81,7 +81,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     dispPoint = false;
     buttonPresse = false;
 
-    sourisSurUneCurve = dispRectangle = recalculate = false;
+    sourisSurUneCurve = dispRectangle = recalculate = recalculateRegs = false;
     hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;   
     moving = false;
 
@@ -129,8 +129,9 @@ void MainGraph::updateGraph()
 
 void MainGraph::updateData()
 {
-    resaveGraph = false;
+    resaveGraph = true;
     recalculate = false;
+    recalculateRegs = true;
     update();
 }
 
@@ -486,7 +487,6 @@ void MainGraph::indirectPaint()
     painter.translate(QPointF(centre.x, centre.y));
 
     drawAnimatedParEq();
-    drawRegressions();
     drawData();
     animationUpdate = false;
 
@@ -531,7 +531,13 @@ void MainGraph::directPaint()
 
     if(recalculate)
     {
+        recalculate = false;
         funcValuesSaver->calculateAll(uniteX, uniteY);
+        recalculateRegVals();
+    }
+    else if(recalculateRegs)
+    {
+        recalculateRegs = false;
         recalculateRegVals();
     }
 
@@ -628,7 +634,13 @@ void MainGraph::resaveImageBuffer()
 
     if(recalculate)
     {
+        recalculate = false;
         funcValuesSaver->calculateAll(uniteX, uniteY);
+        recalculateRegVals();
+    }
+    else if(recalculateRegs)
+    {
+        recalculateRegs = false;
         recalculateRegVals();
     }
 
@@ -639,6 +651,7 @@ void MainGraph::resaveImageBuffer()
     drawStraightLines();
     drawTangents();
     drawStaticParEq();
+    drawRegressions();
 
     painter.end();
 }
@@ -1048,8 +1061,9 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             if(dx != 0)
             {
                 funcValuesSaver->move(dx);
-                recalculateRegVals();
+                moveSavedRegsValues();
             }
+
 
             moving = true;
             refresh = true;
@@ -1069,6 +1083,12 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
 
 
 
+}
+
+void MainGraph::moveSavedRegsValues()
+{
+    for(auto &reg : regValuesSavers)
+        reg.move(graphRange);
 }
 
 void MainGraph::mouseMoveWithActiveSelection(double x, double y)

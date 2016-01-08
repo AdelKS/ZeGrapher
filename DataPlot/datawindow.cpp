@@ -400,13 +400,13 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
     if(selectorSide == ROW_SELECTION)
     {
         if(inBetween)        
-            ui->actionsGroupBox->setTitle(tr("Between two lines:"));        
-        else ui->actionsGroupBox->setTitle(tr("Actions on line:"));
+            ui->actionsGroupBox->setTitle(tr("Between-two-lines actions:"));
+        else ui->actionsGroupBox->setTitle(tr("Line actions:"));
     }
     else
     {
         if(inBetween)        
-            ui->actionsGroupBox->setTitle(tr("Between two columns:"));        
+            ui->actionsGroupBox->setTitle(tr("Between-two-columns actions:"));
         else ui->actionsGroupBox->setTitle(tr("Column actions:"));
     }
 }

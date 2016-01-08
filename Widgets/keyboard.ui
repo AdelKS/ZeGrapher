@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
+    <width>608</width>
     <height>183</height>
    </rect>
   </property>
@@ -703,7 +703,7 @@
       <widget class="QPushButton" name="antiderivative">
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
@@ -838,7 +838,7 @@
       <widget class="QPushButton" name="function">
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
@@ -866,7 +866,7 @@
       <widget class="QPushButton" name="derivative">
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>16777215</height>
         </size>
        </property>
