@@ -18,13 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
-
-
-
 #include <QApplication>
 #include "Windows/zegrapher.h"
 #include <QLocale>

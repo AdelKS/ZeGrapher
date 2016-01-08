@@ -106,6 +106,9 @@ bool DataTable::eventFilter(QObject *obj, QEvent *event)
             {
                 item->setText("");
             }
+            removeUnnecessaryRows();
+            removeUnnecessaryColumns();
+
             return true;
         }
         return false;
@@ -153,7 +156,7 @@ QList<QStringList> DataTable::getData()
     return data;
 }
 
-void DataTable::removeUnnecessaryRowsColumns()
+void DataTable::removeUnnecessaryColumns()
 {
     //removing unnecessary columns but not the last one
 
@@ -178,16 +181,20 @@ void DataTable::removeUnnecessaryRowsColumns()
             removeColumn(col);
         else col++;
     }
+}
 
+void DataTable::removeUnnecessaryRows()
+{
     //removing rows, but not the last one
 
     int row = 0;
+    bool unnecessary = false;
 
     while(row < tableWidget->rowCount()-1 && tableWidget->rowCount() > MIN_ROW_COUNT)
     {
         unnecessary = true;
 
-        for(col = 0 ; col < tableWidget->columnCount() && unnecessary; col++)
+        for(int col = 0 ; col < tableWidget->columnCount() && unnecessary; col++)
             unnecessary = tableWidget->item(row, col)->text().isEmpty() || tableWidget->item(row, col)->text() == " ";
 
         if(unnecessary && tableWidget->rowCount() > MIN_ROW_COUNT)
@@ -237,7 +244,8 @@ void DataTable::addData(QList<QStringList> data)
         }
     }
 
-    removeUnnecessaryRowsColumns();
+    removeUnnecessaryRows();
+    removeUnnecessaryColumns();
 }
 
 void DataTable::sortColumnSwapCells(int col, bool ascending)
@@ -338,6 +346,9 @@ void DataTable::fillColumnFromRange(int col, Range range)
 
     col = tableWidget->horizontalHeader()->logicalIndex(col);
 
+    if(col + 1 == tableWidget->columnCount())
+        addColumn();
+
     int end = trunc((range.end - range.start)/range.step) + 1;
 
     if(end <= 0)
@@ -374,6 +385,9 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
         return false;
 
     col = tableWidget->horizontalHeader()->logicalIndex(col);
+
+    if(col + 1 == tableWidget->columnCount())
+        addColumn();
 
     int row = 0;
 
@@ -433,7 +447,7 @@ QList<QList<double> > &DataTable::getValues()
 void DataTable::checkCell(QTableWidgetItem *item)
 {
     if(disableChecking)
-        return;
+        return;  
 
     if(tableWidget->horizontalHeader()->visualIndex(item->column()) + 1 == tableWidget->columnCount())
         addColumn();

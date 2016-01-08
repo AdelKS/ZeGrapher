@@ -174,8 +174,8 @@ void PolynomialRegression::calculateRegressionPolynomials()
     discretePol.translateY(ymin);
 
     if(approxMethod == ApproachPoints)
-        emit coefsUpdated(discretePol.getCoefs());
-    else emit coefsUpdated(continuousPol.getCoefs());
+        emit coefsUpdated(discretePol.getTranslatedCoefs());
+    else emit coefsUpdated(continuousPol.getTranslatedCoefs());
 }
 
 void PolynomialRegression::setPolynomialRegressionDegree(int deg)
@@ -194,8 +194,8 @@ void PolynomialRegression::setApproxMethod(ApproxMethod method)
     emit regressionModified();
 
     if(approxMethod == ApproachPoints)
-        emit coefsUpdated(discretePol.getCoefs());
-    else emit coefsUpdated(continuousPol.getCoefs());
+        emit coefsUpdated(discretePol.getTranslatedCoefs());
+    else emit coefsUpdated(continuousPol.getTranslatedCoefs());
 
 }
 

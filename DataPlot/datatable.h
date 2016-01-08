@@ -82,7 +82,8 @@ protected:
     void resizeRows(int rowHeight);
     void addRow();
     void addColumn();
-    void removeUnnecessaryRowsColumns();
+    void removeUnnecessaryColumns();
+    void removeUnnecessaryRows();
 
     bool eventFilter(QObject *obj, QEvent *event);
 
