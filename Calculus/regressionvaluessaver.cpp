@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "regressionvaluessaver.h"
 
 #include <iostream>
@@ -157,7 +154,7 @@ void RegressionValuesSaver::calculateCartesianRegressionCurve()
 
 double RegressionValuesSaver::squareLength(QPointF pt)
 {
-    return pt.x()*pt.x() + pt.y()*pt.y();
+    return QPointF::dotProduct(pt, pt);
 }
 
 double RegressionValuesSaver::length(QPointF pt)
@@ -173,7 +170,7 @@ QPointF RegressionValuesSaver::orthogonalVector(const QPointF &pt)
 void RegressionValuesSaver::calculatePolarRegressionCurve()
 {
     Range range = regression->getDrawRange();
-    double angle = range.start, radius = 0, deltaAngle;
+    double angle = range.start, radius = 0, deltaAngle, basicDeltaAngle;
     QPointF nextPt, delta;
 
     curve.clear();
@@ -183,18 +180,22 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
         radius = regression->eval(angle);
         curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
 
-        //we evaluate now de step to add to angle to make the next point "pixelStep" farther than this one on the screen
+        basicDeltaAngle = min(0.01, fabs(atan(pixelStep/sqrt(QPointF::dotProduct(curve.last(), curve.last())))));
+        angle += basicDeltaAngle;
 
-        delta = orthogonalVector(curve.last());
-        delta *= pixelStep / length(delta);
+        radius = regression->eval(angle);
+        nextPt = QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
+
+        delta = nextPt - curve.last();
+        delta *= pixelStep/sqrt(QPointF::dotProduct(delta, delta));
 
         nextPt = curve.last() + delta;
 
         //deltaAngle by al-kashi formula plus we take in count that the xScale and yScale are different
 
-        deltaAngle = fabs(acos(( squareLength(curve.last()) + squareLength(nextPt) - pixelStep*pixelStep ) / ( 2 * length(curve.last()) * length(nextPt) )));
+        deltaAngle = fabs(acos((QPointF::dotProduct(curve.last(), nextPt) / (length(curve.last() * length(nextPt))))));
 
-        angle += deltaAngle;
+        angle += deltaAngle - basicDeltaAngle;
     }
 }
 
