@@ -185,7 +185,8 @@ void GraphDraw::drawRegression(int reg, int width)
     pen.setColor(information->getRegression(reg)->getColor());
     painter.setPen(pen);
 
-    painter.drawPolyline(regValuesSavers[reg].getCurve());
+    for(int i = 0 ; i < regValuesSavers[reg].getCurves().size() ; i++)
+        painter.drawPolyline(regValuesSavers[reg].getCurves().at(i));
 }
 
 void GraphDraw::drawRegressions()

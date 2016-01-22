@@ -18,13 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
-
-
-
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
@@ -70,6 +63,16 @@
 struct GraphRange
 {
     double Xmin, Xmax, Ymin, Ymax, Xscale, Yscale;
+
+    QRectF getRect() const
+    {
+        QRectF graphWin;
+        graphWin.setBottom(Ymin);
+        graphWin.setTop(Ymax);
+        graphWin.setLeft(Xmin);
+        graphWin.setRight(Xmax);
+        return graphWin;
+    }
 };
 struct Point
 {

@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef REGRESSIONVALUESSAVER_H
 #define REGRESSIONVALUESSAVER_H
 
@@ -47,7 +44,7 @@ public:
     void setRegression(Regression *reg);
     void move(GraphRange newRange);
 
-    QPolygonF &getCurve();
+    QList<QPolygonF> &getCurves();
 
 public slots:
      void recalculate();
@@ -59,14 +56,19 @@ protected:
     inline double squareLength(QPointF pt);
     inline double length(QPointF pt);
     QPointF orthogonalVector(const QPointF &pt);
+    void cartesianMove();
+    void polarMove();
+    Range getGraphAngleRange();
+    QList<Range> getDrawableSet();
+    double arg(QPointF pt);
 
     double pixelMove;
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
     GraphRange graphRange;    
-    Range drawnRange;
+    Range drawnRange, graphAngleRange;
 
-    QPolygonF curve;
+    QList<QPolygonF> curves;
 };
 
 #endif // REGRESSIONVALUESSAVER_H
