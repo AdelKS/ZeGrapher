@@ -1,3 +1,2 @@
 Test the new data module to find bugs.
-Limit the calculated teta range in regressionsvaluessaver to the visible area (graphrange): problems are met when the angle range is big,
-    several angle segments are in range (mod 2 Pi)
+polar regressions calculus has still to be fixed. But kinda works

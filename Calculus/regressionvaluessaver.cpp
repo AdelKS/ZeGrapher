@@ -107,9 +107,7 @@ double RegressionValuesSaver::arg(QPointF pt)
         else return -M_PI;
     }
 
-    double res = 2*atan(pt.y() / (pt.x() + length(pt)));
-    if(res < 0)
-        res += 2*M_PI;
+    double res = 2*atan(pt.y() / (pt.x() + length(pt)));    
 
     return res;
 }
@@ -121,43 +119,52 @@ Range RegressionValuesSaver::getGraphAngleRange()
 
     if(graphWin.contains(0,0))
     {
-        angleRange.start = 0;
-        angleRange.end = 2*M_PI;
+        angleRange.start = -M_PI;
+        angleRange.end = M_PI;
         return angleRange;
     }
 
-    //all the calculus made here was to avoid to test all the six cases possible...
-
-    QList<double> angles;
-    angles << arg(graphWin.topLeft()) << arg(graphWin.topRight()) << arg(graphWin.bottomRight()) << arg(graphWin.bottomLeft());
-
-    QList<double> deltaAngles;
-    for(int i = 0 ; i < angles.size() ; i++)
-        for(int j = i+1 ; j < angles.size() ; j++)
-            deltaAngles << fabs(angles[i] - angles[j]);
-
-    int indexOfMax = 0;
-    for(int i = 1 ; i < deltaAngles.size() ; i++)
-        if(deltaAngles[i] > deltaAngles[indexOfMax])
-            indexOfMax = i;
-
-    int i1 = 0, i2 = 0;
-    bool found = false;
-    while(!found && i1 < angles.size())
+    if(graphWin.left() >= 0 && graphWin.bottom() <=0 && graphWin.top() >= 0)
+        //correction to the only discontinuity case since arg gives values in [0,2pi] and angle start must always be smaller than end
     {
-        i2++;
-        if(i2 == angles.size())
-        {
-            i1++;
-            i2 = i1;
-        }
-        else found = (fabs(angles[i1] - angles[i2]) == deltaAngles[indexOfMax]);
-
+        angleRange.start = arg(graphWin.bottomLeft());
+        angleRange.end = arg(graphWin.topLeft());
     }
-
-
-    angleRange.start = std::min(angles[i1], angles[i2]);
-    angleRange.end = std::max(angles[i1], angles[i2]);
+    else if(graphWin.left() >= 0 && graphWin.bottom() >=0)
+    {
+        angleRange.start = arg(graphWin.bottomRight());
+        angleRange.end = arg(graphWin.topLeft());
+    }
+    else if(graphWin.left() <= 0 && graphWin.right() >=0 && graphWin.bottom() >= 0)
+    {
+        angleRange.start = arg(graphWin.bottomRight());
+        angleRange.end = arg(graphWin.bottomLeft());
+    }
+    else if(graphWin.right() <= 0 && graphWin.bottom() >=0)
+    {
+        angleRange.start = arg(graphWin.topRight());
+        angleRange.end = arg(graphWin.bottomLeft());
+    }
+    else if(graphWin.right() <= 0 && graphWin.bottom() <=0 && graphWin.top() >= 0)
+    {
+        angleRange.start = arg(graphWin.topRight());
+        angleRange.end = arg(graphWin.bottomRight())+2*M_PI;
+    }
+    else if(graphWin.right() <= 0 && graphWin.top() <=0)
+    {
+        angleRange.start = arg(graphWin.topLeft());
+        angleRange.end = arg(graphWin.bottomRight());
+    }
+    else if(graphWin.right() >= 0 && graphWin.left() <=0 && graphWin.top() <= 0)
+    {
+        angleRange.start = arg(graphWin.topLeft());
+        angleRange.end = arg(graphWin.topRight());
+    }
+    else // if(graphWin.left() >= 0 && graphWin.top() <=0)
+    {
+        angleRange.start = arg(graphWin.bottomLeft());
+        angleRange.end = arg(graphWin.topRight());
+    }
 
     return angleRange;
 
@@ -264,7 +271,11 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
     while(angle < regRange.end)
     {
-        normalisedAngle = fmod(angle, 2*M_PI);
+        normalisedAngle = remainder(angle, 2*M_PI);
+
+        if(graphAngleRange.end > M_PI && normalisedAngle <= remainder(graphAngleRange.end, 2*M_PI))
+            normalisedAngle += 2*M_PI;
+
 
         if(normalisedAngle < graphAngleRange.start - deltaAngle)
         {
@@ -285,7 +296,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
             radius = regression->eval(angle);
             curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
 
-            basicDeltaAngle = min(0.01, fabs(atan(pixelStep/sqrt(QPointF::dotProduct(curve.last(), curve.last())))));
+            basicDeltaAngle = min(0.001, fabs(atan(pixelStep/sqrt(QPointF::dotProduct(curve.last(), curve.last())))));
             angle += basicDeltaAngle;
 
             radius = regression->eval(angle);
@@ -297,6 +308,9 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
             nextPt = curve.last() + delta;
 
             deltaAngle = fabs(acos((QPointF::dotProduct(curve.last(), nextPt) / (length(curve.last() * length(nextPt))))));
+            if(deltaAngle == 0)
+                deltaAngle = 0.0001;
+
 
             angle += deltaAngle - basicDeltaAngle;
         }
