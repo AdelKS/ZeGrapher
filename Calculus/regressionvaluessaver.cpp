@@ -90,11 +90,7 @@ void RegressionValuesSaver::move(GraphRange newRange)
     graphRange = newRange;
 
     if(regression->isPolar())
-    {
-        Range newAngleRange = getGraphAngleRange();
-        if(newAngleRange.start != graphAngleRange.start || newAngleRange.end != graphAngleRange.end)
-            polarMove();
-    }
+        polarMove();
     else cartesianMove();
 }
 
@@ -263,11 +259,13 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
     Range regRange = regression->getDrawRange();
     graphAngleRange = getGraphAngleRange();
 
-    double angle = regRange.start, radius = 0, deltaAngle = 0.001, basicDeltaAngle = 0;
+    double angle = regRange.start, radius = 0, deltaAngle = 0.0001;
     double normalisedAngle;
-    QPointF nextPt, delta;
+    //QPointF nextPt, delta;
 
     QPolygonF curve;
+    QPointF pt;
+    QRectF graphRect = graphRange.getRect();
 
     while(angle < regRange.end)
     {
@@ -294,31 +292,53 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
         else
         {
             radius = regression->eval(angle);
-            curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
 
-            basicDeltaAngle = min(0.001, fabs(atan(pixelStep/sqrt(QPointF::dotProduct(curve.last(), curve.last())))));
-            angle += basicDeltaAngle;
+            pt.setX(radius * cos(angle));
+            pt.setY(radius * sin(angle));
 
+            if(graphRect.contains(pt))
+            {
+                curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
+
+                deltaAngle = min(length(pt) + 0.0000001, fabs(atan(pixelStep/sqrt(QPointF::dotProduct(curve.last(), curve.last())))));
+                angle += deltaAngle;
+            }
+            else // we look for the next point who's in the represented range, without making more than 2000 tries
+            {
+                curves << curve;
+                curve.clear();
+                double step = (regRange.end - angle)/4096;
+                while(angle < regRange.end && !graphRect.contains(pt))
+                {
+                    angle += step;
+                    radius = regression->eval(angle);
+                    pt.setX(radius * cos(angle));
+                    pt.setY(radius * sin(angle));
+                }
+            }
+
+            /*
             radius = regression->eval(angle);
             nextPt = QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
+
+            angle -= basicDeltaAngle;
 
             delta = nextPt - curve.last();
             delta *= pixelStep/sqrt(QPointF::dotProduct(delta, delta));
 
             nextPt = curve.last() + delta;
 
-            deltaAngle = fabs(acos((QPointF::dotProduct(curve.last(), nextPt) / (length(curve.last() * length(nextPt))))));
-            if(deltaAngle == 0)
-                deltaAngle = 0.0001;
+            deltaAngle = max(0.000001, fabs(acos((QPointF::dotProduct(curve.last(), nextPt) / (length(curve.last() * length(nextPt)))))));
 
-
-            angle += deltaAngle - basicDeltaAngle;
+            angle += deltaAngle;
+            */
         }
     }
 
     if(curve.size() > 1)
         curves << curve;
     curve.clear();
+
 }
 
 

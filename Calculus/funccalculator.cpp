@@ -33,12 +33,13 @@ FuncCalculator::FuncCalculator(int id, QString funcName, QLabel *errorLabel) : t
     errorMessageLabel = errorLabel;
     funcTree = NULL;
     funcNum = id;
-    isExprValidated = areCalledFuncsGood = areIntegrationPointsGood = isParametric = calledFuncsAlreadyChecked = false;
+    isExprValidated = areCalledFuncsGood = areIntegrationPointsGood = isParametric = false;
     name = funcName;    
 
     addRefFuncsPointers();
 
     drawState = true;
+    callLock = false;
 
     for(short i = 0 ; i < 6 ; i++)
     {
@@ -91,8 +92,6 @@ bool FuncCalculator::validateExpression(QString expr)
         integrationPoints.clear();
     }
 
-    calledFuncsAlreadyChecked = false;
-
     return isExprValidated;
 }
 
@@ -104,7 +103,7 @@ void FuncCalculator::setFuncsPointers(QList<FuncCalculator*> otherFuncs)
 
 unsigned long int_pow(unsigned long a, unsigned long b)
 {
-    while(b > 1)
+    while(b != 1)
     {
         a *= a;
         b--;
@@ -185,33 +184,28 @@ bool FuncCalculator::checkFuncCallingInclusions()
     if(!isExprValidated || !areIntegrationPointsGood)
         return false;
 
-    if(!calledFuncsAlreadyChecked)
+    QList<int> calledFuncs = treeCreator.getCalledFuncs(expression);
+
+    areCalledFuncsGood = !calledFuncs.contains(funcNum);
+
+    if(!areCalledFuncsGood)
     {
-        calledFuncsAlreadyChecked = true;
-
-        QList<int> calledFuncs = treeCreator.getCalledFuncs(expression);
-
-        areCalledFuncsGood = !calledFuncs.contains(funcNum);
-
-        if(!areCalledFuncsGood)
-        {
-            errorMessageLabel->setText(tr("This function calls itself in its expression."));
-            //Cette fonction s'appelle elle même dans son expression.
-            return false;
-        }
-
-        for(int i = 0; i < calledFuncs.size() && areCalledFuncsGood; i++)
-        {
-            areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->canBeCalled();
-            if(areCalledFuncsGood)
-                areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->checkFuncCallingInclusions();
-        }
-
-        if(!areCalledFuncsGood)
-            errorMessageLabel->setText(tr("This function calls another function that is whether undefined or makes an inifite calling loop."));
-        //"Cette fonction appelle une autre fonction qui est invalide, non définie ou forme une boucle infinie d'appels."
-
+        errorMessageLabel->setText(tr("This function calls itself in its expression."));
+        return false;
     }
+
+    callLock = true;
+    for(int i = 0; i < calledFuncs.size() && areCalledFuncsGood; i++)
+    {
+        areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->canBeCalled();
+        if(areCalledFuncsGood)
+            areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->checkFuncCallingInclusions();
+    }
+    callLock = false;
+
+    if(!areCalledFuncsGood)
+        errorMessageLabel->setText(tr("This function calls another function that is whether undefined or makes an inifite calling loop."));
+
 
     return areCalledFuncsGood;
 
@@ -249,7 +243,7 @@ void FuncCalculator::setParametricRange(Range range)
 
 bool FuncCalculator::canBeCalled()
 {
-    return isExprValidated && areIntegrationPointsGood && areCalledFuncsGood;
+    return isExprValidated && areIntegrationPointsGood && areCalledFuncsGood && !callLock;
 }
 
 double FuncCalculator::calculateFromTree(FastTree *tree, double x)

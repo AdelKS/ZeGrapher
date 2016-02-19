@@ -202,8 +202,9 @@ void MathObjectsInput::validateFunctions()
     for(int i = 0 ; i < funcWidgets.size(); i++)
         funcWidgets[i]->firstValidation();
 
-    for(int i = 0 ; i < funcWidgets.size(); i++)
-        funcWidgets[i]->secondValidation();
+    for(int j = 0 ; j < funcWidgets.size(); j++)
+        for(int i = 0 ; i < funcWidgets.size(); i++)
+            funcWidgets[i]->secondValidation();
 }
 
 void MathObjectsInput::validateSequences()

@@ -1,2 +1,2 @@
 Test the new data module to find bugs.
-polar regressions calculus has still to be fixed. But kinda works
+bug: when there's more than 99 lines in a dataTable, the indexation column gets bigger and the selectors are misplaced

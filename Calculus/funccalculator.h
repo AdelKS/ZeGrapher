@@ -71,7 +71,7 @@ protected:
 
     int funcNum;
     double k;
-    bool isExprValidated, isParametric, areCalledFuncsGood, areIntegrationPointsGood, drawState, calledFuncsAlreadyChecked;
+    bool isExprValidated, isParametric, areCalledFuncsGood, areIntegrationPointsGood, drawState, callLock;
     TreeCreator treeCreator;
     FastTree *funcTree;
     QString expression, name;
