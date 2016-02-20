@@ -413,6 +413,8 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
 
 void DataWindow::updateSelectorsSize()
 {
+    int width = dataTable->getVerticalHeaderSize().width();
+    Q_UNUSED(width);
     columnSelectorSpacer->setFixedWidth(ROW_SELECTOR_WIDTH + dataTable->getVerticalHeaderSize().width());
     rowSelectorSpacer->setFixedHeight(dataTable->getHorizontalHeaderSize().height());
 

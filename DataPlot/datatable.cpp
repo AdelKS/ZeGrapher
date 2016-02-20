@@ -67,9 +67,8 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
 
     connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(checkCell(QTableWidgetItem*)));
 
-    connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
+    connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SLOT(checkVerticalHeaderNewWidth()));
 
-    connect(tableWidget->horizontalHeader(), SIGNAL(geometriesChanged()), this, SIGNAL(newPosCorrections()));
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(renameColumn(int)));
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SIGNAL(columnMoved(int, int, int)));
 
@@ -84,6 +83,15 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
 
     nameValidator.setPattern("^([a-z]|[A-Z])+(_([a-z]|[A-Z])+)*$");
 
+}
+
+void DataTable::checkVerticalHeaderNewWidth()
+{
+    if(verticalHeaderWidth != tableWidget->verticalHeader()->width())
+    {
+        verticalHeaderWidth = tableWidget->verticalHeader()->width();
+        emit newPosCorrections();
+    }
 }
 
 bool DataTable::eventFilter(QObject *obj, QEvent *event)
@@ -505,6 +513,8 @@ void DataTable::insertRow(int index)
     disableChecking = false;
 
     emit newRowCount(tableWidget->rowCount());
+
+    checkVerticalHeaderNewWidth();
 }
 
 void DataTable::insertColumn(int index)
@@ -540,6 +550,8 @@ void DataTable::removeRow(int index)
     for(int col = 0 ; col < values.size() ; col++) { values[col].removeAt(index); }
 
     emit newRowCount(tableWidget->rowCount());
+
+    checkVerticalHeaderNewWidth();
 }
 
 void DataTable::removeColumn(int index)

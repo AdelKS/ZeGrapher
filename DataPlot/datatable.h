@@ -75,7 +75,8 @@ signals:
 
 protected slots:
     void renameColumn(int index);
-    void checkCell(QTableWidgetItem *item);    
+    void checkCell(QTableWidgetItem *item);
+    void checkVerticalHeaderNewWidth();
 
 protected:
     void resizeColumns(int columnWidth);
@@ -92,7 +93,7 @@ protected:
     bool disableChecking;
     ExprCalculator *calculator;
     TreeCreator *treeCreator;
-    int cellHeight, cellWidth;
+    int cellHeight, cellWidth, verticalHeaderWidth;
     Information *information;
     QTableWidget *tableWidget;
     QList<QList<double> > values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
