@@ -152,8 +152,7 @@ FORMS    += \
 RESOURCES += \
     ressources.qrc
 
-RC_FILE += \
-    ressources.rc
+RC_ICONS = appicon.ico
 
 OTHER_FILES += \
     TODO.txt
