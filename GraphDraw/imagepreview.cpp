@@ -405,6 +405,6 @@ QImage* ImagePreview::drawImage()
 
     painter.end();
 
-    *image = image->convertToFormat(QImage::Format_Indexed8, Qt::ThresholdDither);
+    //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
     return image;
 }

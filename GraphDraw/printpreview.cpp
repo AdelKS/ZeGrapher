@@ -80,6 +80,13 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
 
     painter.begin(printer);
 
+    if(printType == PRINT_FILE)
+    {
+        painter.setBrush(QBrush(information->getOptions().backgroundColor));
+        painter.drawRect(printer->paperRect());
+    }
+
+
     sheetWidth = sheet.width();
     sheetHeight = sheet.height();
 
@@ -222,7 +229,7 @@ void PrintPreview::determinerCentreEtUnites()
 
 void PrintPreview::drawSheet()
 {
-    painter.setBrush(QBrush(Qt::white));;
+    painter.setBrush(QBrush(information->getOptions().backgroundColor));;
 
     double rapport;
 
@@ -295,7 +302,7 @@ void PrintPreview::drawGraph()
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(Qt::black);
+    pen.setColor(information->getOptions().axesColor);
     painter.setPen(pen);
     painter.drawRect(graphRect);
 

@@ -20,8 +20,8 @@
 
 #include "polynomial.h"
 
-Polynomial::Polynomial(const Polynomial &pol) : coefficients(pol.coefficients),
-    translation(pol.translation), translatedCoefficients(pol.translatedCoefficients)
+Polynomial::Polynomial(const Polynomial &pol) : translation(pol.translation), coefficients(pol.coefficients),
+    translatedCoefficients(pol.translatedCoefficients)
 {
 }
 

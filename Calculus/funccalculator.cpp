@@ -20,11 +20,6 @@
 
 #include "Calculus/funccalculator.h"
 
-#include <iostream>
-
-using namespace std;
-
-
 static double tenPower(double x)
 {
      return pow(10, x);
@@ -164,8 +159,6 @@ double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
 
 
     }while(diff > condition);
-
-    cout << "Val calculated!" << endl;
 
     return R[i][i] + A.y;
 
