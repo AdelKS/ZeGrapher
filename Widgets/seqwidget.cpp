@@ -26,6 +26,8 @@ SeqWidget::SeqWidget(QChar name, int id, QColor color) : colorSaver(color)
 {    
     seqName = name;
     seqNum = id;
+    colorButton->setColor(color);
+    secondColorButton->setColor(color);
     nameLabel->setText(QString(name) + "<sub>n</sub> =");
     calculator = new SeqCalculator(id, "(" + QString(name) + "<sub>n</sub>)", errorMessageLabel);
     calculator->setColorSaver(&colorSaver);

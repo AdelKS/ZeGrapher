@@ -18,12 +18,12 @@
 **
 ****************************************************************************/
 
-
-
 #include "GraphDraw/imagepreview.h"
+
 
 ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 {
+    information = info;
     parameters.distanceBetweenPoints = 0.125;
     leftMargin = 30;
     rightMargin = 30;
@@ -37,9 +37,8 @@ ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
     bold = italic = underline = false;
     numPrec = NUM_PREC;
 
-    updateTimer.setInterval(100);
-    updateTimer.setSingleShot(true);
-    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(information, SIGNAL(updateOccured()), this, SLOT(update()));
+
 }
 
 void ImagePreview::paintEvent(QPaintEvent *event)
@@ -320,10 +319,10 @@ void ImagePreview::placerGraduations()
         Ypos += step;
     }
 
-    if(largestWidth < leftMargin - additionalMargin || largestWidth > leftMargin - additionalMargin - 5)
+    if(leftMargin - additionalMargin - largestWidth > 8 || leftMargin - additionalMargin - largestWidth < 4)
     {
-        leftMargin = largestWidth + 10 + additionalMargin;
-        updateTimer.start();
+        leftMargin = largestWidth + additionalMargin + 6;
+        update();
     }
 
 

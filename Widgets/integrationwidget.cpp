@@ -40,7 +40,7 @@ IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsL
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(assignNeutralPalette(QWidget*)));
 
     for(short i = 0; i < 6 ; i++)
-        addWidgetToList(antiderivatives[i]);
+        addWidgetToList(antiderivatives[i], i);
 
     setLayout(centralLayout);
 
@@ -54,7 +54,7 @@ IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsL
     invalidPalette.setColor(QPalette::Text, Qt::black);
 }
 
-void IntegrationWidget::addWidgetToList(QString name)
+void IntegrationWidget::addWidgetToList(QString name, int funcId)
 {
     QWidget *widget = new QWidget;
     QHBoxLayout *layout = new QHBoxLayout;
@@ -92,6 +92,7 @@ void IntegrationWidget::addWidgetToList(QString name)
     centralLayout->addWidget(widget);
 
     containerWidgetsList << widget;
+    funcIds << funcId;
     xList << xLineEdit;
     yList << yLineEdit;
 
@@ -122,8 +123,19 @@ void IntegrationWidget::updateWidgetsShownState(QString expr)
 QList<Point> IntegrationWidget::getIntegrationPoints(bool &ok)
 {
     ok = true;
-    Point point;
+    Point point = {0,0};
     QList<Point> list;
+
+    int max = 0;
+    for(int id: funcIds)
+    {
+        if(id > max)
+            max = id;
+    }
+
+    for(int i = 0 ; i <= max; i++)
+        list << point;
+
 
     if(isHidden())
         return list;
@@ -146,7 +158,7 @@ QList<Point> IntegrationWidget::getIntegrationPoints(bool &ok)
         else yList[i]->setPalette(invalidPalette);
 
         if(ok)
-            list << point;
+            list[funcIds[i]] = point;
     }
 
     return list;

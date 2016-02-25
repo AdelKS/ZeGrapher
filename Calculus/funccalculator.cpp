@@ -18,10 +18,12 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "Calculus/funccalculator.h"
+
+#include <iostream>
+
+using namespace std;
+
 
 static double tenPower(double x)
 {
@@ -101,8 +103,11 @@ void FuncCalculator::setFuncsPointers(QList<FuncCalculator*> otherFuncs)
 
 }
 
-unsigned long int_pow(unsigned long a, unsigned long b)
+int int_pow(int a, int b)
 {
+    if(b==0)
+        return 1;
+
     while(b != 1)
     {
         a *= a;
@@ -114,38 +119,56 @@ unsigned long int_pow(unsigned long a, unsigned long b)
 
 double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
 {   
-    double nDiv = trunc(fabs(A.x - b) * 100);
-    Point pt1, pt2;
-    double newIntegral = 0, oldIntegral = 1, pos;
-    double precision = tenPower(-NUM_PREC);
+    double a = A.x, fa, fb, hn, result, powResult, diff, condition;
 
-    while(fabs(newIntegral - oldIntegral) > precision)
+    condition = tenPower(-NUM_PREC);
+
+    fa = getFuncValue(a, k_val);
+    fb = getFuncValue(b, k_val);
+
+    if(std::isnan(fa) || std::isinf(fa) || std::isnan(fb) || std::isinf(fb))
+        return NAN;
+
+    QList< QList<double> > R;
+    QList<double> L1;
+
+    L1 << 0.5*(b-a)*(fa+fb);
+
+    R << L1;
+
+    int i = 0, end = 0;
+
+    do
     {
-        oldIntegral = newIntegral;
-        newIntegral = 0;
-        pos = 1;
+        i++;
+        end = int_pow(2, i-1);
+        hn = (b-a)/(double(2*end));
+        result = 0;
 
-        pt1.x = A.x;
-        pt1.y = getFuncValue(pt1.x, k_val);
+        for(int j = 1 ; j <= end ; j++)
+            result += getFuncValue(a + ((double(2*j)) - 1)*hn, k_val);
 
-        pt2.x = A.x + (b - A.x)/nDiv;
-        pt2.y = getFuncValue(pt2.x, k_val);
+        QList<double> L;
+        L.reserve(i);
+        L << 0.5*R[i-1][0] + hn*result;
 
-
-        while(pos <= nDiv)
+        for(int j = 1; j <= i ; j++)
         {
-            newIntegral += (pt2.x - pt1.x)*(pt2.y + pt1.y)/2;
-            pos++;
-
-            pt1 = pt2;
-            pt2.x = A.x + pos*(b - A.x)/nDiv;
-            pt2.y = getFuncValue(pt2.x, k_val);
+            powResult = int_pow(4, j);
+            L << (powResult*L[j-1] - R[i-1][j-1])/(powResult-1);
         }
-    }
 
-    newIntegral += A.y;
+        R << L;
 
-    return newIntegral;
+        diff = fabs(R[i][i] - R[i-1][i-1]);
+
+
+    }while(diff > condition);
+
+    cout << "Val calculated!" << endl;
+
+    return R[i][i] + A.y;
+
 
 }
 

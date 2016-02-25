@@ -22,6 +22,10 @@
 
 #include "GraphDraw/maingraph.h"
 
+#include <iostream>
+
+using namespace std;
+
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {   
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
@@ -476,6 +480,8 @@ void MainGraph::paintEvent(QPaintEvent *event)
 
 void MainGraph::indirectPaint()
 {
+    cout << "indirect paint! " << rand() << endl;
+
     if(resaveTangent)
         addTangentToBuffer();
     if(resaveGraph)
@@ -506,6 +512,8 @@ void MainGraph::indirectPaint()
 void MainGraph::directPaint()
 {
     resaveGraph = true;
+
+    cout << "direct paint! " << rand() << endl;
 
     painter.begin(this);
     //trace du background

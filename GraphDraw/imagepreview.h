@@ -57,8 +57,8 @@ protected:
 
     int leftMargin, rightMargin, topMargin, bottomMargin, legendFontSize, additionalMargin, numPrec;
     QString xLegend, yLegend;
+    Information *information;
     bool legendState, bold, italic, underline;
-    QTimer updateTimer;
 
 };
 

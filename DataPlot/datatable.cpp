@@ -67,8 +67,6 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
 
     connect(tableWidget, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(checkCell(QTableWidgetItem*)));
 
-    connect(tableWidget->verticalHeader(), SIGNAL(geometriesChanged()), this, SLOT(checkVerticalHeaderNewWidth()));
-
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(renameColumn(int)));
     connect(tableWidget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SIGNAL(columnMoved(int, int, int)));
 
@@ -514,6 +512,15 @@ void DataTable::insertRow(int index)
 
     emit newRowCount(tableWidget->rowCount());
 
+    double count = tableWidget->rowCount();
+
+    if(floor(log(count)/log(10)) != floor(log(count-1)/log(10)))
+    {
+        tableWidget->verticalHeader()->hide();
+        tableWidget->verticalHeader()->show();
+        checkVerticalHeaderNewWidth();
+    }
+
     checkVerticalHeaderNewWidth();
 }
 
@@ -551,7 +558,15 @@ void DataTable::removeRow(int index)
 
     emit newRowCount(tableWidget->rowCount());
 
-    checkVerticalHeaderNewWidth();
+    double count = tableWidget->rowCount();
+
+    if(floor(log(count)/log(10)) != floor(log(count-1)/log(10)))
+        //this is a correction to a bug in Qt: the vertical header's width doesn't update instantaneously when it visually gets resized
+    {
+        tableWidget->verticalHeader()->hide();
+        tableWidget->verticalHeader()->show();
+        checkVerticalHeaderNewWidth();
+    }
 }
 
 void DataTable::removeColumn(int index)

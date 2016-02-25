@@ -121,9 +121,6 @@ DataWindow::DataWindow(Information *info, int ind)
     columnSelector->updateSelectorsPos();
     rowSelector->updateSelectorsPos();
 
-    columnSelectorSpacer->setFixedWidth(dataTable->getVerticalHeaderSize().width());
-    rowSelectorSpacer->setFixedHeight(dataTable->getHorizontalHeaderSize().height());
-
     ui->actionsLayout->addWidget(columnActionsWidget);
     ui->actionsLayout->addWidget(rowActionsWidget);
 

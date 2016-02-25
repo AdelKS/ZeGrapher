@@ -44,9 +44,10 @@ signals:
     void returnPressed();
 
 protected:  
-    void addWidgetToList(QString name);
+    void addWidgetToList(QString name, int funcId);
 
     QList<QWidget*> containerWidgetsList;
+    QList<int> funcIds;
     QList<QLineEdit*> xList, yList;
     QList<QString> antiderivatives;
     ExprCalculator exprCalc;
