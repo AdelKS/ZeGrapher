@@ -55,6 +55,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 
     assignGraphSize();
     determinerCentreEtUnites();
+    funcValuesSaver->calculateAll(uniteX, uniteY);
     paint();
 
     painter.end();

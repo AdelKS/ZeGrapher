@@ -468,7 +468,7 @@ bool SeqCalculator::check_called_funcs_and_seqs_validity()
     isValid = checkCalledFuncsValidity(expression);
     if(!isValid)
     {
-        errorMessageLabel->setText(tr("This sequence calls in its expression a function who is whether invalid or undefined."));
+        errorMessageLabel->setText(tr("This sequence calls in its expression a function who is either invalid or undefined."));
         //Une fonction invalide ou non définie est appelée dans l'expression de cette suite.
         return false;
     }
@@ -484,7 +484,7 @@ bool SeqCalculator::check_called_funcs_and_seqs_validity()
     isValid = checkCalledSeqsValidity(expression);
     if(!isValid)
     {
-        errorMessageLabel->setText(tr("This sequence uses another sequence who is whether invalid or undefined."));
+        errorMessageLabel->setText(tr("This sequence uses another sequence who is either invalid or undefined."));
         //Une suite invalide ou non définie est appelée dans l'expression de cette suite
         return false;
     }

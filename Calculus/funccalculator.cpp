@@ -220,7 +220,7 @@ bool FuncCalculator::checkFuncCallingInclusions()
     callLock = false;
 
     if(!areCalledFuncsGood)
-        errorMessageLabel->setText(tr("This function calls another function that is whether undefined or makes an inifite calling loop."));
+        errorMessageLabel->setText(tr("This function calls another function that is either undefined or makes an inifite calling loop."));
 
 
     return areCalledFuncsGood;
