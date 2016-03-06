@@ -27,11 +27,10 @@ PrintPreview::PrintPreview(Information *info) : ImagePreview(info)
     parameters.distanceBetweenPoints = 0.125;
     viewType = PORTRAIT;
     graphHeightCm = 28.7;
-    graphWidthCm = 20;
-    hasScale = false;   
-    xscale = yscale = 1;
+    graphWidthCm = 20;  
     relativeXposCm = relativeYposCm = 0;
     moveType = NOTHING;
+    setMouseTracking(true);
 
 }
 
@@ -102,26 +101,6 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
     printer = NULL;
 }
 
-void PrintPreview::setScaleStatus(bool isActive)
-{
-    hasScale = isActive;
-    repaint();
-}
-
-void PrintPreview::setxscale(double scale)
-{
-    xscale = scale;
-    if(information->isOrthonormal())
-        yscale = xscale;
-    repaint();
-}
-
-void PrintPreview::setyscale(double scale)
-{
-    yscale = scale;
-    repaint();
-}
-
 void PrintPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -141,43 +120,26 @@ void PrintPreview::paintEvent(QPaintEvent *event)
 
 void PrintPreview::assignMouseRects()
 {
-    QPointF point;
+    QPointF topLeftTranslation;
+    topLeftTranslation.setX(-8);
+    topLeftTranslation.setY(-8);
 
-    point = graphRect.topLeft();
-    point.setX(point.x() - 3);
-    point.setY(point.y() - 3);
-    topLeft.setTopLeft(point);
+    QPointF bottomRightTranslation;
+    bottomRightTranslation.setX(8);
+    bottomRightTranslation.setY(8);
 
-    point.setX(point.x() + 6);
-    point.setY(point.y() + 6);
-    topLeft.setBottomRight(point);
 
-    point = graphRect.topRight();
-    point.setX(point.x() - 3);
-    point.setY(point.y() - 3);
-    topRight.setTopLeft(point);
+    topLeft.setTopLeft(graphRect.topLeft() + topLeftTranslation);
+    topLeft.setBottomRight(graphRect.topLeft() + bottomRightTranslation);
 
-    point.setX(point.x() + 6);
-    point.setY(point.y() + 6);
-    topRight.setBottomRight(point);
+    topRight.setTopLeft(graphRect.topRight() + topLeftTranslation);
+    topRight.setBottomRight(graphRect.topRight() + bottomRightTranslation);
 
-    point = graphRect.bottomRight();
-    point.setX(point.x() - 3);
-    point.setY(point.y() - 3);
-    bottomRight.setTopLeft(point);
+    bottomLeft.setTopLeft(graphRect.bottomLeft() + topLeftTranslation);
+    bottomLeft.setBottomRight(graphRect.bottomLeft() + bottomRightTranslation);
 
-    point.setX(point.x() + 6);
-    point.setY(point.y() + 6);
-    bottomRight.setBottomRight(point);
-
-    point = graphRect.bottomLeft();
-    point.setX(point.x() - 3);
-    point.setY(point.y() - 3);
-    bottomLeft.setTopLeft(point);
-
-    point.setX(point.x() + 6);
-    point.setY(point.y() + 6);
-    bottomLeft.setBottomRight(point);
+    bottomRight.setTopLeft(graphRect.bottomRight() + topLeftTranslation);
+    bottomRight.setBottomRight(graphRect.bottomRight() + bottomRightTranslation);
 
     top.setTopLeft(topLeft.topRight());
     top.setBottomRight(topRight.bottomLeft());
@@ -204,24 +166,7 @@ void PrintPreview::determinerCentreEtUnites()
         graphRange.Ymin *= rapport;
         graphRange.Ymax *= rapport;
         uniteY = uniteX;
-        xscale = yscale;
-    }
-    if(hasScale)
-    {
-       double newxunit = xscale * graphWidth / graphWidthCm;
-       double newyunit = yscale * graphHeight / graphHeightCm;
-
-       double rapportx = uniteX / newxunit;
-       double rapporty = uniteY / newyunit;
-
-       graphRange.Xmax *= rapportx;
-       graphRange.Xmin *= rapportx;
-       graphRange.Ymax *= rapporty;
-       graphRange.Ymin *= rapporty;
-
-       uniteX = newxunit;
-       uniteY = newyunit;
-    }
+    }   
 
     centre.x = - graphRange.Xmin * uniteX;
     centre.y =  graphRange.Ymax * uniteY;
@@ -305,6 +250,15 @@ void PrintPreview::drawGraph()
     pen.setColor(information->getOptions().axesColor);
     painter.setPen(pen);
     painter.drawRect(graphRect);
+
+//    painter.drawRect(topLeft);
+//    painter.drawRect(topRight);
+//    painter.drawRect(bottomLeft);
+//    painter.drawRect(bottomRight);
+//    painter.drawRect(top);
+//    painter.drawRect(right);
+//    painter.drawRect(left);
+//    painter.drawRect(bottom);
 
     pen.setStyle(Qt::SolidLine);
     painter.setPen(pen);
@@ -392,11 +346,7 @@ void PrintPreview::mousePressEvent(QMouseEvent *event)
 
 void PrintPreview::mouseMoveEvent(QMouseEvent *event)
 {
-    QRectF rect = sheetRect;
-    rect.setTop(rect.top() - 5);
-    rect.setRight(rect.right() - 5);
-    rect.setLeft(rect.left() -  5);
-    rect.setBottom(rect.bottom() - 5);
+
     if(moveType == NOTHING)
     {
         if(topLeft.contains(event->pos()) || bottomRight.contains(event->pos()))
@@ -411,71 +361,70 @@ void PrintPreview::mouseMoveEvent(QMouseEvent *event)
             setCursor(Qt::SizeAllCursor);
         else setCursor(Qt::ArrowCursor);
     }
-    else if(rect.contains(event->pos()))
+
+    double dx = event->pos().x() - lastMousePos.x(), dy = event->pos().y() - lastMousePos.y(), dxCm, dyCm;
+
+    if(viewType == PORTRAIT)
     {
-        double dx = event->pos().x() - lastMousePos.x(), dy = event->pos().y() - lastMousePos.y(), dxCm, dyCm;
-
-        if(viewType == PORTRAIT)
-        {
-            dxCm = dx * 21 / sheetWidth;
-            dyCm = dy * 29.7 / sheetHeight;
-        }
-        else
-        {
-            dxCm = dx * 29.7 / sheetWidth;
-            dyCm = dy * 21 / sheetHeight;
-        }
-
-
-        switch(moveType)
-        {
-        case TOPLEFT_CORNER:
-            relativeXposCm += dxCm;
-            relativeYposCm += dyCm;
-            graphWidthCm -= dxCm;
-            graphHeightCm -= dyCm;
-            break;
-        case TOPRIGHT_CORNER:
-            relativeYposCm += dyCm;
-            graphWidthCm += dxCm;
-            graphHeightCm -= dyCm;
-            break;
-        case BOTTOMLEFT_CORNER:
-            relativeXposCm += dxCm;
-            graphHeightCm += dyCm;
-            graphWidthCm -= dxCm;
-            break;
-        case BOTTOMRIGHT_CORNER:
-            graphWidthCm += dxCm;
-            graphHeightCm += dyCm;
-            break;
-        case LEFT_SIDE:
-            graphWidthCm -= dxCm;
-            relativeXposCm += dxCm;
-            break;
-        case TOP_SIDE:
-            graphHeightCm -= dyCm;
-            relativeYposCm += dyCm;
-            break;
-        case RIGHT_SIDE:
-            graphWidthCm += dxCm;
-            break;
-        case BOTTOM_SIDE:
-            graphHeightCm += dyCm;
-            break;
-        case ALL:
-            relativeXposCm += dxCm;
-            relativeYposCm += dyCm;
-            break;
-        }
-
-        testGraphPosition();
-        repaint();
-
-
-
-        lastMousePos = event->pos();
+        dxCm = dx * 21 / sheetWidth;
+        dyCm = dy * 29.7 / sheetHeight;
     }
+    else
+    {
+        dxCm = dx * 29.7 / sheetWidth;
+        dyCm = dy * 21 / sheetHeight;
+    }
+
+
+    switch(moveType)
+    {
+    case TOPLEFT_CORNER:
+        relativeXposCm += dxCm;
+        relativeYposCm += dyCm;
+        graphWidthCm -= dxCm;
+        graphHeightCm -= dyCm;
+        break;
+    case TOPRIGHT_CORNER:
+        relativeYposCm += dyCm;
+        graphWidthCm += dxCm;
+        graphHeightCm -= dyCm;
+        break;
+    case BOTTOMLEFT_CORNER:
+        relativeXposCm += dxCm;
+        graphHeightCm += dyCm;
+        graphWidthCm -= dxCm;
+        break;
+    case BOTTOMRIGHT_CORNER:
+        graphWidthCm += dxCm;
+        graphHeightCm += dyCm;
+        break;
+    case LEFT_SIDE:
+        graphWidthCm -= dxCm;
+        relativeXposCm += dxCm;
+        break;
+    case TOP_SIDE:
+        graphHeightCm -= dyCm;
+        relativeYposCm += dyCm;
+        break;
+    case RIGHT_SIDE:
+        graphWidthCm += dxCm;
+        break;
+    case BOTTOM_SIDE:
+        graphHeightCm += dyCm;
+        break;
+    case ALL:
+        relativeXposCm += dxCm;
+        relativeYposCm += dyCm;
+        break;
+    }
+
+    testGraphPosition();
+    repaint();
+
+
+
+    lastMousePos = event->pos();
+
 }
 
 void PrintPreview::testGraphPosition()

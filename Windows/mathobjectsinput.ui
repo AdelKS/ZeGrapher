@@ -71,12 +71,15 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Functions</string>
+       <string>&amp;Functions</string>
       </attribute>
       <attribute name="toolTip">
        <string>Numerical functions</string>
@@ -105,7 +108,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>314</height>
+            <height>318</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="Layout_2">
@@ -158,7 +161,7 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Sequences</string>
+       <string>&amp;Sequences</string>
       </attribute>
       <attribute name="toolTip">
        <string>Numerical sequences</string>
@@ -211,7 +214,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>314</height>
+            <height>318</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -326,7 +329,7 @@
      </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>Straight lines</string>
+       <string>Straight &amp;lines</string>
       </attribute>
       <attribute name="toolTip">
        <string>Straight lines and tangents</string>
@@ -358,7 +361,7 @@
             <x>0</x>
             <y>0</y>
             <width>497</width>
-            <height>316</height>
+            <height>320</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -388,7 +391,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>495</width>
-                <height>314</height>
+                <height>318</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -503,7 +506,7 @@
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
-       <string>Parametric</string>
+       <string>&amp;Parametric</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <property name="leftMargin">
@@ -529,7 +532,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>314</height>
+            <height>318</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -745,7 +748,7 @@
      </widget>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
-       <string>Data</string>
+       <string>&amp;Data</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <property name="leftMargin">
@@ -771,7 +774,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>314</height>
+            <height>318</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_12">

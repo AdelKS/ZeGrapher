@@ -53,10 +53,7 @@ Print::Print(Information *info) : ui(new Ui::Print)
     connect(ui->print, SIGNAL(released()), this, SLOT(print())); 
     connect(&timer, SIGNAL(timeout()), this, SLOT(enablePrintButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getPDFname()));
-    connect(ui->inPDF, SIGNAL(toggled(bool)), this, SLOT(setPrintButtonText(bool)));   
-    connect(ui->scaleGroupBox, SIGNAL(toggled(bool)), this, SLOT(checkScaleWidgets(bool)));
-    connect(ui->xscale, SIGNAL(valueChanged(double)), scene, SLOT(setxscale(double)));
-    connect(ui->yscale, SIGNAL(valueChanged(double)), scene, SLOT(setyscale(double)));
+    connect(ui->inPDF, SIGNAL(toggled(bool)), this, SLOT(setPrintButtonText(bool)));
 
     connect(ui->legendBox, SIGNAL(toggled(bool)), scene, SLOT(setLegendState(bool)));
     connect(ui->legendSize, SIGNAL(valueChanged(int)), scene, SLOT(setlegendFontSize(int)));
@@ -80,32 +77,6 @@ void Print::getPDFname()
         ui->PDFname->setText(PDFname);
         scene->setPDFname(PDFname);
     }
-}
-
-void Print::setOrthonormal(bool state)
-{
-    orthonormal = state;    
-    if(!orthonormal)
-        ui->orthInfoLabel->setText(tr("Non-orthonormal basis"));
-    else ui->orthInfoLabel->setText(tr("Orthonormal basis"));
-
-    if(ui->scaleGroupBox->isChecked())
-    {
-        ui->Ylabel->setEnabled(!state);
-        ui->yscale->setEnabled(!state);
-    }
-
-}
-
-void Print::checkScaleWidgets(bool state)
-{
-    if(state && orthonormal)
-    {
-        ui->Ylabel->setEnabled(false);
-        ui->yscale->setEnabled(false);
-    }
-
-    scene->setScaleStatus(state);
 }
 
 void Print::setPrintButtonText(bool inFileRadioButtonState)

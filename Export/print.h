@@ -54,8 +54,6 @@ public slots:
     void enablePrintButton();
     void getPDFname();
     void setPrintButtonText(bool);
-    void setOrthonormal(bool state);
-    void checkScaleWidgets(bool);
 
 protected:    
 

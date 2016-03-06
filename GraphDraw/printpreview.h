@@ -73,10 +73,6 @@ public slots:
     void setGraphHeight(double H);
     void setGraphWidth(double W);   
     void print(int nbPages, bool colorType, bool printType, bool resType, int res = 0);
-    void setScaleStatus(bool isActive);
-    void setxscale(double scale);
-    void setyscale(double scale);
-
 protected:
     void paintEvent(QPaintEvent *event);
     void determinerCentreEtUnites();
@@ -87,9 +83,9 @@ protected:
     void printCurves();
     void testGraphPosition();
 
-    bool viewType, hasScale;
+    bool viewType;
     QRectF graph, sheetRect, graphRect, topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
-    double sheetHeight, graphHeightCm, sheetWidth, graphWidthCm, relativeXposCm, relativeYposCm, xscale, yscale;
+    double sheetHeight, graphHeightCm, sheetWidth, graphWidthCm, relativeXposCm, relativeYposCm;
     QPointF lastMousePos ;
     short moveType;
     QPrinterInfo printerInfo;

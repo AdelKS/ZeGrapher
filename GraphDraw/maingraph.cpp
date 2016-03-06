@@ -706,9 +706,9 @@ void MainGraph::determinerCentreEtUnites()
              graphRange.Yscale = graphRange.Xscale;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.Xscale > 300)
+    else if(uniteX * graphRange.Xscale > 150)
     {
-        while(uniteX * graphRange.Xscale > 300)
+        while(uniteX * graphRange.Xscale > 150)
             graphRange.Xscale /= 2;
         if(orthonormal)
              graphRange.Yscale = graphRange.Xscale;
@@ -722,9 +722,9 @@ void MainGraph::determinerCentreEtUnites()
                 graphRange.Yscale *= 2;
             scaleChanged = true;
         }
-        else if(uniteY * graphRange.Yscale > 200)
+        else if(uniteY * graphRange.Yscale > 150)
         {
-            while(uniteY * graphRange.Yscale > 200)
+            while(uniteY * graphRange.Yscale > 150)
                 graphRange.Yscale /= 2;
             scaleChanged = true;
         }
