@@ -38,6 +38,7 @@ ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
     numPrec = NUM_PREC;
 
     connect(information, SIGNAL(updateOccured()), this, SLOT(update()));
+    connect(information, SIGNAL(gridStateChange()), this, SLOT(update()));
 
 }
 
@@ -45,7 +46,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    parameters = information->getOptions();
+    parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
     painter.begin(this);
@@ -55,7 +56,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 
     assignGraphSize();
     determinerCentreEtUnites();
-    funcValuesSaver->calculateAll(uniteX, uniteY);
+    funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
     paint();
 
     painter.end();
@@ -151,7 +152,7 @@ void ImagePreview::paint()
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.translate(leftMargin, topMargin);
 
-    pen.setColor(information->getOptions().axesColor);
+    pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);
 
     placerGraduations();
@@ -166,7 +167,7 @@ void ImagePreview::paint()
 
     painter.translate(QPointF(centre.x, centre.y));
 
-    funcValuesSaver->calculateAll(uniteX, uniteY);
+    funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
     recalculateRegVals();
 
     drawFunctions();
@@ -215,7 +216,7 @@ void ImagePreview::writeLegends()
 
 void ImagePreview::placerGraduations()
 {
-    double fontSize = information->getOptions().numSize;
+    double fontSize = information->getSettingsVals().numSize;
     double prec = numPrec;
 
     font.setPixelSize(fontSize);
@@ -363,7 +364,7 @@ void ImagePreview::determinerCentreEtUnites()
 
 QImage* ImagePreview::drawImage()
 {
-    parameters = information->getOptions();
+    parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
@@ -372,7 +373,7 @@ QImage* ImagePreview::drawImage()
     painter.begin(image);
     //trace du background  
 
-    pen.setColor(information->getOptions().axesColor);
+    pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -393,7 +394,7 @@ QImage* ImagePreview::drawImage()
 
     if(recalculate)
     {
-        funcValuesSaver->calculateAll(uniteX, uniteY);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
         recalculateRegVals();
     }
 

@@ -46,7 +46,7 @@ void PrintPreview::setPDFname(QString pdf)
 
 void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resType, int res)
 {
-    parameters = information->getOptions();
+    parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
     printer = new QPrinter(printerInfo);
@@ -81,7 +81,7 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
 
     if(printType == PRINT_FILE)
     {
-        painter.setBrush(QBrush(information->getOptions().backgroundColor));
+        painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));
         painter.drawRect(printer->paperRect());
     }
 
@@ -104,7 +104,7 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
 void PrintPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    parameters = information->getOptions();
+    parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
     painter.begin(this);
@@ -174,7 +174,7 @@ void PrintPreview::determinerCentreEtUnites()
 
 void PrintPreview::drawSheet()
 {
-    painter.setBrush(QBrush(information->getOptions().backgroundColor));;
+    painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));;
 
     double rapport;
 
@@ -247,7 +247,7 @@ void PrintPreview::drawGraph()
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(information->getOptions().axesColor);
+    pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);
     painter.drawRect(graphRect);
 

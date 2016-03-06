@@ -179,7 +179,7 @@ void Information::setRange(const GraphRange &newWindow)
 void Information::setGridState(bool etat)
 {
     gridState = etat;
-    emit updateOccured();
+    emit gridStateChange();
 }
 
 void Information::setOrthonormal(bool state)
@@ -189,11 +189,11 @@ void Information::setOrthonormal(bool state)
     emit updateOccured();
 }
 
-void Information::setOptions(Options opt)
+void Information::setSettingsVals(SettingsVals opt)
 {
     parameters = opt;
 
-    emit updateOccured();
+    emit newSettingsVals();
 }
 
 void Information::emitUpdateSignal()
@@ -222,7 +222,7 @@ bool Information::isOrthonormal()
     return orthonormal;   
 }
 
-Options Information::getOptions()
+SettingsVals Information::getSettingsVals()
 {
     return parameters;    
 }

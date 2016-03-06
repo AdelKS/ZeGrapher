@@ -64,7 +64,6 @@ Print::Print(Information *info) : ui(new Ui::Print)
     connect(ui->underline, SIGNAL(toggled(bool)), scene, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), scene, SLOT(setNumPrec(int)));
 
-    connect(info, SIGNAL(newOrthonormalityState(bool)), this, SLOT(setOrthonormal(bool)));
 }
 
 void Print::getPDFname()

@@ -66,7 +66,7 @@ protected:
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
     GraphRange graphRange;    
-    Range drawnRange, graphAngleRange;
+    Range drawRange, graphAngleRange;
 
     QList<QPolygonF> curves;
 };

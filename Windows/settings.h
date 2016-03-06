@@ -51,7 +51,7 @@ private:
 
     Information *information;
     Ui::Settings *ui;
-    Options parameters;
+    SettingsVals parameters;
     QColorButton *axesColorButton, *backgroundColorButton, *gridColorButton, *defaultColorButton;
 
 };

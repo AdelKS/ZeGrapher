@@ -42,7 +42,7 @@ public:
     GraphRange getRange();
     bool getGridState();
     bool isOrthonormal();
-    Options getOptions();  
+    SettingsVals getSettingsVals();
 
     void addDataList();
     void removeDataList(int index);
@@ -91,16 +91,18 @@ signals:
     void dataUpdated();
     void updateOccured();
     void drawStateUpdateOccured();
+    void gridStateChange();
     void animationUpdate();
     void regressionAdded(Regression *reg);
     void regressionRemoved(Regression *reg);
+    void newSettingsVals();
 
 public slots:
 
     void setRange(const GraphRange &newWindow);
     void setGridState(bool etat);
     void setOrthonormal(bool state);
-    void setOptions(Options opt);
+    void setSettingsVals(SettingsVals opt);
 
 protected:
 
@@ -116,7 +118,7 @@ protected:
     QList<SeqCalculator*> sequences;
 
     GraphRange range;
-    Options parameters;   
+    SettingsVals parameters;
     bool orthonormal, gridState, updatingLock;   
     Point units;
     QList<ParEqWidget*> *parEqWidgets;

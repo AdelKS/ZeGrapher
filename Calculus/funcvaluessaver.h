@@ -29,15 +29,16 @@
 class FuncValuesSaver
 {
 public:
-    FuncValuesSaver(Information *info);
+    FuncValuesSaver(QList<FuncCalculator *> funcsList, double pxStep);
 
-    void calculateAll(double new_xUnit, double new_yUnit);
-    void move(double pixels);
+    void setPixelStep(double pxStep);
+    void calculateAll(double new_xUnit, double new_yUnit, GraphRange range);
+    void move(GraphRange range);
+    int getFuncDrawsNum(int func);
 
-    double getStartAbsicssaUnit();
-    double getStartAbscissaPixel();
+    QPolygonF getCurve(int func, int curve);
 
-    QList< QList< QList<double> > >* getFuncValsListPointer();
+
 
 protected slots:
     void recalculateFuncColors(int id);
@@ -50,10 +51,8 @@ protected:
     QList<FuncCalculator*> funcs;
 
     double xUnit, yUnit, pixelStep, unitStep;
-    double startAbscissa_pixel, startAbscissa_unit, endAbscissa_pixel, endAbscissa_unit;
-    double deplacement;
 
-    QList< QList< QList<double> > > funcVals;
+    QList< QList< QPolygonF > > funcCurves;
     QList< QList<QColor> > funcColors;
 };
 

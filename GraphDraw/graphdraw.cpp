@@ -31,7 +31,7 @@ GraphDraw::GraphDraw(Information *info)
 
     coef = sqrt(3)/2;
 
-    parameters = info->getOptions();
+    parameters = info->getSettingsVals();
     graphRange = info->getRange();
 
     pen.setCapStyle(Qt::RoundCap);
@@ -46,16 +46,21 @@ GraphDraw::GraphDraw(Information *info)
     moving = false;
     tangentDrawException = -1;
 
-    funcValuesSaver = new FuncValuesSaver(info);
-    funcVals = funcValuesSaver->getFuncValsListPointer();
+    funcValuesSaver = new FuncValuesSaver(info->getFuncsList(), information->getSettingsVals().distanceBetweenPoints);
 
     connect(information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
     connect(information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
+    connect(information, SIGNAL(newSettingsVals()), this, SLOT(updateSettingsVals()));
+}
+
+void GraphDraw::updateSettingsVals()
+{
+    funcValuesSaver->setPixelStep(information->getSettingsVals().distanceBetweenPoints);   
 }
 
 void GraphDraw::addRegSaver(Regression *reg)
 {
-    regValuesSavers << RegressionValuesSaver(information->getOptions().distanceBetweenPoints, reg);
+    regValuesSavers << RegressionValuesSaver(information->getSettingsVals().distanceBetweenPoints, reg);
     recalculate = true;
     repaint();
 }
@@ -177,24 +182,30 @@ void GraphDraw::drawData()
     }
 }
 
-void GraphDraw::drawRegression(int reg, int width)
+inline void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
 {
-    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
-
     pen.setWidth(width);
-    pen.setColor(information->getRegression(reg)->getColor());
+    pen.setColor(color);
     painter.setPen(pen);
 
-    for(int i = 0 ; i < regValuesSavers[reg].getCurves().size() ; i++)
-        painter.drawPolyline(regValuesSavers[reg].getCurves().at(i));
+    painter.drawPolyline(curve);
+
 }
 
 void GraphDraw::drawRegressions()
 {
-    for(int i = 0 ; i < regValuesSavers.size() ; i++)
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
+
+    for(int reg = 0 ; reg < regValuesSavers.size() ; reg++)
     {
-        if(information->getRegression(i)->getDrawState())
-            drawRegression(i, parameters.curvesThickness);
+        if(information->getRegression(reg)->getDrawState())
+        {
+            for(int curve = 0 ; curve < regValuesSavers[reg].getCurves().size() ; curve++)
+            {
+                drawCurve(parameters.curvesThickness, information->getRegression(reg)->getColor(),
+                          regValuesSavers[reg].getCurves().at(curve));
+            }
+        }
     }
 }
 
@@ -206,98 +217,19 @@ void GraphDraw::recalculateRegVals()
     }
 }
 
-void GraphDraw::drawOneFunction(int i, int width, int curveNum)
-{
-    if(!funcs[i]->getDrawState())
-        return;
-
-    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
-
-    short drawsNum = funcVals->at(i).size(), drawStart = 0;
-
-    if(curveNum != -1)
-    {
-        drawStart = curveNum;
-        drawsNum = curveNum + 1;
-    }
-
-    double posX, delta1, delta2, delta3, y1, y2, y3, y4;;
-    bool pointOvershoot= false;
-    int end;
-    ColorSaver* colorSaver = funcs[i]->getColorSaver();
-
-    pen.setWidth(width);
-
-    for(short draw = drawStart ; draw < drawsNum; draw++)
-    {
-        end = funcVals->at(i)[draw].size();
-        posX = funcValuesSaver->getStartAbscissaPixel();
-        polygon.clear();
-
-        pen.setColor(colorSaver->getColor(draw));
-        painter.setPen(pen);
-
-        for(int pos = 0; pos < end; pos++)
-        {
-            y1 = (*funcVals)[i][draw][pos];
-
-            if(!std::isnan(y1) && !std::isinf(y1))
-            {
-                if(y1 < graphRange.Ymin || y1 > graphRange.Ymax)
-                {
-                    if(!pointOvershoot)
-                    {
-                        polygon << QPointF(posX, -y1*uniteY);
-                        painter.drawPolyline(polygon);
-                        polygon.clear();
-                        pointOvershoot = true;
-                    }
-                }
-                else
-                {
-                    if(pointOvershoot)
-                    {
-                       polygon << QPointF(posX - parameters.distanceBetweenPoints, - funcVals->at(i)[draw][pos-1]*uniteY);
-                    }
-                    polygon << QPointF(posX, -y1*uniteY);
-                    pointOvershoot = false;
-                }
-
-                if(0 < pos && pos < end-2)
-                {
-                    y1 = funcVals->at(i)[draw][pos-1];
-                    y2 = funcVals->at(i)[draw][pos];
-                    y3 = funcVals->at(i)[draw][pos+1];
-                    y4 = funcVals->at(i)[draw][pos+2];
-
-                    delta1 = fabs(y2 - y1);
-                    delta2 = fabs(y3 - y2);
-                    delta3 = fabs(y4 - y3);
-
-                    if(delta2 != 0 && delta2 > 2*delta1 && delta2 > 2*delta3)
-                    {
-                        painter.drawPolyline(polygon);
-                        polygon.clear();
-                    }
-                }
-            }
-            else
-            {
-                painter.drawPolyline(polygon);
-                polygon.clear();
-            }
-            posX += parameters.distanceBetweenPoints;
-        }
-
-        painter.drawPolyline(polygon);
-        pointOvershoot = false;
-    }
-}
 
 void GraphDraw::drawFunctions()
-{
-    for(int i = 0 ; i < funcs.size(); i++)
-        drawOneFunction(i, parameters.curvesThickness);
+{    
+    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
+
+    for(int func = 0 ; func < funcs.size(); func++)
+    {
+        if(!funcs[func]->getDrawState())
+            continue;
+
+        for(int curve = 0 ; curve < funcValuesSaver->getFuncDrawsNum(func) ;  curve++)
+            drawCurve(parameters.curvesThickness, funcs[func]->getColorSaver()->getColor(curve), funcValuesSaver->getCurve(func, curve));
+    }
 }
 
 void GraphDraw::drawOneSequence(int i, int width)

@@ -33,7 +33,7 @@
 #include "Calculus/regressionvaluessaver.h"
 
 
-class GraphDraw : public QWidget // Abstract class
+class GraphDraw : public QWidget // Base class from math objects drawing
 {
     Q_OBJECT
 public:
@@ -43,6 +43,7 @@ public:
 protected slots:
     void addRegSaver(Regression *reg);
     void delRegSaver(Regression *reg);
+    void updateSettingsVals();
 
 protected:
 
@@ -52,17 +53,16 @@ protected:
     inline void drawTriangle(QPointF pt, double w);
     inline void drawCross(QPointF pt, double w);
 
-    void drawOneFunction(int id, int width, int curveNum = -1);
     void drawOneSequence(int id, int width);
     void drawDataSet(int id, int width);
-    void drawRegression(int reg, int width);
+    void drawCurve(int width, QColor color, const QPolygonF &curve);
     void drawOneTangent(int id);
 
     void drawFunctions();
     void drawRegressions();
     void drawData();
     void drawSequences();
-    void drawTangents(); //except the exception :) indicated by tangentDrawException
+    void drawTangents(); //except the one pointed by tangentDrawException
     void drawStraightLines();
     void drawStaticParEq();
 
@@ -74,7 +74,7 @@ protected:
     FuncValuesSaver *funcValuesSaver;    
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
-    Options parameters;
+    SettingsVals parameters;
     QPolygonF polygon;
     QPen pen;
     QBrush brush;
@@ -92,7 +92,6 @@ protected:
     QList<StraightLineWidget*> *straightLines;
     QList<TangentWidget*> *tangents;
     QList<ParEqWidget*> *parEqs;
-    QList< QList< QList<double> > > *funcVals;
     QList< QList<double> > *regVals;
 
     QFont font;

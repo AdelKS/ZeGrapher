@@ -18,39 +18,32 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "Calculus/funcvaluessaver.h"
 
-FuncValuesSaver::FuncValuesSaver(Information *info)
-{
-    information = info;
-    funcs = info->getFuncsList();
-    graphRange = info->getRange();
-    deplacement = 0;
+FuncValuesSaver::FuncValuesSaver(QList<FuncCalculator*> funcsList, double pxStep)
+{    
+    funcs = funcsList;
+    setPixelStep(pxStep);
 
     for(short i = 0 ; i < funcs.size() ; i++)
-        funcVals << QList<QList<double> >();
+        funcCurves << QList<QPolygonF>();
 }
 
-void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
+void FuncValuesSaver::setPixelStep(double pxStep)
 {
-    graphRange = information->getRange();
+    pixelStep = pxStep;
+}
+
+void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRange gRange)
+{
+    graphRange = gRange;
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    pixelStep = information->getOptions().distanceBetweenPoints;
     unitStep = pixelStep / xUnit;
 
-    double x = 0, k = 0;
-    int k_pos = 0, end;
+    double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0;
+    int k_pos = 0, end=0, n=0;
 
-    deplacement = 0;
-    startAbscissa_unit = trunc(graphRange.Xmin / unitStep) * unitStep - unitStep;
-    startAbscissa_pixel = startAbscissa_unit * xUnit;
-
-    endAbscissa_unit = trunc(graphRange.Xmax / unitStep) * unitStep + unitStep;
-    endAbscissa_pixel = endAbscissa_unit * xUnit;
 
     Range range;
 
@@ -59,7 +52,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
         if(!funcs[i]->isFuncValid())
             continue;
 
-        funcVals[i].clear();
+        funcCurves[i].clear();
 
         range = funcs[i]->getParametricRange();
         end = trunc((range.end - range.start)/range.step) + 1;
@@ -67,11 +60,22 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
 
         for(k_pos = 0 ; k_pos < end && k_pos < PAR_DRAW_LIMIT ; k_pos++)
         {            
-            funcVals[i] << QList<double>();
+            funcCurves[i] << QPolygonF();
 
-            for(x = startAbscissa_unit ; x <= endAbscissa_unit ; x += unitStep)
-            {
-                funcVals[i][k_pos] <<  funcs[i]->getFuncValue(x, k);
+            for(x = graphRange.Xmin - unitStep ; x <= graphRange.Xmax + unitStep ; x += unitStep)
+            {                
+                funcCurves[i][k_pos] <<  QPointF( x*xUnit , - funcs[i]->getFuncValue(x, k) * yUnit);
+
+                n = funcCurves[i][k_pos].size();
+                if(n > 1)
+                    delta3 = fabs(funcCurves[i][k_pos][n-1].y() - funcCurves[i][k_pos][n-2].y());
+
+                if(n > 2 && delta2 > 2*delta1 && delta2 > 2*delta3)
+                    funcCurves[i][k_pos].last().setY(NAN);
+
+                delta1 = delta2;
+                delta2 = delta3;
+
             }
 
             k += range.step;           
@@ -79,27 +83,13 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit)
     }
 }
 
-void FuncValuesSaver::move(double pixels)
+void FuncValuesSaver::move(GraphRange range)
 {
-    double x = 0, k = 0, k_step = 0, x_start = 0, x_step = 0;
-    int k_pos;
+    graphRange = range;
 
-    deplacement += pixels;
-    double limite = trunc(deplacement / pixelStep);
+    double x = 0, k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0;
+    int k_pos = 0;
 
-    if(limite == 0)
-        return;
-
-    if(deplacement < 0)
-    {
-        x_step = unitStep;
-        x_start = endAbscissa_unit;
-    }
-    else
-    {
-        x_step = - unitStep;
-        x_start = startAbscissa_unit;
-    }
 
     for(short i = 0 ; i < funcs.size(); i++)
     {
@@ -109,48 +99,84 @@ void FuncValuesSaver::move(double pixels)
         k_step = funcs[i]->getParametricRange().step;
         k = funcs[i]->getParametricRange().start;
 
-        for(k_pos = 0; k_pos < funcVals[i].size() ; k_pos++)
+        for(k_pos = 0; k_pos < funcCurves[i].size() ; k_pos++)
         {
-            x = x_start;
+            x = funcCurves[i][k_pos].first().x()/xUnit - unitStep;
 
-            for(double j = 0; j < abs(limite); j++)
+
+            if(x >= graphRange.Xmin)
             {
-                x += x_step;
+                delta2 = fabs(funcCurves[i][k_pos][0].y() - funcCurves[i][k_pos][1].y());
+                delta1 = fabs(funcCurves[i][k_pos][1].y() - funcCurves[i][k_pos][2].y());
 
-                if(deplacement < 0)
+                while(x >= graphRange.Xmin)
                 {
-                    funcVals[i][k_pos].append(funcs[i]->getFuncValue(x, k));
-                    funcVals[i][k_pos].removeFirst();
-                }
-                else
-                {
-                    funcVals[i][k_pos].prepend(funcs[i]->getFuncValue(x, k));
-                    funcVals[i][k_pos].removeLast();
-                }
+                    funcCurves[i][k_pos].prepend(QPointF(x * xUnit, - funcs[i]->getFuncValue(x, k) * yUnit));
 
+                    x -= unitStep;
+
+                    delta3 = fabs(funcCurves[i][k_pos][0].y() - funcCurves[i][k_pos][1].y());
+
+                    if(delta2 > 2*delta1 && delta2 > 2*delta3)
+                        funcCurves[i][k_pos].first().setY(NAN);
+
+                    delta1 = delta2;
+                    delta2 = delta3;
+                }
             }
+            else
+            {
+                while(x < graphRange.Xmin - unitStep)
+                {
+                    funcCurves[i][k_pos].removeFirst();
+                    x += unitStep;
+                }
+            }
+
+            x = funcCurves[i][k_pos].last().x()/xUnit + unitStep;
+
+            if(x >= graphRange.Xmin)
+            {
+                int n = funcCurves[i][k_pos].size();
+                delta2 = fabs(funcCurves[i][k_pos][n-1].y() - funcCurves[i][k_pos][n-2].y());
+                delta1 = fabs(funcCurves[i][k_pos][n-2].y() - funcCurves[i][k_pos][n-3].y());
+
+                while(x <= graphRange.Xmax)
+                {
+                    funcCurves[i][k_pos] << QPointF(x * xUnit, - funcs[i]->getFuncValue(x, k)  * yUnit);
+                    x += unitStep;
+
+                    delta3 = fabs(funcCurves[i][k_pos][0].y() - funcCurves[i][k_pos][1].y());
+
+                    if(n >= 3 && delta2 > 2*delta1 && delta2 > 2*delta3)
+                        funcCurves[i][k_pos].last().setY(NAN);
+
+                    delta1 = delta2;
+                    delta2 = delta3;
+                }
+            }
+            else
+            {
+                while(x > graphRange.Xmax + unitStep)
+                {
+                    funcCurves[i][k_pos].removeLast();
+                    x -= unitStep;
+                }
+            }
+
+
 
             k += k_step;
         }
     }
-
-    deplacement -= pixelStep * limite;
-    startAbscissa_pixel -= pixelStep * limite;
-    endAbscissa_unit -= limite * unitStep;
-    startAbscissa_unit -= limite * unitStep;
 }
 
-double FuncValuesSaver::getStartAbsicssaUnit()
+int FuncValuesSaver::getFuncDrawsNum(int func)
 {
-    return startAbscissa_unit;
+    return funcCurves[func].size();
 }
 
-double FuncValuesSaver::getStartAbscissaPixel()
+QPolygonF FuncValuesSaver::getCurve(int func, int curve)
 {
-    return startAbscissa_pixel;
-}
-
-QList<QList<QList<double> > > *FuncValuesSaver::getFuncValsListPointer()
-{
-    return &funcVals;
+    return funcCurves[func][curve];
 }

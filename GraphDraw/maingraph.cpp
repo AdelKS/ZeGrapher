@@ -29,8 +29,10 @@ using namespace std;
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {   
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
+    connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(dataUpdated()), this, SLOT(updateData()));
     connect(info, SIGNAL(animationUpdate()), this, SLOT(updateParEq()));  
+    connect(info, SIGNAL(gridStateChange()), this, SLOT(update()));
     connect(info, SIGNAL(drawStateUpdateOccured()), this, SLOT(reactivateSmoothing()));
 
     exprCalculator = new ExprCalculator(false, info->getFuncsList());
@@ -459,7 +461,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphWidth = width();
     graphHeight = height();
 
-    parameters = information->getOptions();
+    parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
     if(windowSize != size())
@@ -540,7 +542,7 @@ void MainGraph::directPaint()
     if(recalculate)
     {
         recalculate = false;
-        funcValuesSaver->calculateAll(uniteX, uniteY);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
         recalculateRegVals();
     }
     else if(recalculateRegs)
@@ -569,7 +571,8 @@ void MainGraph::drawHoveringConsequence()
 {
     if(mouseState.funcType == FUNC_HOVER)
     {
-        drawOneFunction(mouseState.id, parameters.curvesThickness + 1, mouseState.kPos);
+        drawCurve(parameters.curvesThickness + 1, funcs[mouseState.id]->getColorSaver()->getColor(mouseState.kPos),
+                funcValuesSaver->getCurve(mouseState.id, mouseState.kPos));
     }
     else if(mouseState.funcType == SEQ_HOVER)
     {
@@ -643,7 +646,7 @@ void MainGraph::resaveImageBuffer()
     if(recalculate)
     {
         recalculate = false;
-        funcValuesSaver->calculateAll(uniteX, uniteY);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
         recalculateRegVals();
     }
     else if(recalculateRegs)
@@ -747,7 +750,7 @@ void MainGraph::checkIfActiveSelectionConflicts()
 
         if(selectedCurve.isParametric)
         {
-            if((selectedCurve.funcType == FUNC_HOVER && selectedCurve.kPos >= funcVals->at(selectedCurve.id).size()) ||
+            if((selectedCurve.funcType == FUNC_HOVER && selectedCurve.kPos >= funcValuesSaver->getFuncDrawsNum(selectedCurve.id)) ||
                     (selectedCurve.funcType == SEQ_HOVER && selectedCurve.kPos >= seqs[selectedCurve.id]->getDrawsNum()))
                 removeSelection = true;
         }
@@ -1068,7 +1071,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
 
             if(dx != 0)
             {
-                funcValuesSaver->move(dx);
+                funcValuesSaver->move(graphRange);
                 moveSavedRegsValues();
             }
 

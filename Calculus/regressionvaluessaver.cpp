@@ -175,14 +175,14 @@ void RegressionValuesSaver::polarMove()
 
 void RegressionValuesSaver::cartesianMove()
 {    
-    drawnRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
-    drawnRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
+    drawRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
+    drawRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
 
     double x = curves.first().first().x()/xUnit - xUnitStep;
 
-    if(x >= drawnRange.start)
+    if(x >= drawRange.start)
     {
-        while(x >= drawnRange.start)
+        while(x >= drawRange.start)
         {
             curves.first().prepend(QPointF(x * xUnit, - regression->eval(x) * yUnit));
             x -= xUnitStep;
@@ -190,7 +190,7 @@ void RegressionValuesSaver::cartesianMove()
     }
     else
     {
-        while(x < drawnRange.start - xUnitStep)
+        while(x < drawRange.start - xUnitStep)
         {
             curves.first().removeFirst();
             x += xUnitStep;
@@ -199,9 +199,9 @@ void RegressionValuesSaver::cartesianMove()
 
     x = curves.first().last().x()/xUnit + xUnitStep;
 
-    if(x >= drawnRange.start)
+    if(x >= drawRange.start)
     {
-        while(x <= drawnRange.end)
+        while(x <= drawRange.end)
         {
             curves.first() << QPointF(x * xUnit, - regression->eval(x) * yUnit);
             x += xUnitStep;
@@ -209,7 +209,7 @@ void RegressionValuesSaver::cartesianMove()
     }
     else
     {
-        while(x > drawnRange.end + xUnitStep)
+        while(x > drawRange.end + xUnitStep)
         {
             curves.first().removeLast();
             x -= xUnitStep;
@@ -219,15 +219,15 @@ void RegressionValuesSaver::cartesianMove()
 
 void RegressionValuesSaver::calculateCartesianRegressionCurve()
 {    
-    drawnRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
-    drawnRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
+    drawRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
+    drawRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
 
-    double x = drawnRange.start - xUnitStep;
+    double x = drawRange.start - xUnitStep;
 
     QPolygonF curve;
-    curve.reserve((int)((drawnRange.end - drawnRange.start)/xUnitStep));
+    curve.reserve((int)((drawRange.end - drawRange.start)/xUnitStep));
 
-    while(x <= drawnRange.end + xUnitStep)
+    while(x <= drawRange.end + xUnitStep)
     {
         curve << QPointF(x * xUnit, - regression->eval(x) * yUnit);
         x += xUnitStep;

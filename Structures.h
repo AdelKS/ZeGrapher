@@ -97,7 +97,7 @@ struct FastTree
     FastTree *right;
 };
 
-struct Options
+struct SettingsVals
 {
     QColor axesColor;
     QColor backgroundColor;

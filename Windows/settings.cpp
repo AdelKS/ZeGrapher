@@ -148,7 +148,7 @@ void Settings::apply()
         parameters.defaultColor = defaultColorButton->getCurrentColor();
         parameters.numSize = ui->numSize->value();     
 
-        information->setOptions(parameters);
+        information->setSettingsVals(parameters);
     }
 }
 
