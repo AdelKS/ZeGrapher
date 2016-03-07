@@ -192,6 +192,12 @@ inline void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve
 
 }
 
+inline void GraphDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curves)
+{
+    for(QPolygonF curve: curves)
+        drawCurve(width, color, curve);
+}
+
 void GraphDraw::drawRegressions()
 {
     painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);

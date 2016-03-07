@@ -36,7 +36,7 @@ public:
     void move(GraphRange range);
     int getFuncDrawsNum(int func);
 
-    QPolygonF getCurve(int func, int curve);
+    QList<QPolygonF> getCurve(int func, int curve);
 
 
 
@@ -52,7 +52,7 @@ protected:
 
     double xUnit, yUnit, pixelStep, unitStep;
 
-    QList< QList< QPolygonF > > funcCurves;
+    QList< QList< QList<QPolygonF> > > funcCurves;
     QList< QList<QColor> > funcColors;
 };
 

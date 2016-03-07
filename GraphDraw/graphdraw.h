@@ -56,6 +56,7 @@ protected:
     void drawOneSequence(int id, int width);
     void drawDataSet(int id, int width);
     void drawCurve(int width, QColor color, const QPolygonF &curve);
+    void drawCurve(int width, QColor color, const QList<QPolygonF> &curves);
     void drawOneTangent(int id);
 
     void drawFunctions();
