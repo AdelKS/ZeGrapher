@@ -29,7 +29,7 @@ ParEqTable::ParEqTable(Information *info) : AbstractTable()
 
     k = 0;
 
-    updateTimer->setInterval(2000);
+    updateTimer->setInterval(1000);
     updateTimer->setSingleShot(true);
 
     QColor color;
@@ -46,6 +46,28 @@ ParEqTable::ParEqTable(Information *info) : AbstractTable()
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
 
+}
+
+void ParEqTable::exportToCSV()
+{
+    QList<QStringList> csvData;
+    QStringList row;
+
+    row << "t" << "x" << "y";
+    csvData << row;
+
+    row.clear();
+
+    for(int i = 0 ; i < parEqValues.tValues.size() ; i++)
+    {
+        row << QString::number(parEqValues.tValues[i], 'g', precision->value())
+            << QString::number(parEqValues.xValues[i], 'g', precision->value())
+            << QString::number(parEqValues.yValues[i], 'g', precision->value());
+        csvData << row;
+        row.clear();
+    }
+
+    csvHandler->saveCSV(csvData);
 }
 
 void ParEqTable::setTableParameters(ValuesTableParameters par)

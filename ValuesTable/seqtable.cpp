@@ -26,7 +26,7 @@ SeqTable::SeqTable(Information *info) : AbstractTable(), exprCalculator(false, i
 {
     information = info;    
 
-    updateTimer->setInterval(2000);
+    updateTimer->setInterval(1000);
     updateTimer->setSingleShot(true);
 
     QColor color;
@@ -64,6 +64,27 @@ void SeqTable::setTableParameters(ValuesTableParameters par)
     }
 
     updateTable();
+}
+
+void SeqTable::exportToCSV()
+{
+    QList<QStringList> csvData;
+    QStringList row;
+
+    row << "n" << parameters.name + "(n)";
+    csvData << row;
+
+    row.clear();
+
+    for(int i = 0 ; i < xValues.size() ; i++)
+    {
+        row << QString::number(xValues[i], 'g', precision->value())
+            << QString::number(yValues[i], 'g', precision->value());
+        csvData << row;
+        row.clear();
+    }
+
+    csvHandler->saveCSV(csvData);
 }
 
 void SeqTable::precisionEdited()

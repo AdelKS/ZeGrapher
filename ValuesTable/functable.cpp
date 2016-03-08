@@ -27,7 +27,7 @@ FuncTable::FuncTable(Information *info) : AbstractTable()
     information = info;   
     exprCalc = new ExprCalculator(false, info->getFuncsList());
 
-    updateTimer->setInterval(2000);
+    updateTimer->setInterval(1000);
     updateTimer->setSingleShot(true);
 
     disableCellEdit = false;    
@@ -64,6 +64,27 @@ void FuncTable::setTableParameters(ValuesTableParameters par)
     }
 
     updateTable();
+}
+
+void FuncTable::exportToCSV()
+{
+    QList<QStringList> csvData;
+    QStringList row;
+
+    row << "x" << parameters.name + "(x)";
+    csvData << row;
+
+    row.clear();
+
+    for(int i = 0 ; i < xValues.size() ; i++)
+    {
+        row << QString::number(xValues[i], 'g', precision->value())
+            << QString::number(yValues[i], 'g', precision->value());
+        csvData << row;
+        row.clear();
+    }
+
+    csvHandler->saveCSV(csvData);
 }
 
 void FuncTable::precisionEdited()

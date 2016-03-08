@@ -40,6 +40,7 @@ protected slots:
     void kValueEdited();
     void updateTable();
     void precisionEdited();
+    void exportToCSV();
 
 protected:
     void fillFromRange();

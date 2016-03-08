@@ -32,7 +32,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(dataUpdated()), this, SLOT(updateData()));
     connect(info, SIGNAL(animationUpdate()), this, SLOT(updateParEq()));  
-    connect(info, SIGNAL(gridStateChange()), this, SLOT(update()));
+    connect(info, SIGNAL(gridStateChange()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(drawStateUpdateOccured()), this, SLOT(reactivateSmoothing()));
 
     exprCalculator = new ExprCalculator(false, info->getFuncsList());

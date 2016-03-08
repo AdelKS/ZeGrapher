@@ -30,11 +30,14 @@ AbstractTable::AbstractTable(QWidget *parent) :
 
     QHBoxLayout *previousButtonLayout = new QHBoxLayout;
     QPushButton *previousButton = new QPushButton(tr("Back"));
+    QPushButton *exportButton = new QPushButton(tr("Export"));
 
     connect(previousButton, SIGNAL(released()), this, SIGNAL(previous()));
+    connect(exportButton, SIGNAL(released()), this, SLOT(exportToCSV()));
 
     previousButtonLayout->addWidget(previousButton);
     previousButtonLayout->addStretch();
+    previousButtonLayout->addWidget(exportButton);
 
     mainLayout->addLayout(previousButtonLayout);    
 
@@ -95,6 +98,8 @@ AbstractTable::AbstractTable(QWidget *parent) :
     mainLayout->addLayout(precisionLayout);
 
     //--------------------------------------------------------------------
+
+    csvHandler = new CSVhandler(this);
 
     setLayout(mainLayout);
 

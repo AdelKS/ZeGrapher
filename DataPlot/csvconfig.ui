@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>476</width>
+    <width>509</width>
     <height>144</height>
    </rect>
   </property>
@@ -21,7 +21,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher only supports the &lt;a href=&quot;http://fr.wikipedia.org/wiki/Comma-separated_values&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt;fromat for importing and exporting data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher only supports the &lt;a href=&quot;http://fr.wikipedia.org/wiki/Comma-separated_values&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt; fromat for importing and exporting data.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>

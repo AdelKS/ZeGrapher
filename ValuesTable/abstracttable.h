@@ -23,6 +23,7 @@
 #define ABSTRACTTABLE_H
 
 #include "Structures.h"
+#include "DataPlot/csvhandler.h"
 
 class AbstractTable : public QWidget
 {
@@ -35,8 +36,10 @@ signals:
     void previous();
 
 protected slots:
+    virtual void exportToCSV() = 0;
 
 protected:
+    CSVhandler *csvHandler;
     QTableView *tableView;
     QStandardItemModel *model;
     QSpinBox *precision;
