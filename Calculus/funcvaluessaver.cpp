@@ -41,7 +41,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRang
     yUnit = new_yUnit;
     unitStep = pixelStep / xUnit;
 
-    double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0;
+    double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
     int k_pos = 0, end=0, n=0;
 
 
@@ -67,31 +67,45 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRang
 
             for(x = graphRange.Xmin - unitStep ; x <= graphRange.Xmax + unitStep ; x += unitStep)
             {                
-                curvePart <<  QPointF( x*xUnit , - funcs[i]->getFuncValue(x, k) * yUnit);
+                y = funcs[i]->getFuncValue(x, k);
 
-                n = curvePart.size();
-                if(n > 1)
-                    delta3 = fabs(curvePart[n-1].y() - curvePart[n-2].y());
-
-                if(n > 2 && delta2 > 4*delta1 && delta2 > 4*delta3)
+                if(isnan(y) || isinf(y))
                 {
-                    pt1 = curvePart[n-2];
-                    pt2 = curvePart[n-1];
-
-                    curvePart.removeLast();
-                    curvePart.removeLast();
-
-                    funcCurves[i][k_pos] << curvePart;
-                    curvePart.clear();
-                    curvePart << pt1 << pt2;
+                    if(!curvePart.isEmpty())
+                    {
+                        funcCurves[i][k_pos] << curvePart;
+                        curvePart.clear();
+                    }
                 }
+                else
+                {
+                    curvePart <<  QPointF( x*xUnit , - y * yUnit);
 
-                delta1 = delta2;
-                delta2 = delta3;
+                    n = curvePart.size();
+                    if(n > 1)
+                        delta3 = fabs(curvePart[n-1].y() - curvePart[n-2].y());
 
+                    if(n > 2 && delta2 > 4*delta1 && delta2 > 4*delta3)
+                    {
+                        pt1 = curvePart[n-2];
+                        pt2 = curvePart[n-1];
+
+                        curvePart.removeLast();
+                        curvePart.removeLast();
+
+                        funcCurves[i][k_pos] << curvePart;
+                        curvePart.clear();
+                        curvePart << pt1 << pt2;
+                    }
+
+                    delta1 = delta2;
+                    delta2 = delta3;
+
+                }
             }
 
-            funcCurves[i][k_pos] << curvePart;
+            if(!curvePart.isEmpty())
+                funcCurves[i][k_pos] << curvePart;
             curvePart.clear();
 
             k += range.step;           
@@ -103,7 +117,7 @@ void FuncValuesSaver::move(GraphRange range)
 {
     graphRange = range;
 
-    double x = 0, k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0;
+    double x = 0, k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
     int k_pos = 0;
 
 
@@ -139,25 +153,41 @@ void FuncValuesSaver::move(GraphRange range)
 
                 while(x >= graphRange.Xmin)
                 {
-                    curvePart.prepend(QPointF(x * xUnit, - funcs[i]->getFuncValue(x, k) * yUnit));
+                    y = funcs[i]->getFuncValue(x, k);
 
-                    n = curvePart.size();
-                    x -= unitStep;
-
-                    delta3 = fabs(curvePart[0].y() - curvePart[1].y());
-
-                    if(n > 2 && delta2 > 4*delta1 && delta2 > 4*delta3)
+                    if(isnan(y) || isinf(y))
                     {
-                        pt1 = curvePart.takeFirst();
-                        pt2 = curvePart.takeFirst();
+                        if(!curvePart.isEmpty())
+                        {
+                            funcCurves[i][k_pos].prepend(curvePart);
+                            curvePart.clear();
+                        }
+                    }
+                    else
+                    {
+                        curvePart.prepend(QPointF(x * xUnit, - y * yUnit));
 
-                        funcCurves[i][k_pos].prepend(curvePart);
-                        curvePart.clear();
-                        curvePart << pt1 << pt2;
+                        n = curvePart.size();
+
+                        if(n > 1)
+                            delta3 = fabs(curvePart[0].y() - curvePart[1].y());
+
+                        if(n > 2 && delta2 > 4*delta1 && delta2 > 4*delta3)
+                        {
+                            pt1 = curvePart.takeFirst();
+                            pt2 = curvePart.takeFirst();
+
+                            funcCurves[i][k_pos].prepend(curvePart);
+                            curvePart.clear();
+                            curvePart << pt1 << pt2;
+                        }
+
+                        delta1 = delta2;
+                        delta2 = delta3;
+
                     }
 
-                    delta1 = delta2;
-                    delta2 = delta3;
+                    x -= unitStep;
                 }
             }
             else
@@ -195,24 +225,39 @@ void FuncValuesSaver::move(GraphRange range)
 
                 while(x <= graphRange.Xmax)
                 {
-                    curvePart << QPointF(x * xUnit, - funcs[i]->getFuncValue(x, k)  * yUnit);
-                    x += unitStep;
+                    y = funcs[i]->getFuncValue(x, k);
 
-                    n = curvePart.size();
-                    delta3 = fabs(curvePart[n-1].y() - curvePart[n-2].y());
-
-                    if(n > 2 && delta2 > 4*delta1 && delta2 > 4*delta3)
+                    if(isnan(y) || isinf(y))
                     {
-                        pt2 = curvePart.takeLast();
-                        pt1 = curvePart.takeLast();
+                        if(!curvePart.isEmpty())
+                        {
+                            funcCurves[i][k_pos].prepend(curvePart);
+                            curvePart.clear();
+                        }
+                    }
+                    else
+                    {
+                        curvePart << QPointF(x * xUnit, - y  * yUnit);
+                        n = curvePart.size();
 
-                        funcCurves[i][k_pos] << curvePart;
-                        curvePart.clear();
-                        curvePart << pt1 << pt2;
+                        if(n > 1)
+                            delta3 = fabs(curvePart[n-1].y() - curvePart[n-2].y());
+
+                        if(n > 2 && delta2 > 4*delta1 && delta2 > 4*delta3)
+                        {
+                            pt2 = curvePart.takeLast();
+                            pt1 = curvePart.takeLast();
+
+                            funcCurves[i][k_pos] << curvePart;
+                            curvePart.clear();
+                            curvePart << pt1 << pt2;
+                        }
+
+                        delta1 = delta2;
+                        delta2 = delta3;
                     }
 
-                    delta1 = delta2;
-                    delta2 = delta3;
+                    x += unitStep;
                 }
             }
             else

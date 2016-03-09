@@ -84,15 +84,18 @@ void MainWindow::createMenus()
 
     QAction *showPrintWinAction = menuFile->addAction(QIcon(":/icons/print.png"), tr("Print..."));
     showPrintWinAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(showPrintWinAction, SIGNAL(triggered()), printWin, SLOT(show()));
+    connect(showPrintWinAction, SIGNAL(triggered()), printWin, SLOT(show()));    
+    connect(showPrintWinAction, SIGNAL(triggered()), printWin, SLOT(raise()));
 
     QAction *showImageExportWinAction = menuFile->addAction(QIcon(":/icons/saveImage.png"), tr("Image export..."));
     showImageExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
     connect(showImageExportWinAction, SIGNAL(triggered()), imageExportWin, SLOT(show()));
+    connect(showImageExportWinAction, SIGNAL(triggered()), imageExportWin, SLOT(raise()));
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
     connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(show()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(raise()));
 
     menuFile->addSeparator();
 
@@ -103,18 +106,22 @@ void MainWindow::createMenus()
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
     connect(showInputWinAction, SIGNAL(triggered()), inputWin, SLOT(show()));
+    connect(showInputWinAction, SIGNAL(triggered()), inputWin, SLOT(raise()));
 
     QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Range edit"));
     showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));
-    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(show()));
+    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(show()));    
+    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(raise()));
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.png"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
-    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));
+    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));    
+    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(raise()));
 
     QAction *showKeyboardAction = menuWindows->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
     showKeyboardAction->setShortcut(QKeySequence("Ctrl+K"));
-    connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));
+    connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));    
+    connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(raise()));
 
     QToolBar *toolBar = new QToolBar(tr("Windows and actions"));
     addToolBar(Qt::LeftToolBarArea, toolBar);
