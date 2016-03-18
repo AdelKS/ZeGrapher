@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,7 +18,10 @@
 **
 ****************************************************************************/
 
+
 #include "Calculus/funcvaluessaver.h"
+
+#include <iostream>
 
 FuncValuesSaver::FuncValuesSaver(QList<FuncCalculator*> funcsList, double pxStep)
 {    
@@ -135,6 +138,8 @@ void FuncValuesSaver::move(GraphRange range)
 
         for(k_pos = 0; k_pos < funcCurves[i].size() ; k_pos++)
         {
+            std::cout << "curve parts number: " << funcCurves[i][k_pos].size() << std::endl;
+
             curvePart = funcCurves[i][k_pos].takeFirst();
             x = curvePart.first().x()/xUnit - unitStep;
 
@@ -231,7 +236,7 @@ void FuncValuesSaver::move(GraphRange range)
                     {
                         if(!curvePart.isEmpty())
                         {
-                            funcCurves[i][k_pos].prepend(curvePart);
+                            funcCurves[i][k_pos] << curvePart;
                             curvePart.clear();
                         }
                     }

@@ -69,7 +69,8 @@ SOURCES += \
     Windows/rangeadjustments.cpp \
     Windows/mathobjectsinput.cpp \
     Windows/settings.cpp \
-    Windows/values.cpp
+    Windows/values.cpp \
+    Windows/updatecheck.cpp
 
 HEADERS  += \
     Structures.h \
@@ -126,7 +127,8 @@ HEADERS  += \
     Windows/rangeadjustments.h \
     Windows/mathobjectsinput.h \
     Windows/settings.h \
-    Windows/values.h
+    Windows/values.h \
+    Windows/updatecheck.h
 
 
 FORMS    += \

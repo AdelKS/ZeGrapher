@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -17,6 +17,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
+
 
 #include "modelchoicewidget.h"
 #include "ui_modelchoicewidget.h"

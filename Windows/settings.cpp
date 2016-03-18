@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -17,6 +17,7 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
+
 
 
 #include "Windows/settings.h"
@@ -104,6 +105,9 @@ void Settings::readSavedSettings()
 
     settings.endGroup();
 
+    if(settings.contains("update_check_at_start"))
+        ui->updateCheckAtStart->setChecked(settings.value("update_check_at_start").toBool());
+
 }
 
 void Settings::saveSettings()
@@ -127,6 +131,13 @@ void Settings::saveSettings()
 
     settings.endGroup();
 
+    settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
+
+}
+
+void Settings::resetToDefaultVals()
+{
+
 }
 
 void Settings::apply()
@@ -146,7 +157,8 @@ void Settings::apply()
         parameters.backgroundColor = backgroundColorButton->getCurrentColor();
         parameters.gridColor = gridColorButton->getCurrentColor();
         parameters.defaultColor = defaultColorButton->getCurrentColor();
-        parameters.numSize = ui->numSize->value();     
+        parameters.numSize = ui->numSize->value();
+        parameters.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
 
         information->setSettingsVals(parameters);
     }

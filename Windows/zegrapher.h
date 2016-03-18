@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -20,6 +20,7 @@
 
 
 
+
 #ifndef ZEGRAPHER_H
 #define ZEGRAPHER_H
 
@@ -34,6 +35,7 @@
 #include "GraphDraw/printpreview.h"
 #include "Export/print.h"
 #include "Widgets/keyboard.h"
+#include "Windows/updatecheck.h"
 
 #include <QSettings>
 #include <QString>
@@ -70,6 +72,7 @@ private:
     ImageSave *imageExportWin;
     about *aboutWin;
     Print *printWin;
+    UpdateCheck *updateCheckWin;
     QAction *gridButton;
     //ImagePreview *winImageScene;
     //PrintPreview *winPrintScene;

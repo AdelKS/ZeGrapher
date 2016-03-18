@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -20,6 +20,7 @@
 
 
 
+
 #include "Windows/zegrapher.h"
 
 MainWindow::MainWindow()
@@ -30,6 +31,7 @@ MainWindow::MainWindow()
     rangeWin = new RangeAdjustments(information);
     inputWin = new MathObjectsInput(information);
     aboutWin = new about(this);
+    updateCheckWin = new UpdateCheck(this);
     imageExportWin = new ImageSave(information);
     valuesWin = new Values(information);
     printWin = new Print(information);
@@ -56,6 +58,9 @@ MainWindow::MainWindow()
 
     loadWindowSavedGeomtries();
 
+    if(information->getSettingsVals().updateCheckAtStart)
+        updateCheckWin->silentCheckForUpdate();
+
 }
 
 void MainWindow::createMenus()
@@ -81,6 +86,9 @@ void MainWindow::createMenus()
     
     QAction *showAboutQtWinAction = menuHelp->addAction(tr("About Qt"));
     connect(showAboutQtWinAction, SIGNAL(triggered()), this, SLOT(showAboutQtWin()));
+
+    QAction *showUpdateCheckWinAction = menuHelp->addAction(tr("Check for updates"));
+    connect(showUpdateCheckWinAction, SIGNAL(triggered()), updateCheckWin, SLOT(checkForUpdate()));
 
     QAction *showPrintWinAction = menuFile->addAction(QIcon(":/icons/print.png"), tr("Print..."));
     showPrintWinAction->setShortcut(QKeySequence("Ctrl+P"));

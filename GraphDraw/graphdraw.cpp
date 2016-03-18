@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2015, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -17,8 +17,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
-
-
 
 #include "GraphDraw/graphdraw.h"
 #include <iostream>
@@ -182,7 +180,7 @@ void GraphDraw::drawData()
     }
 }
 
-inline void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
+void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
 {
     pen.setWidth(width);
     pen.setColor(color);
@@ -192,7 +190,7 @@ inline void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve
 
 }
 
-inline void GraphDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curves)
+void GraphDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curves)
 {
     for(QPolygonF curve: curves)
         drawCurve(width, color, curve);
