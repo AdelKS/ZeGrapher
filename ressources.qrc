@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>ZeGrapher_fr.qm</file>
         <file>icons/boundaries.png</file>
         <file>icons/saveImage.png</file>
         <file>icons/software.png</file>
@@ -64,5 +63,6 @@
         <file>Help/lineActions_en.png</file>
         <file>Help/pins_en.png</file>
         <file>Help/polynomialCoefVals_en.png</file>
+        <file>ZeGrapher_fr.qm</file>
     </qresource>
 </RCC>

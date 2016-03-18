@@ -63,6 +63,7 @@ Settings::Settings(Information *info)
     connect(backgroundColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(gridColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(defaultColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(ui->reset, SIGNAL(released()), this, SLOT(resetToDefaultVals()));
 
 
     apply();
@@ -108,6 +109,13 @@ void Settings::readSavedSettings()
     if(settings.contains("update_check_at_start"))
         ui->updateCheckAtStart->setChecked(settings.value("update_check_at_start").toBool());
 
+    if(settings.contains("language"))
+    {
+        if(settings.value("language").toString() == "en")
+            ui->languageComboBox->setCurrentIndex(0);
+        else  ui->languageComboBox->setCurrentIndex(1);
+    }
+
 }
 
 void Settings::saveSettings()
@@ -133,11 +141,28 @@ void Settings::saveSettings()
 
     settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
 
+    if(ui->languageComboBox->currentIndex() == 0)
+        settings.setValue("language", "en");
+    else settings.setValue("language", "fr");
 }
 
 void Settings::resetToDefaultVals()
 {
+    int res = QMessageBox::question(this, tr("Reset to default values ?"), tr("Are you sure you want to restore the default values ?"));
+    if(res == QMessageBox::No)
+        return;
 
+    axesColorButton->setColor(Qt::black);
+    backgroundColorButton->setColor(Qt::white);
+    gridColorButton->setColor(Qt::gray);
+    defaultColorButton->setColor(Qt::black);
+    ui->distanceWidget->setValue(4);
+    ui->numSize->setValue(11);
+    ui->thicknessWidget->setValue(1);
+    ui->smoothing->setChecked(true);
+    ui->updateCheckAtStart->setChecked(true);
+
+    apply();
 }
 
 void Settings::apply()

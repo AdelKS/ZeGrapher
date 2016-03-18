@@ -18,15 +18,7 @@
 **
 ****************************************************************************/
 
-
-
-#include <QApplication>
 #include "Windows/zegrapher.h"
-#include <QLocale>
-#include <QTranslator>
-#include <QTextCodec>
-#include <QLibraryInfo>
-#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -36,9 +28,23 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("zegrapher.com");
     QCoreApplication::setApplicationName("ZeGrapher");
 
-    QString locale = QLocale::system().name();
+    QSettings settings;
     QTranslator translator;
-    translator.load(QString("ZeGrapher_") + locale);
+
+    if(settings.contains("language"))
+    {
+        QString language = settings.value("language").toString();
+        if(language == "fr")
+            translator.load(":/ZeGrapher_fr.qm");
+    }
+    else
+    {
+        QLocale locale;
+        if(locale.language() == QLocale::French)
+            translator.load(":/ZeGrapher_fr.qm");
+    }
+
+
 
     a.installTranslator(&translator);
 

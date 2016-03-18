@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>258</width>
-    <height>309</height>
+    <width>294</width>
+    <height>333</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -50,8 +50,11 @@
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <property name="formAlignment">
+     <property name="labelAlignment">
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="formAlignment">
+      <set>Qt::AlignJustify|Qt::AlignVCenter</set>
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
@@ -241,6 +244,33 @@
        </property>
       </widget>
      </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>&lt;strong&gt;Language:&lt;/strong&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QComboBox" name="languageComboBox">
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>English</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Français</string>
+        </property>
+       </item>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -278,9 +308,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>widget</zorder>
-  <zorder>hs</zorder>
-  <zorder>reset</zorder>
  </widget>
  <resources>
   <include location="../ressources.qrc"/>

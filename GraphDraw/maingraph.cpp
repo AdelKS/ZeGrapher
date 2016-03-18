@@ -483,7 +483,6 @@ void MainGraph::paintEvent(QPaintEvent *event)
 
 void MainGraph::indirectPaint()
 {
-    cout << "indirect paint! " << rand() << endl;
 
     if(resaveTangent)
         addTangentToBuffer();
@@ -515,8 +514,6 @@ void MainGraph::indirectPaint()
 void MainGraph::directPaint()
 {
     resaveGraph = true;
-
-    cout << "direct paint! " << rand() << endl;
 
     painter.begin(this);
     //trace du background

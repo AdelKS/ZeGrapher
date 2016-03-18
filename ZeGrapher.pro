@@ -16,6 +16,8 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 UI_DIR = .ui
 
+INCLUDEPATH += .
+
 SOURCES += \
     main.cpp \
     information.cpp \

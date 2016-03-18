@@ -8,6 +8,8 @@ UpdateCheck::UpdateCheck(QWidget *parent) : QDialog(parent)
     hLayout->addWidget(statusLabel);
     setLayout(hLayout);
 
+    setWindowTitle(tr("Update check"));
+
     timer.setSingleShot(true);
     timer.setInterval(5000);
 

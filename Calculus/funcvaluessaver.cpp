@@ -21,7 +21,6 @@
 
 #include "Calculus/funcvaluessaver.h"
 
-#include <iostream>
 
 FuncValuesSaver::FuncValuesSaver(QList<FuncCalculator*> funcsList, double pxStep)
 {    
@@ -138,8 +137,6 @@ void FuncValuesSaver::move(GraphRange range)
 
         for(k_pos = 0; k_pos < funcCurves[i].size() ; k_pos++)
         {
-            std::cout << "curve parts number: " << funcCurves[i][k_pos].size() << std::endl;
-
             curvePart = funcCurves[i][k_pos].takeFirst();
             x = curvePart.first().x()/xUnit - unitStep;
 
