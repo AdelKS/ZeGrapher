@@ -71,7 +71,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRang
             {                
                 y = funcs[i]->getFuncValue(x, k);
 
-                if(isnan(y) || isinf(y))
+                if(std::isnan(y) || std::isinf(y))
                 {
                     if(!curvePart.isEmpty())
                     {
@@ -157,7 +157,7 @@ void FuncValuesSaver::move(GraphRange range)
                 {
                     y = funcs[i]->getFuncValue(x, k);
 
-                    if(isnan(y) || isinf(y))
+                    if(std::isnan(y) || std::isinf(y))
                     {
                         if(!curvePart.isEmpty())
                         {
@@ -229,7 +229,7 @@ void FuncValuesSaver::move(GraphRange range)
                 {
                     y = funcs[i]->getFuncValue(x, k);
 
-                    if(isnan(y) || isinf(y))
+                    if(std::isnan(y) || std::isinf(y))
                     {
                         if(!curvePart.isEmpty())
                         {
