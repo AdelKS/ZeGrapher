@@ -59,6 +59,7 @@
 #define VALID_COLOR "#B2FFB2"
 
 #define EPSILON 0.001
+#define MAX_SAVED_SEQ_VALS 1000000
 
 
 struct GraphRange

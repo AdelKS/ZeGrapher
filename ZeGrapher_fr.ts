@@ -1135,8 +1135,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="286"/>
+        <source>User defined :</source>
+        <translation>Définition manuelle :</translation>
+    </message>
+    <message>
         <source>Définition &amp;manuelle:</source>
-        <translation>Définition manuelle:</translation>
+        <translation type="vanished">Définition manuelle:</translation>
     </message>
     <message>
         <source>Relative extrapolation of </source>
@@ -1651,87 +1655,87 @@ p, li { white-space: pre-wrap; }
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="71"/>
+        <location filename="Windows/settings.ui" line="74"/>
         <source>If the quality is increased, the execution speed is decreased and conversely.</source>
         <translation>la qualité est améliorée au détriment de la vitesse, et inversement.</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="74"/>
+        <location filename="Windows/settings.ui" line="77"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="87"/>
+        <location filename="Windows/settings.ui" line="90"/>
         <source>Distance in pixels</source>
         <translation>Distance en pixels</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="106"/>
+        <location filename="Windows/settings.ui" line="109"/>
         <source>&lt;strong&gt;Curves thickness:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Epaisseur des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="129"/>
+        <location filename="Windows/settings.ui" line="132"/>
         <source>Digits size shown on the graph</source>
         <translation>Taille des nombres affichés sur le graphique</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="132"/>
+        <location filename="Windows/settings.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Font size:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="145"/>
+        <location filename="Windows/settings.ui" line="148"/>
         <source>Size in pixel</source>
         <translation>Taille en pixels</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="161"/>
+        <location filename="Windows/settings.ui" line="164"/>
         <source>&lt;strong&gt;Axes color:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Couleur des axes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="171"/>
+        <location filename="Windows/settings.ui" line="174"/>
         <source>&lt;strong&gt;Background color:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Couleur du fond:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="181"/>
+        <location filename="Windows/settings.ui" line="184"/>
         <source>&lt;strong&gt;Grid color:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="191"/>
+        <location filename="Windows/settings.ui" line="194"/>
         <source>&lt;strong&gt;Curves smoothing:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="217"/>
+        <location filename="Windows/settings.ui" line="220"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves&apos; default color:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;strong&gt;Couleur par défaut des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="227"/>
+        <location filename="Windows/settings.ui" line="230"/>
         <source>&lt;strong&gt;Check for updates at start:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Vérification de mises à jour &lt;br/&gt;au démarrage:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="247"/>
+        <location filename="Windows/settings.ui" line="250"/>
         <source>&lt;strong&gt;Language:&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;Langue:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="255"/>
+        <location filename="Windows/settings.ui" line="264"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="260"/>
+        <location filename="Windows/settings.ui" line="269"/>
         <source>Français</source>
         <translation>Français</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="294"/>
+        <location filename="Windows/settings.ui" line="303"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>

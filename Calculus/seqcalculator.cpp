@@ -186,7 +186,7 @@ bool SeqCalculator::checkByCalculatingValues()
 
 double SeqCalculator::getCustomSeqValue(double n, bool &ok, double k_value)
 {
-    if(nMin > n || n > 100000)
+    if(nMin > n || n > MAX_SAVED_SEQ_VALS)
         return NAN;
 
     double index = (k_value - kRange.start)/kRange.step;
@@ -217,8 +217,8 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 
     blockCalculatingFromTree = true;
 
-    if(nMax > 100000 + nMin)
-        nMax = 100000 + nMin;
+    if(nMax > MAX_SAVED_SEQ_VALS + nMin)
+        nMax = MAX_SAVED_SEQ_VALS + nMin;
 
     double result;
     bool ok = true;
@@ -238,7 +238,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
         }
     }
 
-    for(int n = seqValues[kPos].size(); n <= nMax - nMin; n++)
+    for(int n = seqValues[kPos].size() + nMin; n <= nMax + nMin; n++)
     {
         result = calculateFromTree(seqTree, n, ok);
 
@@ -255,7 +255,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 
 double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
 {   
-    if(nMin > n || n > 100000)
+    if(nMin > n || n > MAX_SAVED_SEQ_VALS)
         return NAN;    
 
     if(n-nMin >= seqValues[0].size())
@@ -292,8 +292,8 @@ bool SeqCalculator::saveSeqValues(double nMax)
     blockCalculatingFromTree = true;
     bool ok = true;
 
-    if(nMax > 100000 + nMin)
-        nMax = 100000 + nMin;
+    if(nMax > MAX_SAVED_SEQ_VALS + nMin)
+        nMax = MAX_SAVED_SEQ_VALS + nMin;
 
     double result;
 
@@ -301,7 +301,7 @@ bool SeqCalculator::saveSeqValues(double nMax)
 
     for(kPos = 0; kPos < drawsNum; kPos++)
     {
-        for(int n = seqValues[kPos].size(); n <= nMax - nMin; n++)
+        for(int n = seqValues[kPos].size() + nMin; n <= nMax + nMin; n++)
         {
             result = calculateFromTree(seqTree, n, ok);
 
