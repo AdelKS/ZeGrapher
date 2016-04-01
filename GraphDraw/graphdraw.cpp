@@ -53,7 +53,7 @@ GraphDraw::GraphDraw(Information *info)
 
 void GraphDraw::updateSettingsVals()
 {
-    funcValuesSaver->setPixelStep(information->getSettingsVals().distanceBetweenPoints);   
+    funcValuesSaver->setPixelStep(information->getSettingsVals().distanceBetweenPoints);
 }
 
 void GraphDraw::addRegSaver(Regression *reg)

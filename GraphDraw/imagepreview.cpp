@@ -50,7 +50,9 @@ void ImagePreview::paintEvent(QPaintEvent *event)
     parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
-    painter.begin(this);
+    painter.begin(this);    
+
+    painter.setFont(information->getSettingsVals().graphFont);
 
     painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, width()+1, height()+1);
@@ -182,6 +184,7 @@ void ImagePreview::paint()
 
 void ImagePreview::writeLegends()
 {
+    font = information->getSettingsVals().graphFont;
     font.setPixelSize(legendFontSize);
     font.setItalic(italic);
     font.setBold(bold);
@@ -217,7 +220,7 @@ void ImagePreview::writeLegends()
 
 void ImagePreview::placerGraduations()
 {
-    double fontSize = information->getSettingsVals().numSize;
+    double fontSize = information->getSettingsVals().graphFont.pixelSize();
     double prec = numPrec;
 
     font.setPixelSize(fontSize);
@@ -307,13 +310,13 @@ void ImagePreview::placerGraduations()
             if(space > largestWidth)
                 largestWidth = space;
 
-            painter.drawText(QPointF(-space, pos + parameters.numSize/2), num);
+            painter.drawText(QPointF(-space, pos + parameters.graphFont.pixelSize()/2), num);
         }
         else
         {
             pos = -Ypos + centre.y;
             space = fontMetrics.width("0") + 5;
-            painter.drawText(QPointF(-space, pos + parameters.numSize/2), "0");
+            painter.drawText(QPointF(-space, pos + parameters.graphFont.pixelSize()/2), "0");
         }
 
         if(space > largestWidth)

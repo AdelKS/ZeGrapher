@@ -21,8 +21,9 @@
 #include "Windows/zegrapher.h"
 
 int main(int argc, char *argv[])
-{
+{    
     QApplication a(argc, argv);
+
 
     QCoreApplication::setOrganizationName("ZeGrapher Project");
     QCoreApplication::setOrganizationDomain("zegrapher.com");
@@ -30,6 +31,8 @@ int main(int argc, char *argv[])
 
     QSettings settings;
     QTranslator translator;
+
+    settings.beginGroup("app");
 
     if(settings.contains("language"))
     {
@@ -44,9 +47,18 @@ int main(int argc, char *argv[])
             translator.load(":/ZeGrapher_fr.qm");
     }
 
+    settings.beginGroup("font");
 
+    if(settings.contains("family") && settings.contains("pixel_size"))
+    {
+        QFont font;
+        font.setPixelSize(settings.value("pixel_size").toInt());
+        font.setFamily(settings.value("family").toString());
+        font.setStyleStrategy(QFont::PreferAntialias);
+        a.setFont(font);
+    }
 
-    a.installTranslator(&translator);
+    a.installTranslator(&translator);    
 
     MainWindow w;
     w.show();

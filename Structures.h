@@ -106,10 +106,10 @@ struct SettingsVals
     QColor gridColor;
     QColor defaultColor;
     short curvesThickness;
-    short numSize;
     double distanceBetweenPoints;
     bool smoothing;
     bool updateCheckAtStart;
+    QFont graphFont;
 
 };
 

@@ -19,13 +19,13 @@
 ****************************************************************************/
 
 
-
 #include "./datawindow.h"
 #include "ui_datawindow.h"
 
 
 DataWindow::DataWindow(Information *info, int ind)
 {
+
     index = ind;
     xindex = STARTING_XPIN_INDEX;
     yindex = STARTING_YPIN_INDEX;

@@ -348,7 +348,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     x = (x-centre.x)/uniteX;
     y = -(y-centre.y)/uniteY;  
 
-    double valeur = (double)event->delta() / 1200;
+    double valeur = (double)event->pixelDelta().y() / 300;
 
     if(std::isinf(valeur))
         return;
@@ -489,7 +489,9 @@ void MainGraph::indirectPaint()
     if(resaveGraph)
         resaveImageBuffer();
 
-    painter.begin(this);   
+    painter.begin(this);
+
+    painter.setFont(information->getSettingsVals().graphFont);
 
     painter.drawImage(QPoint(0,0), *savedGraph);    
     painter.translate(QPointF(centre.x, centre.y));
@@ -518,8 +520,7 @@ void MainGraph::directPaint()
     painter.begin(this);
     //trace du background
 
-    font.setPixelSize(parameters.numSize);
-    painter.setFont(font);
+    painter.setFont(information->getSettingsVals().graphFont);
 
     painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
@@ -631,8 +632,7 @@ void MainGraph::resaveImageBuffer()
     painter.begin(savedGraph);
     //trace du background
 
-    font.setPixelSize(parameters.numSize);
-    painter.setFont(font);
+    painter.setFont(information->getSettingsVals().graphFont);
 
     painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
@@ -1336,7 +1336,7 @@ void MainGraph::placerGraduations()
     if(centre.y < 20)
     {       
         Ypos = 20;
-        posTxt = Ypos + parameters.numSize + 3;
+        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
     else if(graphHeight - centre.y < 20)
     {       
@@ -1346,7 +1346,7 @@ void MainGraph::placerGraduations()
     else
     {
         Ypos = centre.y;
-        posTxt = Ypos + parameters.numSize + 3;
+        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
 
     double Xreal = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale;

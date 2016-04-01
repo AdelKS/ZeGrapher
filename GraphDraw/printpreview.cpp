@@ -110,6 +110,9 @@ void PrintPreview::paintEvent(QPaintEvent *event)
 
     painter.begin(this);
     //trace du background
+
+    painter.setFont(information->getSettingsVals().graphFont);
+
     drawSheet();
     drawGraph();
 

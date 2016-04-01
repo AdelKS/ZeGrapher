@@ -19,8 +19,6 @@
 ****************************************************************************/
 
 
-
-
 #include "Windows/zegrapher.h"
 
 MainWindow::MainWindow()
@@ -60,7 +58,6 @@ MainWindow::MainWindow()
 
     if(information->getSettingsVals().updateCheckAtStart)
         updateCheckWin->silentCheckForUpdate();
-
 }
 
 void MainWindow::createMenus()
