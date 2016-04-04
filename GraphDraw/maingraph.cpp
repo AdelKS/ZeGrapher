@@ -348,7 +348,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     x = (x-centre.x)/uniteX;
     y = -(y-centre.y)/uniteY;  
 
-    double valeur = (double)event->pixelDelta().y() / 300;
+    double valeur = std::min(3.0, (double)event->angleDelta().y() / 300);
 
     if(std::isinf(valeur))
         return;
