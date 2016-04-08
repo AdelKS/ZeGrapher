@@ -94,9 +94,10 @@ protected:
     void drawAnimatedParEq();  
     void drawAllParEq();
 
-    void determinerCentreEtUnites();
-    void placerGraduations();
-    void afficherPoint();
+    void updateCenterPosAndScaling();
+    bool updateTickSpacing(); //return true if spacing was changed
+    void drawTicksAndNumbers();
+    void drawPoint();
 
     void moveSavedRegsValues();
 
@@ -106,7 +107,7 @@ protected:
     Point lastPosSouris, pointPx, pointUnit;
     QSlider *hSlider, *vSlider;
     QLineEdit *lineX, *lineY;
-    double y1, y2, mouseX, mouseY;
+    double y1, y2, mouseX, mouseY, widestXNumber;
 
     bool dispPoint, buttonPresse, sourisSurUneCurve,
          dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,

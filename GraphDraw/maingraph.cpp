@@ -346,12 +346,9 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     double y = event->pos().y();
 
     x = (x-centre.x)/uniteX;
-    y = -(y-centre.y)/uniteY;  
+    y = -(y-centre.y)/uniteY;
 
-    double valeur = std::min(3.0, (double)event->angleDelta().y() / 300);
-
-    if(std::isinf(valeur))
-        return;
+    double valeur = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
 
     if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
     {
@@ -459,6 +456,7 @@ void MainGraph::newWindowSize()
 
 void MainGraph::paintEvent(QPaintEvent *event)
 {
+    cout << "update! " << rand() << endl;
     graphWidth = width();
     graphHeight = height();
 
@@ -501,7 +499,7 @@ void MainGraph::indirectPaint()
     animationUpdate = false;
 
     if(dispPoint)
-        afficherPoint();
+        drawPoint();
 
     if(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection)
         drawOneTangent(selectedCurve.id);
@@ -525,9 +523,23 @@ void MainGraph::directPaint()
     painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
-    determinerCentreEtUnites();
+    updateCenterPosAndScaling();
     drawAxes();
-    placerGraduations();
+    drawTicksAndNumbers();
+
+    if(updateTickSpacing())
+    {
+        cancelUpdateSignal = true;
+        information->setRange(graphRange);
+
+        painter.setBrush(QBrush(parameters.backgroundColor));
+        painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
+
+        updateCenterPosAndScaling();
+        drawAxes();
+        drawTicksAndNumbers();
+    }
+
 
     if(dispRectangle)
     {
@@ -561,7 +573,7 @@ void MainGraph::directPaint()
     drawData();
 
     if(dispPoint)
-        afficherPoint();    
+        drawPoint();
 
     painter.end();
 }
@@ -637,9 +649,9 @@ void MainGraph::resaveImageBuffer()
     painter.setBrush(QBrush(parameters.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
-    determinerCentreEtUnites();
+    updateCenterPosAndScaling();
     drawAxes();
-    placerGraduations();
+    drawTicksAndNumbers();
 
     if(recalculate)
     {
@@ -665,7 +677,7 @@ void MainGraph::resaveImageBuffer()
     painter.end();
 }
 
-void MainGraph::determinerCentreEtUnites()
+void MainGraph::updateCenterPosAndScaling()
 {
     uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
     uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
@@ -691,52 +703,7 @@ void MainGraph::determinerCentreEtUnites()
     }
 
     centre.x = - graphRange.Xmin * uniteX;
-    centre.y =  graphRange.Ymax * uniteY;
-
-    bool scaleChanged = false;
-
-    QFontMetrics fontMeter(font);
-    double last = trunc(graphRange.Xmax / graphRange.Xscale) * graphRange.Xscale;
-    double numberSize = fontMeter.width(QString::number(last, 'g', NUM_PREC)) + 5;
-
-    if(uniteX * graphRange.Xscale < numberSize + 10)
-    {
-        while(uniteX * graphRange.Xscale < numberSize + 10)
-            graphRange.Xscale *= 2;
-        if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
-        scaleChanged = true;
-    }
-    else if(uniteX * graphRange.Xscale > 150)
-    {
-        while(uniteX * graphRange.Xscale > 150)
-            graphRange.Xscale /= 2;
-        if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
-        scaleChanged = true;
-    }
-    if(!orthonormal)
-    {
-        if(uniteY * graphRange.Yscale < 25)
-        {
-            while(uniteY * graphRange.Yscale < 25)
-                graphRange.Yscale *= 2;
-            scaleChanged = true;
-        }
-        else if(uniteY * graphRange.Yscale > 150)
-        {
-            while(uniteY * graphRange.Yscale > 150)
-                graphRange.Yscale /= 2;
-            scaleChanged = true;
-        }
-    }
-
-    if(scaleChanged)
-    {
-       cancelUpdateSignal = true;
-       information->setRange(graphRange);
-       recalculate = true;
-    }
+    centre.y =  graphRange.Ymax * uniteY;    
 
 }
 
@@ -835,7 +802,7 @@ void MainGraph::drawAnimatedParEq()
     }
 }
 
-void MainGraph::afficherPoint()
+void MainGraph::drawPoint()
 {
     if(selectedCurve.funcType == FUNC_HOVER)
     {
@@ -1065,7 +1032,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             cancelUpdateSignal = true;
             information->setRange(graphRange);
 
-            determinerCentreEtUnites();
+            updateCenterPosAndScaling();
 
             if(dx != 0)
             {
@@ -1322,9 +1289,8 @@ void MainGraph::mouseTangentHoverTest(double x, double y)
         update();
 }
 
-void MainGraph::placerGraduations()
-{    
-
+void MainGraph::drawTicksAndNumbers()
+{
     pen.setColor(parameters.axesColor);
     pen.setWidth(1);
     painter.setPen(pen);
@@ -1359,6 +1325,7 @@ void MainGraph::placerGraduations()
     double haut = 0;
 
     QString num = QString::number(Xreal, 'g', NUM_PREC);
+    widestXNumber = painter.fontMetrics().width(num);
 
     start = 5;
     end = graphWidth - 5;
@@ -1388,6 +1355,9 @@ void MainGraph::placerGraduations()
             num = QString::number(Xreal, 'g', NUM_PREC);
             pos = Xpos - painter.fontMetrics().width(num)/2;
             painter.drawText(QPointF(pos, posTxt), num);
+
+            if(painter.fontMetrics().width(num) > widestXNumber)
+                widestXNumber = painter.fontMetrics().width(num);
         }
 
         Xpos += step;
@@ -1459,7 +1429,47 @@ void MainGraph::placerGraduations()
 
         Yreal -= graphRange.Yscale;
         Ypos += step;
+    }   
+}
+
+bool MainGraph::updateTickSpacing()
+{
+    bool scaleChanged = false;
+    bool orthonormal = information->isOrthonormal();
+
+    if(uniteX * graphRange.Xscale < widestXNumber + 15)
+    {
+        while(uniteX * graphRange.Xscale < widestXNumber + 15)
+            graphRange.Xscale *= 2;
+        if(orthonormal)
+             graphRange.Yscale = graphRange.Xscale;
+        scaleChanged = true;
     }
+    else if(uniteX * graphRange.Xscale > 2*widestXNumber + 15)
+    {
+        while(uniteX * graphRange.Xscale > 2*widestXNumber + 15)
+            graphRange.Xscale /= 2;
+        if(orthonormal)
+             graphRange.Yscale = graphRange.Xscale;
+        scaleChanged = true;
+    }
+    if(!orthonormal)
+    {
+        if(uniteY * graphRange.Yscale < 25)
+        {
+            while(uniteY * graphRange.Yscale < 25)
+                graphRange.Yscale *= 2;
+            scaleChanged = true;
+        }
+        else if(uniteY * graphRange.Yscale > 150)
+        {
+            while(uniteY * graphRange.Yscale > 150)
+                graphRange.Yscale /= 2;
+            scaleChanged = true;
+        }
+    }
+
+    return scaleChanged;
 }
 
 void MainGraph::drawAxes()
