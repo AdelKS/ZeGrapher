@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>329</width>
+    <width>379</width>
     <height>409</height>
    </rect>
   </property>
@@ -144,7 +144,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>130</width>
+          <width>210</width>
           <height>16777215</height>
          </size>
         </property>
@@ -227,7 +227,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <property name="rowWrapPolicy">
-       <enum>QFormLayout::WrapLongRows</enum>
+       <enum>QFormLayout::DontWrapRows</enum>
       </property>
       <property name="labelAlignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -331,7 +331,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>130</width>
+          <width>180</width>
           <height>16777215</height>
          </size>
         </property>

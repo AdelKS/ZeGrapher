@@ -1437,17 +1437,19 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * graphRange.Xscale < widestXNumber + 15)
+    double currentTickSpacing = uniteX * graphRange.Xscale;
+
+    if(uniteX * graphRange.Xscale < widestXNumber + 32)
     {
-        while(uniteX * graphRange.Xscale < widestXNumber + 15)
+        while(uniteX * graphRange.Xscale < widestXNumber + 32)
             graphRange.Xscale *= 2;
         if(orthonormal)
              graphRange.Yscale = graphRange.Xscale;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.Xscale > 2*widestXNumber + 15)
+    else if(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
     {
-        while(uniteX * graphRange.Xscale > 2*widestXNumber + 15)
+        while(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
             graphRange.Xscale /= 2;
         if(orthonormal)
              graphRange.Yscale = graphRange.Xscale;

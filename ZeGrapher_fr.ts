@@ -628,92 +628,92 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="68"/>
+        <location filename="Windows/zegrapher.cpp" line="65"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="69"/>
+        <location filename="Windows/zegrapher.cpp" line="66"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="70"/>
+        <location filename="Windows/zegrapher.cpp" line="67"/>
         <source>Windows</source>
         <translation>Fenêtres</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="73"/>
+        <location filename="Windows/zegrapher.cpp" line="70"/>
         <source>Show/Hide the grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="76"/>
+        <location filename="Windows/zegrapher.cpp" line="73"/>
         <source>Toggle orthonormal view</source>
         <translation>Vue orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="90"/>
+        <location filename="Windows/zegrapher.cpp" line="87"/>
         <source>Check for updates</source>
         <translation>Mise à jour ?</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="98"/>
+        <location filename="Windows/zegrapher.cpp" line="95"/>
         <source>Image export...</source>
         <translation>Exporter en tant qu&apos;image...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="103"/>
+        <location filename="Windows/zegrapher.cpp" line="100"/>
         <source>Settings</source>
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="110"/>
+        <location filename="Windows/zegrapher.cpp" line="107"/>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="119"/>
+        <location filename="Windows/zegrapher.cpp" line="116"/>
         <source>Range edit</source>
         <translation>Règlages de la fenêtre</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="149"/>
+        <location filename="Windows/zegrapher.cpp" line="146"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
         <translation>Modifier la fenêtre de représentation: Xmin, Xmax...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="150"/>
+        <location filename="Windows/zegrapher.cpp" line="147"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
         <translation>Fenêtre où l&apos;on saisi les objets mathématiques à représenter: fonctions, suites, équations paramétriques, données...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="151"/>
+        <location filename="Windows/zegrapher.cpp" line="148"/>
         <source>Exit ZeGrapher.</source>
         <translation>Quitter ZeGrapher.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="152"/>
+        <location filename="Windows/zegrapher.cpp" line="149"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
         <translation>Fenêtre des options: couleurs des axes, couleurs du fond, qualité des courbes...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="153"/>
+        <location filename="Windows/zegrapher.cpp" line="150"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
         <translation>Fenêtre où l&apos;on peut afficher les tableaux de valeurs des objets mathématiques saisis: fonctions, suites, équations paramétriques.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="156"/>
+        <location filename="Windows/zegrapher.cpp" line="153"/>
         <source>Export the graph as an image.</source>
         <translation>Fenêtre d&apos;export du graphique en tant qu&apos;image.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="157"/>
+        <location filename="Windows/zegrapher.cpp" line="154"/>
         <source>Virtual keyboard.</source>
         <translation>Clavier virtuel.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="158"/>
+        <location filename="Windows/zegrapher.cpp" line="155"/>
         <source>Print, or export in PDF.</source>
         <translation>Fenêtre des options avant impression. Avec la possiblité d&apos;exporter en PDF ou en PostScript.</translation>
     </message>
@@ -722,23 +722,23 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Base orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="81"/>
-        <location filename="Windows/zegrapher.cpp" line="154"/>
+        <location filename="Windows/zegrapher.cpp" line="78"/>
+        <location filename="Windows/zegrapher.cpp" line="151"/>
         <source>Reset to default view</source>
         <translation>Rétablir vue par défaut</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="84"/>
+        <location filename="Windows/zegrapher.cpp" line="81"/>
         <source>About...</source>
         <translation>À Propos...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="87"/>
+        <location filename="Windows/zegrapher.cpp" line="84"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="93"/>
+        <location filename="Windows/zegrapher.cpp" line="90"/>
         <source>Print...</source>
         <translation>Imprimer...</translation>
     </message>
@@ -755,7 +755,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="114"/>
+        <location filename="Windows/zegrapher.cpp" line="111"/>
         <source>Functions</source>
         <translation>Fonctions</translation>
     </message>
@@ -764,17 +764,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Bornes</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="124"/>
+        <location filename="Windows/zegrapher.cpp" line="121"/>
         <source>Values table</source>
         <translation>Tableau de valeurs</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="129"/>
+        <location filename="Windows/zegrapher.cpp" line="126"/>
         <source>numeric keyboard</source>
         <translation>Clavier numérique</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="134"/>
+        <location filename="Windows/zegrapher.cpp" line="131"/>
         <source>Windows and actions</source>
         <translation>Fenêtres et actions</translation>
     </message>
@@ -799,7 +799,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Affiche la fenêtre où l&apos;on peut modifier les options de représentation</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="155"/>
+        <location filename="Windows/zegrapher.cpp" line="152"/>
         <source>Show/Hide grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
@@ -1650,118 +1650,177 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Options</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="26"/>
+        <location filename="Windows/settings.ui" line="32"/>
         <source>Settings</source>
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="74"/>
+        <location filename="Windows/settings.ui" line="51"/>
+        <source>Graph&apos;s settings:</source>
+        <translation>Réglages du graphique:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="69"/>
         <source>If the quality is increased, the execution speed is decreased and conversely.</source>
         <translation>la qualité est améliorée au détriment de la vitesse, et inversement.</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="77"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="Windows/settings.ui" line="72"/>
+        <source>Curves quality:</source>
+        <translation>Précision des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="90"/>
+        <location filename="Windows/settings.ui" line="104"/>
+        <source>Curves thickness:</source>
+        <translation>Épaisseur des courbes:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="127"/>
+        <location filename="Windows/settings.ui" line="294"/>
+        <source>Font family:</source>
+        <translation>Police d&apos;écriture:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="162"/>
+        <location filename="Windows/settings.ui" line="301"/>
+        <source>Font size:</source>
+        <translation>Taille d&apos;écriture:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="191"/>
+        <source>Curves smoothing:</source>
+        <translation>Lissage des courbes:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="226"/>
+        <source>Application&apos;s settings:</source>
+        <translation>Réglages du logiciel:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="241"/>
+        <source>Update-check at start:</source>
+        <translation>Vérifier l&apos;existence
+de mises à jour:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="261"/>
+        <source>Language:</source>
+        <translation>Langue:</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="85"/>
         <source>Distance in pixels</source>
         <translation>Distance en pixels</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="109"/>
         <source>&lt;strong&gt;Curves thickness:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Epaisseur des courbes:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Epaisseur des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="132"/>
+        <location filename="Windows/settings.ui" line="159"/>
         <source>Digits size shown on the graph</source>
         <translation>Taille des nombres affichés sur le graphique</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Font size:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="148"/>
+        <location filename="Windows/settings.ui" line="175"/>
         <source>Size in pixel</source>
         <translation>Taille en pixels</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="164"/>
         <source>&lt;strong&gt;Axes color:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Couleur des axes:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Couleur des axes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="174"/>
         <source>&lt;strong&gt;Background color:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Couleur du fond:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Couleur du fond:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="184"/>
         <source>&lt;strong&gt;Grid color:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Couleur du quadrillage:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="194"/>
         <source>&lt;strong&gt;Curves smoothing:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Lissage des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="220"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves&apos; default color:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;strong&gt;Couleur par défaut des courbes:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Couleur par défaut des courbes:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="230"/>
         <source>&lt;strong&gt;Check for updates at start:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Vérification de mises à jour &lt;br/&gt;au démarrage:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Vérification de mises à jour &lt;br/&gt;au démarrage:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="250"/>
         <source>&lt;strong&gt;Language:&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;Langue:&lt;/strong&gt;</translation>
+        <translation type="vanished">&lt;strong&gt;Langue:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="264"/>
+        <location filename="Windows/settings.ui" line="281"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="269"/>
+        <location filename="Windows/settings.ui" line="286"/>
         <source>Français</source>
         <translation>Français</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="303"/>
+        <location filename="Windows/settings.ui" line="349"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="151"/>
+        <location filename="Windows/settings.cpp" line="37"/>
+        <source>Axes color:</source>
+        <translation>Couleur des axes:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="41"/>
+        <source>Background color:</source>
+        <translation>Couleur du fond:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="46"/>
+        <source>Grid color:</source>
+        <translation>Couleur de la grille:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="50"/>
+        <source>Curve default color:</source>
+        <translation type="unfinished">Couleur par défaut
+des courbes:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="180"/>
         <source>Reset to default values ?</source>
         <translation>Rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="151"/>
+        <location filename="Windows/settings.cpp" line="180"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Êtes-vous sûr de vouloir rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="171"/>
-        <location filename="Windows/settings.cpp" line="173"/>
+        <location filename="Windows/settings.cpp" line="200"/>
+        <location filename="Windows/settings.cpp" line="202"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="171"/>
+        <location filename="Windows/settings.cpp" line="200"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="173"/>
+        <location filename="Windows/settings.cpp" line="202"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>
