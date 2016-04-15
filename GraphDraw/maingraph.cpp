@@ -23,9 +23,6 @@
 
 #include "GraphDraw/maingraph.h"
 
-#include <iostream>
-
-using namespace std;
 
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {   
@@ -456,7 +453,6 @@ void MainGraph::newWindowSize()
 
 void MainGraph::paintEvent(QPaintEvent *event)
 {
-    cout << "update! " << rand() << endl;
     graphWidth = width();
     graphHeight = height();
 
