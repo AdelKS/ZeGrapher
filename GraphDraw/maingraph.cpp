@@ -1433,8 +1433,6 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    double currentTickSpacing = uniteX * graphRange.Xscale;
-
     if(uniteX * graphRange.Xscale < widestXNumber + 32)
     {
         while(uniteX * graphRange.Xscale < widestXNumber + 32)
