@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "Windows/zegrapher.h"
+#include "Windows/mainwindow.h"
 
 int main(int argc, char *argv[])
 {    

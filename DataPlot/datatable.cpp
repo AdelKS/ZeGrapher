@@ -233,7 +233,6 @@ void DataTable::addData(QList<QStringList> data)
 
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
-
     for(int row = 1 ; row < data.size(); row++)
     {
         if(tableWidget->rowCount() == row)

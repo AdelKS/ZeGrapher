@@ -21,7 +21,6 @@ INCLUDEPATH += .
 SOURCES += \
     main.cpp \
     information.cpp \
-    Windows/zegrapher.cpp \
     Windows/about.cpp \
     Widgets/tangentwidget.cpp \
     Widgets/straightlinewidget.cpp \
@@ -72,12 +71,12 @@ SOURCES += \
     Windows/mathobjectsinput.cpp \
     Windows/settings.cpp \
     Windows/values.cpp \
-    Windows/updatecheck.cpp
+    Windows/updatecheck.cpp \
+    Windows/mainwindow.cpp
 
 HEADERS  += \
     Structures.h \
     information.h \
-    Windows/zegrapher.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
     Widgets/straightlinewidget.h \
@@ -130,7 +129,8 @@ HEADERS  += \
     Windows/mathobjectsinput.h \
     Windows/settings.h \
     Windows/values.h \
-    Windows/updatecheck.h
+    Windows/updatecheck.h \
+    Windows/mainwindow.h
 
 
 FORMS    += \
