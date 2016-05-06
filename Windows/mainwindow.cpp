@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "Windows/zegrapher.h"
+#include "Windows/mainwindow.h"
 
 MainWindow::MainWindow()
 {      

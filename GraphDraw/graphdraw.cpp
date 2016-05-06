@@ -274,7 +274,7 @@ void GraphDraw::drawOneSequence(int i, int width)
          {
              result = seqs[i]->getSeqValue(pos, ok, k);
 
-             if(!ok)
+             if(!ok  || !std::isnormal(result))
                  return;
 
              point.setX(pos * uniteX);
