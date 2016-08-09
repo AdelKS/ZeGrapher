@@ -90,8 +90,6 @@ void TangentWidget::addWidgets()
     functionsComboBox->setFixedSize(40,25);
     connect(functionsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(newFuncChoosen(int)));
 
-    for(int i = 0 ; i < funcNames.size(); i++){functionsComboBox->addItem(funcNames[i]);}
-
     QLabel *label2 = new QLabel(tr("at:  x ="));
 
     tangentPos = new QLineEdit;
