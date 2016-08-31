@@ -52,6 +52,12 @@ RangeAdjustments::RangeAdjustments(Information *info)
     Ystep = new NumberLineEdit(false, info->getFuncsList());
     Ystep->setMaximumHeight(27);
 
+    xLogBase = new NumberLineEdit(false, info->getFuncsList());
+    xLogBase->setMaximumHeight(27);
+
+    yLogBase = new NumberLineEdit(false, info->getFuncsList());
+    yLogBase->setMaximumHeight(27);
+
     ui->gridLayout->addWidget(Xmin,0,1);
     ui->gridLayout->addWidget(Xmax,1,1);
     ui->gridLayout->addWidget(Xstep,2,1);
@@ -60,9 +66,19 @@ RangeAdjustments::RangeAdjustments(Information *info)
     ui->gridLayout->addWidget(Ymax,1,3);
     ui->gridLayout->addWidget(Ystep,2,3);
 
+    ui->xAxisLayout->addWidget(xLogBase);
+    ui->xAxisLayout->addStretch();
+
+    ui->yAxisLayout->addWidget(yLogBase);
+    ui->yAxisLayout->addStretch();
+
     messageBox = new QMessageBox(this);
     messageBox->setWindowTitle(tr("Error"));
     messageBox->setIcon(QMessageBox::Warning);
+
+    QButtonGroup *buttonGroup = new QButtonGroup(this);
+    buttonGroup->addButton(ui->orthonormal);
+    buttonGroup->addButton(ui->logScale);
 
     connect(Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
     connect(Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
@@ -104,6 +120,9 @@ void RangeAdjustments::standardView()
     Ymax->setNumber(10);
     Ymin->setNumber(-10);
     Ystep->setNumber(1);
+
+    xLogBase->setNumber(10);
+    yLogBase->setNumber(10);
 }
 
 void RangeAdjustments::apply()
@@ -119,11 +138,11 @@ void RangeAdjustments::apply()
 
     range.Xmax = Xmax->getValue();
     range.Xmin = Xmin->getValue();
-    range.Xscale = Xstep->getValue();
+    range.XGridStep = Xstep->getValue();
 
     range.Ymax = Ymax->getValue();
     range.Ymin = Ymin->getValue();
-    range.Yscale = Ystep->getValue();
+    range.YGridStep = Ystep->getValue();
 
 
     if(range.Xmin >= range.Xmax)
@@ -144,10 +163,30 @@ void RangeAdjustments::apply()
         messageBox->setText(tr("The view range is too tight for ZeGrapher to distinguish between the upper and lower values."));
         messageBox->exec();
         return;
+    }    
+
+    information->setRange(range);
+
+
+    SettingsVals graphSettings = information->getSettingsVals();
+    graphSettings.viewType = ScaleType::LINEAR;
+
+    if(ui->specialView->isChecked())
+    {
+        if(ui->orthonormal->isChecked())
+            graphSettings.viewType = ScaleType::LINEAR_ORTHONORMAL;
+        else if(ui->logScale->isChecked())
+        {
+            if(ui->xLogScale->isChecked() && ui->yLogScale->isChecked())
+                graphSettings.viewType = ScaleType::XY_LOG;
+            else if(ui->yLogScale->isChecked())
+                graphSettings.viewType = ScaleType::Y_LOG;
+            else graphSettings.viewType = ScaleType::X_LOG;
+
+        }
     }
 
-    information->setOrthonormal(ui->orthonormal->isChecked());
-    information->setRange(range);
+    information->setSettingsVals(graphSettings);
 }
 
 void RangeAdjustments::updateWidgets()
@@ -156,11 +195,11 @@ void RangeAdjustments::updateWidgets()
 
      Xmax->setNumber(window.Xmax);
      Xmin->setNumber(window.Xmin);
-     Xstep->setNumber(window.Xscale);
+     Xstep->setNumber(window.XGridStep);
 
      Ymax->setNumber(window.Ymax);
      Ymin->setNumber(window.Ymin);
-     Ystep->setNumber(window.Yscale);
+     Ystep->setNumber(window.YGridStep);
 
      ui->orthonormal->setChecked(information->isOrthonormal());
      orthonormal(information->isOrthonormal());

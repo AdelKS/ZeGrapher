@@ -89,20 +89,19 @@ public slots:
 
 signals:
 
-    void newOrthonormalityState(bool orth);
     void dataUpdated();
+    void gridStateChange();
     void updateOccured();
     void drawStateUpdateOccured();
-    void gridStateChange();
     void animationUpdate();
     void regressionAdded(Regression *reg);
     void regressionRemoved(Regression *reg);
-    void newSettingsVals();
+    void newViewSettings();
 
 public slots:
 
     void setRange(const GraphRange &newWindow);
-    void setGridState(bool etat);
+    void changeGridState();
     void setOrthonormal(bool state);
     void setSettingsVals(SettingsVals opt);
 
@@ -120,7 +119,7 @@ protected:
     QList<SeqCalculator*> sequences;
 
     GraphRange range;
-    SettingsVals parameters;
+    SettingsVals graphSettings;
     bool orthonormal, gridState, updatingLock;   
     Point units;
     QList<ParEqWidget*> *parEqWidgets;

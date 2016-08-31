@@ -30,7 +30,7 @@ ImageSave::ImageSave(Information *info) : ui(new Ui::ImageSave)
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;
-    window.Xscale = window.Yscale = 1;
+    window.XGridStep = window.YGridStep = 1;
 
     scene = new ImagePreview(info);
     scene->setMinimumSize(150,150);

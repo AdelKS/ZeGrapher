@@ -31,6 +31,24 @@
 #define TANGENT_RESIZE_HOVER 2
 #define TANGENT_MOVE_HOVER 3
 
+struct CurveSelection
+{
+    bool tangentSelection;
+    bool isSomethingSelected;
+    bool isParametric;
+    int funcType, tangentPtSelection, id, kPos;
+};
+
+struct MouseState
+{
+    bool tangentHovering;
+    bool hovering;
+    bool isParametric;
+    short tangentPtSelection;
+    short funcType;
+    short kPos;
+    short id;
+};
 
 class MainGraph : public GraphDraw
 {

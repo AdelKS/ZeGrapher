@@ -46,7 +46,7 @@ MainWindow::MainWindow()
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;
-    window.Xscale = window.Yscale = 1;
+    window.XGridStep = window.YGridStep = 1;
 
     setCentralWidget(scene);    
 
@@ -70,10 +70,10 @@ void MainWindow::createMenus()
     gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
     gridButton->setCheckable(true);
 
-    QAction *setOrthonormalBasisAction = menuTools->addAction(tr("Toggle orthonormal view"));
-    setOrthonormalBasisAction->setCheckable(true);
-    connect(setOrthonormalBasisAction, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
-    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalBasisAction, SLOT(setChecked(bool)));
+    QAction *setOrthonormalAction = menuTools->addAction(tr("Toggle orthonormal view"));
+    setOrthonormalAction->setCheckable(true);
+    connect(setOrthonormalAction, SIGNAL(triggered(bool)), rangeWin, SLOT(setOrthonormal(bool)));
+    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool)));
 
     QAction *resetViewAction = menuTools->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
     connect(resetViewAction, SIGNAL(triggered()), rangeWin, SLOT(resetToStandardView()));

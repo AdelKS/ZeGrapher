@@ -155,8 +155,8 @@ void FuncTable::fillFromRange()
     {
         GraphRange range = information->getRange();
 
-        parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
-        parameters.range.step = range.Xscale;
+        parameters.range.start = trunc(range.Xmin / range.XGridStep) * range.XGridStep;
+        parameters.range.step = range.XGridStep;
         parameters.range.end = range.Xmax;
     }
 

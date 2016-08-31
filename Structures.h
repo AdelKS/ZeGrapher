@@ -64,7 +64,7 @@
 
 struct GraphRange
 {
-    double Xmin, Xmax, Ymin, Ymax, Xscale, Yscale;
+    double Xmin, Xmax, Ymin, Ymax, XGridStep, YGridStep;
 
     QRectF getRect() const
     {
@@ -76,6 +76,7 @@ struct GraphRange
         return graphWin;
     }
 };
+
 struct Point
 {
     double x, y;
@@ -86,17 +87,22 @@ struct Point
     }
 };
 
-struct Rectangle
-{
-    Point pt1, pt2;
-};
-
 struct FastTree
 {
     short type;
     double *value;
     FastTree *left;
     FastTree *right;
+};
+
+enum struct ScaleType : short
+{
+    LINEAR, LINEAR_ORTHONORMAL, X_LOG, Y_LOG, XY_LOG,
+};
+
+enum struct GridState : short
+{
+    NO_GRID, GRID, GRID_SUBGRID
 };
 
 struct SettingsVals
@@ -110,33 +116,16 @@ struct SettingsVals
     bool smoothing;
     bool updateCheckAtStart;
     QFont graphFont;
+    ScaleType viewType;
+    GridState gridState;
 
-};
+    unsigned int xLogBase, yLogBase;
+    // the base used for logarithmic scale,
+    // if it's 10, then it's the usual one
 
-struct CurveSelection
-{
-    bool tangentSelection;
-    bool isSomethingSelected;
-    bool isParametric;
-    int funcType, tangentPtSelection, id, kPos;
+    unsigned int subGridDivs;
+    // the number of lines of the sub grid between two lines of the main one.
 
-};
-
-struct FuncMap
-{
-    bool funcType;
-    short id;
-};
-
-struct MouseState
-{
-    bool tangentHovering;
-    bool hovering;
-    bool isParametric;
-    short tangentPtSelection;
-    short funcType;
-    short kPos;
-    short id;
 };
 
 struct Range
@@ -154,11 +143,6 @@ struct ParametricInfo
     bool isParametric;
     Range range;
     int originalDrawsNum, currentDrawsNum;
-};
-
-struct Color
-{
-    short r, g, b;
 };
 
 struct ValuesTableParameters

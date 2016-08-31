@@ -1311,11 +1311,11 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
 
-    double Xreal = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale;
+    double Xreal = trunc(graphRange.Xmin / graphRange.XGridStep) * graphRange.XGridStep;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double step = graphRange.Xscale * uniteX;
+    double step = graphRange.XGridStep * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1357,7 +1357,7 @@ void MainGraph::drawTicksAndNumbers()
         }
 
         Xpos += step;
-        Xreal += graphRange.Xscale;
+        Xreal += graphRange.XGridStep;
     }
 
 //trace sur l'axe des Y
@@ -1381,9 +1381,9 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / graphRange.Yscale) * graphRange.Yscale;
+    double Yreal = trunc(graphRange.Ymax / graphRange.YGridStep) * graphRange.YGridStep;
     Ypos = -Yreal * uniteY + centre.y;
-    step = graphRange.Yscale * uniteY;
+    step = graphRange.YGridStep * uniteY;
 
     bas =  0;
     haut =  graphWidth;
@@ -1423,7 +1423,7 @@ void MainGraph::drawTicksAndNumbers()
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
-        Yreal -= graphRange.Yscale;
+        Yreal -= graphRange.YGridStep;
         Ypos += step;
     }   
 }
@@ -1433,34 +1433,34 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * graphRange.Xscale < widestXNumber + 32)
+    if(uniteX * graphRange.XGridStep < widestXNumber + 32)
     {
-        while(uniteX * graphRange.Xscale < widestXNumber + 32)
-            graphRange.Xscale *= 2;
+        while(uniteX * graphRange.XGridStep < widestXNumber + 32)
+            graphRange.XGridStep *= 2;
         if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
+             graphRange.YGridStep = graphRange.XGridStep;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
+    else if(uniteX * graphRange.XGridStep > 2*widestXNumber + 96)
     {
-        while(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
-            graphRange.Xscale /= 2;
+        while(uniteX * graphRange.XGridStep > 2*widestXNumber + 96)
+            graphRange.XGridStep /= 2;
         if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
+             graphRange.YGridStep = graphRange.XGridStep;
         scaleChanged = true;
     }
     if(!orthonormal)
     {
-        if(uniteY * graphRange.Yscale < 25)
+        if(uniteY * graphRange.YGridStep < 25)
         {
-            while(uniteY * graphRange.Yscale < 25)
-                graphRange.Yscale *= 2;
+            while(uniteY * graphRange.YGridStep < 25)
+                graphRange.YGridStep *= 2;
             scaleChanged = true;
         }
-        else if(uniteY * graphRange.Yscale > 150)
+        else if(uniteY * graphRange.YGridStep > 150)
         {
-            while(uniteY * graphRange.Yscale > 150)
-                graphRange.Yscale /= 2;
+            while(uniteY * graphRange.YGridStep > 150)
+                graphRange.YGridStep /= 2;
             scaleChanged = true;
         }
     }

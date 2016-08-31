@@ -45,6 +45,9 @@ public:
 public slots:
     void resetToStandardView();
     void updateWidgets();
+    void setOrthonormal(bool state);
+    void setXLogScale(bool state);
+    void setYLogScale(bool state);
 
 
 private slots:
@@ -58,7 +61,7 @@ signals:
 
 private:
 
-    NumberLineEdit *Xmin, *Xmax, *Xstep, *Ymin, *Ymax, *Ystep;
+    NumberLineEdit *Xmin, *Xmax, *Xstep, *Ymin, *Ymax, *Ystep, *xLogBase, *yLogBase;
     Information *information;
     Ui::RangeAdjustments *ui;
     QMessageBox *messageBox;    

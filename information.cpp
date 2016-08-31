@@ -27,7 +27,7 @@ Information::Information()
 {
     range.Xmax = range.Ymax = 10;
     range.Xmin = range.Ymin = -10;
-    range.Xscale = range.Yscale = 1;   
+    range.XGridStep = range.YGridStep = 1;
 
     gridState = orthonormal = updatingLock = false;
 
@@ -178,9 +178,14 @@ void Information::setRange(const GraphRange &newWindow)
     emit updateOccured();
 }
 
-void Information::setGridState(bool etat)
+void Information::changeGridState()
 {
-    gridState = etat;
+    if(graphSettings.gridState == GridState::NO_GRID)
+        graphSettings.gridState = GridState::GRID;
+    else if(graphSettings.gridState == GridState::GRID)
+        graphSettings.gridState = GridState::GRID_SUBGRID;
+    else graphSettings.gridState = GridState::NO_GRID;
+
     emit gridStateChange();
 }
 
@@ -193,9 +198,9 @@ void Information::setOrthonormal(bool state)
 
 void Information::setSettingsVals(SettingsVals opt)
 {
-    parameters = opt;
+    graphSettings = opt;
 
-    emit newSettingsVals();
+    emit newViewSettings();
 }
 
 void Information::emitUpdateSignal()
@@ -226,5 +231,5 @@ bool Information::isOrthonormal()
 
 SettingsVals Information::getSettingsVals()
 {
-    return parameters;    
+    return graphSettings;
 }
