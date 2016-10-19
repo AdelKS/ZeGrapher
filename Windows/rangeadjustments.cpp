@@ -88,6 +88,11 @@ RangeAdjustments::RangeAdjustments(Information *info)
     connect(Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
     connect(Ystep, SIGNAL(returnPressed()), this, SLOT(apply()));
 
+    connect(ui->grid, SIGNAL(toggled(bool)), this, SLOT(manageWidgetStates()));
+    connect(ui->specialView, SIGNAL(toggled(bool)), this, SLOT(manageWidgetStates()));
+    connect(ui->logScale, SIGNAL(toggled(bool)), this, SLOT(manageWidgetStates()));
+    connect(ui->subgrid, SIGNAL(toggled(bool)), this, SLOT(manageWidgetStates()));
+
     connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
     connect(ui->orthonormal, SIGNAL(clicked(bool)), information, SLOT(setOrthonormal(bool)));
 
@@ -98,11 +103,30 @@ RangeAdjustments::RangeAdjustments(Information *info)
     updateWidgets();
 }
 
-void RangeAdjustments::orthonormal(bool state)
+void RangeAdjustments::setOrthonormal(bool state)
 {   
     Ymax->setEnabled(!state);
     Ymin->setEnabled(!state);
     Ystep->setEnabled(!state);
+}
+
+void RangeAdjustments::setXLogScale(bool state)
+{
+
+}
+
+void RangeAdjustments::setYLogScale(bool state)
+{
+
+}
+
+void RangeAdjustments::manageWidgetStates()
+{
+    ui->subgrid->setEnabled(ui->grid->isChecked());
+    ui->divsWidget->setEnabled(ui->subgrid->isChecked() && ui->subgrid->isEnabled());
+    ui->logBaseWidget->setEnabled(ui->logScale->isChecked());
+    ui->orthonormal->setEnabled(ui->specialView->isChecked());
+    ui->logScale->setEnabled(ui->specialView->isChecked());
 }
 
 void RangeAdjustments::resetToStandardView()
@@ -168,7 +192,7 @@ void RangeAdjustments::apply()
     information->setRange(range);
 
 
-    SettingsVals graphSettings = information->getSettingsVals();
+    GraphSettings graphSettings = information->getSettingsVals();
     graphSettings.viewType = ScaleType::LINEAR;
 
     if(ui->specialView->isChecked())
@@ -191,18 +215,22 @@ void RangeAdjustments::apply()
 
 void RangeAdjustments::updateWidgets()
  {
-     GraphRange window = information->getRange();
+    manageWidgetStates();
 
-     Xmax->setNumber(window.Xmax);
-     Xmin->setNumber(window.Xmin);
-     Xstep->setNumber(window.XGridStep);
+    GraphRange window = information->getGraphRange();
 
-     Ymax->setNumber(window.Ymax);
-     Ymin->setNumber(window.Ymin);
-     Ystep->setNumber(window.YGridStep);
+    Xmax->setNumber(window.Xmax);
+    Xmin->setNumber(window.Xmin);
+    Xstep->setNumber(window.XGridStep);
 
-     ui->orthonormal->setChecked(information->isOrthonormal());
-     orthonormal(information->isOrthonormal());
+    Ymax->setNumber(window.Ymax);
+    Ymin->setNumber(window.Ymin);
+    Ystep->setNumber(window.YGridStep);
+
+    ui->orthonormal->setChecked(information->isOrthonormal());
+    setOrthonormal(information->isOrthonormal());
+
+
  }
 
 

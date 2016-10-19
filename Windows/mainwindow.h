@@ -58,6 +58,7 @@ protected:
 
 protected slots:
     void showAboutQtWin();
+    void updateGridButtonIcon();
     
 private:
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>249</width>
-    <height>362</height>
+    <height>404</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -137,7 +137,101 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="grid">
+     <property name="text">
+      <string>Grid</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="subgridWidget" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="subgrid">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Subgrid</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="divsWidget" native="true">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Divsions:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="divisionsSpinBox">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="specialView">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="title">
       <string>Special &amp;view:</string>
      </property>
@@ -150,6 +244,9 @@ p, li { white-space: pre-wrap; }
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QRadioButton" name="orthonormal">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Orthonor&amp;mal</string>
         </property>
@@ -157,13 +254,16 @@ p, li { white-space: pre-wrap; }
       </item>
       <item>
        <widget class="QRadioButton" name="logScale">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>&amp;Logarithmic</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="verticalWidget" native="true">
+       <widget class="QWidget" name="logBaseWidget" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
@@ -258,33 +358,6 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="logScaleWidget" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QWidget" name="buttons" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -359,16 +432,6 @@ p, li { white-space: pre-wrap; }
        </spacer>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget_3" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>1</verstretch>
-      </sizepolicy>
-     </property>
     </widget>
    </item>
   </layout>

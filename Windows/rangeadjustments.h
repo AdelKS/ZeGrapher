@@ -52,8 +52,8 @@ public slots:
 
 private slots:
     void standardView();
-    void orthonormal(bool state);
     void apply();
+    void manageWidgetStates();
 
 signals:
     void newWindow(GraphRange window);//FIXME never emitted

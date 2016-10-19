@@ -457,7 +457,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphHeight = height();
 
     parameters = information->getSettingsVals();
-    graphRange = information->getRange();
+    graphRange = information->getGraphRange();
 
     if(windowSize != size())
     {
@@ -1335,7 +1335,7 @@ void MainGraph::drawTicksAndNumbers()
     {       
         if(start <= Xpos && fabs(Xpos - centre.x) > 1)
         {
-            if(start <= Xpos && information->getGridState() && Xpos <= end)
+            if(start <= Xpos && information->getGridType() == GridType::GRID && Xpos <= end)
             {
                 pen.setColor(parameters.gridColor);
                 pen.setWidthF(0.5);
@@ -1404,7 +1404,7 @@ void MainGraph::drawTicksAndNumbers()
     {        
         if(start <= Ypos && fabs(Ypos - centre.y) > 1)
         {
-            if(information->getGridState())
+            if(information->getGridType() == GridType::GRID)
             {
                 pen.setColor(parameters.gridColor);
                 pen.setWidthF(0.5);

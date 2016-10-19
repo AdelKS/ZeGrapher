@@ -25,11 +25,11 @@
 
 Information::Information()
 {
-    range.Xmax = range.Ymax = 10;
-    range.Xmin = range.Ymin = -10;
-    range.XGridStep = range.YGridStep = 1;
+    graphRange.Xmax = graphRange.Ymax = 10;
+    graphRange.Xmin = graphRange.Ymin = -10;
+    graphRange.XGridStep = graphRange.YGridStep = 1;
 
-    gridState = orthonormal = updatingLock = false;
+    updatingLock = false;
 
 }
 
@@ -174,33 +174,42 @@ QList<FuncCalculator*> Information::getFuncsList()
 
 void Information::setRange(const GraphRange &newWindow)
 {
-    range = newWindow;
+    graphRange = newWindow;
     emit updateOccured();
 }
 
 void Information::changeGridState()
 {
-    if(graphSettings.gridState == GridState::NO_GRID)
-        graphSettings.gridState = GridState::GRID;
-    else if(graphSettings.gridState == GridState::GRID)
-        graphSettings.gridState = GridState::GRID_SUBGRID;
-    else graphSettings.gridState = GridState::NO_GRID;
+    if(graphSettings.gridType == GridType::NO_GRID)
+        graphSettings.gridType = GridType::GRID;
+    else if(graphSettings.gridType == GridType::GRID)
+        graphSettings.gridType = GridType::GRID_SUBGRID;
+    else graphSettings.gridType = GridType::NO_GRID;
 
     emit gridStateChange();
 }
 
 void Information::setOrthonormal(bool state)
 {
-    orthonormal = state;
-    emit newOrthonormalityState(state);
+    // TODO
     emit updateOccured();
 }
 
-void Information::setSettingsVals(SettingsVals opt)
+bool Information::isOrthonormal()
+{
+    return graphSettings.viewType == ScaleType::LINEAR_ORTHONORMAL;
+}
+
+GridType Information::getGridType()
+{
+    return graphSettings.gridType;
+}
+
+void Information::setSettingsVals(GraphSettings opt)
 {
     graphSettings = opt;
 
-    emit newViewSettings();
+    emit newGraphSettings();
 }
 
 void Information::emitUpdateSignal()
@@ -213,23 +222,12 @@ void Information::emitDrawStateUpdate()
     emit drawStateUpdateOccured();
 }
 
-GraphRange Information::getRange()
+GraphRange Information::getGraphRange()
 {
-    return range;
+    return graphRange;
 }
 
-bool Information::getGridState()
-{
-    return gridState;
-
-}
-
-bool Information::isOrthonormal()
-{
-    return orthonormal;   
-}
-
-SettingsVals Information::getSettingsVals()
+GraphSettings Information::getSettingsVals()
 {
     return graphSettings;
 }

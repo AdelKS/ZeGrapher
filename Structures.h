@@ -66,7 +66,7 @@ struct GraphRange
 {
     double Xmin, Xmax, Ymin, Ymax, XGridStep, YGridStep;
 
-    QRectF getRect() const
+    QRectF rect() const
     {
         QRectF graphWin;
         graphWin.setBottom(Ymin);
@@ -100,12 +100,12 @@ enum struct ScaleType : short
     LINEAR, LINEAR_ORTHONORMAL, X_LOG, Y_LOG, XY_LOG,
 };
 
-enum struct GridState : short
+enum struct GridType : short
 {
     NO_GRID, GRID, GRID_SUBGRID
 };
 
-struct SettingsVals
+struct GraphSettings
 {
     QColor axesColor;
     QColor backgroundColor;
@@ -117,9 +117,9 @@ struct SettingsVals
     bool updateCheckAtStart;
     QFont graphFont;
     ScaleType viewType;
-    GridState gridState;
+    GridType gridType;
 
-    unsigned int xLogBase, yLogBase;
+    double xLogBase, yLogBase;
     // the base used for logarithmic scale,
     // if it's 10, then it's the usual one
 

@@ -41,10 +41,8 @@ class Information: public QObject
 public:
     Information();
 
-    GraphRange getRange();
-    bool getGridState();
-    bool isOrthonormal();
-    SettingsVals getSettingsVals();
+    GraphRange getGraphRange();
+    GraphSettings getSettingsVals();
 
     void addDataList();
     void removeDataList(int index);
@@ -81,6 +79,9 @@ public:
     void setUnits(Point vec);
     Point getUnits();
 
+    bool isOrthonormal();
+    GridType getGridType();
+
 public slots:
     void emitUpdateSignal();
     void emitDataUpdate();
@@ -96,14 +97,14 @@ signals:
     void animationUpdate();
     void regressionAdded(Regression *reg);
     void regressionRemoved(Regression *reg);
-    void newViewSettings();
+    void newGraphSettings();
 
 public slots:
 
     void setRange(const GraphRange &newWindow);
     void changeGridState();
     void setOrthonormal(bool state);
-    void setSettingsVals(SettingsVals opt);
+    void setSettingsVals(GraphSettings opt);
 
 protected:
 
@@ -118,9 +119,9 @@ protected:
     QList<FuncCalculator*> functions;
     QList<SeqCalculator*> sequences;
 
-    GraphRange range;
-    SettingsVals graphSettings;
-    bool orthonormal, gridState, updatingLock;   
+    GraphRange graphRange;
+    GraphSettings graphSettings;
+    bool updatingLock;
     Point units;
     QList<ParEqWidget*> *parEqWidgets;
 };

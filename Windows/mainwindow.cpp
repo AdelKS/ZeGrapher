@@ -68,7 +68,6 @@ void MainWindow::createMenus()
     QMenu *menuHelp = menuBar()->addMenu("?");   
 
     gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
-    gridButton->setCheckable(true);
 
     QAction *setOrthonormalAction = menuTools->addAction(tr("Toggle orthonormal view"));
     setOrthonormalAction->setCheckable(true);
@@ -149,7 +148,7 @@ void MainWindow::createMenus()
     showSettingsWinAction->setStatusTip(tr("Edit axes' color, background color, curve's quality..."));
     showValuesWinAction->setStatusTip(tr("Display the values taken by functions, sequences and parametric equations on tables."));
     resetViewAction->setStatusTip(tr("Reset to default view"));
-    gridButton->setStatusTip(tr("Show/Hide grid"));
+    gridButton->setStatusTip(tr("Show/Hide grid with/without subgrid"));
     showImageExportWinAction->setStatusTip(tr("Export the graph as an image."));
     showKeyboardAction->setStatusTip(tr("Virtual keyboard."));
     showPrintWinAction->setStatusTip(tr("Print, or export in PDF."));
@@ -192,9 +191,22 @@ void MainWindow::saveWindowsGeometry()
 
 void MainWindow::makeConnects()
 {   
-    connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
+    connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(changeGridState()));
+    connect(information, SIGNAL(gridStateChange()), this, SLOT(updateGridButtonIcon()));
     connect(scene, SIGNAL(sizeChanged(int,int)), imageExportWin, SLOT(setSize(int,int)));
     connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
+}
+
+void MainWindow::updateGridButtonIcon()
+{
+    GraphSettings graphSettings = information->getSettingsVals();
+
+    if(graphSettings.gridType == GridType::NO_GRID)
+        gridButton->setIcon(QIcon(":/icons/no_grid.png"));
+    else if(graphSettings.gridType == GridType::GRID)
+        gridButton->setIcon(QIcon(":/icons/grid.png"));
+    else gridButton->setIcon(QIcon(":/icons/grid_subgrid.png"));
+
 }
 
 void MainWindow::showAboutQtWin()

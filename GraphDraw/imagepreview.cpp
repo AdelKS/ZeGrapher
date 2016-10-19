@@ -48,7 +48,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
 
     parameters = information->getSettingsVals();
-    graphRange = information->getRange();
+    graphRange = information->getGraphRange();
 
     painter.begin(this);    
 
@@ -245,7 +245,7 @@ void ImagePreview::placerGraduations()
     {
         if(fabs(Xpos) > 1)
         {
-            if(information->getGridState())
+            if(information->getGridType() == GridType::GRID)
             {
                 pen.setColor(parameters.gridColor);
                 pen.setWidthF(0.5);
@@ -287,7 +287,7 @@ void ImagePreview::placerGraduations()
     {
         if(fabs(Ypos) > 1)
         {
-            if(information->getGridState())
+            if(information->getGridType() == GridType::GRID)
             {
                 pen.setColor(parameters.gridColor);
                 pen.setWidthF(0.5);
@@ -369,7 +369,7 @@ void ImagePreview::determinerCentreEtUnites()
 QImage* ImagePreview::drawImage()
 {
     parameters = information->getSettingsVals();
-    graphRange = information->getRange();
+    graphRange = information->getGraphRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
     image->fill(parameters.backgroundColor.rgb());

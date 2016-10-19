@@ -111,7 +111,7 @@ double RegressionValuesSaver::arg(QPointF pt)
 
 Range RegressionValuesSaver::getGraphAngleRange()
 {
-    QRectF graphWin = graphRange.getRect();
+    QRectF graphWin = graphRange.rect();
     Range angleRange;
 
     if(graphWin.contains(0,0))
@@ -266,7 +266,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
     QPolygonF curve;
     QPointF pt;
-    QRectF graphRect = graphRange.getRect();
+    QRectF graphRect = graphRange.rect();
 
     while(angle < regRange.end)
     {

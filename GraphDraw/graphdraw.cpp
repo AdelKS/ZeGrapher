@@ -30,7 +30,7 @@ GraphDraw::GraphDraw(Information *info)
     coef = sqrt(3)/2;
 
     parameters = info->getSettingsVals();
-    graphRange = info->getRange();
+    graphRange = info->getGraphRange();
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
