@@ -41,8 +41,8 @@ class Information: public QObject
 public:
     Information();
 
-    GraphRange getGraphRange();
-    GraphSettings getSettingsVals();
+    GraphView getGraphRange();
+    GraphSettings getGraphSettings();
 
     void addDataList();
     void removeDataList(int index);
@@ -80,7 +80,7 @@ public:
     Point getUnits();
 
     bool isOrthonormal();
-    GridType getGridType();
+    GridSettings getGridSettings();
 
 public slots:
     void emitUpdateSignal();
@@ -101,10 +101,10 @@ signals:
 
 public slots:
 
-    void setRange(const GraphRange &newWindow);
+    void setRange(const GraphView &newWindow);
     void changeGridState();
     void setOrthonormal(bool state);
-    void setSettingsVals(GraphSettings opt);
+    void setGraphSettings(GraphSettings opt);
 
 protected:
 
@@ -119,7 +119,7 @@ protected:
     QList<FuncCalculator*> functions;
     QList<SeqCalculator*> sequences;
 
-    GraphRange graphRange;
+    GraphView graphView;
     GraphSettings graphSettings;
     bool updatingLock;
     Point units;

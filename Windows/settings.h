@@ -53,7 +53,7 @@ private:
 
     Information *information;
     Ui::Settings *ui;
-    GraphSettings parameters;
+    GraphSettings graphSettings;
     QColorButton *axesColorButton, *backgroundColorButton, *gridColorButton, *defaultColorButton;
 
 };

@@ -28,9 +28,7 @@ ImageSave::ImageSave(Information *info) : ui(new Ui::ImageSave)
 {
     ui->setupUi(this);
 
-    window.Xmax = window.Ymax = 10;
-    window.Xmin = window.Ymin = -10;
-    window.XGridStep = window.YGridStep = 1;
+    window = info->getGraphRange();
 
     scene = new ImagePreview(info);
     scene->setMinimumSize(150,150);
@@ -96,7 +94,7 @@ void ImageSave::setH(int H)
     scene->setFixedHeight(H);
 }
 
-void ImageSave::setWindow(GraphRange win)
+void ImageSave::setWindow(GraphView win)
 {
     window = win;    
 }

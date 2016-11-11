@@ -33,8 +33,8 @@ public:
     FuncValuesSaver(QList<FuncCalculator *> funcsList, double pxStep);
 
     void setPixelStep(double pxStep);
-    void calculateAll(double new_xUnit, double new_yUnit, GraphRange range);
-    void move(GraphRange range);
+    void calculateAll(double new_xUnit, double new_yUnit, GraphView view);
+    void move(GraphView view);
     int getFuncDrawsNum(int func);
 
     QList<QPolygonF> getCurve(int func, int curve);
@@ -46,9 +46,12 @@ protected slots:
 
 protected:
     void calculateAllFuncColors();
+    double getStartAbscissa();
+    double getEndAbscissa();
+    double evalFunc(int funId, double x, double k);
 
     Information *information;
-    GraphRange graphRange;
+    GraphView graphView;
     QList<FuncCalculator*> funcs;
 
     double xUnit, yUnit, pixelStep, unitStep;

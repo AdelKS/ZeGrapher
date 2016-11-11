@@ -60,7 +60,7 @@ void RegressionValuesSaver::recalculate()
     recalculate(Point{xUnit, yUnit}, graphRange);
 }
 
-void RegressionValuesSaver::recalculate(Point graphUnits, GraphRange range)
+void RegressionValuesSaver::recalculate(Point graphUnits, GraphView range)
 {   
     graphRange = range;
     xUnit = graphUnits.x;
@@ -86,7 +86,7 @@ QList<QPolygonF> &RegressionValuesSaver::getCurves()
     return curves;
 }
 
-void RegressionValuesSaver::move(GraphRange newRange)
+void RegressionValuesSaver::move(GraphView newRange)
 {
     graphRange = newRange;
 

@@ -76,12 +76,12 @@ protected:
     FuncValuesSaver *funcValuesSaver;    
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
-    GraphSettings parameters;
+    GraphSettings graphSettings;
     QPolygonF polygon;
     QPen pen;
     QBrush brush;
     Point centre;
-    GraphRange graphRange;
+    GraphView graphRange;
 
     double coef;
 

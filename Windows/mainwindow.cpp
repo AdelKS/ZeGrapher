@@ -44,10 +44,6 @@ MainWindow::MainWindow()
 
     createMenus();
 
-    window.Xmax = window.Ymax = 10;
-    window.Xmin = window.Ymin = -10;
-    window.XGridStep = window.YGridStep = 1;
-
     setCentralWidget(scene);    
 
     imageExportWin->setSize(scene->width(), scene->height());
@@ -56,7 +52,7 @@ MainWindow::MainWindow()
 
     loadWindowSavedGeomtries();
 
-    if(information->getSettingsVals().updateCheckAtStart)
+    if(information->getGraphSettings().updateCheckAtStart)
         updateCheckWin->silentCheckForUpdate();
 }
 
@@ -72,7 +68,6 @@ void MainWindow::createMenus()
     QAction *setOrthonormalAction = menuTools->addAction(tr("Toggle orthonormal view"));
     setOrthonormalAction->setCheckable(true);
     connect(setOrthonormalAction, SIGNAL(triggered(bool)), rangeWin, SLOT(setOrthonormal(bool)));
-    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool)));
 
     QAction *resetViewAction = menuTools->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
     connect(resetViewAction, SIGNAL(triggered()), rangeWin, SLOT(resetToStandardView()));
@@ -199,11 +194,11 @@ void MainWindow::makeConnects()
 
 void MainWindow::updateGridButtonIcon()
 {
-    GraphSettings graphSettings = information->getSettingsVals();
+    GraphSettings graphSettings = information->getGraphSettings();
 
-    if(graphSettings.gridType == GridType::NO_GRID)
+    if(graphSettings.gridSettings.gridType == GridType::NO_GRID)
         gridButton->setIcon(QIcon(":/icons/no_grid.png"));
-    else if(graphSettings.gridType == GridType::GRID)
+    else if(graphSettings.gridSettings.gridType == GridType::GRID)
         gridButton->setIcon(QIcon(":/icons/grid.png"));
     else gridButton->setIcon(QIcon(":/icons/grid_subgrid.png"));
 

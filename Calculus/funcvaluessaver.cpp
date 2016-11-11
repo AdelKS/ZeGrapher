@@ -36,20 +36,57 @@ void FuncValuesSaver::setPixelStep(double pxStep)
     pixelStep = pxStep;
 }
 
-void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRange gRange)
+double FuncValuesSaver::getStartAbscissa()
 {
-    graphRange = gRange;
+    unitStep = pixelStep / xUnit;
+
+    if(graphView.viewType == ScaleType::X_LOG)
+    {
+       return log(graphView.Xmin)/log(graphView.xLogBase) - unitStep;
+    }
+    else return graphView.Xmin - unitStep;
+}
+
+double FuncValuesSaver::getEndAbscissa()
+{
+    unitStep = pixelStep / xUnit;
+
+    if(graphView.viewType == ScaleType::X_LOG)
+    {
+       return log(graphView.Xmax)/log(graphView.xLogBase) + unitStep;
+    }
+    else return graphView.Xmax + unitStep;
+}
+
+double FuncValuesSaver::evalFunc(int funId, double x, double k)
+{
+    if(graphView.viewType == ScaleType::X_LOG)
+    {
+        return funcs[funId]->getFuncValue(pow(graphView.xLogBase, x), k);
+    }
+    else if(graphView.viewType == ScaleType::XY_LOG)
+    {
+        return log(funcs[funId]->getFuncValue(pow(graphView.xLogBase, x), k))/log(graphView.yLogBase);
+    }
+    else return funcs[funId]->getFuncValue(x, k);
+}
+
+
+void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView view)
+{
+    graphView = view;
     xUnit = new_xUnit;
     yUnit = new_yUnit;
-    unitStep = pixelStep / xUnit;
 
     double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
     int k_pos = 0, end=0, n=0;
 
-
     Range range;
     QPolygonF curvePart;
     QPointF pt1, pt2;
+
+    double xStart = getStartAbscissa();
+    double xEnd = getEndAbscissa();
 
     for(short i = 0; i < funcs.size(); i++)
     {
@@ -67,9 +104,9 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRang
             funcCurves[i] << QList<QPolygonF>();
             curvePart.clear();
 
-            for(x = graphRange.Xmin - unitStep ; x <= graphRange.Xmax + unitStep ; x += unitStep)
+            for(x = xStart ; x <= xEnd; x += unitStep)
             {                
-                y = funcs[i]->getFuncValue(x, k);
+                y = evalFunc(i, x, k);
 
                 if(std::isnan(y) || std::isinf(y))
                 {
@@ -115,9 +152,9 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphRang
     }
 }
 
-void FuncValuesSaver::move(GraphRange range)
+void FuncValuesSaver::move(GraphView view)
 {
-    graphRange = range;
+    graphView = view;
 
     double x = 0, k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
     int k_pos = 0;
@@ -126,6 +163,9 @@ void FuncValuesSaver::move(GraphRange range)
     QPolygonF curvePart;
     QPointF pt1, pt2;
     int n = 0;
+
+    double xStart = getStartAbscissa();
+    double xEnd = getEndAbscissa();
 
     for(short i = 0 ; i < funcs.size(); i++)
     {
@@ -140,7 +180,7 @@ void FuncValuesSaver::move(GraphRange range)
             curvePart = funcCurves[i][k_pos].takeFirst();
             x = curvePart.first().x()/xUnit - unitStep;
 
-            if(x >= graphRange.Xmin)
+            if(x >= xStart)
             {
                 if(curvePart.size() >= 3)
                 {
@@ -153,9 +193,9 @@ void FuncValuesSaver::move(GraphRange range)
                 }
 
 
-                while(x >= graphRange.Xmin)
+                while(x >= xStart)
                 {
-                    y = funcs[i]->getFuncValue(x, k);
+                    y = evalFunc(i, x, k);
 
                     if(std::isnan(y) || std::isinf(y))
                     {
@@ -194,7 +234,7 @@ void FuncValuesSaver::move(GraphRange range)
             }
             else
             {
-                while(x < graphRange.Xmin - unitStep)
+                while(x < xStart)
                 {
                     if(curvePart.isEmpty())
                         curvePart = funcCurves[i][k_pos].takeFirst();
@@ -212,7 +252,7 @@ void FuncValuesSaver::move(GraphRange range)
 
             x = curvePart.last().x()/xUnit + unitStep;
 
-            if(x <= graphRange.Xmax)
+            if(x <= xEnd)
             {
                 n = curvePart.size();
                 if(curvePart.size() >= 3)
@@ -225,9 +265,9 @@ void FuncValuesSaver::move(GraphRange range)
                     delta2 = fabs(curvePart[n-1].y() - curvePart[n-2].y());
                 }
 
-                while(x <= graphRange.Xmax)
+                while(x <= xEnd)
                 {
-                    y = funcs[i]->getFuncValue(x, k);
+                    y = evalFunc(i, x, k);
 
                     if(std::isnan(y) || std::isinf(y))
                     {
@@ -264,7 +304,7 @@ void FuncValuesSaver::move(GraphRange range)
             }
             else
             {
-                while(x > graphRange.Xmax + unitStep)
+                while(x > xEnd)
                 {
                     if(curvePart.isEmpty())
                         curvePart = funcCurves[i][k_pos].takeLast();

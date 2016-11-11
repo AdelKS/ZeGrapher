@@ -93,7 +93,7 @@ void MathObjectsInput::addFunctions()
         FuncWidget *widget;
         if(i < funcColors.size())
             widget = new FuncWidget(funcNames[i], i, funcColors.at(i));
-        else widget = new FuncWidget(funcNames[i], i, information->getSettingsVals().defaultColor);
+        else widget = new FuncWidget(funcNames[i], i, information->getGraphSettings().defaultColor);
 
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
         connect(widget, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
@@ -135,7 +135,7 @@ void MathObjectsInput::addSequences()
 
         if(i < seqColors.size())
             widget = new SeqWidget(seqNames[i], i, seqColors.at(i));
-        else widget = new SeqWidget(seqNames[i], i, information->getSettingsVals().defaultColor);
+        else widget = new SeqWidget(seqNames[i], i, information->getGraphSettings().defaultColor);
 
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
         connect(widget, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
@@ -243,7 +243,7 @@ void MathObjectsInput::keyboardButtonClicked()
 
 void MathObjectsInput::addTangent()
 {
-    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets, information->getSettingsVals().defaultColor);
+    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets, information->getGraphSettings().defaultColor);
     tangentWidgets << tangent;
 
     connect(tangent, SIGNAL(removeMe(TangentWidget*)), this, SLOT(removeTangent(TangentWidget*)));
@@ -267,7 +267,7 @@ void MathObjectsInput::removeTangent(TangentWidget *widget)
 
 void MathObjectsInput::addStraightline()
 {
-    StraightLineWidget *line = new StraightLineWidget(straightlineWidgets.size(), funcCalcs, information->getSettingsVals().defaultColor);
+    StraightLineWidget *line = new StraightLineWidget(straightlineWidgets.size(), funcCalcs, information->getGraphSettings().defaultColor);
     straightlineWidgets << line;
 
     connect(line, SIGNAL(removeMe(StraightLineWidget*)), this, SLOT(removeStraightline(StraightLineWidget*)));
@@ -290,7 +290,7 @@ void MathObjectsInput::removeStraightline(StraightLineWidget *widget)
 
 void MathObjectsInput::addParEq()
 {
-    ParEqWidget *widget = new ParEqWidget(parEqWidgets.size(), funcCalcs, information->getSettingsVals().defaultColor);
+    ParEqWidget *widget = new ParEqWidget(parEqWidgets.size(), funcCalcs, information->getGraphSettings().defaultColor);
     connect(widget, SIGNAL(removeClicked(ParEqWidget*)), this, SLOT(removeParEq(ParEqWidget*)));
     connect(widget, SIGNAL(updateRequest()), information, SLOT(emitDrawStateUpdate()));
     connect(widget, SIGNAL(animationUpdateRequest()), information, SLOT(emitAnimationUpdate()));

@@ -153,10 +153,11 @@ void FuncTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphRange range = information->getGraphRange();
+        GraphView range = information->getGraphRange();
+        GridSettings gridSettings = information->getGridSettings();
 
-        parameters.range.start = trunc(range.Xmin / range.XGridStep) * range.XGridStep;
-        parameters.range.step = range.XGridStep;
+        parameters.range.start = trunc(range.Xmin / gridSettings.xGridStep) * gridSettings.xGridStep;
+        parameters.range.step = gridSettings.xGridStep;
         parameters.range.end = range.Xmax;
     }
 

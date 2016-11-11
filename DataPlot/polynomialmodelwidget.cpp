@@ -45,7 +45,7 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
 
     information->addDataRegression(regression);
 
-    regression->setColor(information->getSettingsVals().defaultColor);
+    regression->setColor(information->getGraphSettings().defaultColor);
     regression->setData(dat); //
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));
@@ -215,7 +215,7 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), startVal, SLOT(setEnabled(bool)));
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
-    colorButton = new QColorButton(information->getSettingsVals().defaultColor);
+    colorButton = new QColorButton(information->getGraphSettings().defaultColor);
     QLabel *colorLabel = new QLabel(tr("color:"));
     ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);

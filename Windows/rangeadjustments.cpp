@@ -151,6 +151,8 @@ void RangeAdjustments::standardView()
 
 void RangeAdjustments::apply()
 {
+    GraphSettings graphSettings = information->getGraphSettings();
+
     if(!Xmax->isValid() || !Xmin->isValid() || !Xstep->isValid() ||
             !Ymax->isValid() || !Ymin->isValid() || !Ystep->isValid())
         return;
@@ -158,74 +160,70 @@ void RangeAdjustments::apply()
     if(ui->orthonormal->isChecked())
         Ystep->setNumber(Xstep->getValue());
 
-    GraphRange range;
 
-    range.Xmax = Xmax->getValue();
-    range.Xmin = Xmin->getValue();
-    range.XGridStep = Xstep->getValue();
+    graphSettings.view.Xmax = Xmax->getValue();
+    graphSettings.view.Xmin = Xmin->getValue();
+    graphSettings.gridSettings.xGridStep = Xstep->getValue();
 
-    range.Ymax = Ymax->getValue();
-    range.Ymin = Ymin->getValue();
-    range.YGridStep = Ystep->getValue();
+    graphSettings.view.Ymax = Ymax->getValue();
+    graphSettings.view.Ymin = Ymin->getValue();
+    graphSettings.gridSettings.yGridStep = Ystep->getValue();
 
 
-    if(range.Xmin >= range.Xmax)
+    if(graphSettings.view.Xmin >= graphSettings.view.Xmax)
     {
         messageBox->setText(tr("X<sub>min</sub> must be smaller than X<sub>max</sub>"));
         messageBox->exec();
         return;
     }
-    if(range.Ymin >= range.Ymax)
+    if(graphSettings.view.Ymin >= graphSettings.view.Ymax)
     {
         messageBox->setText(tr("Y<sub>min</sub> must be smaller than Y<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
-    if(range.Ymax - range.Ymin < MIN_RANGE || range.Xmax - range.Xmin < MIN_RANGE)
+    if(graphSettings.view.Ymax - graphSettings.view.Ymin < MIN_RANGE || graphSettings.view.Xmax - graphSettings.view.Xmin < MIN_RANGE)
     {
-        messageBox->setText(tr("The view range is too tight for ZeGrapher to distinguish between the upper and lower values."));
+        messageBox->setText(tr("The view graphSettings.view is too tight for ZeGrapher to distinguish between the upper and lower values."));
         messageBox->exec();
         return;
-    }    
+    }
 
-    information->setRange(range);
-
-
-    GraphSettings graphSettings = information->getSettingsVals();
-    graphSettings.viewType = ScaleType::LINEAR;
+    graphSettings.view.viewType = ScaleType::LINEAR;
 
     if(ui->specialView->isChecked())
     {
         if(ui->orthonormal->isChecked())
-            graphSettings.viewType = ScaleType::LINEAR_ORTHONORMAL;
+            graphSettings.view.viewType = ScaleType::LINEAR_ORTHONORMAL;
         else if(ui->logScale->isChecked())
         {
             if(ui->xLogScale->isChecked() && ui->yLogScale->isChecked())
-                graphSettings.viewType = ScaleType::XY_LOG;
+                graphSettings.view.viewType = ScaleType::XY_LOG;
             else if(ui->yLogScale->isChecked())
-                graphSettings.viewType = ScaleType::Y_LOG;
-            else graphSettings.viewType = ScaleType::X_LOG;
+                graphSettings.view.viewType = ScaleType::Y_LOG;
+            else graphSettings.view.viewType = ScaleType::X_LOG;
 
         }
     }
 
-    information->setSettingsVals(graphSettings);
+    information->setGraphSettings(graphSettings);
 }
 
 void RangeAdjustments::updateWidgets()
  {
     manageWidgetStates();
 
-    GraphRange window = information->getGraphRange();
+    GraphView window = information->getGraphRange();
+    GridSettings gridSettings = information->getGridSettings();
 
     Xmax->setNumber(window.Xmax);
     Xmin->setNumber(window.Xmin);
-    Xstep->setNumber(window.XGridStep);
+    Xstep->setNumber(gridSettings.xGridStep);
 
     Ymax->setNumber(window.Ymax);
     Ymin->setNumber(window.Ymin);
-    Ystep->setNumber(window.YGridStep);
+    Ystep->setNumber(gridSettings.yGridStep);
 
     ui->orthonormal->setChecked(information->isOrthonormal());
     setOrthonormal(information->isOrthonormal());

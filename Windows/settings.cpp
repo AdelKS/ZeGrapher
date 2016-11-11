@@ -27,6 +27,8 @@ Settings::Settings(Information *info)
 {
     information = info;
 
+    graphSettings = info->getGraphSettings();
+
     ui = new Ui::Settings;
     ui->setupUi(this);
 
@@ -51,10 +53,10 @@ Settings::Settings(Information *info)
 
     readSavedSettings();
 
-    parameters.backgroundColor = backgroundColorButton->getCurrentColor();
-    parameters.axesColor = axesColorButton->getCurrentColor();
-    parameters.gridColor = gridColorButton->getCurrentColor();
-    parameters.defaultColor = defaultColorButton->getCurrentColor();
+    graphSettings.backgroundColor = backgroundColorButton->getCurrentColor();
+    graphSettings.axesColor = axesColorButton->getCurrentColor();
+    graphSettings.gridColor = gridColorButton->getCurrentColor();
+    graphSettings.defaultColor = defaultColorButton->getCurrentColor();
 
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
@@ -204,21 +206,21 @@ void Settings::apply()
     {
         double dist = ui->distanceWidget->value();
 
-        parameters.smoothing = ui->smoothing->isChecked();
-        parameters.distanceBetweenPoints = pow(2, 2-dist/2);
-        parameters.curvesThickness = ui->thicknessWidget->value();
-        parameters.axesColor = axesColorButton->getCurrentColor();
-        parameters.backgroundColor = backgroundColorButton->getCurrentColor();
-        parameters.gridColor = gridColorButton->getCurrentColor();
-        parameters.defaultColor = defaultColorButton->getCurrentColor();
-        parameters.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
+        graphSettings.smoothing = ui->smoothing->isChecked();
+        graphSettings.distanceBetweenPoints = pow(2, 2-dist/2);
+        graphSettings.curvesThickness = ui->thicknessWidget->value();
+        graphSettings.axesColor = axesColorButton->getCurrentColor();
+        graphSettings.backgroundColor = backgroundColorButton->getCurrentColor();
+        graphSettings.gridColor = gridColorButton->getCurrentColor();
+        graphSettings.defaultColor = defaultColorButton->getCurrentColor();
+        graphSettings.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
 
         QFont font(ui->graphFont->currentFont());
         font.setPixelSize(ui->graphFontSize->value());
 
-        parameters.graphFont = font;
+        graphSettings.graphFont = font;
 
-        information->setSettingsVals(parameters);
+        information->setGraphSettings(graphSettings);
     }
 }
 

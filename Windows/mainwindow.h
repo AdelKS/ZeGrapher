@@ -64,7 +64,6 @@ private:
 
     Information *information;
     MainGraph *scene;
-    GraphRange window;
     MathObjectsInput *inputWin;
     RangeAdjustments *rangeWin;
     Settings *settingsWin;

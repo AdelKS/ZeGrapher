@@ -27,7 +27,7 @@
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {   
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
-    connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));
+    connect(info, SIGNAL(newGraphSettings()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(dataUpdated()), this, SLOT(updateData()));
     connect(info, SIGNAL(animationUpdate()), this, SLOT(updateParEq()));  
     connect(info, SIGNAL(gridStateChange()), this, SLOT(updateGraph()));
@@ -356,7 +356,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
 
         moving = true;
 
-        if(parameters.smoothing)
+        if(graphSettings.smoothing)
             repaintTimer.start();
 
         information->setRange(graphRange);
@@ -456,7 +456,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphWidth = width();
     graphHeight = height();
 
-    parameters = information->getSettingsVals();
+    graphSettings = information->getGraphSettings();
     graphRange = information->getGraphRange();
 
     if(windowSize != size())
@@ -485,7 +485,7 @@ void MainGraph::indirectPaint()
 
     painter.begin(this);
 
-    painter.setFont(information->getSettingsVals().graphFont);
+    painter.setFont(information->getGraphSettings().graphFont);
 
     painter.drawImage(QPoint(0,0), *savedGraph);    
     painter.translate(QPointF(centre.x, centre.y));
@@ -514,9 +514,9 @@ void MainGraph::directPaint()
     painter.begin(this);
     //trace du background
 
-    painter.setFont(information->getSettingsVals().graphFont);
+    painter.setFont(information->getGraphSettings().graphFont);
 
-    painter.setBrush(QBrush(parameters.backgroundColor));
+    painter.setBrush(QBrush(graphSettings.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
     updateCenterPosAndScaling();
@@ -528,7 +528,7 @@ void MainGraph::directPaint()
         cancelUpdateSignal = true;
         information->setRange(graphRange);
 
-        painter.setBrush(QBrush(parameters.backgroundColor));
+        painter.setBrush(QBrush(graphSettings.backgroundColor));
         painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
         updateCenterPosAndScaling();
@@ -541,7 +541,7 @@ void MainGraph::directPaint()
     {
         painter.setBrush(Qt::NoBrush);
         pen.setWidth(1);
-        pen.setColor(parameters.axesColor);
+        pen.setColor(graphSettings.axesColor);
         painter.setPen(pen);
         painter.drawRect(rectReel);
     }
@@ -578,19 +578,19 @@ void MainGraph::drawHoveringConsequence()
 {
     if(mouseState.funcType == FUNC_HOVER)
     {
-        drawCurve(parameters.curvesThickness + 1, funcs[mouseState.id]->getColorSaver()->getColor(mouseState.kPos),
+        drawCurve(graphSettings.curvesThickness + 1, funcs[mouseState.id]->getColorSaver()->getColor(mouseState.kPos),
                 funcValuesSaver->getCurve(mouseState.id, mouseState.kPos));
     }
     else if(mouseState.funcType == SEQ_HOVER)
     {
-        drawOneSequence(mouseState.id, parameters.curvesThickness + 4);
+        drawOneSequence(mouseState.id, graphSettings.curvesThickness + 4);
     }
     else if(mouseState.funcType == TANGENT_MOVE_HOVER || mouseState.funcType == TANGENT_RESIZE_HOVER)
     {
         TangentWidget *tangent = tangents->at(mouseState.id);
         TangentPoints points = tangent->getCaracteristicPoints();
 
-        pen.setWidth(parameters.curvesThickness + 4);
+        pen.setWidth(graphSettings.curvesThickness + 4);
         pen.setColor(tangent->getColor());
         painter.setPen(pen);
         painter.setRenderHint(QPainter::Antialiasing);
@@ -640,9 +640,9 @@ void MainGraph::resaveImageBuffer()
     painter.begin(savedGraph);
     //trace du background
 
-    painter.setFont(information->getSettingsVals().graphFont);
+    painter.setFont(information->getGraphSettings().graphFont);
 
-    painter.setBrush(QBrush(parameters.backgroundColor));
+    painter.setBrush(QBrush(graphSettings.backgroundColor));
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
     updateCenterPosAndScaling();
@@ -736,7 +736,7 @@ void MainGraph::drawAllParEq()
 
 void MainGraph::drawAnimatedParEq()
 {
-    painter.setRenderHint(QPainter::Antialiasing, parameters.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
 
     QList< QList<Point> > *list;
     QPolygonF polygon;
@@ -744,7 +744,7 @@ void MainGraph::drawAnimatedParEq()
     ColorSaver *colorSaver;
     Point point;    
 
-    pen.setWidth(parameters.curvesThickness);
+    pen.setWidth(graphSettings.curvesThickness);
     painter.setPen(pen);
 
     int listEnd;
@@ -785,12 +785,12 @@ void MainGraph::drawAnimatedParEq()
 
                 if(parWidget->is_t_Animated())
                 {
-                    pen.setWidth(parameters.curvesThickness + 4);
+                    pen.setWidth(graphSettings.curvesThickness + 4);
                     painter.setPen(pen);
 
                     painter.drawPoint(polygon.last());
 
-                    pen.setWidth(parameters.curvesThickness);
+                    pen.setWidth(graphSettings.curvesThickness);
                     painter.setPen(pen);
                 }
             }
@@ -811,8 +811,8 @@ void MainGraph::drawPoint()
         yTextLabel->setText(customSequences[selectedCurve.id]);
     }
 
-    xTextLabel->setStyleSheet("color: " + parameters.axesColor.name());
-    yTextLabel->setStyleSheet("color: " + parameters.axesColor.name());
+    xTextLabel->setStyleSheet("color: " + graphSettings.axesColor.name());
+    yTextLabel->setStyleSheet("color: " + graphSettings.axesColor.name());
 
 
 
@@ -838,7 +838,7 @@ void MainGraph::drawPoint()
     if(selectedCurve.funcType == SEQ_HOVER)
         extraWidth += 2;
 
-    pen.setWidth(parameters.curvesThickness + extraWidth);
+    pen.setWidth(graphSettings.curvesThickness + extraWidth);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -933,7 +933,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 
         if(rectReel.height() > 10 && rectReel.width() > 10)
         {
-            GraphRange win = graphRange;
+            GraphView win = graphRange;
             win.Xmax = (rectReel.right() - centre.x) / uniteX;
             win.Xmin = (rectReel.left() - centre.x) / uniteX;
             win.Ymax = (- rectReel.top() + centre.y) / uniteY;
@@ -1151,7 +1151,7 @@ void MainGraph::mouseFuncHoverTest(double x, double y)
             {
                 if(!(selectedCurve.isSomethingSelected && selectedCurve.funcType == FUNCTION && draw == selectedCurve.kPos && i == selectedCurve.id))
                 {
-                    if((fabs(calcY - y) * uniteY) < parameters.curvesThickness + 1)
+                    if((fabs(calcY - y) * uniteY) < graphSettings.curvesThickness + 1)
                     {
                         mouseState.hovering = true;
                         mouseState.tangentHovering = false;
@@ -1190,7 +1190,7 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
         if(uniteX < 1)
              step = 5*trunc(1/uniteX);
 
-        if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < (double)(parameters.curvesThickness) + 2)
+        if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < (double)(graphSettings.curvesThickness) + 2)
             intAbscissa = trunc((x-start)/step) * step + start;
 
         if(std::isnan(intAbscissa))
@@ -1213,7 +1213,7 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
 
                 if(!(selectedCurve.isSomethingSelected && selectedCurve.funcType == SEQUENCE && draw == selectedCurve.kPos && i == selectedCurve.id))
                 {
-                    if((fabs(calcY - y) * uniteY) < parameters.curvesThickness + 3)
+                    if((fabs(calcY - y) * uniteY) < graphSettings.curvesThickness + 3)
                     {
                         mouseState.hovering = true;
                         mouseState.tangentHovering = false;
@@ -1287,7 +1287,7 @@ void MainGraph::mouseTangentHoverTest(double x, double y)
 
 void MainGraph::drawTicksAndNumbers()
 {
-    pen.setColor(parameters.axesColor);
+    pen.setColor(graphSettings.axesColor);
     pen.setWidth(1);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -1298,7 +1298,7 @@ void MainGraph::drawTicksAndNumbers()
     if(centre.y < 20)
     {       
         Ypos = 20;
-        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
+        posTxt = Ypos + graphSettings.graphFont.pixelSize() + 3;
     }
     else if(graphHeight - centre.y < 20)
     {       
@@ -1308,14 +1308,16 @@ void MainGraph::drawTicksAndNumbers()
     else
     {
         Ypos = centre.y;
-        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
+        posTxt = Ypos + graphSettings.graphFont.pixelSize() + 3;
     }
 
-    double Xreal = trunc(graphRange.Xmin / graphRange.XGridStep) * graphRange.XGridStep;
+    GridSettings gridSettings = information->getGridSettings();
+
+    double Xreal = trunc(graphRange.Xmin / gridSettings.xGridStep) * gridSettings.xGridStep;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double step = graphRange.XGridStep * uniteX;
+    double step = gridSettings.xGridStep * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1335,14 +1337,14 @@ void MainGraph::drawTicksAndNumbers()
     {       
         if(start <= Xpos && fabs(Xpos - centre.x) > 1)
         {
-            if(start <= Xpos && information->getGridType() == GridType::GRID && Xpos <= end)
+            if(start <= Xpos && graphSettings.gridSettings.gridType == GridType::GRID && Xpos <= end)
             {
-                pen.setColor(parameters.gridColor);
+                pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(Xpos, bas), QPointF(Xpos, haut));
 
-                pen.setColor(parameters.axesColor);
+                pen.setColor(graphSettings.axesColor);
                 pen.setWidth(1);
                 painter.setPen(pen);
             }
@@ -1357,7 +1359,7 @@ void MainGraph::drawTicksAndNumbers()
         }
 
         Xpos += step;
-        Xreal += graphRange.XGridStep;
+        Xreal += gridSettings.xGridStep;
     }
 
 //trace sur l'axe des Y
@@ -1381,9 +1383,9 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / graphRange.YGridStep) * graphRange.YGridStep;
+    double Yreal = trunc(graphRange.Ymax / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep;
     Ypos = -Yreal * uniteY + centre.y;
-    step = graphRange.YGridStep * uniteY;
+    step = graphSettings.gridSettings.yGridStep * uniteY;
 
     bas =  0;
     haut =  graphWidth;
@@ -1404,14 +1406,14 @@ void MainGraph::drawTicksAndNumbers()
     {        
         if(start <= Ypos && fabs(Ypos - centre.y) > 1)
         {
-            if(information->getGridType() == GridType::GRID)
+            if(information->getGridSettings().gridType == GridType::GRID)
             {
-                pen.setColor(parameters.gridColor);
+                pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(bas, Ypos), QPointF(haut, Ypos));
 
-                pen.setColor(parameters.axesColor);
+                pen.setColor(graphSettings.axesColor);
                 pen.setWidth(1);
                 painter.setPen(pen);
             }
@@ -1423,7 +1425,7 @@ void MainGraph::drawTicksAndNumbers()
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
-        Yreal -= graphRange.YGridStep;
+        Yreal -= graphSettings.gridSettings.yGridStep;
         Ypos += step;
     }   
 }
@@ -1433,34 +1435,36 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * graphRange.XGridStep < widestXNumber + 32)
+    GridSettings gridSettings = information->getGridSettings();
+
+    if(uniteX * gridSettings.xGridStep < widestXNumber + 32)
     {
-        while(uniteX * graphRange.XGridStep < widestXNumber + 32)
-            graphRange.XGridStep *= 2;
+        while(uniteX * gridSettings.xGridStep < widestXNumber + 32)
+            gridSettings.xGridStep *= 2;
         if(orthonormal)
-             graphRange.YGridStep = graphRange.XGridStep;
+             graphSettings.gridSettings.yGridStep = gridSettings.xGridStep;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.XGridStep > 2*widestXNumber + 96)
+    else if(uniteX * gridSettings.xGridStep > 2*widestXNumber + 96)
     {
-        while(uniteX * graphRange.XGridStep > 2*widestXNumber + 96)
-            graphRange.XGridStep /= 2;
+        while(uniteX * gridSettings.xGridStep > 2*widestXNumber + 96)
+            gridSettings.xGridStep /= 2;
         if(orthonormal)
-             graphRange.YGridStep = graphRange.XGridStep;
+             graphSettings.gridSettings.yGridStep = gridSettings.xGridStep;
         scaleChanged = true;
     }
     if(!orthonormal)
     {
-        if(uniteY * graphRange.YGridStep < 25)
+        if(uniteY * graphSettings.gridSettings.yGridStep < 25)
         {
-            while(uniteY * graphRange.YGridStep < 25)
-                graphRange.YGridStep *= 2;
+            while(uniteY * graphSettings.gridSettings.yGridStep < 25)
+                graphSettings.gridSettings.yGridStep *= 2;
             scaleChanged = true;
         }
-        else if(uniteY * graphRange.YGridStep > 150)
+        else if(uniteY * graphSettings.gridSettings.yGridStep > 150)
         {
-            while(uniteY * graphRange.YGridStep > 150)
-                graphRange.YGridStep /= 2;
+            while(uniteY * graphSettings.gridSettings.yGridStep > 150)
+                graphSettings.gridSettings.yGridStep /= 2;
             scaleChanged = true;
         }
     }
@@ -1472,7 +1476,7 @@ void MainGraph::drawAxes()
 {
     // *********** remarque: les y sont positifs en dessous de l'axe x, step au dessus !! ************//
     pen.setWidth(1);
-    pen.setColor(parameters.axesColor);
+    pen.setColor(graphSettings.axesColor);
     painter.setPen(pen);    
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -1502,7 +1506,7 @@ void MainGraph::drawAxes()
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-6), QPointF(axesIntersec.x+3, axesIntersec.y-4));
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-9), QPointF(axesIntersec.x+3, axesIntersec.y-7));
 
-        pen.setColor(parameters.backgroundColor);
+        pen.setColor(graphSettings.backgroundColor);
         painter.setPen(pen);
 
         painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y-6), QPointF(axesIntersec.x, axesIntersec.y-7));
@@ -1512,7 +1516,7 @@ void MainGraph::drawAxes()
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+6), QPointF(axesIntersec.x+3, axesIntersec.y+4));
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+9), QPointF(axesIntersec.x+3, axesIntersec.y+7));
 
-        pen.setColor(parameters.backgroundColor);
+        pen.setColor(graphSettings.backgroundColor);
         painter.setPen(pen);
 
         painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y+6), QPointF(axesIntersec.x, axesIntersec.y+7));
@@ -1530,7 +1534,7 @@ void MainGraph::zoomX()
     moving = true;
     information->setRange(graphRange);
 
-    if(parameters.smoothing)
+    if(graphSettings.smoothing)
         repaintTimer.start();
 }
 
@@ -1560,7 +1564,7 @@ void MainGraph::zoomY()
     }
 
     moving = true;
-    if(parameters.smoothing)
+    if(graphSettings.smoothing)
         repaintTimer.start();
 
     information->setRange(graphRange);

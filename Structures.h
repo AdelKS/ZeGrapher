@@ -47,7 +47,7 @@
 #define DATA_TABLE_EXPR 5 // expression to apply to a column: example: x' = 2 * x multiplies every column's cell value by 2.
 #define MAX_DOUBLE_PREC 15
 
-#define MIN_RANGE 0.000001
+#define MIN_RANGE 0.0000000000001
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
@@ -61,21 +61,6 @@
 #define EPSILON 0.001
 #define MAX_SAVED_SEQ_VALS 1000000
 
-
-struct GraphRange
-{
-    double Xmin, Xmax, Ymin, Ymax, XGridStep, YGridStep;
-
-    QRectF rect() const
-    {
-        QRectF graphWin;
-        graphWin.setBottom(Ymin);
-        graphWin.setTop(Ymax);
-        graphWin.setLeft(Xmin);
-        graphWin.setRight(Xmax);
-        return graphWin;
-    }
-};
 
 struct Point
 {
@@ -105,6 +90,33 @@ enum struct GridType : short
     NO_GRID, GRID, GRID_SUBGRID
 };
 
+struct GridSettings
+{
+    GridType gridType;
+    double xGridStep, yGridStep;
+    unsigned int subGridDivs;
+    // the number of lines of the sub grid between two lines of the main one.
+};
+
+struct GraphView
+{
+    double Xmin, Xmax, Ymin, Ymax;
+    ScaleType viewType;
+    double xLogBase, yLogBase;
+    // the base used for logarithmic scale,
+    // if it's 10, then it's the usual one
+
+    QRectF rect() const
+    {
+        QRectF graphWin;
+        graphWin.setBottom(Ymin);
+        graphWin.setTop(Ymax);
+        graphWin.setLeft(Xmin);
+        graphWin.setRight(Xmax);
+        return graphWin;
+    }
+};
+
 struct GraphSettings
 {
     QColor axesColor;
@@ -116,16 +128,9 @@ struct GraphSettings
     bool smoothing;
     bool updateCheckAtStart;
     QFont graphFont;
-    ScaleType viewType;
-    GridType gridType;
 
-    double xLogBase, yLogBase;
-    // the base used for logarithmic scale,
-    // if it's 10, then it's the usual one
-
-    unsigned int subGridDivs;
-    // the number of lines of the sub grid between two lines of the main one.
-
+    GraphView view;
+    GridSettings gridSettings;
 };
 
 struct Range

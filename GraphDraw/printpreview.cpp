@@ -25,7 +25,7 @@
 
 PrintPreview::PrintPreview(Information *info) : ImagePreview(info)
 {
-    parameters.distanceBetweenPoints = 0.125;
+    graphSettings.distanceBetweenPoints = 0.125;
     viewType = PORTRAIT;
     graphHeightCm = 28.7;
     graphWidthCm = 20;  
@@ -47,7 +47,7 @@ void PrintPreview::setPDFname(QString pdf)
 
 void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resType, int res)
 {
-    parameters = information->getSettingsVals();
+    graphSettings = information->getGraphSettings();
     graphRange = information->getGraphRange();
 
     printer = new QPrinter(printerInfo);
@@ -82,7 +82,7 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
 
     if(printType == PRINT_FILE)
     {
-        painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));
+        painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));
         painter.drawRect(printer->paperRect());
     }
 
@@ -105,13 +105,13 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
 void PrintPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    parameters = information->getSettingsVals();
+    graphSettings = information->getGraphSettings();
     graphRange = information->getGraphRange();
 
     painter.begin(this);
     //trace du background
 
-    painter.setFont(information->getSettingsVals().graphFont);
+    painter.setFont(information->getGraphSettings().graphFont);
 
     drawSheet();
     drawGraph();
@@ -164,7 +164,7 @@ void PrintPreview::determinerCentreEtUnites()
     uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
     uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
 
-    if(information->getSettingsVals().viewType == ScaleType::LINEAR_ORTHONORMAL)
+    if(information->getGraphSettings().view.viewType == ScaleType::LINEAR_ORTHONORMAL)
     {
         double rapport =  uniteY / uniteX;
         graphRange.Ymin *= rapport;
@@ -178,7 +178,7 @@ void PrintPreview::determinerCentreEtUnites()
 
 void PrintPreview::drawSheet()
 {
-    painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));;
+    painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));;
 
     double rapport;
 
@@ -251,7 +251,7 @@ void PrintPreview::drawGraph()
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(information->getSettingsVals().axesColor);
+    pen.setColor(information->getGraphSettings().axesColor);
     painter.setPen(pen);
     painter.drawRect(graphRect);
 

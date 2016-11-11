@@ -25,9 +25,9 @@
 
 Information::Information()
 {
-    graphRange.Xmax = graphRange.Ymax = 10;
-    graphRange.Xmin = graphRange.Ymin = -10;
-    graphRange.XGridStep = graphRange.YGridStep = 1;
+    graphSettings.view.Xmax = graphSettings.view.Ymax = 10;
+    graphSettings.view.Xmin = graphSettings.view.Ymin = -10;
+    graphSettings.gridSettings.xGridStep = graphSettings.gridSettings.yGridStep = 1;
 
     updatingLock = false;
 
@@ -172,19 +172,19 @@ QList<FuncCalculator*> Information::getFuncsList()
     return functions;
 }
 
-void Information::setRange(const GraphRange &newWindow)
+void Information::setRange(const GraphView &newWindow)
 {
-    graphRange = newWindow;
+    graphSettings.view = newWindow;
     emit updateOccured();
 }
 
 void Information::changeGridState()
 {
-    if(graphSettings.gridType == GridType::NO_GRID)
-        graphSettings.gridType = GridType::GRID;
-    else if(graphSettings.gridType == GridType::GRID)
-        graphSettings.gridType = GridType::GRID_SUBGRID;
-    else graphSettings.gridType = GridType::NO_GRID;
+    if(graphSettings.gridSettings.gridType == GridType::NO_GRID)
+        graphSettings.gridSettings.gridType = GridType::GRID;
+    else if(graphSettings.gridSettings.gridType == GridType::GRID)
+        graphSettings.gridSettings.gridType = GridType::GRID_SUBGRID;
+    else graphSettings.gridSettings.gridType = GridType::NO_GRID;
 
     emit gridStateChange();
 }
@@ -197,15 +197,15 @@ void Information::setOrthonormal(bool state)
 
 bool Information::isOrthonormal()
 {
-    return graphSettings.viewType == ScaleType::LINEAR_ORTHONORMAL;
+    return graphSettings.view.viewType == ScaleType::LINEAR_ORTHONORMAL;
 }
 
-GridType Information::getGridType()
+GridSettings Information::getGridSettings()
 {
-    return graphSettings.gridType;
+    return graphSettings.gridSettings;
 }
 
-void Information::setSettingsVals(GraphSettings opt)
+void Information::setGraphSettings(GraphSettings opt)
 {
     graphSettings = opt;
 
@@ -222,12 +222,12 @@ void Information::emitDrawStateUpdate()
     emit drawStateUpdateOccured();
 }
 
-GraphRange Information::getGraphRange()
+GraphView Information::getGraphRange()
 {
-    return graphRange;
+    return graphSettings.view;
 }
 
-GraphSettings Information::getSettingsVals()
+GraphSettings Information::getGraphSettings()
 {
     return graphSettings;
 }
