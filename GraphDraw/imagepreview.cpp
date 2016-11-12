@@ -48,7 +48,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
 
     graphSettings = information->getGraphSettings();
-    graphRange = information->getGraphRange();
+    graphView = information->getGraphRange();
 
     painter.begin(this);    
 
@@ -59,7 +59,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 
     assignGraphSize();
     determinerCentreEtUnites();
-    funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+    funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
     paint();
 
     painter.end();
@@ -170,7 +170,7 @@ void ImagePreview::paint()
 
     painter.translate(QPointF(centre.x, centre.y));
 
-    funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+    funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
     recalculateRegVals();
 
     drawFunctions();
@@ -235,8 +235,8 @@ void ImagePreview::placerGraduations()
 
     double space, pos;
 
-    double Xpos = trunc(graphRange.Xmin / graphSettings.gridSettings.xGridStep) * graphSettings.gridSettings.xGridStep * uniteX;
-    double end = graphRange.Xmax * uniteX;
+    double Xpos = trunc(graphView.Xmin / graphSettings.gridSettings.xGridStep) * graphSettings.gridSettings.xGridStep * uniteX;
+    double end = graphView.Xmax * uniteX;
     double step = graphSettings.gridSettings.xGridStep * uniteX;
 
     QString num;
@@ -277,9 +277,9 @@ void ImagePreview::placerGraduations()
 //trace sur l'axe des Y
 
 
-    double Ypos = ceil(graphRange.Ymin / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep * uniteY;
+    double Ypos = ceil(graphView.Ymin / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep * uniteY;
     step = graphSettings.gridSettings.yGridStep * uniteY;
-    end = graphRange.Ymax * uniteY;
+    end = graphView.Ymax * uniteY;
 
     int largestWidth = 0;
 
@@ -341,35 +341,35 @@ void ImagePreview::drawAxes()
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    if(graphRange.Ymin < 0 && graphRange.Ymax > 0)
+    if(graphView.Ymin < 0 && graphView.Ymax > 0)
         painter.drawLine(QPointF(0, centre.y), QPointF(graphWidth, centre.y));
-    if(graphRange.Xmin < 0 && graphRange.Xmax > 0)
+    if(graphView.Xmin < 0 && graphView.Xmax > 0)
         painter.drawLine(QPointF(centre.x, 0), QPointF(centre.x, graphHeight));
 
 }
 
 void ImagePreview::determinerCentreEtUnites()
 {
-    uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
-    uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
+    uniteY = graphHeight / (graphView.Ymax - graphView.Ymin);
+    uniteX = graphWidth / (graphView.Xmax - graphView.Xmin);
 
     double rapport = uniteY / uniteX;
     if(information->isOrthonormal())
     {
-        graphRange.Ymin *= rapport;
-        graphRange.Ymax *= rapport;
+        graphView.Ymin *= rapport;
+        graphView.Ymax *= rapport;
         uniteY = uniteX;
     }
 
 
-    centre.x = - graphRange.Xmin * uniteX;
-    centre.y =  graphRange.Ymax * uniteY;
+    centre.x = - graphView.Xmin * uniteX;
+    centre.y =  graphView.Ymax * uniteY;
 }
 
 QImage* ImagePreview::drawImage()
 {
     graphSettings = information->getGraphSettings();
-    graphRange = information->getGraphRange();
+    graphView = information->getGraphRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
     image->fill(graphSettings.backgroundColor.rgb());
@@ -398,7 +398,7 @@ QImage* ImagePreview::drawImage()
 
     if(recalculate)
     {
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
         recalculateRegVals();
     }
 

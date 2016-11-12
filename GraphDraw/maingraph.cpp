@@ -345,22 +345,10 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     x = (x-centre.x)/uniteX;
     y = -(y-centre.y)/uniteY;
 
-    double valeur = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
+    double ratio = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
 
-    if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
-    {
-        graphRange.Xmax -= (graphRange.Xmax - x)*valeur;
-        graphRange.Xmin -= (graphRange.Xmin - x)*valeur;
-        graphRange.Ymax -= (graphRange.Ymax - y)*valeur;
-        graphRange.Ymin -= (graphRange.Ymin - y)*valeur;
-
-        moving = true;
-
-        if(graphSettings.smoothing)
-            repaintTimer.start();
-
-        information->setRange(graphRange);
-    }
+    graphView.zoomView(QPointF(x,y), ratio);
+    information->setRange(graphView);
 
     event->accept();
 
@@ -457,7 +445,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphHeight = height();
 
     graphSettings = information->getGraphSettings();
-    graphRange = information->getGraphRange();
+    graphView = information->getGraphRange();
 
     if(windowSize != size())
     {
@@ -526,7 +514,7 @@ void MainGraph::directPaint()
     if(updateTickSpacing())
     {
         cancelUpdateSignal = true;
-        information->setRange(graphRange);
+        information->setRange(graphView);
 
         painter.setBrush(QBrush(graphSettings.backgroundColor));
         painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
@@ -549,7 +537,7 @@ void MainGraph::directPaint()
     if(recalculate)
     {
         recalculate = false;
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
         recalculateRegVals();
     }
     else if(recalculateRegs)
@@ -652,7 +640,7 @@ void MainGraph::resaveImageBuffer()
     if(recalculate)
     {
         recalculate = false;
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
         recalculateRegVals();
     }
     else if(recalculateRegs)
@@ -675,8 +663,8 @@ void MainGraph::resaveImageBuffer()
 
 void MainGraph::updateCenterPosAndScaling()
 {
-    uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
-    uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
+    uniteY = graphHeight / (graphView.viewRect().top() - graphView.viewRect().bottom());
+    uniteX = graphWidth / (graphView.viewRect().right() - graphView.viewRect().left());
 
     Point pt;
     pt.x = uniteX;
@@ -684,22 +672,20 @@ void MainGraph::updateCenterPosAndScaling()
 
     information->setUnits(pt);
 
-    bool orthonormal = information->isOrthonormal();
-
     double rapport =  uniteY / uniteX;
-    if(orthonormal && !(0.9999 < rapport && rapport < 1.0001))
+    if(graphView.viewType() == ScaleType::LINEAR_ORTHONORMAL && !(0.9999 < rapport && rapport < 1.0001))
     {
-        graphRange.Ymin *= rapport;
-        graphRange.Ymax *= rapport;
+        graphView.setYmax(graphView.rect().top() * rapport);
+        graphView.setYmin(graphView.rect().bottom() * rapport);
         uniteY = uniteX;
 
         cancelUpdateSignal = true;
-        information->setRange(graphRange);
+        information->setRange(graphView);
         recalculate = true;
     }
 
-    centre.x = - graphRange.Xmin * uniteX;
-    centre.y =  graphRange.Ymax * uniteY;    
+    centre.x = - graphView.viewRect().left() * uniteX;
+    centre.y =  graphView.viewRect().top() * uniteY;
 
 }
 
@@ -933,13 +919,13 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 
         if(rectReel.height() > 10 && rectReel.width() > 10)
         {
-            GraphView win = graphRange;
-            win.Xmax = (rectReel.right() - centre.x) / uniteX;
-            win.Xmin = (rectReel.left() - centre.x) / uniteX;
-            win.Ymax = (- rectReel.top() + centre.y) / uniteY;
-            win.Ymin = (- rectReel.bottom() + centre.y) / uniteY;
+            GraphView win = graphView;
+            win.viewRect().right() = (rectReel.right() - centre.x) / uniteX;
+            win.viewRect().left() = (rectReel.left() - centre.x) / uniteX;
+            win.viewRect().top() = (- rectReel.top() + centre.y) / uniteY;
+            win.viewRect().bottom() = (- rectReel.bottom() + centre.y) / uniteY;
 
-            if(win.Xmax - win.Xmin > MIN_RANGE && win.Ymax - win.Ymin > MIN_RANGE)
+            if(win.viewRect().right() - win.viewRect().left() > MIN_RANGE && win.viewRect().top() - win.viewRect().bottom() > MIN_RANGE)
                 information->setRange(win);
 
             typeCurseur = NORMAL;
@@ -980,8 +966,8 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
 
     if(typeCurseur == NORMAL)
     {
-        double x =  (mouseX - centre.x) / uniteX;
-        double y = - (mouseY - centre.y) / uniteY;
+        double x = graphView.realXvalueFromView((mouseX - centre.x) / uniteX);
+        double y = graphView.realYvalueFromView(- (mouseY - centre.y) / uniteY);
 
         if(selectedCurve.isSomethingSelected)
         {
@@ -1013,26 +999,19 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
 
         if(buttonPresse && !(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection))
         {
-            double dx = mouseX - lastPosSouris.x;
-            double dy = mouseY - lastPosSouris.y;
+            double dx = -(mouseX - lastPosSouris.x)/uniteX;
+            double dy = (mouseY - lastPosSouris.y)/uniteY;
 
-            centre.x += dx;
-            centre.y += dy;
-
-            graphRange.Xmax -= dx / uniteX;
-            graphRange.Xmin -= dx / uniteX;
-
-            graphRange.Ymax += dy / uniteY;
-            graphRange.Ymin += dy / uniteY;
+            graphView.translateView(QPointF(dx, dy));
 
             cancelUpdateSignal = true;
-            information->setRange(graphRange);
+            information->setRange(graphView);
 
             updateCenterPosAndScaling();
 
             if(dx != 0)
             {
-                funcValuesSaver->move(graphRange);
+                funcValuesSaver->move(graphView);
                 moveSavedRegsValues();
             }
 
@@ -1060,7 +1039,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
 void MainGraph::moveSavedRegsValues()
 {
     for(auto &reg : regValuesSavers)
-        reg.move(graphRange);
+        reg.move(graphView);
 }
 
 void MainGraph::mouseMoveWithActiveSelection(double x, double y)
@@ -1092,8 +1071,8 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
         double start, step = 1;
         bool ok = true;
 
-        if(graphRange.Xmin > seqs[0]->get_nMin())
-            start = trunc(graphRange.Xmin);
+        if(graphView.viewRect().left() > seqs[0]->get_nMin())
+            start = trunc(graphView.viewRect().left());
         else start = seqs[0]->get_nMin();
 
         if(uniteX < 1)
@@ -1183,8 +1162,8 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
         double intAbscissa = NAN;
         double start, step = 1;
 
-        if(graphRange.Xmin > nMin)
-            start = trunc(graphRange.Xmin);
+        if(graphView.viewRect().left() > nMin)
+            start = trunc(graphView.viewRect().left());
         else start = nMin;
 
         if(uniteX < 1)
@@ -1313,7 +1292,7 @@ void MainGraph::drawTicksAndNumbers()
 
     GridSettings gridSettings = information->getGridSettings();
 
-    double Xreal = trunc(graphRange.Xmin / gridSettings.xGridStep) * gridSettings.xGridStep;
+    double Xreal = trunc(graphView.viewRect().left() / gridSettings.xGridStep) * gridSettings.xGridStep;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
@@ -1383,7 +1362,7 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep;
+    double Yreal = trunc(graphView.viewRect().top() / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep;
     Ypos = -Yreal * uniteY + centre.y;
     step = graphSettings.gridSettings.yGridStep * uniteY;
 
@@ -1483,14 +1462,14 @@ void MainGraph::drawAxes()
     axesIntersec.y = centre.y;
     axesIntersec.x = centre.x;
 
-    if(graphRange.Ymin > -20/uniteY)
+    if(graphView.viewRect().bottom() > -20/uniteY)
         axesIntersec.y = graphHeight - 20;
-    else if(graphRange.Ymax < 20/uniteY)
+    else if(graphView.viewRect().top() < 20/uniteY)
         axesIntersec.y = 20;
 
-    if(graphRange.Xmin > -10/uniteX)
+    if(graphView.viewRect().left() > -10/uniteX)
         axesIntersec.x = 10;
-    else if(graphRange.Xmax < 10/uniteX)
+    else if(graphView.viewRect().right() < 10/uniteX)
         axesIntersec.x = graphWidth - 10;
 
 
@@ -1501,7 +1480,7 @@ void MainGraph::drawAxes()
     painter.drawLine(QPointF(0, axesIntersec.y), QPointF(graphWidth, axesIntersec.y));
 
 
-    if(graphRange.Ymin > -20/uniteY)
+    if(graphView.viewRect().bottom() > -20/uniteY)
     {
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-6), QPointF(axesIntersec.x+3, axesIntersec.y-4));
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-9), QPointF(axesIntersec.x+3, axesIntersec.y-7));
@@ -1511,7 +1490,7 @@ void MainGraph::drawAxes()
 
         painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y-6), QPointF(axesIntersec.x, axesIntersec.y-7));
     }
-    else if(graphRange.Ymax < 20/uniteY)
+    else if(graphView.viewRect().top() < 20/uniteY)
     {
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+6), QPointF(axesIntersec.x+3, axesIntersec.y+4));
         painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+9), QPointF(axesIntersec.x+3, axesIntersec.y+7));
@@ -1527,12 +1506,11 @@ void MainGraph::zoomX()
 {
     repaintTimer.stop();
 
-    double valeur = (graphRange.Xmax- graphRange.Xmin) * (double)(hSlider->value()) * 0.0016;
+    double ratio = (graphView.viewRect().right()- graphView.viewRect().left()) * (double)(hSlider->value()) * 0.0016;
 
-    graphRange.Xmin += valeur;
-    graphRange.Xmax -= valeur;
+    graphView.zoomXview(ratio);
     moving = true;
-    information->setRange(graphRange);
+    information->setRange(graphView);
 
     if(graphSettings.smoothing)
         repaintTimer.start();
@@ -1548,18 +1526,16 @@ void MainGraph::zoomY()
 {
     repaintTimer.stop();
 
-    double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * 0.0016;
+    double valeur = (graphView.viewRect().top() - graphView.viewRect().bottom()) * (double)(vSlider->value()) * 0.0016;
 
     if(!information->isOrthonormal())
     {        
-        graphRange.Ymin += valeur;
-        graphRange.Ymax -= valeur;
+        graphView.zoomYview(valeur);
         recalculate = false;
     }
     else
     {
-        graphRange.Xmin += valeur;
-        graphRange.Xmax -= valeur;
+        graphView.zoomXview(valeur);
         recalculate = true;
     }
 
@@ -1567,7 +1543,7 @@ void MainGraph::zoomY()
     if(graphSettings.smoothing)
         repaintTimer.start();
 
-    information->setRange(graphRange);
+    information->setRange(graphView);
 }
 
 void MainGraph::stop_Y_Zoom()

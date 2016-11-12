@@ -73,7 +73,8 @@ SOURCES += \
     Windows/settings.cpp \
     Windows/values.cpp \
     Windows/updatecheck.cpp \
-    Windows/mainwindow.cpp
+    Windows/mainwindow.cpp \
+    GraphDraw/graphview.cpp
 
 HEADERS  += \
     Structures.h \
@@ -131,7 +132,8 @@ HEADERS  += \
     Windows/settings.h \
     Windows/values.h \
     Windows/updatecheck.h \
-    Windows/mainwindow.h
+    Windows/mainwindow.h \
+    GraphDraw/graphview.h
 
 
 FORMS    += \

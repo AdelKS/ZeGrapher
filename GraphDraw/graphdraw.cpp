@@ -30,7 +30,7 @@ GraphDraw::GraphDraw(Information *info)
     coef = sqrt(3)/2;
 
     graphSettings = info->getGraphSettings();
-    graphRange = info->getGraphRange();
+    graphView = info->getGraphRange();
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
@@ -217,7 +217,7 @@ void GraphDraw::recalculateRegVals()
 {
     for(auto &regValSaver : regValuesSavers)
     {
-        regValSaver.recalculate(Point{uniteX, uniteY}, graphRange);
+        regValSaver.recalculate(Point{uniteX, uniteY}, graphView);
     }
 }
 
@@ -238,7 +238,7 @@ void GraphDraw::drawFunctions()
 
 void GraphDraw::drawOneSequence(int i, int width)
 {
-    if(graphRange.Xmax <= seqs[0]->get_nMin() || trunc(graphRange.Xmax) <= graphRange.Xmin || !seqs[i]->getDrawState())
+    if(graphView.Xmax <= seqs[0]->get_nMin() || trunc(graphView.Xmax) <= graphView.Xmin || !seqs[i]->getDrawState())
         return;
 
      painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
@@ -247,8 +247,8 @@ void GraphDraw::drawOneSequence(int i, int width)
      QPointF point;
      double posX;
 
-     if(graphRange.Xmin >  seqs[0]->get_nMin())
-         posX = trunc(graphRange.Xmin);
+     if(graphView.Xmin >  seqs[0]->get_nMin())
+         posX = trunc(graphView.Xmin);
      else posX = seqs[0]->get_nMin();
 
      double step = 1;
@@ -262,7 +262,7 @@ void GraphDraw::drawOneSequence(int i, int width)
      int end = seqs[i]->getDrawsNum();
      ColorSaver *colorSaver;
 
-     seqs[i]->getSeqValue(trunc(graphRange.Xmax), ok);
+     seqs[i]->getSeqValue(trunc(graphView.Xmax), ok);
      colorSaver = seqs[i]->getColorSaver();
 
      for(int k = 0; k < end; k++)
@@ -270,7 +270,7 @@ void GraphDraw::drawOneSequence(int i, int width)
          pen.setColor(colorSaver->getColor(k));
          painter.setPen(pen);
 
-         for(double pos = posX; pos < graphRange.Xmax; pos += step)
+         for(double pos = posX; pos < graphView.Xmax; pos += step)
          {
              result = seqs[i]->getSeqValue(pos, ok, k);
 
@@ -344,18 +344,18 @@ void GraphDraw::drawStraightLines()
         if(straightLines->at(i)->isVertical())
         {
             pt1.setX(straightLines->at(i)->getVerticalPos() * uniteX);
-            pt1.setY(-graphRange.Ymax * uniteY);
+            pt1.setY(-graphView.Ymax * uniteY);
 
             pt2.setX(straightLines->at(i)->getVerticalPos() * uniteX);
-            pt2.setY(-graphRange.Ymin * uniteY);
+            pt2.setY(-graphView.Ymin * uniteY);
         }
         else
         {
-            pt1.setX(graphRange.Xmin * uniteX);
-            pt1.setY(- straightLines->at(i)->getOrdinate(graphRange.Xmin) * uniteY);
+            pt1.setX(graphView.Xmin * uniteX);
+            pt1.setY(- straightLines->at(i)->getOrdinate(graphView.Xmin) * uniteY);
 
-            pt2.setX(graphRange.Xmax * uniteX);
-            pt2.setY(- straightLines->at(i)->getOrdinate(graphRange.Xmax) * uniteY);
+            pt2.setX(graphView.Xmax * uniteX);
+            pt2.setY(- straightLines->at(i)->getOrdinate(graphView.Xmax) * uniteY);
         }
 
         painter.drawLine(pt1, pt2);
