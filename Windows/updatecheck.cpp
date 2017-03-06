@@ -70,7 +70,7 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
     }
     else
     {
-        if(latestVersion > 3.0)
+        if(latestVersion > SOFTWARE_VERSION)
         {
             statusLabel->setTextFormat(Qt::RichText);
             statusLabel->setText(tr("A new version is available!<br/><br/>To download it, visit <a href=http://zegrapher.com>zegrapher.com</a>"));

@@ -88,7 +88,10 @@ void ParEqWidget::setRatio(double r)
     if(tWidget->isAnimateChecked() && valid)
     {
         if(2*trunc(tRange.step * ratio) > trunc(tRange.end - tRange.start))
+        {
             blockAnimation = true;
+            parCurrentValLineEdit->setText(tr("Increment period too small for the animation to be seen."));
+        }
         else
         {
             blockAnimation = false;
@@ -101,7 +104,10 @@ void ParEqWidget::setRatio(double r)
     else if(kWidget->isAnimateChecked() && valid)
     {         
         if(2*trunc(kRange.step * ratio) > trunc(kRange.end - kRange.start))
+        {
             blockAnimation = true;
+            parCurrentValLineEdit->setText(tr("Increment period too small for the animation to be seen."));
+        }
         else
         {
             blockAnimation = false;

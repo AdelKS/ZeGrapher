@@ -42,7 +42,7 @@ void ParEqController::nextAnimationFrame()
 {
     bool update = false;
 
-    for(int i = 0; i < parEqs->size(); i++)
+    for(int i = 0 ; i < parEqs->size(); i++)
     {
         if(parEqs->at(i)->isAnimated() && parEqs->at(i)->isPlaying())
         {

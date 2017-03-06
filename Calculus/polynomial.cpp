@@ -84,11 +84,9 @@ double Polynomial::getXTranslation() const
 
 void Polynomial::translateX(double Dx)
 {    
-    translation += -Dx;
+    translation -= Dx;
 
-    translatedCoefficients.clear();
-    
-    Dx = -Dx;
+    translatedCoefficients.clear();    
 
     QList<double> DxPowTable;
     DxPowTable.reserve(coefficients.size());
@@ -99,7 +97,7 @@ void Polynomial::translateX(double Dx)
     {
         translatedCoefficients << 0;
         DxPowTable << DxPow;
-        DxPow *= Dx;
+        DxPow *= translation;
     }
 
     for(int n = 0 ; n < coefficients.size() ; n++)

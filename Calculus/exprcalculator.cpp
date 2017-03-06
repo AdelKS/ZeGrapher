@@ -18,10 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 #include "Calculus/exprcalculator.h"
 
 static double tenPower(double x)

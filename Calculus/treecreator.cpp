@@ -99,8 +99,7 @@ void TreeCreator::insertMultiplySigns(QString &formula)
                 (formula[i].isLetter() && formula[i+1].isDigit()) ||
                 (formula[i].isDigit() && formula[i+1] == '(') ||
                 (formula[i] == ')' && formula[i+1] == '(') ||               
-                (formula[i] == ')' && (formula[i+1].isDigit() || formula[i+1].isLetter())) ||                
-                (i != 0 && !formula[i-1].isLetter() && vars.contains(QString(formula[i])) && formula[i+1] == '('))
+                (formula[i] == ')' && (formula[i+1].isDigit() || formula[i+1].isLetter())))
         {
             formula.insert(i+1, QString("*"));
             i++;
@@ -228,8 +227,8 @@ bool TreeCreator::check(QString formula)
             if(!ok)
                 return false;
 
-            openingParenthesis = varOrFunc = numberSign = false;
-            digit = ope = closingParenthesis = canEnd = true;
+            digit = openingParenthesis = varOrFunc = numberSign = false;
+            ope = closingParenthesis = canEnd = true;
         }
         else if(formula[i].isLetter() && varOrFunc)
         {
@@ -280,8 +279,8 @@ bool TreeCreator::check(QString formula)
 
             else if(constants.contains(name) || customVars.contains(name) || vars.contains(name))
             {
-                varOrFunc = numberSign = false;
-                openingParenthesis = digit = ope = closingParenthesis = canEnd = true;
+                varOrFunc = numberSign = openingParenthesis = digit = false;
+                ope = closingParenthesis = canEnd = true;
 
                 if(customVars.contains(name)) /* customVars comes at first because of overriding policy, customvars come from dataplot, and user can redefine
                                                 n t or x or k */

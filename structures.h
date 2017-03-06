@@ -18,15 +18,15 @@
 **
 ****************************************************************************/
 
-
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
 #include <cmath>
-
 #include <QtWidgets>
-
 #include "GraphDraw/graphview.h"
+
+#define SOFTWARE_VERSION 3.01
+
 
 #define FROM_CURRENT_GRAPHIC 0
 #define MANUAL_ENTRY 1
