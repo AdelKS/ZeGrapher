@@ -28,7 +28,7 @@
 #include <QString>
 #include <QColor>
 
-#include "Structures.h"
+#include "structures.h"
 
 class Regression : public QObject
 {

@@ -23,7 +23,7 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "information.h"
 #include "Calculus/exprcalculator.h"
 

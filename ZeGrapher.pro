@@ -77,7 +77,6 @@ SOURCES += \
     GraphDraw/graphview.cpp
 
 HEADERS  += \
-    Structures.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
@@ -133,7 +132,8 @@ HEADERS  += \
     Windows/values.h \
     Windows/updatecheck.h \
     Windows/mainwindow.h \
-    GraphDraw/graphview.h
+    GraphDraw/graphview.h \
+    structures.h
 
 
 FORMS    += \

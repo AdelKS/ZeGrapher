@@ -156,7 +156,7 @@ void FuncTable::fillFromRange()
         GraphView range = information->getGraphRange();
         GridSettings gridSettings = information->getGridSettings();
 
-        parameters.range.start = trunc(range.Xmin / gridSettings.xGridStep) * gridSettings.xGridStep;
+        parameters.range.start = trunc(range.Xmin() / gridSettings.xGridStep) * gridSettings.xGridStep;
         parameters.range.step = gridSettings.xGridStep;
         parameters.range.end = range.Xmax;
     }

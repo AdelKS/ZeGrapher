@@ -23,7 +23,7 @@
 #ifndef ABSTRACTTABLE_H
 #define ABSTRACTTABLE_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "DataPlot/csvhandler.h"
 
 class AbstractTable : public QWidget

@@ -23,7 +23,7 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include "Structures.h"
+#include <QDialog>
 
 namespace Ui {
     class About;

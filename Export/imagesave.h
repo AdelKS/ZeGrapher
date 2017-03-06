@@ -25,7 +25,7 @@
 #define IMAGESAVE_H
 
 #include <QWidget>
-#include "Structures.h"
+#include "structures.h"
 #include "GraphDraw/imagepreview.h"
 
 namespace Ui {

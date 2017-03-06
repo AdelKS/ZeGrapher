@@ -25,8 +25,6 @@
 
 Information::Information()
 {
-    graphSettings.view.Xmax = graphSettings.view.Ymax = 10;
-    graphSettings.view.Xmin = graphSettings.view.Ymin = -10;
     graphSettings.gridSettings.xGridStep = graphSettings.gridSettings.yGridStep = 1;
 
     updatingLock = false;
@@ -197,7 +195,7 @@ void Information::setOrthonormal(bool state)
 
 bool Information::isOrthonormal()
 {
-    return graphSettings.view.viewType == ScaleType::LINEAR_ORTHONORMAL;
+    return graphSettings.view.viewType() == ScaleType::LINEAR_ORTHONORMAL;
 }
 
 GridSettings Information::getGridSettings()

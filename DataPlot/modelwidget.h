@@ -25,7 +25,7 @@
 #include <QFrame>
 #include <QVBoxLayout>
 
-#include "Structures.h"
+#include "structures.h"
 #include "information.h"
 #include "./modelchoicewidget.h"
 #include "./polynomialmodelwidget.h"

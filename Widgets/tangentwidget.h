@@ -24,7 +24,7 @@
 #ifndef TANGENTWIDGET_H
 #define TANGENTWIDGET_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "Widgets/qcolorbutton.h"
 #include "Calculus/funccalculator.h"
 #include "Calculus/exprcalculator.h"

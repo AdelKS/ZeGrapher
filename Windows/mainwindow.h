@@ -24,7 +24,7 @@
 #ifndef ZEGRAPHER_H
 #define ZEGRAPHER_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "GraphDraw/maingraph.h"
 #include "Windows/rangeadjustments.h"
 #include "Windows/mathobjectsinput.h"

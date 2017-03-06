@@ -24,7 +24,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include "Structures.h"
+#include "structures.h"
 
 namespace Ui {
     class Keyboard;

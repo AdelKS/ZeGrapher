@@ -1,2 +1,2 @@
-Test the new data module to find bugs.
-Correct tick spacing update
+continue graphview to calculate grid
+qpainter will do a graph scale and translation to match pixel units with graph units

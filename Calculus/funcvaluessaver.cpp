@@ -36,28 +36,6 @@ void FuncValuesSaver::setPixelStep(double pxStep)
     pixelStep = pxStep;
 }
 
-double FuncValuesSaver::getStartAbscissa()
-{
-    unitStep = pixelStep / xUnit;
-
-    if(graphView.viewType == ScaleType::X_LOG)
-    {
-       return log(graphView.Xmin)/log(graphView.xLogBase) - unitStep;
-    }
-    else return graphView.Xmin - unitStep;
-}
-
-double FuncValuesSaver::getEndAbscissa()
-{
-    unitStep = pixelStep / xUnit;
-
-    if(graphView.viewType == ScaleType::X_LOG)
-    {
-       return log(graphView.Xmax)/log(graphView.xLogBase) + unitStep;
-    }
-    else return graphView.Xmax + unitStep;
-}
-
 double FuncValuesSaver::evalFunc(int funId, double x, double k)
 {
     if(graphView.viewType == ScaleType::X_LOG)
@@ -77,6 +55,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView
     graphView = view;
     xUnit = new_xUnit;
     yUnit = new_yUnit;
+    unitStep = pixelStep / xUnit;
 
     double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
     int k_pos = 0, end=0, n=0;
@@ -85,8 +64,8 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView
     QPolygonF curvePart;
     QPointF pt1, pt2;
 
-    double xStart = getStartAbscissa();
-    double xEnd = getEndAbscissa();
+    double xStart = graphView.viewXmin() - unitStep;
+    double xEnd = graphView.viewXmax() + unitStep;
 
     for(short i = 0; i < funcs.size(); i++)
     {
@@ -164,8 +143,8 @@ void FuncValuesSaver::move(GraphView view)
     QPointF pt1, pt2;
     int n = 0;
 
-    double xStart = getStartAbscissa();
-    double xEnd = getEndAbscissa();
+    double xStart = graphView.viewXmin() - unitStep;
+    double xEnd = graphView.viewXmax() + unitStep;
 
     for(short i = 0 ; i < funcs.size(); i++)
     {

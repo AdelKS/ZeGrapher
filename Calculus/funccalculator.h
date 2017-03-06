@@ -23,7 +23,7 @@
 #ifndef FUNCCALCULATOR_H
 #define FUNCCALCULATOR_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "treecreator.h"
 #include "colorsaver.h"
 

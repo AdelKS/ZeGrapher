@@ -46,8 +46,6 @@ protected slots:
 
 protected:
     void calculateAllFuncColors();
-    double getStartAbscissa();
-    double getEndAbscissa();
     double evalFunc(int funId, double x, double k);
 
     Information *information;

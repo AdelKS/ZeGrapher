@@ -24,9 +24,9 @@
 
 #include <cmath>
 
-
 #include <QtWidgets>
 
+#include "GraphDraw/graphview.h"
 
 #define FROM_CURRENT_GRAPHIC 0
 #define MANUAL_ENTRY 1
@@ -80,42 +80,7 @@ struct FastTree
     FastTree *right;
 };
 
-enum struct ScaleType : short
-{
-    LINEAR, LINEAR_ORTHONORMAL, X_LOG, Y_LOG, XY_LOG,
-};
 
-enum struct GridType : short
-{
-    NO_GRID, GRID, GRID_SUBGRID
-};
-
-struct GridSettings
-{
-    GridType gridType;
-    double xGridStep, yGridStep;
-    unsigned int subGridDivs;
-    // the number of lines of the sub grid between two lines of the main one.
-};
-
-struct GraphView
-{
-    double Xmin, Xmax, Ymin, Ymax;
-    ScaleType viewType;
-    double xLogBase, yLogBase;
-    // the base used for logarithmic scale,
-    // if it's 10, then it's the usual one
-
-    QRectF rect() const
-    {
-        QRectF graphWin;
-        graphWin.setBottom(Ymin);
-        graphWin.setTop(Ymax);
-        graphWin.setLeft(Xmin);
-        graphWin.setRight(Xmax);
-        return graphWin;
-    }
-};
 
 struct GraphSettings
 {
@@ -130,7 +95,6 @@ struct GraphSettings
     QFont graphFont;
 
     GraphView view;
-    GridSettings gridSettings;
 };
 
 struct Range

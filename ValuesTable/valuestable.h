@@ -24,7 +24,7 @@
 #ifndef VALUESTABLE_H
 #define VALUESTABLE_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "information.h"
 #include "valuestableconf.h"
 #include "seqtable.h"
