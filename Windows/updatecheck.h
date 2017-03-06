@@ -10,6 +10,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
+#include <Structures.h>
+
 
 class UpdateCheck : public QDialog
 {

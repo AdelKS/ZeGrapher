@@ -160,7 +160,7 @@ void PolynomialRegression::calculateRegressionPolynomials()
 
     continuousPol.translateX(1);
     continuousPol.expand(xamp/2);    
-    continuousPol.translateX(xmin);    
+    continuousPol.translateX(xmin);
 
     continuousPol.translateY(1);
     continuousPol *= yamp/2;

@@ -23,9 +23,9 @@
 #define STRUCTURES_H
 
 #include <cmath>
-
-
 #include <QtWidgets>
+
+#define SOFTWARE_VERSION 3.01
 
 
 #define FROM_CURRENT_GRAPHIC 0
