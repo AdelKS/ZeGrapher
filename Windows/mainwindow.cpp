@@ -196,9 +196,9 @@ void MainWindow::updateGridButtonIcon()
 {
     GraphSettings graphSettings = information->getGraphSettings();
 
-    if(graphSettings.gridSettings.gridType == GridType::NO_GRID)
+    if(graphSettings.gridSettings.gridType == ZeGridType::NO_GRID)
         gridButton->setIcon(QIcon(":/icons/no_grid.png"));
-    else if(graphSettings.gridSettings.gridType == GridType::GRID)
+    else if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
         gridButton->setIcon(QIcon(":/icons/grid.png"));
     else gridButton->setIcon(QIcon(":/icons/grid_subgrid.png"));
 

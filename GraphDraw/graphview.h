@@ -5,7 +5,7 @@
 #include <QRectF>
 #include <QPair>
 
-enum struct ScaleType
+enum struct ZeScaleType
 {
     LINEAR, LINEAR_ORTHONORMAL, X_LOG, Y_LOG, XY_LOG,
 };
@@ -16,52 +16,57 @@ struct ZeLogBase
     double powerNumerator, powerDenominator;
 };
 
-enum struct GridType
+enum struct ZeGridType
 {
     NO_GRID, GRID, GRID_SUBGRID
 };
 
-struct GridSettings
+struct ZeGridSettings
 {
-    GridType gridType;
-    double xGridStep, yGridStep;
+    ZeGridType gridType;
     unsigned int horSubGridLineCount, verSubGridLineCount;
     // the number of lines of the sub grid between two lines of the main one.
 };
 
-struct MainGridLine
+struct ZeTickCoordinate
 {
-    double pos; // no need to differenciate between log and linear view since it's seamless for the plotter
-    QString logBase;
+    QString baseStr;
+    double base;
+    double baseMultiplier;
     int powerNumerator, powerDenominator;
-
 };
 
-struct SubGridLine
+struct ZeMainGridLine
+{
+    double pos; // no need to differenciate between log and linear view since it's seamless for the plotter
+    ZeTickCoordinate coordinate;
+};
+
+struct ZeSubGridLine
 {
     double pos;
     int numerator, denominator;
 };
 
-struct ZeGridDescription
+struct ZeGrid
 {
-    OneDirectionGrid horizontal, vertical;
+    ZeOneDirectionGrid horizontal, vertical;
 };
 
-struct OneDirectionGrid
+struct ZeOneDirectionGrid
 {
-    QList<MainGridLine> mainGrid;
-    QList<SubGridLine> subGrid;
+    QList<ZeMainGridLine> mainGrid;
+    QList<ZeSubGridLine> subGrid;
 };
 
-class GraphView : public QObject
+class ZeGraphView : public QObject
 {
     Q_OBJECT
 public:
-    explicit GraphView(QObject *parent = 0);
-    GraphView(const GraphView &other, QObject *parent = 0);
+    explicit ZeGraphView(QObject *parent = 0);
+    ZeGraphView(const ZeGraphView &other, QObject *parent = 0);
 
-    GraphView& operator=(const GraphView &other);
+    ZeGraphView& operator=(const ZeGraphView &other);
 
 
     void zoomYview(double ratio);
@@ -79,32 +84,38 @@ public:
     void setYmin(double val);
     void setYmax(double val);
 
-    const void realYvalueFromView(double viewY);
-    const void realXvalueFromView(double viewX);
+    double viewToUnit_y(double viewY) const;
+    double unitToView_y(double unitY) const ;
 
-    const QRectF rect();
-    const QRectF lgRect();
+    double viewToUnit_x(double viewX) const ;
+    double unitToView_x(double unitX) const ;
 
-    const QRectF viewRect();
+    QRectF rect() const ;
+    QRectF lgRect() const ;
 
-    const ScaleType viewType();
+    QRectF viewRect() const ;
 
-    ZeGridDescription getGrid(QRect graphRectPx);
+    ZeScaleType viewType() const ;
+
+    ZeGrid getGrid(QRect graphRectPx);
 
 signals:
 
 public slots:
 
 protected:
-    OneDirectionGrid getOneDirectionLinearGrid(int pxWidth)
+    ZeOneDirectionGrid getOneDirectionLinearGrid(int pxWidth, double &step, double min, double max,
+                                               int subGridlineCount, double minTickDist, double maxTickDist);
 
 
     double Xmin, Xmax, Ymin, Ymax;
     double lgXmin, lgXmax, lgYmin, lgYmax;
-    ScaleType m_viewType;
-    double xLogBase, yLogBase;
+    ZeScaleType scaleType;
 
-    GridSettings gridSettings;
+    double xLogBase, yLogBase;    
+    double xGridStep, yGridStep;
+
+    ZeGridSettings gridSettings;
 };
 
 #endif // GRAPHVIEW_H

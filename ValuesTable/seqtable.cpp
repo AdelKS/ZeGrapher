@@ -150,8 +150,8 @@ void SeqTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphView range = information->getGraphRange();
-        GridSettings gridSettings = information->getGridSettings();
+        ZeGraphView range = information->getGraphRange();
+        ZeGridSettings gridSettings = information->getGridSettings();
 
         parameters.range.start = trunc(range.Xmin / gridSettings.xGridStep) * gridSettings.xGridStep;
         parameters.range.step = gridSettings.xGridStep;

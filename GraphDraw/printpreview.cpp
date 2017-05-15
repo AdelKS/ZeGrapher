@@ -164,7 +164,7 @@ void PrintPreview::determinerCentreEtUnites()
     uniteY = graphHeight / (graphView.Ymax - graphView.Ymin);
     uniteX = graphWidth / (graphView.Xmax - graphView.Xmin);
 
-    if(information->getGraphSettings().view.viewType == ScaleType::LINEAR_ORTHONORMAL)
+    if(information->getGraphSettings().view.viewType == ZeScaleType::LINEAR_ORTHONORMAL)
     {
         double rapport =  uniteY / uniteX;
         graphView.Ymin *= rapport;

@@ -56,7 +56,7 @@ private slots:
     void manageWidgetStates();
 
 signals:
-    void newWindow(GraphView window);//FIXME never emitted
+    void newWindow(ZeGraphView window);//FIXME never emitted
     void orthonormalBasis(bool state);
 
 private:

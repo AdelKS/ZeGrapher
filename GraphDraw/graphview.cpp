@@ -1,16 +1,16 @@
 #include "graphview.h"
 
-GraphView::GraphView(QObject *parent) : QObject(parent)
+ZeGraphView::ZeGraphView(QObject *parent) : QObject(parent)
 {
     Xmin = Ymin = -10;
     Xmax = Ymax = 10;
     lgXmin = lgYmin = -1;
     lgXmax = lgYmax = 1;
     xLogBase = yLogBase = 10;
-    m_viewType = ScaleType::LINEAR;
+    m_viewType = ZeScaleType::LINEAR;
 }
 
-GraphView::GraphView(const GraphView &other, QObject *parent) : QObject(parent)
+ZeGraphView::ZeGraphView(const ZeGraphView &other, QObject *parent) : QObject(parent)
 {
     Xmin = other.Xmin;
     Xmax = other.Xmax;
@@ -28,7 +28,7 @@ GraphView::GraphView(const GraphView &other, QObject *parent) : QObject(parent)
     m_viewType = other.m_viewType;
 }
 
-GraphView& GraphView::operator=(const GraphView &other)
+ZeGraphView& ZeGraphView::operator=(const ZeGraphView &other)
 {
     Xmin = other.Xmin;
     Xmax = other.Xmax;
@@ -46,7 +46,7 @@ GraphView& GraphView::operator=(const GraphView &other)
     m_viewType = other.m_viewType;
 }
 
-QRectF GraphView::rect()
+QRectF ZeGraphView::rect()
 {
     QRectF graphWin;
     graphWin.setBottom(Ymin);
@@ -56,7 +56,7 @@ QRectF GraphView::rect()
     return graphWin;
 }
 
-QRectF GraphView::lgRect()
+QRectF ZeGraphView::lgRect()
 {
     QRectF graphlLgWin;
     graphlLgWin.setBottom(lgYmin);
@@ -66,11 +66,11 @@ QRectF GraphView::lgRect()
     return graphlLgWin;
 }
 
-QRectF GraphView::viewRect()
+QRectF ZeGraphView::viewRect()
 {
     QRect viewWin;
 
-    if(viewType == ScaleType::X_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
     {
         viewWin.setLeft(lgXmin);
         viewWind.setRight(lgXmax);
@@ -81,7 +81,7 @@ QRectF GraphView::viewRect()
         viewWind.setRight(Xmax);
     }
 
-    if(viewType == ScaleType::Y_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
     {
         viewWin.setBottom(lgYmin);
         viewWin.setTop(lgYmax);
@@ -95,9 +95,9 @@ QRectF GraphView::viewRect()
     return viewWin;
 }
 
-void GraphView::zoomYview(double ratio)
+void ZeGraphView::zoomYview(double ratio)
 {
-    if(viewType == ScaleType::Y_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
     {
         double val = (lgYmax - lgYmin) * ratio;
         setlgYmax(lgYmax + val);
@@ -111,9 +111,9 @@ void GraphView::zoomYview(double ratio)
     }
 }
 
-void GraphView::zoomXview(double ratio)
+void ZeGraphView::zoomXview(double ratio)
 {
-    if(viewType == ScaleType::X_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
     {
         double val = (lgXmax - lgXmin) * ratio;
         setlgXmax(lgXmax + val);
@@ -127,11 +127,11 @@ void GraphView::zoomXview(double ratio)
     }
 }
 
-void GraphView::zoomView(QPointF center, double ratio)
+void ZeGraphView::zoomView(QPointF center, double ratio)
 {
     if((Xmax - Xmin > MIN_RANGE && Ymax - Ymin > MIN_RANGE) || ratio < 0)
     {
-        if(viewType == ScaleType::X_LOG || viewType == ScaleType::XY_LOG)
+        if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
         {
             setlgXmax(lgXmax - (lgXmax - center.x())*ratio);
             setlgXmin(lgXmin - (lgXmin - center.x())*ratio);
@@ -142,7 +142,7 @@ void GraphView::zoomView(QPointF center, double ratio)
             setXmin(Xmin - (Xmin - center.x())*ratio);
         }
 
-        if(viewType == ScaleType::Y_LOG || viewType == ScaleType::XY_LOG)
+        if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
         {
             setlgYmax(lgYmax - (lgYmax - center.y())*ratio);
             setlgYmin(lgYmin - (lgYmin - center.y())*ratio);
@@ -155,14 +155,75 @@ void GraphView::zoomView(QPointF center, double ratio)
     }
 }
 
- ZeGridDescription getGrid(QRect graphRectPx)
+ ZeGrid ZeGraphView::getGrid(QRect graphRectPx)
  {
+     ZeGrid grid;
+
+     if(scaleType == ZeScaleType::LINEAR || scaleType == ZeScaleType::LINEAR_ORTHONORMAL)
+     {
+         grid.horizontal = getOneDirectionLinearGrid(graphRectPx.width(), xGridStep, Xmin, Xmax, gridSettings.horSubGridLineCount,
+                                                     30, 150);
+         grid.vertical = getOneDirectionLinearGrid(graphRectPx.height(), yGridStep, Ymin, Ymax, gridSettings.verSubGridLineCount,
+                                                   30, 100);
+     }
+
+     return grid;
+ }
+
+ ZeOneDirectionGrid ZeGraphView::getOneDirectionLinearGrid(int pxWidth, double &step, double min, double max,
+                                                       int subGridlineCount, double minTickDist, double maxTickDist)
+ {
+     ZeOneDirectionGrid grid;
+
+     ZeMainGridLine gridLine;
+     ZeSubGridLine subGridLine;
+
+     double scaling = pxWidth / (max-min);
+
+     if(scaling * step < minTickDist)
+         step *= pow(2, trunc(ln(minTickDist)/ln(step*scaling)) + 1);
+     else if(scaling * step > maxTickDist)
+         step *= pow(2, trunc(ln(maxTickDist)/ln(step*scaling)));
+
+
+     gridLine.pos = (trunc(min / step)-1) * step;
+
+     grid.mainGrid.push_back(pos);
+
+     while(gridLine.pos < max)
+     {
+         gridLine.pos += step;
+         grid.mainGrid.push_back(pos);
+     }
+
+     double count = subGridlineCount;
+     double p1, p2;
+
+     for(int i = 0 ; i < grid.mainGrid.size() - 1 ; i++)
+     {
+         p1 = grid.mainGrid[i].pos;
+         p2 = grid.mainGrid[i+1].pos;
+
+         for(double j = 1 ; j < count ; j++)
+         {
+             subGridLine.pos = j*p2 + (count-j)*p1;
+             grid.subGrid.push_back(subGridLine);
+         }
+     }
+
+     while(!grid.mainGrid.empty() && grid.mainGrid.front().pos < min) { grid.mainGrid.pop_front(); }
+     while(!grid.subGrid.empty() && grid.subGrid.front().pos < min) { grid.subGrid.pop_front(); }
+
+     while(!grid.mainGrid.empty() && grid.mainGrid.back().pos > max) { grid.mainGrid.pop_back(); }
+     while(!grid.subGrid.empty() && grid.subGrid.back().pos > max) { grid.subGrid.pop_back(); }
+
+     return grid;
 
  }
 
-void GraphView::translateView(QPointF vec)
+void ZeGraphView::translateView(QPointF vec)
 {
-    if(viewType == ScaleType::X_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
     {
         setlgXmax(lgXmax + vec.x());
         setlgXmin(lgXmin + vec.x());
@@ -173,7 +234,7 @@ void GraphView::translateView(QPointF vec)
         setXmin(Xmin + vec.x());
     }
 
-    if(viewType == ScaleType::Y_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
     {
         setlgYmax(lgYmax + vec.y());
         setlgYmin(lgYmin + vec.y());
@@ -185,9 +246,9 @@ void GraphView::translateView(QPointF vec)
     }
 }
 
-void GraphView::realYvalueFromView(double viewY) // viewY =
+void ZeGraphView::viewToUnit_y(double viewY) // viewY =
 {
-    if(viewType == ScaleType::Y_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
     {
         return pow(yLogBase, viewY);
     }
@@ -197,11 +258,23 @@ void GraphView::realYvalueFromView(double viewY) // viewY =
     }
 }
 
-void GraphView::realXvalueFromView(double viewX)
+const double ZeGraphView::unitToView_y(double unitY)
 {
-    if(viewType == ScaleType::X_LOG || viewType == ScaleType::XY_LOG)
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
     {
-        pow(xLogBase, viewX);
+        return ln(unitY)/ln(yLogBase);
+    }
+    else
+    {
+        return unitY;
+    }
+}
+
+const double ZeGraphView::viewToUnit_x(double viewX)
+{
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    {
+        return pow(xLogBase, viewX);
     }
     else
     {
@@ -209,55 +282,67 @@ void GraphView::realXvalueFromView(double viewX)
     }
 }
 
-void GraphView::setlgXmin(double val)
+const double ZeGraphView::unitToView_x(double unitX)
+{
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    {
+        return ln(unitX)/ln(xLogBase);
+    }
+    else
+    {
+        return unitX;
+    }
+}
+
+void ZeGraphView::setlgXmin(double val)
 {
     lgXmin = val;
     Xmin = pow(xLogBase, lgXmin);
 }
 
-void GraphView::setlgXmax(double val)
+void ZeGraphView::setlgXmax(double val)
 {
     lgXmax = val;
     Xmax = pow(xLogBase, lgXmax);
 }
 
-void GraphView::setlgYmin(double val)
+void ZeGraphView::setlgYmin(double val)
 {
     lgYmin = val;
     Ymin = pow(yLogBase, lgYmin);
 }
 
-void GraphView::setlgYmax(double val)
+void ZeGraphView::setlgYmax(double val)
 {
     lgYmax = val;
     Ymax = pow(yLogBase, lgYmax);
 }
 
-void GraphView::setXmin(double val)
+void ZeGraphView::setXmin(double val)
 {
     Xmin = val;
     lgXmin = log(Xmin)/log(xLogBase);
 }
 
-void GraphView::setXmax(double val)
+void ZeGraphView::setXmax(double val)
 {
     Xmax = val;
     lgXmax = log(Xmax)/log(xLogBase);
 }
 
-void GraphView::setYmin(double val)
+void ZeGraphView::setYmin(double val)
 {
     Ymin = val;
     lgYmin = log(Ymin)/log(yLogBase);
 }
 
-void GraphView::setYmax(double val)
+void ZeGraphView::setYmax(double val)
 {
     Ymax = val;
     lgYmax = log(Ymax)/log(yLogBase);
 }
 
-ScaleType GraphView::viewType() const
+ZeScaleType ZeGraphView::viewType() const
 {
     return m_viewType;
 }

@@ -42,7 +42,7 @@ public:
 
 public slots:
     void setSize(int W, int H);
-    void setWindow(GraphView win);
+    void setWindow(ZeGraphView win);
     void setPrecision(short prec);   
     void setW(int W);
     void setH(int H);
@@ -53,7 +53,7 @@ private:
     QWidget *previewWindow;    
 
     int largeur, hauteur;
-    GraphView window;
+    ZeGraphView window;
     short precision;
     ImagePreview *scene;   
     QFileDialog fileDialog;

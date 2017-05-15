@@ -42,13 +42,13 @@ public:
 
     Regression* getRegression();
     void setRegression(Regression *reg);
-    void move(GraphView newRange);
+    void move(ZeGraphView newRange);
 
     QList<QPolygonF> &getCurves();
 
 public slots:
      void recalculate();
-     void recalculate(Point graphUnits, GraphView range);
+     void recalculate(Point graphUnits, ZeGraphView range);
 
 protected:
     void calculatePolarRegressionCurve();
@@ -65,7 +65,7 @@ protected:
     double pixelMove;
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
-    GraphView graphRange;    
+    ZeGraphView graphRange;    
     Range drawRange, graphAngleRange;
 
     QList<QPolygonF> curves;

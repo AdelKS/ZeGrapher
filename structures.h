@@ -94,7 +94,7 @@ struct GraphSettings
     bool updateCheckAtStart;
     QFont graphFont;
 
-    GraphView view;
+    ZeGraphView view;
 };
 
 struct Range

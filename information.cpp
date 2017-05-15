@@ -170,7 +170,7 @@ QList<FuncCalculator*> Information::getFuncsList()
     return functions;
 }
 
-void Information::setRange(const GraphView &newWindow)
+void Information::setRange(const ZeGraphView &newWindow)
 {
     graphSettings.view = newWindow;
     emit updateOccured();
@@ -178,11 +178,11 @@ void Information::setRange(const GraphView &newWindow)
 
 void Information::changeGridState()
 {
-    if(graphSettings.gridSettings.gridType == GridType::NO_GRID)
-        graphSettings.gridSettings.gridType = GridType::GRID;
-    else if(graphSettings.gridSettings.gridType == GridType::GRID)
-        graphSettings.gridSettings.gridType = GridType::GRID_SUBGRID;
-    else graphSettings.gridSettings.gridType = GridType::NO_GRID;
+    if(graphSettings.gridSettings.gridType == ZeGridType::NO_GRID)
+        graphSettings.gridSettings.gridType = ZeGridType::GRID;
+    else if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
+        graphSettings.gridSettings.gridType = ZeGridType::GRID_SUBGRID;
+    else graphSettings.gridSettings.gridType = ZeGridType::NO_GRID;
 
     emit gridStateChange();
 }
@@ -195,10 +195,10 @@ void Information::setOrthonormal(bool state)
 
 bool Information::isOrthonormal()
 {
-    return graphSettings.view.viewType() == ScaleType::LINEAR_ORTHONORMAL;
+    return graphSettings.view.viewType() == ZeScaleType::LINEAR_ORTHONORMAL;
 }
 
-GridSettings Information::getGridSettings()
+ZeGridSettings Information::getGridSettings()
 {
     return graphSettings.gridSettings;
 }
@@ -220,7 +220,7 @@ void Information::emitDrawStateUpdate()
     emit drawStateUpdateOccured();
 }
 
-GraphView Information::getGraphRange()
+ZeGraphView Information::getGraphRange()
 {
     return graphSettings.view;
 }

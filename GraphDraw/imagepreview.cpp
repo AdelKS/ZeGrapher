@@ -245,7 +245,7 @@ void ImagePreview::placerGraduations()
     {
         if(fabs(Xpos) > 1)
         {
-            if(graphSettings.gridSettings.gridType == GridType::GRID)
+            if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
             {
                 pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
@@ -287,7 +287,7 @@ void ImagePreview::placerGraduations()
     {
         if(fabs(Ypos) > 1)
         {
-            if(graphSettings.gridSettings.gridType == GridType::GRID)
+            if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
             {
                 pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);

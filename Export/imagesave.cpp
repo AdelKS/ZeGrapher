@@ -94,7 +94,7 @@ void ImageSave::setH(int H)
     scene->setFixedHeight(H);
 }
 
-void ImageSave::setWindow(GraphView win)
+void ImageSave::setWindow(ZeGraphView win)
 {
     window = win;    
 }

@@ -477,6 +477,7 @@ void MainGraph::indirectPaint()
 
     painter.drawImage(QPoint(0,0), *savedGraph);    
     painter.translate(QPointF(centre.x, centre.y));
+    painter.scale(1/uniteX, 1/uniteY);
 
     drawAnimatedParEq();
     drawData();
@@ -673,7 +674,7 @@ void MainGraph::updateCenterPosAndScaling()
     information->setUnits(pt);
 
     double rapport =  uniteY / uniteX;
-    if(graphView.viewType() == ScaleType::LINEAR_ORTHONORMAL && !(0.9999 < rapport && rapport < 1.0001))
+    if(graphView.viewType() == ZeScaleType::LINEAR_ORTHONORMAL && !(0.9999 < rapport && rapport < 1.0001))
     {
         graphView.setYmax(graphView.rect().top() * rapport);
         graphView.setYmin(graphView.rect().bottom() * rapport);
@@ -919,7 +920,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 
         if(rectReel.height() > 10 && rectReel.width() > 10)
         {
-            GraphView win = graphView;
+            ZeGraphView win = graphView;
             win.viewRect().right() = (rectReel.right() - centre.x) / uniteX;
             win.viewRect().left() = (rectReel.left() - centre.x) / uniteX;
             win.viewRect().top() = (- rectReel.top() + centre.y) / uniteY;
@@ -1290,7 +1291,7 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Ypos + graphSettings.graphFont.pixelSize() + 3;
     }
 
-    GridSettings gridSettings = information->getGridSettings();
+    ZeGridSettings gridSettings = information->getGridSettings();
 
     double Xreal = trunc(graphView.viewRect().left() / gridSettings.xGridStep) * gridSettings.xGridStep;
     double Xpos = Xreal * uniteX + centre.x;
@@ -1316,7 +1317,7 @@ void MainGraph::drawTicksAndNumbers()
     {       
         if(start <= Xpos && fabs(Xpos - centre.x) > 1)
         {
-            if(start <= Xpos && graphSettings.gridSettings.gridType == GridType::GRID && Xpos <= end)
+            if(start <= Xpos && graphSettings.gridSettings.gridType == ZeGridType::GRID && Xpos <= end)
             {
                 pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
@@ -1385,7 +1386,7 @@ void MainGraph::drawTicksAndNumbers()
     {        
         if(start <= Ypos && fabs(Ypos - centre.y) > 1)
         {
-            if(information->getGridSettings().gridType == GridType::GRID)
+            if(information->getGridSettings().gridType == ZeGridType::GRID)
             {
                 pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
@@ -1414,7 +1415,7 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    GridSettings gridSettings = information->getGridSettings();
+    ZeGridSettings gridSettings = information->getGridSettings();
 
     if(uniteX * gridSettings.xGridStep < widestXNumber + 32)
     {

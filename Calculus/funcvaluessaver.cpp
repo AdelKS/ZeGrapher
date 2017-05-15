@@ -38,11 +38,11 @@ void FuncValuesSaver::setPixelStep(double pxStep)
 
 double FuncValuesSaver::evalFunc(int funId, double x, double k)
 {
-    if(graphView.viewType == ScaleType::X_LOG)
+    if(graphView.viewType == ZeScaleType::X_LOG)
     {
         return funcs[funId]->getFuncValue(pow(graphView.xLogBase, x), k);
     }
-    else if(graphView.viewType == ScaleType::XY_LOG)
+    else if(graphView.viewType == ZeScaleType::XY_LOG)
     {
         return log(funcs[funId]->getFuncValue(pow(graphView.xLogBase, x), k))/log(graphView.yLogBase);
     }
@@ -50,7 +50,7 @@ double FuncValuesSaver::evalFunc(int funId, double x, double k)
 }
 
 
-void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView view)
+void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, ZeGraphView view)
 {
     graphView = view;
     xUnit = new_xUnit;
@@ -64,8 +64,8 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView
     QPolygonF curvePart;
     QPointF pt1, pt2;
 
-    double xStart = graphView.viewXmin() - unitStep;
-    double xEnd = graphView.viewXmax() + unitStep;
+    double xStart = graphView.viewRect().left() - unitStep;
+    double xEnd = graphView.viewRect().right() + unitStep;
 
     for(short i = 0; i < funcs.size(); i++)
     {
@@ -85,7 +85,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView
 
             for(x = xStart ; x <= xEnd; x += unitStep)
             {                
-                y = evalFunc(i, x, k);
+                y = evalFunc(i, view.viewToUnit_x(x), k);
 
                 if(std::isnan(y) || std::isinf(y))
                 {
@@ -97,7 +97,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView
                 }
                 else
                 {
-                    curvePart <<  QPointF( x*xUnit , - y * yUnit);
+                    curvePart <<  QPointF( x ,  view.unitToView_y(y));
 
                     n = curvePart.size();
                     if(n > 1)
@@ -131,7 +131,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, GraphView
     }
 }
 
-void FuncValuesSaver::move(GraphView view)
+void FuncValuesSaver::move(ZeGraphView view)
 {
     graphView = view;
 
@@ -143,8 +143,8 @@ void FuncValuesSaver::move(GraphView view)
     QPointF pt1, pt2;
     int n = 0;
 
-    double xStart = graphView.viewXmin() - unitStep;
-    double xEnd = graphView.viewXmax() + unitStep;
+    double xStart = graphView.viewRect().left() - unitStep;
+    double xEnd = graphView.viewRect().right() + unitStep;
 
     for(short i = 0 ; i < funcs.size(); i++)
     {
@@ -157,7 +157,7 @@ void FuncValuesSaver::move(GraphView view)
         for(k_pos = 0; k_pos < funcCurves[i].size() ; k_pos++)
         {
             curvePart = funcCurves[i][k_pos].takeFirst();
-            x = curvePart.first().x()/xUnit - unitStep;
+            x = curvePart.first().x() - unitStep;
 
             if(x >= xStart)
             {
@@ -174,7 +174,7 @@ void FuncValuesSaver::move(GraphView view)
 
                 while(x >= xStart)
                 {
-                    y = evalFunc(i, x, k);
+                    y = evalFunc(i, view.viewToUnit_x(x), k);
 
                     if(std::isnan(y) || std::isinf(y))
                     {
@@ -186,7 +186,7 @@ void FuncValuesSaver::move(GraphView view)
                     }
                     else
                     {
-                        curvePart.prepend(QPointF(x * xUnit, - y * yUnit));
+                        curvePart.prepend(QPointF(x ,  view.unitToView_y(y)));
 
                         n = curvePart.size();
 
@@ -229,7 +229,7 @@ void FuncValuesSaver::move(GraphView view)
 
             curvePart = funcCurves[i][k_pos].takeLast();
 
-            x = curvePart.last().x()/xUnit + unitStep;
+            x = curvePart.last().x() + unitStep;
 
             if(x <= xEnd)
             {
@@ -246,7 +246,7 @@ void FuncValuesSaver::move(GraphView view)
 
                 while(x <= xEnd)
                 {
-                    y = evalFunc(i, x, k);
+                    y = evalFunc(i, view.viewToUnit_x(x), k);
 
                     if(std::isnan(y) || std::isinf(y))
                     {
@@ -258,7 +258,7 @@ void FuncValuesSaver::move(GraphView view)
                     }
                     else
                     {
-                        curvePart << QPointF(x * xUnit, - y  * yUnit);
+                        curvePart << QPointF(x ,  view.unitToView_y(y) );
                         n = curvePart.size();
 
                         if(n > 1)

@@ -123,11 +123,6 @@ void GraphDraw::drawDataSet(int id, int width)
     QList<QPointF> list = information->getDataList(id);
     DataStyle style = information->getDataStyle(id);
 
-    for(int i = 0 ; i < list.size(); i++)
-    {
-        list[i].rx() *= uniteX;
-        list[i].ry() *= - uniteY;
-    }
 
     pen.setColor(style.color);
     painter.setPen(pen);
@@ -247,9 +242,15 @@ void GraphDraw::drawOneSequence(int i, int width)
      QPointF point;
      double posX;
 
-     if(graphView.Xmin >  seqs[0]->get_nMin())
-         posX = trunc(graphView.Xmin);
-     else posX = seqs[0]->get_nMin();
+     double viewXmin = graphView->viewRect().left();
+     double viewXmax = graphView->viewRect().right();
+
+     double Xmin = graphView->rect().right();
+     double Xmax = graphView->rect().left();
+
+     if(Xmin >  seqs[0]->get_nMin())
+         posX = viewXmin;
+     else posX = graphView->unitToView_x(seqs[0]->get_nMin());
 
      double step = 1;
 
@@ -260,25 +261,24 @@ void GraphDraw::drawOneSequence(int i, int width)
      double result;
      bool ok = true;
      int end = seqs[i]->getDrawsNum();
-     ColorSaver *colorSaver;
 
-     seqs[i]->getSeqValue(trunc(graphView.Xmax), ok);
-     colorSaver = seqs[i]->getColorSaver();
+     ColorSaver *colorSaver = seqs[i]->getColorSaver();
+
 
      for(int k = 0; k < end; k++)
      {
          pen.setColor(colorSaver->getColor(k));
          painter.setPen(pen);
 
-         for(double pos = posX; pos < graphView.Xmax; pos += step)
+         for(double pos = posX; pos < viewXmax; pos += step)
          {
-             result = seqs[i]->getSeqValue(pos, ok, k);
+             result = seqs[i]->getSeqValue(trunc(graphView->unitToView_x(pos)), ok, k);
 
              if(!ok  || !std::isnormal(result))
                  return;
 
-             point.setX(pos * uniteX);
-             point.setY(- result * uniteY);
+             point.setX(pos);
+             point.setY(result);
              painter.drawPoint(point);
          }
      }
@@ -307,14 +307,15 @@ void GraphDraw::drawOneTangent(int i)
     painter.setPen(pen);
 
     tangentPoints = tangents->at(i)->getCaracteristicPoints();
-    painter.drawLine(QPointF(tangentPoints.left.x * uniteX, - tangentPoints.left.y * uniteY), QPointF(tangentPoints.right.x * uniteX, - tangentPoints.right.y * uniteY));
+    painter.drawLine(QPointF(graphView->unitToView_x(tangentPoints.left.x), graphView->unitToView_y(tangentPoints.left.y)),
+                     QPointF(graphView->unitToView_x(tangentPoints.right.x), graphView->unitToView_y(tangentPoints.right.y)));
 
     pen.setWidth(graphSettings.curvesThickness + 3);
     painter.setPen(pen);
 
-    painter.drawPoint(QPointF(tangentPoints.left.x * uniteX, - tangentPoints.left.y * uniteY));
-    painter.drawPoint(QPointF(tangentPoints.center.x * uniteX,  -tangentPoints.center.y * uniteY));
-    painter.drawPoint(QPointF(tangentPoints.right.x * uniteX, - tangentPoints.right.y * uniteY));
+    painter.drawPoint(QPointF(graphView->unitToView_x(tangentPoints.left.x), graphView->unitToView_y(tangentPoints.left.y)));
+    painter.drawPoint(QPointF(graphView->unitToView_x(tangentPoints.center.x), graphView->unitToView_y(tangentPoints.center.y)));
+    painter.drawPoint(QPointF(graphView->unitToView_x(tangentPoints.right.x), graphView->unitToView_y(tangentPoints.right.y)));
 }
 
 void GraphDraw::drawTangents()
@@ -343,19 +344,19 @@ void GraphDraw::drawStraightLines()
 
         if(straightLines->at(i)->isVertical())
         {
-            pt1.setX(straightLines->at(i)->getVerticalPos() * uniteX);
-            pt1.setY(-graphView.Ymax * uniteY);
+            pt1.setX(graphView->unitToView_x(straightLines->at(i)->getVerticalPos()));
+            pt1.setY(graphView->viewRect().top());
 
-            pt2.setX(straightLines->at(i)->getVerticalPos() * uniteX);
-            pt2.setY(-graphView.Ymin * uniteY);
+            pt2.setX(graphView->unitToView_x(straightLines->at(i)->getVerticalPos()));
+            pt2.setY(graphView->viewRect().bottom());
         }
         else
         {
-            pt1.setX(graphView.Xmin * uniteX);
-            pt1.setY(- straightLines->at(i)->getOrdinate(graphView.Xmin) * uniteY);
+            pt1.setX(graphView->viewRect().left());
+            pt1.setY(graphView->unitToView_y(straightLines->at(i)->getOrdinate(graphView->rect().left())));
 
-            pt2.setX(graphView.Xmax * uniteX);
-            pt2.setY(- straightLines->at(i)->getOrdinate(graphView.Xmax) * uniteY);
+            pt2.setX(graphView->viewRect().right());
+            pt2.setY(graphView->unitToView_y(straightLines->at(i)->getOrdinate(graphView->rect().right())));
         }
 
         painter.drawLine(pt1, pt2);
@@ -391,7 +392,7 @@ void GraphDraw::drawStaticParEq()
             for(int pos = 0 ; pos < list->at(curve).size(); pos ++)
             {
                 point = list->at(curve).at(pos);
-                polygon << QPointF(point.x * uniteX, - point.y * uniteY);
+                polygon << QPointF(graphView->unitToView_x(point.x), graphView->unitToView_y(point.y));
             }
 
             painter.drawPolyline(polygon);

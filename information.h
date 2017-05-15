@@ -38,7 +38,7 @@ class Information: public QObject
 public:
     Information();
 
-    GraphView getGraphRange();
+    ZeGraphView getGraphRange();
     GraphSettings getGraphSettings();
 
     void addDataList();
@@ -77,7 +77,7 @@ public:
     Point getUnits();
 
     bool isOrthonormal();
-    GridSettings getGridSettings();
+    ZeGridSettings getGridSettings();
 
 public slots:
     void emitUpdateSignal();
@@ -98,7 +98,7 @@ signals:
 
 public slots:
 
-    void setRange(const GraphView &newWindow);
+    void setRange(const ZeGraphView &newWindow);
     void changeGridState();
     void setOrthonormal(bool state);
     void setGraphSettings(GraphSettings opt);
@@ -116,7 +116,7 @@ protected:
     QList<FuncCalculator*> functions;
     QList<SeqCalculator*> sequences;
 
-    GraphView graphView;
+    ZeGraphView graphView;
     GraphSettings graphSettings;
     bool updatingLock;
     Point units;

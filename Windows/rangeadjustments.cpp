@@ -190,19 +190,19 @@ void RangeAdjustments::apply()
         return;
     }
 
-    graphSettings.view.viewType = ScaleType::LINEAR;
+    graphSettings.view.viewType = ZeScaleType::LINEAR;
 
     if(ui->specialView->isChecked())
     {
         if(ui->orthonormal->isChecked())
-            graphSettings.view.viewType = ScaleType::LINEAR_ORTHONORMAL;
+            graphSettings.view.viewType = ZeScaleType::LINEAR_ORTHONORMAL;
         else if(ui->logScale->isChecked())
         {
             if(ui->xLogScale->isChecked() && ui->yLogScale->isChecked())
-                graphSettings.view.viewType = ScaleType::XY_LOG;
+                graphSettings.view.viewType = ZeScaleType::XY_LOG;
             else if(ui->yLogScale->isChecked())
-                graphSettings.view.viewType = ScaleType::Y_LOG;
-            else graphSettings.view.viewType = ScaleType::X_LOG;
+                graphSettings.view.viewType = ZeScaleType::Y_LOG;
+            else graphSettings.view.viewType = ZeScaleType::X_LOG;
 
         }
     }
@@ -214,8 +214,8 @@ void RangeAdjustments::updateWidgets()
  {
     manageWidgetStates();
 
-    GraphView window = information->getGraphRange();
-    GridSettings gridSettings = information->getGridSettings();
+    ZeGraphView window = information->getGraphRange();
+    ZeGridSettings gridSettings = information->getGridSettings();
 
     Xmax->setNumber(window.Xmax);
     Xmin->setNumber(window.Xmin);
