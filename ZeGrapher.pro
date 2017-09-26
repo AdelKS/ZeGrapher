@@ -161,6 +161,7 @@ RC_ICONS = appicon.ico
 OTHER_FILES += \
     TODO.txt
 
+
 isEmpty(APPDATADIR):APPDATADIR=$${PREFIX}/share/appdata
 isEmpty(APPDIR):APPDIR=$${PREFIX}/share/applications
 isEmpty(DSRDIR):DSRDIR=$${PREFIX}/share/$${TARGET}
@@ -176,6 +177,7 @@ translations.path = $$INSTROOT$$DSRDIR/locale
 desktop.files = ZeGrapher.desktop
 appdata.files =  ZeGrapher.appdata.xml
 icon.files = icons/ZeGrapher.png
+
 translations.files = ZeGrapher_fr.qm
 
 INSTALLS += appdata desktop icon target translations
