@@ -24,9 +24,11 @@
 #include "Export/print.h"
 #include "ui_print.h"
 
-Print::Print(Information *info) : ui(new Ui::Print)
+Print::Print(Information *info, QWidget *parent) : ui(new Ui::Print), QWidget(parent)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::Window);
 
     setWindowTitle(tr("Print"));
 

@@ -22,7 +22,7 @@
 #define EXPRCALCULATOR_H
 
 #include "treecreator.h"
-#include "Structures.h"
+#include "structures.h"
 #include "funccalculator.h"
 
 class ExprCalculator

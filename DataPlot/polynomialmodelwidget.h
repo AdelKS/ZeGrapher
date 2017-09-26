@@ -24,7 +24,7 @@
 
 #include <QWidget>
 
-#include "Structures.h"
+#include "structures.h"
 #include "information.h"
 #include "Widgets/numberlineedit.h"
 #include "Widgets/qcolorbutton.h"

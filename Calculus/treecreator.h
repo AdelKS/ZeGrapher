@@ -26,7 +26,7 @@
 #ifndef TREECREATOR_H
 #define TREECREATOR_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "calculusdefines.h"
 
 class TreeCreator

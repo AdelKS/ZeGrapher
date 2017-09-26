@@ -30,7 +30,7 @@
 
 #include <QList>
 #include <algorithm>
-#include "Structures.h"
+#include "structures.h"
 
 
 class Polynomial

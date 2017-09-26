@@ -24,7 +24,7 @@
 #ifndef PARCONFWIDGET_H
 #define PARCONFWIDGET_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "Calculus/treecreator.h"
 #include "Calculus/exprcalculator.h"
 

@@ -25,7 +25,7 @@
 #include <algorithm>
 
 #include "regression.h"
-#include "Structures.h"
+#include "structures.h"
 
 
 class RegressionValuesSaver : public QObject

@@ -23,9 +23,11 @@
 
 #include "Windows/values.h"
 
-Values::Values(Information *info)
+Values::Values(Information *info, QWidget *parent): QWidget(parent)
 {
-    information = info;    
+    information = info;
+
+    setWindowFlags(Qt::Window);
 
     setWindowTitle(tr("Values table"));
     setWindowIcon(QIcon(":/icons/valuesTable.png"));

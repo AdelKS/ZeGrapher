@@ -25,7 +25,7 @@
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
-#include <Structures.h>
+#include <structures.h>
 #include "Widgets/pareqwidget.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/funccalculator.h"

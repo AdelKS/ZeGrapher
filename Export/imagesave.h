@@ -25,7 +25,7 @@
 #define IMAGESAVE_H
 
 #include <QWidget>
-#include "Structures.h"
+#include "structures.h"
 #include "GraphDraw/imagepreview.h"
 
 namespace Ui {
@@ -37,7 +37,7 @@ class ImageSave : public QWidget
     Q_OBJECT
 
 public:
-    explicit ImageSave(Information *info);
+    explicit ImageSave(Information *info, QWidget *parent = 0);
     ~ImageSave();   
 
 public slots:

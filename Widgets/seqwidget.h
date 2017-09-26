@@ -24,7 +24,7 @@
 #ifndef SEQWIDGET_H
 #define SEQWIDGET_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "Widgets/abstractfuncwidget.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/colorsaver.h"

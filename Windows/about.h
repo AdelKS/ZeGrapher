@@ -23,7 +23,7 @@
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include "Structures.h"
+#include "structures.h"
 
 namespace Ui {
     class About;

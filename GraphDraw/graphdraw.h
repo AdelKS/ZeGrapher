@@ -24,7 +24,7 @@
 #ifndef GRAPHDRAW_H
 #define GRAPHDRAW_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "Calculus/funccalculator.h"
 #include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"

@@ -24,9 +24,11 @@
 #include "Export/imagesave.h"
 #include "ui_imagesave.h"
 
-ImageSave::ImageSave(Information *info) : ui(new Ui::ImageSave)
+ImageSave::ImageSave(Information *info, QWidget *parent) : ui(new Ui::ImageSave), QWidget(parent)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::Window);
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;

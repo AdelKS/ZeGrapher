@@ -23,7 +23,7 @@
 #ifndef ABSTRACTFUNCWIDGET_H
 #define ABSTRACTFUNCWIDGET_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "parconfwidget.h"
 #include "qcolorbutton.h"
 

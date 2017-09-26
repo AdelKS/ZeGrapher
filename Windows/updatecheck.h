@@ -37,6 +37,7 @@ protected:
     QTimer timer;
     QLabel *statusLabel;
     bool silentCheck;
+    QString manualCheckErrorText;
 
 };
 

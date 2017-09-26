@@ -25,18 +25,17 @@ MainWindow::MainWindow()
 {      
     information = new Information();
 
-    settingsWin = new Settings(information);
-    rangeWin = new RangeAdjustments(information);
-    inputWin = new MathObjectsInput(information);
+    settingsWin = new Settings(information, this);
+    rangeWin = new RangeAdjustments(information, this);
+    inputWin = new MathObjectsInput(information, this);
     aboutWin = new about(this);
     updateCheckWin = new UpdateCheck(this);
-    imageExportWin = new ImageSave(information);
-    valuesWin = new Values(information);
-    printWin = new Print(information);
-    keyboard = new Keyboard();
+    imageExportWin = new ImageSave(information, this);
+    valuesWin = new Values(information, this);
+    printWin = new Print(information, this);
+    keyboard = new Keyboard(this);
 
     scene = new MainGraph(information); // it has to be the last thing to create.
-
 
     setWindowIcon(QIcon(":/icons/software.png"));
     setMinimumSize(700,450);
@@ -48,7 +47,7 @@ MainWindow::MainWindow()
     window.Xmin = window.Ymin = -10;
     window.Xscale = window.Yscale = 1;
 
-    setCentralWidget(scene);    
+    setCentralWidget(scene);
 
     imageExportWin->setSize(scene->width(), scene->height());
 
@@ -125,7 +124,7 @@ void MainWindow::createMenus()
 
     QAction *showKeyboardAction = menuWindows->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
     showKeyboardAction->setShortcut(QKeySequence("Ctrl+K"));
-    connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));    
+    connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));
     connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(raise()));
 
     QToolBar *toolBar = new QToolBar(tr("Windows and actions"));
@@ -174,19 +173,26 @@ void MainWindow::loadWindowSavedGeomtries()
         printWin->setGeometry(settings.value("print_window/geometry").value<QRect>());
     if(settings.contains("virtual_keyboard_window/geometry"))
         keyboard->setGeometry(settings.value("virtual_keyboard_window/geometry").value<QRect>());
-
 }
 
 void MainWindow::saveWindowsGeometry()
 {
-    settings.setValue("main_window/geometry", geometry());
-    settings.setValue("settings_window/geometry", settingsWin->geometry());
-    settings.setValue("range_window/geometry", rangeWin->geometry());
-    settings.setValue("input_window/geometry", inputWin->geometry());
-    settings.setValue("image_export_window/geometry", imageExportWin->geometry());
-    settings.setValue("values_window/geometry", valuesWin->geometry());
-    settings.setValue("print_window/geometry", printWin->geometry());
-    settings.setValue("virtual_keyboard_window/geometry", keyboard->geometry());
+    settings.setValue("main_window/geometry", frameGeometry());
+
+    if(settingsWin->frameGeometry().top() != 0)
+        settings.setValue("settings_window/geometry", settingsWin->frameGeometry());
+    if(rangeWin->frameGeometry().top() != 0)
+        settings.setValue("range_window/geometry", rangeWin->frameGeometry());
+    if(inputWin->frameGeometry().top() != 0)
+        settings.setValue("input_window/geometry", inputWin->frameGeometry());
+    if(imageExportWin->frameGeometry().top() != 0)
+        settings.setValue("image_export_window/geometry", imageExportWin->frameGeometry());
+    if(valuesWin->frameGeometry().top() != 0)
+        settings.setValue("values_window/geometry", valuesWin->frameGeometry());
+    if(printWin->frameGeometry().top() != 0)
+        settings.setValue("print_window/geometry", printWin->frameGeometry());
+    if(keyboard->frameGeometry().top() != 0)
+        settings.setValue("virtual_keyboard_window/geometry", keyboard->frameGeometry());
 }
 
 
@@ -204,35 +210,15 @@ void MainWindow::showAboutQtWin()
 
 void MainWindow::closeEvent(QCloseEvent *evenement)
 {
-    rangeWin->close();
-
-    inputWin->closeAllOpenedWindows();
-    inputWin->close();
-
+    /* Save windows geometry */
+    saveWindowsGeometry();
     settingsWin->saveSettings();
-    settingsWin->close();
-
-    aboutWin->close();
-    valuesWin->close();
-    imageExportWin->close();
-    printWin->close();
-    keyboard->close();
 
     evenement->accept();
 }
 
 MainWindow::~MainWindow()
 {   
-    /* Save windows geometry */
-    saveWindowsGeometry();
-    
-    delete valuesWin;
-    delete scene;   
-    delete rangeWin;
-    delete inputWin;
-    delete settingsWin;
-    delete aboutWin;
-    delete imageExportWin;
 }
 
 

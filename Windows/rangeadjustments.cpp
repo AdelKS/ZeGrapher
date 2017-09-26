@@ -24,10 +24,11 @@
 #include "Windows/rangeadjustments.h"
 #include "ui_rangeadjustments.h"
 
-RangeAdjustments::RangeAdjustments(Information *info)
+RangeAdjustments::RangeAdjustments(Information *info, QWidget *parent): QWidget(parent)
 {
     information = info;
 
+    setWindowFlags(Qt::Window);
 
     calculator = new ExprCalculator(false, information->getFuncsList());
 

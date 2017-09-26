@@ -76,7 +76,6 @@ SOURCES += \
     Windows/mainwindow.cpp
 
 HEADERS  += \
-    Structures.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
@@ -131,7 +130,8 @@ HEADERS  += \
     Windows/settings.h \
     Windows/values.h \
     Windows/updatecheck.h \
-    Windows/mainwindow.h
+    Windows/mainwindow.h \
+    structures.h
 
 
 FORMS    += \

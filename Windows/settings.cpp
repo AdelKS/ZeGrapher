@@ -23,12 +23,14 @@
 #include "Windows/settings.h"
 #include "ui_settings.h"
 
-Settings::Settings(Information *info)
+Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
 {
     information = info;
 
     ui = new Ui::Settings;
     ui->setupUi(this);
+
+    setWindowFlags(Qt::Window);
 
     setWindowIcon(QIcon(":/icons/settings.png"));
 
@@ -190,6 +192,9 @@ void Settings::resetToDefaultVals()
     ui->thicknessWidget->setValue(1);
     ui->smoothing->setChecked(true);
     ui->updateCheckAtStart->setChecked(true);
+
+    QSettings settings;
+    settings.clear();
 
     apply();
 }

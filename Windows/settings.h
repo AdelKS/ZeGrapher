@@ -38,7 +38,7 @@ class Settings : public QWidget
     Q_OBJECT
 
 public:
-    explicit Settings(Information *info);
+    explicit Settings(Information *info, QWidget *parent = 0);
     ~Settings();
 
 public slots:

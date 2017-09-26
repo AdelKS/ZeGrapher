@@ -23,7 +23,7 @@
 #ifndef ROWACTIONSWIDGET_H
 #define ROWACTIONSWIDGET_H
 
-#include "Structures.h"
+#include "structures.h"
 
 class RowActionsWidget : public QWidget
 {

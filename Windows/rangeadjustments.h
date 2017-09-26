@@ -24,7 +24,7 @@
 #ifndef RANGEADJUSTMENTS_H
 #define RANGEADJUSTMENTS_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "information.h"
 #include "Calculus/exprcalculator.h"
 #include "Widgets/numberlineedit.h"
@@ -39,7 +39,7 @@ class RangeAdjustments : public QWidget
     Q_OBJECT
 
 public:
-    explicit RangeAdjustments(Information *info);
+    explicit RangeAdjustments(Information *info, QWidget *parent = 0);
     ~RangeAdjustments();
 
 public slots:

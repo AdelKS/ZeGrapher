@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "Windows/about.h"
 #include "ui_about.h"
 
@@ -30,6 +27,8 @@ about::about(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->logo->setPixmap(QPixmap(":/icons/software.png"));
+
+    ui->versionLabel->setText(SOFTWARE_VERSION_STR);
     setWindowIcon(QIcon(":/icons/software.png"));    
 }
 

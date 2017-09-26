@@ -39,7 +39,7 @@ class MathObjectsInput : public QWidget
     Q_OBJECT
 
 public:
-    explicit MathObjectsInput(Information *info);
+    explicit MathObjectsInput(Information *info, QWidget *parent = 0);
     void closeAllOpenedWindows();
      ~MathObjectsInput();
 

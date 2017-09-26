@@ -18,17 +18,16 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "Windows/mathobjectsinput.h"
 #include "ui_mathobjectsinput.h"
 
 
-MathObjectsInput::MathObjectsInput(Information *info)
+MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent): QWidget(parent)
 {   
     ui = new Ui::MathObjectsInput;
     ui->setupUi(this);   
+
+    setWindowFlags(Qt::Window);
 
     parEqController = new ParEqController(&parEqWidgets);
 
