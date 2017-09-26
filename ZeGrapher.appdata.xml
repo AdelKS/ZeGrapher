@@ -7,10 +7,18 @@
   <summary>Free and opensource math graphing software</summary>
   <description>
     <p>
-      ZeGrapher is theree and opensource math graphing software. It can plot
-      functions, sequences, parametric equations and data on the plane. It has
-      been designed to be as easy to use as possible: there's no need for any 
-      documentation before use, download it and see!
+      ZeGrapher is a plotting program for functions, sequences,
+      parametric equations, and tabular data. It has been designed to
+      be as easy to use as possible.
+    </p>
+    <p>
+      ZeGrapher supports importing and exporting of tabular data from
+      and to CSV files and polynomial (regression) fits, plotting of
+      tangents (the point can be selected interactively). Calculation
+      and plotting of derivatives and integrals is also possible.
+    </p>
+    <p>
+      Plots can be exported in various image formats and as PDF files.
     </p>
   </description>
   <screenshots>
