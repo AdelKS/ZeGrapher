@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=ZeGrapher
-Comment="mathematical objects plotting software"
-Comment[fr]=Logiciel de tacé de courbes
-Exec=/usr/bin/ZeGrapher
+Comment=Mathematical objects plotting software"
+Comment[fr]=Logiciel de tracé de courbes
+Exec=ZeGrapher
 Terminal=false
 Type=Application
 Icon=ZeGrapher
