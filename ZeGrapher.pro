@@ -163,4 +163,23 @@ RC_ICONS = appicon.ico
 OTHER_FILES += \
     TODO.txt
 
+isEmpty(APPDATADIR):APPDATADIR=$${PREFIX}/share/appdata/
+isEmpty(APPDIR):APPDIR=$${PREFIX}/share/applications
+isEmpty(DSRDIR):DSRDIR=$${PREFIX}/share/$${TARGET}
+isEmpty(ICONDIR):ICONDIR=$${PREFIX}/share/icons/hicolor/128x128/apps
+isEmpty(BINDIR):BINDIR=$${PREFIX}/bin
 
+appdata.path = $$INSTROOT$$APPDATADIR
+desktop.path = $$INSTROOT$$APPDIR
+icon.path = $$INSTROOT$$ICONDIR
+target.path = $$INSTROOT$$BINDIR
+translations.path = $$INSTROOT$$DSRDIR/locale
+
+icon.extra= cp $$PWD/icons/software.png $$PWD/ZeGrapher.png
+
+desktop.files = ZeGrapher.desktop
+appdata.files =  ZeGrapher.appdata.xml
+icon.files = ZeGrapher.png
+translations.files = ZeGrapher_fr.qm
+
+INSTALLS += appdata desktop icon target translations
