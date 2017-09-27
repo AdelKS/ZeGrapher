@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=ZeGrapher
-Comment=Mathematical objects plotting software"
+Comment=Math graphing software
 Comment[fr]=Logiciel de tracé de courbes
 Exec=ZeGrapher
 Terminal=false
