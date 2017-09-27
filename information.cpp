@@ -25,8 +25,6 @@
 
 Information::Information()
 {
-    graphSettings.gridSettings.xGridStep = graphSettings.gridSettings.yGridStep = 1;
-
     updatingLock = false;
 
 }
@@ -178,11 +176,11 @@ void Information::setRange(const ZeGraphView &newWindow)
 
 void Information::changeGridState()
 {
-    if(graphSettings.gridSettings.gridType == ZeGridType::NO_GRID)
-        graphSettings.gridSettings.gridType = ZeGridType::GRID;
-    else if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
-        graphSettings.gridSettings.gridType = ZeGridType::GRID_SUBGRID;
-    else graphSettings.gridSettings.gridType = ZeGridType::NO_GRID;
+    if(graphSettings.view.gridType() == ZeGridType::NO_GRID)
+        graphSettings.view.setGridType(ZeGridType::GRID);
+    else if(graphSettings.view.gridType() == ZeGridType::GRID)
+        graphSettings.view.setGridType(ZeGridType::GRID_SUBGRID);
+    else graphSettings.view.setGridType(ZeGridType::NO_GRID);
 
     emit gridStateChange();
 }
@@ -196,11 +194,6 @@ void Information::setOrthonormal(bool state)
 bool Information::isOrthonormal()
 {
     return graphSettings.view.viewType() == ZeScaleType::LINEAR_ORTHONORMAL;
-}
-
-ZeGridSettings Information::getGridSettings()
-{
-    return graphSettings.gridSettings;
 }
 
 void Information::setGraphSettings(GraphSettings opt)
@@ -220,7 +213,7 @@ void Information::emitDrawStateUpdate()
     emit drawStateUpdateOccured();
 }
 
-ZeGraphView Information::getGraphRange()
+ZeGraphView Information::getGraphView()
 {
     return graphSettings.view;
 }

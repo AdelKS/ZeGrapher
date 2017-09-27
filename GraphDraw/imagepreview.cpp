@@ -48,7 +48,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
 
     graphSettings = information->getGraphSettings();
-    graphView = information->getGraphRange();
+    graphView = information->getGraphView();
 
     painter.begin(this);    
 
@@ -235,14 +235,18 @@ void ImagePreview::placerGraduations()
 
     double space, pos;
 
-    double Xpos = trunc(graphView.Xmin / graphSettings.gridSettings.xGridStep) * graphSettings.gridSettings.xGridStep * uniteX;
-    double end = graphView.Xmax * uniteX;
-    double step = graphSettings.gridSettings.xGridStep * uniteX;
+    double Xpos;
+
+    ZeGrid grid = graphView.getGrid();
+
+    QList<ZeMainGridLine> &horMainGrid = grid.horizontal.mainGrid;
 
     QString num;
 
-    while(Xpos <= end)
+    for(ZeMainGridLine gridLine: horMainGrid)
     {
+        Xpos = gridLine.pos;
+
         if(fabs(Xpos) > 1)
         {
             if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
@@ -369,7 +373,7 @@ void ImagePreview::determinerCentreEtUnites()
 QImage* ImagePreview::drawImage()
 {
     graphSettings = information->getGraphSettings();
-    graphView = information->getGraphRange();
+    graphView = information->getGraphView();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
     image->fill(graphSettings.backgroundColor.rgb());

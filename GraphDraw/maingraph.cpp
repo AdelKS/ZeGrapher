@@ -445,7 +445,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphHeight = height();
 
     graphSettings = information->getGraphSettings();
-    graphView = information->getGraphRange();
+    graphView = information->getGraphView();
 
     if(windowSize != size())
     {
@@ -477,7 +477,7 @@ void MainGraph::indirectPaint()
 
     painter.drawImage(QPoint(0,0), *savedGraph);    
     painter.translate(QPointF(centre.x, centre.y));
-    painter.scale(1/uniteX, 1/uniteY);
+    painter.scale(1/uniteX, -1/uniteY);
 
     drawAnimatedParEq();
     drawData();
@@ -509,22 +509,12 @@ void MainGraph::directPaint()
     painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
     updateCenterPosAndScaling();
+
+    painter.translate(QPointF(centre.x, centre.y));
+    painter.scale(1/uniteX, -1/uniteY);
+
     drawAxes();
-    drawTicksAndNumbers();
-
-    if(updateTickSpacing())
-    {
-        cancelUpdateSignal = true;
-        information->setRange(graphView);
-
-        painter.setBrush(QBrush(graphSettings.backgroundColor));
-        painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
-
-        updateCenterPosAndScaling();
-        drawAxes();
-        drawTicksAndNumbers();
-    }
-
+    drawGridAndCoordinates();
 
     if(dispRectangle)
     {
@@ -636,7 +626,7 @@ void MainGraph::resaveImageBuffer()
 
     updateCenterPosAndScaling();
     drawAxes();
-    drawTicksAndNumbers();
+    drawGridAndCoordinates();
 
     if(recalculate)
     {
@@ -664,8 +654,8 @@ void MainGraph::resaveImageBuffer()
 
 void MainGraph::updateCenterPosAndScaling()
 {
-    uniteY = graphHeight / (graphView.viewRect().top() - graphView.viewRect().bottom());
-    uniteX = graphWidth / (graphView.viewRect().right() - graphView.viewRect().left());
+    uniteY = graphHeight / (graphView.viewRect().height());
+    uniteX = graphWidth / (graphView.viewRect().width());
 
     Point pt;
     pt.x = uniteX;
@@ -920,14 +910,14 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 
         if(rectReel.height() > 10 && rectReel.width() > 10)
         {
-            ZeGraphView win = graphView;
-            win.viewRect().right() = (rectReel.right() - centre.x) / uniteX;
-            win.viewRect().left() = (rectReel.left() - centre.x) / uniteX;
-            win.viewRect().top() = (- rectReel.top() + centre.y) / uniteY;
-            win.viewRect().bottom() = (- rectReel.bottom() + centre.y) / uniteY;
+            QRectF viewRect;
+            viewRect.setRight((rectReel.right() - centre.x) / uniteX);
+            viewRect.setLeft((rectReel.left() - centre.x) / uniteX);
+            viewRect.setTop((- rectReel.top() + centre.y) / uniteY);
+            viewRect.setBottom((- rectReel.bottom() + centre.y) / uniteY);
 
-            if(win.viewRect().right() - win.viewRect().left() > MIN_RANGE && win.viewRect().top() - win.viewRect().bottom() > MIN_RANGE)
-                information->setRange(win);
+            if(viewRect.width() > MIN_RANGE && viewRect.height() > MIN_RANGE)
+                graphView.setViewRect(viewRect);
 
             typeCurseur = NORMAL;
         }
@@ -1265,7 +1255,7 @@ void MainGraph::mouseTangentHoverTest(double x, double y)
         update();
 }
 
-void MainGraph::drawTicksAndNumbers()
+void MainGraph::drawGridAndCoordinates()
 {
     pen.setColor(graphSettings.axesColor);
     pen.setWidth(1);
@@ -1290,8 +1280,6 @@ void MainGraph::drawTicksAndNumbers()
         Ypos = centre.y;
         posTxt = Ypos + graphSettings.graphFont.pixelSize() + 3;
     }
-
-    ZeGridSettings gridSettings = information->getGridSettings();
 
     double Xreal = trunc(graphView.viewRect().left() / gridSettings.xGridStep) * gridSettings.xGridStep;
     double Xpos = Xreal * uniteX + centre.x;
@@ -1408,48 +1396,6 @@ void MainGraph::drawTicksAndNumbers()
         Yreal -= graphSettings.gridSettings.yGridStep;
         Ypos += step;
     }   
-}
-
-bool MainGraph::updateTickSpacing()
-{
-    bool scaleChanged = false;
-    bool orthonormal = information->isOrthonormal();
-
-    ZeGridSettings gridSettings = information->getGridSettings();
-
-    if(uniteX * gridSettings.xGridStep < widestXNumber + 32)
-    {
-        while(uniteX * gridSettings.xGridStep < widestXNumber + 32)
-            gridSettings.xGridStep *= 2;
-        if(orthonormal)
-             graphSettings.gridSettings.yGridStep = gridSettings.xGridStep;
-        scaleChanged = true;
-    }
-    else if(uniteX * gridSettings.xGridStep > 2*widestXNumber + 96)
-    {
-        while(uniteX * gridSettings.xGridStep > 2*widestXNumber + 96)
-            gridSettings.xGridStep /= 2;
-        if(orthonormal)
-             graphSettings.gridSettings.yGridStep = gridSettings.xGridStep;
-        scaleChanged = true;
-    }
-    if(!orthonormal)
-    {
-        if(uniteY * graphSettings.gridSettings.yGridStep < 25)
-        {
-            while(uniteY * graphSettings.gridSettings.yGridStep < 25)
-                graphSettings.gridSettings.yGridStep *= 2;
-            scaleChanged = true;
-        }
-        else if(uniteY * graphSettings.gridSettings.yGridStep > 150)
-        {
-            while(uniteY * graphSettings.gridSettings.yGridStep > 150)
-                graphSettings.gridSettings.yGridStep /= 2;
-            scaleChanged = true;
-        }
-    }
-
-    return scaleChanged;
 }
 
 void MainGraph::drawAxes()

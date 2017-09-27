@@ -81,7 +81,7 @@ protected:
     QPen pen;
     QBrush brush;
     Point centre;
-    ZeGraphView *graphView;
+    ZeGraphView graphView;
 
     double coef;
 

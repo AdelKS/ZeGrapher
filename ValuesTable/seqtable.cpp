@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-
+/* Seqtable and functable should be fused */
 
 #include "ValuesTable/seqtable.h"
 
@@ -150,12 +150,13 @@ void SeqTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        ZeGraphView range = information->getGraphRange();
-        ZeGridSettings gridSettings = information->getGridSettings();
+        ZeGraphView range = information->getGraphView();
 
-        parameters.range.start = trunc(range.Xmin / gridSettings.xGridStep) * gridSettings.xGridStep;
-        parameters.range.step = gridSettings.xGridStep;
-        parameters.range.end = range.Xmax;
+        //change here with the new approach
+
+        parameters.range.start = -10;
+        parameters.range.step = 1;
+        parameters.range.end = 10;
 
         if(seq->get_nMin() > parameters.range.end)
             return;

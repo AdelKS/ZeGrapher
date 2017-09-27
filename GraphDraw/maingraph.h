@@ -113,8 +113,7 @@ protected:
     void drawAllParEq();
 
     void updateCenterPosAndScaling();
-    bool updateTickSpacing(); //return true if spacing was changed
-    void drawTicksAndNumbers();
+    void drawGridAndCoordinates();
     void drawPoint();
 
     void moveSavedRegsValues();

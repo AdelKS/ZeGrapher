@@ -38,7 +38,7 @@ class Information: public QObject
 public:
     Information();
 
-    ZeGraphView getGraphRange();
+    ZeGraphView getGraphView();
     GraphSettings getGraphSettings();
 
     void addDataList();
@@ -77,7 +77,6 @@ public:
     Point getUnits();
 
     bool isOrthonormal();
-    ZeGridSettings getGridSettings();
 
 public slots:
     void emitUpdateSignal();

@@ -38,15 +38,7 @@ void FuncValuesSaver::setPixelStep(double pxStep)
 
 double FuncValuesSaver::evalFunc(int funId, double x, double k)
 {
-    if(graphView.viewType == ZeScaleType::X_LOG)
-    {
-        return funcs[funId]->getFuncValue(pow(graphView.xLogBase, x), k);
-    }
-    else if(graphView.viewType == ZeScaleType::XY_LOG)
-    {
-        return log(funcs[funId]->getFuncValue(pow(graphView.xLogBase, x), k))/log(graphView.yLogBase);
-    }
-    else return funcs[funId]->getFuncValue(x, k);
+    return funcs[funId]->getFuncValue(x, k);
 }
 
 

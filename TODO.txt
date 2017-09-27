@@ -1,3 +1,4 @@
 continue graphview to calculate grid
 qpainter will do a graph scale and translation to match pixel units with graph units
-change funcvalssaver to not take onto account the unit change with pixels
+change the way grid is drawn, and coordinates too
+fill from range for seqs and functions

@@ -28,7 +28,7 @@ ImageSave::ImageSave(Information *info) : ui(new Ui::ImageSave)
 {
     ui->setupUi(this);
 
-    window = info->getGraphRange();
+    window = info->getGraphView();
 
     scene = new ImagePreview(info);
     scene->setMinimumSize(150,150);

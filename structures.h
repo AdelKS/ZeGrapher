@@ -87,6 +87,7 @@ struct GraphSettings
     QColor axesColor;
     QColor backgroundColor;
     QColor gridColor;
+    QColor subGridColor;
     QColor defaultColor;
     short curvesThickness;
     double distanceBetweenPoints;

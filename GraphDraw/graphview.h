@@ -2,6 +2,7 @@
 #define GRAPHVIEW_H
 
 #include <QObject>
+#include <QWidget>
 #include <QRectF>
 #include <QPair>
 
@@ -48,22 +49,23 @@ struct ZeSubGridLine
     int numerator, denominator;
 };
 
-struct ZeGrid
-{
-    ZeOneDirectionGrid horizontal, vertical;
-};
-
 struct ZeOneDirectionGrid
 {
     QList<ZeMainGridLine> mainGrid;
     QList<ZeSubGridLine> subGrid;
 };
 
+struct ZeGrid
+{
+    ZeOneDirectionGrid horizontal, vertical;
+};
+
+
 class ZeGraphView : public QObject
 {
     Q_OBJECT
 public:
-    explicit ZeGraphView(QObject *parent = 0);
+    explicit ZeGraphView(QWidget *viewWidget = 0, QObject *parent = 0);
     ZeGraphView(const ZeGraphView &other, QObject *parent = 0);
 
     ZeGraphView& operator=(const ZeGraphView &other);
@@ -73,6 +75,11 @@ public:
     void zoomXview(double ratio);
     void zoomView(QPointF center, double ratio);
     void translateView(QPointF vec);
+    
+    void setViewXmin(double val);
+    void setViewXmax(double val);
+    void setViewYmin(double val);
+    void setViewYmax(double val);
 
     void setlgXmin(double val);
     void setlgXmax(double val);
@@ -84,6 +91,11 @@ public:
     void setYmin(double val);
     void setYmax(double val);
 
+    double getXmin();
+    double getXmax();
+    double getYmin();
+    double getYmax();
+
     double viewToUnit_y(double viewY) const;
     double unitToView_y(double unitY) const ;
 
@@ -92,25 +104,29 @@ public:
 
     QRectF rect() const ;
     QRectF lgRect() const ;
-
     QRectF viewRect() const ;
+    void setViewRect(QRectF rect);
 
     ZeScaleType viewType() const ;
 
-    ZeGrid getGrid(QRect graphRectPx);
+    ZeGrid getGrid();
+    ZeGridType gridType() const;
+    void setGridType(ZeGridType type) const;
 
 signals:
 
 public slots:
+    void setWindowRect(QRectF rect);
 
 protected:
     ZeOneDirectionGrid getOneDirectionLinearGrid(int pxWidth, double &step, double min, double max,
                                                int subGridlineCount, double minTickDist, double maxTickDist);
-
+    void verifyOrthonormality();
 
     double Xmin, Xmax, Ymin, Ymax;
     double lgXmin, lgXmax, lgYmin, lgYmax;
     ZeScaleType scaleType;
+    QWidget *viewWidget;
 
     double xLogBase, yLogBase;    
     double xGridStep, yGridStep;

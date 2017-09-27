@@ -209,27 +209,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="DataPlot/datatable.cpp" line="78"/>
         <location filename="DataPlot/datatable.cpp" line="176"/>
-        <location filename="DataPlot/datatable.cpp" line="531"/>
+        <location filename="DataPlot/datatable.cpp" line="530"/>
         <source>Rename me!</source>
         <translation>Renommez moi!</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="588"/>
+        <location filename="DataPlot/datatable.cpp" line="587"/>
         <source>New name for column</source>
         <translation>Nouveau nom de colonne</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="588"/>
+        <location filename="DataPlot/datatable.cpp" line="587"/>
         <source>Please enter a name for this column:</source>
         <translation>Veuillez entrer un nom pour cette colonne :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="594"/>
+        <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="594"/>
+        <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Column names can only have letters and &quot;_&quot;</source>
         <translation>Les noms ne peuvent contenir que des lettres et &quot;_&quot;</translation>
     </message>
@@ -443,12 +443,12 @@ p, li { white-space: pre-wrap; }
         <translation>Fonction : </translation>
     </message>
     <message>
-        <location filename="ValuesTable/functable.cpp" line="178"/>
+        <location filename="ValuesTable/functable.cpp" line="180"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="ValuesTable/functable.cpp" line="178"/>
+        <location filename="ValuesTable/functable.cpp" line="180"/>
         <source>Syntax error in this entry</source>
         <translation>Erreur de syntaxe dans cette entrée</translation>
     </message>
@@ -524,7 +524,7 @@ p, li { white-space: pre-wrap; }
         <translation>Taille de police :</translation>
     </message>
     <message>
-        <location filename="Export/imagesave.cpp" line="61"/>
+        <location filename="Export/imagesave.cpp" line="59"/>
         <source>Save picture</source>
         <translation>Enregistrer une image</translation>
     </message>
@@ -628,92 +628,97 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="65"/>
+        <location filename="Windows/mainwindow.cpp" line="61"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="66"/>
+        <location filename="Windows/mainwindow.cpp" line="62"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="67"/>
+        <location filename="Windows/mainwindow.cpp" line="63"/>
         <source>Windows</source>
         <translation>Fenêtres</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="70"/>
+        <location filename="Windows/mainwindow.cpp" line="66"/>
         <source>Show/Hide the grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="73"/>
+        <location filename="Windows/mainwindow.cpp" line="68"/>
         <source>Toggle orthonormal view</source>
         <translation>Vue orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="87"/>
+        <location filename="Windows/mainwindow.cpp" line="81"/>
         <source>Check for updates</source>
         <translation>Mise à jour ?</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="95"/>
+        <location filename="Windows/mainwindow.cpp" line="89"/>
         <source>Image export...</source>
         <translation>Exporter en tant qu&apos;image...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="100"/>
+        <location filename="Windows/mainwindow.cpp" line="94"/>
         <source>Settings</source>
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="107"/>
+        <location filename="Windows/mainwindow.cpp" line="101"/>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="116"/>
+        <location filename="Windows/mainwindow.cpp" line="110"/>
         <source>Range edit</source>
         <translation>Règlages de la fenêtre</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="146"/>
+        <location filename="Windows/mainwindow.cpp" line="140"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
         <translation>Modifier la fenêtre de représentation: Xmin, Xmax...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="147"/>
+        <location filename="Windows/mainwindow.cpp" line="141"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
         <translation>Fenêtre où l&apos;on saisi les objets mathématiques à représenter: fonctions, suites, équations paramétriques, données...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="148"/>
+        <location filename="Windows/mainwindow.cpp" line="142"/>
         <source>Exit ZeGrapher.</source>
         <translation>Quitter ZeGrapher.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="149"/>
+        <location filename="Windows/mainwindow.cpp" line="143"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
         <translation>Fenêtre des options: couleurs des axes, couleurs du fond, qualité des courbes...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="150"/>
+        <location filename="Windows/mainwindow.cpp" line="144"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
         <translation>Fenêtre où l&apos;on peut afficher les tableaux de valeurs des objets mathématiques saisis: fonctions, suites, équations paramétriques.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="153"/>
+        <location filename="Windows/mainwindow.cpp" line="146"/>
+        <source>Show/Hide grid with/without subgrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/mainwindow.cpp" line="147"/>
         <source>Export the graph as an image.</source>
         <translation>Fenêtre d&apos;export du graphique en tant qu&apos;image.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="154"/>
+        <location filename="Windows/mainwindow.cpp" line="148"/>
         <source>Virtual keyboard.</source>
         <translation>Clavier virtuel.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="155"/>
+        <location filename="Windows/mainwindow.cpp" line="149"/>
         <source>Print, or export in PDF.</source>
         <translation>Fenêtre des options avant impression. Avec la possiblité d&apos;exporter en PDF ou en PostScript.</translation>
     </message>
@@ -722,23 +727,23 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Base orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="78"/>
-        <location filename="Windows/zegrapher.cpp" line="151"/>
+        <location filename="Windows/mainwindow.cpp" line="72"/>
+        <location filename="Windows/mainwindow.cpp" line="145"/>
         <source>Reset to default view</source>
         <translation>Rétablir vue par défaut</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="81"/>
+        <location filename="Windows/mainwindow.cpp" line="75"/>
         <source>About...</source>
         <translation>À Propos...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="84"/>
+        <location filename="Windows/mainwindow.cpp" line="78"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="90"/>
+        <location filename="Windows/mainwindow.cpp" line="84"/>
         <source>Print...</source>
         <translation>Imprimer...</translation>
     </message>
@@ -755,7 +760,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="111"/>
+        <location filename="Windows/mainwindow.cpp" line="105"/>
         <source>Functions</source>
         <translation>Fonctions</translation>
     </message>
@@ -764,17 +769,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Bornes</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="121"/>
+        <location filename="Windows/mainwindow.cpp" line="115"/>
         <source>Values table</source>
         <translation>Tableau de valeurs</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="126"/>
+        <location filename="Windows/mainwindow.cpp" line="120"/>
         <source>numeric keyboard</source>
         <translation>Clavier numérique</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="131"/>
+        <location filename="Windows/mainwindow.cpp" line="125"/>
         <source>Windows and actions</source>
         <translation>Fenêtres et actions</translation>
     </message>
@@ -799,9 +804,8 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Affiche la fenêtre où l&apos;on peut modifier les options de représentation</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="152"/>
         <source>Show/Hide grid</source>
-        <translation>Afficher/Cacher le quadrillage</translation>
+        <translation type="vanished">Afficher/Cacher le quadrillage</translation>
     </message>
     <message>
         <source>Save the graph on a picture.</source>
@@ -1037,24 +1041,30 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ParEqWidget</name>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="512"/>
-        <location filename="Widgets/pareqwidget.cpp" line="515"/>
-        <location filename="Widgets/pareqwidget.cpp" line="538"/>
+        <location filename="Widgets/pareqwidget.cpp" line="93"/>
+        <location filename="Widgets/pareqwidget.cpp" line="109"/>
+        <source>Increment period too small for the animation to be seen.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Widgets/pareqwidget.cpp" line="518"/>
+        <location filename="Widgets/pareqwidget.cpp" line="521"/>
+        <location filename="Widgets/pareqwidget.cpp" line="544"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="512"/>
+        <location filename="Widgets/pareqwidget.cpp" line="518"/>
         <source>Step value for the &quot;t&quot; parameter is not compatible with the entered range, in parametric equation</source>
         <translation>La valeur du pas du paramètre t est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="515"/>
+        <location filename="Widgets/pareqwidget.cpp" line="521"/>
         <source>Too many points to calculate on parametric equation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="539"/>
+        <location filename="Widgets/pareqwidget.cpp" line="545"/>
         <source>Step value for the &quot;k&quot; parameter is not compatible with the entered range, in parametric equation (P&lt;sub&gt;</source>
         <translation>La valeur du pas du paramètre k est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique (P&lt;sub&gt;</translation>
     </message>
@@ -1436,15 +1446,60 @@ p, li { white-space: pre-wrap; }
         <translation>Bornes de représentation</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="118"/>
         <location filename="Windows/rangeadjustments.ui" line="125"/>
+        <location filename="Windows/rangeadjustments.ui" line="132"/>
         <source>&lt;strong&gt;&lt;em&gt;Step&lt;/em&gt;&lt;/strong&gt;</source>
         <translation>&lt;strong&gt;&lt;em&gt;Pas&lt;/em&gt;&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="140"/>
+        <location filename="Windows/rangeadjustments.ui" line="148"/>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="179"/>
+        <source>Subgrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="207"/>
+        <source>Divsions:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="248"/>
+        <source>Special &amp;view:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="263"/>
+        <source>Orthonor&amp;mal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="273"/>
+        <source>&amp;Logarithmic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="310"/>
+        <source> X axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="338"/>
+        <location filename="Windows/rangeadjustments.ui" line="367"/>
+        <source>Base:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Windows/rangeadjustments.ui" line="348"/>
+        <source> Y axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Orthonormal view</source>
-        <translation>Vue orthonormale</translation>
+        <translation type="vanished">Vue orthonormale</translation>
     </message>
     <message>
         <source>-10</source>
@@ -1463,17 +1518,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Base orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="168"/>
+        <location filename="Windows/rangeadjustments.ui" line="405"/>
         <source>Standard View</source>
         <translation>Vue standard</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.ui" line="200"/>
+        <location filename="Windows/rangeadjustments.ui" line="437"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="64"/>
+        <location filename="Windows/rangeadjustments.cpp" line="76"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -1490,21 +1545,25 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des Y.</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="131"/>
+        <location filename="Windows/rangeadjustments.cpp" line="175"/>
         <source>X&lt;sub&gt;min&lt;/sub&gt; must be smaller than X&lt;sub&gt;max&lt;/sub&gt;</source>
         <oldsource>X&lt;sub&gt;min&lt;/sub&gt; must be lower than X&lt;sub&gt;max&lt;/sub&gt;</oldsource>
         <translation>X&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="137"/>
+        <location filename="Windows/rangeadjustments.cpp" line="181"/>
         <source>Y&lt;sub&gt;min&lt;/sub&gt; must be smaller than Y&lt;sub&gt;max&lt;/sub&gt;</source>
         <oldsource>Y&lt;sub&gt;min&lt;/sub&gt; must be lower than Y&lt;sub&gt;max&lt;/sub&gt;</oldsource>
         <translation>Y&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="144"/>
+        <location filename="Windows/rangeadjustments.cpp" line="188"/>
+        <source>The view graphSettings.view is too tight for ZeGrapher to distinguish between the upper and lower values.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The view range is too tight for ZeGrapher to distinguish between the upper and lower values.</source>
-        <translation>Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher.</translation>
+        <translation type="vanished">Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher.</translation>
     </message>
 </context>
 <context>
@@ -1619,26 +1678,26 @@ p, li { white-space: pre-wrap; }
         <translation>Suite : </translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="187"/>
-        <location filename="ValuesTable/seqtable.cpp" line="193"/>
-        <location filename="ValuesTable/seqtable.cpp" line="202"/>
-        <location filename="ValuesTable/seqtable.cpp" line="294"/>
+        <location filename="ValuesTable/seqtable.cpp" line="189"/>
+        <location filename="ValuesTable/seqtable.cpp" line="195"/>
+        <location filename="ValuesTable/seqtable.cpp" line="204"/>
+        <location filename="ValuesTable/seqtable.cpp" line="296"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="187"/>
+        <location filename="ValuesTable/seqtable.cpp" line="189"/>
         <source>Syntax error in this entry</source>
         <translation>Erreur de syntaxe dans cette entrée</translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="193"/>
+        <location filename="ValuesTable/seqtable.cpp" line="195"/>
         <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</source>
         <translation>Vous devez saisir un nombre entier supérieur à n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="ValuesTable/seqtable.cpp" line="202"/>
-        <location filename="ValuesTable/seqtable.cpp" line="294"/>
+        <location filename="ValuesTable/seqtable.cpp" line="204"/>
+        <location filename="ValuesTable/seqtable.cpp" line="296"/>
         <source>Error while calculating this sequence&apos;s terms, changing &quot;k&quot; value might solve the error.</source>
         <translation>Erreur dans le calcul des termes de cette suite paramètrique, changer la valeur du paramètre pourrait résoudre le problème.</translation>
     </message>
@@ -1778,49 +1837,49 @@ de mises à jour:</translation>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="37"/>
+        <location filename="Windows/settings.cpp" line="39"/>
         <source>Axes color:</source>
         <translation>Couleur des axes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="41"/>
+        <location filename="Windows/settings.cpp" line="43"/>
         <source>Background color:</source>
         <translation>Couleur du fond:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="46"/>
+        <location filename="Windows/settings.cpp" line="48"/>
         <source>Grid color:</source>
         <translation>Couleur de la grille:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="50"/>
+        <location filename="Windows/settings.cpp" line="52"/>
         <source>Curve default color:</source>
         <translation type="unfinished">Couleur par défaut
 des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="180"/>
+        <location filename="Windows/settings.cpp" line="182"/>
         <source>Reset to default values ?</source>
         <translation>Rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="180"/>
+        <location filename="Windows/settings.cpp" line="182"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Êtes-vous sûr de vouloir rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="200"/>
         <location filename="Windows/settings.cpp" line="202"/>
+        <location filename="Windows/settings.cpp" line="204"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="200"/>
+        <location filename="Windows/settings.cpp" line="202"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="202"/>
+        <location filename="Windows/settings.cpp" line="204"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>
@@ -1933,22 +1992,22 @@ des courbes:</translation>
         <translation type="vanished">Pour k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="95"/>
+        <location filename="Widgets/tangentwidget.cpp" line="93"/>
         <source>at:  x =</source>
         <translation>en x =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="157"/>
+        <location filename="Widgets/tangentwidget.cpp" line="155"/>
         <source>with k =</source>
         <translation>avec k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="202"/>
+        <location filename="Widgets/tangentwidget.cpp" line="200"/>
         <source>Choosen Function</source>
         <translation>Fonction choisie</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="203"/>
+        <location filename="Widgets/tangentwidget.cpp" line="201"/>
         <source>Invalid</source>
         <translation></translation>
     </message>

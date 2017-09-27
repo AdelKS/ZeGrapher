@@ -1,7 +1,8 @@
 #include "graphview.h"
 
-ZeGraphView::ZeGraphView(QObject *parent) : QObject(parent)
+ZeGraphView::ZeGraphView(QWidget *v, QObject *parent) : QObject(parent), viewWidget(v)
 {
+    xGridStep = yGridStep = 1;
     Xmin = Ymin = -10;
     Xmax = Ymax = 10;
     lgXmin = lgYmin = -1;
@@ -44,9 +45,11 @@ ZeGraphView& ZeGraphView::operator=(const ZeGraphView &other)
     yLogBase = other.yLogBase;
 
     m_viewType = other.m_viewType;
+
+    viewWidget = 0;
 }
 
-QRectF ZeGraphView::rect()
+QRectF ZeGraphView::rect() const
 {
     QRectF graphWin;
     graphWin.setBottom(Ymin);
@@ -56,7 +59,7 @@ QRectF ZeGraphView::rect()
     return graphWin;
 }
 
-QRectF ZeGraphView::lgRect()
+QRectF ZeGraphView::lgRect() const
 {
     QRectF graphlLgWin;
     graphlLgWin.setBottom(lgYmin);
@@ -66,7 +69,17 @@ QRectF ZeGraphView::lgRect()
     return graphlLgWin;
 }
 
-QRectF ZeGraphView::viewRect()
+void ZeGraphView::setViewRect(QRectF rect)
+{
+    setViewXmax(rect.right());
+    setViewXmin(rect.left());
+    setViewYmax(rect.top());
+    setViewYmin(rect.bottom());
+
+    verifyOrthonormality();
+}
+
+QRectF ZeGraphView::viewRect() const
 {
     QRect viewWin;
 
@@ -109,6 +122,8 @@ void ZeGraphView::zoomYview(double ratio)
         setYmax(Ymax + val);
         setYmin(Ymin - val);
     }
+
+    verifyOrthonormality();
 }
 
 void ZeGraphView::zoomXview(double ratio)
@@ -125,6 +140,8 @@ void ZeGraphView::zoomXview(double ratio)
         setXmax(Xmax + val);
         setXmin(Xmin - val);
     }
+
+    verifyOrthonormality();
 }
 
 void ZeGraphView::zoomView(QPointF center, double ratio)
@@ -155,20 +172,24 @@ void ZeGraphView::zoomView(QPointF center, double ratio)
     }
 }
 
- ZeGrid ZeGraphView::getGrid(QRect graphRectPx)
+ ZeGrid ZeGraphView::getGrid()
  {
      ZeGrid grid;
 
+     if(viewWidget == 0)
+         return grid;
+
      if(scaleType == ZeScaleType::LINEAR || scaleType == ZeScaleType::LINEAR_ORTHONORMAL)
      {
-         grid.horizontal = getOneDirectionLinearGrid(graphRectPx.width(), xGridStep, Xmin, Xmax, gridSettings.horSubGridLineCount,
+         grid.horizontal = getOneDirectionLinearGrid(viewWidget->width(), xGridStep, Xmin, Xmax, gridSettings.horSubGridLineCount,
                                                      30, 150);
-         grid.vertical = getOneDirectionLinearGrid(graphRectPx.height(), yGridStep, Ymin, Ymax, gridSettings.verSubGridLineCount,
+         grid.vertical = getOneDirectionLinearGrid(viewWidget->height(), yGridStep, Ymin, Ymax, gridSettings.verSubGridLineCount,
                                                    30, 100);
      }
 
      return grid;
  }
+
 
  ZeOneDirectionGrid ZeGraphView::getOneDirectionLinearGrid(int pxWidth, double &step, double min, double max,
                                                        int subGridlineCount, double minTickDist, double maxTickDist)
@@ -270,6 +291,26 @@ const double ZeGraphView::unitToView_y(double unitY)
     }
 }
 
+double ZeGraphView::getXmin()
+{
+    return Xmin;
+}
+
+double ZeGraphView::getXmax()
+{
+    return Xmax;
+}
+
+double ZeGraphView::getYmin()
+{
+    return Ymin;
+}
+
+double ZeGraphView::getYmax()
+{
+    return Ymax;
+}
+
 const double ZeGraphView::viewToUnit_x(double viewX)
 {
     if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
@@ -291,6 +332,74 @@ const double ZeGraphView::unitToView_x(double unitX)
     else
     {
         return unitX;
+    }
+}
+
+void ZeGraphView::setViewXmin(double val)
+{
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    {
+        setlgXmin(val);
+    }
+    else
+    {
+        setXmin(val);
+    }
+
+    verifyOrthonormality();
+}
+
+void ZeGraphView::setViewXmax(double val)
+{
+    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    {
+        setlgXmax(val);
+    }
+    else
+    {
+        setXmax(val);
+    }
+
+    verifyOrthonormality();
+}
+
+void ZeGraphView::setViewYmin(double val)
+{
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    {
+        setlgYmin(val);
+    }
+    else
+    {
+        setYmin(val);
+    }
+
+    verifyOrthonormality();
+}
+
+void ZeGraphView::setViewYmax(double val)
+{
+    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    {
+        setlgYmax(val);
+    }
+    else
+    {
+        setYmax(val);
+    }
+
+    verifyOrthonormality();
+}
+
+void ZeGraphView::verifyOrthonormality()
+{
+    if(viewWidget != 0 && viewType == ZeScaleType::LINEAR_ORTHONORMAL)
+    {
+        double uniteY = viewWidget->height() / viewRect().height();
+        double uniteX = viewWidget->width() / viewRect().width();
+
+        double ratio =  uniteX / uniteY;
+        zoomYview(ratio);
     }
 }
 
@@ -345,4 +454,13 @@ void ZeGraphView::setYmax(double val)
 ZeScaleType ZeGraphView::viewType() const
 {
     return m_viewType;
+}
+
+ZeGridType ZeGraphView::gridType() const
+{
+    return gridSettings.gridType;
+}
+void ZeGraphView::setGridType(ZeGridType type) const
+{
+    gridSettings.gridType = type;
 }

@@ -214,7 +214,7 @@ void RangeAdjustments::updateWidgets()
  {
     manageWidgetStates();
 
-    ZeGraphView window = information->getGraphRange();
+    ZeGraphView window = information->getGraphView();
     ZeGridSettings gridSettings = information->getGridSettings();
 
     Xmax->setNumber(window.Xmax);
