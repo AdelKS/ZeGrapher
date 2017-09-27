@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> -->
+
+<application>
+  <id type="desktop">ZeGrapher.desktop</id>
+  <name>ZeGrapher</name>
+  <summary>Plot mathematical functions and tabular data</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <p>
+      ZeGrapher is a plotting program for functions, sequences,
+      parametric equations, and tabular data. It has been designed to
+      be as easy to use as possible.
+    </p>
+    <p>
+      ZeGrapher supports importing and exporting of tabular data from
+      and to CSV files and polynomial (regression) fits, plotting of
+      tangents (the point can be selected interactively). Calculation
+      and plotting of derivatives and integrals is also possible.
+    </p>
+    <p>
+      Plots can be exported in various image formats and as PDF files.
+    </p>
+  </description>
+  <url type="homepage">https://en.zegrapher.com/</url>
+  <screenshots>
+    <screenshot type="default">https://in.waw.pl/~zbyszek/zegrapher/zegrapher-plot.png</screenshot>
+    <screenshot>https://in.waw.pl/~zbyszek/zegrapher/zegrapher-all-windows.png</screenshot>
+    <screenshot>https://in.waw.pl/~zbyszek/zegrapher/zegrapher-save.png</screenshot>
+  </screenshots>
+  <!-- FIXME: change this to an upstream email address for spec updates
+  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
+   -->
+</application>

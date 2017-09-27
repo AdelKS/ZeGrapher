@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>ZeGrapher.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>ZeGrapher</name>
+  <summary>Free and opensource math graphing software</summary>
+  <description>
+    <p>
+      ZeGrapher is a plotting program for functions, sequences,
+      parametric equations, and tabular data. It has been designed to
+      be as easy to use as possible.
+    </p>
+    <p>
+      ZeGrapher supports importing and exporting of tabular data from
+      and to CSV files and polynomial (regression) fits, plotting of
+      tangents (the point can be selected interactively). Calculation
+      and plotting of derivatives and integrals is also possible.
+    </p>
+    <p>
+      Plots can be exported in various image formats and as PDF files.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://zegrapher.com/screenshots/2g.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/3p.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/4g.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/7p.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/12g.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://en.zegrapher.com/</url>
+  <url type="bugtracker">https://github.com/AdelKS/ZeGrapher/issues</url>
+  <update_contact>eclipseo_at_fedoraproject.org</update_contact>
+</component>
