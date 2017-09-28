@@ -33,7 +33,7 @@ MainWindow::MainWindow()
     imageExportWin = new ImageSave(information, this);
     valuesWin = new Values(information, this);
     printWin = new Print(information, this);
-    keyboard = new Keyboard(this);
+    keyboard = new Keyboard();
 
     scene = new MainGraph(information); // it has to be the last thing to create.
 
@@ -179,20 +179,20 @@ void MainWindow::saveWindowsGeometry()
 {
     settings.setValue("main_window/geometry", frameGeometry());
 
-    if(settingsWin->frameGeometry().top() != 0)
-        settings.setValue("settings_window/geometry", settingsWin->frameGeometry());
-    if(rangeWin->frameGeometry().top() != 0)
-        settings.setValue("range_window/geometry", rangeWin->frameGeometry());
-    if(inputWin->frameGeometry().top() != 0)
-        settings.setValue("input_window/geometry", inputWin->frameGeometry());
-    if(imageExportWin->frameGeometry().top() != 0)
-        settings.setValue("image_export_window/geometry", imageExportWin->frameGeometry());
-    if(valuesWin->frameGeometry().top() != 0)
-        settings.setValue("values_window/geometry", valuesWin->frameGeometry());
-    if(printWin->frameGeometry().top() != 0)
-        settings.setValue("print_window/geometry", printWin->frameGeometry());
-    if(keyboard->frameGeometry().top() != 0)
-        settings.setValue("virtual_keyboard_window/geometry", keyboard->frameGeometry());
+    if(settingsWin->geometry().top() != 0)
+        settings.setValue("settings_window/geometry", settingsWin->geometry());
+    if(rangeWin->geometry().top() != 0)
+        settings.setValue("range_window/geometry", rangeWin->geometry());
+    if(inputWin->geometry().top() != 0)
+        settings.setValue("input_window/geometry", inputWin->geometry());
+    if(imageExportWin->geometry().top() != 0)
+        settings.setValue("image_export_window/geometry", imageExportWin->geometry());
+    if(valuesWin->geometry().top() != 0)
+        settings.setValue("values_window/geometry", valuesWin->geometry());
+    if(printWin->geometry().top() != 0)
+        settings.setValue("print_window/geometry", printWin->geometry());
+    if(keyboard->geometry().top() != 0)
+        settings.setValue("virtual_keyboard_window/geometry", keyboard->geometry());
 }
 
 
@@ -213,12 +213,13 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
     /* Save windows geometry */
     saveWindowsGeometry();
     settingsWin->saveSettings();
-
+    keyboard->close();
     evenement->accept();
 }
 
 MainWindow::~MainWindow()
 {   
+    delete keyboard;
 }
 
 

@@ -10,7 +10,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
-#include <Structures.h>
+#include "structures.h"
 
 
 class UpdateCheck : public QDialog

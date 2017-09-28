@@ -25,7 +25,7 @@ UpdateCheck::UpdateCheck(QWidget *parent) : QDialog(parent)
 
 void UpdateCheck::timedOut()
 {
-    statusLabel->setText(tr("Timed out while trying to check for an update.\n") + manualCheckErrorText);
+    statusLabel->setText(tr("Failed to lookup the latest version.\n") + manualCheckErrorText);
 }
 
 void UpdateCheck::silentCheckForUpdate()
@@ -76,8 +76,11 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
     {
         if(latestVersion > SOFTWARE_VERSION)
         {            
-            statusLabel->setText(tr("A new version is available!\n\n"
-                                    "To download it, visit <a href=http://zegrapher.com>zegrapher.com</a>\n"));
+            statusLabel->setTextFormat(Qt::RichText);
+
+            statusLabel->setText(tr("A new version is available!<br/>"
+                                    "To download it, visit <a href=http://zegrapher.com>zegrapher.com</a><br/><br/>"
+                                    "<u>Note:</u> You can enable/disable the automatic update check in the settings"));
             if(silentCheck)
                 QDialog::exec();
         }

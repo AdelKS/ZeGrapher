@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>508</width>
-    <height>321</height>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,7 +98,7 @@
             <item>
              <widget class="QLabel" name="versionLabel">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Sans'; font-size:11pt; font-weight:600;&quot;&gt;v3.0.2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Sans'; font-size:11pt; font-weight:600;&quot;&gt;v3.0.2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -165,7 +165,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="close">
         <property name="minimumSize">
          <size>
           <width>98</width>
@@ -205,5 +205,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>close</sender>
+   <signal>clicked()</signal>
+   <receiver>About</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>280</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>714</x>
+     <y>230</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

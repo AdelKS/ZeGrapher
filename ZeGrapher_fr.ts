@@ -9,10 +9,19 @@
         <translation>À Propos...</translation>
     </message>
     <message>
-        <location filename="Windows/about.ui" line="35"/>
+        <location filename="Windows/about.ui" line="81"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher&lt;br/&gt;&lt;/span&gt;       by Adel Kara Slimane&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher&lt;br/&gt;&lt;/span&gt;       par Adel Kara Slimane&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="Windows/about.ui" line="117"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher est un logiciel libre et gratuit, distributé sous la licence GNU GPLv3. Son code source est disponible en libre accès sur son &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;site officiel&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; ou bien sur &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (pour le dernier en date)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Vous avez trouvé un bug ? Vous avez des idées pour améliorer ZeGrapher ? Autre chose ? Un mail en parlant à &lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt; est le bienvenue!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;br/&gt;&lt;/span&gt;       by Adel Kara Slimane&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? a crash ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;br/&gt;&lt;/span&gt;by Adel Kara Slimane&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? a crash ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;br/&gt;&lt;/span&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;par Adel Kara Slimane&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher est un logiciel libre et gratuit, distributé sous la licence GNU GPLv3. Son code source est disponible en libre accès sur son &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;site officiel&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; ou bien sur &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (pour le dernier en date)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Vous avez trouvé un bug ? Vous avez des idées pour améliorer ZeGrapher ? Autre chose ? Un mail en parlant à &lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt; est le bienvenue!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher 3.0&lt;br/&gt;&lt;/span&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;par Adel Kara Slimane&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher est un logiciel libre et gratuit, distributé sous la licence GNU GPLv3. Son code source est disponible en libre accès sur son &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;site officiel&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; ou bien sur &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (pour le dernier en date)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Vous avez trouvé un bug ? Vous avez des idées pour améliorer ZeGrapher ? Autre chose ? Un mail en parlant à &lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt; est le bienvenue!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -70,7 +79,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel : &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/about.ui" line="80"/>
+        <location filename="Windows/about.ui" line="182"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -209,27 +218,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="DataPlot/datatable.cpp" line="78"/>
         <location filename="DataPlot/datatable.cpp" line="176"/>
-        <location filename="DataPlot/datatable.cpp" line="531"/>
+        <location filename="DataPlot/datatable.cpp" line="530"/>
         <source>Rename me!</source>
         <translation>Renommez moi!</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="588"/>
+        <location filename="DataPlot/datatable.cpp" line="587"/>
         <source>New name for column</source>
         <translation>Nouveau nom de colonne</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="588"/>
+        <location filename="DataPlot/datatable.cpp" line="587"/>
         <source>Please enter a name for this column:</source>
         <translation>Veuillez entrer un nom pour cette colonne :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="594"/>
+        <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="DataPlot/datatable.cpp" line="594"/>
+        <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Column names can only have letters and &quot;_&quot;</source>
         <translation>Les noms ne peuvent contenir que des lettres et &quot;_&quot;</translation>
     </message>
@@ -524,7 +533,7 @@ p, li { white-space: pre-wrap; }
         <translation>Taille de police :</translation>
     </message>
     <message>
-        <location filename="Export/imagesave.cpp" line="61"/>
+        <location filename="Export/imagesave.cpp" line="63"/>
         <source>Save picture</source>
         <translation>Enregistrer une image</translation>
     </message>
@@ -628,92 +637,92 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="65"/>
+        <location filename="Windows/mainwindow.cpp" line="64"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="66"/>
+        <location filename="Windows/mainwindow.cpp" line="65"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="67"/>
+        <location filename="Windows/mainwindow.cpp" line="66"/>
         <source>Windows</source>
         <translation>Fenêtres</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="70"/>
+        <location filename="Windows/mainwindow.cpp" line="69"/>
         <source>Show/Hide the grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="73"/>
+        <location filename="Windows/mainwindow.cpp" line="72"/>
         <source>Toggle orthonormal view</source>
         <translation>Vue orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="87"/>
+        <location filename="Windows/mainwindow.cpp" line="86"/>
         <source>Check for updates</source>
         <translation>Mise à jour ?</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="95"/>
+        <location filename="Windows/mainwindow.cpp" line="94"/>
         <source>Image export...</source>
         <translation>Exporter en tant qu&apos;image...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="100"/>
+        <location filename="Windows/mainwindow.cpp" line="99"/>
         <source>Settings</source>
         <translation>Réglages</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="107"/>
+        <location filename="Windows/mainwindow.cpp" line="106"/>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="116"/>
+        <location filename="Windows/mainwindow.cpp" line="115"/>
         <source>Range edit</source>
         <translation>Règlages de la fenêtre</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="146"/>
+        <location filename="Windows/mainwindow.cpp" line="145"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
         <translation>Modifier la fenêtre de représentation: Xmin, Xmax...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="147"/>
+        <location filename="Windows/mainwindow.cpp" line="146"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
         <translation>Fenêtre où l&apos;on saisi les objets mathématiques à représenter: fonctions, suites, équations paramétriques, données...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="148"/>
+        <location filename="Windows/mainwindow.cpp" line="147"/>
         <source>Exit ZeGrapher.</source>
         <translation>Quitter ZeGrapher.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="149"/>
+        <location filename="Windows/mainwindow.cpp" line="148"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
         <translation>Fenêtre des options: couleurs des axes, couleurs du fond, qualité des courbes...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="150"/>
+        <location filename="Windows/mainwindow.cpp" line="149"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
         <translation>Fenêtre où l&apos;on peut afficher les tableaux de valeurs des objets mathématiques saisis: fonctions, suites, équations paramétriques.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="153"/>
+        <location filename="Windows/mainwindow.cpp" line="152"/>
         <source>Export the graph as an image.</source>
         <translation>Fenêtre d&apos;export du graphique en tant qu&apos;image.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="154"/>
+        <location filename="Windows/mainwindow.cpp" line="153"/>
         <source>Virtual keyboard.</source>
         <translation>Clavier virtuel.</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="155"/>
+        <location filename="Windows/mainwindow.cpp" line="154"/>
         <source>Print, or export in PDF.</source>
         <translation>Fenêtre des options avant impression. Avec la possiblité d&apos;exporter en PDF ou en PostScript.</translation>
     </message>
@@ -722,23 +731,23 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Base orthonormale</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="78"/>
-        <location filename="Windows/zegrapher.cpp" line="151"/>
+        <location filename="Windows/mainwindow.cpp" line="77"/>
+        <location filename="Windows/mainwindow.cpp" line="150"/>
         <source>Reset to default view</source>
         <translation>Rétablir vue par défaut</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="81"/>
+        <location filename="Windows/mainwindow.cpp" line="80"/>
         <source>About...</source>
         <translation>À Propos...</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="84"/>
+        <location filename="Windows/mainwindow.cpp" line="83"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="90"/>
+        <location filename="Windows/mainwindow.cpp" line="89"/>
         <source>Print...</source>
         <translation>Imprimer...</translation>
     </message>
@@ -755,7 +764,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Quitter</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="111"/>
+        <location filename="Windows/mainwindow.cpp" line="110"/>
         <source>Functions</source>
         <translation>Fonctions</translation>
     </message>
@@ -764,17 +773,17 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Bornes</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="121"/>
+        <location filename="Windows/mainwindow.cpp" line="120"/>
         <source>Values table</source>
         <translation>Tableau de valeurs</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="126"/>
+        <location filename="Windows/mainwindow.cpp" line="125"/>
         <source>numeric keyboard</source>
         <translation>Clavier numérique</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="131"/>
+        <location filename="Windows/mainwindow.cpp" line="130"/>
         <source>Windows and actions</source>
         <translation>Fenêtres et actions</translation>
     </message>
@@ -799,7 +808,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Affiche la fenêtre où l&apos;on peut modifier les options de représentation</translation>
     </message>
     <message>
-        <location filename="Windows/zegrapher.cpp" line="152"/>
+        <location filename="Windows/mainwindow.cpp" line="151"/>
         <source>Show/Hide grid</source>
         <translation>Afficher/Cacher le quadrillage</translation>
     </message>
@@ -918,7 +927,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="751"/>
         <source>&amp;Data</source>
-        <translation>&amp;Données:</translation>
+        <translation>&amp;Données</translation>
     </message>
     <message>
         <source>Frequency:</source>
@@ -946,12 +955,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="907"/>
-        <location filename="Windows/mathobjectsinput.cpp" line="40"/>
+        <location filename="Windows/mathobjectsinput.cpp" line="39"/>
         <source>Plot</source>
         <translation>Tracer</translation>
     </message>
     <message>
-        <location filename="Windows/mathobjectsinput.cpp" line="78"/>
+        <location filename="Windows/mathobjectsinput.cpp" line="77"/>
         <source>Help: data fill window.</source>
         <translation>Aide: Fenêtre de saisie de données.</translation>
     </message>
@@ -1037,24 +1046,31 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ParEqWidget</name>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="512"/>
-        <location filename="Widgets/pareqwidget.cpp" line="515"/>
-        <location filename="Widgets/pareqwidget.cpp" line="538"/>
+        <location filename="Widgets/pareqwidget.cpp" line="93"/>
+        <location filename="Widgets/pareqwidget.cpp" line="109"/>
+        <source>The increment period is too small...</source>
+        <oldsource>Increment period too small for the animation to be seen.</oldsource>
+        <translation>La période d&apos;incrémentation est trop petite...</translation>
+    </message>
+    <message>
+        <location filename="Widgets/pareqwidget.cpp" line="518"/>
+        <location filename="Widgets/pareqwidget.cpp" line="521"/>
+        <location filename="Widgets/pareqwidget.cpp" line="544"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="512"/>
+        <location filename="Widgets/pareqwidget.cpp" line="518"/>
         <source>Step value for the &quot;t&quot; parameter is not compatible with the entered range, in parametric equation</source>
         <translation>La valeur du pas du paramètre t est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="515"/>
+        <location filename="Widgets/pareqwidget.cpp" line="521"/>
         <source>Too many points to calculate on parametric equation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="539"/>
+        <location filename="Widgets/pareqwidget.cpp" line="545"/>
         <source>Step value for the &quot;k&quot; parameter is not compatible with the entered range, in parametric equation (P&lt;sub&gt;</source>
         <translation>La valeur du pas du paramètre k est incompatible avec l&apos;intervalle saisi, dans l&apos;équation paramétrique (P&lt;sub&gt;</translation>
     </message>
@@ -1193,8 +1209,8 @@ p, li { white-space: pre-wrap; }
         <location filename="Export/print.ui" line="14"/>
         <location filename="Export/print.ui" line="130"/>
         <location filename="Export/print.ui" line="711"/>
-        <location filename="Export/print.cpp" line="31"/>
-        <location filename="Export/print.cpp" line="86"/>
+        <location filename="Export/print.cpp" line="33"/>
+        <location filename="Export/print.cpp" line="88"/>
         <source>Print</source>
         <translation>Imprimer</translation>
     </message>
@@ -1357,7 +1373,7 @@ p, li { white-space: pre-wrap; }
         <translation>Taille de police :</translation>
     </message>
     <message>
-        <location filename="Export/print.cpp" line="72"/>
+        <location filename="Export/print.cpp" line="74"/>
         <source>Create PDF</source>
         <translation>Créer un PDF</translation>
     </message>
@@ -1370,28 +1386,28 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Repère orthonormal</translation>
     </message>
     <message>
-        <location filename="Export/print.cpp" line="85"/>
+        <location filename="Export/print.cpp" line="87"/>
         <source>Save</source>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="Export/print.cpp" line="101"/>
+        <location filename="Export/print.cpp" line="103"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Export/print.cpp" line="101"/>
+        <location filename="Export/print.cpp" line="103"/>
         <source>You are about to print, do you want to continue?
  Please check settings before printing.</source>
         <translation>Vous êtes sur le point d&apos;imprimer, voulez-vous continuer ? \n Veuillez vérifier le paramétrage avant de continuer.</translation>
     </message>
     <message>
-        <location filename="Export/print.cpp" line="130"/>
+        <location filename="Export/print.cpp" line="132"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="Export/print.cpp" line="130"/>
+        <location filename="Export/print.cpp" line="132"/>
         <source>Please select a directory to create the PDF file in.</source>
         <translation>Veuillez sélectionner un dossier pour y créer le fichier PDF.</translation>
     </message>
@@ -1473,7 +1489,7 @@ p, li { white-space: pre-wrap; }
         <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="64"/>
+        <location filename="Windows/rangeadjustments.cpp" line="65"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -1490,19 +1506,19 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Erreur lors de l&apos;evaluation de l&apos;expression écrite pour le pas des Y.</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="131"/>
+        <location filename="Windows/rangeadjustments.cpp" line="132"/>
         <source>X&lt;sub&gt;min&lt;/sub&gt; must be smaller than X&lt;sub&gt;max&lt;/sub&gt;</source>
         <oldsource>X&lt;sub&gt;min&lt;/sub&gt; must be lower than X&lt;sub&gt;max&lt;/sub&gt;</oldsource>
         <translation>X&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="137"/>
+        <location filename="Windows/rangeadjustments.cpp" line="138"/>
         <source>Y&lt;sub&gt;min&lt;/sub&gt; must be smaller than Y&lt;sub&gt;max&lt;/sub&gt;</source>
         <oldsource>Y&lt;sub&gt;min&lt;/sub&gt; must be lower than Y&lt;sub&gt;max&lt;/sub&gt;</oldsource>
         <translation>Y&lt;sub&gt;min&lt;/sub&gt; doit être plus petit que Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="144"/>
+        <location filename="Windows/rangeadjustments.cpp" line="145"/>
         <source>The view range is too tight for ZeGrapher to distinguish between the upper and lower values.</source>
         <translation>Les bornes sont trop proches pour être traitées comme différentes par ZeGrapher.</translation>
     </message>
@@ -1676,13 +1692,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
-        <location filename="Windows/settings.ui" line="294"/>
+        <location filename="Windows/settings.ui" line="297"/>
         <source>Font family:</source>
         <translation>Police d&apos;écriture:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
-        <location filename="Windows/settings.ui" line="301"/>
+        <location filename="Windows/settings.ui" line="304"/>
         <source>Font size:</source>
         <translation>Taille d&apos;écriture:</translation>
     </message>
@@ -1703,7 +1719,7 @@ p, li { white-space: pre-wrap; }
 de mises à jour:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="261"/>
+        <location filename="Windows/settings.ui" line="264"/>
         <source>Language:</source>
         <translation>Langue:</translation>
     </message>
@@ -1763,64 +1779,64 @@ de mises à jour:</translation>
         <translation type="vanished">&lt;strong&gt;Langue:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="281"/>
+        <location filename="Windows/settings.ui" line="284"/>
         <source>English</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="286"/>
+        <location filename="Windows/settings.ui" line="289"/>
         <source>Français</source>
         <translation>Français</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="349"/>
+        <location filename="Windows/settings.ui" line="352"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="37"/>
+        <location filename="Windows/settings.cpp" line="39"/>
         <source>Axes color:</source>
         <translation>Couleur des axes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="41"/>
+        <location filename="Windows/settings.cpp" line="43"/>
         <source>Background color:</source>
         <translation>Couleur du fond:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="46"/>
+        <location filename="Windows/settings.cpp" line="48"/>
         <source>Grid color:</source>
         <translation>Couleur de la grille:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="50"/>
+        <location filename="Windows/settings.cpp" line="52"/>
         <source>Curve default color:</source>
-        <translation type="unfinished">Couleur par défaut
+        <translation>Couleur par défaut
 des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="180"/>
+        <location filename="Windows/settings.cpp" line="182"/>
         <source>Reset to default values ?</source>
         <translation>Rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="180"/>
+        <location filename="Windows/settings.cpp" line="182"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Êtes-vous sûr de vouloir rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="200"/>
-        <location filename="Windows/settings.cpp" line="202"/>
+        <location filename="Windows/settings.cpp" line="205"/>
+        <location filename="Windows/settings.cpp" line="207"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="200"/>
+        <location filename="Windows/settings.cpp" line="205"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="202"/>
+        <location filename="Windows/settings.cpp" line="207"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>
@@ -1933,22 +1949,22 @@ des courbes:</translation>
         <translation type="vanished">Pour k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="95"/>
+        <location filename="Widgets/tangentwidget.cpp" line="93"/>
         <source>at:  x =</source>
         <translation>en x =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="157"/>
+        <location filename="Widgets/tangentwidget.cpp" line="155"/>
         <source>with k =</source>
         <translation>avec k =</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="202"/>
+        <location filename="Widgets/tangentwidget.cpp" line="200"/>
         <source>Choosen Function</source>
         <translation>Fonction choisie</translation>
     </message>
     <message>
-        <location filename="Widgets/tangentwidget.cpp" line="203"/>
+        <location filename="Widgets/tangentwidget.cpp" line="201"/>
         <source>Invalid</source>
         <translation></translation>
     </message>
@@ -1961,33 +1977,68 @@ des courbes:</translation>
         <translation>Vérification de mises à jour</translation>
     </message>
     <message>
-        <location filename="Windows/updatecheck.cpp" line="24"/>
-        <source>Timed out while trying to check for an update. Please check that you&apos;re connected to the internet then try again.</source>
-        <translation>Impossible de vérifier l&apos;existence de mises à jour. Veuillez vérifier que vous êtes bien connecté à internet.</translation>
+        <location filename="Windows/updatecheck.cpp" line="18"/>
+        <source>Please check that you&apos;re connected to the internet then try again.
+If the problem persists, you can check manually at &lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt;
+Current version: </source>
+        <translation>Veuillez vérifier votre connexion à internet puis réessayez de nouveau.
+Si le problème persiste, vous pouvez vérifier manuellement sur &lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt;
+Version actuelle :
+</translation>
     </message>
     <message>
-        <location filename="Windows/updatecheck.cpp" line="31"/>
-        <location filename="Windows/updatecheck.cpp" line="43"/>
+        <location filename="Windows/updatecheck.cpp" line="28"/>
+        <location filename="Windows/updatecheck.cpp" line="62"/>
+        <source>Failed to lookup the latest version.
+</source>
+        <oldsource>Timed out while trying to check for an update.
+</oldsource>
+        <translation>Impossible de se connecter au serveur.</translation>
+    </message>
+    <message>
+        <location filename="Windows/updatecheck.cpp" line="73"/>
+        <source>Error while reading latest version file...</source>
+        <translation>Erreur dans la lecture des informations de mise à jour...</translation>
+    </message>
+    <message>
+        <location filename="Windows/updatecheck.cpp" line="79"/>
+        <source>A new version is available!
+
+To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;
+&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</source>
+        <oldsource>A new version is available!
+
+To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;
+</oldsource>
+        <translation>Une nouvelle version est disponible !
+
+Vous pouvez la télécharger sur &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;
+&lt;u&gt;Note:&lt;/u&gt; Il est possible d&apos;activer/désactiver la vérification automatique de mise à jour au démarrage de l&apos;application dans les paramètres</translation>
+    </message>
+    <message>
+        <source>Timed out while trying to check for an update. Please check that you&apos;re connected to the internet then try again.</source>
+        <translation type="vanished">Impossible de vérifier l&apos;existence de mises à jour. Veuillez vérifier que vous êtes bien connecté à internet.</translation>
+    </message>
+    <message>
+        <location filename="Windows/updatecheck.cpp" line="35"/>
+        <location filename="Windows/updatecheck.cpp" line="47"/>
         <source>Looking for a possible update, please wait...</source>
         <translation>Recherche d&apos;une éventuelle misé à jour, veuillez attendre...</translation>
     </message>
     <message>
-        <location filename="Windows/updatecheck.cpp" line="58"/>
         <source>Failed to lookup for the latest version, please check that you&apos;re currently connected to the internet then try again.</source>
-        <translation>Échec lors du chargement du fichier mises à jour. Veuillez vérifier que vous êtes bien connecté à internet.</translation>
+        <translation type="vanished">Échec lors du chargement du fichier mises à jour. Veuillez vérifier que vous êtes bien connecté à internet.</translation>
     </message>
     <message>
-        <location filename="Windows/updatecheck.cpp" line="69"/>
         <source>Error while reading latest version file... Please try again later.</source>
-        <translation>Erreur lors de la lecture de la dernière version disponible. Veuillez réessayer plus tard.</translation>
+        <translation type="vanished">Erreur lors de la lecture de la dernière version disponible. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
-        <location filename="Windows/updatecheck.cpp" line="76"/>
         <source>A new version is available!&lt;br/&gt;&lt;br/&gt;To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;</source>
-        <translation>Une nouvelle version est disponible! &lt;br/&gt;&lt;br/&gt;Pour la télécharger, veuillez visiter le site web officiel &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;</translation>
+        <translation type="vanished">Une nouvelle version est disponible! &lt;br/&gt;&lt;br/&gt;Pour la télécharger, veuillez visiter le site web officiel &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/updatecheck.cpp" line="82"/>
+        <location filename="Windows/updatecheck.cpp" line="87"/>
         <source>You have the latest version.</source>
         <translation>Vous avez encore la version la plus récente.</translation>
     </message>
@@ -1995,12 +2046,12 @@ des courbes:</translation>
 <context>
     <name>Values</name>
     <message>
-        <location filename="Windows/values.cpp" line="30"/>
+        <location filename="Windows/values.cpp" line="32"/>
         <source>Values table</source>
         <translation>Tableaux de valeurs</translation>
     </message>
     <message>
-        <location filename="Windows/values.cpp" line="33"/>
+        <location filename="Windows/values.cpp" line="35"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>

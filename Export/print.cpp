@@ -24,7 +24,7 @@
 #include "Export/print.h"
 #include "ui_print.h"
 
-Print::Print(Information *info, QWidget *parent) : ui(new Ui::Print), QWidget(parent)
+Print::Print(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui::Print)
 {
     ui->setupUi(this);
 
