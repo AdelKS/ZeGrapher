@@ -4,7 +4,9 @@ UpdateCheck::UpdateCheck(QWidget *parent) : QDialog(parent)
 {
     QHBoxLayout *hLayout = new QHBoxLayout();
     statusLabel = new QLabel();
-    statusLabel->setOpenExternalLinks(true);
+    statusLabel->setOpenExternalLinks(true);    
+    statusLabel->setTextFormat(Qt::RichText);
+
     hLayout->addWidget(statusLabel);
     setLayout(hLayout);
 
@@ -13,10 +15,8 @@ UpdateCheck::UpdateCheck(QWidget *parent) : QDialog(parent)
     timer.setSingleShot(true);
     timer.setInterval(5000);
 
-    silentCheck = true;
-
-    manualCheckErrorText = tr("Please check that you're connected to the internet then try again.\n"
-                              "If the problem persists, you can check manually at <a href='zegrapher.com'>zegrapher.com</a>\n"
+    manualCheckErrorText = tr("Please check that you are connected to the internet then try again.<br/>"
+                              "If the problem persists, you can check manually at <a href='zegrapher.com'>zegrapher.com</a><br/>"
                               "Current version: ") + SOFTWARE_VERSION_STR;
 
     connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
@@ -25,13 +25,11 @@ UpdateCheck::UpdateCheck(QWidget *parent) : QDialog(parent)
 
 void UpdateCheck::timedOut()
 {
-    statusLabel->setText(tr("Failed to lookup the latest version.\n") + manualCheckErrorText);
+    statusLabel->setText(tr("Failed to lookup the latest version.<br/>") + manualCheckErrorText);
 }
 
 void UpdateCheck::silentCheckForUpdate()
 {
-    silentCheck = true;
-
     statusLabel->setText(tr("Looking for a possible update, please wait..."));
 
     QNetworkRequest request(QUrl("https://zegrapher.com/latest"));
@@ -42,8 +40,6 @@ void UpdateCheck::silentCheckForUpdate()
 
 void UpdateCheck::checkForUpdate()
 {
-    silentCheck = false;
-
     statusLabel->setText(tr("Looking for a possible update, please wait..."));
 
     QNetworkRequest request(QUrl("https://zegrapher.com/latest"));
@@ -59,7 +55,7 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
 
     if(reply->error() != QNetworkReply::NoError)
     {
-        statusLabel->setText(tr("Failed to lookup the latest version.\n") + manualCheckErrorText);
+        statusLabel->setText(tr("Failed to lookup the latest version.<br/>") + manualCheckErrorText);
         reply->deleteLater();
         return;
     }
@@ -75,14 +71,12 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
     else
     {
         if(latestVersion > SOFTWARE_VERSION)
-        {            
-            statusLabel->setTextFormat(Qt::RichText);
-
+        {
             statusLabel->setText(tr("A new version is available!<br/>"
                                     "To download it, visit <a href=http://zegrapher.com>zegrapher.com</a><br/><br/>"
                                     "<u>Note:</u> You can enable/disable the automatic update check in the settings"));
-            if(silentCheck)
-                QDialog::exec();
+
+            QDialog::exec();
         }
         else
         {

@@ -36,7 +36,6 @@ protected:
     QNetworkAccessManager manager;
     QTimer timer;
     QLabel *statusLabel;
-    bool silentCheck;
     QString manualCheckErrorText;
 
 };

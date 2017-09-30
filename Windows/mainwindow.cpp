@@ -177,7 +177,7 @@ void MainWindow::loadWindowSavedGeomtries()
 
 void MainWindow::saveWindowsGeometry()
 {
-    settings.setValue("main_window/geometry", frameGeometry());
+    settings.setValue("main_window/geometry", geometry());
 
     if(settingsWin->geometry().top() != 0)
         settings.setValue("settings_window/geometry", settingsWin->geometry());
