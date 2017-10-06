@@ -85,7 +85,7 @@ private:
 
     QList <QChar> funcNames;
     QList <QChar> seqNames;
-    QWebView helpWindow;
+    QTextBrowser helpWindow;
 
     QList<FuncCalculator*> funcCalcs;
     QList<SeqCalculator*> seqCalcs;

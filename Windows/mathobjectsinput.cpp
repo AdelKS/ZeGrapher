@@ -29,6 +29,11 @@ MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent): QWidget(
 
     setWindowFlags(Qt::Window);
 
+
+    helpWindow.resize(800,600);
+    helpWindow.setParent(this);
+    helpWindow.setWindowFlags(Qt::Window);
+
     parEqController = new ParEqController(&parEqWidgets);
 
     connect(ui->periodSpinBox, SIGNAL(valueChanged(int)), parEqController, SLOT(setIncrPeriod(int)));
@@ -71,8 +76,8 @@ void MathObjectsInput::showDataHelpWindow()
 {
     QLocale locale;
     if(locale.language() == QLocale::French)
-        helpWindow.load(QUrl("qrc:///Help/data_help_fr.html"));
-    else helpWindow.load(QUrl("qrc:///Help/data_help_en.html"));
+        helpWindow.setSource(QUrl("qrc:///Help/data_help_fr.html"));
+    else helpWindow.setSource(QUrl("qrc:///Help/data_help_en.html"));
 
     helpWindow.setWindowTitle(tr("Help: data fill window."));
 
@@ -314,7 +319,7 @@ void MathObjectsInput::addDataWidget()
 {
     information->addDataList();
 
-    DataWidget *widget = new DataWidget(dataWidgets.size(), information);
+    DataWidget *widget = new DataWidget(dataWidgets.size(), information, this);
     connect(widget, SIGNAL(removeMe(DataWidget*)), this, SLOT(removeDataWidget(DataWidget*)));
     connect(widget->getDataWindow(), SIGNAL(showHelpWindow()), this, SLOT(showDataHelpWindow()));
 

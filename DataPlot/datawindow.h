@@ -60,7 +60,7 @@ class DataWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataWindow(Information *info, int ind);
+    explicit DataWindow(Information *info, int ind, QWidget *parent = 0);
     RetractableWidgetState getRetractableWidgetState();
     void shrinkActionsWidgetContainer();
 

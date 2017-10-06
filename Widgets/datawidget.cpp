@@ -73,7 +73,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     ui->mainLayout->addWidget(removeButton);
 
     QSettings settings;
-    dataWindow = new DataWindow(info, num);
+    dataWindow = new DataWindow(info, num, this);
 
     if(settings.contains("data_window/shrinked_actions_widget"))
         if(settings.value("data_window/shrinked_actions_widget").toBool())

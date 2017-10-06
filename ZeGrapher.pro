@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 
-QT += widgets printsupport webkitwidgets
+QT += widgets printsupport
 
 TARGET = ZeGrapher
 TEMPLATE = app

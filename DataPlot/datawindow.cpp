@@ -23,8 +23,10 @@
 #include "ui_datawindow.h"
 
 
-DataWindow::DataWindow(Information *info, int ind)
+DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(parent)
 {
+
+    setWindowFlags(Qt::Window);
 
     index = ind;
     xindex = STARTING_XPIN_INDEX;
