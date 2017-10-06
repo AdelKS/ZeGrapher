@@ -32,8 +32,6 @@
 #include "./csvhandler.h"
 #include "./modelwidget.h"
 
-#include <QtWebKitWidgets/QWebView>
-
 #define WIDGET_ANIMATION_TIME 250
 
 #define COLUMN_SELECTION true

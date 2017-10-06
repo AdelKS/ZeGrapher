@@ -4,7 +4,6 @@
 #
 #-------------------------------------------------
 
-
 QT += widgets printsupport network
 
 TARGET = ZeGrapher
@@ -18,6 +17,11 @@ MOC_DIR = .moc
 UI_DIR = .ui
 
 INCLUDEPATH += .
+
+win32 {
+    INCLUDEPATH += C:/boost/boost_1_72_0
+}
+
 
 SOURCES += \
     main.cpp \
