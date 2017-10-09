@@ -25,9 +25,6 @@
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
-#include <boost/math/special_functions/binomial.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
 #include <QList>
 #include <algorithm>
 #include "structures.h"

@@ -18,8 +18,10 @@
 **
 ****************************************************************************/
 
-
 #include "polynomial.h"
+
+#include <boost/math/special_functions/binomial.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
 
 Polynomial::Polynomial(const Polynomial &pol) : translation(pol.translation), coefficients(pol.coefficients),
     translatedCoefficients(pol.translatedCoefficients)

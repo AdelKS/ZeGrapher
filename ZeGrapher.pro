@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 
-QT += widgets printsupport
+QT += widgets printsupport network
 
 TARGET = ZeGrapher
 TEMPLATE = app
