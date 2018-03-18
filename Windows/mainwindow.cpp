@@ -34,8 +34,13 @@ MainWindow::MainWindow()
     valuesWin = new Values(information, this);
     printWin = new Print(information, this);
     keyboard = new Keyboard();
+    mathInputDockWidget = new QDockWidget(this);
 
     scene = new MainGraph(information); // it has to be the last thing to create.
+
+
+    mathInputDockWidget->setWidget(inputWin);
+    addDockWidget(Qt::LeftDockWidgetArea, mathInputDockWidget);
 
     setWindowIcon(QIcon(":/icons/software.png"));
     setMinimumSize(700,450);
@@ -109,8 +114,8 @@ void MainWindow::createMenus()
 
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
-    connect(showInputWinAction, SIGNAL(triggered()), inputWin, SLOT(show()));
-    connect(showInputWinAction, SIGNAL(triggered()), inputWin, SLOT(raise()));
+    connect(showInputWinAction, SIGNAL(triggered()), mathInputDockWidget, SLOT(show()));
+    connect(showInputWinAction, SIGNAL(triggered()), mathInputDockWidget, SLOT(raise()));
 
     QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Range edit"));
     showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));

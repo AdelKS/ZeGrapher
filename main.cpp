@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
 {    
     QApplication a(argc, argv);
 
-
     QCoreApplication::setOrganizationName("ZeGrapher Project");
     QCoreApplication::setOrganizationDomain("zegrapher.com");
     QCoreApplication::setApplicationName("ZeGrapher");

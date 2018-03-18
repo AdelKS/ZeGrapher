@@ -29,7 +29,6 @@ MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent): QWidget(
 
     setWindowFlags(Qt::Window);
 
-
     helpWindow.resize(800,600);
     helpWindow.setParent(this);
     helpWindow.setWindowFlags(Qt::Window);

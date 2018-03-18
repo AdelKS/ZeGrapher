@@ -74,6 +74,7 @@ private:
     Print *printWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
+    QDockWidget *mathInputDockWidget;
     //ImagePreview *winImageScene;
     //PrintPreview *winPrintScene;
     QSettings settings;
