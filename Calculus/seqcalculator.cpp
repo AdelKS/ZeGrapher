@@ -41,6 +41,7 @@ SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) : treeCre
     custom_k = 0;
     k = 0;
     drawState = true;
+    seqTree = NULL;
 
     addRefFuncsPointers();
 
@@ -108,6 +109,8 @@ int SeqCalculator::getDrawsNum()
 void SeqCalculator::set_nMin(int val)
 {
     nMin = val;
+    seqValues.clear();
+    updateSeqValuesSize();
 }
 
 bool SeqCalculator::isSeqParametric()
@@ -178,7 +181,7 @@ bool SeqCalculator::checkByCalculatingValues()
     if(!isExprValidated || !areFirstValsValidated)
         return false;
 
-    isValid = saveSeqValues(3*seqValues[0].size() + 10 + nMin);
+    isValid = saveSeqValues(3*seqValues[0].size() + 10 - nMin);
     blockCalculatingFromTree = false;
 
     return isValid;
@@ -186,7 +189,7 @@ bool SeqCalculator::checkByCalculatingValues()
 
 double SeqCalculator::getCustomSeqValue(double n, bool &ok, double k_value)
 {
-    if(nMin > n || n > MAX_SAVED_SEQ_VALS)
+    if( n < nMin || n > MAX_SAVED_SEQ_VALS)
         return NAN;
 
     double index = (k_value - kRange.start)/kRange.step;
@@ -217,7 +220,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 
     blockCalculatingFromTree = true;
 
-    if(nMax > MAX_SAVED_SEQ_VALS + nMin)
+    if(nMax-nMin > MAX_SAVED_SEQ_VALS)
         nMax = MAX_SAVED_SEQ_VALS + nMin;
 
     double result;
@@ -255,7 +258,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 
 double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
 {   
-    if(nMin > n || n > MAX_SAVED_SEQ_VALS)
+    if(n < nMin || seqValues[0].size() > MAX_SAVED_SEQ_VALS)
         return NAN;    
 
     if(n-nMin >= seqValues[0].size())
@@ -268,7 +271,10 @@ double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
         return NAN;
 
     if(0 <= index_k && index_k < drawsNum)
-        return seqValues[index_k][n-nMin];
+    {
+        double res = seqValues[index_k][n-nMin];
+        return res;
+    }
     else return NAN;
 }
 
@@ -301,7 +307,7 @@ bool SeqCalculator::saveSeqValues(double nMax)
 
     for(kPos = 0; kPos < drawsNum; kPos++)
     {
-        for(int n = seqValues[kPos].size() + nMin; n <= nMax + nMin; n++)
+        for(int n = seqValues[kPos].size() - nMin; n <= nMax ; n++)
         {
             result = calculateFromTree(seqTree, n, ok);
 

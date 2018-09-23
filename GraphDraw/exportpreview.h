@@ -29,18 +29,6 @@
 
 #include "imagepreview.h"
 
-#define PORTRAIT true
-#define PAYSAGE false
-
-#define COLOR true
-#define GRAYSCALE false
-
-#define SCREEN_RESOLUTION true
-#define CUSTOM_RESOLUTION false
-
-#define PRINT_SHEET true
-#define PRINT_FILE false
-
 #define NOTHING 0
 #define TOPLEFT_CORNER 1
 #define TOPRIGHT_CORNER 2
@@ -52,28 +40,31 @@
 #define BOTTOM_SIDE 8
 #define ALL 9
 
-class PrintPreview : public ImagePreview
+class ExportPreview : public ImagePreview
 {
     Q_OBJECT
 
 public:
-    explicit PrintPreview(Information *info);
-    void setViewType(bool type);  
+    explicit ExportPreview(Information *info);
+    void setOrientation(QPrinter::Orientation type);
     void setPrinter(QPrinterInfo printInfo);
-    void setPDFname(QString pdf);
 
 signals:
-    void newGraphSize(double H, double W);  
+    void newGraphSize(double H, double W);
 
-public slots:    
+public slots:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);   
+    void wheelEvent(QWheelEvent *event);
 
     void setGraphHeight(double H);
-    void setGraphWidth(double W);   
-    void print(int nbPages, bool colorType, bool printType, bool resType, int res = 0);
+    void setGraphWidth(double W);
+    void setScale(double scalingFactor);
+    void print(int nbPages, bool useColor);
+    void exportPDF(QString fileName);
+
+
 protected:
     void paintEvent(QPaintEvent *event);
     void determinerCentreEtUnites();
@@ -84,13 +75,17 @@ protected:
     void printCurves();
     void testGraphPosition();
 
-    bool viewType;
+    void printOrExportPDF(bool print, int nbPages, bool useColor, QString fileName = "");
+
+    QPrinter::Orientation orientation;
+    double userScalingFactor, screenResolution;
+    QRect initialViewPort;
     QRectF graph, sheetRect, graphRect, topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
     double sheetHeight, graphHeightCm, sheetWidth, graphWidthCm, relativeXposCm, relativeYposCm;
     QPointF lastMousePos ;
     short moveType;
     QPrinterInfo printerInfo;
-    QPrinter *printer;
+    QPrinter mprinter;
     QString PDFname;
 
 };

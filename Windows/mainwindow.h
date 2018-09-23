@@ -32,8 +32,8 @@
 #include "Windows/values.h"
 #include "about.h"
 #include "Export/imagesave.h"
-#include "GraphDraw/printpreview.h"
-#include "Export/print.h"
+#include "GraphDraw/exportpreview.h"
+#include "Export/export.h"
 #include "Widgets/keyboard.h"
 #include "Windows/updatecheck.h"
 
@@ -71,7 +71,7 @@ private:
     Keyboard *keyboard;
     ImageSave *imageExportWin;
     about *aboutWin;
-    Print *printWin;
+    Export *printWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
     QDockWidget *mathInputDockWidget;

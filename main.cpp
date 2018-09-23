@@ -22,8 +22,10 @@
 
 
 int main(int argc, char *argv[])
-{    
+{
     QApplication a(argc, argv);
+
+    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
     QCoreApplication::setOrganizationName("ZeGrapher Project");
     QCoreApplication::setOrganizationDomain("zegrapher.com");
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
         a.setFont(font);
     }
 
-    a.installTranslator(&translator);    
+    a.installTranslator(&translator);
 
     MainWindow w;
     w.show();

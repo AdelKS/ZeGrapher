@@ -50,7 +50,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
     parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
-    painter.begin(this);    
+    painter.begin(this);
 
     painter.setFont(information->getSettingsVals().graphFont);
 
@@ -226,7 +226,7 @@ void ImagePreview::placerGraduations()
     font.setPixelSize(fontSize);
     font.setItalic(false);
     font.setBold(false);
-    font.setUnderline(false);    
+    font.setUnderline(false);
     pen.setWidth(1);
     painter.setFont(font);
     painter.setRenderHint(QPainter::Antialiasing, false);
@@ -253,7 +253,7 @@ void ImagePreview::placerGraduations()
                 painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphHeight));
             }
             pen.setColor(parameters.axesColor);
-            pen.setWidth(1);            
+            pen.setWidth(1);
             painter.setPen(pen);
 
             pos = Xpos + centre.x;
@@ -335,7 +335,7 @@ void ImagePreview::placerGraduations()
 }
 
 void ImagePreview::drawAxes()
-{   
+{
     pen.setWidth(1);
     pen.setColor(parameters.axesColor);
     painter.setPen(pen);
@@ -375,7 +375,7 @@ QImage* ImagePreview::drawImage()
     image->fill(parameters.backgroundColor.rgb());
 
     painter.begin(image);
-    //trace du background  
+    //trace du background
 
     pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);

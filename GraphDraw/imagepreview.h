@@ -34,7 +34,7 @@ public:
     explicit ImagePreview(Information *info);
     QImage* drawImage();
 
-public slots:    
+public slots:
     void setlegendFontSize(int size);
     void setLegendState(bool show);
 
@@ -46,7 +46,7 @@ public slots:
     void setItalic(bool state);
     void setNumPrec(int prec);
 
-protected:   
+protected:
 
     void paintEvent(QPaintEvent *event);
     void determinerCentreEtUnites();
@@ -56,7 +56,8 @@ protected:
     void assignGraphSize();
     void writeLegends();
 
-    int leftMargin, rightMargin, topMargin, bottomMargin, legendFontSize, additionalMargin, numPrec;
+    double leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
+    int  legendFontSize, numPrec;
     QString xLegend, yLegend;
     Information *information;
     bool legendState, bold, italic, underline;

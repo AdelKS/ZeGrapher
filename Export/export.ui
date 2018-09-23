@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Print</class>
- <widget class="QWidget" name="Print">
+ <class>Export</class>
+ <widget class="QWidget" name="Export">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>562</width>
-    <height>550</height>
+    <width>506</width>
+    <height>864</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,37 +39,14 @@
             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
            </property>
            <item row="0" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Copies :</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="numPages">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
               <string>Orientation:</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="view">
+           <item row="0" column="1">
+            <widget class="QComboBox" name="orientationSelector">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -78,24 +55,24 @@
              </property>
              <item>
               <property name="text">
-               <string>Portrait</string>
+               <string>Landscape</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Landscape</string>
+               <string>Portrait</string>
               </property>
              </item>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="1" column="0">
             <widget class="QLabel" name="label_3">
              <property name="text">
               <string>Coloration :</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="1" column="1">
             <widget class="QComboBox" name="colorType">
              <property name="maximumSize">
               <size>
@@ -127,41 +104,102 @@
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
-          <string>Print</string>
+          <string>Export</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QGroupBox" name="groupBox_2">
-            <property name="title">
-             <string>Resolution:</string>
+           <widget class="QWidget" name="widget_2" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
              <property name="spacing">
               <number>0</number>
              </property>
              <item>
-              <widget class="QRadioButton" name="screenRes">
-               <property name="text">
-                <string>Screen resolution</string>
+              <widget class="QLabel" name="label_9">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="checked">
-                <bool>true</bool>
+               <property name="text">
+                <string>Global scaling:</string>
                </property>
               </widget>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <widget class="QDoubleSpinBox" name="scalingFactor">
+               <property name="prefix">
+                <string>x</string>
+               </property>
+               <property name="minimum">
+                <double>0.100000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>10.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+               <property name="value">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="printGroup">
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Print</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
                <item>
-                <widget class="QRadioButton" name="CustomRes">
+                <widget class="QLabel" name="label">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="text">
-                  <string>Predefined:</string>
+                  <string>Printer:</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="resolution">
-                 <property name="enabled">
-                  <bool>false</bool>
+                <widget class="QComboBox" name="printerSelector">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
                  <property name="maximumSize">
                   <size>
@@ -169,20 +207,44 @@
                    <height>25</height>
                   </size>
                  </property>
-                 <property name="suffix">
-                  <string> ppp</string>
+                 <property name="sizeIncrement">
+                  <size>
+                   <width>5</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>Copies :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="numPages">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>25</height>
+                  </size>
                  </property>
                  <property name="minimum">
-                  <number>50</number>
-                 </property>
-                 <property name="maximum">
-                  <number>400</number>
-                 </property>
-                 <property name="singleStep">
-                  <number>100</number>
+                  <number>1</number>
                  </property>
                  <property name="value">
-                  <number>100</number>
+                  <number>1</number>
                  </property>
                 </widget>
                </item>
@@ -192,20 +254,26 @@
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_3">
+           <widget class="QGroupBox" name="exportGroup">
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>100</height>
+             </size>
+            </property>
             <property name="title">
-             <string>Printing:</string>
+             <string>Export</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_2">
-               <property name="spacing">
-                <number>0</number>
-               </property>
                <item>
-                <widget class="QRadioButton" name="inPaper">
+                <widget class="QRadioButton" name="scalableFormat">
                  <property name="text">
-                  <string>on a sheet</string>
+                  <string>Scalable format</string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>
@@ -213,28 +281,9 @@
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
                  <item>
-                  <widget class="QLabel" name="label_6">
-                   <property name="minimumSize">
-                    <size>
-                     <width>25</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>25</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label">
+                  <widget class="QLabel" name="label_15">
                    <property name="maximumSize">
                     <size>
                      <width>90</width>
@@ -242,18 +291,28 @@
                     </size>
                    </property>
                    <property name="text">
-                    <string>Printer:</string>
+                    <string>Format:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBox" name="printer">
+                  <widget class="QComboBox" name="scalableFormatSelection">
                    <property name="maximumSize">
                     <size>
                      <width>16777215</width>
                      <height>25</height>
                     </size>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string>PDF</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>SVG</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                 </layout>
@@ -262,70 +321,114 @@
              </item>
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_3">
-               <property name="spacing">
-                <number>0</number>
-               </property>
                <item>
-                <widget class="QRadioButton" name="inPDF">
+                <widget class="QRadioButton" name="imageFormat">
                  <property name="text">
-                  <string>to a file (PDF, PostScript)</string>
+                  <string>Image format</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
                  <item>
-                  <widget class="QLabel" name="label_8">
-                   <property name="minimumSize">
-                    <size>
-                     <width>25</width>
-                     <height>25</height>
-                    </size>
-                   </property>
+                  <widget class="QLabel" name="label_17">
                    <property name="maximumSize">
                     <size>
-                     <width>25</width>
-                     <height>25</height>
+                     <width>90</width>
+                     <height>16777215</height>
                     </size>
                    </property>
                    <property name="text">
-                    <string/>
+                    <string>Format:</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="PDFname">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
+                  <widget class="QComboBox" name="imageFormatSelection">
                    <property name="maximumSize">
                     <size>
                      <width>16777215</width>
                      <height>25</height>
                     </size>
                    </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="chooseLocation">
-                   <property name="enabled">
-                    <bool>false</bool>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>25</width>
-                     <height>25</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>...</string>
-                   </property>
+                   <item>
+                    <property name="text">
+                     <string>JPEG</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>PNG</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>PBM</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>PPM</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                 </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <widget class="QLabel" name="pathLabel">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Path:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="fileName">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="chooseLocation">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>25</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
@@ -357,7 +460,7 @@
             <item>
              <widget class="QLabel" name="label_13">
               <property name="text">
-               <string>Precision:</string>
+               <string>Digits:</string>
               </property>
              </widget>
             </item>
@@ -706,9 +809,9 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="print">
+         <widget class="QPushButton" name="exportButton">
           <property name="text">
-           <string>Print</string>
+           <string>Export</string>
           </property>
          </widget>
         </item>
@@ -753,8 +856,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>264</width>
-        <height>530</height>
+        <width>219</width>
+        <height>844</height>
        </rect>
       </property>
      </widget>
@@ -767,114 +870,34 @@
  </resources>
  <connections>
   <connection>
-   <sender>CustomRes</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>resolution</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>141</x>
-     <y>295</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>247</x>
-     <y>295</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inPaper</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>143</x>
-     <y>384</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>154</x>
-     <y>410</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inPaper</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>printer</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>212</x>
-     <y>384</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>246</x>
-     <y>410</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inPDF</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>PDFname</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>111</x>
-     <y>445</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>164</x>
-     <y>471</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inPDF</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>chooseLocation</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>247</x>
-     <y>445</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>246</x>
-     <y>471</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>groupBox_3</sender>
+   <sender>printGroup</sender>
    <signal>toggled(bool)</signal>
    <receiver>numPages</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>94</x>
-     <y>417</y>
+     <x>114</x>
+     <y>331</y>
     </hint>
     <hint type="destinationlabel">
-     <x>164</x>
-     <y>62</y>
+     <x>236</x>
+     <y>318</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>groupBox_3</sender>
+   <sender>printGroup</sender>
    <signal>toggled(bool)</signal>
    <receiver>label_2</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
-     <y>415</y>
+     <x>93</x>
+     <y>331</y>
     </hint>
     <hint type="destinationlabel">
-     <x>64</x>
-     <y>65</y>
+     <x>94</x>
+     <y>318</y>
     </hint>
    </hints>
   </connection>

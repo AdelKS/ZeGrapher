@@ -25,44 +25,43 @@
 #define PRINT_H
 
 #include <QWidget>
-#include "GraphDraw/printpreview.h"
-
-#define PORTRAIT true
-#define PAYSAGE false
-
-#define SCREEN_RESOLUTION true
-#define CUSTOM_RESOLUTION false
+#include <QPrintPreviewWidget>
+#include "GraphDraw/exportpreview.h"
 
 #define PRINT_SHEET true
 #define PRINT_FILE false
 
 namespace Ui {
-    class Print;
+    class Export;
 }
 
-class Print : public QWidget
+class Export : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Print(Information *info, QWidget *parent = 0);
-    ~Print();  
+    explicit Export(Information *info, QWidget *parent = 0);
+    ~Export();
 
 public slots:
-    void viewChanged(int);
+    void orientationChanged(int);
     void setGraphSize(double H, double W);
-    void print();
     void enablePrintButton();
-    void getPDFname();
+    void getFileName();
+    void exportGraph();
     void setPrintButtonText(bool);
 
-protected:    
+protected slots:
+    void exportGroupStateChanged(bool state);
 
-    Ui::Print *ui;
-    PrintPreview *scene;   
+protected:
+
+    Ui::Export *ui;
+    QTabWidget *tabWidget;
+    ExportPreview *exportPreview;
     QList<QPrinterInfo> printersList;
     QTimer timer;
-    QString PDFname;
+    QString fileName;
     bool orthonormal;
 };
 

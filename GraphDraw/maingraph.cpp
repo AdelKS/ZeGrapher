@@ -25,11 +25,11 @@
 
 
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
-{   
+{
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(dataUpdated()), this, SLOT(updateData()));
-    connect(info, SIGNAL(animationUpdate()), this, SLOT(updateParEq()));  
+    connect(info, SIGNAL(animationUpdate()), this, SLOT(updateParEq()));
     connect(info, SIGNAL(gridStateChange()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(drawStateUpdateOccured()), this, SLOT(reactivateSmoothing()));
 
@@ -86,7 +86,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     buttonPresse = false;
 
     sourisSurUneCurve = dispRectangle = recalculate = recalculateRegs = false;
-    hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;   
+    hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;
     moving = false;
 
     kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF);"
@@ -98,7 +98,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     kLabel.setParent(this);
     kLabel.hide();
 
-    savedGraph = NULL;   
+    savedGraph = NULL;
 
     setMouseTracking(true);
     typeCurseur = NORMAL;
@@ -120,9 +120,9 @@ void MainGraph::updateParEq()
 }
 
 void MainGraph::updateGraph()
-{    
+{
     if(!cancelUpdateSignal)
-    {        
+    {
         resaveGraph = true;
         recalculate = true;
         update();
@@ -197,8 +197,8 @@ void MainGraph::addOtherWidgets()
     lineX->setFixedSize(100,25);
     connect(lineX, SIGNAL(returnPressed()), this, SLOT(lineXReturnPressed()));
 
-    lineY = new QLineEdit();   
-    lineY->setReadOnly(true);    
+    lineY = new QLineEdit();
+    lineY->setReadOnly(true);
     lineY->setFixedSize(100,25);
 
     QVBoxLayout *verLayout = new QVBoxLayout();
@@ -218,7 +218,7 @@ void MainGraph::addOtherWidgets()
     hWidget = new QWidget(this);
     hWidget->setLayout(horLayout);
 
-    xWidget = new QWidget(this);    
+    xWidget = new QWidget(this);
     xWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox1 = new QHBoxLayout();
     hbox1->addStretch();
@@ -229,7 +229,7 @@ void MainGraph::addOtherWidgets()
     xWidget->setAutoFillBackground(true);
 
 
-    yWidget = new QWidget(this);    
+    yWidget = new QWidget(this);
     yWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox2 = new QHBoxLayout();
     hbox2->addStretch();
@@ -253,7 +253,7 @@ void MainGraph::addOtherWidgets()
 }
 
 void MainGraph::hideHorWidget()
-{   
+{
     if(hWidget->y() >= hBottom)
     {
         hWidgetHideTransition.stop();
@@ -265,7 +265,7 @@ void MainGraph::hideHorWidget()
 }
 
 void MainGraph::hideVerWidget()
-{  
+{
     if(vWidget->x() >= vBottom)
     {
         vWidgetHideTransition.stop();
@@ -290,7 +290,7 @@ void MainGraph::hideXYWidgets()
 }
 
 void MainGraph::showHorWidget()
-{    
+{
     hWidget->show();
 
     if(hWidget->y() <= hTopLeft.y())
@@ -308,7 +308,7 @@ void MainGraph::showVerWidget()
     if(vWidget->x() <= vTopLeft.x())
     {
         vWidgetState = true;
-        vWidgetShowTransition.stop();        
+        vWidgetShowTransition.stop();
     }
     else vWidget->move(vWidget->x()-6, vWidget->y());
 }
@@ -384,7 +384,7 @@ void MainGraph::afficherPtX(double x)
             pointUnit.x = x;
             pointUnit.y = funcs[selectedCurve.id]->getFuncValue(x, k);
 
-            dispPoint = true;          
+            dispPoint = true;
         }
         else if(selectedCurve.funcType == SEQ_HOVER)
         {
@@ -393,7 +393,7 @@ void MainGraph::afficherPtX(double x)
                 bool ok = true;
                 x = trunc(x);
                 pointUnit.x = x;
-                pointUnit.y = seqs[selectedCurve.id]->getSeqValue(x, ok, selectedCurve.kPos);               
+                pointUnit.y = seqs[selectedCurve.id]->getSeqValue(x, ok, selectedCurve.kPos);
                 dispPoint = true;
             }
         }
@@ -462,15 +462,15 @@ void MainGraph::paintEvent(QPaintEvent *event)
     if(windowSize != size())
     {
        newWindowSize();
-       resaveGraph = true;       
-       recalculate = true;       
+       resaveGraph = true;
+       recalculate = true;
     }
 
     if(!moving && (typeCurseur == NORMAL || hWidgetHideTransition.isActive() || vWidgetHideTransition.isActive() ||
             hWidgetShowTransition.isActive() || vWidgetShowTransition.isActive() || hWidgetState || vWidgetState ||
                    animationUpdate))
         indirectPaint();
-    else directPaint();    
+    else directPaint();
 
     event->accept();
 }
@@ -487,7 +487,7 @@ void MainGraph::indirectPaint()
 
     painter.setFont(information->getSettingsVals().graphFont);
 
-    painter.drawImage(QPoint(0,0), *savedGraph);    
+    painter.drawImage(QPoint(0,0), *savedGraph);
     painter.translate(QPointF(centre.x, centre.y));
 
     drawAnimatedParEq();
@@ -630,7 +630,7 @@ void MainGraph::addTangentToBuffer()
 
 void MainGraph::resaveImageBuffer()
 {
-    resaveGraph = false;    
+    resaveGraph = false;
 
     checkIfActiveSelectionConflicts();
 
@@ -699,7 +699,7 @@ void MainGraph::updateCenterPosAndScaling()
     }
 
     centre.x = - graphRange.Xmin * uniteX;
-    centre.y =  graphRange.Ymax * uniteY;    
+    centre.y =  graphRange.Ymax * uniteY;
 
 }
 
@@ -742,7 +742,7 @@ void MainGraph::drawAnimatedParEq()
     QPolygonF polygon;
     ParEqWidget *parWidget;
     ColorSaver *colorSaver;
-    Point point;    
+    Point point;
 
     pen.setWidth(parameters.curvesThickness);
     painter.setPen(pen);
@@ -921,11 +921,11 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
                 kLabel.hide();
 
             }
-            else moving = false;            
+            else moving = false;
 
             update();
         }
-    }   
+    }
     else if(typeCurseur == ZOOMBOX)
     {
         dispRectangle = false;
@@ -944,11 +944,11 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 
             typeCurseur = NORMAL;
         }
-    }  
+    }
 }
 
 void MainGraph::mouseMoveEvent(QMouseEvent *event)
-{    
+{
     bool refresh = false;
 
     mouseX = event->x();
@@ -967,7 +967,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
     }
 
     if(vWidgetRect.contains(mouseX, mouseY))
-    {        
+    {
         vWidgetHideTransition.stop();
         vHideStarted = false;
         vWidgetShowTransition.start();
@@ -1040,12 +1040,12 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             moving = true;
             refresh = true;
         }
-    }  
+    }
     else if(typeCurseur == ZOOMBOX)
     {
         rectReel.setBottomRight(QPoint(event->x(), event->y()));
         refresh = true;
-    }   
+    }
 
     lastPosSouris.x = event->x();
     lastPosSouris.y = event->y();
@@ -1115,7 +1115,7 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
         recalculate = false;
     }
     else if(selectedCurve.funcType == TANGENT_RESIZE_HOVER)
-    {       
+    {
          double dx = (mouseX - lastPosSouris.x)/uniteX;
          tangents->at(selectedCurve.id)->resizeTangent(dx, selectedCurve.tangentPtSelection);
     }
@@ -1127,7 +1127,7 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
 
 void MainGraph::mouseFuncHoverTest(double x, double y)
 {
-    double calcY = 0;   
+    double calcY = 0;
     double k = 0;
     int draw;
     double rangeLimit;
@@ -1296,12 +1296,12 @@ void MainGraph::drawTicksAndNumbers()
 
     //trace sur l'axe des X
     if(centre.y < 20)
-    {       
+    {
         Ypos = 20;
         posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
     else if(graphHeight - centre.y < 20)
-    {       
+    {
         Ypos = graphHeight - 20;
         posTxt = Ypos - 7;
     }
@@ -1332,7 +1332,7 @@ void MainGraph::drawTicksAndNumbers()
         end = graphWidth - 10 - painter.fontMetrics().width(num)/2 - 5;
 
     while(Xpos <= end)
-    {       
+    {
         if(start <= Xpos && fabs(Xpos - centre.x) > 1)
         {
             if(start <= Xpos && information->getGridState() && Xpos <= end)
@@ -1401,7 +1401,7 @@ void MainGraph::drawTicksAndNumbers()
     double txtCorr = + painter.fontMetrics().ascent()/2 - 2;
 
     while(Ypos <= end)
-    {        
+    {
         if(start <= Ypos && fabs(Ypos - centre.y) > 1)
         {
             if(information->getGridState())
@@ -1425,7 +1425,7 @@ void MainGraph::drawTicksAndNumbers()
 
         Yreal -= graphRange.Yscale;
         Ypos += step;
-    }   
+    }
 }
 
 bool MainGraph::updateTickSpacing()
@@ -1473,7 +1473,7 @@ void MainGraph::drawAxes()
     // *********** remarque: les y sont positifs en dessous de l'axe x, step au dessus !! ************//
     pen.setWidth(1);
     pen.setColor(parameters.axesColor);
-    painter.setPen(pen);    
+    painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     axesIntersec.y = centre.y;
@@ -1547,7 +1547,7 @@ void MainGraph::zoomY()
     double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * 0.0016;
 
     if(!information->isOrthonormal())
-    {        
+    {
         graphRange.Ymin += valeur;
         graphRange.Ymax -= valeur;
         recalculate = false;

@@ -21,54 +21,79 @@
 
 
 
-#include "GraphDraw/printpreview.h"
+#include "GraphDraw/exportpreview.h"
 
-PrintPreview::PrintPreview(Information *info) : ImagePreview(info)
+ExportPreview::ExportPreview(Information *info) : ImagePreview(info)
 {
-    parameters.distanceBetweenPoints = 0.125;
-    viewType = PORTRAIT;
+    parameters.distanceBetweenPoints = info->getSettingsVals().distanceBetweenPoints;
+    orientation = QPrinter::Portrait;
     graphHeightCm = 28.7;
-    graphWidthCm = 20;  
+    graphWidthCm = 20;
     relativeXposCm = relativeYposCm = 0;
     moveType = NOTHING;
     setMouseTracking(true);
+    userScalingFactor = 1;
+
+    QPrinter *printer = new QPrinter(printerInfo);
+    screenResolution = printer->resolution();
+
+    printer->setOrientation(orientation);
+    printer->setPaperSize(QPrinter::A4);
+    printer->setFullPage(true);
+    printer->setOutputFileName("foo.pdf");
+
+    painter.begin(printer);
+    initialViewPort = painter.viewport();
+    painter.end();
+    delete printer;
 
 }
 
-void PrintPreview::setPrinter(QPrinterInfo printInfo)
+void ExportPreview::setScale(double scalingFactor)
+{
+    userScalingFactor = scalingFactor;
+    update();
+}
+
+void ExportPreview::setPrinter(QPrinterInfo printInfo)
 {
     printerInfo = printInfo;
 }
 
-void PrintPreview::setPDFname(QString pdf)
+
+void ExportPreview::exportPDF(QString fileName)
 {
-    PDFname = pdf;
+    printOrExportPDF(false, 0, true, fileName);
 }
 
-void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resType, int res)
+void ExportPreview::print(int nbPages, bool useColor)
+{
+     printOrExportPDF(true, nbPages, useColor);
+}
+
+void ExportPreview::printOrExportPDF(bool print, int nbPages, bool useColor, QString fileName)
 {
     parameters = information->getSettingsVals();
     graphRange = information->getRange();
 
-    printer = new QPrinter(printerInfo);
+    QPrinter *printer = new QPrinter(printerInfo);
 
-    if(resType == CUSTOM_RESOLUTION)
-        printer->setResolution(res);
+    printer->setResolution(screenResolution / userScalingFactor);
 
     printer->setPaperSize(QPrinter::A4);
     printer->setFullPage(true);
-    printer->setCopyCount(nbPages);   
+    printer->setCopyCount(nbPages);
 
-    if(colorType == COLOR)
+    if(useColor)
         printer->setColorMode(QPrinter::Color);
     else printer->setColorMode(QPrinter::GrayScale);
 
-    if(viewType == PORTRAIT)
-        printer->setOrientation(QPrinter::Portrait);
-    else printer->setOrientation(QPrinter::Landscape);
+    printer->setOrientation(orientation);
 
-    if(printType == PRINT_FILE)
-        printer->setOutputFileName(PDFname);
+    if(!print)
+    {
+        printer->setOutputFileName(fileName);
+    }
 
     QRect sheet = printer->paperRect();
     graphHeight = sheet.height() * graphHeightCm / 29.7;
@@ -76,16 +101,15 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
 
     QPoint graphOrigin;
     graphOrigin.setX((relativeXposCm + 0.5) * sheet.width() / 21);
-    graphOrigin.setY((relativeYposCm + 0.5) * sheet.height() / 29.7);   
+    graphOrigin.setY((relativeYposCm + 0.5) * sheet.height() / 29.7);
 
     painter.begin(printer);
 
-    if(printType == PRINT_FILE)
+    if(!print)
     {
         painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));
         painter.drawRect(printer->paperRect());
     }
-
 
     sheetWidth = sheet.width();
     sheetHeight = sheet.height();
@@ -96,13 +120,13 @@ void PrintPreview::print(int nbPages, bool colorType, bool printType, bool resTy
     determinerCentreEtUnites();
     paint();
 
-    painter.end(); 
+    painter.end();
 
     delete printer;
     printer = NULL;
 }
 
-void PrintPreview::paintEvent(QPaintEvent *event)
+void ExportPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     parameters = information->getSettingsVals();
@@ -122,7 +146,7 @@ void PrintPreview::paintEvent(QPaintEvent *event)
 
 }
 
-void PrintPreview::assignMouseRects()
+void ExportPreview::assignMouseRects()
 {
     QPointF topLeftTranslation;
     topLeftTranslation.setX(-8);
@@ -159,7 +183,7 @@ void PrintPreview::assignMouseRects()
 }
 
 
-void PrintPreview::determinerCentreEtUnites()
+void ExportPreview::determinerCentreEtUnites()
 {
     uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
     uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
@@ -170,19 +194,19 @@ void PrintPreview::determinerCentreEtUnites()
         graphRange.Ymin *= rapport;
         graphRange.Ymax *= rapport;
         uniteY = uniteX;
-    }   
+    }
 
     centre.x = - graphRange.Xmin * uniteX;
     centre.y =  graphRange.Ymax * uniteY;
 }
 
-void PrintPreview::drawSheet()
+void ExportPreview::drawSheet()
 {
     painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));;
 
     double rapport;
 
-    if(viewType == PORTRAIT)
+    if(orientation == QPrinter::Portrait)
     {
         rapport = (double)height() / (double)width();
 
@@ -228,7 +252,7 @@ void PrintPreview::drawSheet()
     graphRect.setWidth(sheetWidth * graphWidthCm / 21);
 
     QPointF point;
-    if(viewType == PORTRAIT)
+    if(orientation == QPrinter::Portrait)
     {
         point.setX(sheetRect.topLeft().x() + (relativeXposCm + 0.5) * sheetWidth / 21);
         point.setY(sheetRect.topLeft().y() + (relativeYposCm + 0.5) * sheetHeight / 29.7);
@@ -239,13 +263,28 @@ void PrintPreview::drawSheet()
         point.setY(sheetRect.topLeft().y() + (relativeYposCm + 0.5) * sheetHeight / 21);
     }
 
-     graphRect.setTopLeft(point);
+    graphRect.setTopLeft(point);
+
+    graphWidth = graphRect.width();
+    graphHeight = graphRect.height();
 
     painter.drawRect(sheetRect);
 }
 
-void PrintPreview::drawGraph()
+void ExportPreview::drawGraph()
 {
+    double sheetSizeScaling = sheetWidth / (double)initialViewPort.width();
+    double totalScaleFactor = sheetSizeScaling * userScalingFactor;
+
+    graphRect.setWidth(graphRect.width() / totalScaleFactor);
+    graphRect.setHeight(graphRect.height() / totalScaleFactor);
+    graphRect.setTopLeft( (1/totalScaleFactor) * graphRect.topLeft());
+
+    sheetHeight /= totalScaleFactor;
+    sheetWidth /= totalScaleFactor;
+
+    painter.scale(totalScaleFactor, totalScaleFactor);
+
     assignGraphSize();
 
     painter.setBrush(Qt::NoBrush);
@@ -254,15 +293,6 @@ void PrintPreview::drawGraph()
     pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);
     painter.drawRect(graphRect);
-
-//    painter.drawRect(topLeft);
-//    painter.drawRect(topRight);
-//    painter.drawRect(bottomLeft);
-//    painter.drawRect(bottomRight);
-//    painter.drawRect(top);
-//    painter.drawRect(right);
-//    painter.drawRect(left);
-//    painter.drawRect(bottom);
 
     pen.setStyle(Qt::SolidLine);
     painter.setPen(pen);
@@ -273,25 +303,25 @@ void PrintPreview::drawGraph()
     paint();
 }
 
-void PrintPreview::setGraphHeight(double H)
+void ExportPreview::setGraphHeight(double H)
 {
     graphHeightCm = H;
     testGraphPosition();
     repaint();
 }
 
-void PrintPreview::setGraphWidth(double W)
+void ExportPreview::setGraphWidth(double W)
 {
     graphWidthCm = W;
     testGraphPosition();
     repaint();
 }
 
-void PrintPreview::setViewType(bool type)
+void ExportPreview::setOrientation(QPrinter::Orientation type)
 {
-    viewType = type;
+    orientation = type;
     relativeXposCm = relativeYposCm = 0;
-    if(viewType == PORTRAIT)
+    if(orientation == QPrinter::Portrait)
     {
        graphHeightCm = 28.7;
        graphWidthCm = 20;
@@ -301,13 +331,25 @@ void PrintPreview::setViewType(bool type)
         graphHeightCm = 20;
         graphWidthCm = 28.7;
     }
+
+    QPrinter *printer = new QPrinter(printerInfo);
+    printer->setPaperSize(QPrinter::A4);
+    printer->setOrientation(orientation);
+    printer->setFullPage(true);
+    printer->setOutputFileName("foo.pdf");
+
+    painter.begin(printer);
+    initialViewPort = painter.viewport();
+    painter.end();
+    delete printer;
+
     emit newGraphSize(graphHeightCm, graphWidthCm);
     repaint();
 }
 
-void PrintPreview::assignGraphSize()
+void ExportPreview::assignGraphSize()
 {
-    if(viewType == PORTRAIT)
+    if(orientation == QPrinter::Portrait)
     {
         graphRect.setWidth(graphWidthCm * sheetWidth / 21);
         graphRect.setHeight(graphHeightCm * sheetHeight / 29.7);
@@ -322,7 +364,7 @@ void PrintPreview::assignGraphSize()
     graphHeight = graphRect.height()-(topMargin+bottomMargin);
 }
 
-void PrintPreview::mousePressEvent(QMouseEvent *event)
+void ExportPreview::mousePressEvent(QMouseEvent *event)
 {
     if(topLeft.contains(event->pos()))
         moveType = TOPLEFT_CORNER;
@@ -341,14 +383,14 @@ void PrintPreview::mousePressEvent(QMouseEvent *event)
     else if(right.contains(event->pos()))
         moveType = RIGHT_SIDE;
     else if(graphRect.contains(event->pos()))
-        moveType = ALL;    
+        moveType = ALL;
     else moveType = NOTHING;
 
     if(moveType != NOTHING)
         lastMousePos = event->pos();
 }
 
-void PrintPreview::mouseMoveEvent(QMouseEvent *event)
+void ExportPreview::mouseMoveEvent(QMouseEvent *event)
 {
 
     if(moveType == NOTHING)
@@ -368,7 +410,7 @@ void PrintPreview::mouseMoveEvent(QMouseEvent *event)
 
     double dx = event->pos().x() - lastMousePos.x(), dy = event->pos().y() - lastMousePos.y(), dxCm, dyCm;
 
-    if(viewType == PORTRAIT)
+    if(orientation == QPrinter::Portrait)
     {
         dxCm = dx * 21 / sheetWidth;
         dyCm = dy * 29.7 / sheetHeight;
@@ -431,13 +473,13 @@ void PrintPreview::mouseMoveEvent(QMouseEvent *event)
 
 }
 
-void PrintPreview::testGraphPosition()
+void ExportPreview::testGraphPosition()
 {
     if(relativeXposCm < 0)
         relativeXposCm = 0;
     if(relativeYposCm < 0)
         relativeYposCm = 0;
-    if(viewType == PORTRAIT)
+    if(orientation == QPrinter::Portrait)
     {
         if(graphHeightCm > 28.7)
             graphHeightCm = 28.7;
@@ -473,14 +515,14 @@ void PrintPreview::testGraphPosition()
     emit newGraphSize(graphHeightCm, graphWidthCm);
 }
 
-void PrintPreview::mouseReleaseEvent(QMouseEvent *event)
+void ExportPreview::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
     setCursor(Qt::ArrowCursor);
     moveType = NOTHING;
 }
 
-void PrintPreview::wheelEvent(QWheelEvent *event)
+void ExportPreview::wheelEvent(QWheelEvent *event)
 {
     Q_UNUSED(event);
 }

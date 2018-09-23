@@ -32,7 +32,7 @@ MainWindow::MainWindow()
     updateCheckWin = new UpdateCheck(this);
     imageExportWin = new ImageSave(information, this);
     valuesWin = new Values(information, this);
-    printWin = new Print(information, this);
+    printWin = new Export(information, this);
     keyboard = new Keyboard();
     mathInputDockWidget = new QDockWidget(this);
 

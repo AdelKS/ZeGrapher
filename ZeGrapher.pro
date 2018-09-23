@@ -40,11 +40,9 @@ SOURCES += \
     ValuesTable/pareqtable.cpp \
     ValuesTable/functable.cpp \
     ValuesTable/abstracttable.cpp \
-    GraphDraw/printpreview.cpp \
     GraphDraw/maingraph.cpp \
     GraphDraw/imagepreview.cpp \
     GraphDraw/graphdraw.cpp \
-    Export/print.cpp \
     Export/imagesave.cpp \
     DataPlot/rowselectorwidget.cpp \
     DataPlot/rowactionswidget.cpp \
@@ -73,7 +71,9 @@ SOURCES += \
     Windows/settings.cpp \
     Windows/values.cpp \
     Windows/updatecheck.cpp \
-    Windows/mainwindow.cpp
+    Windows/mainwindow.cpp \
+    Export/export.cpp \
+    GraphDraw/exportpreview.cpp
 
 HEADERS  += \
     information.h \
@@ -95,11 +95,9 @@ HEADERS  += \
     ValuesTable/pareqtable.h \
     ValuesTable/functable.h \
     ValuesTable/abstracttable.h \
-    GraphDraw/printpreview.h \
     GraphDraw/maingraph.h \
     GraphDraw/imagepreview.h \
     GraphDraw/graphdraw.h \
-    Export/print.h \
     Export/imagesave.h \
     DataPlot/rowselectorwidget.h \
     DataPlot/rowactionswidget.h \
@@ -131,13 +129,14 @@ HEADERS  += \
     Windows/values.h \
     Windows/updatecheck.h \
     Windows/mainwindow.h \
-    structures.h
+    structures.h \
+    Export/export.h \
+    GraphDraw/exportpreview.h
 
 
 FORMS    += \
     Windows/about.ui \
     Widgets/datawidget.ui \
-    Export/print.ui \
     Export/imagesave.ui \
     DataPlot/startingactions.ui \
     DataPlot/sortoptions.ui \
@@ -150,7 +149,8 @@ FORMS    += \
     Widgets/keyboard.ui \
     Windows/rangeadjustments.ui \
     Windows/mathobjectsinput.ui \
-    Windows/settings.ui
+    Windows/settings.ui \
+    Export/export.ui
 
 
 RESOURCES += \
