@@ -1,4 +1,4 @@
-#ZeGrapher
+# ZeGrapher
 
 ![ZeGrapher example](http://zegrapher.com/screenshots/index.png)
 
