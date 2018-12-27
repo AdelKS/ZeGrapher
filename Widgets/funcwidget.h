@@ -35,8 +35,10 @@ class FuncWidget : public AbstractFuncWidget
     Q_OBJECT
 public:
     explicit FuncWidget(QChar name, int id, QColor color);
+    ~FuncWidget();
+
     void firstValidation();
-    void secondValidation();   
+    void secondValidation();
     void setFuncsCalcsList(QList<FuncCalculator*> list);
     void setFuncWidgets(QList<FuncWidget*> widgets);
 
@@ -67,7 +69,7 @@ protected:
     int funcNum;
     bool areCalledFuncsParametric, isExprParametric;
 
-    
+
 };
 
 #endif // FUNCWIDGET_H

@@ -29,10 +29,10 @@ static double tenPower(double x)
 FuncCalculator::FuncCalculator(int id, QString funcName, QLabel *errorLabel) : treeCreator(FUNCTION)
 {
     errorMessageLabel = errorLabel;
-    funcTree = NULL;
+    funcTree = nullptr;
     funcNum = id;
     isExprValidated = areCalledFuncsGood = areIntegrationPointsGood = isParametric = false;
-    name = funcName;    
+    name = funcName;
 
     addRefFuncsPointers();
 
@@ -78,10 +78,10 @@ bool FuncCalculator::getDrawState()
 }
 
 bool FuncCalculator::validateExpression(QString expr)
-{   
+{
     if(expression != expr)
     {
-        if(funcTree != NULL)
+        if(funcTree != nullptr)
             treeCreator.deleteFastTree(funcTree);
 
         funcTree = treeCreator.getTreeFromExpr(expr, isExprValidated);
@@ -114,7 +114,7 @@ int int_pow(int a, int b)
 }
 
 double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
-{   
+{
     double a = A.x, fa, fb, hn, result, powResult, diff, condition;
 
     condition = tenPower(-NUM_PREC);
@@ -167,7 +167,7 @@ double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
 }
 
 double FuncCalculator::getFuncValue(double x, double kValue)
-{    
+{
     k = kValue;
     return calculateFromTree(funcTree, x);
 }
@@ -307,10 +307,10 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
         return funcCalculatorsList[id]->getFuncValue(calculateFromTree(tree->right, x), k);
     }
     else if(DERIV_START < tree->type && tree->type < DERIV_END)
-    {             
+    {
         int id = tree->type - DERIV_START - 1;
         return funcCalculatorsList[id]->getDerivativeValue(calculateFromTree(tree->right, x), k);
-    }   
+    }
     else if(INTEGRATION_FUNC_START < tree->type && tree->type < INTEGRATION_FUNC_END)
     {
         int id = tree->type - INTEGRATION_FUNC_START - 1;
@@ -318,4 +318,10 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
     }
 
     else return NAN;
+}
+
+FuncCalculator::~FuncCalculator()
+{
+    if(funcTree != nullptr)
+        treeCreator.deleteFastTree(funcTree);
 }

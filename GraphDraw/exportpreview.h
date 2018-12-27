@@ -24,21 +24,17 @@
 #ifndef PRINTPREVIEW_H
 #define PRINTPREVIEW_H
 
-#include <QPrinterInfo>
-#include <QPrinter>
-
 #include "imagepreview.h"
+#include <QPdfWriter>
 
-#define NOTHING 0
-#define TOPLEFT_CORNER 1
-#define TOPRIGHT_CORNER 2
-#define BOTTOMLEFT_CORNER 3
-#define BOTTOMRIGHT_CORNER 4
-#define LEFT_SIDE 5
-#define TOP_SIDE 6
-#define RIGHT_SIDE 7
-#define BOTTOM_SIDE 8
-#define ALL 9
+
+enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
+                      BOTTOMLEFT_CORNER, BOTTOMRIGHT_CORNER, LEFT_SIDE,
+                     TOP_SIDE, RIGHT_SIDE, BOTTOM_SIDE, ALL};
+
+enum ExportType {SCALABLE, IMAGE};
+
+
 
 class ExportPreview : public ImagePreview
 {
@@ -46,11 +42,10 @@ class ExportPreview : public ImagePreview
 
 public:
     explicit ExportPreview(Information *info);
-    void setOrientation(QPrinter::Orientation type);
-    void setPrinter(QPrinterInfo printInfo);
+    void setOrientation(QPageLayout::Orientation type);
 
 signals:
-    void newGraphSize(double H, double W);
+    void newCanvasSizeCm(QSizeF sizeCm);
 
 public slots:
     void mousePressEvent(QMouseEvent *event);
@@ -58,35 +53,36 @@ public slots:
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void setGraphHeight(double H);
-    void setGraphWidth(double W);
+    void setCanvasSizeCm(QSizeF sizeCm);
+    void setSheetSizeCm(QSizeF sizeCm);
     void setScale(double scalingFactor);
-    void print(int nbPages, bool useColor);
     void exportPDF(QString fileName);
 
 
 protected:
     void paintEvent(QPaintEvent *event);
-    void determinerCentreEtUnites();
     void drawSheet();
     void drawGraph();
-    void assignGraphSize();
     void assignMouseRects();
     void printCurves();
-    void testGraphPosition();
+    void constrainCanvasRectRel();
+    void updateDrawableRectFromRel();
 
     void printOrExportPDF(bool print, int nbPages, bool useColor, QString fileName = "");
 
-    QPrinter::Orientation orientation;
+    QPageLayout::Orientation orientation;
+    double relativeSheetMargin; // margin to the sheet where the graph can be
     double userScalingFactor, screenResolution;
-    QRect initialViewPort;
-    QRectF graph, sheetRect, graphRect, topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
-    double sheetHeight, graphHeightCm, sheetWidth, graphWidthCm, relativeXposCm, relativeYposCm;
-    QPointF lastMousePos ;
-    short moveType;
-    QPrinterInfo printerInfo;
-    QPrinter mprinter;
-    QString PDFname;
+    QRect viewRect, sheetRect;
+    QSizeF canvasSizeCm, sheetSizeCm;
+    QRectF canvasRectRelative;
+    QRectF topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
+
+    QPoint lastMousePos ;
+    MouseActionType moveType;
+    QString fileName;
+
+    ExportType exportType;
 
 };
 

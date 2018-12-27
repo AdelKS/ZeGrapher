@@ -120,11 +120,11 @@ void RangeAdjustments::apply()
 
     range.Xmax = Xmax->getValue();
     range.Xmin = Xmin->getValue();
-    range.Xscale = Xstep->getValue();
+    range.Xstep = Xstep->getValue();
 
     range.Ymax = Ymax->getValue();
     range.Ymin = Ymin->getValue();
-    range.Yscale = Ystep->getValue();
+    range.Ystep = Ystep->getValue();
 
 
     if(range.Xmin >= range.Xmax)
@@ -157,11 +157,11 @@ void RangeAdjustments::updateWidgets()
 
      Xmax->setNumber(window.Xmax);
      Xmin->setNumber(window.Xmin);
-     Xstep->setNumber(window.Xscale);
+     Xstep->setNumber(window.Xstep);
 
      Ymax->setNumber(window.Ymax);
      Ymin->setNumber(window.Ymin);
-     Ystep->setNumber(window.Yscale);
+     Ystep->setNumber(window.Ystep);
 
      ui->orthonormal->setChecked(information->isOrthonormal());
      orthonormal(information->isOrthonormal());

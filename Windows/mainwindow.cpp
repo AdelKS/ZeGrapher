@@ -22,7 +22,7 @@
 #include "Windows/mainwindow.h"
 
 MainWindow::MainWindow()
-{      
+{
     information = new Information();
 
     settingsWin = new Settings(information, this);
@@ -30,9 +30,8 @@ MainWindow::MainWindow()
     inputWin = new MathObjectsInput(information, this);
     aboutWin = new about(this);
     updateCheckWin = new UpdateCheck(this);
-    imageExportWin = new ImageSave(information, this);
     valuesWin = new Values(information, this);
-    printWin = new Export(information, this);
+    exportWin = new Export(information, this);
     keyboard = new Keyboard();
     mathInputDockWidget = new QDockWidget(this);
 
@@ -50,11 +49,9 @@ MainWindow::MainWindow()
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;
-    window.Xscale = window.Yscale = 1;
+    window.Xstep = window.Ystep = 1;
 
     setCentralWidget(scene);
-
-    imageExportWin->setSize(scene->width(), scene->height());
 
     makeConnects();
 
@@ -69,7 +66,7 @@ void MainWindow::createMenus()
     QMenu *menuFile = menuBar()->addMenu(tr("File"));
     QMenu *menuTools = menuBar()->addMenu(tr("Tools"));
     QMenu *menuWindows = menuBar()->addMenu(tr("Windows"));
-    QMenu *menuHelp = menuBar()->addMenu("?");   
+    QMenu *menuHelp = menuBar()->addMenu("?");
 
     gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
     gridButton->setCheckable(true);
@@ -84,22 +81,17 @@ void MainWindow::createMenus()
 
     QAction *showAboutWinAction = menuHelp->addAction(tr("About..."));
     connect(showAboutWinAction, SIGNAL(triggered()), aboutWin, SLOT(exec()));
-    
+
     QAction *showAboutQtWinAction = menuHelp->addAction(tr("About Qt"));
     connect(showAboutQtWinAction, SIGNAL(triggered()), this, SLOT(showAboutQtWin()));
 
     QAction *showUpdateCheckWinAction = menuHelp->addAction(tr("Check for updates"));
     connect(showUpdateCheckWinAction, SIGNAL(triggered()), updateCheckWin, SLOT(checkForUpdate()));
 
-    QAction *showPrintWinAction = menuFile->addAction(QIcon(":/icons/print.png"), tr("Print..."));
-    showPrintWinAction->setShortcut(QKeySequence("Ctrl+P"));
-    connect(showPrintWinAction, SIGNAL(triggered()), printWin, SLOT(show()));    
-    connect(showPrintWinAction, SIGNAL(triggered()), printWin, SLOT(raise()));
-
-    QAction *showImageExportWinAction = menuFile->addAction(QIcon(":/icons/saveImage.png"), tr("Image export..."));
-    showImageExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
-    connect(showImageExportWinAction, SIGNAL(triggered()), imageExportWin, SLOT(show()));
-    connect(showImageExportWinAction, SIGNAL(triggered()), imageExportWin, SLOT(raise()));
+    QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.png"), tr("Export or print..."));
+    showExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
+    connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(show()));
+    connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(raise()));
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
@@ -119,12 +111,12 @@ void MainWindow::createMenus()
 
     QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Range edit"));
     showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));
-    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(show()));    
+    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(show()));
     connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(raise()));
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.png"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
-    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));    
+    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));
     connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(raise()));
 
     QAction *showKeyboardAction = menuWindows->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
@@ -141,8 +133,7 @@ void MainWindow::createMenus()
     toolBar->addAction(showInputWinAction);
     toolBar->addAction(showRangeWinAction);
     toolBar->addAction(showValuesWinAction);
-    toolBar->addAction(showImageExportWinAction);
-    toolBar->addAction(showPrintWinAction);
+    toolBar->addAction(showExportWinAction);
     toolBar->addAction(showKeyboardAction);
 
     statusBar();
@@ -154,9 +145,8 @@ void MainWindow::createMenus()
     showValuesWinAction->setStatusTip(tr("Display the values taken by functions, sequences and parametric equations on tables."));
     resetViewAction->setStatusTip(tr("Reset to default view"));
     gridButton->setStatusTip(tr("Show/Hide grid"));
-    showImageExportWinAction->setStatusTip(tr("Export the graph as an image."));
     showKeyboardAction->setStatusTip(tr("Virtual keyboard."));
-    showPrintWinAction->setStatusTip(tr("Print, or export in PDF."));
+    showExportWinAction->setStatusTip(tr("Export graph or print."));
 }
 
 void MainWindow::loadWindowSavedGeomtries()
@@ -170,12 +160,10 @@ void MainWindow::loadWindowSavedGeomtries()
         rangeWin->setGeometry(settings.value("range_window/geometry").value<QRect>());
     if(settings.contains("input_window/geometry"))
         inputWin->setGeometry(settings.value("input_window/geometry").value<QRect>());
-    if(settings.contains("image_export_window/geometry"))
-        imageExportWin->setGeometry(settings.value("image_export_window/geometry").value<QRect>());
     if(settings.contains("values_window/geometry"))
         valuesWin->setGeometry(settings.value("values_window/geometry").value<QRect>());
-    if(settings.contains("print_window/geometry"))
-        printWin->setGeometry(settings.value("print_window/geometry").value<QRect>());
+    if(settings.contains("export_window/geometry"))
+        exportWin->setGeometry(settings.value("export_window/geometry").value<QRect>());
     if(settings.contains("virtual_keyboard_window/geometry"))
         keyboard->setGeometry(settings.value("virtual_keyboard_window/geometry").value<QRect>());
 }
@@ -184,27 +172,24 @@ void MainWindow::saveWindowsGeometry()
 {
     settings.setValue("main_window/geometry", geometry());
 
-    if(settingsWin->geometry().top() != 0)
+    if(! settingsWin->geometry().isNull())
         settings.setValue("settings_window/geometry", settingsWin->geometry());
-    if(rangeWin->geometry().top() != 0)
+    if(! rangeWin->geometry().isNull())
         settings.setValue("range_window/geometry", rangeWin->geometry());
-    if(inputWin->geometry().top() != 0)
+    if(! inputWin->geometry().isNull())
         settings.setValue("input_window/geometry", inputWin->geometry());
-    if(imageExportWin->geometry().top() != 0)
-        settings.setValue("image_export_window/geometry", imageExportWin->geometry());
-    if(valuesWin->geometry().top() != 0)
+    if(! valuesWin->geometry().isNull())
         settings.setValue("values_window/geometry", valuesWin->geometry());
-    if(printWin->geometry().top() != 0)
-        settings.setValue("print_window/geometry", printWin->geometry());
-    if(keyboard->geometry().top() != 0)
+    if(! exportWin->geometry().isNull())
+        settings.setValue("export_window/geometry", exportWin->geometry());
+    if(! keyboard->geometry().isNull())
         settings.setValue("virtual_keyboard_window/geometry", keyboard->geometry());
 }
 
 
 void MainWindow::makeConnects()
-{   
+{
     connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
-    connect(scene, SIGNAL(sizeChanged(int,int)), imageExportWin, SLOT(setSize(int,int)));
     connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
 }
 
@@ -223,7 +208,7 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 }
 
 MainWindow::~MainWindow()
-{   
+{
     delete keyboard;
 }
 

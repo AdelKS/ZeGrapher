@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/boundaries.png</file>
-        <file>icons/saveImage.png</file>
+        <file>icons/export.png</file>
         <file>icons/software.png</file>
         <file>icons/print.png</file>
         <file>icons/grid.png</file>

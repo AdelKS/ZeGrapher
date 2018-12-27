@@ -18,11 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
-
 #ifndef TREECREATOR_H
 #define TREECREATOR_H
 
@@ -40,10 +35,10 @@ public:
     QList<int> getCalledSeqs(QString expr);
 
     void allow_k(bool state);
-    void deleteFastTree(FastTree *tree);    
+    void deleteFastTree(FastTree *tree);
 
 protected:
-    bool check(QString formula);    
+    bool check(QString formula);
     void insertMultiplySigns(QString &formula);
     void refreshAuthorizedVars();
     FastTree* createFastTree(int debut, int fin);

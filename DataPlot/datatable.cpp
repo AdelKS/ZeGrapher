@@ -214,7 +214,7 @@ void DataTable::addData(QList<QStringList> data)
 {
     //the first line of the CSV file must contain column names, matching the validator, or left blank
 
-    int indexOfLastInsertedColumn = 0;    
+    int indexOfLastInsertedColumn = 0;
 
     if(!data.isEmpty())
     {
@@ -399,7 +399,7 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
 
     disableChecking = true;
 
-    double val;   
+    double val;
     QList<double> rowVals;
 
     for(row = 0 ; row < tableWidget->rowCount() ; row++)
@@ -453,7 +453,7 @@ QList<QList<double> > &DataTable::getValues()
 void DataTable::checkCell(QTableWidgetItem *item)
 {
     if(disableChecking)
-        return;  
+        return;
 
     if(tableWidget->horizontalHeader()->visualIndex(item->column()) + 1 == tableWidget->columnCount())
         addColumn();
@@ -576,7 +576,7 @@ void DataTable::removeColumn(int index)
 
     values.removeAt(index);
 
-    tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);    
+    tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 
     emit newColumnCount(tableWidget->columnCount());
 }
@@ -620,7 +620,7 @@ void DataTable::resizeRows(int rowHeight)
     for(int i = 0 ; i < tableWidget->rowCount(); i++)
     {
         tableWidget->setRowHeight(i, rowHeight);
-    }    
+    }
 }
 
 int DataTable::colVisualIndex(int logicalIndex)

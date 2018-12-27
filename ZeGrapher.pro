@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 
-QT += widgets printsupport network
+QT += widgets network
 
 TARGET = ZeGrapher
 TEMPLATE = app
@@ -46,7 +46,7 @@ SOURCES += \
     Export/imagesave.cpp \
     DataPlot/rowselectorwidget.cpp \
     DataPlot/rowactionswidget.cpp \
-    DataPlot/datawindow.cpp \    
+    DataPlot/datawindow.cpp \
     DataPlot/datatable.cpp \
     DataPlot/columnselectorwidget.cpp \
     DataPlot/columnactionswidget.cpp \
@@ -101,7 +101,7 @@ HEADERS  += \
     Export/imagesave.h \
     DataPlot/rowselectorwidget.h \
     DataPlot/rowactionswidget.h \
-    DataPlot/datawindow.h \   
+    DataPlot/datawindow.h \
     DataPlot/datatable.h \
     DataPlot/columnselectorwidget.h \
     DataPlot/columnactionswidget.h \
@@ -141,7 +141,7 @@ FORMS    += \
     DataPlot/startingactions.ui \
     DataPlot/sortoptions.ui \
     DataPlot/filloptions.ui \
-    DataPlot/datawindow.ui \   
+    DataPlot/datawindow.ui \
     DataPlot/confirmdelete.ui \
     DataPlot/csvconfig.ui \
     DataPlot/modelchoicewidget.ui \

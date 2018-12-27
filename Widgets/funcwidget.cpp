@@ -42,7 +42,7 @@ FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(),
     nameLabel->setText(QString(name) + "(x) =");
 
     connect(colorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setFristColor(QColor)));
-    connect(secondColorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setLastColor(QColor)));  
+    connect(secondColorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setLastColor(QColor)));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(resetToNeutralPalette()));
     connect(drawCheckBox, SIGNAL(toggled(bool)), calculator, SLOT(setDrawState(bool)));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(checkExprLineEdit()));
@@ -170,4 +170,9 @@ void FuncWidget::secondValidation()
     if(!errorMessageLabel->text().isEmpty())
         errorMessageWidget->show();
     else errorMessageWidget->hide();
+}
+
+FuncWidget::~FuncWidget()
+{
+    delete calculator;
 }

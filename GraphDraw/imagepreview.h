@@ -56,10 +56,10 @@ protected:
     void assignGraphSize();
     void writeLegends();
 
-    double leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
+    int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
     int  legendFontSize, numPrec;
+    QRect drawableRect, graphRect;
     QString xLegend, yLegend;
-    Information *information;
     bool legendState, bold, italic, underline;
 
 };

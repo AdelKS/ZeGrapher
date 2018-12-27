@@ -52,9 +52,9 @@
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
-#define INIT_FREQ 20 //animation update frequency
+#define INIT_FREQ 30 //animation update frequency
 #define INIT_INCR_PERIOD 100 //animation incremental period
-#define PAR_DRAW_LIMIT 100
+#define PAR_DRAW_LIMIT 500
 
 #define INVALID_COLOR "#FF9980"
 #define VALID_COLOR "#B2FFB2"
@@ -65,7 +65,7 @@
 
 struct GraphRange
 {
-    double Xmin, Xmax, Ymin, Ymax, Xscale, Yscale;
+    double Xmin, Xmax, Ymin, Ymax, Xstep, Ystep;
 
     QRectF getRect() const
     {

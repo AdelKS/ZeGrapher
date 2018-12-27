@@ -33,6 +33,7 @@ class FuncCalculator : public QObject
 
 public:
     FuncCalculator(int id, QString funcName, QLabel *errorLabel);
+    ~FuncCalculator();
 
     void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
     void setIntegrationPointsList(QList<Point> list);
@@ -53,19 +54,19 @@ public:
 
 
     bool canBeCalled();
-    bool validateExpression(QString expr);    
+    bool validateExpression(QString expr);
     bool isFuncValid();
     bool getDrawState();
-    bool isFuncParametric();   
+    bool isFuncParametric();
 
     Range getParametricRange();
 
-public slots:    
+public slots:
     void setDrawState(bool draw);
 
 protected:
     double calculateFromTree(FastTree *tree, double x);
-    void addRefFuncsPointers();     
+    void addRefFuncsPointers();
 
     int funcNum;
     double k;
@@ -74,12 +75,12 @@ protected:
     FastTree *funcTree;
     QString expression, name;
     QList<FuncCalculator*> funcCalculatorsList;
-    Range kRange;    
+    Range kRange;
     ColorSaver *colorSaver;
     QLabel *errorMessageLabel;
 
     QList<Point> integrationPoints;
-    QList<double (*)(double)> refFuncs;    
+    QList<double (*)(double)> refFuncs;
 };
 
 #endif // FUNCCALCULATOR_H

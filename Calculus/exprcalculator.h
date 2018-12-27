@@ -38,11 +38,10 @@ public:
     double calculateFromTree(FastTree *tree, double x = 0);
     bool checkCalledFuncsValidity(QString expr);
 
-protected:    
+protected:
     void addRefFuncsPointers();
 
     double k;
-    FastTree *currentTree;
     TreeCreator treeCreator;
     QList<FuncCalculator*> funcCalculatorsList;
     QList<double (*)(double)> refFuncs;

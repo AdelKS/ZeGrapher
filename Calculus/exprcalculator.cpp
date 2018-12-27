@@ -26,10 +26,9 @@ static double tenPower(double x)
 }
 
 ExprCalculator::ExprCalculator(bool allowK, QList<FuncCalculator *> otherFuncs) : treeCreator(NORMAL_EXPR)
-{    
+{
     treeCreator.allow_k(allowK);
     k = 0;
-    currentTree = NULL;
     funcCalculatorsList = otherFuncs;
     addRefFuncsPointers();
 }
@@ -43,14 +42,13 @@ double ExprCalculator::calculateExpression(QString expr, bool &ok, double k_val)
     if(!ok)
         return NAN;
 
-    currentTree = treeCreator.getTreeFromExpr(expr, ok);
+    FastTree *tree = treeCreator.getTreeFromExpr(expr, ok);
 
     if(!ok)
         return NAN;
 
-    double result = calculateFromTree(currentTree);
-    treeCreator.deleteFastTree(currentTree);
-    currentTree = NULL;
+    double result = calculateFromTree(tree);
+    treeCreator.deleteFastTree(tree);
 
     return result;
 }

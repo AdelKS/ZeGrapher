@@ -24,7 +24,7 @@
 #include "Export/imagesave.h"
 #include "ui_imagesave.h"
 
-ImageSave::ImageSave(Information *info, QWidget *parent) : ui(new Ui::ImageSave), QWidget(parent)
+ImageSave::ImageSave(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui::ImageSave)
 {
     ui->setupUi(this);
 
@@ -32,7 +32,7 @@ ImageSave::ImageSave(Information *info, QWidget *parent) : ui(new Ui::ImageSave)
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;
-    window.Xscale = window.Yscale = 1;
+    window.Xstep = window.Ystep = 1;
 
     scene = new ImagePreview(info);
     scene->setMinimumSize(150,150);
@@ -56,7 +56,7 @@ ImageSave::ImageSave(Information *info, QWidget *parent) : ui(new Ui::ImageSave)
 void ImageSave::save()
 {
     scene->repaint();
-    QImage *image = scene->drawImage();    
+    QImage *image = scene->drawImage();
     QString fichier;
 
 
@@ -100,7 +100,7 @@ void ImageSave::setH(int H)
 
 void ImageSave::setWindow(GraphRange win)
 {
-    window = win;    
+    window = win;
 }
 
 void ImageSave::setPrecision(short prec)
@@ -110,5 +110,5 @@ void ImageSave::setPrecision(short prec)
 
 ImageSave::~ImageSave()
 {
-    delete ui;   
+    delete ui;
 }

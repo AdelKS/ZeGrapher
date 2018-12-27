@@ -71,7 +71,7 @@ protected:
     void recalculateRegVals();
 
 
-    int graphWidth, graphHeight;
+    int graphWidthPx, graphHeightPx;
     Information *information;
     FuncValuesSaver *funcValuesSaver;    
     QList<RegressionValuesSaver> regValuesSavers;

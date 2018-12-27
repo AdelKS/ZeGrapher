@@ -24,7 +24,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "information.h"
 #include "Widgets/qcolorbutton.h"
 

@@ -145,11 +145,11 @@ DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(par
 
     connect(rowSelector, SIGNAL(askForSelector()), this, SLOT(selectorInRowSelection()));
     connect(rowSelector, SIGNAL(askForSelector()), columnSelector, SLOT(askedForSelector()));
-    connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));  
+    connect(rowSelector, SIGNAL(newIndex(bool,int)), this, SLOT(selectorPosChanged(bool,int)));
     connect(rowSelector, SIGNAL(newIndex(bool,int)), rowActionsWidget, SLOT(setSelectorPos(bool,int)));
 
     connect(rowActionsWidget, SIGNAL(insertRowClicked(int)), dataTable, SLOT(insertRow(int)));
-    connect(rowActionsWidget, SIGNAL(removeRowClicked(int)), dataTable, SLOT(removeRow(int))); 
+    connect(rowActionsWidget, SIGNAL(removeRowClicked(int)), dataTable, SLOT(removeRow(int)));
 
     connect(columnActionsWidget, SIGNAL(insertColumnClicked(int)), dataTable, SLOT(insertColumn(int)));
     connect(columnActionsWidget, SIGNAL(removeColumnClicked(int)), dataTable, SLOT(removeColumn(int)));
@@ -337,7 +337,7 @@ void DataWindow::remakeDataList()
         if(!std::isnan(values[logicalX][row]) && !std::isnan(values[logicalY][row]))
         {
             if(ui->polar->isChecked())
-            {               
+            {
                 point.setX(values[logicalY][row] * cos( values[logicalX][row]));
                 point.setY(values[logicalY][row] * sin( values[logicalX][row]));
             }
@@ -379,7 +379,7 @@ void DataWindow::saveData()
 
 void DataWindow::selectorInColumnSelection()
 {
-    selectorSide = COLUMN_SELECTION;    
+    selectorSide = COLUMN_SELECTION;
 
     columnActionsWidget->show();
     rowActionsWidget->hide();
@@ -387,7 +387,7 @@ void DataWindow::selectorInColumnSelection()
 
 void DataWindow::selectorInRowSelection()
 {
-    selectorSide = ROW_SELECTION;    
+    selectorSide = ROW_SELECTION;
 
     columnActionsWidget->hide();
     rowActionsWidget->show();
@@ -399,13 +399,13 @@ void DataWindow::selectorPosChanged(bool inBetween, int index)
 
     if(selectorSide == ROW_SELECTION)
     {
-        if(inBetween)        
+        if(inBetween)
             ui->actionsGroupBox->setTitle(tr("Between-two-lines actions:"));
         else ui->actionsGroupBox->setTitle(tr("Line actions:"));
     }
     else
     {
-        if(inBetween)        
+        if(inBetween)
             ui->actionsGroupBox->setTitle(tr("Between-two-columns actions:"));
         else ui->actionsGroupBox->setTitle(tr("Column actions:"));
     }
@@ -424,6 +424,13 @@ void DataWindow::updateSelectorsSize()
 
 DataWindow::~DataWindow()
 {
+    if(isVisible())
+    {
+        QSettings settings;
+        settings.setValue("data_window/geometry", geometry());
+        settings.setValue("data_window/shrinked_actions_widget", getRetractableWidgetState() == WIDGET_RETRACTED);
+    }
+
     delete dataTable;
     delete csvHandler;
 }

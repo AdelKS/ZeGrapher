@@ -405,7 +405,7 @@ void MainGraph::afficherPtX(double x)
 
 void MainGraph::newWindowSize()
 {
-    emit sizeChanged(graphWidth, graphHeight);
+    emit sizeChanged(graphWidthPx, graphHeightPx);
     windowSize = size();
 
     if(hWidget != NULL)
@@ -453,8 +453,8 @@ void MainGraph::newWindowSize()
 
 void MainGraph::paintEvent(QPaintEvent *event)
 {
-    graphWidth = width();
-    graphHeight = height();
+    graphWidthPx = width();
+    graphHeightPx = height();
 
     parameters = information->getSettingsVals();
     graphRange = information->getRange();
@@ -517,7 +517,7 @@ void MainGraph::directPaint()
     painter.setFont(information->getSettingsVals().graphFont);
 
     painter.setBrush(QBrush(parameters.backgroundColor));
-    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
+    painter.drawRect(-1, -1, graphWidthPx+1, graphHeightPx+1);
 
     updateCenterPosAndScaling();
     drawAxes();
@@ -529,7 +529,7 @@ void MainGraph::directPaint()
         information->setRange(graphRange);
 
         painter.setBrush(QBrush(parameters.backgroundColor));
-        painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
+        painter.drawRect(-1, -1, graphWidthPx+1, graphHeightPx+1);
 
         updateCenterPosAndScaling();
         drawAxes();
@@ -643,7 +643,7 @@ void MainGraph::resaveImageBuffer()
     painter.setFont(information->getSettingsVals().graphFont);
 
     painter.setBrush(QBrush(parameters.backgroundColor));
-    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
+    painter.drawRect(-1, -1, graphWidthPx+1, graphHeightPx+1);
 
     updateCenterPosAndScaling();
     drawAxes();
@@ -675,8 +675,8 @@ void MainGraph::resaveImageBuffer()
 
 void MainGraph::updateCenterPosAndScaling()
 {
-    uniteY = graphHeight / (graphRange.Ymax - graphRange.Ymin);
-    uniteX = graphWidth / (graphRange.Xmax - graphRange.Xmin);
+    uniteY = graphHeightPx / (graphRange.Ymax - graphRange.Ymin);
+    uniteX = graphWidthPx / (graphRange.Xmax - graphRange.Xmin);
 
     Point pt;
     pt.x = uniteX;
@@ -1300,9 +1300,9 @@ void MainGraph::drawTicksAndNumbers()
         Ypos = 20;
         posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
-    else if(graphHeight - centre.y < 20)
+    else if(graphHeightPx - centre.y < 20)
     {
-        Ypos = graphHeight - 20;
+        Ypos = graphHeightPx - 20;
         posTxt = Ypos - 7;
     }
     else
@@ -1311,11 +1311,11 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
 
-    double Xreal = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale;
+    double Xreal = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double step = graphRange.Xscale * uniteX;
+    double step = graphRange.Xstep * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1324,12 +1324,12 @@ void MainGraph::drawTicksAndNumbers()
     widestXNumber = painter.fontMetrics().width(num);
 
     start = 5;
-    end = graphWidth - 5;
+    end = graphWidthPx - 5;
 
     if(centre.x < 10)
         start = 10 + painter.fontMetrics().width(num)/2 + 5;
-    else if(centre.x > graphWidth - 10)
-        end = graphWidth - 10 - painter.fontMetrics().width(num)/2 - 5;
+    else if(centre.x > graphWidthPx - 10)
+        end = graphWidthPx - 10 - painter.fontMetrics().width(num)/2 - 5;
 
     while(Xpos <= end)
     {
@@ -1357,7 +1357,7 @@ void MainGraph::drawTicksAndNumbers()
         }
 
         Xpos += step;
-        Xreal += graphRange.Xscale;
+        Xreal += graphRange.Xstep;
     }
 
 //trace sur l'axe des Y
@@ -1369,9 +1369,9 @@ void MainGraph::drawTicksAndNumbers()
         Xpos = 10;
         posTxt = Xpos + 4;
     }
-    else if(graphWidth - centre.x < 10)
+    else if(graphWidthPx - centre.x < 10)
     {
-        Xpos = graphWidth - 10;
+        Xpos = graphWidthPx - 10;
         posTxt = Xpos - 8;
         drawOnRight = true;
     }
@@ -1381,19 +1381,19 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / graphRange.Yscale) * graphRange.Yscale;
+    double Yreal = trunc(graphRange.Ymax / graphRange.Ystep) * graphRange.Ystep;
     Ypos = -Yreal * uniteY + centre.y;
-    step = graphRange.Yscale * uniteY;
+    step = graphRange.Ystep * uniteY;
 
     bas =  0;
-    haut =  graphWidth;
+    haut =  graphWidthPx;
 
     start = 5;
-    end = graphHeight - 5;
+    end = graphHeightPx - 5;
 
 
-    if(graphHeight - centre.y < 10)
-        end = graphHeight - 50;
+    if(graphHeightPx - centre.y < 10)
+        end = graphHeightPx - 50;
     else if(centre.y < 10)
         start = 50;
 
@@ -1423,7 +1423,7 @@ void MainGraph::drawTicksAndNumbers()
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
-        Yreal -= graphRange.Yscale;
+        Yreal -= graphRange.Ystep;
         Ypos += step;
     }
 }
@@ -1433,34 +1433,34 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * graphRange.Xscale < widestXNumber + 32)
+    if(uniteX * graphRange.Xstep < widestXNumber + 32)
     {
-        while(uniteX * graphRange.Xscale < widestXNumber + 32)
-            graphRange.Xscale *= 2;
+        while(uniteX * graphRange.Xstep < widestXNumber + 32)
+            graphRange.Xstep *= 2;
         if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
+             graphRange.Ystep = graphRange.Xstep;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
+    else if(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
     {
-        while(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
-            graphRange.Xscale /= 2;
+        while(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
+            graphRange.Xstep /= 2;
         if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
+             graphRange.Ystep = graphRange.Xstep;
         scaleChanged = true;
     }
     if(!orthonormal)
     {
-        if(uniteY * graphRange.Yscale < 25)
+        if(uniteY * graphRange.Ystep < 25)
         {
-            while(uniteY * graphRange.Yscale < 25)
-                graphRange.Yscale *= 2;
+            while(uniteY * graphRange.Ystep < 25)
+                graphRange.Ystep *= 2;
             scaleChanged = true;
         }
-        else if(uniteY * graphRange.Yscale > 150)
+        else if(uniteY * graphRange.Ystep > 150)
         {
-            while(uniteY * graphRange.Yscale > 150)
-                graphRange.Yscale /= 2;
+            while(uniteY * graphRange.Ystep > 150)
+                graphRange.Ystep /= 2;
             scaleChanged = true;
         }
     }
@@ -1480,21 +1480,21 @@ void MainGraph::drawAxes()
     axesIntersec.x = centre.x;
 
     if(graphRange.Ymin > -20/uniteY)
-        axesIntersec.y = graphHeight - 20;
+        axesIntersec.y = graphHeightPx - 20;
     else if(graphRange.Ymax < 20/uniteY)
         axesIntersec.y = 20;
 
     if(graphRange.Xmin > -10/uniteX)
         axesIntersec.x = 10;
     else if(graphRange.Xmax < 10/uniteX)
-        axesIntersec.x = graphWidth - 10;
+        axesIntersec.x = graphWidthPx - 10;
 
 
     //ordinates axis
-    painter.drawLine(QPointF(axesIntersec.x, 0), QPointF(axesIntersec.x, graphHeight));
+    painter.drawLine(QPointF(axesIntersec.x, 0), QPointF(axesIntersec.x, graphHeightPx));
 
     //abscissa axis
-    painter.drawLine(QPointF(0, axesIntersec.y), QPointF(graphWidth, axesIntersec.y));
+    painter.drawLine(QPointF(0, axesIntersec.y), QPointF(graphWidthPx, axesIntersec.y));
 
 
     if(graphRange.Ymin > -20/uniteY)

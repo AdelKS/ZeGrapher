@@ -24,7 +24,7 @@
 #ifndef ZEGRAPHER_H
 #define ZEGRAPHER_H
 
-#include "Structures.h"
+#include "structures.h"
 #include "GraphDraw/maingraph.h"
 #include "Windows/rangeadjustments.h"
 #include "Windows/mathobjectsinput.h"
@@ -58,7 +58,7 @@ protected:
 
 protected slots:
     void showAboutQtWin();
-    
+
 private:
 
     Information *information;
@@ -69,16 +69,15 @@ private:
     Settings *settingsWin;
     Values *valuesWin;
     Keyboard *keyboard;
-    ImageSave *imageExportWin;
     about *aboutWin;
-    Export *printWin;
+    Export *exportWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
     QDockWidget *mathInputDockWidget;
     //ImagePreview *winImageScene;
     //PrintPreview *winPrintScene;
     QSettings settings;
-    
+
 };
 
 #endif // ZEGRAPHER_H

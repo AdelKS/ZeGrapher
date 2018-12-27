@@ -27,11 +27,12 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     ui->setupUi(this);
     exportPreview = new ExportPreview(info);
 
-    orientationChanged(ui->orientationSelector->currentIndex());
+    onOrientationChange();
+    onSheetSizeChange();
 
     setWindowFlags(Qt::Window);
 
-    setWindowTitle(tr("Print"));
+    setWindowTitle(tr("Export"));
 
     orthonormal = false;
 
@@ -40,21 +41,15 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     timer.setInterval(4000);
     timer.setSingleShot(true);
 
-    printersList = QPrinterInfo::availablePrinters();
 
-    for(short i = 0; i < printersList.size(); i++)
-        ui->printerSelector->insertItem(i, printersList[i].printerName());
-
-    connect(ui->exportGroup, SIGNAL(toggled(bool)), this, SLOT(exportGroupStateChanged(bool)));
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
-    connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(orientationChanged(int)));
-    connect(ui->height, SIGNAL(valueChanged(double)), exportPreview, SLOT(setGraphHeight(double)));
-    connect(ui->width, SIGNAL(valueChanged(double)), exportPreview, SLOT(setGraphWidth(double)));
-    connect(exportPreview, SIGNAL(newGraphSize(double,double)), this, SLOT(setGraphSize(double,double)));
+    connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onOrientationChange()));
+    connect(ui->canvasHeight, SIGNAL(valueChanged(double)), this, SLOT(onCanvasSizeChange()));
+    connect(ui->canvasWidth, SIGNAL(valueChanged(double)), this, SLOT(onCanvasSizeChange()));
+    connect(exportPreview, SIGNAL(newCanvasSizeCm(QSizeF)), this, SLOT(setCanvasSizeCm(QSizeF)));
     connect(ui->exportButton, SIGNAL(released()), this, SLOT(exportGraph()));
-    connect(&timer, SIGNAL(timeout()), this, SLOT(enablePrintButton()));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(enableExportButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getFileName()));
-    connect(ui->printGroup, SIGNAL(toggled(bool)), this, SLOT(setPrintButtonText(bool)));
 
     connect(ui->legendBox, SIGNAL(toggled(bool)), exportPreview, SLOT(setLegendState(bool)));
     connect(ui->legendSize, SIGNAL(valueChanged(int)), exportPreview, SLOT(setlegendFontSize(int)));
@@ -65,11 +60,6 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->underline, SIGNAL(toggled(bool)), exportPreview, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), exportPreview, SLOT(setNumPrec(int)));
 
-}
-
-void Export::exportGroupStateChanged(bool state)
-{
-    ui->printGroup->setChecked(!state);
 }
 
 void Export::getFileName()
@@ -85,90 +75,66 @@ void Export::getFileName()
     }
 }
 
-void Export::setPrintButtonText(bool state)
-{
-    if(state)
-        ui->exportButton->setText(tr("Print"));
-    else ui->exportButton->setText(tr("Save"));
 
-    ui->exportGroup->setChecked(!state);
-}
-
-void Export::enablePrintButton()
+void Export::enableExportButton()
 {
     ui->exportButton->setEnabled(true);
 }
 
 void Export::exportGraph()
 {
-    bool useColor;
-    if(ui->colorType->currentIndex() == 0)
-        useColor = true;
-    else useColor = false;
-
     ui->exportButton->setEnabled(false);
     timer.start();
 
-    if(ui->printGroup->isChecked())
+    if(ui->scalableFormat->isChecked())
     {
-        int reponse = QMessageBox::question(this, tr("Please confrim your printing request"), tr("You are about to print, do you want to continue?\n Please check settings before printing."), QMessageBox::Yes | QMessageBox::No);
+        if(ui->scalableFormatSelection->currentText() == "PDF")
+        {
+         if(!fileName.isEmpty())
+            exportPreview->exportPDF(fileName);
+         else QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
+                                                                            "specified along with a destination folder.\n\n"
+                                                                            "Please specify them then try again."));
+        }
+        else if(ui->scalableFormatSelection->currentText() == "SVG")
+        {
 
-        if (reponse == QMessageBox::No)
-            return;
+        }
+    }
+    else // image format
+    {
 
-        if(!printersList.isEmpty())
-            exportPreview->setPrinter(printersList[ui->printerSelector->currentIndex()]);
-        else return;
+    }
 
-         exportPreview->print(ui->numPages->value(), useColor);
+}
+
+void Export::setCanvasSizeCm(QSizeF sizeCm)
+{
+    ui->canvasHeight->setValue(sizeCm.height());
+    ui->canvasWidth->setValue(sizeCm.width());
+}
+
+void Export::onCanvasSizeChange()
+{
+    // transmit to exportPreview
+}
+
+void Export::onSheetSizeChange()
+{
+    // change of maximums in cm and minimum in pixels
+    exportPreview->setSheetSizeCm(QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value()));
+}
+
+void Export::onOrientationChange()
+{
+    if(ui->orientationSelector->currentIndex() == 0)
+    {
+        exportPreview->setOrientation(QPageLayout::Landscape);
     }
     else
     {
-         if(ui->scalableFormat->isChecked())
-         {
-             if(ui->scalableFormatSelection->currentText() == "PDF")
-             {
-                 if(!fileName.isEmpty())
-                    exportPreview->exportPDF(fileName);
-                 else QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
-                                                                                    "specified along with a destination folder.\n\n"
-                                                                                    "Please specify them then try again."));
-             }
-             else if(ui->scalableFormatSelection->currentText() == "SVG")
-             {
-
-             }
-         }
-         else // image format
-         {
-
-         }
+        exportPreview->setOrientation(QPageLayout::Portrait);
     }
-}
-
-void Export::setGraphSize(double H, double W)
-{
-    ui->height->setValue(H);
-    ui->width->setValue(W);
-}
-
-void Export::orientationChanged(int pos)
-{
-    if(pos == 1)
-    {
-        ui->width->setMaximum(20);
-        ui->height->setMaximum(28.7);
-        exportPreview->setOrientation(QPrinter::Portrait);
-        exportPreview->setMinimumSize(210,297);
-    }
-    else
-    {
-        ui->width->setMaximum(28.7);
-        ui->height->setMaximum(20);
-        exportPreview->setOrientation(QPrinter::Landscape);
-        exportPreview->setMinimumSize(297,210);
-    }
-
 }
 
 

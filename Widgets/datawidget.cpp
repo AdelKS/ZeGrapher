@@ -28,7 +28,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     ui(new Ui::DataWidget)
 {
     ui->setupUi(this);
-    ui->styleWidget->hide();   
+    ui->styleWidget->hide();
 
     style.color = info->getSettingsVals().defaultColor;
     style.drawLines = false;
@@ -169,9 +169,5 @@ void DataWidget::emitRemoveSignal()
 
 DataWidget::~DataWidget()
 {
-    QSettings settings;
-    settings.setValue("data_window/geometry", dataWindow->geometry());
-    settings.setValue("data_window/shrinked_actions_widget", dataWindow->getRetractableWidgetState() == WIDGET_RETRACTED);
-
     delete dataWindow;
 }

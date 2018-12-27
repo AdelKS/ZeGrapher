@@ -1,1 +1,13 @@
+Currently working on:
+Taking into account the specific shape of the sheet and graph and the custom resolution to have a correct preview
+Resizing doesn't work
 
+
+- Fix bug with zooming in the main window, it doesn't work sometimes
+- Improve the change of xStep and yStep after zooming. e.g. multiply by 2 till a power of 10 is reached
+- Fix mouse resizing in the export preview
+- Fix vertical lines appearing for negatives numbers in the export preview
+- add Latex support to write legends and x,y labels
+- Enable adding additional pins in data tables to represent more than one curve per data table
+- check if sequence draw with diffrent nmin work properly
+- continue working on exporting with the differently defined user paper sizes
