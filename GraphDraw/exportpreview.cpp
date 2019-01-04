@@ -21,21 +21,44 @@
 
 #include "GraphDraw/exportpreview.h"
 
-ExportPreview::ExportPreview(Information *info) : ImagePreview(info)
+ExportPreview::ExportPreview(QSizeF sheetSizeInCm, Information *info) : ImagePreview(info)
 {
-    parameters.distanceBetweenPoints = info->getSettingsVals().distanceBetweenPoints;
+    sheetSizeCm = sheetSizeInCm;
+    relativeSheetMinMargin = 0.05;
+
+    setMaximalCanvas();
+
+    graphSettings.distanceBetweenPoints = info->getSettingsVals().distanceBetweenPoints;
     orientation = QPageLayout::Landscape;
     moveType = NOTHING;
     setMouseTracking(true);
     userScalingFactor = 1;
 
-    relativeSheetMargin = 0.05;
-    canvasRectRelative.setWidth(1 - relativeSheetMargin);
-    canvasRectRelative.setHeight(1 - relativeSheetMargin);
-    canvasRectRelative.setTopLeft(QPointF(relativeSheetMargin, relativeSheetMargin));
+
+    minRelSize = 0.25;
 
     screenResolution = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
+}
+
+void ExportPreview::setMaximalCanvas()
+{
+    double widthMinMargin, heightMinMargin;
+    if(sheetSizeCm.width() < sheetSizeCm.height())
+    {
+        widthMinMargin = relativeSheetMinMargin;
+        heightMinMargin = relativeSheetMinMargin * sheetSizeCm.width() / sheetSizeCm.height();
+    }
+    else
+    {
+        widthMinMargin = relativeSheetMinMargin * sheetSizeCm.height() / sheetSizeCm.width();
+        heightMinMargin = relativeSheetMinMargin;
+    }
+
+    figureRectRelative.setWidth(1 - widthMinMargin);
+    figureRectRelative.setHeight(1 - heightMinMargin);
+    figureRectRelative.moveTop(heightMinMargin/2);
+    figureRectRelative.moveLeft(widthMinMargin/2);
 }
 
 void ExportPreview::setScale(double scalingFactor)
@@ -46,7 +69,7 @@ void ExportPreview::setScale(double scalingFactor)
 
 void ExportPreview::exportPDF(QString fileName)
 {
-    parameters = information->getSettingsVals();
+    graphSettings = information->getSettingsVals();
     graphRange = information->getRange();
 
     QPdfWriter *pdfWriter = new QPdfWriter(fileName);
@@ -65,8 +88,8 @@ void ExportPreview::exportPDF(QString fileName)
     pdfWriter->setPageLayout(layout);
 
     QRect exportSheetRect = pdfWriter->pageLayout().fullRectPixels(targetResolution);
-    drawableRect.setHeight(int(double(sheetRect.height()) * canvasSizeCm.height() / sheetSizeCm.height()));
-    drawableRect.setWidth(int(double(sheetRect.width()) * canvasSizeCm.width() / sheetSizeCm.width()));
+    figureRectScaled.setHeight(int(double(sheetRect.height()) * canvasSizeCm.height() / sheetSizeCm.height()));
+    figureRectScaled.setWidth(int(double(sheetRect.width()) * canvasSizeCm.width() / sheetSizeCm.width()));
 
     QPoint graphOrigin;
     graphOrigin.setX(int( double(sheetRect.width()) / sheetSizeCm.width()));
@@ -82,8 +105,8 @@ void ExportPreview::exportPDF(QString fileName)
 
     painter.translate(graphOrigin);
 
-    assignGraphSize();
-    determinerCentreEtUnites();
+    updateGraphRect();
+    updateCenterPosAndScaling();
     paint();
 
     painter.end();
@@ -95,45 +118,43 @@ void ExportPreview::exportPDF(QString fileName)
 void ExportPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    parameters = information->getSettingsVals();
+    graphSettings = information->getSettingsVals();
     graphRange = information->getRange();
 
-    painter.begin(this);
-    //trace du background
-
-    painter.setFont(information->getSettingsVals().graphFont);
+    painter.begin(this);    
 
     drawSheet();
-    drawGraph();
-
-    painter.end();
+    drawFigureRect();
 
     assignMouseRects();
 
+    drawGraph();
+
+    painter.end();
 }
 
 void ExportPreview::assignMouseRects()
 {
-    QPointF topLeftTranslation;
+    QPoint topLeftTranslation;
     topLeftTranslation.setX(-8);
     topLeftTranslation.setY(-8);
 
-    QPointF bottomRightTranslation;
+    QPoint bottomRightTranslation;
     bottomRightTranslation.setX(8);
     bottomRightTranslation.setY(8);
 
 
-    topLeft.setTopLeft(drawableRect.topLeft() + topLeftTranslation);
-    topLeft.setBottomRight(drawableRect.topLeft() + bottomRightTranslation);
+    topLeft.setTopLeft(figureRect.topLeft() + topLeftTranslation);
+    topLeft.setBottomRight(figureRect.topLeft() + bottomRightTranslation);
 
-    topRight.setTopLeft(drawableRect.topRight() + topLeftTranslation);
-    topRight.setBottomRight(drawableRect.topRight() + bottomRightTranslation);
+    topRight.setTopLeft(figureRect.topRight() + topLeftTranslation);
+    topRight.setBottomRight(figureRect.topRight() + bottomRightTranslation);
 
-    bottomLeft.setTopLeft(drawableRect.bottomLeft() + topLeftTranslation);
-    bottomLeft.setBottomRight(drawableRect.bottomLeft() + bottomRightTranslation);
+    bottomLeft.setTopLeft(figureRect.bottomLeft() + topLeftTranslation);
+    bottomLeft.setBottomRight(figureRect.bottomLeft() + bottomRightTranslation);
 
-    bottomRight.setTopLeft(drawableRect.bottomRight() + topLeftTranslation);
-    bottomRight.setBottomRight(drawableRect.bottomRight() + bottomRightTranslation);
+    bottomRight.setTopLeft(figureRect.bottomRight() + topLeftTranslation);
+    bottomRight.setBottomRight(figureRect.bottomRight() + bottomRightTranslation);
 
     top.setTopLeft(topLeft.topRight());
     top.setBottomRight(topRight.bottomLeft());
@@ -148,58 +169,86 @@ void ExportPreview::assignMouseRects()
     right.setBottomRight(bottomRight.topRight());
 }
 
-void ExportPreview::drawSheet()
+QRect ExportPreview::sheetRectFromViewRect(QRect viewRect)
 {
-    painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));;
-
     double ratio, targetRatio;
 
-    ratio = double(height()) / double(width());
+    ratio = double(viewRect.height()) / double(viewRect.width());
     targetRatio = sheetSizeCm.height() / sheetSizeCm.width();
+
+    QRect rect;
 
     if(ratio <= targetRatio)
     {
-        sheetRect.setHeight(height());
-        sheetRect.setWidth(int(double(height()) / targetRatio));
+        rect.setHeight(viewRect.height());
+        rect.setWidth(int(double(viewRect.height()) / targetRatio));
 
-        sheetRect.setTopLeft(QPoint((width() - sheetRect.width())/2, 0));
+        rect.moveTopLeft(QPoint((viewRect.width() - rect.width())/2, 0));
     }
     else
     {
-        sheetRect.setHeight(int(double(width()) * targetRatio));
-        sheetRect.setWidth(width());
+        rect.setHeight(int(double(viewRect.width()) * targetRatio));
+        rect.setWidth(viewRect.width());
 
-        sheetRect.setTopLeft(QPoint(0, (height() - sheetRect.height())/2));
+        rect.moveTopLeft(QPoint(0, (viewRect.height() - rect.height())/2));
     }
 
-    updateDrawableRectFromRel();
-
-    painter.drawRect(sheetRect);
+    return rect;
 }
 
-void ExportPreview::drawGraph()
+void ExportPreview::drawSheet()
+{ // draws the sheet on an untransformed view
+    painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));;
+
+    sheetRect = sheetRectFromViewRect(painter.viewport());
+
+    painter.drawRect(sheetRect);   
+}
+
+void ExportPreview::drawFigureRect()
 {
-    assignGraphSize();
+    figureRect = getFigureRectFromRelative(sheetRect);
+
+    qDebug() << "Sheet rect: " << sheetRect;
+    qDebug() << "Figure rect: " << figureRect;
+    qDebug() << "Figure rect relative: " << figureRectRelative;
+    qDebug() << "---------------------------------";
 
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(Qt::red);//information->getSettingsVals().axesColor);
+    pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);
-    painter.drawRect(drawableRect);
+    painter.drawRect(figureRect);
 
     pen.setStyle(Qt::SolidLine);
     painter.setPen(pen);
+}
 
-    determinerCentreEtUnites();
+void ExportPreview::scaleView(QRect refSheetRect)
+{
+    QSizeF sheetSizeMm(sheetSizeCm.height() * 10, sheetSizeCm.width() * 10);
 
-    painter.translate(drawableRect.topLeft());
+    QPageLayout layout;
+    layout.setOrientation(orientation);
+    layout.setPageSize(QPageSize(sheetSizeMm, QPageSize::Millimeter));
+    QRect targetSheetRect = layout.fullRectPixels(int(screenResolution / userScalingFactor));
 
-    double widthSheetScale = double(sheetRect.width()) / double(painter.viewport().width());
-    double heightSheetScale = double(sheetRect.height()) / double(painter.viewport().height());
+    double widthSheetScale = double(refSheetRect.width()) / double(targetSheetRect.width());
+    double heightSheetScale = double(refSheetRect.height()) / double(targetSheetRect.height());
 
-    painter.scale(widthSheetScale * userScalingFactor, heightSheetScale * userScalingFactor);
+    painter.scale(widthSheetScale, heightSheetScale);
+}
 
+void ExportPreview::drawGraph()
+{
+    scaleView(sheetRect);
+
+    sheetRectScaled = painter.worldTransform().inverted().mapRect(sheetRect);
+
+    figureRectScaled = getFigureRectFromRelative(sheetRectScaled);
+
+    painter.translate(figureRectScaled.topLeft());
 
     paint();
 }
@@ -207,8 +256,8 @@ void ExportPreview::drawGraph()
 void ExportPreview::setCanvasSizeCm(QSizeF sizeCm)
 {
     canvasSizeCm = sizeCm;
-    canvasRectRelative.setWidth(int( double(canvasSizeCm.width()) / double(sheetSizeCm.width())));
-    canvasRectRelative.setHeight(int( double(canvasSizeCm.height()) / double(sheetSizeCm.height())));
+    figureRectRelative.setWidth(int( double(canvasSizeCm.width()) / double(sheetSizeCm.width())));
+    figureRectRelative.setHeight(int( double(canvasSizeCm.height()) / double(sheetSizeCm.height())));
     constrainCanvasRectRel();
 
     update();
@@ -225,10 +274,10 @@ void ExportPreview::setOrientation(QPageLayout::Orientation type)
     if(type != orientation)
     {
          orientation = type;
-         canvasRectRelative = canvasRectRelative.transposed();
+         figureRectRelative = figureRectRelative.transposed();
     }
 
-    repaint();
+    update();
 }
 
 void ExportPreview::mousePressEvent(QMouseEvent *event)
@@ -249,7 +298,7 @@ void ExportPreview::mousePressEvent(QMouseEvent *event)
         moveType = LEFT_SIDE;
     else if(right.contains(event->pos()))
         moveType = RIGHT_SIDE;
-    else if(drawableRect.contains(event->pos()))
+    else if(figureRect.contains(event->pos()))
         moveType = ALL;
     else moveType = NOTHING;
 
@@ -269,95 +318,117 @@ void ExportPreview::mouseMoveEvent(QMouseEvent *event)
             setCursor(Qt::SizeVerCursor);
         else if(left.contains(event->pos()) || right.contains(event->pos()))
             setCursor(Qt::SizeHorCursor);
-        else if(drawableRect.contains(event->pos()))
+        else if(figureRect.contains(event->pos()))
             setCursor(Qt::SizeAllCursor);
         else setCursor(Qt::ArrowCursor);
+
+        lastMousePos = event->pos();
     }
     else
     {
         QPoint dr = event->pos() - lastMousePos;
+        lastMousePos = event->pos();
 
         switch(moveType)
         {
         case TOPLEFT_CORNER:
-            drawableRect.setTopLeft(drawableRect.topLeft() + dr);
+            figureRect.setTopLeft(figureRect.topLeft() + dr);
             break;
         case TOPRIGHT_CORNER:
-            drawableRect.setTopRight(drawableRect.topRight() + dr);
+            figureRect.setTopRight(figureRect.topRight() + dr);
             break;
         case BOTTOMLEFT_CORNER:
-            drawableRect.setBottomLeft(drawableRect.bottomLeft() + dr);
+            figureRect.setBottomLeft(figureRect.bottomLeft() + dr);
             break;
         case BOTTOMRIGHT_CORNER:
-            drawableRect.setBottomRight(drawableRect.bottomRight() + dr);
+            figureRect.setBottomRight(figureRect.bottomRight() + dr);
             break;
         case LEFT_SIDE:
-            drawableRect.setLeft(drawableRect.left() + dr.x());
+            figureRect.setLeft(figureRect.left() + dr.x());
             break;
         case TOP_SIDE:
-            drawableRect.setTop(drawableRect.top() + dr.y());
+            figureRect.setTop(figureRect.top() + dr.y());
             break;
         case RIGHT_SIDE:
-            drawableRect.setRight(drawableRect.right() + dr.x());
+            figureRect.setRight(figureRect.right() + dr.x());
             break;
         case BOTTOM_SIDE:
-            drawableRect.setBottom(drawableRect.bottom() + dr.y());
+            figureRect.setBottom(figureRect.bottom() + dr.y());
             break;
         case ALL:
-            drawableRect.translate(dr);
+            figureRect.translate(dr);
             break;
         case NOTHING:
             break;
         }
 
-        QPointF pt = drawableRect.topLeft() - sheetRect.topLeft();
+        QPointF pt = figureRect.topLeft() - sheetRect.topLeft();
         pt.setX(pt.x() / double(sheetRect.width()));
         pt.setY(pt.y() / double(sheetRect.height()));
 
-        canvasRectRelative.setTopLeft(pt);
-        canvasRectRelative.setWidth(double(drawableRect.width()) / double(sheetRect.width()));
-        canvasRectRelative.setHeight(double(drawableRect.height()) / double(sheetRect.height()));
+        figureRectRelative.setTopLeft(pt);
+        figureRectRelative.setWidth(double(figureRect.width()) / double(sheetRect.width()));
+        figureRectRelative.setHeight(double(figureRect.height()) / double(sheetRect.height()));
 
         constrainCanvasRectRel();
-        updateDrawableRectFromRel();
-        repaint();
+        update();
     }
 
-    lastMousePos = event->pos();
 }
 
 void ExportPreview::constrainCanvasRectRel()
 {
-    if(canvasRectRelative.width() > 1 - relativeSheetMargin)
-        canvasRectRelative.setWidth(1 - relativeSheetMargin);
-    if(canvasRectRelative.height() > 1 - relativeSheetMargin)
-        canvasRectRelative.setHeight(1 - relativeSheetMargin);
+    double widthMinMargin, heightMinMargin;
+    if(sheetSizeCm.width() < sheetSizeCm.height())
+    {
+        widthMinMargin = relativeSheetMinMargin;
+        heightMinMargin = relativeSheetMinMargin * sheetSizeCm.width() / sheetSizeCm.height();
+    }
+    else
+    {
+        widthMinMargin = relativeSheetMinMargin * sheetSizeCm.height() / sheetSizeCm.width();
+        heightMinMargin = relativeSheetMinMargin;
+    }   
+
+    if(figureRectRelative.width() > 1 - widthMinMargin)
+        figureRectRelative.setWidth(1 - widthMinMargin);
+    if(figureRectRelative.height() > 1 - heightMinMargin)
+        figureRectRelative.setHeight(1 - heightMinMargin);
+
+    if(figureRectRelative.width() < minRelSize)
+        figureRectRelative.setWidth(minRelSize);
+    if(figureRectRelative.height() < minRelSize)
+        figureRectRelative.setHeight(minRelSize);
+
+    if(figureRectRelative.left() < widthMinMargin/2)
+        figureRectRelative.moveLeft(widthMinMargin/2);
+    if(figureRectRelative.right() > 1 - widthMinMargin/2)
+        figureRectRelative.moveRight(1 - widthMinMargin/2);
+
+    if(figureRectRelative.bottom() > 1 - heightMinMargin/2)
+        figureRectRelative.moveBottom(1 - heightMinMargin/2);
+    if(figureRectRelative.top() < heightMinMargin/2)
+        figureRectRelative.moveTop(heightMinMargin/2);
 
     QSizeF updatedGraphSizeCm;
-    updatedGraphSizeCm.setHeight(canvasRectRelative.width() * sheetSizeCm.width());
-    updatedGraphSizeCm.setWidth(canvasRectRelative.height() * sheetSizeCm.height());
+    updatedGraphSizeCm.setHeight(figureRectRelative.width() * sheetSizeCm.width());
+    updatedGraphSizeCm.setWidth(figureRectRelative.height() * sheetSizeCm.height());
 
     if(canvasSizeCm != updatedGraphSizeCm)
     {
         canvasSizeCm = updatedGraphSizeCm;
         emit newCanvasSizeCm(canvasSizeCm);
     }
-
-    QPointF topLeft = canvasRectRelative.topLeft();
-    if(topLeft.x() + canvasRectRelative.width() > 1 - relativeSheetMargin/2)
-        topLeft.setX(1 - relativeSheetMargin/2 - canvasRectRelative.width());
-    if(topLeft.y() + canvasRectRelative.height() > 1 - relativeSheetMargin/2)
-        topLeft.setY(1 - relativeSheetMargin/2 - canvasRectRelative.height());
-
-    canvasRectRelative.setTopLeft(topLeft);
 }
 
-void ExportPreview::updateDrawableRectFromRel()
+QRect ExportPreview::getFigureRectFromRelative(QRect refSheetRect)
 {
-    drawableRect.setWidth(int(canvasRectRelative.width() * double(sheetRect.width())));
-    drawableRect.setHeight(int(canvasRectRelative.height() * double(sheetRect.height())));
-    drawableRect.setTopLeft(sheetRect.topLeft() + QPoint(int(canvasRectRelative.topLeft().x() * double(sheetRect.width())),
-                                                         int(canvasRectRelative.topLeft().y() * double(sheetRect.height()))));
+    QRect rect;
+    rect.setWidth(int(figureRectRelative.width() * double(refSheetRect.width())));
+    rect.setHeight(int(figureRectRelative.height() * double(refSheetRect.height())));
+    rect.moveTopLeft(refSheetRect.topLeft() + QPoint(int(figureRectRelative.topLeft().x() * double(refSheetRect.width())),
+                                                         int(figureRectRelative.topLeft().y() * double(refSheetRect.height()))));
+    return rect;
 }
 
 void ExportPreview::mouseReleaseEvent(QMouseEvent *event)

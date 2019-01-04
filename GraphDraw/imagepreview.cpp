@@ -25,7 +25,7 @@
 ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 {
     information = info;
-    parameters.distanceBetweenPoints = 0.125;
+    graphSettings.distanceBetweenPoints = 0.125;
     leftMargin = 30;
     rightMargin = 30;
     topMargin = 20;
@@ -47,18 +47,18 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    parameters = information->getSettingsVals();
+    graphSettings = information->getSettingsVals();
     graphRange = information->getRange();
 
     painter.begin(this);
 
     painter.setFont(information->getSettingsVals().graphFont);
 
-    painter.setBrush(QBrush(parameters.backgroundColor));
+    painter.setBrush(QBrush(graphSettings.backgroundColor));
     painter.drawRect(-1, -1, width()+1, height()+1);
 
-    assignGraphSize();
-    determinerCentreEtUnites();
+    updateGraphRect();
+    updateCenterPosAndScaling();
     funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
     paint();
 
@@ -143,32 +143,33 @@ void ImagePreview::setYaxisLegend(QString legend)
     update();
 }
 
-void ImagePreview::assignGraphSize()
-{
-    graphRect.setTop(drawableRect.top() + topMargin);
-    graphRect.setBottom(drawableRect.bottom() - bottomMargin);
-    graphRect.setRight(drawableRect.right() - rightMargin);
-    graphRect.setLeft(drawableRect.left() - leftMargin);
+void ImagePreview::updateGraphRect()
+{    
+    graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
+    graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
+    graphRectScaled.moveTopLeft(QPoint(0, 0)); // because painter is translated to its top-left corner
 }
 
 void ImagePreview::paint()
 {
     painter.setBrush(Qt::NoBrush);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.translate(leftMargin, topMargin);
+    painter.setRenderHint(QPainter::Antialiasing, false);    
 
     pen.setColor(information->getSettingsVals().axesColor);
     painter.setPen(pen);
 
-    placerGraduations();
-    drawAxes();
+    updateGraphRect(); // must happen before the next instruction
+    updateCenterPosAndScaling();
 
-    painter.drawRect(graphRect);
+    painter.translate(leftMargin, topMargin);
+
+    drawTicksAndNumbers();
+    drawAxes();    
 
     if(legendState)
         writeLegends();
 
-    painter.setClipRect(graphRect);
+    painter.setClipRect(graphRectScaled);
 
     painter.translate(QPointF(centre.x, centre.y));
 
@@ -199,8 +200,8 @@ void ImagePreview::writeLegends()
         int xLegendWidth = painter.fontMetrics().width(xLegend);
 
         QPoint startDrawPoint;
-        startDrawPoint.setX((graphRect.width() - xLegendWidth)/2);
-        startDrawPoint.setY(graphRect.height() + bottomMargin - 10);
+        startDrawPoint.setX((graphRectScaled.width() - xLegendWidth)/2);
+        startDrawPoint.setY(graphRectScaled.height() + bottomMargin - 10);
 
         painter.drawText(startDrawPoint, xLegend);
     }
@@ -211,7 +212,7 @@ void ImagePreview::writeLegends()
         int yLegendHeight = legendFontSize + 6;
 
         QPoint startDrawPoint;
-        startDrawPoint.setX(- (graphRect.height() - (graphRect.height() - yLegendWidth)/2));
+        startDrawPoint.setX(- (graphRectScaled.height() - (graphRectScaled.height() - yLegendWidth)/2));
         startDrawPoint.setY(-leftMargin + yLegendHeight);
 
         painter.drawText(startDrawPoint, yLegend);
@@ -220,16 +221,10 @@ void ImagePreview::writeLegends()
     }
 }
 
-void ImagePreview::placerGraduations()
+void ImagePreview::drawTicksAndNumbers()
 {
-    int fontSize = information->getSettingsVals().graphFont.pixelSize();
-
-    font.setPixelSize(fontSize);
-    font.setItalic(false);
-    font.setBold(false);
-    font.setUnderline(false);
     pen.setWidth(1);
-    painter.setFont(font);
+    painter.setFont(graphSettings.graphFont);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     QFontMetrics fontMetrics = painter.fontMetrics();
@@ -248,28 +243,28 @@ void ImagePreview::placerGraduations()
         {
             if(information->getGridState())
             {
-                pen.setColor(parameters.gridColor);
+                pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
-                painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRect.height()));
+                painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRectScaled.height()));
             }
-            pen.setColor(parameters.axesColor);
+            pen.setColor(graphSettings.axesColor);
             pen.setWidth(1);
             painter.setPen(pen);
 
             pos = Xpos + centre.x;
 
             painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
-            painter.drawLine(QPointF(pos, graphRect.height()-4), QPointF(pos, graphRect.height()));
+            painter.drawLine(QPointF(pos, graphRectScaled.height()-4), QPointF(pos, graphRectScaled.height()));
             num = QString::number(Xpos/uniteX, 'g', numPrec);
             space = fontMetrics.width(num);
-            painter.drawText(QPointF(pos - space/2, graphRect.height()+15), num);
+            painter.drawText(QPointF(pos - space/2, graphRectScaled.height()+15), num);
         }
         else
         {
             pos = Xpos + centre.x;
             space = fontMetrics.width("0");
-            painter.drawText(QPointF(pos - space/2, graphRect.height()+15), "0");
+            painter.drawText(QPointF(pos - space/2, graphRectScaled.height()+15), "0");
         }
 
         Xpos += step;
@@ -290,20 +285,20 @@ void ImagePreview::placerGraduations()
         {
             if(information->getGridState())
             {
-                pen.setColor(parameters.gridColor);
+                pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
-                painter.drawLine(QPointF(0, -Ypos + centre.y), QPointF(graphRect.width(), -Ypos + centre.y));
+                painter.drawLine(QPointF(0, -Ypos + centre.y), QPointF(graphRectScaled.width(), -Ypos + centre.y));
             }
 
-            pen.setColor(parameters.axesColor);
+            pen.setColor(graphSettings.axesColor);
             pen.setWidth(1);
             painter.setPen(pen);
 
             pos = -Ypos + centre.y;
 
             painter.drawLine(QPointF(4, pos), QPointF(0, pos));
-            painter.drawLine(QPointF(graphRect.width() - 4, pos), QPointF(graphRect.width(), pos));
+            painter.drawLine(QPointF(graphRectScaled.width() - 4, pos), QPointF(graphRectScaled.width(), pos));
 
             num = QString::number(Ypos/uniteY, 'g', numPrec);
             space = fontMetrics.width(num) + 5;
@@ -311,13 +306,13 @@ void ImagePreview::placerGraduations()
             if(space > largestWidth)
                 largestWidth = space;
 
-            painter.drawText(QPointF(-space, pos + parameters.graphFont.pixelSize()/2), num);
+            painter.drawText(QPointF(-space, pos + graphSettings.graphFont.pixelSize()/2), num);
         }
         else
         {
             pos = -Ypos + centre.y;
             space = fontMetrics.width("0") + 5;
-            painter.drawText(QPointF(-space, pos + parameters.graphFont.pixelSize()/2), "0");
+            painter.drawText(QPointF(-space, pos + graphSettings.graphFont.pixelSize()/2), "0");
         }
 
         if(space > largestWidth)
@@ -338,21 +333,23 @@ void ImagePreview::placerGraduations()
 void ImagePreview::drawAxes()
 {
     pen.setWidth(1);
-    pen.setColor(parameters.axesColor);
+    pen.setColor(graphSettings.axesColor);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     if(graphRange.Ymin < 0 && graphRange.Ymax > 0)
-        painter.drawLine(QPointF(0, centre.y), QPointF(graphRect.width(), centre.y));
+        painter.drawLine(QPointF(0, centre.y), QPointF(graphRectScaled.width(), centre.y));
     if(graphRange.Xmin < 0 && graphRange.Xmax > 0)
-        painter.drawLine(QPointF(centre.x, 0), QPointF(centre.x, graphRect.height()));
+        painter.drawLine(QPointF(centre.x, 0), QPointF(centre.x, graphRectScaled.height()));
+
+    painter.drawRect(graphRectScaled);
 
 }
 
-void ImagePreview::determinerCentreEtUnites()
+void ImagePreview::updateCenterPosAndScaling()
 {
-    uniteY = double(graphRect.height()) / (graphRange.Ymax - graphRange.Ymin);
-    uniteX = double(graphRect.width()) / (graphRange.Xmax - graphRange.Xmin);
+    uniteY = double(graphRectScaled.height()) / (graphRange.Ymax - graphRange.Ymin);
+    uniteX = double(graphRectScaled.width()) / (graphRange.Xmax - graphRange.Xmin);
 
     double rapport = uniteY / uniteX;
     if(information->isOrthonormal())
@@ -369,11 +366,11 @@ void ImagePreview::determinerCentreEtUnites()
 
 QImage* ImagePreview::drawImage()
 {
-    parameters = information->getSettingsVals();
+    graphSettings = information->getSettingsVals();
     graphRange = information->getRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
-    image->fill(parameters.backgroundColor.rgb());
+    image->fill(graphSettings.backgroundColor.rgb());
 
     painter.begin(image);
     //trace du background
@@ -382,18 +379,18 @@ QImage* ImagePreview::drawImage()
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    painter.drawRect(leftMargin, topMargin, graphRect.width(), graphRect.height());
+    painter.drawRect(leftMargin, topMargin, graphRectScaled.width(), graphRectScaled.height());
 
     painter.translate(leftMargin, topMargin);
 
-    determinerCentreEtUnites();
+    updateCenterPosAndScaling();
     drawAxes();
-    placerGraduations();
+    drawTicksAndNumbers();
 
     if(legendState)
         writeLegends();
 
-    painter.setClipRect(0,0,graphRect.width(),graphRect.height());
+    painter.setClipRect(0,0,graphRectScaled.width(),graphRectScaled.height());
 
     painter.translate(QPointF(centre.x, centre.y));
 

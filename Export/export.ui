@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>830</width>
-    <height>636</height>
+    <height>662</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,7 +81,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -96,7 +96,7 @@
             <item>
              <widget class="QRadioButton" name="scalableFormat">
               <property name="text">
-               <string>Scalable format</string>
+               <string>Vector format</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -104,7 +104,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget" native="true">
+             <widget class="QWidget" name="scalableWidget" native="true">
               <layout class="QFormLayout" name="formLayout_4">
                <property name="leftMargin">
                 <number>25</number>
@@ -163,7 +163,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QWidget" name="widget" native="true">
+             <widget class="QWidget" name="imageWidget" native="true">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -233,70 +233,140 @@
            </widget>
           </item>
           <item>
-           <layout class="QFormLayout" name="formLayout_6">
-            <property name="leftMargin">
-             <number>25</number>
+           <widget class="QWidget" name="sheetSizeWidget" native="true">
+            <property name="enabled">
+             <bool>true</bool>
             </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_6">
-              <property name="text">
-               <string>Height:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_8">
-              <property name="text">
-               <string>Width:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="sheetWidth">
-              <property name="suffix">
-               <string> cm</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="minimum">
-               <double>3.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>200.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>29.699999999999999</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="sheetHeight">
-              <property name="suffix">
-               <string> cm</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="minimum">
-               <double>3.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>200.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>21.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>3</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QWidget" name="sdfsdag" native="true">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <layout class="QFormLayout" name="formLayout_6">
+                <property name="leftMargin">
+                 <number>25</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>Height:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QDoubleSpinBox" name="sheetHeight">
+                  <property name="suffix">
+                   <string> cm</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>3.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>200.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>21.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_8">
+                  <property name="text">
+                   <string>Width:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QDoubleSpinBox" name="sheetWidth">
+                  <property name="suffix">
+                   <string> cm</string>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>3.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>200.000000000000000</double>
+                  </property>
+                  <property name="value">
+                   <double>29.699999999999999</double>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>28</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../ressources.qrc">
+                 <normaloff>:/icons/go&amp;return.png</normaloff>:/icons/go&amp;return.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item>
            <widget class="QWidget" name="paperSizeWidget" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="spacing">
+              <number>2</number>
+             </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -327,7 +397,7 @@
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_2">
                  <item>
-                  <widget class="QPushButton" name="pushButton_4">
+                  <widget class="QPushButton" name="A3">
                    <property name="maximumSize">
                     <size>
                      <width>35</width>
@@ -346,7 +416,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_3">
+                  <widget class="QPushButton" name="A4">
                    <property name="maximumSize">
                     <size>
                      <width>35</width>
@@ -368,7 +438,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton_2">
+                  <widget class="QPushButton" name="A5">
                    <property name="maximumSize">
                     <size>
                      <width>35</width>
@@ -387,7 +457,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButton">
+                  <widget class="QPushButton" name="customSize">
                    <property name="text">
                     <string>Custom</string>
                    </property>
@@ -916,7 +986,7 @@
         <x>0</x>
         <y>0</y>
         <width>504</width>
-        <height>616</height>
+        <height>642</height>
        </rect>
       </property>
      </widget>
@@ -930,33 +1000,65 @@
  <connections>
   <connection>
    <sender>scalableFormat</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>widget</receiver>
+   <signal>toggled(bool)</signal>
+   <receiver>scalableWidget</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
-     <y>163</y>
+     <x>114</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
-     <x>35</x>
-     <y>183</y>
+     <x>50</x>
+     <y>188</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>imageFormat</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>widget</receiver>
+   <signal>toggled(bool)</signal>
+   <receiver>imageWidget</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>113</x>
-     <y>222</y>
+     <x>109</x>
+     <y>216</y>
     </hint>
     <hint type="destinationlabel">
-     <x>52</x>
-     <y>250</y>
+     <x>32</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>customSize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sheetSizeWidget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>228</x>
+     <y>377</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>266</x>
+     <y>354</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>customSize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>orientationSelector</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>235</x>
+     <y>391</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>406</y>
     </hint>
    </hints>
   </connection>

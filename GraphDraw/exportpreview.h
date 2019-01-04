@@ -26,6 +26,7 @@
 
 #include "imagepreview.h"
 #include <QPdfWriter>
+#include <QPageLayout>
 
 
 enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
@@ -41,7 +42,7 @@ class ExportPreview : public ImagePreview
     Q_OBJECT
 
 public:
-    explicit ExportPreview(Information *info);
+    explicit ExportPreview(QSizeF sheetSizeInCm, Information *info);
     void setOrientation(QPageLayout::Orientation type);
 
 signals:
@@ -63,20 +64,26 @@ protected:
     void paintEvent(QPaintEvent *event);
     void drawSheet();
     void drawGraph();
+    QRect sheetRectFromViewRect(QRect viewRect);
+    void drawFigureRect();
     void assignMouseRects();
     void printCurves();
     void constrainCanvasRectRel();
-    void updateDrawableRectFromRel();
+    QRect getFigureRectFromRelative(QRect refSheetRect);
+    void scaleView(QRect refSheetRect);
+    void setMaximalCanvas();
 
     void printOrExportPDF(bool print, int nbPages, bool useColor, QString fileName = "");
 
     QPageLayout::Orientation orientation;
-    double relativeSheetMargin; // margin to the sheet where the graph can be
+    double relativeSheetMinMargin, minRelSize;
+    // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
+    // the other margin is scaled accordingly
     double userScalingFactor, screenResolution;
-    QRect viewRect, sheetRect;
+    QRect figureRect, sheetRect, sheetRectScaled;
     QSizeF canvasSizeCm, sheetSizeCm;
-    QRectF canvasRectRelative;
-    QRectF topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
+    QRectF figureRectRelative;
+    QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 
     QPoint lastMousePos ;
     MouseActionType moveType;

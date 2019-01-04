@@ -7,6 +7,8 @@
 
 QT += widgets network
 
+OUTPUT += Console
+
 TARGET = ZeGrapher
 TEMPLATE = app
 TRANSLATIONS = ZeGrapher_fr.ts

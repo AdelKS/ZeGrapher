@@ -49,16 +49,16 @@ public slots:
 protected:
 
     void paintEvent(QPaintEvent *event);
-    void determinerCentreEtUnites();
-    void placerGraduations();
+    void updateCenterPosAndScaling();
+    void drawTicksAndNumbers();
     void drawAxes();
     void paint();
-    void assignGraphSize();
+    void updateGraphRect();
     void writeLegends();
 
     int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
     int  legendFontSize, numPrec;
-    QRect drawableRect, graphRect;
+    QRect figureRectScaled, graphRectScaled;
     QString xLegend, yLegend;
     bool legendState, bold, italic, underline;
 

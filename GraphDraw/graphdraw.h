@@ -76,7 +76,7 @@ protected:
     FuncValuesSaver *funcValuesSaver;    
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
-    SettingsVals parameters;
+    SettingsVals graphSettings;
     QPolygonF polygon;
     QPen pen;
     QBrush brush;

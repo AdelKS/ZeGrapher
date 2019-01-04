@@ -25,7 +25,8 @@
 Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui::Export)
 {
     ui->setupUi(this);
-    exportPreview = new ExportPreview(info);
+    exportPreview = new ExportPreview(QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value()), info);
+    ui->sheetSizeWidget->setEnabled(false);
 
     onOrientationChange();
     onSheetSizeChange();
@@ -50,6 +51,12 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->exportButton, SIGNAL(released()), this, SLOT(exportGraph()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(enableExportButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getFileName()));
+
+    connect(ui->A3, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
+    connect(ui->A4, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
+    connect(ui->A5, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
+    connect(ui->customSize, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
+    connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onSheetSizeChange()));
 
     connect(ui->legendBox, SIGNAL(toggled(bool)), exportPreview, SLOT(setLegendState(bool)));
     connect(ui->legendSize, SIGNAL(valueChanged(int)), exportPreview, SLOT(setlegendFontSize(int)));
@@ -121,8 +128,47 @@ void Export::onCanvasSizeChange()
 
 void Export::onSheetSizeChange()
 {
+    QPageLayout layout;
+
+    if(ui->orientationSelector->currentIndex() == 0)
+        layout.setOrientation(QPageLayout::Landscape);
+    else layout.setOrientation(QPageLayout::Portrait);
+
+    QSizeF size;
+
+    if(ui->A3->isChecked())
+    {
+        layout.setPageSize(QPageSize(QPageSize::A3));
+        QRectF rect = layout.fullRect(QPageLayout::Millimeter);
+        size.setWidth(rect.width() / 10);
+        size.setHeight(rect.height() / 10);
+    }
+    else if(ui->A4->isChecked())
+    {
+        layout.setPageSize(QPageSize(QPageSize::A4));
+        QRectF rect = layout.fullRect(QPageLayout::Millimeter);
+        size.setWidth(rect.width() / 10);
+        size.setHeight(rect.height() / 10);
+    }
+    else if(ui->A5->isChecked())
+    {
+        layout.setPageSize(QPageSize(QPageSize::A5));
+        QRectF rect = layout.fullRect(QPageLayout::Millimeter);
+        size.setWidth(rect.width() / 10);
+        size.setHeight(rect.height() / 10);
+    }
+    else
+    {
+        size = QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value());
+    }
+
+    ui->sheetWidth->setValue(size.width());
+    ui->sheetHeight->setValue(size.height());
+
+    qDebug() << "size update!";
+
     // change of maximums in cm and minimum in pixels
-    exportPreview->setSheetSizeCm(QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value()));
+    exportPreview->setSheetSizeCm(size);
 }
 
 void Export::onOrientationChange()
