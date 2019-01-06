@@ -28,6 +28,9 @@
 #include <QPdfWriter>
 #include <QPageLayout>
 
+#define RELATIVE_MIN_MARGIN 0.05
+#define RELATIVE_MIN_SIZE 0.25
+
 
 enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
                       BOTTOMLEFT_CORNER, BOTTOMRIGHT_CORNER, LEFT_SIDE,
@@ -44,9 +47,11 @@ class ExportPreview : public ImagePreview
 public:
     explicit ExportPreview(QSizeF sheetSizeInCm, Information *info);
     void setOrientation(QPageLayout::Orientation type);
+    double getMinMargin();
+    double getMinFigureSize();
 
 signals:
-    void newCanvasSizeCm(QSizeF sizeCm);
+    void newFigureSizeCm(QSizeF sizeCm);
 
 public slots:
     void mousePressEvent(QMouseEvent *event);
@@ -54,7 +59,7 @@ public slots:
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void setCanvasSizeCm(QSizeF sizeCm);
+    void setFigureSizeCm(QSizeF sizeCm);
     void setSheetSizeCm(QSizeF sizeCm);
     void setScale(double scalingFactor);
     void exportPDF(QString fileName);
@@ -81,7 +86,7 @@ protected:
     // the other margin is scaled accordingly
     double userScalingFactor, screenResolution;
     QRect figureRect, sheetRect, sheetRectScaled;
-    QSizeF canvasSizeCm, sheetSizeCm;
+    QSizeF figureSizeCm, sheetSizeCm;
     QRectF figureRectRelative;
     QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 

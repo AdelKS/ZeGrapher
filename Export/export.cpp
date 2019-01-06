@@ -26,16 +26,15 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 {
     ui->setupUi(this);
     exportPreview = new ExportPreview(QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value()), info);
-    ui->sheetSizeWidget->setEnabled(false);
-
-    onOrientationChange();
-    onSheetSizeChange();
+    ui->sheetSizeWidget->setEnabled(false);  
 
     setWindowFlags(Qt::Window);
 
     setWindowTitle(tr("Export"));
 
     orthonormal = false;
+    disableOnSheetSizeChangeSlot = false;
+    disableOnFigureSizeChange = false;
 
     ui->scrollArea->setWidget(exportPreview);
 
@@ -44,10 +43,9 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
 
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
-    connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onOrientationChange()));
-    connect(ui->canvasHeight, SIGNAL(valueChanged(double)), this, SLOT(onCanvasSizeChange()));
-    connect(ui->canvasWidth, SIGNAL(valueChanged(double)), this, SLOT(onCanvasSizeChange()));
-    connect(exportPreview, SIGNAL(newCanvasSizeCm(QSizeF)), this, SLOT(setCanvasSizeCm(QSizeF)));
+    connect(ui->figureHeight, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
+    connect(ui->figureWidth, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
+    connect(exportPreview, SIGNAL(newFigureSizeCm(QSizeF)), this, SLOT(setFigureSizeCm(QSizeF)));
     connect(ui->exportButton, SIGNAL(released()), this, SLOT(exportGraph()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(enableExportButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getFileName()));
@@ -55,7 +53,9 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->A3, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
     connect(ui->A4, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
     connect(ui->A5, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
-    connect(ui->customSize, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
+    connect(ui->sheetHeight, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
+    connect(ui->sheetWidth, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
+    connect(ui->swapButton, SIGNAL(released()), this, SLOT(swapSheetHeightAndWidth()));
     connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onSheetSizeChange()));
 
     connect(ui->legendBox, SIGNAL(toggled(bool)), exportPreview, SLOT(setLegendState(bool)));
@@ -67,6 +67,15 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->underline, SIGNAL(toggled(bool)), exportPreview, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), exportPreview, SLOT(setNumPrec(int)));
 
+}
+
+void Export::constrainFigureSizeWidgets()
+{
+    ui->figureHeight->setMaximum(ui->sheetHeight->value() * (1 - exportPreview->getMinMargin()));
+    ui->figureHeight->setMinimum(ui->sheetHeight->value() * exportPreview->getMinFigureSize());
+
+    ui->figureWidth->setMaximum(ui->sheetWidth->value() * (1 - exportPreview->getMinMargin()));
+    ui->figureWidth->setMinimum(ui->sheetWidth->value() * exportPreview->getMinFigureSize());
 }
 
 void Export::getFileName()
@@ -115,72 +124,93 @@ void Export::exportGraph()
 
 }
 
-void Export::setCanvasSizeCm(QSizeF sizeCm)
+void Export::setFigureSizeCm(QSizeF sizeCm)
 {
-    ui->canvasHeight->setValue(sizeCm.height());
-    ui->canvasWidth->setValue(sizeCm.width());
+    disableOnFigureSizeChange = true;
+    ui->figureHeight->setValue(sizeCm.height());
+    ui->figureWidth->setValue(sizeCm.width());
+    disableOnFigureSizeChange = false;
 }
 
-void Export::onCanvasSizeChange()
+void Export::onFigureSizeChange()
 {
-    // transmit to exportPreview
+    if(disableOnFigureSizeChange)
+        return;
+
+    exportPreview->setFigureSizeCm(QSizeF(ui->figureWidth->value(), ui->figureHeight->value()));
+    exportPreview->update();
 }
 
 void Export::onSheetSizeChange()
 {
+    if(disableOnSheetSizeChangeSlot)
+        return;
+
+    disableOnSheetSizeChangeSlot = true;
+
     QPageLayout layout;
 
     if(ui->orientationSelector->currentIndex() == 0)
+    {
         layout.setOrientation(QPageLayout::Landscape);
-    else layout.setOrientation(QPageLayout::Portrait);
+        exportPreview->setOrientation(QPageLayout::Landscape);
+    }
+    else
+    {
+        layout.setOrientation(QPageLayout::Portrait);
+        exportPreview->setOrientation(QPageLayout::Portrait);
+    }
 
-    QSizeF size;
+    QSizeF sheetSize;
 
     if(ui->A3->isChecked())
     {
         layout.setPageSize(QPageSize(QPageSize::A3));
         QRectF rect = layout.fullRect(QPageLayout::Millimeter);
-        size.setWidth(rect.width() / 10);
-        size.setHeight(rect.height() / 10);
+        sheetSize.setWidth(rect.width() / 10);
+        sheetSize.setHeight(rect.height() / 10);
     }
     else if(ui->A4->isChecked())
     {
         layout.setPageSize(QPageSize(QPageSize::A4));
         QRectF rect = layout.fullRect(QPageLayout::Millimeter);
-        size.setWidth(rect.width() / 10);
-        size.setHeight(rect.height() / 10);
+        sheetSize.setWidth(rect.width() / 10);
+        sheetSize.setHeight(rect.height() / 10);
     }
     else if(ui->A5->isChecked())
     {
         layout.setPageSize(QPageSize(QPageSize::A5));
         QRectF rect = layout.fullRect(QPageLayout::Millimeter);
-        size.setWidth(rect.width() / 10);
-        size.setHeight(rect.height() / 10);
+        sheetSize.setWidth(rect.width() / 10);
+        sheetSize.setHeight(rect.height() / 10);
     }
     else
     {
-        size = QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value());
+        sheetSize = QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value());
     }
 
-    ui->sheetWidth->setValue(size.width());
-    ui->sheetHeight->setValue(size.height());
+    ui->sheetWidth->setValue(sheetSize.width());
+    ui->sheetHeight->setValue(sheetSize.height());
 
-    qDebug() << "size update!";
+    exportPreview->setSheetSizeCm(sheetSize);
 
-    // change of maximums in cm and minimum in pixels
-    exportPreview->setSheetSizeCm(size);
+    exportPreview->update();
+
+    constrainFigureSizeWidgets(); // should come after updating
+
+    disableOnSheetSizeChangeSlot = false;
 }
 
-void Export::onOrientationChange()
+void Export::swapSheetHeightAndWidth()
 {
-    if(ui->orientationSelector->currentIndex() == 0)
-    {
-        exportPreview->setOrientation(QPageLayout::Landscape);
-    }
-    else
-    {
-        exportPreview->setOrientation(QPageLayout::Portrait);
-    }
+    disableOnSheetSizeChangeSlot = true;
+
+    double tmp = ui->sheetHeight->value();
+    ui->sheetHeight->setValue(ui->sheetWidth->value());
+
+    disableOnSheetSizeChangeSlot = false;
+
+    ui->sheetWidth->setValue(tmp);
 }
 
 

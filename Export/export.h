@@ -41,15 +41,16 @@ public:
     ~Export();
 
 public slots:    
-    void setCanvasSizeCm(QSizeF sizeCm);
+    void setFigureSizeCm(QSizeF sizeCm);
     void enableExportButton();
     void getFileName();
     void exportGraph();
 
 protected slots:
     void onSheetSizeChange();
-    void onCanvasSizeChange();
-    void onOrientationChange();
+    void onFigureSizeChange();
+    void swapSheetHeightAndWidth();
+    void constrainFigureSizeWidgets();
 
 protected:
 
@@ -59,6 +60,7 @@ protected:
     QTimer timer;
     QString fileName;
     bool orthonormal;
+    bool disableOnSheetSizeChangeSlot, disableOnFigureSizeChange;
 };
 
 #endif // PRINT_H

@@ -81,7 +81,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -327,7 +327,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="swapButton">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -512,7 +512,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Canvas size:</string>
+             <string>Figure size:</string>
             </property>
            </widget>
           </item>
@@ -532,7 +532,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="canvasHeight">
+             <widget class="QDoubleSpinBox" name="figureHeight">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -549,10 +549,13 @@
                <double>10.000000000000000</double>
               </property>
               <property name="maximum">
-               <double>28.699999999999999</double>
+               <double>21.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.500000000000000</double>
               </property>
               <property name="value">
-               <double>28.699999999999999</double>
+               <double>21.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -564,7 +567,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="canvasWidth">
+             <widget class="QDoubleSpinBox" name="figureWidth">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -581,10 +584,13 @@
                <double>10.000000000000000</double>
               </property>
               <property name="maximum">
-               <double>20.000000000000000</double>
+               <double>29.699999999999999</double>
+              </property>
+              <property name="singleStep">
+               <double>0.500000000000000</double>
               </property>
               <property name="value">
-               <double>20.000000000000000</double>
+               <double>29.699999999999999</double>
               </property>
              </widget>
             </item>
@@ -607,7 +613,7 @@
                </size>
               </property>
               <property name="text">
-               <string>Path:</string>
+               <string>Save as :</string>
               </property>
              </widget>
             </item>

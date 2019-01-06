@@ -1,2 +1,0 @@
-# C source
-| ".*\\.[ch]" -> frame open:"//**" line:"*" close:""
