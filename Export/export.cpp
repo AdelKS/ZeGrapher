@@ -33,14 +33,19 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     setWindowTitle(tr("Export"));
 
     orthonormal = false;
-    disableOnSheetSizeChangeSlot = false;
-    disableOnFigureSizeChange = false;
 
     ui->scrollArea->setWidget(exportPreview);
 
     timer.setInterval(4000);
     timer.setSingleShot(true);
 
+    connect(ui->zoomIn, SIGNAL(released()), this, SLOT(zoomIn()));
+    connect(ui->zoomOut, SIGNAL(released()), this, SLOT(zoomOut()));
+
+    connect(ui->zoomPercentage, SIGNAL(valueChanged(double)), this, SLOT(onZoomPercentageUserChange()));
+    connect(exportPreview, SIGNAL(newZoomValue(double)), this, SLOT(newZoomValue(double)));
+    connect(ui->fitSheet, SIGNAL(toggled(bool)), this, SLOT(resizeExportPreview()));
+    connect(ui->hundredPercent, SIGNAL(released()), this, SLOT(activateRealSizePreview()));
 
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
     connect(ui->figureHeight, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
@@ -67,6 +72,64 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->underline, SIGNAL(toggled(bool)), exportPreview, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), exportPreview, SLOT(setNumPrec(int)));
 
+    resizeExportPreview();
+
+}
+
+void Export::activateRealSizePreview()
+{
+    ui->zoomPercentage->setValue(100);
+}
+
+void Export::zoomIn()
+{
+    ui->zoomPercentage->setValue(ui->zoomPercentage->value() + 5);
+}
+
+void Export::zoomOut()
+{
+    ui->zoomPercentage->setValue(ui->zoomPercentage->value() - 5);
+}
+
+void Export::newZoomValue(double value)
+{
+    if(!ui->fitSheet->isChecked())
+        resizeExportPreview();
+    else
+    {
+        ui->zoomPercentage->blockSignals(true);
+        ui->zoomPercentage->setValue(value * 100);
+        ui->zoomPercentage->blockSignals(false);
+    }
+}
+
+void Export::onZoomPercentageUserChange()
+{
+    ui->fitSheet->setChecked(false);
+    resizeExportPreview();
+}
+
+
+void Export::resizeExportPreview()
+{
+    if(ui->fitSheet->isChecked())
+    {
+        if(exportPreview->size() != ui->scrollArea->contentsRect().size())
+            exportPreview->resize(ui->scrollArea->contentsRect().size());
+    }
+    else
+    {
+        QSize targetSize = exportPreview->getTargetSheetSizePixels();
+        targetSize.setHeight(int(double(targetSize.height()) * ui->zoomPercentage->value() / 100));
+        targetSize.setWidth(int(double(targetSize.width()) * ui->zoomPercentage->value() / 100));
+        exportPreview->resize(targetSize);
+    }
+}
+
+void Export::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    resizeExportPreview();
 }
 
 void Export::constrainFigureSizeWidgets()
@@ -107,7 +170,8 @@ void Export::exportGraph()
         if(ui->scalableFormatSelection->currentText() == "PDF")
         {
          if(!fileName.isEmpty())
-            exportPreview->exportPDF(fileName);
+             exportPreview->exportPDF(fileName, ui->customSize->isChecked() ? SheetSizeType::CUSTOM : SheetSizeType::NORMALISED);
+
          else QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
                                                                             "specified along with a destination folder.\n\n"
                                                                             "Please specify them then try again."));
@@ -126,28 +190,24 @@ void Export::exportGraph()
 
 void Export::setFigureSizeCm(QSizeF sizeCm)
 {
-    disableOnFigureSizeChange = true;
+    ui->figureHeight->blockSignals(true);
+    ui->figureWidth->blockSignals(true);
+
     ui->figureHeight->setValue(sizeCm.height());
     ui->figureWidth->setValue(sizeCm.width());
-    disableOnFigureSizeChange = false;
+
+    ui->figureHeight->blockSignals(false);
+    ui->figureWidth->blockSignals(false);
 }
 
 void Export::onFigureSizeChange()
 {
-    if(disableOnFigureSizeChange)
-        return;
-
     exportPreview->setFigureSizeCm(QSizeF(ui->figureWidth->value(), ui->figureHeight->value()));
     exportPreview->update();
 }
 
 void Export::onSheetSizeChange()
 {
-    if(disableOnSheetSizeChangeSlot)
-        return;
-
-    disableOnSheetSizeChangeSlot = true;
-
     QPageLayout layout;
 
     if(ui->orientationSelector->currentIndex() == 0)
@@ -189,28 +249,40 @@ void Export::onSheetSizeChange()
         sheetSize = QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value());
     }
 
+    ui->sheetHeight->blockSignals(true);
+    ui->sheetWidth->blockSignals(true);
+
     ui->sheetWidth->setValue(sheetSize.width());
     ui->sheetHeight->setValue(sheetSize.height());
+
+    ui->sheetHeight->blockSignals(false);
+    ui->sheetWidth->blockSignals(false);
+
+
 
     exportPreview->setSheetSizeCm(sheetSize);
 
     exportPreview->update();
 
     constrainFigureSizeWidgets(); // should come after updating
-
-    disableOnSheetSizeChangeSlot = false;
 }
 
 void Export::swapSheetHeightAndWidth()
 {
-    disableOnSheetSizeChangeSlot = true;
+    ui->sheetHeight->blockSignals(true);
+    ui->sheetWidth->blockSignals(true);
 
     double tmp = ui->sheetHeight->value();
     ui->sheetHeight->setValue(ui->sheetWidth->value());
-
-    disableOnSheetSizeChangeSlot = false;
-
     ui->sheetWidth->setValue(tmp);
+
+    ui->orientationSelector->setCurrentIndex((ui->orientationSelector->currentIndex() + 1) % 2);
+
+    ui->sheetHeight->blockSignals(false);
+    ui->sheetWidth->blockSignals(false);
+
+    onSheetSizeChange();
+
 }
 
 

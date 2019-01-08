@@ -28,15 +28,14 @@
 #include <QPdfWriter>
 #include <QPageLayout>
 
-#define RELATIVE_MIN_MARGIN 0.05
 #define RELATIVE_MIN_SIZE 0.25
-
 
 enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
                       BOTTOMLEFT_CORNER, BOTTOMRIGHT_CORNER, LEFT_SIDE,
                      TOP_SIDE, RIGHT_SIDE, BOTTOM_SIDE, ALL};
 
 enum ExportType {SCALABLE, IMAGE};
+enum SheetSizeType {NORMALISED, CUSTOM};
 
 
 
@@ -45,13 +44,18 @@ class ExportPreview : public ImagePreview
     Q_OBJECT
 
 public:
-    explicit ExportPreview(QSizeF sheetSizeInCm, Information *info);
+    explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePixels, ExportType exportType, Information *info);
+
     void setOrientation(QPageLayout::Orientation type);
-    double getMinMargin();
+    void setSheetMarginCm(double sheetMarginCm);
+    void setImageMarginPx(int imageMarginPx);
+
     double getMinFigureSize();
+    QSize getTargetSheetSizePixels();
 
 signals:
     void newFigureSizeCm(QSizeF sizeCm);
+    void newZoomValue(double value);
 
 public slots:
     void mousePressEvent(QMouseEvent *event);
@@ -62,10 +66,11 @@ public slots:
     void setFigureSizeCm(QSizeF sizeCm);
     void setSheetSizeCm(QSizeF sizeCm);
     void setScale(double scalingFactor);
-    void exportPDF(QString fileName);
+    void exportPDF(QString fileName, SheetSizeType sizeType);
 
 
 protected:
+    void initialise();
     void paintEvent(QPaintEvent *event);
     void drawSheet();
     void drawGraph();
@@ -78,15 +83,17 @@ protected:
     void scaleView(QRect refSheetRect);
     void setMaximalCanvas();
 
-    void printOrExportPDF(bool print, int nbPages, bool useColor, QString fileName = "");
-
     QPageLayout::Orientation orientation;
-    double relativeSheetMinMargin, minRelSize;
+    double minRelSize;
+    double sheetMarginCm;
+    int imageMarginPx;
     // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
     // the other margin is scaled accordingly
-    double userScalingFactor, screenResolution;
+    double userScalingFactor, screenResolution, currentZoom;
+    QSize targetSheetSizePixels;
     QRect figureRect, sheetRect, sheetRectScaled;
     QSizeF figureSizeCm, sheetSizeCm;
+    QSize figureSizePixels, imageSizePixels;
     QRectF figureRectRelative;
     QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 

@@ -25,9 +25,6 @@
 #include <QWidget>
 #include "GraphDraw/exportpreview.h"
 
-#define PRINT_SHEET true
-#define PRINT_FILE false
-
 namespace Ui {
     class Export;
 }
@@ -51,8 +48,16 @@ protected slots:
     void onFigureSizeChange();
     void swapSheetHeightAndWidth();
     void constrainFigureSizeWidgets();
+    void resizeExportPreview();
+    void zoomIn();
+    void zoomOut();
+    void newZoomValue(double value);
+    void onZoomPercentageUserChange();
+    void activateRealSizePreview();
+    void updateWidgetsToExportFormat();
 
-protected:
+protected:    
+    void resizeEvent(QResizeEvent *event);
 
     Ui::Export *ui;
     QTabWidget *tabWidget;
@@ -60,7 +65,6 @@ protected:
     QTimer timer;
     QString fileName;
     bool orthonormal;
-    bool disableOnSheetSizeChangeSlot, disableOnFigureSizeChange;
 };
 
 #endif // PRINT_H

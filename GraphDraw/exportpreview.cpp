@@ -21,54 +21,50 @@
 
 #include "GraphDraw/exportpreview.h"
 
-ExportPreview::ExportPreview(QSizeF sheetSizeInCm, Information *info) : ImagePreview(info)
+ExportPreview::ExportPreview(QSizeF sheetSizeCm, QSize imageSizePixels, ExportType exportType, Information *info): ImagePreview(info)
 {
-    sheetSizeCm = sheetSizeInCm;
-    relativeSheetMinMargin = RELATIVE_MIN_MARGIN;
+    this->sheetSizeCm = sheetSizeCm;
+    this->imageSizePixels = imageSizePixels;
+    this->exportType = exportType;
 
-    setMaximalCanvas();
+    initialise();
+}
 
-    graphSettings.distanceBetweenPoints = info->getSettingsVals().distanceBetweenPoints;
+void ExportPreview::initialise()
+{
+    graphSettings.distanceBetweenPoints = information->getSettingsVals().distanceBetweenPoints;
     orientation = QPageLayout::Landscape;
     moveType = NOTHING;
     setMouseTracking(true);
     userScalingFactor = 1;
 
-
     minRelSize = RELATIVE_MIN_SIZE;
 
     screenResolution = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
+    figureRectRelative.setHeight(1);
+    figureRectRelative.setWidth(1);
+    figureRectRelative.moveTopLeft(QPointF(0, 0));
 }
 
-double ExportPreview::getMinMargin()
+void ExportPreview::setSheetMarginCm(double sheetMarginCm)
 {
-    return relativeSheetMinMargin;
+    this->sheetMarginCm = sheetMarginCm;
+}
+
+void ExportPreview::setImageMarginPx(int imageMarginPx)
+{
+    this->imageMarginPx = imageMarginPx;
+}
+
+QSize ExportPreview::getTargetSheetSizePixels()
+{
+    return targetSheetSizePixels;
 }
 
 double ExportPreview::getMinFigureSize()
 {
     return minRelSize;
-}
-
-void ExportPreview::setMaximalCanvas()
-{
-    double widthMinMargin, heightMinMargin;
-    if(sheetSizeCm.width() < sheetSizeCm.height())
-    {
-        widthMinMargin = relativeSheetMinMargin;
-        heightMinMargin = relativeSheetMinMargin * sheetSizeCm.width() / sheetSizeCm.height();
-    }
-    else
-    {
-        widthMinMargin = relativeSheetMinMargin * sheetSizeCm.height() / sheetSizeCm.width();
-        heightMinMargin = relativeSheetMinMargin;
-    }
-
-    figureRectRelative.setWidth(1 - widthMinMargin);
-    figureRectRelative.setHeight(1 - heightMinMargin);
-    figureRectRelative.moveTop(heightMinMargin/2);
-    figureRectRelative.moveLeft(widthMinMargin/2);
 }
 
 void ExportPreview::setScale(double scalingFactor)
@@ -77,7 +73,7 @@ void ExportPreview::setScale(double scalingFactor)
     update();
 }
 
-void ExportPreview::exportPDF(QString fileName)
+void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
 {
     graphSettings = information->getSettingsVals();
     graphRange = information->getRange();
@@ -86,24 +82,19 @@ void ExportPreview::exportPDF(QString fileName)
 
     int targetResolution = int(screenResolution / userScalingFactor);
 
-    pdfWriter->setResolution(targetResolution);
+    pdfWriter->setResolution(targetResolution);   
 
     QPageLayout layout;
-    layout.setPageSize(QPageSize(QPageSize::A4));
-    layout.setOrientation(orientation);
+    layout.setUnits(QPageLayout::Millimeter);
 
-    sheetSizeCm.setWidth(sheetRect.width() * 0.1);
-    sheetSizeCm.setHeight(sheetRect.height() * 0.1);
+    QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
+    layout.setPageSize(QPageSize(sheetSizeMm, QPageSize::Millimeter, "", QPageSize::FuzzyOrientationMatch));
+
+    if(sizeType == SheetSizeType::NORMALISED)
+        layout.setOrientation(orientation);
+    else layout.setOrientation(QPageLayout::Portrait);
 
     pdfWriter->setPageLayout(layout);
-
-    QRect exportSheetRect = pdfWriter->pageLayout().fullRectPixels(targetResolution);
-    figureRectScaled.setHeight(int(double(sheetRect.height()) * figureSizeCm.height() / sheetSizeCm.height()));
-    figureRectScaled.setWidth(int(double(sheetRect.width()) * figureSizeCm.width() / sheetSizeCm.width()));
-
-    QPoint graphOrigin;
-    graphOrigin.setX(int( double(sheetRect.width()) / sheetSizeCm.width()));
-    graphOrigin.setY(int( double(sheetRect.height()) / sheetSizeCm.height()));
 
     painter.begin(pdfWriter);
 
@@ -113,10 +104,10 @@ void ExportPreview::exportPDF(QString fileName)
         painter.drawRect(painter.viewport());
     }
 
-    painter.translate(graphOrigin);
+    figureRectScaled = getFigureRectFromRelative(painter.viewport());
 
-    updateGraphRect();
-    updateCenterPosAndScaling();
+    painter.translate(figureRectScaled.topLeft());
+
     paint();
 
     painter.end();
@@ -219,11 +210,6 @@ void ExportPreview::drawFigureRect()
 {
     figureRect = getFigureRectFromRelative(sheetRect);
 
-//    qDebug() << "Sheet rect: " << sheetRect;
-//    qDebug() << "Figure rect: " << figureRect;
-//    qDebug() << "Figure rect relative: " << figureRectRelative;
-//    qDebug() << "---------------------------------";
-
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
@@ -240,10 +226,21 @@ void ExportPreview::scaleView(QRect refSheetRect)
     QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
 
     QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
-    QRect targetSheetRect = layout.fullRectPixels(int(screenResolution / userScalingFactor));
+    layout.setOrientation(orientation);
+    targetSheetSizePixels = layout.fullRectPixels(int(screenResolution)).size();
 
-    double totalScaleFactor;
-    totalScaleFactor = double(refSheetRect.width()) / double(targetSheetRect.width());
+    if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
+        targetSheetSizePixels.transpose();
+
+    double newZoom = double(refSheetRect.width()) / double(targetSheetSizePixels.width());
+
+    if(fabs(newZoom - currentZoom) > 0.001)
+        emit newZoomValue(newZoom);
+
+    currentZoom = newZoom;
+
+    double totalScaleFactor = currentZoom * userScalingFactor;
+
 
     painter.scale(totalScaleFactor, totalScaleFactor);
 }
