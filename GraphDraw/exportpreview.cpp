@@ -37,6 +37,8 @@ void ExportPreview::initialise()
     moveType = NOTHING;
     setMouseTracking(true);
     userScalingFactor = 1;
+    sheetMarginCm = 0;
+    imageMarginPx = 0;
 
     minRelSize = RELATIVE_MIN_SIZE;
 
@@ -382,37 +384,25 @@ void ExportPreview::mouseMoveEvent(QMouseEvent *event)
 
 void ExportPreview::constrainCanvasRectRel()
 {
-    double widthMinMargin, heightMinMargin;
-    if(sheetSizeCm.width() < sheetSizeCm.height())
-    {
-        widthMinMargin = relativeSheetMinMargin;
-        heightMinMargin = relativeSheetMinMargin * sheetSizeCm.width() / sheetSizeCm.height();
-    }
-    else
-    {
-        widthMinMargin = relativeSheetMinMargin * sheetSizeCm.height() / sheetSizeCm.width();
-        heightMinMargin = relativeSheetMinMargin;
-    }   
-
-    if(figureRectRelative.width() > 1 - widthMinMargin)
-        figureRectRelative.setWidth(1 - widthMinMargin);
-    if(figureRectRelative.height() > 1 - heightMinMargin)
-        figureRectRelative.setHeight(1 - heightMinMargin);
+    if(figureRectRelative.width() > 1)
+        figureRectRelative.setWidth(1);
+    if(figureRectRelative.height() > 1)
+        figureRectRelative.setHeight(1);
 
     if(figureRectRelative.width() < minRelSize)
         figureRectRelative.setWidth(minRelSize);
     if(figureRectRelative.height() < minRelSize)
         figureRectRelative.setHeight(minRelSize);
 
-    if(figureRectRelative.left() < widthMinMargin/2)
-        figureRectRelative.moveLeft(widthMinMargin/2);
-    if(figureRectRelative.right() > 1 - widthMinMargin/2)
-        figureRectRelative.moveRight(1 - widthMinMargin/2);
+    if(figureRectRelative.left() < 0)
+        figureRectRelative.moveLeft(0);
+    if(figureRectRelative.right() > 1)
+        figureRectRelative.moveRight(1);
 
-    if(figureRectRelative.bottom() > 1 - heightMinMargin/2)
-        figureRectRelative.moveBottom(1 - heightMinMargin/2);
-    if(figureRectRelative.top() < heightMinMargin/2)
-        figureRectRelative.moveTop(heightMinMargin/2);
+    if(figureRectRelative.bottom() > 1)
+        figureRectRelative.moveBottom(1);
+    if(figureRectRelative.top() < 0)
+        figureRectRelative.moveTop(0);
 
     QSizeF oldFigureSizeCm = figureSizeCm;
 

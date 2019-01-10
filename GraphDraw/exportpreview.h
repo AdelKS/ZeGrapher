@@ -46,10 +46,6 @@ class ExportPreview : public ImagePreview
 public:
     explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePixels, ExportType exportType, Information *info);
 
-    void setOrientation(QPageLayout::Orientation type);
-    void setSheetMarginCm(double sheetMarginCm);
-    void setImageMarginPx(int imageMarginPx);
-
     double getMinFigureSize();
     QSize getTargetSheetSizePixels();
 
@@ -67,6 +63,9 @@ public slots:
     void setSheetSizeCm(QSizeF sizeCm);
     void setScale(double scalingFactor);
     void exportPDF(QString fileName, SheetSizeType sizeType);
+    void setSheetMarginCm(double sheetMarginCm);
+    void setImageMarginPx(int imageMarginPx);
+     void setOrientation(QPageLayout::Orientation type);
 
 
 protected:

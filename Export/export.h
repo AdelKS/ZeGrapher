@@ -54,7 +54,7 @@ protected slots:
     void newZoomValue(double value);
     void onZoomPercentageUserChange();
     void activateRealSizePreview();
-    void updateWidgetsToExportFormat();
+    void updateWidgetsVisibility();
 
 protected:    
     void resizeEvent(QResizeEvent *event);

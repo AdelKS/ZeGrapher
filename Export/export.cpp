@@ -47,6 +47,11 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->fitSheet, SIGNAL(toggled(bool)), this, SLOT(resizeExportPreview()));
     connect(ui->hundredPercent, SIGNAL(released()), this, SLOT(activateRealSizePreview()));
 
+    connect(ui->vectorFormat, SIGNAL(toggled(bool)), this, SLOT(updateWidgetsVisibility()));
+
+    connect(ui->sheetMargin, SIGNAL(valueChanged(double)), exportPreview, SLOT(setSheetMarginCm(double)));
+    connect(ui->imageMargin, SIGNAL(valueChanged(int)), exportPreview, SLOT(setImageMarginPx(int)));
+
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
     connect(ui->figureHeight, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
     connect(ui->figureWidth, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
@@ -74,6 +79,30 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     resizeExportPreview();
 
+}
+
+void Export::updateWidgetsVisibility()
+{
+    if(ui->vectorFormat->isChecked())
+    {
+        ui->imageSizeLabel->hide();
+        ui->imageSizeWiwget->hide();
+        ui->imageFigureSizeWidget->hide();
+
+        ui->sheetSizeLabel->show();
+        ui->sheetSizeWidget->show();
+        ui->sheetFigureSizeWidget->show();
+    }
+    else
+    {
+        ui->imageSizeLabel->show();
+        ui->imageSizeWiwget->show();
+        ui->imageFigureSizeWidget->show();
+
+        ui->sheetSizeLabel->hide();
+        ui->sheetSizeWidget->hide();
+        ui->sheetFigureSizeWidget->hide();
+    }
 }
 
 void Export::activateRealSizePreview()
