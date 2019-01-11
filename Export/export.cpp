@@ -25,8 +25,11 @@
 Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui::Export)
 {
     ui->setupUi(this);
-    exportPreview = new ExportPreview(QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value()), info);
-    ui->sheetSizeWidget->setEnabled(false);  
+    QSizeF sheetSize(ui->sheetWidth->value(), ui->sheetHeight->value());
+    QSize imageSize(ui->imageWidth->value(), ui->imageHeight->value());
+    ExportType exportType = ui->vectorFormat->isChecked() ? ExportType::VECTORIAL : ExportType::IMAGE;
+
+    exportPreview = new ExportPreview(sheetSize, imageSize, exportType, info);
 
     setWindowFlags(Qt::Window);
 
@@ -36,7 +39,7 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     ui->scrollArea->setWidget(exportPreview);
 
-    timer.setInterval(4000);
+    timer.setInterval(2000);
     timer.setSingleShot(true);
 
     connect(ui->zoomIn, SIGNAL(released()), this, SLOT(zoomIn()));
@@ -53,9 +56,9 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->imageMargin, SIGNAL(valueChanged(int)), exportPreview, SLOT(setImageMarginPx(int)));
 
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
-    connect(ui->figureHeight, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
-    connect(ui->figureWidth, SIGNAL(valueChanged(double)), this, SLOT(onFigureSizeChange()));
-    connect(exportPreview, SIGNAL(newFigureSizeCm(QSizeF)), this, SLOT(setFigureSizeCm(QSizeF)));
+    connect(ui->sheetFigureHeight, SIGNAL(valueChanged(double)), this, SLOT(onSheetFigureSizeChange()));
+    connect(ui->sheetFigureWidth, SIGNAL(valueChanged(double)), this, SLOT(onSheetFigureSizeChange()));
+    connect(exportPreview, SIGNAL(newFigureSizeCm(QSizeF)), this, SLOT(setSheetFigureSizeCm(QSizeF)));
     connect(ui->exportButton, SIGNAL(released()), this, SLOT(exportGraph()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(enableExportButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getFileName()));
@@ -65,7 +68,7 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->A5, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
     connect(ui->sheetHeight, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
     connect(ui->sheetWidth, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
-    connect(ui->swapButton, SIGNAL(released()), this, SLOT(swapSheetHeightAndWidth()));
+    connect(ui->sheetSizeSwap, SIGNAL(released()), this, SLOT(swapSheetHeightAndWidth()));
     connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onSheetSizeChange()));
 
     connect(ui->legendBox, SIGNAL(toggled(bool)), exportPreview, SLOT(setLegendState(bool)));
@@ -77,6 +80,7 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->underline, SIGNAL(toggled(bool)), exportPreview, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), exportPreview, SLOT(setNumPrec(int)));
 
+    updateWidgetsVisibility();
     resizeExportPreview();
 
 }
@@ -86,7 +90,7 @@ void Export::updateWidgetsVisibility()
     if(ui->vectorFormat->isChecked())
     {
         ui->imageSizeLabel->hide();
-        ui->imageSizeWiwget->hide();
+        ui->imageSizeWidget->hide();
         ui->imageFigureSizeWidget->hide();
 
         ui->sheetSizeLabel->show();
@@ -96,7 +100,7 @@ void Export::updateWidgetsVisibility()
     else
     {
         ui->imageSizeLabel->show();
-        ui->imageSizeWiwget->show();
+        ui->imageSizeWidget->show();
         ui->imageFigureSizeWidget->show();
 
         ui->sheetSizeLabel->hide();
@@ -143,8 +147,20 @@ void Export::resizeExportPreview()
 {
     if(ui->fitSheet->isChecked())
     {
-        if(exportPreview->size() != ui->scrollArea->contentsRect().size())
-            exportPreview->resize(ui->scrollArea->contentsRect().size());
+        if(ui->vectorFormat->isChecked())
+        {
+            if(exportPreview->size() != ui->scrollArea->contentsRect().size())
+                exportPreview->resize(ui->scrollArea->contentsRect().size());
+        }
+        else
+        {
+            if(ui->scrollArea->contentsRect().size().width() > ui->imageWidth->value() &&
+                    ui->scrollArea->contentsRect().size().height() > ui->imageHeight->value())
+                exportPreview->resize(ui->imageWidth->value(), ui->imageHeight->value());
+            else if(exportPreview->size() != ui->scrollArea->contentsRect().size())
+                exportPreview->resize(ui->scrollArea->contentsRect().size());
+        }
+
     }
     else
     {
@@ -163,11 +179,17 @@ void Export::resizeEvent(QResizeEvent *event)
 
 void Export::constrainFigureSizeWidgets()
 {
-    ui->figureHeight->setMaximum(ui->sheetHeight->value() * (1 - exportPreview->getMinMargin()));
-    ui->figureHeight->setMinimum(ui->sheetHeight->value() * exportPreview->getMinFigureSize());
+    ui->sheetFigureHeight->setMaximum(ui->sheetHeight->value() - 2 * ui->sheetMargin->value());
+    ui->sheetFigureHeight->setMinimum(ui->sheetHeight->value() - 2 * ui->sheetMargin->value());
 
-    ui->figureWidth->setMaximum(ui->sheetWidth->value() * (1 - exportPreview->getMinMargin()));
-    ui->figureWidth->setMinimum(ui->sheetWidth->value() * exportPreview->getMinFigureSize());
+    ui->sheetFigureWidth->setMaximum(ui->sheetWidth->value() - 2 * ui->sheetMargin->value());
+    ui->sheetFigureWidth->setMinimum(ui->sheetWidth->value() - 2 * ui->sheetMargin->value());
+
+    ui->imageFigureHeight->setMaximum(ui->imageHeight->value() - 2 * ui->imageMargin->value());
+    ui->imageFigureHeight->setMinimum(ui->imageHeight->value() - 2 * ui->imageMargin->value());
+
+    ui->imageFigureWidth->setMaximum(ui->imageWidth->value() - 2 * ui->imageMargin->value());
+    ui->imageFigureWidth->setMinimum(ui->imageWidth->value() - 2 * ui->imageMargin->value());
 }
 
 void Export::getFileName()
@@ -175,7 +197,7 @@ void Export::getFileName()
     fileName = QFileDialog::getSaveFileName(this, tr("Enter file name in the selected folder"));
     if(!fileName.isEmpty())
     {
-        if(ui->scalableFormat->isChecked())
+        if(ui->vectorFormat->isChecked())
             fileName.append("." + ui->scalableFormatSelection->currentText().toLower());
         else fileName.append("." + ui->imageFormatSelection->currentText().toLower());
 
@@ -194,7 +216,7 @@ void Export::exportGraph()
     ui->exportButton->setEnabled(false);
     timer.start();
 
-    if(ui->scalableFormat->isChecked())
+    if(ui->vectorFormat->isChecked())
     {
         if(ui->scalableFormatSelection->currentText() == "PDF")
         {
@@ -217,21 +239,21 @@ void Export::exportGraph()
 
 }
 
-void Export::setFigureSizeCm(QSizeF sizeCm)
+void Export::setSheetFigureSizeCm(QSizeF sizeCm)
 {
-    ui->figureHeight->blockSignals(true);
-    ui->figureWidth->blockSignals(true);
+    ui->sheetFigureHeight->blockSignals(true);
+    ui->sheetFigureWidth->blockSignals(true);
 
-    ui->figureHeight->setValue(sizeCm.height());
-    ui->figureWidth->setValue(sizeCm.width());
+    ui->sheetFigureHeight->setValue(sizeCm.height());
+    ui->sheetFigureWidth->setValue(sizeCm.width());
 
-    ui->figureHeight->blockSignals(false);
-    ui->figureWidth->blockSignals(false);
+    ui->sheetFigureHeight->blockSignals(false);
+    ui->sheetFigureWidth->blockSignals(false);
 }
 
-void Export::onFigureSizeChange()
+void Export::onSheetFigureSizeChange()
 {
-    exportPreview->setFigureSizeCm(QSizeF(ui->figureWidth->value(), ui->figureHeight->value()));
+    exportPreview->setSheetFigureSizeCm(QSizeF(ui->sheetFigureWidth->value(), ui->sheetFigureHeight->value()));
     exportPreview->update();
 }
 
@@ -242,12 +264,12 @@ void Export::onSheetSizeChange()
     if(ui->orientationSelector->currentIndex() == 0)
     {
         layout.setOrientation(QPageLayout::Landscape);
-        exportPreview->setOrientation(QPageLayout::Landscape);
+        exportPreview->setSheetOrientation(QPageLayout::Landscape);
     }
     else
     {
         layout.setOrientation(QPageLayout::Portrait);
-        exportPreview->setOrientation(QPageLayout::Portrait);
+        exportPreview->setSheetOrientation(QPageLayout::Portrait);
     }
 
     QSizeF sheetSize;
@@ -311,7 +333,6 @@ void Export::swapSheetHeightAndWidth()
     ui->sheetWidth->blockSignals(false);
 
     onSheetSizeChange();
-
 }
 
 

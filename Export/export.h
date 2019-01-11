@@ -38,14 +38,14 @@ public:
     ~Export();
 
 public slots:    
-    void setFigureSizeCm(QSizeF sizeCm);
+    void setSheetFigureSizeCm(QSizeF sizeCm);
     void enableExportButton();
     void getFileName();
     void exportGraph();
 
 protected slots:
     void onSheetSizeChange();
-    void onFigureSizeChange();
+    void onSheetFigureSizeChange();
     void swapSheetHeightAndWidth();
     void constrainFigureSizeWidgets();
     void resizeExportPreview();

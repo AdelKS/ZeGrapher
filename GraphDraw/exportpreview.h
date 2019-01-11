@@ -34,7 +34,7 @@ enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
                       BOTTOMLEFT_CORNER, BOTTOMRIGHT_CORNER, LEFT_SIDE,
                      TOP_SIDE, RIGHT_SIDE, BOTTOM_SIDE, ALL};
 
-enum ExportType {SCALABLE, IMAGE};
+enum ExportType {VECTORIAL, IMAGE};
 enum SheetSizeType {NORMALISED, CUSTOM};
 
 
@@ -44,13 +44,15 @@ class ExportPreview : public ImagePreview
     Q_OBJECT
 
 public:
-    explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePixels, ExportType exportType, Information *info);
+    explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePx, ExportType exportType, Information *info);
 
     double getMinFigureSize();
     QSize getTargetSheetSizePixels();
 
 signals:
     void newFigureSizeCm(QSizeF sizeCm);
+    void newFigureSizePx(QSize sizePx);
+
     void newZoomValue(double value);
 
 public slots:
@@ -59,13 +61,20 @@ public slots:
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void setFigureSizeCm(QSizeF sizeCm);
+    void setSheetFigureSizeCm(QSizeF sizeCm);
+    void setImageFigureSizePx(QSize sizePx);
+
     void setSheetSizeCm(QSizeF sizeCm);
-    void setScale(double scalingFactor);
-    void exportPDF(QString fileName, SheetSizeType sizeType);
+    void setImageSizePx(QSize sizePx);
+
     void setSheetMarginCm(double sheetMarginCm);
     void setImageMarginPx(int imageMarginPx);
-     void setOrientation(QPageLayout::Orientation type);
+
+    void setScale(double scalingFactor);
+
+    void exportPDF(QString fileName, SheetSizeType sizeType);
+
+    void setSheetOrientation(QPageLayout::Orientation type);
 
 
 protected:
@@ -92,8 +101,9 @@ protected:
     QSize targetSheetSizePixels;
     QRect figureRect, sheetRect, sheetRectScaled;
     QSizeF figureSizeCm, sheetSizeCm;
-    QSize figureSizePixels, imageSizePixels;
-    QRectF figureRectRelative;
+    QSize figureSizePx, imageSizePx;
+
+    QRectF sheetFigureRectRelative, imageFigureRectRelative;
     QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 
     QPoint lastMousePos ;

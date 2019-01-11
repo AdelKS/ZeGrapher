@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>865</width>
-    <height>799</height>
+    <height>847</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -269,7 +269,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="shetSizeWidget" native="true">
+           <widget class="QWidget" name="sheetSizeWidget" native="true">
             <layout class="QVBoxLayout" name="verticalLayout">
              <property name="leftMargin">
               <number>25</number>
@@ -284,9 +284,9 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QWidget" name="widget_3" native="true">
+              <widget class="QWidget" name="sheetSizeSubWidget" native="true">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
                 <property name="spacing">
@@ -307,7 +307,7 @@
                 <item>
                  <widget class="QWidget" name="widget_2" native="true">
                   <property name="enabled">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                   <layout class="QFormLayout" name="formLayout_6">
                    <property name="leftMargin">
@@ -640,12 +640,33 @@
                     <property name="suffix">
                      <string> pixels</string>
                     </property>
+                    <property name="minimum">
+                     <number>200</number>
+                    </property>
+                    <property name="maximum">
+                     <number>10000</number>
+                    </property>
+                    <property name="value">
+                     <number>400</number>
+                    </property>
                    </widget>
                   </item>
                   <item row="1" column="1">
                    <widget class="QSpinBox" name="imageWidth">
                     <property name="suffix">
                      <string> pixels</string>
+                    </property>
+                    <property name="minimum">
+                     <number>200</number>
+                    </property>
+                    <property name="maximum">
+                     <number>10000</number>
+                    </property>
+                    <property name="singleStep">
+                     <number>20</number>
+                    </property>
+                    <property name="value">
+                     <number>600</number>
                     </property>
                    </widget>
                   </item>
@@ -705,6 +726,12 @@
                 <widget class="QSpinBox" name="imageMargin">
                  <property name="suffix">
                   <string> pixels</string>
+                 </property>
+                 <property name="maximum">
+                  <number>100</number>
+                 </property>
+                 <property name="value">
+                  <number>5</number>
                  </property>
                 </widget>
                </item>
@@ -849,10 +876,10 @@
                 <string> pixels</string>
                </property>
                <property name="maximum">
-                <number>400</number>
+                <number>390</number>
                </property>
                <property name="value">
-                <number>395</number>
+                <number>390</number>
                </property>
               </widget>
              </item>
@@ -868,10 +895,10 @@
                 <string> pixels</string>
                </property>
                <property name="maximum">
-                <number>600</number>
+                <number>590</number>
                </property>
                <property name="value">
-                <number>595</number>
+                <number>590</number>
                </property>
               </widget>
              </item>
@@ -1287,7 +1314,7 @@
          <property name="geometry">
           <rect>
            <x>86</x>
-           <y>83</y>
+           <y>107</y>
            <width>372</width>
            <height>577</height>
           </rect>
@@ -1496,6 +1523,22 @@
     <hint type="destinationlabel">
      <x>32</x>
      <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>customSize</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sheetSizeSubWidget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>364</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>266</x>
+     <y>348</y>
     </hint>
    </hints>
   </connection>

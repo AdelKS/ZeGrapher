@@ -24,7 +24,7 @@
 ExportPreview::ExportPreview(QSizeF sheetSizeCm, QSize imageSizePixels, ExportType exportType, Information *info): ImagePreview(info)
 {
     this->sheetSizeCm = sheetSizeCm;
-    this->imageSizePixels = imageSizePixels;
+    this->imageSizePx = imageSizePixels;
     this->exportType = exportType;
 
     initialise();
@@ -44,9 +44,13 @@ void ExportPreview::initialise()
 
     screenResolution = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
-    figureRectRelative.setHeight(1);
-    figureRectRelative.setWidth(1);
-    figureRectRelative.moveTopLeft(QPointF(0, 0));
+    sheetFigureRectRelative.setHeight(1);
+    sheetFigureRectRelative.setWidth(1);
+    sheetFigureRectRelative.moveTopLeft(QPointF(0, 0));
+
+    imageFigureRectRelative.setHeight(1);
+    imageFigureRectRelative.setWidth(1);
+    imageFigureRectRelative.moveTopLeft(QPointF(0, 0));
 }
 
 void ExportPreview::setSheetMarginCm(double sheetMarginCm)
@@ -177,7 +181,10 @@ QRect ExportPreview::sheetRectFromViewRect(QRect viewRect)
     double ratio, targetRatio;
 
     ratio = double(viewRect.height()) / double(viewRect.width());
-    targetRatio = sheetSizeCm.height() / sheetSizeCm.width();
+
+    if(exportType == ExportType::VECTORIAL)
+        targetRatio = sheetSizeCm.height() / sheetSizeCm.width();
+    else targetRatio = double(imageSizePx.height()) / double(imageSizePx.width());
 
     QRect rect;
 
@@ -225,16 +232,25 @@ void ExportPreview::drawFigureRect()
 
 void ExportPreview::scaleView(QRect refSheetRect)
 {
-    QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
+    double newZoom;
 
-    QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
-    layout.setOrientation(orientation);
-    targetSheetSizePixels = layout.fullRectPixels(int(screenResolution)).size();
+    if(exportType == ExportType::VECTORIAL)
+    {
+        QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
 
-    if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
-        targetSheetSizePixels.transpose();
+        QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
+        layout.setOrientation(orientation);
+        targetSheetSizePixels = layout.fullRectPixels(int(screenResolution)).size();
 
-    double newZoom = double(refSheetRect.width()) / double(targetSheetSizePixels.width());
+        if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
+            targetSheetSizePixels.transpose();
+
+         newZoom = double(refSheetRect.width()) / double(targetSheetSizePixels.width());
+    }
+    else
+    {
+        newZoom = double(refSheetRect.width()) / double(imageSizePx.width());
+    }
 
     if(fabs(newZoom - currentZoom) > 0.001)
         emit newZoomValue(newZoom);
@@ -260,29 +276,46 @@ void ExportPreview::drawGraph()
     paint();
 }
 
-void ExportPreview::setFigureSizeCm(QSizeF sizeCm)
+void ExportPreview::setSheetFigureSizeCm(QSizeF sizeCm)
 {
     figureSizeCm = sizeCm;
-    figureRectRelative.setWidth(figureSizeCm.width() / sheetSizeCm.width());
-    figureRectRelative.setHeight(figureSizeCm.height() / sheetSizeCm.height());
+    sheetFigureRectRelative.setWidth(figureSizeCm.width() / sheetSizeCm.width());
+    sheetFigureRectRelative.setHeight(figureSizeCm.height() / sheetSizeCm.height());
+    constrainCanvasRectRel();
+}
+
+void ExportPreview::setImageFigureSizePx(QSize sizePx)
+{
+    figureSizePx = sizePx;
+    sheetFigureRectRelative.setWidth(double(figureSizePx.width()) / double(imageSizePx.width()));
+    sheetFigureRectRelative.setHeight(double(figureSizePx.height()) / double(imageSizePx.height()));
     constrainCanvasRectRel();
 }
 
 void ExportPreview::setSheetSizeCm(QSizeF sizeCm)
 {
     sheetSizeCm = sizeCm;
-    figureSizeCm.setHeight(figureRectRelative.height() * sheetSizeCm.height());
-    figureSizeCm.setWidth(figureRectRelative.width() * sheetSizeCm.width());
+    figureSizeCm.setHeight(sheetFigureRectRelative.height() * sheetSizeCm.height());
+    figureSizeCm.setWidth(sheetFigureRectRelative.width() * sheetSizeCm.width());
 
     emit newFigureSizeCm(figureSizeCm);
 }
 
-void ExportPreview::setOrientation(QPageLayout::Orientation type)
+void ExportPreview::setImageSizePx(QSize sizePx)
+{
+    imageSizePx = sizePx;
+    figureSizePx.setHeight(int(imageFigureRectRelative.height() * double(imageSizePx.height())));
+    figureSizePx.setWidth(int(imageFigureRectRelative.width() * double(imageSizePx.width())));
+
+    emit newFigureSizePx(figureSizePx);
+}
+
+void ExportPreview::setSheetOrientation(QPageLayout::Orientation type)
 {
     if(type != orientation)
     {
          orientation = type;
-         figureRectRelative = figureRectRelative.transposed();
+         sheetFigureRectRelative = sheetFigureRectRelative.transposed();
     }
 }
 
@@ -372,9 +405,9 @@ void ExportPreview::mouseMoveEvent(QMouseEvent *event)
         pt.setX(pt.x() / double(sheetRect.width()));
         pt.setY(pt.y() / double(sheetRect.height()));
 
-        figureRectRelative.setTopLeft(pt);
-        figureRectRelative.setWidth(double(figureRect.width()) / double(sheetRect.width()));
-        figureRectRelative.setHeight(double(figureRect.height()) / double(sheetRect.height()));
+        sheetFigureRectRelative.setTopLeft(pt);
+        sheetFigureRectRelative.setWidth(double(figureRect.width()) / double(sheetRect.width()));
+        sheetFigureRectRelative.setHeight(double(figureRect.height()) / double(sheetRect.height()));
 
         constrainCanvasRectRel();
         update();
@@ -384,44 +417,106 @@ void ExportPreview::mouseMoveEvent(QMouseEvent *event)
 
 void ExportPreview::constrainCanvasRectRel()
 {
-    if(figureRectRelative.width() > 1)
-        figureRectRelative.setWidth(1);
-    if(figureRectRelative.height() > 1)
-        figureRectRelative.setHeight(1);
-
-    if(figureRectRelative.width() < minRelSize)
-        figureRectRelative.setWidth(minRelSize);
-    if(figureRectRelative.height() < minRelSize)
-        figureRectRelative.setHeight(minRelSize);
-
-    if(figureRectRelative.left() < 0)
-        figureRectRelative.moveLeft(0);
-    if(figureRectRelative.right() > 1)
-        figureRectRelative.moveRight(1);
-
-    if(figureRectRelative.bottom() > 1)
-        figureRectRelative.moveBottom(1);
-    if(figureRectRelative.top() < 0)
-        figureRectRelative.moveTop(0);
-
-    QSizeF oldFigureSizeCm = figureSizeCm;
-
-    figureSizeCm.setWidth(figureRectRelative.width() * sheetSizeCm.width());
-    figureSizeCm.setHeight(figureRectRelative.height() * sheetSizeCm.height());
-
-    if(oldFigureSizeCm != figureSizeCm)
+    if(exportType == ExportType::VECTORIAL)
     {
-        emit newFigureSizeCm(figureSizeCm);
+        if(sheetFigureRectRelative.width() > 1)
+            sheetFigureRectRelative.setWidth(1);
+        if(sheetFigureRectRelative.height() > 1)
+            sheetFigureRectRelative.setHeight(1);
+
+        if(sheetFigureRectRelative.width() < minRelSize)
+            sheetFigureRectRelative.setWidth(minRelSize);
+        if(sheetFigureRectRelative.height() < minRelSize)
+            sheetFigureRectRelative.setHeight(minRelSize);
+
+        if(sheetFigureRectRelative.left() < 0)
+            sheetFigureRectRelative.moveLeft(0);
+        if(sheetFigureRectRelative.right() > 1)
+            sheetFigureRectRelative.moveRight(1);
+
+        if(sheetFigureRectRelative.bottom() > 1)
+            sheetFigureRectRelative.moveBottom(1);
+        if(sheetFigureRectRelative.top() < 0)
+            sheetFigureRectRelative.moveTop(0);
+
+        QSizeF oldFigureSizeCm = figureSizeCm;
+
+        figureSizeCm.setWidth(sheetFigureRectRelative.width() * sheetSizeCm.width());
+        figureSizeCm.setHeight(sheetFigureRectRelative.height() * sheetSizeCm.height());
+
+        if(oldFigureSizeCm != figureSizeCm)
+        {
+            emit newFigureSizeCm(figureSizeCm);
+        }
     }
+    else
+    {
+        if(imageFigureRectRelative.width() > 1)
+            imageFigureRectRelative.setWidth(1);
+        if(imageFigureRectRelative.height() > 1)
+            imageFigureRectRelative.setHeight(1);
+
+        if(imageFigureRectRelative.width() < minRelSize)
+            imageFigureRectRelative.setWidth(minRelSize);
+        if(imageFigureRectRelative.height() < minRelSize)
+            imageFigureRectRelative.setHeight(minRelSize);
+
+        if(imageFigureRectRelative.left() < 0)
+            imageFigureRectRelative.moveLeft(0);
+        if(imageFigureRectRelative.right() > 1)
+            imageFigureRectRelative.moveRight(1);
+
+        if(imageFigureRectRelative.bottom() > 1)
+            imageFigureRectRelative.moveBottom(1);
+        if(imageFigureRectRelative.top() < 0)
+            imageFigureRectRelative.moveTop(0);
+
+        QSizeF oldFigureSizePx = figureSizePx;
+
+        figureSizePx.setWidth(int(imageFigureRectRelative.width() * double(imageSizePx.width())));
+        figureSizePx.setHeight(int(imageFigureRectRelative.height() * double(imageSizePx.height())));
+
+        if(oldFigureSizePx != figureSizePx)
+        {
+            emit newFigureSizePx(figureSizePx);
+        }
+    }
+
 }
 
 QRect ExportPreview::getFigureRectFromRelative(QRect refSheetRect)
 {
     QRect rect;
-    rect.setWidth(int(figureRectRelative.width() * double(refSheetRect.width())));
-    rect.setHeight(int(figureRectRelative.height() * double(refSheetRect.height())));
-    rect.moveTopLeft(refSheetRect.topLeft() + QPoint(int(figureRectRelative.topLeft().x() * double(refSheetRect.width())),
-                                                         int(figureRectRelative.topLeft().y() * double(refSheetRect.height()))));
+    QRectF relRect;
+    QSizeF availableSize(refSheetRect.size());
+    QPoint marginTopLeft;
+
+    if(exportType == ExportType::VECTORIAL)
+    {
+        marginTopLeft.setX(int(sheetMarginCm / sheetSizeCm.width() * availableSize.width()));
+        marginTopLeft.setY(int(sheetMarginCm / sheetSizeCm.height() * availableSize.height()));
+
+        availableSize.setWidth(availableSize.width() - 2 * sheetMarginCm / sheetSizeCm.width() * availableSize.width());
+        availableSize.setHeight(availableSize.height() - 2 * sheetMarginCm / sheetSizeCm.height() * availableSize.height());
+
+        relRect = sheetFigureRectRelative;
+    }
+    else
+    {
+        marginTopLeft.setX(int(double(imageMarginPx) / double(imageSizePx.width()) * availableSize.width()));
+        marginTopLeft.setY(int(double(imageMarginPx) / double(imageSizePx.height()) * availableSize.height()));
+
+        availableSize.setWidth(availableSize.width() - 2 * double(imageMarginPx) / double(imageSizePx.width()) * availableSize.width());
+        availableSize.setHeight(availableSize.height() - 2 * double(imageMarginPx) / double(imageSizePx.height()) * availableSize.height());
+
+        relRect = imageFigureRectRelative;
+    }
+
+
+    rect.setWidth(int(relRect.width() * availableSize.width()));
+    rect.setHeight(int(relRect.height() * availableSize.height()));
+    rect.moveTopLeft(refSheetRect.topLeft() + marginTopLeft + QPoint(int(relRect.topLeft().x() * double(refSheetRect.width())),
+                                                         int(relRect.topLeft().y() * double(refSheetRect.height()))));
     return rect;
 }
 
