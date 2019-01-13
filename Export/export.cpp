@@ -30,10 +30,14 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     ExportType exportType = ui->vectorFormat->isChecked() ? ExportType::VECTORIAL : ExportType::IMAGE;
 
     exportPreview = new ExportPreview(sheetSize, imageSize, exportType, info);
+    exportPreview->setImageMarginPx(ui->imageMargin->value());
+    exportPreview->setSheetMarginCm(ui->sheetMargin->value());
 
     setWindowFlags(Qt::Window);
 
     setWindowTitle(tr("Export"));
+
+    ui->sheetSizeSubWidget->setEnabled(false);
 
     orthonormal = false;
 
@@ -50,15 +54,28 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->fitSheet, SIGNAL(toggled(bool)), this, SLOT(resizeExportPreview()));
     connect(ui->hundredPercent, SIGNAL(released()), this, SLOT(activateRealSizePreview()));
 
-    connect(ui->vectorFormat, SIGNAL(toggled(bool)), this, SLOT(updateWidgetsVisibility()));
+    connect(ui->vectorFormat, SIGNAL(toggled(bool)), this, SLOT(exportFormatChanged()));
 
     connect(ui->sheetMargin, SIGNAL(valueChanged(double)), exportPreview, SLOT(setSheetMarginCm(double)));
     connect(ui->imageMargin, SIGNAL(valueChanged(int)), exportPreview, SLOT(setImageMarginPx(int)));
 
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
+
     connect(ui->sheetFigureHeight, SIGNAL(valueChanged(double)), this, SLOT(onSheetFigureSizeChange()));
     connect(ui->sheetFigureWidth, SIGNAL(valueChanged(double)), this, SLOT(onSheetFigureSizeChange()));
+
+    connect(ui->imageFigureHeight, SIGNAL(valueChanged(int)), this, SLOT(onImageFigureSizeChange()));
+    connect(ui->imageFigureWidth, SIGNAL(valueChanged(int)), this, SLOT(onImageFigureSizeChange()));
+
     connect(exportPreview, SIGNAL(newFigureSizeCm(QSizeF)), this, SLOT(setSheetFigureSizeCm(QSizeF)));
+    connect(exportPreview, SIGNAL(newFigureSizePx(QSize)), this, SLOT(setImageFigureSizePx(QSize)));
+
+    connect(ui->sheetHeight, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
+    connect(ui->sheetWidth, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
+
+    connect(ui->imageHeight, SIGNAL(valueChanged(int)), this, SLOT(onImageSizeChange()));
+    connect(ui->imageWidth, SIGNAL(valueChanged(int)), this, SLOT(onImageSizeChange()));
+
     connect(ui->exportButton, SIGNAL(released()), this, SLOT(exportGraph()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(enableExportButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getFileName()));
@@ -66,9 +83,10 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->A3, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
     connect(ui->A4, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
     connect(ui->A5, SIGNAL(clicked()), this, SLOT(onSheetSizeChange()));
-    connect(ui->sheetHeight, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
-    connect(ui->sheetWidth, SIGNAL(valueChanged(double)), this, SLOT(onSheetSizeChange()));
+
     connect(ui->sheetSizeSwap, SIGNAL(released()), this, SLOT(swapSheetHeightAndWidth()));
+    connect(ui->imageSizeSwap, SIGNAL(released()), this, SLOT(swapImageHeightAndWidth()));
+
     connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onSheetSizeChange()));
 
     connect(ui->legendBox, SIGNAL(toggled(bool)), exportPreview, SLOT(setLegendState(bool)));
@@ -80,15 +98,17 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->underline, SIGNAL(toggled(bool)), exportPreview, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), exportPreview, SLOT(setNumPrec(int)));
 
-    updateWidgetsVisibility();
-    resizeExportPreview();
-
+    exportFormatChanged();
 }
 
-void Export::updateWidgetsVisibility()
+void Export::exportFormatChanged()
 {
+    // showing and hiding the necessary widgets
+
     if(ui->vectorFormat->isChecked())
     {
+        exportPreview->setExportType(ExportType::VECTORIAL);
+
         ui->imageSizeLabel->hide();
         ui->imageSizeWidget->hide();
         ui->imageFigureSizeWidget->hide();
@@ -99,6 +119,8 @@ void Export::updateWidgetsVisibility()
     }
     else
     {
+        exportPreview->setExportType(ExportType::IMAGE);
+
         ui->imageSizeLabel->show();
         ui->imageSizeWidget->show();
         ui->imageFigureSizeWidget->show();
@@ -107,6 +129,8 @@ void Export::updateWidgetsVisibility()
         ui->sheetSizeWidget->hide();
         ui->sheetFigureSizeWidget->hide();
     }
+
+    resizeExportPreview();
 }
 
 void Export::activateRealSizePreview()
@@ -164,10 +188,11 @@ void Export::resizeExportPreview()
     }
     else
     {
-        QSize targetSize = exportPreview->getTargetSheetSizePixels();
+        QSize targetSize = exportPreview->getTargetSupportSizePixels();
         targetSize.setHeight(int(double(targetSize.height()) * ui->zoomPercentage->value() / 100));
         targetSize.setWidth(int(double(targetSize.width()) * ui->zoomPercentage->value() / 100));
         exportPreview->resize(targetSize);
+        qDebug() << "Resizing export preview to " << targetSize;
     }
 }
 
@@ -251,9 +276,27 @@ void Export::setSheetFigureSizeCm(QSizeF sizeCm)
     ui->sheetFigureWidth->blockSignals(false);
 }
 
+void Export::setImageFigureSizePx(QSize sizePx)
+{
+    ui->imageFigureHeight->blockSignals(true);
+    ui->imageFigureWidth->blockSignals(true);
+
+    ui->imageFigureHeight->setValue(sizePx.height());
+    ui->imageFigureWidth->setValue(sizePx.width());
+
+    ui->imageFigureHeight->blockSignals(false);
+    ui->imageFigureWidth->blockSignals(false);
+}
+
 void Export::onSheetFigureSizeChange()
 {
     exportPreview->setSheetFigureSizeCm(QSizeF(ui->sheetFigureWidth->value(), ui->sheetFigureHeight->value()));
+    exportPreview->update();
+}
+
+void Export::onImageFigureSizeChange()
+{
+    exportPreview->setImageFigureSizePx(QSize(ui->imageFigureWidth->value(), ui->imageFigureHeight->value()));
     exportPreview->update();
 }
 
@@ -318,6 +361,14 @@ void Export::onSheetSizeChange()
     constrainFigureSizeWidgets(); // should come after updating
 }
 
+void Export::onImageSizeChange()
+{
+    exportPreview->setImageSizePx(QSize(ui->imageWidth->value(), ui->imageHeight->value()));
+    resizeExportPreview();
+
+    constrainFigureSizeWidgets();
+}
+
 void Export::swapSheetHeightAndWidth()
 {
     ui->sheetHeight->blockSignals(true);
@@ -333,6 +384,21 @@ void Export::swapSheetHeightAndWidth()
     ui->sheetWidth->blockSignals(false);
 
     onSheetSizeChange();
+}
+
+void Export::swapImageHeightAndWidth()
+{
+    ui->imageHeight->blockSignals(true);
+    ui->imageWidth->blockSignals(true);
+
+    int tmp = ui->imageHeight->value();
+    ui->imageHeight->setValue(ui->imageWidth->value());
+    ui->imageWidth->setValue(tmp);
+
+    ui->imageHeight->blockSignals(false);
+    ui->imageWidth->blockSignals(false);
+
+    onImageSizeChange();
 }
 
 

@@ -39,14 +39,22 @@ public:
 
 public slots:    
     void setSheetFigureSizeCm(QSizeF sizeCm);
+    void setImageFigureSizePx(QSize sizePx);
+
     void enableExportButton();
     void getFileName();
     void exportGraph();
 
 protected slots:
     void onSheetSizeChange();
+    void onImageSizeChange();
+
     void onSheetFigureSizeChange();
+    void onImageFigureSizeChange();
+
     void swapSheetHeightAndWidth();
+    void swapImageHeightAndWidth();
+
     void constrainFigureSizeWidgets();
     void resizeExportPreview();
     void zoomIn();
@@ -54,7 +62,7 @@ protected slots:
     void newZoomValue(double value);
     void onZoomPercentageUserChange();
     void activateRealSizePreview();
-    void updateWidgetsVisibility();
+    void exportFormatChanged();
 
 protected:    
     void resizeEvent(QResizeEvent *event);

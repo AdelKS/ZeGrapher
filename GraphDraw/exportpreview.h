@@ -46,8 +46,9 @@ class ExportPreview : public ImagePreview
 public:
     explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePx, ExportType exportType, Information *info);
 
+    void setExportType(ExportType type);
     double getMinFigureSize();
-    QSize getTargetSheetSizePixels();
+    QSize getTargetSupportSizePixels();
 
 signals:
     void newFigureSizeCm(QSizeF sizeCm);
@@ -80,16 +81,18 @@ public slots:
 protected:
     void initialise();
     void paintEvent(QPaintEvent *event);
-    void drawSheet();
+    void drawSupport();
     void drawGraph();
-    QRect sheetRectFromViewRect(QRect viewRect);
+    QRect supportRectFromViewRect(QRect viewRect);
     void drawFigureRect();
     void assignMouseRects();
     void printCurves();
     void constrainCanvasRectRel();
-    QRect getFigureRectFromRelative(QRect refSheetRect);
-    void scaleView(QRect refSheetRect);
+    QRect getFigureRect(const QRect &refSupportRect);
+    QRect getDrawableRect(const QRect &refSupportRect);
+    void scaleView(const QRect &refSheetRect);
     void setMaximalCanvas();
+    void updateTargetSupportSizePx();
 
     QPageLayout::Orientation orientation;
     double minRelSize;
@@ -98,8 +101,8 @@ protected:
     // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
     // the other margin is scaled accordingly
     double userScalingFactor, screenResolution, currentZoom;
-    QSize targetSheetSizePixels;
-    QRect figureRect, sheetRect, sheetRectScaled;
+    QSize targetSupportSizePixels;
+    QRect figureRect, supportRect, sheetRectScaled;
     QSizeF figureSizeCm, sheetSizeCm;
     QSize figureSizePx, imageSizePx;
 
