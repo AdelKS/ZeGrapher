@@ -49,6 +49,9 @@ protected slots:
     void onSheetSizeChange();
     void onImageSizeChange();
 
+    void onSheetMarginChange();
+    void onImageMarginChange();
+
     void onSheetFigureSizeChange();
     void onImageFigureSizeChange();
 

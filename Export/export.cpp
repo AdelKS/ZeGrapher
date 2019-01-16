@@ -56,8 +56,8 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     connect(ui->vectorFormat, SIGNAL(toggled(bool)), this, SLOT(exportFormatChanged()));
 
-    connect(ui->sheetMargin, SIGNAL(valueChanged(double)), exportPreview, SLOT(setSheetMarginCm(double)));
-    connect(ui->imageMargin, SIGNAL(valueChanged(int)), exportPreview, SLOT(setImageMarginPx(int)));
+    connect(ui->sheetMargin, SIGNAL(valueChanged(double)), this, SLOT(onSheetMarginChange()));
+    connect(ui->imageMargin, SIGNAL(valueChanged(int)), this, SLOT(onImageMarginChange()));
 
     connect(ui->scalingFactor, SIGNAL(valueChanged(double)), exportPreview, SLOT(setScale(double)));
 
@@ -298,6 +298,18 @@ void Export::onImageFigureSizeChange()
 {
     exportPreview->setImageFigureSizePx(QSize(ui->imageFigureWidth->value(), ui->imageFigureHeight->value()));
     exportPreview->update();
+}
+
+void Export::onSheetMarginChange()
+{
+   constrainFigureSizeWidgets();
+   exportPreview->setSheetMarginCm(ui->sheetMargin->value());
+}
+
+void Export::onImageMarginChange()
+{
+   constrainFigureSizeWidgets();
+   exportPreview->setImageMarginPx(ui->imageMargin->value());
 }
 
 void Export::onSheetSizeChange()
