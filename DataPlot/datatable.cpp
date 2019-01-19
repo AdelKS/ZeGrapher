@@ -31,7 +31,7 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
     mainLayout->setMargin(0);
     setMinimumSize(0,0);
     calculator = new ExprCalculator(false, information->getFuncsList());
-    treeCreator = new TreeCreator(DATA_TABLE_EXPR);
+    treeCreator = new TreeCreator(ObjectType::DATA_TABLE_EXPR);
 
     tableWidget = new QTableWidget(rowCount,columnCount);
 
@@ -57,7 +57,7 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
         {
             QTableWidgetItem *item = new QTableWidgetItem(" ");
             tableWidget->setItem(row, col, item);
-            values[col] << NAN ;
+            values[col] << nan("") ;
         }
     }
 
@@ -465,7 +465,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
     {
         item->setBackgroundColor(backgroundColor);
         item->setTextColor(textColor);
-        values[item->column()][item->row()] = NAN;
+        values[item->column()][item->row()] = nan("");
     }
     else
     {
@@ -487,7 +487,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
             item->setBackgroundColor(INVALID_COLOR);
             item->setTextColor(Qt::black);
 
-            values[item->column()][item->row()] = NAN;
+            values[item->column()][item->row()] = nan("");
         }
     }
 
@@ -505,7 +505,7 @@ void DataTable::insertRow(int index)
     {
         QTableWidgetItem *item = new QTableWidgetItem(" ");
         tableWidget->setItem(index, col, item);
-        values[col].insert(index, NAN);
+        values[col].insert(index, nan(""));
     }
 
     disableChecking = false;
@@ -540,7 +540,7 @@ void DataTable::insertColumn(int index)
     {
         QTableWidgetItem *item = new QTableWidgetItem(" ");
         tableWidget->setItem(row, index, item);
-        values[index] << NAN ;
+        values[index] << nan("") ;
     }
 
     disableChecking = false;

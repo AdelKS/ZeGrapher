@@ -26,6 +26,9 @@
 
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {
+    graphRange = info->getGraphRange();
+    tickInterval = info->getGraphTickIntervals();
+
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(dataUpdated()), this, SLOT(updateData()));
@@ -98,7 +101,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     kLabel.setParent(this);
     kLabel.hide();
 
-    savedGraph = NULL;
+    savedGraph = nullptr;
 
     setMouseTracking(true);
     typeCurseur = NORMAL;
@@ -345,7 +348,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     x = (x-centre.x)/uniteX;
     y = -(y-centre.y)/uniteY;
 
-    double valeur = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
+    double valeur = tanh(double(event->angleDelta().y()) / 1024) / 1.1;
 
     if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
     {
@@ -359,7 +362,8 @@ void MainGraph::wheelEvent(QWheelEvent *event)
         if(graphSettings.smoothing)
             repaintTimer.start();
 
-        information->setRange(graphRange);
+        emit graphRangeChanged(graphRange);
+        update();
     }
 
     event->accept();
@@ -378,7 +382,7 @@ void MainGraph::afficherPtX(double x)
             if(selectedCurve.isParametric)
             {
                 Range info = funcs[selectedCurve.id]->getParametricRange();
-                k = info.start + (double)(selectedCurve.kPos) * info.step;
+                k = info.start + double(selectedCurve.kPos) * info.step;
             }
 
             pointUnit.x = x;
@@ -408,7 +412,7 @@ void MainGraph::newWindowSize()
     emit sizeChanged(graphWidthPx, graphHeightPx);
     windowSize = size();
 
-    if(hWidget != NULL)
+    if(hWidget != nullptr)
     {
         hTopLeft.setX((width()-hWidget->width())/2);
         hTopLeft.setY(height()-hWidget->height());
@@ -456,8 +460,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
     graphWidthPx = width();
     graphHeightPx = height();
 
-    graphSettings = information->getSettingsVals();
-    graphRange = information->getRange();
+    graphSettings = information->getSettingsVals();  
 
     if(windowSize != size())
     {
@@ -526,7 +529,7 @@ void MainGraph::directPaint()
     if(updateTickSpacing())
     {
         cancelUpdateSignal = true;
-        information->setRange(graphRange);
+        emit graphTickIntervalsChanged(tickInterval);
 
         painter.setBrush(QBrush(graphSettings.backgroundColor));
         painter.drawRect(-1, -1, graphWidthPx+1, graphHeightPx+1);
@@ -694,7 +697,7 @@ void MainGraph::updateCenterPosAndScaling()
         uniteY = uniteX;
 
         cancelUpdateSignal = true;
-        information->setRange(graphRange);
+        emit graphRangeChanged(graphRange);
         recalculate = true;
     }
 
@@ -940,7 +943,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             win.Ymin = (- rectReel.bottom() + centre.y) / uniteY;
 
             if(win.Xmax - win.Xmin > MIN_RANGE && win.Ymax - win.Ymin > MIN_RANGE)
-                information->setRange(win);
+                emit graphRangeChanged(graphRange);
 
             typeCurseur = NORMAL;
         }
@@ -1026,7 +1029,8 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             graphRange.Ymin += dy / uniteY;
 
             cancelUpdateSignal = true;
-            information->setRange(graphRange);
+
+            emit graphRangeChanged(graphRange);
 
             updateCenterPosAndScaling();
 
@@ -1067,7 +1071,7 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
 {
     Q_UNUSED(y);
 
-    short k_pos = 0;
+    int k_pos = 0;
     double k = 0;
 
     if(selectedCurve.isParametric)
@@ -1075,7 +1079,7 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
         if(selectedCurve.funcType == FUNC_HOVER)
         {
             Range info = funcs[selectedCurve.id]->getParametricRange();
-            k = info.start + (double)selectedCurve.kPos * info.step;
+            k = info.start + double(selectedCurve.kPos) * info.step;
         }
         else k_pos = selectedCurve.kPos;
     }
@@ -1174,13 +1178,13 @@ void MainGraph::mouseFuncHoverTest(double x, double y)
 void MainGraph::mouseSeqHoverTest(double x, double y)
 {
     double calcY = 0;
-    short drawsNum = 1;
+    int drawsNum = 1;
     bool ok;
     double nMin = seqs[0]->get_nMin();
 
     if(x > nMin)
     {
-        double intAbscissa = NAN;
+        double intAbscissa = 0;
         double start, step = 1;
 
         if(graphRange.Xmin > nMin)
@@ -1190,7 +1194,7 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
         if(uniteX < 1)
              step = 5*trunc(1/uniteX);
 
-        if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < (double)(graphSettings.curvesThickness) + 2)
+        if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < double(graphSettings.curvesThickness) + 2)
             intAbscissa = trunc((x-start)/step) * step + start;
 
         if(std::isnan(intAbscissa))
@@ -1311,11 +1315,11 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Ypos + graphSettings.graphFont.pixelSize() + 3;
     }
 
-    double Xreal = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep;
+    double Xreal = trunc(graphRange.Xmin / tickInterval.x) * tickInterval.x;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double step = graphRange.Xstep * uniteX;
+    double step = tickInterval.x * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1357,7 +1361,7 @@ void MainGraph::drawTicksAndNumbers()
         }
 
         Xpos += step;
-        Xreal += graphRange.Xstep;
+        Xreal += tickInterval.x;
     }
 
 //trace sur l'axe des Y
@@ -1381,9 +1385,9 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / graphRange.Ystep) * graphRange.Ystep;
+    double Yreal = trunc(graphRange.Ymax / tickInterval.y) * tickInterval.y;
     Ypos = -Yreal * uniteY + centre.y;
-    step = graphRange.Ystep * uniteY;
+    step = tickInterval.y * uniteY;
 
     bas =  0;
     haut =  graphWidthPx;
@@ -1423,7 +1427,7 @@ void MainGraph::drawTicksAndNumbers()
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
-        Yreal -= graphRange.Ystep;
+        Yreal -= tickInterval.y;
         Ypos += step;
     }
 }
@@ -1433,34 +1437,34 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * graphRange.Xstep < widestXNumber + 32)
+    if(uniteX * tickInterval.x < widestXNumber + 32)
     {
-        while(uniteX * graphRange.Xstep < widestXNumber + 32)
-            graphRange.Xstep *= 2;
+        while(uniteX * tickInterval.x < widestXNumber + 32)
+            tickInterval.x *= 2;
         if(orthonormal)
-             graphRange.Ystep = graphRange.Xstep;
+             tickInterval.y = tickInterval.x;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
+    else if(uniteX * tickInterval.x > 2*widestXNumber + 96)
     {
-        while(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
-            graphRange.Xstep /= 2;
+        while(uniteX * tickInterval.x > 2*widestXNumber + 96)
+            tickInterval.x /= 2;
         if(orthonormal)
-             graphRange.Ystep = graphRange.Xstep;
+             tickInterval.y = tickInterval.x;
         scaleChanged = true;
     }
     if(!orthonormal)
     {
-        if(uniteY * graphRange.Ystep < 25)
+        if(uniteY * tickInterval.y < 25)
         {
-            while(uniteY * graphRange.Ystep < 25)
-                graphRange.Ystep *= 2;
+            while(uniteY * tickInterval.y < 25)
+                tickInterval.y *= 2;
             scaleChanged = true;
         }
-        else if(uniteY * graphRange.Ystep > 150)
+        else if(uniteY * tickInterval.y > 150)
         {
-            while(uniteY * graphRange.Ystep > 150)
-                graphRange.Ystep /= 2;
+            while(uniteY * tickInterval.y > 150)
+                tickInterval.y /= 2;
             scaleChanged = true;
         }
     }
@@ -1523,12 +1527,13 @@ void MainGraph::zoomX()
 {
     repaintTimer.stop();
 
-    double valeur = (graphRange.Xmax- graphRange.Xmin) * (double)(hSlider->value()) * 0.0016;
+    double valeur = (graphRange.Xmax- graphRange.Xmin) * double(hSlider->value()) * 0.0016;
 
     graphRange.Xmin += valeur;
     graphRange.Xmax -= valeur;
     moving = true;
-    information->setRange(graphRange);
+
+    emit graphRangeChanged(graphRange);
 
     if(graphSettings.smoothing)
         repaintTimer.start();
@@ -1544,7 +1549,7 @@ void MainGraph::zoomY()
 {
     repaintTimer.stop();
 
-    double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * 0.0016;
+    double valeur = (graphRange.Ymax - graphRange.Ymin) * double(vSlider->value()) * 0.0016;
 
     if(!information->isOrthonormal())
     {
@@ -1563,13 +1568,28 @@ void MainGraph::zoomY()
     if(graphSettings.smoothing)
         repaintTimer.start();
 
-    information->setRange(graphRange);
+    emit graphRangeChanged(graphRange);
 }
 
 void MainGraph::stop_Y_Zoom()
 {
     timerY.stop();
     vSlider->setValue(0);
+}
+
+void MainGraph::setGraphRange(GraphRange range)
+{
+    graphRange = range;
+    recalculate = true;
+    resaveGraph = true;
+    update();
+}
+
+void MainGraph::setGraphTickIntervals(GraphTickIntervals interval)
+{
+    tickInterval = interval;
+    resaveGraph = true;
+    update();
 }
 
 MainGraph::~MainGraph()

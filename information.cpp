@@ -27,7 +27,7 @@ Information::Information()
 {
     range.Xmax = range.Ymax = 10;
     range.Xmin = range.Ymin = -10;
-    range.Xstep = range.Ystep = 1;   
+    tickInterval.x = tickInterval.y = 1;
 
     gridState = orthonormal = updatingLock = false;
 
@@ -172,10 +172,18 @@ QList<FuncCalculator*> Information::getFuncsList()
     return functions;
 }
 
-void Information::setRange(const GraphRange &newWindow)
+void Information::setGraphRange(GraphRange newWindow)
 {
     range = newWindow;
-    emit updateOccured();
+
+    emit graphRangeChanged(range);
+}
+
+void Information::setGraphTickIntervals(GraphTickIntervals tickInterval)
+{
+    this->tickInterval = tickInterval;
+
+    emit graphTickIntervalsChanged(tickInterval);
 }
 
 void Information::setGridState(bool etat)
@@ -208,9 +216,14 @@ void Information::emitDrawStateUpdate()
     emit drawStateUpdateOccured();
 }
 
-GraphRange Information::getRange()
+GraphRange Information::getGraphRange()
 {
     return range;
+}
+
+GraphTickIntervals Information::getGraphTickIntervals()
+{
+    return tickInterval;
 }
 
 bool Information::getGridState()

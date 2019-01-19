@@ -24,9 +24,9 @@
 
 #include "Calculus/treecreator.h"
 
-TreeCreator::TreeCreator(short callingObjectType)
+TreeCreator::TreeCreator(ObjectType type)
 {
-    funcType = callingObjectType;
+    funcType = type;
 
     refFunctions << "acos" << "asin" << "atan" << "cos" << "sin" << "tan" << "sqrt"
                  << "log" << "ln" << "abs" << "exp" << "floor" << "ceil" << "cosh"
@@ -53,19 +53,19 @@ TreeCreator::TreeCreator(short callingObjectType)
 
 void TreeCreator::refreshAuthorizedVars()
 {
-    if(funcType == FUNCTION)
+    if(funcType == ObjectType::FUNCTION)
     {
         authorizedVars[0] = authorizedVars[3] = true; // x and k
     }
-    else if(funcType == SEQUENCE)
+    else if(funcType == ObjectType::SEQUENCE)
     {
         authorizedVars[2] = authorizedVars[3] = true; // k and n
     }
-    else if(funcType == PARAMETRIC_EQ)
+    else if(funcType == ObjectType::PARAMETRIC_EQ)
     {
         authorizedVars[1] = authorizedVars[3] = true; // k and t
     }
-    else if(funcType == DATA_TABLE_EXPR)
+    else if(funcType == ObjectType::DATA_TABLE_EXPR)
     {
         authorizedVars[0] = true; // only x, which is the old cell value.
     }

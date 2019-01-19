@@ -95,7 +95,7 @@ QSize ExportPreview::getTargetSupportSizePixels()
     return targetSupportSizePixels;
 }
 
-double ExportPreview::getMinFigureSize()
+double ExportPreview::getMinFigureRelativeSize()
 {
     return minRelSize;
 }
@@ -109,7 +109,6 @@ void ExportPreview::setScale(double scalingFactor)
 void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
 {
     graphSettings = information->getSettingsVals();
-    graphRange = information->getRange();
 
     QPdfWriter *pdfWriter = new QPdfWriter(fileName);
 
@@ -153,7 +152,6 @@ void ExportPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     graphSettings = information->getSettingsVals();
-    graphRange = information->getRange();
 
     painter.begin(this);    
 
@@ -345,39 +343,31 @@ void ExportPreview::drawGraph()
 void ExportPreview::setSheetFigureSizeCm(QSizeF sizeCm)
 {
     figureSizeCm = sizeCm;
-    sheetFigureRectRelative.setWidth(figureSizeCm.width() / sheetSizeCm.width());
-    sheetFigureRectRelative.setHeight(figureSizeCm.height() / sheetSizeCm.height());
-    constrainCanvasRectRel();
+    sheetFigureRectRelative.setWidth(figureSizeCm.width() / (sheetSizeCm.width() - 2*sheetMarginCm));
+    sheetFigureRectRelative.setHeight(figureSizeCm.height() / (sheetSizeCm.height() - 2*sheetMarginCm));
+    constrainFigureRectRel();
 }
 
 void ExportPreview::setImageFigureSizePx(QSize sizePx)
 {
     figureSizePx = sizePx;
-    sheetFigureRectRelative.setWidth(double(figureSizePx.width()) / double(imageSizePx.width()));
-    sheetFigureRectRelative.setHeight(double(figureSizePx.height()) / double(imageSizePx.height()));
-    constrainCanvasRectRel();
+    imageFigureRectRelative.setWidth(double(figureSizePx.width()) / double(imageSizePx.width() - 2*imageMarginPx));
+    imageFigureRectRelative.setHeight(double(figureSizePx.height()) / double(imageSizePx.height() - 2*imageMarginPx));
+    constrainFigureRectRel();
 }
 
 void ExportPreview::setSheetSizeCm(QSizeF sizeCm)
 {
     sheetSizeCm = sizeCm;
-    figureSizeCm.setHeight(sheetFigureRectRelative.height() * sheetSizeCm.height());
-    figureSizeCm.setWidth(sheetFigureRectRelative.width() * sheetSizeCm.width());
-
+    updateFigureSize();
     updateTargetSupportSizePx();
-
-    emit newFigureSizeCm(figureSizeCm);
 }
 
 void ExportPreview::setImageSizePx(QSize sizePx)
 {
     imageSizePx = sizePx;
-    figureSizePx.setHeight(int(imageFigureRectRelative.height() * double(imageSizePx.height())));
-    figureSizePx.setWidth(int(imageFigureRectRelative.width() * double(imageSizePx.width())));
-
+    updateFigureSize();
     updateTargetSupportSizePx();
-
-    emit newFigureSizePx(figureSizePx);
 }
 
 void ExportPreview::setSheetOrientation(QPageLayout::Orientation type)
@@ -487,16 +477,45 @@ void ExportPreview::mouseMoveEvent(QMouseEvent *event)
         {
             imageFigureRectRelative.setWidth(double(figureRect.width()) / double(drawableRect.width()));
             imageFigureRectRelative.setHeight(double(figureRect.height()) / double(drawableRect.height()));
-            imageFigureRectRelative.moveTopLeft(pt);
+            imageFigureRectRelative.moveTopLeft(pt);           
         }
 
-        constrainCanvasRectRel();
+        constrainFigureRectRel();
+        updateFigureSize();
         update();
     }
 
 }
 
-void ExportPreview::constrainCanvasRectRel()
+void ExportPreview::updateFigureSize()
+{
+    if(exportType == ExportType::VECTORIAL)
+    {
+        QSizeF oldFigureSizeCm = figureSizeCm;
+
+        figureSizeCm.setWidth(sheetFigureRectRelative.width() * (sheetSizeCm.width() - 2*sheetMarginCm));
+        figureSizeCm.setHeight(sheetFigureRectRelative.height() * (sheetSizeCm.height() - 2*sheetMarginCm));
+
+        if(oldFigureSizeCm != figureSizeCm)
+        {
+            emit newFigureSizeCm(figureSizeCm);
+        }
+    }
+    else
+    {
+        QSizeF oldFigureSizePx = figureSizePx;
+
+        figureSizePx.setWidth(int(imageFigureRectRelative.width() * double(imageSizePx.width() - 2*imageMarginPx)));
+        figureSizePx.setHeight(int(imageFigureRectRelative.height() * double(imageSizePx.height() - 2*imageMarginPx)));
+
+        if(oldFigureSizePx != figureSizePx)
+        {
+            emit newFigureSizePx(figureSizePx);
+        }
+    }
+}
+
+void ExportPreview::constrainFigureRectRel()
 {
     if(exportType == ExportType::VECTORIAL)
     {
@@ -518,17 +537,7 @@ void ExportPreview::constrainCanvasRectRel()
         if(sheetFigureRectRelative.bottom() > 1)
             sheetFigureRectRelative.moveBottom(1);
         if(sheetFigureRectRelative.top() < 0)
-            sheetFigureRectRelative.moveTop(0);
-
-        QSizeF oldFigureSizeCm = figureSizeCm;
-
-        figureSizeCm.setWidth(sheetFigureRectRelative.width() * sheetSizeCm.width());
-        figureSizeCm.setHeight(sheetFigureRectRelative.height() * sheetSizeCm.height());
-
-        if(oldFigureSizeCm != figureSizeCm)
-        {
-            emit newFigureSizeCm(figureSizeCm);
-        }
+            sheetFigureRectRelative.moveTop(0);      
     }
     else
     {
@@ -551,16 +560,6 @@ void ExportPreview::constrainCanvasRectRel()
             imageFigureRectRelative.moveBottom(1);
         if(imageFigureRectRelative.top() < 0)
             imageFigureRectRelative.moveTop(0);
-
-        QSizeF oldFigureSizePx = figureSizePx;
-
-        figureSizePx.setWidth(int(imageFigureRectRelative.width() * double(imageSizePx.width())));
-        figureSizePx.setHeight(int(imageFigureRectRelative.height() * double(imageSizePx.height())));
-
-        if(oldFigureSizePx != figureSizePx)
-        {
-            emit newFigureSizePx(figureSizePx);
-        }
     }
 
 }
@@ -575,4 +574,14 @@ void ExportPreview::mouseReleaseEvent(QMouseEvent *event)
 void ExportPreview::wheelEvent(QWheelEvent *event)
 {
     Q_UNUSED(event);
+}
+
+void ExportPreview::setGraphRange(const GraphRange &range)
+{
+    graphRange = range;
+}
+void ExportPreview::setGraphTickIntervals(double xTickInterval, double yTickInterval)
+{
+    tickInterval.x = xTickInterval;
+    tickInterval.y = yTickInterval;
 }

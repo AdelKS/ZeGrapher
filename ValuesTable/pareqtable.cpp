@@ -255,17 +255,17 @@ void ParEqTable::emptyCellsFill()
         QStandardItem *t = new QStandardItem();
         t->setEditable(true);
         tlist.append(t);
-        parEqValues.tValues << NAN;
+        parEqValues.tValues << nan("");
 
         QStandardItem *x = new QStandardItem();
         x->setEditable(false);
         xlist.append(x);
-        parEqValues.xValues << NAN;
+        parEqValues.xValues << nan("");
 
         QStandardItem *y = new QStandardItem();
         y->setEditable(false);
         ylist.append(y);
-        parEqValues.yValues << NAN;
+        parEqValues.yValues << nan("");
     }
 
     model->appendColumn(tlist);

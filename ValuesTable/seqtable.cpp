@@ -150,10 +150,11 @@ void SeqTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-        GraphRange range = information->getRange();
+        GraphRange range = information->getGraphRange();
+        GraphTickIntervals tickInterval = information->getGraphTickIntervals();
 
-        parameters.range.start = trunc(range.Xmin / range.Xstep) * range.Xstep;
-        parameters.range.step = range.Xstep;
+        parameters.range.start = trunc(range.Xmin / tickInterval.x) * tickInterval.x;
+        parameters.range.step = tickInterval.x;
         parameters.range.end = range.Xmax;
 
         if(seq->get_nMin() > parameters.range.end)
@@ -323,8 +324,8 @@ void SeqTable::emptyCellsFill()
     {
         QStandardItem *item = new QStandardItem();
         liste << item;
-        xValues << NAN;
-        yValues << NAN;
+        xValues << nan("");
+        yValues << nan("");
     }
 
     model->appendColumn(liste);

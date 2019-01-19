@@ -45,7 +45,12 @@ signals:
     void zoomBoxActive(bool active);    
     void sizeChanged(int H, int W);
 
+    void graphRangeChanged(GraphRange range);
+    void graphTickIntervalsChanged(GraphTickIntervals interval);
+
 public slots:
+    void setGraphRange(GraphRange range);
+    void setGraphTickIntervals(GraphTickIntervals interval);
 
     void showHorWidget();
     void showVerWidget();

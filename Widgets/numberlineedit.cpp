@@ -33,7 +33,7 @@ NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) :
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
     valid = false;
-    value = NAN;
+    value = nan("");
 
     connect(this, SIGNAL(returnPressed()), this, SLOT(checkVal()));
     connect(this, SIGNAL(editingFinished()), this, SLOT(checkVal()));

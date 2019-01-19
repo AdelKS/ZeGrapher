@@ -48,7 +48,6 @@ void ImagePreview::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
 
     graphSettings = information->getSettingsVals();
-    graphRange = information->getRange();
 
     painter.begin(this);
 
@@ -231,9 +230,9 @@ void ImagePreview::drawTicksAndNumbers()
 
     double space, pos;
 
-    double Xpos = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep * uniteX;
+    double Xpos = ceil(graphRange.Xmin / tickInterval.x) * tickInterval.x * uniteX;
     double end = graphRange.Xmax * uniteX;
-    double step = graphRange.Xstep * uniteX;
+    double step = tickInterval.x * uniteX;
 
     QString num;
 
@@ -273,8 +272,8 @@ void ImagePreview::drawTicksAndNumbers()
 //trace sur l'axe des Y
 
 
-    double Ypos = ceil(graphRange.Ymin / graphRange.Ystep) * graphRange.Ystep * uniteY;
-    step = graphRange.Ystep * uniteY;
+    double Ypos = ceil(graphRange.Ymin / tickInterval.y) * tickInterval.y * uniteY;
+    step = tickInterval.y * uniteY;
     end = graphRange.Ymax * uniteY;
 
     int largestWidth = 0;
@@ -367,7 +366,6 @@ void ImagePreview::updateCenterPosAndScaling()
 QImage* ImagePreview::drawImage()
 {
     graphSettings = information->getSettingsVals();
-    graphRange = information->getRange();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
     image->fill(graphSettings.backgroundColor.rgb());

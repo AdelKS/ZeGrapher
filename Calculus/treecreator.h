@@ -24,10 +24,13 @@
 #include "structures.h"
 #include "calculusdefines.h"
 
+
+enum ObjectType {FUNCTION, SEQUENCE, PARAMETRIC_EQ, NORMAL_EXPR, DATA_TABLE_EXPR};
+
 class TreeCreator
 {
 public:
-    TreeCreator(short callingObjectType);
+    TreeCreator(ObjectType type);
 
     FastTree* getTreeFromExpr(QString expr, bool &ok, QStringList additionnalVars = QStringList());
 
@@ -43,7 +46,7 @@ protected:
     void refreshAuthorizedVars();
     FastTree* createFastTree(int debut, int fin);
 
-    short funcType;
+    ObjectType funcType;
     QStringList refFunctions, functions, sequences, antiderivatives, derivatives, constants, vars, customVars;
     QList<double> constantsVals;
 

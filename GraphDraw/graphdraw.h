@@ -41,6 +41,10 @@ public:
     explicit GraphDraw(Information *info);
     ~GraphDraw();
 
+public slots:
+    virtual void setGraphRange(GraphRange range);
+    virtual void setGraphTickIntervals(GraphTickIntervals interval);
+
 protected slots:
     void addRegSaver(Regression *reg);
     void delRegSaver(Regression *reg);
@@ -82,6 +86,7 @@ protected:
     QBrush brush;
     Point centre;
     GraphRange graphRange;
+    GraphTickIntervals tickInterval;
 
     double coef;
 

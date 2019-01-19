@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef PRINTPREVIEW_H
 #define PRINTPREVIEW_H
 
@@ -47,7 +44,7 @@ public:
     explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePx, ExportType exportType, Information *info);
 
     void setExportType(ExportType type);
-    double getMinFigureSize();
+    double getMinFigureRelativeSize();
     QSize getTargetSupportSizePixels();
 
 signals:
@@ -71,6 +68,9 @@ public slots:
     void setSheetMarginCm(double sheetMarginCm);
     void setImageMarginPx(int imageMarginPx);
 
+    void setGraphRange(const GraphRange &range);
+    void setGraphTickIntervals(double xTickInterval, double yTickInterval);
+
     void setScale(double scalingFactor);
 
     void exportPDF(QString fileName, SheetSizeType sizeType);
@@ -79,20 +79,23 @@ public slots:
 
 
 protected:
-    void initialise();
     void paintEvent(QPaintEvent *event);
+
+    void initialise();
+
     void drawSupport();
     void drawGraph();
     QRect supportRectFromViewRect(QRect viewRect);
     void drawFigureRect();
     void assignMouseRects();
     void printCurves();
-    void constrainCanvasRectRel();
+    void constrainFigureRectRel();
     QRect getFigureRect(const QRect &refSupportRect);
     QRect getDrawableRect(const QRect &refSupportRect);
     void scaleView(const QRect &refSheetRect);
     void setMaximalCanvas();
     void updateTargetSupportSizePx();
+    void updateFigureSize();
 
     QPageLayout::Orientation orientation;
     double minRelSize;

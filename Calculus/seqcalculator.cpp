@@ -29,7 +29,7 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) : treeCreator(SEQUENCE), firstValsTreeCreator(NORMAL_EXPR)
+SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) : treeCreator(ObjectType::SEQUENCE), firstValsTreeCreator(ObjectType::NORMAL_EXPR)
 {   
     seqNum = id;
     isExprValidated = isValid = isKRangeValid = blockCalculatingFromTree = false;
@@ -190,7 +190,7 @@ bool SeqCalculator::checkByCalculatingValues()
 double SeqCalculator::getCustomSeqValue(double n, bool &ok, double k_value)
 {
     if( n < nMin || n > MAX_SAVED_SEQ_VALS)
-        return NAN;
+        return nan("");
 
     double index = (k_value - kRange.start)/kRange.step;
 
@@ -208,7 +208,7 @@ double SeqCalculator::getCustomSeqValue(double n, bool &ok, double k_value)
         ok = saveCustomSeqValues(n);
 
     if(!ok)
-        return NAN;
+        return nan("");
 
     return seqValues[drawsNum][n-nMin];
 }
@@ -259,7 +259,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
 {   
     if(n < nMin || seqValues[0].size() > MAX_SAVED_SEQ_VALS)
-        return NAN;    
+        return nan("");
 
     if(n-nMin >= seqValues[0].size())
     {
@@ -268,14 +268,14 @@ double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
     }
 
     if(!ok)
-        return NAN;
+        return nan("");
 
     if(0 <= index_k && index_k < drawsNum)
     {
         double res = seqValues[index_k][n-nMin];
         return res;
     }
-    else return NAN;
+    else return nan("");
 }
 
 void SeqCalculator::updateSeqValuesSize()
@@ -359,7 +359,7 @@ bool SeqCalculator::calculateAndSaveFirstValuesTrees()
 double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
 {
     if(!ok)
-        return NAN;
+        return nan("");
     if(tree->type == NUMBER )
     {
         return *tree->value;
@@ -412,7 +412,7 @@ double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
         ok = verifyAskedTerm(asked_n);
         if(ok)
             return seqValues[kPos][asked_n];
-        else return NAN;
+        else return nan("");
     }
     else if(SEQUENCES_START < tree->type && tree->type < SEQUENCES_END)
     {
@@ -421,10 +421,10 @@ double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
         ok = verifyOtherSeqAskedTerm(asked_n, id);
         if(ok)
             return seqCalculatorsList[id]->getCustomSeqValue(asked_n, ok, k);
-        else return NAN;
+        else return nan("");
     }
 
-    else return NAN;
+    else return nan("");
 }
 
 bool SeqCalculator::verifyAskedTerm(double n)

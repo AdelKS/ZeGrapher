@@ -31,7 +31,6 @@
 #include "Windows/settings.h"
 #include "Windows/values.h"
 #include "about.h"
-#include "Export/imagesave.h"
 #include "GraphDraw/exportpreview.h"
 #include "Export/export.h"
 #include "Widgets/keyboard.h"
@@ -62,8 +61,7 @@ protected slots:
 private:
 
     Information *information;
-    MainGraph *scene;
-    GraphRange window;
+    MainGraph *mainGraph;
     MathObjectsInput *inputWin;
     RangeAdjustments *rangeWin;
     Settings *settingsWin;

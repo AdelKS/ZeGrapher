@@ -41,11 +41,6 @@
 #define DEPLACER 4
 #define NO_CURSOR 5
 
-#define FUNCTION 1
-#define SEQUENCE 2
-#define PARAMETRIC_EQ 3
-#define NORMAL_EXPR 4
-#define DATA_TABLE_EXPR 5 // expression to apply to a column: example: x' = 2 * x multiplies every column's cell value by 2.
 #define MAX_DOUBLE_PREC 15
 
 #define MIN_RANGE 0.000001
@@ -65,7 +60,7 @@
 
 struct GraphRange
 {
-    double Xmin, Xmax, Ymin, Ymax, Xstep, Ystep;
+    double Xmin, Xmax, Ymin, Ymax;
 
     QRectF getRect() const
     {
@@ -74,9 +69,35 @@ struct GraphRange
         graphWin.setTop(Ymax);
         graphWin.setLeft(Xmin);
         graphWin.setRight(Xmax);
+        graphWin.moveTopLeft(QPointF(0, 0));
         return graphWin;
     }
+
+    bool operator==(const GraphRange &other)
+    {
+        return fabs(Xmin - other.Xmin) < 1e-10 && fabs(Xmax - other.Xmax) < 1e-10 &&
+                fabs(Ymin - other.Ymin) < 1e-10 && fabs(Ymax - other.Ymax) < 1e-10;
+    }
+    bool operator!=(const GraphRange &other)
+    {
+        return !((*this) == other);
+    }
 };
+
+struct GraphTickIntervals
+{
+    double x, y;
+
+    bool operator==(const GraphTickIntervals &other)
+    {
+        return fabs(x - other.x) < 1e-10 && fabs(y - other.y) < 1e-10;
+    }
+    bool operator!=(const GraphTickIntervals &other)
+    {
+        return !((*this) == other);
+    }
+};
+
 struct Point
 {
     double x, y;
@@ -134,10 +155,10 @@ struct MouseState
     bool tangentHovering;
     bool hovering;
     bool isParametric;
-    short tangentPtSelection;
-    short funcType;
-    short kPos;
-    short id;
+    int tangentPtSelection;
+    int funcType;
+    int kPos;
+    int id;
 };
 
 struct Range

@@ -26,7 +26,7 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-FuncCalculator::FuncCalculator(int id, QString funcName, QLabel *errorLabel) : treeCreator(FUNCTION)
+FuncCalculator::FuncCalculator(int id, QString funcName, QLabel *errorLabel) : treeCreator(ObjectType::FUNCTION)
 {
     errorMessageLabel = errorLabel;
     funcTree = nullptr;
@@ -123,7 +123,7 @@ double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
     fb = getFuncValue(b, k_val);
 
     if(std::isnan(fa) || std::isinf(fa) || std::isnan(fb) || std::isinf(fb))
-        return NAN;
+        return nan("");
 
     QList< QList<double> > R;
     QList<double> L1;
@@ -317,7 +317,7 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
         return funcCalculatorsList[id]->getAntiderivativeValue(calculateFromTree(tree->right, x), integrationPoints[id], k);
     }
 
-    else return NAN;
+    else return nan("");
 }
 
 FuncCalculator::~FuncCalculator()

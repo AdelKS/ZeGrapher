@@ -23,7 +23,7 @@
 
 #include "Widgets/abstractfuncwidget.h"
 
-AbstractFuncWidget::AbstractFuncWidget() : treeCreator(FUNCTION)
+AbstractFuncWidget::AbstractFuncWidget() : treeCreator(ObjectType::FUNCTION)
 {
     isParametric = isValid = false;
 

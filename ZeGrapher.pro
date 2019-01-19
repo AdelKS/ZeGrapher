@@ -45,7 +45,6 @@ SOURCES += \
     GraphDraw/maingraph.cpp \
     GraphDraw/imagepreview.cpp \
     GraphDraw/graphdraw.cpp \
-    Export/imagesave.cpp \
     DataPlot/rowselectorwidget.cpp \
     DataPlot/rowactionswidget.cpp \
     DataPlot/datawindow.cpp \
@@ -100,7 +99,6 @@ HEADERS  += \
     GraphDraw/maingraph.h \
     GraphDraw/imagepreview.h \
     GraphDraw/graphdraw.h \
-    Export/imagesave.h \
     DataPlot/rowselectorwidget.h \
     DataPlot/rowactionswidget.h \
     DataPlot/datawindow.h \

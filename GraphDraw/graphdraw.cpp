@@ -30,7 +30,7 @@ GraphDraw::GraphDraw(Information *info)
     coef = sqrt(3)/2;
 
     graphSettings = info->getSettingsVals();
-    graphRange = info->getRange();
+    graphRange = info->getGraphRange();
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
@@ -61,6 +61,18 @@ void GraphDraw::addRegSaver(Regression *reg)
     regValuesSavers << RegressionValuesSaver(information->getSettingsVals().distanceBetweenPoints, reg);
     recalculate = true;
     repaint();
+}
+
+void GraphDraw::setGraphRange(GraphRange range)
+{
+    graphRange = range;
+    update();
+}
+
+void GraphDraw::setGraphTickIntervals(GraphTickIntervals interval)
+{
+    tickInterval = interval;
+    update();
 }
 
 void GraphDraw::delRegSaver(Regression *reg)

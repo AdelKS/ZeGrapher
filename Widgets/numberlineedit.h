@@ -39,8 +39,6 @@ public:
 
 public slots:
     void clear();
-
-protected slots:
     void checkVal();
 
 signals:

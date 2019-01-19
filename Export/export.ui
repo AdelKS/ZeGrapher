@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>847</height>
+    <width>845</width>
+    <height>895</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,10 +33,16 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>320</width>
+       <height>0</height>
+      </size>
      </property>
      <property name="maximumSize">
       <size>
@@ -111,10 +117,16 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>1</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="sizeIncrement">
          <size>
@@ -123,864 +135,955 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
           <string>Export</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_15">
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <property name="spacing">
-             <number>3</number>
+           <widget class="QScrollArea" name="scrollArea_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <item>
-             <widget class="QRadioButton" name="vectorFormat">
-              <property name="text">
-               <string>Vector format</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="scalableWidget" native="true">
-              <layout class="QFormLayout" name="formLayout_4">
-               <property name="leftMargin">
-                <number>25</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_15">
-                 <property name="maximumSize">
-                  <size>
-                   <width>90</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Format:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QComboBox" name="scalableFormatSelection">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>PDF</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>SVG</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
-             <widget class="QRadioButton" name="imageFormat">
-              <property name="text">
-               <string>Image format</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="imageWidget" native="true">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <layout class="QFormLayout" name="formLayout_5">
-               <property name="leftMargin">
-                <number>25</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_17">
-                 <property name="maximumSize">
-                  <size>
-                   <width>90</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Format:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QComboBox" name="imageFormatSelection">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>JPEG</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>PNG</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>PBM</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>PPM</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QLabel" name="sheetSizeLabel">
-            <property name="text">
-             <string>Sheet size:</string>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="sheetSizeWidget" native="true">
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <property name="leftMargin">
-              <number>25</number>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>296</width>
+               <height>699</height>
+              </rect>
              </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QWidget" name="sheetSizeSubWidget" native="true">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <property name="spacing">
-                 <number>3</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QWidget" name="widget_2" native="true">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <layout class="QFormLayout" name="formLayout_6">
-                   <property name="leftMargin">
-                    <number>0</number>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QWidget" name="widget_3" native="true">
+                <layout class="QVBoxLayout" name="verticalLayout_2">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <property name="sizeConstraint">
+                  <enum>QLayout::SetDefaultConstraint</enum>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QRadioButton" name="vectorFormat">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
-                   <property name="topMargin">
-                    <number>0</number>
+                   <property name="text">
+                    <string>Vector format</string>
                    </property>
-                   <property name="rightMargin">
-                    <number>0</number>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="scalableWidget" native="true">
+                   <layout class="QFormLayout" name="formLayout_4">
+                    <property name="leftMargin">
+                     <number>25</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_15">
+                      <property name="maximumSize">
+                       <size>
+                        <width>90</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Format:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QComboBox" name="scalableFormatSelection">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>PDF</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>SVG</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QRadioButton" name="imageFormat">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
-                   <item row="1" column="1">
-                    <widget class="QDoubleSpinBox" name="sheetWidth">
-                     <property name="suffix">
-                      <string> cm</string>
+                   <property name="text">
+                    <string>Image format</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="imageWidget" native="true">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <layout class="QFormLayout" name="formLayout_5">
+                    <property name="leftMargin">
+                     <number>25</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_17">
+                      <property name="maximumSize">
+                       <size>
+                        <width>90</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>Format:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QComboBox" name="imageFormatSelection">
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>JPEG</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>PNG</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>PBM</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>PPM</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="sheetSizeLabel">
+                <property name="text">
+                 <string>Sheet size:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="sheetSizeWidget" native="true">
+                <layout class="QVBoxLayout" name="verticalLayout">
+                 <property name="leftMargin">
+                  <number>25</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QWidget" name="sheetSizeSubWidget" native="true">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_4">
+                    <property name="spacing">
+                     <number>3</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QWidget" name="widget_2" native="true">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
+                      <layout class="QFormLayout" name="formLayout_6">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item row="1" column="1">
+                        <widget class="QDoubleSpinBox" name="sheetWidth">
+                         <property name="suffix">
+                          <string> cm</string>
+                         </property>
+                         <property name="decimals">
+                          <number>1</number>
+                         </property>
+                         <property name="minimum">
+                          <double>3.000000000000000</double>
+                         </property>
+                         <property name="maximum">
+                          <double>200.000000000000000</double>
+                         </property>
+                         <property name="value">
+                          <double>29.699999999999999</double>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="QLabel" name="label_8">
+                         <property name="text">
+                          <string>Width:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QDoubleSpinBox" name="sheetHeight">
+                         <property name="suffix">
+                          <string> cm</string>
+                         </property>
+                         <property name="decimals">
+                          <number>1</number>
+                         </property>
+                         <property name="minimum">
+                          <double>3.000000000000000</double>
+                         </property>
+                         <property name="maximum">
+                          <double>200.000000000000000</double>
+                         </property>
+                         <property name="value">
+                          <double>21.000000000000000</double>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <widget class="QLabel" name="label_6">
+                         <property name="text">
+                          <string>Height:</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="sheetSizeSwap">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>28</width>
+                        <height>28</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="../ressources.qrc">
+                        <normaloff>:/icons/go&amp;return.png</normaloff>:/icons/go&amp;return.png</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>24</width>
+                        <height>24</height>
+                       </size>
+                      </property>
+                      <property name="flat">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="khdgldhf" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QPushButton" name="A3">
+                      <property name="maximumSize">
+                       <size>
+                        <width>35</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>A3</string>
+                      </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="A4">
+                      <property name="maximumSize">
+                       <size>
+                        <width>35</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>A4</string>
+                      </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
+                      <property name="checked">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="A5">
+                      <property name="maximumSize">
+                       <size>
+                        <width>35</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>A5</string>
+                      </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="customSize">
+                      <property name="text">
+                       <string>Custom</string>
+                      </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
+                      <property name="autoExclusive">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="orientationSelector">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Landscape</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Portrait</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="sheetMarginWidget" native="true">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <layout class="QFormLayout" name="formLayout_3">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>31</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_3">
+                      <property name="text">
+                       <string>Margins:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QDoubleSpinBox" name="sheetMargin">
+                      <property name="suffix">
+                       <string> cm</string>
+                      </property>
+                      <property name="decimals">
+                       <number>1</number>
+                      </property>
+                      <property name="minimum">
+                       <double>0.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>5.000000000000000</double>
+                      </property>
+                      <property name="value">
+                       <double>1.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="imageSizeLabel">
+                <property name="text">
+                 <string>Image size: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="imageSizeWidget" native="true">
+                <property name="enabled">
+                 <bool>true</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_8">
+                   <item>
+                    <widget class="QWidget" name="sdfsdag_2" native="true">
+                     <property name="enabled">
+                      <bool>true</bool>
                      </property>
-                     <property name="decimals">
-                      <number>1</number>
-                     </property>
-                     <property name="minimum">
-                      <double>3.000000000000000</double>
-                     </property>
-                     <property name="maximum">
-                      <double>200.000000000000000</double>
-                     </property>
-                     <property name="value">
-                      <double>29.699999999999999</double>
-                     </property>
+                     <layout class="QFormLayout" name="formLayout_7">
+                      <property name="leftMargin">
+                       <number>25</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item row="0" column="1">
+                       <widget class="QSpinBox" name="imageHeight">
+                        <property name="suffix">
+                         <string> pixels</string>
+                        </property>
+                        <property name="minimum">
+                         <number>200</number>
+                        </property>
+                        <property name="maximum">
+                         <number>10000</number>
+                        </property>
+                        <property name="singleStep">
+                         <number>10</number>
+                        </property>
+                        <property name="value">
+                         <number>400</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QSpinBox" name="imageWidth">
+                        <property name="suffix">
+                         <string> pixels</string>
+                        </property>
+                        <property name="minimum">
+                         <number>200</number>
+                        </property>
+                        <property name="maximum">
+                         <number>10000</number>
+                        </property>
+                        <property name="singleStep">
+                         <number>20</number>
+                        </property>
+                        <property name="value">
+                         <number>600</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_2">
+                        <property name="text">
+                         <string>Height:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_7">
+                        <property name="text">
+                         <string>Width:</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
                    </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_8">
+                   <item>
+                    <widget class="QPushButton" name="imageSizeSwap">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>28</width>
+                       <height>28</height>
+                      </size>
+                     </property>
                      <property name="text">
-                      <string>Width:</string>
+                      <string/>
                      </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QDoubleSpinBox" name="sheetHeight">
-                     <property name="suffix">
-                      <string> cm</string>
+                     <property name="icon">
+                      <iconset resource="../ressources.qrc">
+                       <normaloff>:/icons/go&amp;return.png</normaloff>:/icons/go&amp;return.png</iconset>
                      </property>
-                     <property name="decimals">
-                      <number>1</number>
+                     <property name="iconSize">
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
                      </property>
-                     <property name="minimum">
-                      <double>3.000000000000000</double>
-                     </property>
-                     <property name="maximum">
-                      <double>200.000000000000000</double>
-                     </property>
-                     <property name="value">
-                      <double>21.000000000000000</double>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="label_6">
-                     <property name="text">
-                      <string>Height:</string>
+                     <property name="flat">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="sheetSizeSwap">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>28</width>
-                    <height>28</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="../ressources.qrc">
-                    <normaloff>:/icons/go&amp;return.png</normaloff>:/icons/go&amp;return.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>24</width>
-                    <height>24</height>
-                   </size>
-                  </property>
-                  <property name="flat">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="khdgldhf" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="A3">
-                  <property name="maximumSize">
-                   <size>
-                    <width>35</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>A3</string>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="autoExclusive">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="A4">
-                  <property name="maximumSize">
-                   <size>
-                    <width>35</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>A4</string>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                  <property name="autoExclusive">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="A5">
-                  <property name="maximumSize">
-                   <size>
-                    <width>35</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>A5</string>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="autoExclusive">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="customSize">
-                  <property name="text">
-                   <string>Custom</string>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="autoExclusive">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="orientationSelector">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <item>
+                 </item>
+                 <item>
+                  <layout class="QFormLayout" name="formLayout_18">
+                   <property name="leftMargin">
+                    <number>25</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>35</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_14">
+                     <property name="text">
+                      <string>Margins:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QSpinBox" name="imageMargin">
+                     <property name="suffix">
+                      <string> pixels</string>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
+                     <property name="value">
+                      <number>5</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Landscape</string>
+                 <string>Figure size:</string>
                 </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Portrait</string>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="sheetFigureSizeWidget" native="true">
+                <layout class="QFormLayout" name="formLayout_2">
+                 <property name="leftMargin">
+                  <number>25</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Height</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QDoubleSpinBox" name="sheetFigureHeight">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="suffix">
+                    <string> cm</string>
+                   </property>
+                   <property name="decimals">
+                    <number>1</number>
+                   </property>
+                   <property name="minimum">
+                    <double>10.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>21.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.500000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>21.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>Width</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QDoubleSpinBox" name="sheetFigureWidth">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="suffix">
+                    <string> cm</string>
+                   </property>
+                   <property name="decimals">
+                    <number>1</number>
+                   </property>
+                   <property name="minimum">
+                    <double>10.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>29.699999999999999</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.500000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>29.699999999999999</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="imageFigureSizeWidget" native="true">
+                <layout class="QFormLayout" name="formLayout_9">
+                 <property name="leftMargin">
+                  <number>25</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_16">
+                   <property name="text">
+                    <string>Height</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_19">
+                   <property name="text">
+                    <string>Width</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QSpinBox" name="imageFigureHeight">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="suffix">
+                    <string> pixels</string>
+                   </property>
+                   <property name="maximum">
+                    <number>390</number>
+                   </property>
+                   <property name="value">
+                    <number>390</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QSpinBox" name="imageFigureWidth">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="suffix">
+                    <string> pixels</string>
+                   </property>
+                   <property name="maximum">
+                    <number>590</number>
+                   </property>
+                   <property name="value">
+                    <number>590</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="widget_5" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
-               </item>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="sheetMarginWidget" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <layout class="QFormLayout" name="formLayout_3">
-                <property name="leftMargin">
-                 <number>0</number>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <item>
+                  <widget class="QLabel" name="pathLabel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Save as :</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="fileName">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="chooseLocation">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>...</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
                 </property>
-                <property name="topMargin">
-                 <number>0</number>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>37</height>
+                 </size>
                 </property>
-                <property name="rightMargin">
-                 <number>31</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label_3">
-                  <property name="text">
-                   <string>Margins:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="sheetMargin">
-                  <property name="suffix">
-                   <string> cm</string>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>5.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
            </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="imageSizeLabel">
-            <property name="text">
-             <string>Image size: </string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="imageSizeWidget" native="true">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_14">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_8">
-               <item>
-                <widget class="QWidget" name="sdfsdag_2" native="true">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <layout class="QFormLayout" name="formLayout_7">
-                  <property name="leftMargin">
-                   <number>25</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                  <item row="0" column="1">
-                   <widget class="QSpinBox" name="imageHeight">
-                    <property name="suffix">
-                     <string> pixels</string>
-                    </property>
-                    <property name="minimum">
-                     <number>200</number>
-                    </property>
-                    <property name="maximum">
-                     <number>10000</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>10</number>
-                    </property>
-                    <property name="value">
-                     <number>400</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1">
-                   <widget class="QSpinBox" name="imageWidth">
-                    <property name="suffix">
-                     <string> pixels</string>
-                    </property>
-                    <property name="minimum">
-                     <number>200</number>
-                    </property>
-                    <property name="maximum">
-                     <number>10000</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>20</number>
-                    </property>
-                    <property name="value">
-                     <number>600</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_2">
-                    <property name="text">
-                     <string>Height:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="label_7">
-                    <property name="text">
-                     <string>Width:</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="imageSizeSwap">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>28</width>
-                   <height>28</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../ressources.qrc">
-                   <normaloff>:/icons/go&amp;return.png</normaloff>:/icons/go&amp;return.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="flat">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QFormLayout" name="formLayout_18">
-               <property name="leftMargin">
-                <number>25</number>
-               </property>
-               <property name="rightMargin">
-                <number>35</number>
-               </property>
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_14">
-                 <property name="text">
-                  <string>Margins:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QSpinBox" name="imageMargin">
-                 <property name="suffix">
-                  <string> pixels</string>
-                 </property>
-                 <property name="maximum">
-                  <number>100</number>
-                 </property>
-                 <property name="value">
-                  <number>5</number>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Figure size:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="sheetFigureSizeWidget" native="true">
-            <layout class="QFormLayout" name="formLayout_2">
-             <property name="leftMargin">
-              <number>25</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Height</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QDoubleSpinBox" name="sheetFigureHeight">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="suffix">
-                <string> cm</string>
-               </property>
-               <property name="decimals">
-                <number>1</number>
-               </property>
-               <property name="minimum">
-                <double>10.000000000000000</double>
-               </property>
-               <property name="maximum">
-                <double>21.000000000000000</double>
-               </property>
-               <property name="singleStep">
-                <double>0.500000000000000</double>
-               </property>
-               <property name="value">
-                <double>21.000000000000000</double>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Width</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QDoubleSpinBox" name="sheetFigureWidth">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="suffix">
-                <string> cm</string>
-               </property>
-               <property name="decimals">
-                <number>1</number>
-               </property>
-               <property name="minimum">
-                <double>10.000000000000000</double>
-               </property>
-               <property name="maximum">
-                <double>29.699999999999999</double>
-               </property>
-               <property name="singleStep">
-                <double>0.500000000000000</double>
-               </property>
-               <property name="value">
-                <double>29.699999999999999</double>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <widget class="QWidget" name="imageFigureSizeWidget" native="true">
-            <layout class="QFormLayout" name="formLayout_9">
-             <property name="leftMargin">
-              <number>25</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>Height</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_19">
-               <property name="text">
-                <string>Width</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSpinBox" name="imageFigureHeight">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="suffix">
-                <string> pixels</string>
-               </property>
-               <property name="maximum">
-                <number>390</number>
-               </property>
-               <property name="value">
-                <number>390</number>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="imageFigureWidth">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="suffix">
-                <string> pixels</string>
-               </property>
-               <property name="maximum">
-                <number>590</number>
-               </property>
-               <property name="value">
-                <number>590</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <item>
-             <widget class="QLabel" name="pathLabel">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Save as :</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="fileName">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="chooseLocation">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>25</width>
-                <height>25</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
@@ -988,279 +1091,309 @@
          <attribute name="title">
           <string>Graph</string>
          </attribute>
-         <widget class="QGroupBox" name="legendBox">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>90</y>
-            <width>260</width>
-            <height>198</height>
-           </rect>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-          <property name="title">
-           <string>Legends</string>
+          <property name="topMargin">
+           <number>0</number>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <property name="rightMargin">
+           <number>0</number>
           </property>
-          <property name="checkable">
-           <bool>true</bool>
+          <property name="bottomMargin">
+           <number>0</number>
           </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>X axis :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="xLegend">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>25</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Y axis :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="yLegend">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>25</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <property name="topMargin">
-              <number>5</number>
-             </property>
-             <item>
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="bold">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">font-weight: bold;</string>
-               </property>
-               <property name="text">
-                <string notr="true">B</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="italic">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">font-style: italic;</string>
-               </property>
-               <property name="text">
-                <string notr="true">I</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="underline">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">text-decoration: underline;</string>
-               </property>
-               <property name="text">
-                <string notr="true">S</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <property name="topMargin">
-              <number>5</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Font size:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="legendSize">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>25</height>
-                </size>
-               </property>
-               <property name="minimum">
-                <number>10</number>
-               </property>
-               <property name="maximum">
-                <number>22</number>
-               </property>
-               <property name="value">
-                <number>12</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="layoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>256</width>
-            <height>27</height>
-           </rect>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
-           <item>
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>Significant digits:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="numPrec">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>25</height>
-              </size>
-             </property>
-             <property name="minimum">
-              <number>2</number>
-             </property>
-             <property name="maximum">
-              <number>8</number>
-             </property>
-             <property name="value">
-              <number>8</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_6">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string>Legends</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_11">
           <item>
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+           <widget class="QScrollArea" name="scrollArea_3">
+            <property name="widgetResizable">
+             <bool>true</bool>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
+            <widget class="QWidget" name="scrollAreaWidgetContents_3">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>296</width>
+               <height>699</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <item>
+               <widget class="QGroupBox" name="groupBox_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="title">
+                 <string>Graph view range</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_12">
+                 <item>
+                  <widget class="QCheckBox" name="checkBox">
+                   <property name="text">
+                    <string>Link range to main graph</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="graphRangeWidget" native="true">
+                   <layout class="QFormLayout" name="graphRangeForm"/>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="tickIntervalWidget" native="true">
+                   <layout class="QFormLayout" name="tickIntervalForm"/>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="groupBox">
+                <property name="title">
+                 <string>Axes appearance</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <item>
+                  <layout class="QFormLayout" name="axesAppearanceFormLayout">
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_13">
+                     <property name="text">
+                      <string>Significant digits:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QSpinBox" name="numPrec">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="minimum">
+                      <number>2</number>
+                     </property>
+                     <property name="maximum">
+                      <number>8</number>
+                     </property>
+                     <property name="value">
+                      <number>8</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="legendBox">
+                <property name="title">
+                 <string>Axes' titles</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <item>
+                  <layout class="QFormLayout" name="axeTitleFormLayout">
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_10">
+                     <property name="text">
+                      <string>X axis :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLineEdit" name="xLegend">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_11">
+                     <property name="text">
+                      <string>Y axis :</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLineEdit" name="yLegend">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_12">
+                     <property name="text">
+                      <string>Font size:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QSpinBox" name="legendSize">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="minimum">
+                      <number>10</number>
+                     </property>
+                     <property name="maximum">
+                      <number>22</number>
+                     </property>
+                     <property name="value">
+                      <number>12</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_9">
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <spacer name="horizontalSpacer_3">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="bold">
+                     <property name="maximumSize">
+                      <size>
+                       <width>30</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string notr="true">B</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="italic">
+                     <property name="maximumSize">
+                      <size>
+                       <width>30</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">font-style: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string notr="true">I</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="underline">
+                     <property name="maximumSize">
+                      <size>
+                       <width>30</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">text-decoration: underline;</string>
+                     </property>
+                     <property name="text">
+                      <string notr="true">S</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_4">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
           </item>
          </layout>
         </widget>
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="" native="true">
+       <widget class="QWidget" name="widget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <spacer name="horizontalSpacer_2">
@@ -1304,8 +1437,8 @@
    <item>
     <widget class="QWidget" name="widget32" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>1</horstretch>
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
@@ -1327,6 +1460,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustIgnored</enum>
+        </property>
         <property name="widgetResizable">
          <bool>false</bool>
         </property>
@@ -1336,8 +1472,8 @@
         <widget class="QWidget" name="scrollAreaWidgetContents_2">
          <property name="geometry">
           <rect>
-           <x>6</x>
-           <y>107</y>
+           <x>66</x>
+           <y>131</y>
            <width>372</width>
            <height>577</height>
           </rect>
@@ -1518,50 +1654,34 @@
  </resources>
  <connections>
   <connection>
-   <sender>vectorFormat</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>scalableWidget</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>114</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>50</x>
-     <y>188</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>imageFormat</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>imageWidget</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>109</x>
-     <y>216</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>32</x>
-     <y>253</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>customSize</sender>
    <signal>toggled(bool)</signal>
    <receiver>sheetSizeSubWidget</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>272</x>
-     <y>364</y>
+     <x>300</x>
+     <y>378</y>
     </hint>
     <hint type="destinationlabel">
-     <x>266</x>
-     <y>348</y>
+     <x>294</x>
+     <y>345</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>graphRangeWidget</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>109</x>
+     <y>194</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>206</y>
     </hint>
    </hints>
   </connection>

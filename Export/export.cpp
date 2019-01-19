@@ -37,6 +37,35 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     setWindowTitle(tr("Export"));
 
+    xTickInterval = new NumberLineEdit(false, info->getFuncsList());
+    yTickInterval = new NumberLineEdit(false, info->getFuncsList());
+
+    xMin = new NumberLineEdit(false, info->getFuncsList());
+    yMin = new NumberLineEdit(false, info->getFuncsList());
+
+    xMax = new NumberLineEdit(false, info->getFuncsList());
+    yMax = new NumberLineEdit(false, info->getFuncsList());
+
+    xTickInterval->setMaximumHeight(25);
+    yTickInterval->setMaximumHeight(25);
+    xMin->setMaximumHeight(25);
+    yMin->setMaximumHeight(25);
+    xMax->setMaximumHeight(25);
+    yMax->setMaximumHeight(25);
+
+    ui->axesAppearanceFormLayout->setWidget(1, QFormLayout::FieldRole, xTickInterval);
+    ui->axesAppearanceFormLayout->setWidget(2, QFormLayout::FieldRole, yTickInterval);
+
+    ui->graphRangeForm->addRow(new QLabel("x<sub>min</sub>"), xMin);
+    ui->graphRangeForm->addRow(new QLabel("x<sub>max</sub>"), xMax);
+
+    ui->graphRangeForm->addRow(new QLabel("y<sub>min</sub>"), yMin);
+    ui->graphRangeForm->addRow(new QLabel("y<sub>max</sub>"), yMax);
+
+    ui->tickIntervalForm->addRow(tr("x tick interval"), xTickInterval);
+    ui->tickIntervalForm->addRow(tr("y tick interval"), yTickInterval);
+
+    ui->graphRangeWidget->setEnabled(false);
     ui->sheetSizeSubWidget->setEnabled(false);
 
     orthonormal = false;
@@ -204,17 +233,30 @@ void Export::resizeEvent(QResizeEvent *event)
 
 void Export::constrainFigureSizeWidgets()
 {
+    const QSignalBlocker blocker(ui->sheetFigureHeight);
+    const QSignalBlocker blocker1(ui->sheetFigureWidth);
+
+    const QSignalBlocker blocker2(ui->imageFigureHeight);
+    const QSignalBlocker blocker3(ui->imageFigureWidth);
+
+    double smallest = ui->sheetHeight->value() < ui->sheetWidth->value() ? ui->sheetHeight->value() : ui->sheetWidth->value();
+    double minRelSize = exportPreview->getMinFigureRelativeSize();
+
+    ui->sheetMargin->setMaximum(smallest * (1 - minRelSize) / 2);
     ui->sheetFigureHeight->setMaximum(ui->sheetHeight->value() - 2 * ui->sheetMargin->value());
-    ui->sheetFigureHeight->setMinimum(ui->sheetHeight->value() - 2 * ui->sheetMargin->value());
+    ui->sheetFigureHeight->setMinimum(minRelSize * smallest);
 
     ui->sheetFigureWidth->setMaximum(ui->sheetWidth->value() - 2 * ui->sheetMargin->value());
-    ui->sheetFigureWidth->setMinimum(ui->sheetWidth->value() - 2 * ui->sheetMargin->value());
+    ui->sheetFigureWidth->setMinimum(minRelSize * smallest);
 
+    smallest = ui->imageHeight->value() < ui->imageWidth->value() ? ui->imageHeight->value() : ui->imageWidth->value();
+
+    ui->imageMargin->setMaximum(int(smallest * (1 - minRelSize) / 2));
     ui->imageFigureHeight->setMaximum(ui->imageHeight->value() - 2 * ui->imageMargin->value());
-    ui->imageFigureHeight->setMinimum(ui->imageHeight->value() - 2 * ui->imageMargin->value());
+    ui->imageFigureHeight->setMinimum(int(smallest * minRelSize));
 
     ui->imageFigureWidth->setMaximum(ui->imageWidth->value() - 2 * ui->imageMargin->value());
-    ui->imageFigureWidth->setMinimum(ui->imageWidth->value() - 2 * ui->imageMargin->value());
+    ui->imageFigureWidth->setMinimum(int(smallest * minRelSize));
 }
 
 void Export::getFileName()
@@ -238,6 +280,13 @@ void Export::enableExportButton()
 
 void Export::exportGraph()
 {
+    if(!fileName.isEmpty())
+        exportPreview->exportPDF(fileName, ui->customSize->isChecked() ? SheetSizeType::CUSTOM : SheetSizeType::NORMALISED);
+
+    else QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
+                                                                       "specified along with a destination folder.\n\n"
+                                                                       "Please specify them then try again."));
+
     ui->exportButton->setEnabled(false);
     timer.start();
 
@@ -245,12 +294,7 @@ void Export::exportGraph()
     {
         if(ui->scalableFormatSelection->currentText() == "PDF")
         {
-         if(!fileName.isEmpty())
-             exportPreview->exportPDF(fileName, ui->customSize->isChecked() ? SheetSizeType::CUSTOM : SheetSizeType::NORMALISED);
 
-         else QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
-                                                                            "specified along with a destination folder.\n\n"
-                                                                            "Please specify them then try again."));
         }
         else if(ui->scalableFormatSelection->currentText() == "SVG")
         {
@@ -313,7 +357,7 @@ void Export::onImageMarginChange()
 }
 
 void Export::onSheetSizeChange()
-{
+{   
     QPageLayout layout;
 
     if(ui->orientationSelector->currentIndex() == 0)
@@ -355,30 +399,28 @@ void Export::onSheetSizeChange()
         sheetSize = QSizeF(ui->sheetWidth->value(), ui->sheetHeight->value());
     }
 
-    ui->sheetHeight->blockSignals(true);
-    ui->sheetWidth->blockSignals(true);
+    const QSignalBlocker blocker(ui->sheetWidth);
+    const QSignalBlocker blocker2(ui->sheetHeight);
 
     ui->sheetWidth->setValue(sheetSize.width());
     ui->sheetHeight->setValue(sheetSize.height());
 
-    ui->sheetHeight->blockSignals(false);
-    ui->sheetWidth->blockSignals(false);
-
-
+    constrainFigureSizeWidgets();
 
     exportPreview->setSheetSizeCm(sheetSize);
 
     exportPreview->update();
 
-    constrainFigureSizeWidgets(); // should come after updating
 }
 
 void Export::onImageSizeChange()
 {
+    constrainFigureSizeWidgets();
+
     exportPreview->setImageSizePx(QSize(ui->imageWidth->value(), ui->imageHeight->value()));
     resizeExportPreview();
 
-    constrainFigureSizeWidgets();
+    exportPreview->update();
 }
 
 void Export::swapSheetHeightAndWidth()

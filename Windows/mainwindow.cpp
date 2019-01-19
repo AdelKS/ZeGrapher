@@ -25,18 +25,19 @@ MainWindow::MainWindow()
 {
     information = new Information();
 
-    settingsWin = new Settings(information, this);
-    rangeWin = new RangeAdjustments(information, this);
+    settingsWin = new Settings(information, this);    
     inputWin = new MathObjectsInput(information, this);
+    // RangeWin should be instanced after inputWin, because needs information->getFuncsList(), updated by inputWin
+    rangeWin = new RangeAdjustments(information->getFuncsList(), information->getGraphRange(),
+                                    information->getGraphTickIntervals(), this);
     aboutWin = new about(this);
     updateCheckWin = new UpdateCheck(this);
     valuesWin = new Values(information, this);
     exportWin = new Export(information, this);
     keyboard = new Keyboard();
-    mathInputDockWidget = new QDockWidget(this);
+    mathInputDockWidget = new QDockWidget(tr("Math objects input"), this);
 
-    scene = new MainGraph(information); // it has to be the last thing to create.
-
+    mainGraph = new MainGraph(information); // it has to be the last thing to create.
 
     mathInputDockWidget->setWidget(inputWin);
     addDockWidget(Qt::LeftDockWidgetArea, mathInputDockWidget);
@@ -47,11 +48,7 @@ MainWindow::MainWindow()
 
     createMenus();
 
-    window.Xmax = window.Ymax = 10;
-    window.Xmin = window.Ymin = -10;
-    window.Xstep = window.Ystep = 1;
-
-    setCentralWidget(scene);
+    setCentralWidget(mainGraph);
 
     makeConnects();
 
@@ -190,7 +187,19 @@ void MainWindow::saveWindowsGeometry()
 void MainWindow::makeConnects()
 {
     connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
-    connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
+    connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));    
+
+    connect(rangeWin, SIGNAL(graphRangeChanged(GraphRange)), mainGraph, SLOT(setGraphRange(GraphRange)));
+    connect(rangeWin, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), mainGraph, SLOT(setGraphTickIntervals(GraphTickIntervals)));
+
+    connect(mainGraph, SIGNAL(graphRangeChanged(GraphRange)), rangeWin, SLOT(setGraphRange(GraphRange)));
+    connect(mainGraph, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), rangeWin, SLOT(setGraphTickIntervals(GraphTickIntervals)));
+
+    connect(rangeWin, SIGNAL(graphRangeChanged(GraphRange)), information, SLOT(setGraphRange(GraphRange)));
+    connect(rangeWin, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), information, SLOT(setGraphTickIntervals(GraphTickIntervals)));
+
+    connect(mainGraph, SIGNAL(graphRangeChanged(GraphRange)), information, SLOT(setGraphRange(GraphRange)));
+    connect(mainGraph, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), information, SLOT(setGraphTickIntervals(GraphTickIntervals)));
 }
 
 void MainWindow::showAboutQtWin()

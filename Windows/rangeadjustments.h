@@ -39,27 +39,30 @@ class RangeAdjustments : public QWidget
     Q_OBJECT
 
 public:
-    explicit RangeAdjustments(Information *info, QWidget *parent = 0);
+    explicit RangeAdjustments(QList<FuncCalculator *> funcsList, GraphRange graphRange, GraphTickIntervals tickIntervals, QWidget *parent = nullptr);
     ~RangeAdjustments();
 
 public slots:
-    void resetToStandardView();
-    void updateWidgets();
+    void resetToStandardView();   
+    void setGraphRange(GraphRange range);
+    void setGraphTickIntervals(GraphTickIntervals tickIntervals);
 
+protected slots:
+    void onRangeChange();
+    void onTickIntervalChange();
 
-private slots:
     void standardView();
-    void orthonormal(bool state);
-    void apply();
+    void setOrthonormal(bool state);
 
 signals:
-    void newWindow(GraphRange window);//FIXME never emitted
-    void orthonormalBasis(bool state);
+    void graphRangeChanged(GraphRange range);
+    void graphTickIntervalsChanged(GraphTickIntervals tickIntervals);
+    void orthonormalBasisToggled(bool state);
 
 private:
-
+    GraphRange graphRange;
+    GraphTickIntervals tickIntervals;
     NumberLineEdit *Xmin, *Xmax, *Xstep, *Ymin, *Ymax, *Ystep;
-    Information *information;
     Ui::RangeAdjustments *ui;
     QMessageBox *messageBox;    
     ExprCalculator *calculator;
