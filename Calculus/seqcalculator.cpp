@@ -41,7 +41,7 @@ SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) : treeCre
     custom_k = 0;
     k = 0;
     drawState = true;
-    seqTree = NULL;
+    seqTree = nullptr;
 
     addRefFuncsPointers();
 
@@ -76,7 +76,7 @@ bool SeqCalculator::validateSeqExpr(QString expr)
     drawsNum = 1;
     seqValues.clear();
 
-    if(seqTree != NULL)
+    if(seqTree != nullptr)
         treeCreator.deleteFastTree(seqTree);
 
     seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);

@@ -1130,25 +1130,15 @@
                 <property name="title">
                  <string>Graph view range</string>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_12">
+                <layout class="QVBoxLayout" name="graphViewLayout">
                  <item>
-                  <widget class="QCheckBox" name="checkBox">
+                  <widget class="QCheckBox" name="linkToMainGraph">
                    <property name="text">
                     <string>Link range to main graph</string>
                    </property>
                    <property name="checked">
                     <bool>true</bool>
                    </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QWidget" name="graphRangeWidget" native="true">
-                   <layout class="QFormLayout" name="graphRangeForm"/>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QWidget" name="tickIntervalWidget" native="true">
-                   <layout class="QFormLayout" name="tickIntervalForm"/>
                   </widget>
                  </item>
                 </layout>
@@ -1387,7 +1377,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="widget1" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -1666,22 +1656,6 @@
     <hint type="destinationlabel">
      <x>294</x>
      <y>345</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>graphRangeWidget</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>109</x>
-     <y>194</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>99</x>
-     <y>206</y>
     </hint>
    </hints>
   </connection>

@@ -21,28 +21,13 @@
 
 #include "numberlineedit.h"
 
-NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) : calculator(allowK, otherFuncs)
+NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) : ExpressionLineEdit(), calculator(allowK, otherFuncs)
 {
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
-
     valid = false;
     value = nan("");
 
     connect(this, SIGNAL(returnPressed()), this, SLOT(checkVal()));
     connect(this, SIGNAL(editingFinished()), this, SLOT(checkVal()));
-}
-
-void NumberLineEdit::clear()
-{
-    setPalette(neutralPalette);
-    QLineEdit::clear();
 }
 
 bool NumberLineEdit::isValid()
@@ -55,11 +40,11 @@ double NumberLineEdit::getValue()
     return value;
 }
 
-void NumberLineEdit::setNumber(double num)
+void NumberLineEdit::setValue(double value)
 {
-    setText(QString::number(num));
-    value = num;
-    setPalette(validPalette);
+    setText(QString::number(value));
+    value = value;
+    setValid();
     valid = true;
 }
 
@@ -68,7 +53,7 @@ void NumberLineEdit::checkVal()
     valid = false;
     if(text().isEmpty())
     {
-        setPalette(neutralPalette);
+        setNeutral();
         return;
     }
 
@@ -77,10 +62,10 @@ void NumberLineEdit::checkVal()
 
     if(ok)
     {
-        setNumber(num);
+        setValue(num);
         value = num;
         valid = true;
         emit newVal(num);
     }
-    else setPalette(invalidPalette);    
+    else setInvalid();
 }

@@ -28,9 +28,9 @@ ValuesTable::ValuesTable(Information *info, QWidget *parent) :
 {    
     infoClass = info;
 
-    seqTable = NULL;
-    parEqTable = NULL;
-    funcTable = NULL;
+    seqTable = nullptr;
+    parEqTable = nullptr;
+    funcTable = nullptr;
 
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setMargin(0);
@@ -81,9 +81,9 @@ void ValuesTable::emitRemoveSignal()
 
 void ValuesTable::previous()
 {
-    if(funcTable != NULL)
+    if(funcTable != nullptr)
         funcTable->close();
-    else if(seqTable != NULL)
+    else if(seqTable != nullptr)
         seqTable->close();
     else parEqTable->close();
 
@@ -98,7 +98,7 @@ void ValuesTable::apply(ValuesTableParameters parameters)
 
     if(parameters.funcType == FUNCTION)
     {
-        if(funcTable == NULL)
+        if(funcTable == nullptr)
         {
             funcTable = new FuncTable(infoClass);
             containerLayout->addWidget(funcTable);
@@ -110,20 +110,20 @@ void ValuesTable::apply(ValuesTableParameters parameters)
         funcTable->setTableParameters(parameters);
         funcTable->show();
 
-        if(seqTable != NULL)
+        if(seqTable != nullptr)
         {
             delete seqTable;
-            seqTable = NULL;
+            seqTable = nullptr;
         }
-        else if(parEqTable != NULL)
+        else if(parEqTable != nullptr)
         {
             delete parEqTable;
-            parEqTable = NULL;
+            parEqTable = nullptr;
         }
     }
     else if(parameters.funcType == SEQUENCE)
     {
-        if(seqTable == NULL)
+        if(seqTable == nullptr)
         {
             seqTable = new SeqTable(infoClass);
             containerLayout->addWidget(seqTable);
@@ -136,20 +136,20 @@ void ValuesTable::apply(ValuesTableParameters parameters)
 
         setFixedWidth(310);
 
-        if(funcTable != NULL)
+        if(funcTable != nullptr)
         {
             delete funcTable;
-            funcTable = NULL;
+            funcTable = nullptr;
         }
-        else if(parEqTable != NULL)
+        else if(parEqTable != nullptr)
         {
             delete parEqTable;
-            parEqTable = NULL;
+            parEqTable = nullptr;
         }
     }
     else
     {
-        if(parEqTable == NULL)
+        if(parEqTable == nullptr)
         {
             parEqTable = new ParEqTable(infoClass);
             containerLayout->addWidget(parEqTable);
@@ -162,15 +162,15 @@ void ValuesTable::apply(ValuesTableParameters parameters)
 
         setFixedWidth(460);
 
-        if(funcTable != NULL)
+        if(funcTable != nullptr)
         {
             delete funcTable;
-            funcTable = NULL;
+            funcTable = nullptr;
         }
-        else if(seqTable != NULL)
+        else if(seqTable != nullptr)
         {
             delete seqTable;
-            seqTable = NULL;
+            seqTable = nullptr;
         }
 
     }

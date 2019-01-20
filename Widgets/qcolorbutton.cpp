@@ -40,9 +40,7 @@ void QColorButton::openColorDialog()
 void QColorButton::setColor(QColor color)
 {
     currentColor = color;
-    setStyleSheet("background-color:"+color.name()+"; border-width: 1px; border-color: #787878 ; border-style: solid; "
-                                                   "border-top-right-radius: 8; border-bottom-left-radius: 8;"
-                                                   "border-top-left-radius: 2; border-bottom-right-radius: 2;");
+    setStyleSheet("background-color:" + color.name() + "; border-width: 1px; border-color: #787878 ; border-style: solid; border-radius: 8px");
 
     emit colorChanged(currentColor);
 }

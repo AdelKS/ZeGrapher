@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>380</width>
-    <height>400</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -108,7 +108,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>318</height>
+            <height>320</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="Layout_2">
@@ -214,7 +214,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>318</height>
+            <height>320</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -361,7 +361,7 @@
             <x>0</x>
             <y>0</y>
             <width>497</width>
-            <height>320</height>
+            <height>322</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -391,7 +391,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>495</width>
-                <height>318</height>
+                <height>320</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -494,7 +494,6 @@
                 </spacer>
                </item>
               </layout>
-              <zorder></zorder>
              </widget>
             </widget>
            </item>
@@ -532,7 +531,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>318</height>
+            <height>320</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -774,7 +773,7 @@
             <x>0</x>
             <y>0</y>
             <width>495</width>
-            <height>318</height>
+            <height>320</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -929,9 +928,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>tabWidget</zorder>
-  <zorder>widget</zorder>
-  <zorder></zorder>
  </widget>
  <resources>
   <include location="../ressources.qrc"/>

@@ -51,7 +51,7 @@ public slots:
     void checkCalledFuncsParametric();
 
 protected slots:
-    void resetToNeutralPalette();
+    void resetToNeutralState();
     void checkExprLineEdit();
 
 signals:

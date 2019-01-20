@@ -47,18 +47,19 @@ public:
     explicit MainWindow();
     ~MainWindow();
 
+protected slots:
+    void showAboutQtWin();
+
 protected:
     void closeEvent(QCloseEvent *evenement);
+
+    void createDocks();
     void makeConnects();
     void createMenus();
     void createZoomWidgets();
     void loadWindowSavedGeomtries();
     void saveWindowsGeometry();
 
-protected slots:
-    void showAboutQtWin();
-
-private:
 
     Information *information;
     MainGraph *mainGraph;
@@ -71,9 +72,8 @@ private:
     Export *exportWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
-    QDockWidget *mathInputDockWidget;
-    //ImagePreview *winImageScene;
-    //PrintPreview *winPrintScene;
+    QDockWidget *mathInputDock, *rangeWinDock;
+
     QSettings settings;
 
 };

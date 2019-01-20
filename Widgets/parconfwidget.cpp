@@ -31,13 +31,13 @@ ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKee
     defaultRange.start = 0;
     defaultRange.step = 1;
     defaultRange.end = 0.5;
-    keepTracks = NULL;
+    keepTracks = nullptr;
 
     QHBoxLayout *widgetsLayout = new QHBoxLayout;
     widgetsLayout->setSpacing(3);
     addConfWidgets(widgetsLayout);
 
-    startTree = endTree = stepTree = NULL;
+    startTree = endTree = stepTree = nullptr;
     kState = valid = isStepGood = isEndGood = isStartGood = false;
 
     QColor color;
@@ -140,7 +140,7 @@ void ParConfWidget::updateTreeWithExpr(QString &lastExpr, QLineEdit *line, FastT
 
         if(isExprGood)
         {
-            if(*treePointerAdress != NULL)
+            if(*treePointerAdress != nullptr)
                 treeCreator.deleteFastTree(*treePointerAdress);
 
             *treePointerAdress = treeCreator.getTreeFromExpr(lastExpr, isExprGood);
@@ -179,7 +179,7 @@ void ParConfWidget::validate()
 void ParConfWidget::setAnimationEnabled(bool enabled)
 {
     animate->setEnabled(enabled);
-    if(keepTracks != NULL)
+    if(keepTracks != nullptr)
         keepTracks->setEnabled(enabled);
 }
 
@@ -215,11 +215,11 @@ Range ParConfWidget::getRange(double k)
 
 ParConfWidget::~ParConfWidget()
 {
-    if(stepTree != NULL)
+    if(stepTree != nullptr)
         treeCreator.deleteFastTree(stepTree);
-    if(endTree != NULL)
+    if(endTree != nullptr)
         treeCreator.deleteFastTree(endTree);
-    if(startTree != NULL)
+    if(startTree != nullptr)
         treeCreator.deleteFastTree(startTree);
 
     delete calculator;

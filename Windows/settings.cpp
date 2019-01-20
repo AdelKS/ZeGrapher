@@ -34,21 +34,17 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
 
     setWindowIcon(QIcon(":/icons/settings.png"));
 
-    axesColorButton = new QColorButton(Qt::black);
-    axesColorButton->setFixedSize(20,20);
+    axesColorButton = new QColorButton(Qt::black);   
     ui->formLayout->addRow(tr("Axes color:"), axesColorButton);
 
-    backgroundColorButton = new QColorButton(Qt::white);
-    backgroundColorButton->setFixedSize(20,20);
+    backgroundColorButton = new QColorButton(Qt::white); 
     ui->formLayout->addRow(tr("Background color:"), backgroundColorButton);
 
 
-    gridColorButton = new QColorButton(Qt::gray);
-    gridColorButton->setFixedSize(20,20);
+    gridColorButton = new QColorButton(Qt::gray);  
     ui->formLayout->addRow(tr("Grid color:"), gridColorButton);
 
-    defaultColorButton = new QColorButton(Qt::black);
-    defaultColorButton->setFixedSize(20,20);
+    defaultColorButton = new QColorButton(Qt::black);  
     ui->formLayout->addRow(tr("Curve default color:"), defaultColorButton);
 
     readSavedSettings();

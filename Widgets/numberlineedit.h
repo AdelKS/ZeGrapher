@@ -22,23 +22,24 @@
 #ifndef NUMBERLINEEDIT_H
 #define NUMBERLINEEDIT_H
 
-#include <QLineEdit>
 
 #include "Calculus/exprcalculator.h"
 #include "Calculus/funccalculator.h"
+#include "Widgets/expressionlineedit.h"
 
-class NumberLineEdit : public QLineEdit
+
+class NumberLineEdit : public ExpressionLineEdit
 {
     Q_OBJECT
 
 public:
     NumberLineEdit(bool allowK = false, QList<FuncCalculator*> otherFuncs = QList<FuncCalculator*>());
-    void setNumber(double num);
+
+    void setValue(double value);
     bool isValid();
     double getValue();
 
 public slots:
-    void clear();
     void checkVal();
 
 signals:
@@ -48,7 +49,7 @@ protected:
     ExprCalculator calculator;
     bool valid;
     double value;
-    QPalette validPalette, invalidPalette, neutralPalette;
+
 };
 
 #endif // NUMBERLINEEDIT_H

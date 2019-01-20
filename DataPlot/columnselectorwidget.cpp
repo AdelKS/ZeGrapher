@@ -42,7 +42,7 @@ ColumnSelectorWidget::ColumnSelectorWidget(int count, int xindex, int yindex, in
     selector.image.load(":icons/selector.png");
 
 
-    draggedSelector = NULL;
+    draggedSelector = nullptr;
 
     selectors << &xselector << &yselector << &selector;
 

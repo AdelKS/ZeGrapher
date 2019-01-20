@@ -64,5 +64,6 @@
         <file>Help/pins_en.png</file>
         <file>Help/polynomialCoefVals_en.png</file>
         <file>ZeGrapher_fr.qm</file>
+        <file>icons/orthonormalView.svg</file>
     </qresource>
 </RCC>

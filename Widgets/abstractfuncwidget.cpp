@@ -26,18 +26,7 @@
 AbstractFuncWidget::AbstractFuncWidget() : treeCreator(ObjectType::FUNCTION)
 {
     isParametric = isValid = false;
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-     validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
-
     addMainWidgets();
-
 }
 
 void AbstractFuncWidget::addMainWidgets()
@@ -53,7 +42,7 @@ void AbstractFuncWidget::addMainWidgets()
 
     nameLabel = new QLabel;
 
-    expressionLineEdit = new QLineEdit;
+    expressionLineEdit = new ExpressionLineEdit();
     expressionLineEdit->setMaximumHeight(25);
 
     connect(expressionLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));   

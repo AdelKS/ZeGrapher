@@ -29,6 +29,7 @@
 #include "Calculus/seqcalculator.h"
 #include "Calculus/colorsaver.h"
 #include "Widgets/funcwidget.h"
+#include "Widgets/expressionlineedit.h"
 
 class SeqWidget : public AbstractFuncWidget
 {
@@ -65,7 +66,7 @@ protected:
     QList<FuncWidget*> funcWidgets;
     QList<SeqWidget*> seqWidgets;
     SeqCalculator *calculator;
-    QLineEdit *firstValsLine;
+    ExpressionLineEdit *firstValsLine;
     ColorSaver colorSaver;
     QChar seqName;
     Range defaultRange;

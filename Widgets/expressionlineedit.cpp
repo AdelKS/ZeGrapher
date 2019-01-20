@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,38 +18,38 @@
 **
 ****************************************************************************/
 
+#include "expressionlineedit.h"
 
-
-#ifndef ABSTRACTFUNCWIDGET_H
-#define ABSTRACTFUNCWIDGET_H
-
-#include "structures.h"
-#include "parconfwidget.h"
-#include "qcolorbutton.h"
-#include "Widgets/expressionlineedit.h"
-
-class AbstractFuncWidget : public QWidget
+ExpressionLineEdit::ExpressionLineEdit()
 {
-    Q_OBJECT
-public:
-    explicit AbstractFuncWidget();
+    validCSS = "padding-left: 5px; border-radius: 5px; background-color: " + QString(VALID_COLOR) + ";";
+    invalidCSS = "padding-left: 5px; border-radius: 5px; background-color: " + QString(INVALID_COLOR) + ";";
+    neutralCSS = "padding-left: 5px; border-radius: 5px;" ;
 
-signals:
-    void returnPressed();
+    setStyleSheet(neutralCSS);
+}
 
-protected:
-    void addMainWidgets();
+void ExpressionLineEdit::clear()
+{
+    setStyleSheet(neutralCSS);
+    QLineEdit::clear();
+}
 
-    QCheckBox *drawCheckBox;
-    QHBoxLayout *secondContainerLayout;
-    QLabel *nameLabel, *errorMessageLabel;
-    QWidget *errorMessageWidget;
-    ExpressionLineEdit *expressionLineEdit;
-    QColorButton *colorButton, *secondColorButton;
-    ParConfWidget *kConfWidget;
-    TreeCreator treeCreator;
+void ExpressionLineEdit::setValid()
+{
+    setStyleSheet(validCSS);
+}
 
-    bool isParametric, isValid;
-};
+void ExpressionLineEdit::setInvalid()
+{
+    setStyleSheet(invalidCSS);
+}
 
-#endif // ABSTRACTFUNCWIDGET_H
+void ExpressionLineEdit::setNeutral()
+{
+    setStyleSheet(neutralCSS);
+}
+
+
+
+

@@ -43,15 +43,15 @@ FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(),
 
     connect(colorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setFristColor(QColor)));
     connect(secondColorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setLastColor(QColor)));
-    connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(resetToNeutralPalette()));
+    connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(resetToNeutralState()));
     connect(drawCheckBox, SIGNAL(toggled(bool)), calculator, SLOT(setDrawState(bool)));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(checkExprLineEdit()));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(checkCalledFuncsParametric()));
 }
 
-void FuncWidget::resetToNeutralPalette()
+void FuncWidget::resetToNeutralState()
 {
-    expressionLineEdit->setPalette(neutralPalette);
+    expressionLineEdit->setNeutral();
 }
 
  void FuncWidget::checkCalledFuncsParametric()
@@ -95,7 +95,7 @@ void FuncWidget::updateParametricState()
 
 void FuncWidget::checkExprLineEdit()
 {
-     expressionLineEdit->setPalette(neutralPalette);
+     expressionLineEdit->setNeutral();
 
      bool oldIsExprParametric = isExprParametric;
 
@@ -142,8 +142,8 @@ void FuncWidget::firstValidation()
     colorSaver.setCurvesNum(trunc((range.end - range.start)/range.step) + 1);
 
     if(isValid)
-        expressionLineEdit->setPalette(validPalette);
-    else expressionLineEdit->setPalette(invalidPalette);
+        expressionLineEdit->setValid();
+    else expressionLineEdit->setInvalid();
 
     isValid = isValid && validateIntegrationPoints() && (!isParametric || kConfWidget->isValid());
 }

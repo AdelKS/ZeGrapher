@@ -230,9 +230,9 @@ void ImagePreview::drawTicksAndNumbers()
 
     double space, pos;
 
-    double Xpos = ceil(graphRange.Xmin / tickInterval.x) * tickInterval.x * uniteX;
+    double Xpos = ceil(graphRange.Xmin / tickIntervals.x) * tickIntervals.x * uniteX;
     double end = graphRange.Xmax * uniteX;
-    double step = tickInterval.x * uniteX;
+    double step = tickIntervals.x * uniteX;
 
     QString num;
 
@@ -272,8 +272,8 @@ void ImagePreview::drawTicksAndNumbers()
 //trace sur l'axe des Y
 
 
-    double Ypos = ceil(graphRange.Ymin / tickInterval.y) * tickInterval.y * uniteY;
-    step = tickInterval.y * uniteY;
+    double Ypos = ceil(graphRange.Ymin / tickIntervals.y) * tickIntervals.y * uniteY;
+    step = tickIntervals.y * uniteY;
     end = graphRange.Ymax * uniteY;
 
     int largestWidth = 0;

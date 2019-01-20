@@ -73,7 +73,7 @@ void TreeCreator::refreshAuthorizedVars()
 
 FastTree* TreeCreator::getTreeFromExpr(QString expr, bool &ok, QStringList additionnalVars)
 {    
-    FastTree *tree = NULL;
+    FastTree *tree = nullptr;
 
     customVars = additionnalVars;
 
@@ -351,9 +351,9 @@ bool TreeCreator::check(QString formula)
 FastTree* TreeCreator::createFastTree(int debut, int fin)
 {
     FastTree *root = new FastTree;
-    root->right = NULL;
-    root->left = NULL;
-    root->value = NULL;
+    root->right = nullptr;
+    root->left = nullptr;
+    root->value = nullptr;
 
     short pths = 0, closingPthPos = 0, openingPthPos = 0;
     bool debutPthFerme = false;
@@ -414,9 +414,9 @@ FastTree* TreeCreator::createFastTree(int debut, int fin)
 void TreeCreator::deleteFastTree(FastTree *tree)
 {
     delete tree->value;
-    if(tree->left != NULL)
+    if(tree->left != nullptr)
         deleteFastTree(tree->left);
-    if(tree->right != NULL)
+    if(tree->right != nullptr)
         deleteFastTree(tree->right);
     delete tree;
 }

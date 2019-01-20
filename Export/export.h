@@ -24,7 +24,7 @@
 
 #include <QWidget>
 #include "GraphDraw/exportpreview.h"
-#include "Widgets/numberlineedit.h"
+#include "Windows/rangeadjustments.h"
 
 namespace Ui {
     class Export;
@@ -70,7 +70,7 @@ protected slots:
 
 protected:    
     void resizeEvent(QResizeEvent *event);
-    NumberLineEdit *xTickInterval, *yTickInterval, *xMin, *xMax, *yMin, *yMax;
+    RangeAdjustments *rangeWidget;
     Ui::Export *ui;
     QTabWidget *tabWidget;
     ExportPreview *exportPreview;

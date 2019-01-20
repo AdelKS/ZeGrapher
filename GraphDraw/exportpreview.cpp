@@ -58,6 +58,10 @@ void ExportPreview::updateTargetSupportSizePx()
 void ExportPreview::initialise()
 {
     graphSettings.distanceBetweenPoints = information->getSettingsVals().distanceBetweenPoints;
+
+    graphRange = information->getGraphRange();
+    tickIntervals = information->getGraphTickIntervals();
+
     orientation = QPageLayout::Landscape;
     moveType = NOTHING;
     setMouseTracking(true);
@@ -576,12 +580,11 @@ void ExportPreview::wheelEvent(QWheelEvent *event)
     Q_UNUSED(event);
 }
 
-void ExportPreview::setGraphRange(const GraphRange &range)
+void ExportPreview::setGraphRange(GraphRange range)
 {
     graphRange = range;
 }
-void ExportPreview::setGraphTickIntervals(double xTickInterval, double yTickInterval)
+void ExportPreview::setGraphTickIntervals(GraphTickIntervals tickIntervals)
 {
-    tickInterval.x = xTickInterval;
-    tickInterval.y = yTickInterval;
+    this->tickIntervals = tickIntervals;
 }

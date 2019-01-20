@@ -24,8 +24,7 @@
 #include "Windows/rangeadjustments.h"
 #include "ui_rangeadjustments.h"
 
-RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange graphRange,
-                                   GraphTickIntervals tickIntervals, QWidget *parent): QWidget(parent)
+RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange graphRange, GraphTickIntervals tickIntervals, QWidget *parent): QWidget(parent)
 {
     this->graphRange = graphRange;
     this->tickIntervals = tickIntervals;
@@ -39,27 +38,27 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange 
 
     Xmin = new NumberLineEdit(false, funcsList);
     Xmin->setMaximumHeight(27);
-    Xmin->setNumber(graphRange.Xmin);
+    Xmin->setValue(graphRange.Xmin);
 
     Xmax = new NumberLineEdit(false, funcsList);
     Xmax->setMaximumHeight(27);
-    Xmax->setNumber(graphRange.Xmax);
+    Xmax->setValue(graphRange.Xmax);
 
     Xstep = new NumberLineEdit(false, funcsList);
     Xstep->setMaximumHeight(27);
-    Xstep->setNumber(tickIntervals.x);
+    Xstep->setValue(tickIntervals.x);
 
     Ymin = new NumberLineEdit(false, funcsList);
     Ymin->setMaximumHeight(27);
-    Ymin->setNumber(graphRange.Ymin);
+    Ymin->setValue(graphRange.Ymin);
 
     Ymax = new NumberLineEdit(false, funcsList);
     Ymax->setMaximumHeight(27);
-    Ymax->setNumber(graphRange.Ymax);
+    Ymax->setValue(graphRange.Ymax);
 
     Ystep = new NumberLineEdit(false, funcsList);
     Ystep->setMaximumHeight(27);
-    Ystep->setNumber(tickIntervals.y);
+    Ystep->setValue(tickIntervals.y);
 
     ui->xForm->addRow(new QLabel("x<sub>min</sub>"), Xmin);
     ui->xForm->addRow(new QLabel("x<sub>max</sub>"), Xmax);
@@ -87,6 +86,24 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange 
     connect(ui->apply, SIGNAL(released()), this, SLOT(onTickIntervalChange()));
 }
 
+void RangeAdjustments::setMargin(int margin)
+{
+    ui->mainLayout->setMargin(margin);
+}
+
+void RangeAdjustments::hideViewOptions(bool hide)
+{
+    ui->viewOptionsWidget->setHidden(hide);
+}
+
+void RangeAdjustments::disableRangeWidgets(bool disable)
+{
+    Xmin->setDisabled(disable);
+    Xmax->setDisabled(disable);
+    Ymin->setDisabled(disable);
+    Ymax->setDisabled(disable);
+}
+
 void RangeAdjustments::setGraphRange(GraphRange range)
 {
     const QSignalBlocker blocker1(Xmin);
@@ -95,11 +112,11 @@ void RangeAdjustments::setGraphRange(GraphRange range)
     const QSignalBlocker blocker3(Ymin);
     const QSignalBlocker blocker4(Ymax);
 
-    Xmin->setNumber(range.Xmin);
-    Xmax->setNumber(range.Xmax);
+    Xmin->setValue(range.Xmin);
+    Xmax->setValue(range.Xmax);
 
-    Ymin->setNumber(range.Ymin);
-    Ymax->setNumber(range.Ymax);
+    Ymin->setValue(range.Ymin);
+    Ymax->setValue(range.Ymax);
 }
 
 void RangeAdjustments::setGraphTickIntervals(GraphTickIntervals tickIntervals)
@@ -107,8 +124,8 @@ void RangeAdjustments::setGraphTickIntervals(GraphTickIntervals tickIntervals)
     const QSignalBlocker blocker1(Xstep);
     const QSignalBlocker blocker2(Ystep);
 
-    Xstep->setNumber(tickIntervals.x);
-    Ystep->setNumber(tickIntervals.y);
+    Xstep->setValue(tickIntervals.x);
+    Ystep->setValue(tickIntervals.y);
 }
 
 void RangeAdjustments::onRangeChange()
@@ -123,7 +140,7 @@ void RangeAdjustments::onRangeChange()
         return;
 
     if(ui->orthonormal->isChecked())
-        Ystep->setNumber(Xstep->getValue());
+        Ystep->setValue(Xstep->getValue());
 
     GraphRange oldGraphRange = graphRange;
 
@@ -195,13 +212,13 @@ void RangeAdjustments::resetToStandardView()
 
 void RangeAdjustments::standardView()
 {
-    Xmax->setNumber(10);
-    Xmin->setNumber(-10);
-    Xstep->setNumber(1);
+    Xmax->setValue(10);
+    Xmin->setValue(-10);
+    Xstep->setValue(1);
 
-    Ymax->setNumber(10);
-    Ymin->setNumber(-10);
-    Ystep->setNumber(1);
+    Ymax->setValue(10);
+    Ymin->setValue(-10);
+    Ystep->setValue(1);
 }
 
 RangeAdjustments::~RangeAdjustments()

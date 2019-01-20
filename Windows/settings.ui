@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>409</height>
+    <width>320</width>
+    <height>426</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+   <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -36,13 +36,10 @@
     <normaloff>:/icons/settings.png</normaloff>:/icons/settings.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>3</number>
-   </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -50,7 +47,16 @@
      <property name="title">
       <string>Graph's settings:</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
      <layout class="QFormLayout" name="formLayout">
+      <property name="rowWrapPolicy">
+       <enum>QFormLayout::WrapLongRows</enum>
+      </property>
+      <property name="formAlignment">
+       <set>Qt::AlignHCenter|Qt::AlignTop</set>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="sizePolicy">
@@ -75,6 +81,12 @@
       </item>
       <item row="0" column="1">
        <widget class="QSpinBox" name="distanceWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -107,6 +119,12 @@
       </item>
       <item row="1" column="1">
        <widget class="QSpinBox" name="thicknessWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -131,7 +149,7 @@
       <item row="2" column="1">
        <widget class="QFontComboBox" name="graphFont">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -144,7 +162,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>210</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -165,6 +183,12 @@
       </item>
       <item row="3" column="1">
        <widget class="QSpinBox" name="graphFontSize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -194,6 +218,12 @@
       </item>
       <item row="4" column="1">
        <widget class="QCheckBox" name="smoothing">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>25</width>
@@ -217,7 +247,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -225,9 +255,12 @@
      <property name="title">
       <string>Application's settings:</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
      <layout class="QFormLayout" name="formLayout_2">
       <property name="rowWrapPolicy">
-       <enum>QFormLayout::DontWrapRows</enum>
+       <enum>QFormLayout::WrapLongRows</enum>
       </property>
       <property name="labelAlignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -244,6 +277,12 @@
       </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="updateCheckAtStart">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>25</width>
@@ -268,7 +307,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="languageComboBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -276,7 +315,7 @@
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>25</height>
+          <height>16777215</height>
          </size>
         </property>
         <item>
@@ -307,6 +346,12 @@
       </item>
       <item row="3" column="1">
        <widget class="QSpinBox" name="appFontSize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -327,14 +372,14 @@
       <item row="2" column="1">
        <widget class="QFontComboBox" name="appFontFamily">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="maximumSize">
          <size>
-          <width>180</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -347,9 +392,75 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="reset">
-     <property name="text">
-      <string>Reset</string>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="reset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
      </property>
     </widget>
    </item>

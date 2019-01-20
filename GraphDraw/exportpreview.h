@@ -68,8 +68,8 @@ public slots:
     void setSheetMarginCm(double sheetMarginCm);
     void setImageMarginPx(int imageMarginPx);
 
-    void setGraphRange(const GraphRange &range);
-    void setGraphTickIntervals(double xTickInterval, double yTickInterval);
+    void setGraphRange(GraphRange range);
+    void setGraphTickIntervals(GraphTickIntervals tickIntervals);
 
     void setScale(double scalingFactor);
 

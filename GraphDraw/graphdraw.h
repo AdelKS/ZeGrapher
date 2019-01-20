@@ -86,7 +86,7 @@ protected:
     QBrush brush;
     Point centre;
     GraphRange graphRange;
-    GraphTickIntervals tickInterval;
+    GraphTickIntervals tickIntervals;
 
     double coef;
 

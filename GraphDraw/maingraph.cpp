@@ -27,7 +27,7 @@
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {
     graphRange = info->getGraphRange();
-    tickInterval = info->getGraphTickIntervals();
+    tickIntervals = info->getGraphTickIntervals();
 
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));
@@ -529,7 +529,7 @@ void MainGraph::directPaint()
     if(updateTickSpacing())
     {
         cancelUpdateSignal = true;
-        emit graphTickIntervalsChanged(tickInterval);
+        emit graphTickIntervalsChanged(tickIntervals);
 
         painter.setBrush(QBrush(graphSettings.backgroundColor));
         painter.drawRect(-1, -1, graphWidthPx+1, graphHeightPx+1);
@@ -1315,11 +1315,11 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Ypos + graphSettings.graphFont.pixelSize() + 3;
     }
 
-    double Xreal = trunc(graphRange.Xmin / tickInterval.x) * tickInterval.x;
+    double Xreal = trunc(graphRange.Xmin / tickIntervals.x) * tickIntervals.x;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double step = tickInterval.x * uniteX;
+    double step = tickIntervals.x * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1361,7 +1361,7 @@ void MainGraph::drawTicksAndNumbers()
         }
 
         Xpos += step;
-        Xreal += tickInterval.x;
+        Xreal += tickIntervals.x;
     }
 
 //trace sur l'axe des Y
@@ -1385,9 +1385,9 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / tickInterval.y) * tickInterval.y;
+    double Yreal = trunc(graphRange.Ymax / tickIntervals.y) * tickIntervals.y;
     Ypos = -Yreal * uniteY + centre.y;
-    step = tickInterval.y * uniteY;
+    step = tickIntervals.y * uniteY;
 
     bas =  0;
     haut =  graphWidthPx;
@@ -1427,7 +1427,7 @@ void MainGraph::drawTicksAndNumbers()
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
-        Yreal -= tickInterval.y;
+        Yreal -= tickIntervals.y;
         Ypos += step;
     }
 }
@@ -1437,34 +1437,34 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * tickInterval.x < widestXNumber + 32)
+    if(uniteX * tickIntervals.x < widestXNumber + 32)
     {
-        while(uniteX * tickInterval.x < widestXNumber + 32)
-            tickInterval.x *= 2;
+        while(uniteX * tickIntervals.x < widestXNumber + 32)
+            tickIntervals.x *= 2;
         if(orthonormal)
-             tickInterval.y = tickInterval.x;
+             tickIntervals.y = tickIntervals.x;
         scaleChanged = true;
     }
-    else if(uniteX * tickInterval.x > 2*widestXNumber + 96)
+    else if(uniteX * tickIntervals.x > 2*widestXNumber + 96)
     {
-        while(uniteX * tickInterval.x > 2*widestXNumber + 96)
-            tickInterval.x /= 2;
+        while(uniteX * tickIntervals.x > 2*widestXNumber + 96)
+            tickIntervals.x /= 2;
         if(orthonormal)
-             tickInterval.y = tickInterval.x;
+             tickIntervals.y = tickIntervals.x;
         scaleChanged = true;
     }
     if(!orthonormal)
     {
-        if(uniteY * tickInterval.y < 25)
+        if(uniteY * tickIntervals.y < 25)
         {
-            while(uniteY * tickInterval.y < 25)
-                tickInterval.y *= 2;
+            while(uniteY * tickIntervals.y < 25)
+                tickIntervals.y *= 2;
             scaleChanged = true;
         }
-        else if(uniteY * tickInterval.y > 150)
+        else if(uniteY * tickIntervals.y > 150)
         {
-            while(uniteY * tickInterval.y > 150)
-                tickInterval.y /= 2;
+            while(uniteY * tickIntervals.y > 150)
+                tickIntervals.y /= 2;
             scaleChanged = true;
         }
     }
@@ -1587,7 +1587,7 @@ void MainGraph::setGraphRange(GraphRange range)
 
 void MainGraph::setGraphTickIntervals(GraphTickIntervals interval)
 {
-    tickInterval = interval;
+    tickIntervals = interval;
     resaveGraph = true;
     update();
 }

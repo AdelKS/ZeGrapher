@@ -152,8 +152,8 @@ void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
 
 void PolynomialModelWidget::updateManualRangeFields()
 {
-    startVal->setNumber(regression->getDrawRange().start);
-    endVal->setNumber(regression->getDrawRange().end);
+    startVal->setValue(regression->getDrawRange().start);
+    endVal->setValue(regression->getDrawRange().end);
 }
 
 void PolynomialModelWidget::updateApproxMethod()

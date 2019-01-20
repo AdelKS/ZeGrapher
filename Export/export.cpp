@@ -37,35 +37,14 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     setWindowTitle(tr("Export"));
 
-    xTickInterval = new NumberLineEdit(false, info->getFuncsList());
-    yTickInterval = new NumberLineEdit(false, info->getFuncsList());
+    rangeWidget = new RangeAdjustments(info->getFuncsList(), info->getGraphRange(), info->getGraphTickIntervals());
+    rangeWidget->setMargin(0);
+    rangeWidget->disableRangeWidgets(ui->linkToMainGraph->isChecked());
 
-    xMin = new NumberLineEdit(false, info->getFuncsList());
-    yMin = new NumberLineEdit(false, info->getFuncsList());
+    connect(ui->linkToMainGraph, SIGNAL(toggled(bool)), rangeWidget, SLOT(disableRangeWidgets(bool)));
 
-    xMax = new NumberLineEdit(false, info->getFuncsList());
-    yMax = new NumberLineEdit(false, info->getFuncsList());
+    ui->graphViewLayout->addWidget(rangeWidget);
 
-    xTickInterval->setMaximumHeight(25);
-    yTickInterval->setMaximumHeight(25);
-    xMin->setMaximumHeight(25);
-    yMin->setMaximumHeight(25);
-    xMax->setMaximumHeight(25);
-    yMax->setMaximumHeight(25);
-
-    ui->axesAppearanceFormLayout->setWidget(1, QFormLayout::FieldRole, xTickInterval);
-    ui->axesAppearanceFormLayout->setWidget(2, QFormLayout::FieldRole, yTickInterval);
-
-    ui->graphRangeForm->addRow(new QLabel("x<sub>min</sub>"), xMin);
-    ui->graphRangeForm->addRow(new QLabel("x<sub>max</sub>"), xMax);
-
-    ui->graphRangeForm->addRow(new QLabel("y<sub>min</sub>"), yMin);
-    ui->graphRangeForm->addRow(new QLabel("y<sub>max</sub>"), yMax);
-
-    ui->tickIntervalForm->addRow(tr("x tick interval"), xTickInterval);
-    ui->tickIntervalForm->addRow(tr("y tick interval"), yTickInterval);
-
-    ui->graphRangeWidget->setEnabled(false);
     ui->sheetSizeSubWidget->setEnabled(false);
 
     orthonormal = false;
@@ -220,8 +199,7 @@ void Export::resizeExportPreview()
         QSize targetSize = exportPreview->getTargetSupportSizePixels();
         targetSize.setHeight(int(double(targetSize.height()) * ui->zoomPercentage->value() / 100));
         targetSize.setWidth(int(double(targetSize.width()) * ui->zoomPercentage->value() / 100));
-        exportPreview->resize(targetSize);
-        qDebug() << "Resizing export preview to " << targetSize;
+        exportPreview->resize(targetSize);     
     }
 }
 

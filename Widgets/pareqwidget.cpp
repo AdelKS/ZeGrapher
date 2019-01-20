@@ -29,7 +29,7 @@ ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : tre
     index = num;
     funcCalcs = list;
     createWidgets(col);
-    xTree = yTree = NULL;   
+    xTree = yTree = nullptr;   
     isParametric = valid = is_t_range_parametric = false;
     playState = false;
     blockAnimation = false;
@@ -468,7 +468,7 @@ void ParEqWidget::checkXline()
 {
     if(xExpr != xLine->text())
     {
-        if(xTree != NULL)
+        if(xTree != nullptr)
             treeCreator.deleteFastTree(xTree);
 
         xTree = treeCreator.getTreeFromExpr(xLine->text(), isXExprGood);
@@ -486,7 +486,7 @@ void ParEqWidget::checkYline()
 {
     if(yExpr != yLine->text())
     {
-        if(yTree != NULL)
+        if(yTree != nullptr)
             treeCreator.deleteFastTree(yTree);
 
         yTree = treeCreator.getTreeFromExpr(yLine->text(), isYExprGood);
@@ -775,9 +775,9 @@ void ParEqWidget::playButtonClicked()
 
 ParEqWidget::~ParEqWidget()
 {
-    if(xTree != NULL)
+    if(xTree != nullptr)
         treeCreator.deleteFastTree(xTree);
-    if(yTree != NULL)
+    if(yTree != nullptr)
         treeCreator.deleteFastTree(yTree);
 }
 

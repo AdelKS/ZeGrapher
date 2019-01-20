@@ -74,7 +74,8 @@ SOURCES += \
     Windows/updatecheck.cpp \
     Windows/mainwindow.cpp \
     Export/export.cpp \
-    GraphDraw/exportpreview.cpp
+    GraphDraw/exportpreview.cpp \
+    Widgets/expressionlineedit.cpp
 
 HEADERS  += \
     information.h \
@@ -131,7 +132,8 @@ HEADERS  += \
     Windows/mainwindow.h \
     structures.h \
     Export/export.h \
-    GraphDraw/exportpreview.h
+    GraphDraw/exportpreview.h \
+    Widgets/expressionlineedit.h
 
 
 FORMS    += \

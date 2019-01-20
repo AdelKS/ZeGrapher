@@ -53,7 +53,7 @@ void SeqWidget::addSeqWidgets()
 {
     QLabel *firstValsLabel = new QLabel(seqName + QString("<sub>0</sub> ; ") + seqName + QString("<sub>1</sub> ; ...  ="));
 
-    firstValsLine = new QLineEdit();
+    firstValsLine = new ExpressionLineEdit();
     firstValsLine->setMaximumHeight(25);
 
     secondContainerLayout->addStretch();
@@ -96,7 +96,7 @@ SeqCalculator* SeqWidget::getCalculator()
 
 void SeqWidget::checkExprLineEdit()
 {
-    expressionLineEdit->setPalette(neutralPalette);
+    expressionLineEdit->setNeutral();
 
     bool oldIsExprParametric = isExprParametric;
 
@@ -126,7 +126,7 @@ void SeqWidget::updateParametricState()
 
 void SeqWidget::checkFirstValsLineEdit()
 {
-    firstValsLine->setPalette(neutralPalette);
+    firstValsLine->setNeutral();
 
     bool oldAreFirstValsParametric = areFirstValsParametric;
     areFirstValsParametric = firstValsLine->text().contains('k');
@@ -166,13 +166,13 @@ void SeqWidget::firstValidation()
 
     bool firstValsValidated = calculator->validateFirstValsExpr(firstValsLine->text());
     if(firstValsValidated)    
-        firstValsLine->setPalette(validPalette);    
-    else firstValsLine->setPalette(invalidPalette);
+        firstValsLine->setValid();
+    else firstValsLine->setInvalid();
 
     bool seqExprValidated = calculator->validateSeqExpr(expressionLineEdit->text());
     if(seqExprValidated)
-        expressionLineEdit->setPalette(validPalette);
-    else expressionLineEdit->setPalette(invalidPalette);
+        expressionLineEdit->setValid();
+    else expressionLineEdit->setInvalid();
 
     calculator->setParametricInfo(isParametric, kConfWidget->getRange());
 

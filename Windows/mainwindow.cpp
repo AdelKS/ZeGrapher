@@ -23,6 +23,9 @@
 
 MainWindow::MainWindow()
 {
+    setWindowIcon(QIcon(":/icons/software.png"));   
+    setWindowTitle("ZeGrapher");
+
     information = new Information();
 
     settingsWin = new Settings(information, this);    
@@ -35,27 +38,32 @@ MainWindow::MainWindow()
     valuesWin = new Values(information, this);
     exportWin = new Export(information, this);
     keyboard = new Keyboard();
-    mathInputDockWidget = new QDockWidget(tr("Math objects input"), this);
+
 
     mainGraph = new MainGraph(information); // it has to be the last thing to create.
-
-    mathInputDockWidget->setWidget(inputWin);
-    addDockWidget(Qt::LeftDockWidgetArea, mathInputDockWidget);
-
-    setWindowIcon(QIcon(":/icons/software.png"));
-    setMinimumSize(700,450);
-    setWindowTitle("ZeGrapher");
-
-    createMenus();
-
     setCentralWidget(mainGraph);
 
+
+    createDocks();
+    createMenus();
     makeConnects();
 
     loadWindowSavedGeomtries();
 
     if(information->getSettingsVals().updateCheckAtStart)
         updateCheckWin->silentCheckForUpdate();
+}
+
+void MainWindow::createDocks()
+{
+    rangeWin->hideViewOptions(true);
+    rangeWinDock = new QDockWidget(tr("View adjustments"), this);
+    rangeWinDock->setWidget(rangeWin);
+    addDockWidget(Qt::LeftDockWidgetArea, rangeWinDock);
+
+    mathInputDock = new QDockWidget(tr("Math objects input"), this);
+    mathInputDock->setWidget(inputWin);
+    addDockWidget(Qt::LeftDockWidgetArea, mathInputDock);
 }
 
 void MainWindow::createMenus()
@@ -68,10 +76,10 @@ void MainWindow::createMenus()
     gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
     gridButton->setCheckable(true);
 
-    QAction *setOrthonormalBasisAction = menuTools->addAction(tr("Toggle orthonormal view"));
-    setOrthonormalBasisAction->setCheckable(true);
-    connect(setOrthonormalBasisAction, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
-    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalBasisAction, SLOT(setChecked(bool)));
+    QAction *setOrthonormalAction = menuTools->addAction(QIcon(":/icons/orthonormalView.svg"), tr("Toggle orthonormal view"));
+    setOrthonormalAction->setCheckable(true);
+    connect(setOrthonormalAction, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
+    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool)));
 
     QAction *resetViewAction = menuTools->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
     connect(resetViewAction, SIGNAL(triggered()), rangeWin, SLOT(resetToStandardView()));
@@ -85,7 +93,7 @@ void MainWindow::createMenus()
     QAction *showUpdateCheckWinAction = menuHelp->addAction(tr("Check for updates"));
     connect(showUpdateCheckWinAction, SIGNAL(triggered()), updateCheckWin, SLOT(checkForUpdate()));
 
-    QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.png"), tr("Export or print..."));
+    QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.png"), tr("Export graph..."));
     showExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
     connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(show()));
     connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(raise()));
@@ -103,13 +111,13 @@ void MainWindow::createMenus()
 
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
-    connect(showInputWinAction, SIGNAL(triggered()), mathInputDockWidget, SLOT(show()));
-    connect(showInputWinAction, SIGNAL(triggered()), mathInputDockWidget, SLOT(raise()));
+    connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(show()));
+    connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(raise()));
 
     QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Range edit"));
     showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));
-    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(show()));
-    connect(showRangeWinAction, SIGNAL(triggered()), rangeWin, SLOT(raise()));
+    connect(showRangeWinAction, SIGNAL(triggered()), rangeWinDock, SLOT(show()));
+    connect(showRangeWinAction, SIGNAL(triggered()), rangeWinDock, SLOT(raise()));
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.png"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
@@ -125,6 +133,7 @@ void MainWindow::createMenus()
     addToolBar(Qt::LeftToolBarArea, toolBar);
 
     toolBar->addAction(gridButton);
+    toolBar->addAction(setOrthonormalAction);
     toolBar->addAction(resetViewAction);
     toolBar->addSeparator();
     toolBar->addAction(showInputWinAction);

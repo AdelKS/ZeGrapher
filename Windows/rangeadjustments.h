@@ -42,10 +42,14 @@ public:
     explicit RangeAdjustments(QList<FuncCalculator *> funcsList, GraphRange graphRange, GraphTickIntervals tickIntervals, QWidget *parent = nullptr);
     ~RangeAdjustments();
 
+    void setMargin(int margin);
+
 public slots:
     void resetToStandardView();   
     void setGraphRange(GraphRange range);
     void setGraphTickIntervals(GraphTickIntervals tickIntervals);
+    void disableRangeWidgets(bool disable);
+    void hideViewOptions(bool hide);
 
 protected slots:
     void onRangeChange();

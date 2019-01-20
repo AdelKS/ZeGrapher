@@ -29,6 +29,8 @@ GraphDraw::GraphDraw(Information *info)
 
     coef = sqrt(3)/2;
 
+    setMinimumSize(QSize(200, 200));
+
     graphSettings = info->getSettingsVals();
     graphRange = info->getGraphRange();
 
@@ -71,7 +73,7 @@ void GraphDraw::setGraphRange(GraphRange range)
 
 void GraphDraw::setGraphTickIntervals(GraphTickIntervals interval)
 {
-    tickInterval = interval;
+    tickIntervals = interval;
     update();
 }
 

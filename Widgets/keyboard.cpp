@@ -32,7 +32,7 @@ Keyboard::Keyboard(QWidget *parent) :
     ui->backspace->setIcon(QIcon(":/icons/backspace.png"));
     ui->clear->setIcon(QIcon(":/icons/clear.png"));
 
-    setWindowFlags(Qt::Tool | Qt::WindowDoesNotAcceptFocus | Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::Tool | Qt::WindowDoesNotAcceptFocus /**| Qt::WindowStaysOnTopHint**/);
     setWindowIcon(QIcon(":/icons/keyboard.png"));
     keyboardButtons = new QSignalMapper(this);
     funcsMapper = new QSignalMapper(this);
@@ -108,7 +108,7 @@ void Keyboard::changeFuncButtonsText()
 void Keyboard::removeChar()
 {
     QWidget *w = qApp->focusWidget();
-    if(w != NULL && w->inherits("QLineEdit"))
+    if(w != nullptr && w->inherits("QLineEdit"))
     {
         QLineEdit *lineEdit = qobject_cast<QLineEdit*>(w);
         lineEdit->setText(lineEdit->text().remove(lineEdit->text().size()-1, 1));
@@ -118,7 +118,7 @@ void Keyboard::removeChar()
 void Keyboard::clearLine()
 {
     QWidget *w = qApp->focusWidget();
-    if(w != NULL && w->inherits("QLineEdit"))
+    if(w != nullptr && w->inherits("QLineEdit"))
     {
         QLineEdit *lineEdit = qobject_cast<QLineEdit*>(w);
         lineEdit->clear();
@@ -129,7 +129,7 @@ void Keyboard::keyboardPressed(QWidget *widget)
 {
     QPushButton *button = qobject_cast<QPushButton*>(widget);
     QWidget *w = qApp->focusWidget();
-    if(w != NULL && w->inherits("QLineEdit"))
+    if(w != nullptr && w->inherits("QLineEdit"))
         qobject_cast<QLineEdit*>(w)->insert(button->text());
 }
 
@@ -137,7 +137,7 @@ void Keyboard::funcButtonPressed(QWidget *widget)
 {
     QPushButton *button = qobject_cast<QPushButton*>(widget);
     QWidget *w = qApp->focusWidget();
-    if(w != NULL && w->inherits("QLineEdit"))
+    if(w != nullptr && w->inherits("QLineEdit"))
         qobject_cast<QLineEdit*>(w)->insert(button->text() + "(");
 }
 
