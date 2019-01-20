@@ -1,11 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/boundaries.png</file>
         <file>icons/export.png</file>
         <file>icons/software.png</file>
         <file>icons/print.png</file>
         <file>icons/grid.png</file>
-        <file>icons/valuesTable.png</file>
         <file>icons/zoom-in-icon.png</file>
         <file>icons/zoom-out-icon.png</file>
         <file>icons/functions.png</file>
@@ -65,5 +63,7 @@
         <file>Help/polynomialCoefVals_en.png</file>
         <file>ZeGrapher_fr.qm</file>
         <file>icons/orthonormalView.svg</file>
+        <file>icons/viewRange.svg</file>
+        <file>icons/valuesTable.svg</file>
     </qresource>
 </RCC>

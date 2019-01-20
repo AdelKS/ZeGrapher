@@ -44,6 +44,7 @@ protected slots:
     
 protected:
     QColor currentColor;
+    int buttonSize;
     
 };
 

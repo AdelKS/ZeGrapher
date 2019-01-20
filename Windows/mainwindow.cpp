@@ -114,12 +114,12 @@ void MainWindow::createMenus()
     connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(show()));
     connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(raise()));
 
-    QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/boundaries.png"), tr("Range edit"));
+    QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/viewRange.svg"), tr("Range edit"));
     showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));
     connect(showRangeWinAction, SIGNAL(triggered()), rangeWinDock, SLOT(show()));
     connect(showRangeWinAction, SIGNAL(triggered()), rangeWinDock, SLOT(raise()));
 
-    QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.png"), tr("Values table"));
+    QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.svg"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
     connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));
     connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(raise()));
