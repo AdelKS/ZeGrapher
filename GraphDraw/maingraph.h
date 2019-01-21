@@ -26,12 +26,6 @@
 
 #include "graphdraw.h"
 
-#define FUNC_HOVER 0
-#define SEQ_HOVER 1
-#define TANGENT_RESIZE_HOVER 2
-#define TANGENT_MOVE_HOVER 3
-
-
 class MainGraph : public GraphDraw
 {
     Q_OBJECT
@@ -39,7 +33,7 @@ public:
     explicit MainGraph(Information *info);
     ~MainGraph();
 
-    void afficherPtX(double x);   
+    void afficherPtX(double x);
 
 signals:
     void zoomBoxActive(bool active);    
@@ -108,6 +102,18 @@ protected:
 
     void checkIfActiveSelectionConflicts();
 
+    enum CursorType {NORMAL, DEZOOMER, ZOOMBOX, DEPLACER, NO_CURSOR};
+    enum HoverType {FUNC_HOVER, SEQ_HOVER, TANGENT_RESIZE_HOVER, TANGENT_MOVE_HOVER};
+
+    struct CurveSelection
+    {
+        bool tangentSelection;
+        bool isSomethingSelected;
+        bool isParametric;
+        HoverType funcType;
+        int tangentPtSelection, id, kPos;
+    };
+
     ExprCalculator *exprCalculator;
     Point lastPosSouris, pointPx, pointUnit;
     QSlider *hSlider, *vSlider;
@@ -119,11 +125,10 @@ protected:
          hHideStarted, vHideStarted, hoveredCurveType, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;
 
-    char typeCurseur;   
+    CursorType cursorType;
     int  hBottom, vBottom, xyBottom;
     QTimer timerX, timerY;
 
-    QPolygonF polygon;   
     QSize windowSize;  
     CurveSelection selectedCurve;
     MouseState mouseState;

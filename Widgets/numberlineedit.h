@@ -47,6 +47,7 @@ signals:
 
 protected:
     ExprCalculator calculator;
+    int significantDigitPrecision;
     bool valid;
     double value;
 

@@ -34,16 +34,11 @@
 #define PREDEFINED_ENTRY 2
 
 
-#define NORMAL 0
-#define ZOOMER 1
-#define DEZOOMER 2
-#define ZOOMBOX 3
-#define DEPLACER 4
-#define NO_CURSOR 5
 
-#define MAX_DOUBLE_PREC 15
 
-#define MIN_RANGE 0.000001
+#define MAX_DOUBLE_PREC 13
+
+#define MIN_RANGE 1E-13
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
@@ -132,15 +127,6 @@ struct SettingsVals
     bool smoothing;
     bool updateCheckAtStart;
     QFont graphFont;
-
-};
-
-struct CurveSelection
-{
-    bool tangentSelection;
-    bool isSomethingSelected;
-    bool isParametric;
-    int funcType, tangentPtSelection, id, kPos;
 
 };
 

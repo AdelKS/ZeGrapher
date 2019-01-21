@@ -26,6 +26,8 @@ NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) :
     valid = false;
     value = nan("");
 
+    significantDigitPrecision = MAX_DOUBLE_PREC;
+
     connect(this, SIGNAL(returnPressed()), this, SLOT(checkVal()));
     connect(this, SIGNAL(editingFinished()), this, SLOT(checkVal()));
 }
@@ -42,8 +44,8 @@ double NumberLineEdit::getValue()
 
 void NumberLineEdit::setValue(double value)
 {
-    setText(QString::number(value));
-    value = value;
+    setText(QString::number(value, 'g', significantDigitPrecision));
+    this->value = value;
     setValid();
     valid = true;
 }

@@ -104,7 +104,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     savedGraph = nullptr;
 
     setMouseTracking(true);
-    typeCurseur = NORMAL;
+    cursorType = NORMAL;
 
     addOtherWidgets();
 }
@@ -363,6 +363,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
             repaintTimer.start();
 
         emit graphRangeChanged(graphRange);
+
         update();
     }
 
@@ -469,7 +470,7 @@ void MainGraph::paintEvent(QPaintEvent *event)
        recalculate = true;
     }
 
-    if(!moving && (typeCurseur == NORMAL || hWidgetHideTransition.isActive() || vWidgetHideTransition.isActive() ||
+    if(!moving && (cursorType == NORMAL || hWidgetHideTransition.isActive() || vWidgetHideTransition.isActive() ||
             hWidgetShowTransition.isActive() || vWidgetShowTransition.isActive() || hWidgetState || vWidgetState ||
                    animationUpdate))
         indirectPaint();
@@ -864,7 +865,7 @@ void MainGraph::mousePressEvent(QMouseEvent *event)
 
     if(event->buttons() & Qt::LeftButton)
     {
-        typeCurseur = NORMAL;
+        cursorType = NORMAL;
 
         if(mouseState.hovering && mouseState.tangentHovering)
         {
@@ -879,7 +880,7 @@ void MainGraph::mousePressEvent(QMouseEvent *event)
     }
     else if(event->buttons() & Qt::RightButton)
     {
-        typeCurseur = ZOOMBOX;
+        cursorType = ZOOMBOX;
         dispRectangle = true;
         rectReel.setTopLeft(QPoint(event->x(), event->y()));
     }
@@ -890,7 +891,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
     Q_UNUSED(event);
     buttonPresse = false;
 
-    if(typeCurseur == NORMAL)
+    if(cursorType == NORMAL)
     {
         if(mouseState.hovering && !mouseState.tangentHovering)
         {
@@ -929,7 +930,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             update();
         }
     }
-    else if(typeCurseur == ZOOMBOX)
+    else if(cursorType == ZOOMBOX)
     {
         dispRectangle = false;
         rectReel = rectReel.normalized();
@@ -945,7 +946,7 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             if(win.Xmax - win.Xmin > MIN_RANGE && win.Ymax - win.Ymin > MIN_RANGE)
                 emit graphRangeChanged(graphRange);
 
-            typeCurseur = NORMAL;
+            cursorType = NORMAL;
         }
     }
 }
@@ -981,7 +982,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
         vHideStarted = true;
     }
 
-    if(typeCurseur == NORMAL)
+    if(cursorType == NORMAL)
     {
         double x =  (mouseX - centre.x) / uniteX;
         double y = - (mouseY - centre.y) / uniteY;
@@ -1045,7 +1046,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             refresh = true;
         }
     }
-    else if(typeCurseur == ZOOMBOX)
+    else if(cursorType == ZOOMBOX)
     {
         rectReel.setBottomRight(QPoint(event->x(), event->y()));
         refresh = true;
@@ -1525,18 +1526,25 @@ void MainGraph::drawAxes()
 
 void MainGraph::zoomX()
 {
-    repaintTimer.stop();
-
     double valeur = (graphRange.Xmax- graphRange.Xmin) * double(hSlider->value()) * 0.0016;
 
-    graphRange.Xmin += valeur;
-    graphRange.Xmax -= valeur;
-    moving = true;
+    if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
+    {
+        repaintTimer.stop();
 
-    emit graphRangeChanged(graphRange);
 
-    if(graphSettings.smoothing)
-        repaintTimer.start();
+
+        graphRange.Xmin += valeur;
+        graphRange.Xmax -= valeur;
+        moving = true;
+
+        emit graphRangeChanged(graphRange);
+
+        if(graphSettings.smoothing)
+            repaintTimer.start();
+
+        update();
+    }
 }
 
 void MainGraph::stop_X_zoom()
@@ -1547,28 +1555,32 @@ void MainGraph::stop_X_zoom()
 
 void MainGraph::zoomY()
 {
-    repaintTimer.stop();
-
     double valeur = (graphRange.Ymax - graphRange.Ymin) * double(vSlider->value()) * 0.0016;
 
-    if(!information->isOrthonormal())
+    if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
     {
-        graphRange.Ymin += valeur;
-        graphRange.Ymax -= valeur;
-        recalculate = false;
-    }
-    else
-    {
-        graphRange.Xmin += valeur;
-        graphRange.Xmax -= valeur;
-        recalculate = true;
-    }
+        repaintTimer.stop();
 
-    moving = true;
-    if(graphSettings.smoothing)
-        repaintTimer.start();
+        if(!information->isOrthonormal())
+        {
+            graphRange.Ymin += valeur;
+            graphRange.Ymax -= valeur;
+            recalculate = false;
+        }
+        else
+        {
+            graphRange.Xmin += valeur;
+            graphRange.Xmax -= valeur;
+            recalculate = true;
+        }
 
-    emit graphRangeChanged(graphRange);
+        moving = true;
+        if(graphSettings.smoothing)
+            repaintTimer.start();
+
+        emit graphRangeChanged(graphRange);
+        update();
+    }
 }
 
 void MainGraph::stop_Y_Zoom()
