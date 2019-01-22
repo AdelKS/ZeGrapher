@@ -72,7 +72,7 @@ protected:
     Export *exportWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
-    QDockWidget *mathInputDock, *rangeWinDock;
+    QDockWidget *mathInputDock, *rangeWinDock, *settingsWinDock;
 
     QSettings settings;
 

@@ -64,6 +64,12 @@ void MainWindow::createDocks()
     mathInputDock = new QDockWidget(tr("Math objects input"), this);
     mathInputDock->setWidget(inputWin);
     addDockWidget(Qt::LeftDockWidgetArea, mathInputDock);
+
+    settingsWinDock = new QDockWidget(tr("Settings"), this);
+    settingsWinDock->setWidget(settingsWin);
+    addDockWidget(Qt::LeftDockWidgetArea, settingsWinDock);
+    tabifyDockWidget(mathInputDock, settingsWinDock);
+    settingsWinDock->close();
 }
 
 void MainWindow::createMenus()
@@ -100,8 +106,8 @@ void MainWindow::createMenus()
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
-    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(show()));
-    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(raise()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWinDock, SLOT(show()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWinDock, SLOT(raise()));
 
     menuFile->addSeparator();
 
@@ -140,6 +146,7 @@ void MainWindow::createMenus()
     toolBar->addAction(showRangeWinAction);
     toolBar->addAction(showValuesWinAction);
     toolBar->addAction(showExportWinAction);
+    toolBar->addAction(showSettingsWinAction);
     toolBar->addAction(showKeyboardAction);
 
     statusBar();

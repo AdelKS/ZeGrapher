@@ -136,17 +136,6 @@ struct FuncMap
     short id;
 };
 
-struct MouseState
-{
-    bool tangentHovering;
-    bool hovering;
-    bool isParametric;
-    int tangentPtSelection;
-    int funcType;
-    int kPos;
-    int id;
-};
-
 struct Range
 {
     double start, end, step;

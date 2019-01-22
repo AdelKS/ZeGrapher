@@ -103,14 +103,24 @@ protected:
     void checkIfActiveSelectionConflicts();
 
     enum CursorType {NORMAL, DEZOOMER, ZOOMBOX, DEPLACER, NO_CURSOR};
-    enum HoverType {FUNC_HOVER, SEQ_HOVER, TANGENT_RESIZE_HOVER, TANGENT_MOVE_HOVER};
+    enum SelectableMathObject {NONE, FUNCTION, SEQUENCE, TANGENT_RESIZE, TANGENT_MOVE};
+
+    struct MouseState
+    {
+        bool tangentHovering;
+        bool isParametric;
+        int tangentPtSelection;
+        SelectableMathObject pointedObjectType;
+        int kPos;
+        int id;
+    };
 
     struct CurveSelection
     {
         bool tangentSelection;
         bool isSomethingSelected;
         bool isParametric;
-        HoverType funcType;
+        SelectableMathObject selectedObject;
         int tangentPtSelection, id, kPos;
     };
 
@@ -120,9 +130,8 @@ protected:
     QLineEdit *lineX, *lineY;
     double y1, y2, mouseX, mouseY, widestXNumber;
 
-    bool dispPoint, buttonPresse, sourisSurUneCurve,
-         dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,
-         hHideStarted, vHideStarted, hoveredCurveType, resaveGraph, cancelUpdateSignal,
+    bool dispPoint, ongoingMouseClick, dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,
+         hHideStarted, vHideStarted, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;
 
     CursorType cursorType;

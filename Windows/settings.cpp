@@ -31,7 +31,7 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
-
+    setWindowTitle(tr("Settings"));
     setWindowIcon(QIcon(":/icons/settings.png"));
 
     axesColorButton = new QColorButton(Qt::black);   

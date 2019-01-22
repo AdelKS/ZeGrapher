@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "GraphDraw/maingraph.h"
 
 
@@ -86,10 +83,11 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     connect(&timerY, SIGNAL(timeout()), this, SLOT(zoomY()));
 
     dispPoint = false;
-    buttonPresse = false;
+    ongoingMouseClick = false;
 
-    sourisSurUneCurve = dispRectangle = recalculate = recalculateRegs = false;
-    hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;
+    dispRectangle = recalculate = recalculateRegs = false;
+    hHideStarted = vHideStarted = xyWidgetsState = false;
+    mouseState.pointedObjectType = NONE;
     moving = false;
 
     kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF);"
@@ -376,7 +374,7 @@ void MainGraph::afficherPtX(double x)
 {
     if(selectedCurve.isSomethingSelected && !selectedCurve.tangentSelection)
     {
-        if(selectedCurve.funcType == FUNC_HOVER)
+        if(selectedCurve.selectedObject == FUNCTION)
         {
             double k = 0;
 
@@ -391,7 +389,7 @@ void MainGraph::afficherPtX(double x)
 
             dispPoint = true;
         }
-        else if(selectedCurve.funcType == SEQ_HOVER)
+        else if(selectedCurve.selectedObject == SEQUENCE)
         {
             if(trunc(x) >= seqs[selectedCurve.id]->get_nMin())
             {
@@ -504,7 +502,7 @@ void MainGraph::indirectPaint()
     if(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection)
         drawOneTangent(selectedCurve.id);
 
-    if(mouseState.hovering)
+    if(mouseState.pointedObjectType != SelectableMathObject::NONE)
         drawHoveringConsequence();
 
     painter.end();
@@ -580,16 +578,16 @@ void MainGraph::directPaint()
 
 void MainGraph::drawHoveringConsequence()
 {
-    if(mouseState.funcType == FUNC_HOVER)
+    if(mouseState.pointedObjectType == FUNCTION)
     {
         drawCurve(graphSettings.curvesThickness + 1, funcs[mouseState.id]->getColorSaver()->getColor(mouseState.kPos),
                 funcValuesSaver->getCurve(mouseState.id, mouseState.kPos));
     }
-    else if(mouseState.funcType == SEQ_HOVER)
+    else if(mouseState.pointedObjectType == SEQUENCE)
     {
         drawOneSequence(mouseState.id, graphSettings.curvesThickness + 4);
     }
-    else if(mouseState.funcType == TANGENT_MOVE_HOVER || mouseState.funcType == TANGENT_RESIZE_HOVER)
+    else if(mouseState.pointedObjectType == TANGENT_MOVE || mouseState.pointedObjectType == TANGENT_RESIZE)
     {
         TangentWidget *tangent = tangents->at(mouseState.id);
         TangentPoints points = tangent->getCaracteristicPoints();
@@ -599,7 +597,7 @@ void MainGraph::drawHoveringConsequence()
         painter.setPen(pen);
         painter.setRenderHint(QPainter::Antialiasing);
 
-        if(mouseState.funcType == TANGENT_MOVE_HOVER)
+        if(mouseState.pointedObjectType == TANGENT_MOVE)
         {
             QPointF pt(points.center.x * uniteX, - points.center.y * uniteY);
             painter.drawPoint(pt);
@@ -715,12 +713,12 @@ void MainGraph::checkIfActiveSelectionConflicts()
 
         if(selectedCurve.isParametric)
         {
-            if((selectedCurve.funcType == FUNC_HOVER && selectedCurve.kPos >= funcValuesSaver->getFuncDrawsNum(selectedCurve.id)) ||
-                    (selectedCurve.funcType == SEQ_HOVER && selectedCurve.kPos >= seqs[selectedCurve.id]->getDrawsNum()))
+            if((selectedCurve.selectedObject == FUNCTION && selectedCurve.kPos >= funcValuesSaver->getFuncDrawsNum(selectedCurve.id)) ||
+                    (selectedCurve.selectedObject == SEQUENCE && selectedCurve.kPos >= seqs[selectedCurve.id]->getDrawsNum()))
                 removeSelection = true;
         }
-        if((selectedCurve.funcType == FUNC_HOVER && !funcs[selectedCurve.id]->getDrawState()) ||
-                    (selectedCurve.funcType == SEQ_HOVER && !seqs[selectedCurve.id]->getDrawState()))
+        if((selectedCurve.selectedObject == FUNCTION && !funcs[selectedCurve.id]->getDrawState()) ||
+                    (selectedCurve.selectedObject == SEQUENCE && !seqs[selectedCurve.id]->getDrawState()))
                     removeSelection = true;
 
         if(removeSelection)
@@ -804,7 +802,7 @@ void MainGraph::drawAnimatedParEq()
 
 void MainGraph::drawPoint()
 {
-    if(selectedCurve.funcType == FUNC_HOVER)
+    if(selectedCurve.selectedObject == FUNCTION)
     {
         xTextLabel->setText("x = ");
         yTextLabel->setText(customFunctions[selectedCurve.id]);
@@ -823,7 +821,7 @@ void MainGraph::drawPoint()
     if(selectedCurve.isParametric)
     {
         Range kRange;
-        if(selectedCurve.funcType == FUNC_HOVER)
+        if(selectedCurve.selectedObject == FUNCTION)
             kRange = funcs[selectedCurve.id]->getParametricRange();
         else kRange = seqs[selectedCurve.id]->getKRange();
 
@@ -834,12 +832,12 @@ void MainGraph::drawPoint()
         kLabel.show();
     }
 
-    if(selectedCurve.funcType == FUNC_HOVER)
+    if(selectedCurve.selectedObject == FUNCTION)
         pen.setColor(funcs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
     else  pen.setColor(seqs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
 
     int extraWidth = 3;
-    if(selectedCurve.funcType == SEQ_HOVER)
+    if(selectedCurve.selectedObject == SEQUENCE)
         extraWidth += 2;
 
     pen.setWidth(graphSettings.curvesThickness + extraWidth);
@@ -859,7 +857,7 @@ void MainGraph::drawPoint()
 
 void MainGraph::mousePressEvent(QMouseEvent *event)
 {
-    buttonPresse = true;
+    ongoingMouseClick = true;
     lastPosSouris.x = event->x();
     lastPosSouris.y = event->y();
 
@@ -867,13 +865,13 @@ void MainGraph::mousePressEvent(QMouseEvent *event)
     {
         cursorType = NORMAL;
 
-        if(mouseState.hovering && mouseState.tangentHovering)
+        if(mouseState.pointedObjectType  != SelectableMathObject::NONE && mouseState.tangentHovering)
         {
             selectedCurve.tangentSelection = true;
             selectedCurve.isSomethingSelected = true;
             selectedCurve.tangentPtSelection = mouseState.tangentPtSelection;
             selectedCurve.id = mouseState.id;
-            selectedCurve.funcType = mouseState.funcType;
+            selectedCurve.selectedObject = mouseState.pointedObjectType;
             tangentDrawException = mouseState.id;
             resaveGraph = true;
         }
@@ -889,18 +887,18 @@ void MainGraph::mousePressEvent(QMouseEvent *event)
 void MainGraph::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    buttonPresse = false;
+    ongoingMouseClick = false;
 
     if(cursorType == NORMAL)
     {
-        if(mouseState.hovering && !mouseState.tangentHovering)
+        if(mouseState.pointedObjectType  != SelectableMathObject::NONE && !mouseState.tangentHovering)
         {
             selectedCurve.tangentSelection = mouseState.tangentHovering;
             selectedCurve.isSomethingSelected = true;
             selectedCurve.isParametric = mouseState.isParametric;
             selectedCurve.kPos = mouseState.kPos;
             selectedCurve.id = mouseState.id;
-            selectedCurve.funcType = mouseState.funcType;
+            selectedCurve.selectedObject = mouseState.pointedObjectType;
             selectedCurve.tangentPtSelection = mouseState.tangentPtSelection;
             moving = false;
 
@@ -958,7 +956,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
     mouseX = event->x();
     mouseY = event->y();
 
-    if(hWidgetRect.contains(mouseX, mouseY))
+    if(hWidgetRect.contains(event->pos()))
     {
         hWidgetHideTransition.stop();
         hHideStarted = false;
@@ -970,7 +968,7 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
         hHideStarted = true;
     }
 
-    if(vWidgetRect.contains(mouseX, mouseY))
+    if(vWidgetRect.contains(event->pos()))
     {
         vWidgetHideTransition.stop();
         vHideStarted = false;
@@ -993,29 +991,29 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
             refresh = true;
         }
 
-        mouseState.hovering = false;
+        mouseState.pointedObjectType = NONE;
 
         mouseTangentHoverTest(x, y);
 
-        if(!mouseState.hovering)
+        if(mouseState.pointedObjectType == SelectableMathObject::NONE)
         {
             mouseSeqHoverTest(x, y);
-            refresh = refresh || mouseState.hovering;
+            refresh = refresh || mouseState.pointedObjectType  != SelectableMathObject::NONE;
         }
 
-        if(!mouseState.hovering)
+        if(mouseState.pointedObjectType == SelectableMathObject::NONE)
         {
             mouseFuncHoverTest(x, y);
-            refresh = refresh || mouseState.hovering;
+            refresh = refresh || mouseState.pointedObjectType  != SelectableMathObject::NONE;
         }
 
-        if(!mouseState.hovering && mouseState.id != -1)
+        if(mouseState.pointedObjectType == SelectableMathObject::NONE && mouseState.id != -1)
         {
             mouseState.id = -1;
             refresh = true;
         }
 
-        if(buttonPresse && !(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection))
+        if(ongoingMouseClick && !(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection))
         {
             double dx = mouseX - lastPosSouris.x;
             double dy = mouseY - lastPosSouris.y;
@@ -1077,14 +1075,14 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
 
     if(selectedCurve.isParametric)
     {
-        if(selectedCurve.funcType == FUNC_HOVER)
+        if(selectedCurve.selectedObject == FUNCTION)
         {
             Range info = funcs[selectedCurve.id]->getParametricRange();
             k = info.start + double(selectedCurve.kPos) * info.step;
         }
         else k_pos = selectedCurve.kPos;
     }
-    if(selectedCurve.funcType == FUNC_HOVER)
+    if(selectedCurve.selectedObject == FUNCTION)
     {
         pointUnit.x = x;
         pointUnit.y = funcs[selectedCurve.id]->getFuncValue(x, k);
@@ -1092,7 +1090,7 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
         dispPoint = true;
         recalculate = false;
     }
-    else if(selectedCurve.funcType == SEQ_HOVER && x >= seqs[0]->get_nMin()-0.3)
+    else if(selectedCurve.selectedObject == SEQUENCE && x >= seqs[0]->get_nMin()-0.3)
     {
         double start, step = 1;
         bool ok = true;
@@ -1119,12 +1117,12 @@ void MainGraph::mouseMoveWithActiveSelection(double x, double y)
         dispPoint = true;
         recalculate = false;
     }
-    else if(selectedCurve.funcType == TANGENT_RESIZE_HOVER)
+    else if(selectedCurve.selectedObject == TANGENT_RESIZE)
     {
          double dx = (mouseX - lastPosSouris.x)/uniteX;
          tangents->at(selectedCurve.id)->resizeTangent(dx, selectedCurve.tangentPtSelection);
     }
-    else if(selectedCurve.funcType == TANGENT_MOVE_HOVER)
+    else if(selectedCurve.selectedObject == TANGENT_MOVE)
     {
          tangents->at(selectedCurve.id)->move(x);
     }
@@ -1154,13 +1152,12 @@ void MainGraph::mouseFuncHoverTest(double x, double y)
 
             if(!(std::isnan(calcY) || std::isinf(calcY)))
             {
-                if(!(selectedCurve.isSomethingSelected && selectedCurve.funcType == FUNCTION && draw == selectedCurve.kPos && i == selectedCurve.id))
+                if(!(selectedCurve.isSomethingSelected && selectedCurve.selectedObject == FUNCTION && draw == selectedCurve.kPos && i == selectedCurve.id))
                 {
                     if((fabs(calcY - y) * uniteY) < graphSettings.curvesThickness + 1)
                     {
-                        mouseState.hovering = true;
                         mouseState.tangentHovering = false;
-                        mouseState.funcType = FUNC_HOVER;
+                        mouseState.pointedObjectType = FUNCTION;
                         mouseState.isParametric = funcs[i]->isFuncParametric();
                         mouseState.kPos = draw;
                         mouseState.id = i;
@@ -1216,13 +1213,12 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
                 if(!ok)
                     break;
 
-                if(!(selectedCurve.isSomethingSelected && selectedCurve.funcType == SEQUENCE && draw == selectedCurve.kPos && i == selectedCurve.id))
+                if(!(selectedCurve.isSomethingSelected && selectedCurve.selectedObject == SEQUENCE && draw == selectedCurve.kPos && i == selectedCurve.id))
                 {
                     if((fabs(calcY - y) * uniteY) < graphSettings.curvesThickness + 3)
-                    {
-                        mouseState.hovering = true;
+                    {                        
                         mouseState.tangentHovering = false;
-                        mouseState.funcType = SEQ_HOVER;
+                        mouseState.pointedObjectType = SEQUENCE;
                         mouseState.isParametric = seqs[i]->isSeqParametric();
                         mouseState.kPos = draw;
                         mouseState.id = i;
@@ -1257,29 +1253,26 @@ void MainGraph::mouseTangentHoverTest(double x, double y)
 
         if(fabs(tangentPoints.left.x - x) < 4/uniteX && fabs(tangentPoints.left.y - y) < 4/uniteY)
         {
-            mouseState.hovering = true;
             mouseState.tangentHovering = true;
             mouseState.tangentPtSelection = -1; //-1 for left point, so when we add dx to the tangent's lenght, we multiply it by -1
-            mouseState.funcType = TANGENT_RESIZE_HOVER;
+            mouseState.pointedObjectType = TANGENT_RESIZE;
             mouseState.id = i;
             found = true;
             //recalculate = false;
         }
         else if(fabs(tangentPoints.right.x - x) < 4/uniteX && fabs(tangentPoints.right.y - y) < 4/uniteY)
-        {
-            mouseState.hovering = true;
+        {           
             mouseState.tangentHovering = true;
             mouseState.tangentPtSelection = 1;
-            mouseState.funcType = TANGENT_RESIZE_HOVER;
+            mouseState.pointedObjectType = TANGENT_RESIZE;
             mouseState.id = i;
             found = true;
             //recalculate = false;
         }
         else if(fabs(tangentPoints.center.x - x) < 5/uniteX && fabs(tangentPoints.center.y - y) < 5/uniteY)
-        {
-            mouseState.hovering = true;
+        {           
             mouseState.tangentHovering = true;
-            mouseState.funcType = TANGENT_MOVE_HOVER;
+            mouseState.pointedObjectType = TANGENT_MOVE;
             mouseState.id = i;
             found = true;
             //recalculate = false;
