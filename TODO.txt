@@ -1,6 +1,6 @@
 Currently working on:
     Make the actual exporting with the user given formats
-    Add the ability the change the tick spacing and the view range on the export window, by using RangeAdjustments class.
+    Implemet tick spacing auto-update in export preview. Unify the code for exportPreview and mainGraph into GraphDraw maybe.
 
 - Fix bug with zooming in the main window, it doesn't work sometimes
 - Improve the change of xStep and yStep after zooming. e.g. multiply by 2 till a power of 10 is reached

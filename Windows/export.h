@@ -50,6 +50,8 @@ protected slots:
     void onSheetSizeChange();
     void onImageSizeChange();
 
+    void onMainGraphRangeChange(GraphRange range); // range change coming from the application's main graph
+
     void onSheetMarginChange();
     void onImageMarginChange();
 
@@ -69,6 +71,7 @@ protected slots:
     void exportFormatChanged();
 
 protected:    
+    void makeUiConnects();
     void resizeEvent(QResizeEvent *event);
     RangeAdjustments *rangeWidget;
     Ui::Export *ui;
@@ -77,6 +80,7 @@ protected:
     QTimer timer;
     QString fileName;
     bool orthonormal;
+    Information *information;
 };
 
 #endif // PRINT_H

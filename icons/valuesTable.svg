@@ -6,11 +6,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
    viewBox="0 0 88.446426 101.3644"
    height="101.3644mm"
-   width="88.446426mm">
+   width="88.446426mm"
+   sodipodi:docname="valuesTable.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1600"
+     inkscape:window-height="849"
+     id="namedview28"
+     showgrid="false"
+     inkscape:zoom="0.61601178"
+     inkscape:cx="170.38954"
+     inkscape:cy="191.55478"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2" />
   <metadata
@@ -21,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -30,8 +54,9 @@
      id="layer1">
     <path
        style="fill:none;stroke:#000000;stroke-width:2.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 89.202381,21.833333 V 104.23214"
-       id="path817" />
+       d="M 89.202381,4.6529265 V 104.23214"
+       id="path817"
+       inkscape:connector-curvature="0" />
     <path
        style="fill:none;stroke:#000000;stroke-width:2.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 45.357142,49.047619 H 133.80357"
@@ -86,7 +111,7 @@
         </g>
       </g>
       <g
-         transform="matrix(0,2.508191,-2.508191,0,471.09408,-277.31851)"
+         transform="matrix(0,1.5411717,-1.5411717,0,342.31491,-131.28113)"
          ns1:version="0.9.1"
          ns1:texconverter="pdflatex"
          ns1:pdfconverter="pdf2svg"
@@ -95,32 +120,37 @@
          ns1:scale="7.10983254909"
          ns1:alignment="middle center"
          ns1:jacobian_sqrt="2.508191"
-         id="g948">
+         id="g948"
+         style="stroke-width:1.62745726">
         <g
-           id="g946">
+           id="g946"
+           style="stroke-width:1.62745726">
           <g
-             style="fill:#000000;fill-opacity:1"
+             style="fill:#000000;fill-opacity:1;stroke-width:1.62745726"
              id="g944">
             <path
                style="stroke:none;stroke-width:0"
                d="m 1.90625,-0.53125 c 0,-0.28125 -0.234375,-0.53125 -0.515625,-0.53125 -0.296875,0 -0.53125,0.25 -0.53125,0.53125 C 0.859375,-0.234375 1.09375,0 1.390625,0 1.671875,0 1.90625,-0.234375 1.90625,-0.53125 Z m 0,0"
                transform="translate(148.712,134.765)"
-               id="path938" />
+               id="path938"
+               inkscape:connector-curvature="0" />
             <path
                style="stroke:none;stroke-width:0"
                d="m 1.90625,-0.53125 c 0,-0.28125 -0.234375,-0.53125 -0.515625,-0.53125 -0.296875,0 -0.53125,0.25 -0.53125,0.53125 C 0.859375,-0.234375 1.09375,0 1.390625,0 1.671875,0 1.90625,-0.234375 1.90625,-0.53125 Z m 0,0"
                transform="translate(151.47961,134.765)"
-               id="path940" />
+               id="path940"
+               inkscape:connector-curvature="0" />
             <path
                style="stroke:none;stroke-width:0"
                d="m 1.90625,-0.53125 c 0,-0.28125 -0.234375,-0.53125 -0.515625,-0.53125 -0.296875,0 -0.53125,0.25 -0.53125,0.53125 C 0.859375,-0.234375 1.09375,0 1.390625,0 1.671875,0 1.90625,-0.234375 1.90625,-0.53125 Z m 0,0"
                transform="translate(154.24722,134.765)"
-               id="path942" />
+               id="path942"
+               inkscape:connector-curvature="0" />
           </g>
         </g>
       </g>
       <g
-         transform="matrix(0,2.508191,-2.508191,0,491.9136,-278.11123)"
+         transform="matrix(0,1.5411717,-1.5411717,0,361.29737,-131.40831)"
          ns1:version="0.9.1"
          ns1:texconverter="pdflatex"
          ns1:pdfconverter="pdf2svg"
@@ -129,27 +159,32 @@
          ns1:scale="7.10983254909"
          ns1:alignment="middle center"
          ns1:jacobian_sqrt="2.508191"
-         id="g948-1">
+         id="g948-7"
+         style="stroke-width:1.62745726">
         <g
-           id="g946-5">
+           id="g946-1"
+           style="stroke-width:1.62745726">
           <g
-             style="fill:#000000;fill-opacity:1"
-             id="g944-9">
+             style="fill:#000000;fill-opacity:1;stroke-width:1.62745726"
+             id="g944-1">
             <path
                style="stroke:none;stroke-width:0"
                d="m 1.90625,-0.53125 c 0,-0.28125 -0.234375,-0.53125 -0.515625,-0.53125 -0.296875,0 -0.53125,0.25 -0.53125,0.53125 C 0.859375,-0.234375 1.09375,0 1.390625,0 1.671875,0 1.90625,-0.234375 1.90625,-0.53125 Z m 0,0"
                transform="translate(148.712,134.765)"
-               id="path938-7" />
+               id="path938-5"
+               inkscape:connector-curvature="0" />
             <path
                style="stroke:none;stroke-width:0"
                d="m 1.90625,-0.53125 c 0,-0.28125 -0.234375,-0.53125 -0.515625,-0.53125 -0.296875,0 -0.53125,0.25 -0.53125,0.53125 C 0.859375,-0.234375 1.09375,0 1.390625,0 1.671875,0 1.90625,-0.234375 1.90625,-0.53125 Z m 0,0"
                transform="translate(151.47961,134.765)"
-               id="path940-7" />
+               id="path940-9"
+               inkscape:connector-curvature="0" />
             <path
                style="stroke:none;stroke-width:0"
                d="m 1.90625,-0.53125 c 0,-0.28125 -0.234375,-0.53125 -0.515625,-0.53125 -0.296875,0 -0.53125,0.25 -0.53125,0.53125 C 0.859375,-0.234375 1.09375,0 1.390625,0 1.671875,0 1.90625,-0.234375 1.90625,-0.53125 Z m 0,0"
                transform="translate(154.24722,134.765)"
-               id="path942-6" />
+               id="path942-7"
+               inkscape:connector-curvature="0" />
           </g>
         </g>
       </g>

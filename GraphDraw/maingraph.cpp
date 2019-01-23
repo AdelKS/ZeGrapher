@@ -24,7 +24,10 @@
 MainGraph::MainGraph(Information *info) : GraphDraw(info)
 {
     graphRange = info->getGraphRange();
-    tickIntervals = info->getGraphTickIntervals();
+    tickIntervals = info->getGraphTickIntervals();    
+    
+    setMinimumSize(QSize(200, 200));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     connect(info, SIGNAL(updateOccured()), this, SLOT(updateGraph()));
     connect(info, SIGNAL(newSettingsVals()), this, SLOT(updateGraph()));

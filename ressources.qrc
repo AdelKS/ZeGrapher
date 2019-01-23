@@ -65,5 +65,7 @@
         <file>icons/orthonormalView.svg</file>
         <file>icons/viewRange.svg</file>
         <file>icons/valuesTable.svg</file>
+        <file>icons/resetToDefaultView.svg</file>
+        <file>icons/export.svg</file>
     </qresource>
 </RCC>

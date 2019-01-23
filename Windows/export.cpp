@@ -19,11 +19,12 @@
 ****************************************************************************/
 
 
-#include "Export/export.h"
+#include "Windows/export.h"
 #include "ui_export.h"
 
 Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui::Export)
 {
+    information = info;
     ui->setupUi(this);
     QSizeF sheetSize(ui->sheetWidth->value(), ui->sheetHeight->value());
     QSize imageSize(ui->imageWidth->value(), ui->imageHeight->value());
@@ -39,9 +40,9 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     rangeWidget = new RangeAdjustments(info->getFuncsList(), info->getGraphRange(), info->getGraphTickIntervals());
     rangeWidget->setMargin(0);
-    rangeWidget->disableRangeWidgets(ui->linkToMainGraph->isChecked());
+    rangeWidget->disableUserInput(ui->linkToMainGraph->isChecked());
 
-    connect(ui->linkToMainGraph, SIGNAL(toggled(bool)), rangeWidget, SLOT(disableRangeWidgets(bool)));
+    connect(ui->linkToMainGraph, SIGNAL(toggled(bool)), rangeWidget, SLOT(disableUserInput(bool)));
 
     ui->graphViewLayout->addWidget(rangeWidget);
 
@@ -53,6 +54,18 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     timer.setInterval(2000);
     timer.setSingleShot(true);
+
+    makeUiConnects();
+
+    exportFormatChanged();
+}
+
+void Export::makeUiConnects()
+{
+    connect(rangeWidget, SIGNAL(graphRangeChanged(GraphRange)), exportPreview, SLOT(setGraphRange(GraphRange)));
+    connect(rangeWidget, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), exportPreview, SLOT(setGraphTickIntervals(GraphTickIntervals)));
+
+    connect(information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(onMainGraphRangeChange(GraphRange)));
 
     connect(ui->zoomIn, SIGNAL(released()), this, SLOT(zoomIn()));
     connect(ui->zoomOut, SIGNAL(released()), this, SLOT(zoomOut()));
@@ -105,8 +118,6 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     connect(ui->italic, SIGNAL(toggled(bool)), exportPreview, SLOT(setItalic(bool)));
     connect(ui->underline, SIGNAL(toggled(bool)), exportPreview, SLOT(setUnderline(bool)));
     connect(ui->numPrec, SIGNAL(valueChanged(int)), exportPreview, SLOT(setNumPrec(int)));
-
-    exportFormatChanged();
 }
 
 void Export::exportFormatChanged()
@@ -139,6 +150,15 @@ void Export::exportFormatChanged()
     }
 
     resizeExportPreview();
+}
+
+void Export::onMainGraphRangeChange(GraphRange range)
+{
+    if(ui->linkToMainGraph->isChecked())
+    {
+        rangeWidget->setGraphRange(range);
+        exportPreview->setGraphRange(range);
+    }
 }
 
 void Export::activateRealSizePreview()

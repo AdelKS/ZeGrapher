@@ -87,7 +87,7 @@ void MainWindow::createMenus()
     connect(setOrthonormalAction, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
     connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool)));
 
-    QAction *resetViewAction = menuTools->addAction(QIcon(":/icons/resetToDefaultView.png"), tr("Reset to default view"));
+    QAction *resetViewAction = menuTools->addAction(QIcon(":/icons/resetToDefaultView.svg"), tr("Reset to default view"));
     connect(resetViewAction, SIGNAL(triggered()), rangeWin, SLOT(resetToStandardView()));
 
     QAction *showAboutWinAction = menuHelp->addAction(tr("About..."));
@@ -99,7 +99,7 @@ void MainWindow::createMenus()
     QAction *showUpdateCheckWinAction = menuHelp->addAction(tr("Check for updates"));
     connect(showUpdateCheckWinAction, SIGNAL(triggered()), updateCheckWin, SLOT(checkForUpdate()));
 
-    QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.png"), tr("Export graph..."));
+    QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.svg"), tr("Export graph..."));
     showExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
     connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(show()));
     connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(raise()));

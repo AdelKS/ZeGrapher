@@ -583,8 +583,10 @@ void ExportPreview::wheelEvent(QWheelEvent *event)
 void ExportPreview::setGraphRange(GraphRange range)
 {
     graphRange = range;
+    update();
 }
 void ExportPreview::setGraphTickIntervals(GraphTickIntervals tickIntervals)
 {
     this->tickIntervals = tickIntervals;
+    update();
 }

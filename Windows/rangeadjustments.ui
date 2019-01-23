@@ -32,8 +32,8 @@
    <string>Representation range</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icons/bornes.png</normaloff>:/icons/bornes.png</iconset>
+   <iconset resource="../ressources.qrc">
+    <normaloff>:/icons/viewRange.svg</normaloff>:/icons/viewRange.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <item>
@@ -150,7 +150,7 @@
            </property>
            <property name="icon">
             <iconset resource="../ressources.qrc">
-             <normaloff>:/icons/resetToDefaultView.png</normaloff>:/icons/resetToDefaultView.png</iconset>
+             <normaloff>:/icons/resetToDefaultView.svg</normaloff>:/icons/resetToDefaultView.svg</iconset>
            </property>
            <property name="iconSize">
             <size>

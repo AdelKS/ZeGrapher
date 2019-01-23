@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../ressources.qrc">
-    <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
+    <normaloff>:/icons/export.svg</normaloff>:/icons/export.svg</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
    <property name="leftMargin">

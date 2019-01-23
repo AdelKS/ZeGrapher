@@ -96,12 +96,13 @@ void RangeAdjustments::hideViewOptions(bool hide)
     ui->viewOptionsWidget->setHidden(hide);
 }
 
-void RangeAdjustments::disableRangeWidgets(bool disable)
+void RangeAdjustments::disableUserInput(bool disable)
 {
     Xmin->setDisabled(disable);
     Xmax->setDisabled(disable);
     Ymin->setDisabled(disable);
     Ymax->setDisabled(disable);
+    ui->buttonsWidget->setDisabled(disable);
 }
 
 void RangeAdjustments::setGraphRange(GraphRange range)
@@ -117,6 +118,8 @@ void RangeAdjustments::setGraphRange(GraphRange range)
 
     Ymin->setValue(range.Ymin);
     Ymax->setValue(range.Ymax);
+
+    graphRange = range;
 }
 
 void RangeAdjustments::setGraphTickIntervals(GraphTickIntervals tickIntervals)
@@ -173,6 +176,7 @@ void RangeAdjustments::onRangeChange()
 
     if(oldGraphRange != graphRange)
     {
+        qDebug() << "Change in values detected!";
         emit graphRangeChanged(graphRange);
     }
 }
@@ -219,6 +223,8 @@ void RangeAdjustments::standardView()
     Ymax->setValue(10);
     Ymin->setValue(-10);
     Ystep->setValue(1);
+
+    onRangeChange();
 }
 
 RangeAdjustments::~RangeAdjustments()

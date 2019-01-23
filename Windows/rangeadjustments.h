@@ -48,7 +48,7 @@ public slots:
     void resetToStandardView();   
     void setGraphRange(GraphRange range);
     void setGraphTickIntervals(GraphTickIntervals tickIntervals);
-    void disableRangeWidgets(bool disable);
+    void disableUserInput(bool disable);
     void hideViewOptions(bool hide);
 
 protected slots:

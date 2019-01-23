@@ -73,7 +73,7 @@ SOURCES += \
     Windows/values.cpp \
     Windows/updatecheck.cpp \
     Windows/mainwindow.cpp \
-    Export/export.cpp \
+    Windows/export.cpp \
     GraphDraw/exportpreview.cpp \
     Widgets/expressionlineedit.cpp
 
@@ -131,7 +131,7 @@ HEADERS  += \
     Windows/updatecheck.h \
     Windows/mainwindow.h \
     structures.h \
-    Export/export.h \
+    Windows/export.h \
     GraphDraw/exportpreview.h \
     Widgets/expressionlineedit.h
 
@@ -139,7 +139,6 @@ HEADERS  += \
 FORMS    += \
     Windows/about.ui \
     Widgets/datawidget.ui \
-    Export/imagesave.ui \
     DataPlot/startingactions.ui \
     DataPlot/sortoptions.ui \
     DataPlot/filloptions.ui \
@@ -152,7 +151,7 @@ FORMS    += \
     Windows/rangeadjustments.ui \
     Windows/mathobjectsinput.ui \
     Windows/settings.ui \
-    Export/export.ui
+    Windows/export.ui
 
 
 RESOURCES += \

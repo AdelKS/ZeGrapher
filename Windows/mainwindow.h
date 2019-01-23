@@ -32,7 +32,7 @@
 #include "Windows/values.h"
 #include "about.h"
 #include "GraphDraw/exportpreview.h"
-#include "Export/export.h"
+#include "Windows/export.h"
 #include "Widgets/keyboard.h"
 #include "Windows/updatecheck.h"
 
