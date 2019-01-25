@@ -10,11 +10,11 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
-   viewBox="0 0 88.446426 101.3644"
-   height="101.3644mm"
-   width="88.446426mm"
+   viewBox="0 0 89.958326 99.579213"
+   height="99.579216mm"
+   width="89.958328mm"
    sodipodi:docname="valuesTable.svg"
-   inkscape:version="0.92.4 (unknown)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -24,17 +24,52 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1600"
-     inkscape:window-height="849"
+     inkscape:window-width="1849"
+     inkscape:window-height="1149"
      id="namedview28"
      showgrid="false"
-     inkscape:zoom="0.61601178"
-     inkscape:cx="170.38954"
-     inkscape:cy="191.55478"
-     inkscape:window-x="0"
+     inkscape:zoom="0.82693301"
+     inkscape:cx="11.679781"
+     inkscape:cy="64.918422"
+     inkscape:window-x="71"
      inkscape:window-y="25"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="g833"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-smooth-nodes="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
+    <sodipodi:guide
+       position="-34.615338,94.570013"
+       orientation="0,1"
+       id="guide839"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="22.556996,61.111862"
+       orientation="1,0"
+       id="guide841"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="67.477286,47.03048"
+       orientation="1,0"
+       id="guide843"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="22.556988,26.853284"
+       orientation="0,1"
+       id="guide845"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <defs
      id="defs2" />
   <metadata
@@ -45,22 +80,23 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     transform="translate(-45.357142,-2.8677357)"
+     transform="translate(-45.357142,-4.6529265)"
      id="layer1">
     <path
-       style="fill:none;stroke:#000000;stroke-width:2.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 89.202381,4.6529265 V 104.23214"
+       style="fill:none;stroke:#000000;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 90.336308,5.0133918 V 104.23214"
        id="path817"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:2.4000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 45.357142,49.047619 H 133.80357"
-       id="path821" />
+       style="fill:none;stroke:#000000;stroke-width:2.64583325;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 45.357142,49.047619 H 135.31547"
+       id="path821"
+       inkscape:connector-curvature="0" />
     <g
        transform="matrix(2.508191,0,0,2.508191,-274.95441,-184.12767)"
        ns1:version="0.9.1"
@@ -74,7 +110,7 @@
        id="g833">
       <g
          style="stroke-width:0.39465556"
-         transform="matrix(2.5338551,0,0,2.5338551,-249.65664,-255.68162)"
+         transform="matrix(2.0678598,0,0,2.0678598,-176.55111,-191.87888)"
          id="surface1">
         <g
            style="fill:#000000;fill-opacity:1;stroke-width:0.39465556"
@@ -83,7 +119,8 @@
              style="stroke:none;stroke-width:0"
              d="M 3.328125,-3.015625 C 3.390625,-3.265625 3.625,-4.1875 4.3125,-4.1875 c 0.046875,0 0.296875,0 0.5,0.125 C 4.53125,-4 4.34375,-3.765625 4.34375,-3.515625 c 0,0.15625 0.109375,0.34375 0.375,0.34375 0.21875,0 0.53125,-0.171875 0.53125,-0.578125 0,-0.515625 -0.578125,-0.65625 -0.921875,-0.65625 -0.578125,0 -0.921875,0.53125 -1.046875,0.75 -0.25,-0.65625 -0.78125,-0.75 -1.078125,-0.75 -1.03125,0 -1.609375,1.28125 -1.609375,1.53125 0,0.109375 0.109375,0.109375 0.125,0.109375 0.078125,0 0.109375,-0.03125 0.125,-0.109375 0.34375,-1.0625 1,-1.3125 1.34375,-1.3125 0.1875,0 0.53125,0.09375 0.53125,0.671875 0,0.3125 -0.171875,0.96875 -0.53125,2.375 -0.15625,0.609375 -0.515625,1.03125 -0.953125,1.03125 -0.0625,0 -0.28125,0 -0.5,-0.125 0.25,-0.0625 0.46875,-0.265625 0.46875,-0.546875 0,-0.265625 -0.21875,-0.34375 -0.359375,-0.34375 -0.3125,0 -0.546875,0.25 -0.546875,0.578125 0,0.453125 0.484375,0.65625 0.921875,0.65625 0.671875,0 1.03125,-0.703125 1.046875,-0.75 0.125,0.359375 0.484375,0.75 1.078125,0.75 1.03125,0 1.59375,-1.28125 1.59375,-1.53125 0,-0.109375 -0.078125,-0.109375 -0.109375,-0.109375 -0.09375,0 -0.109375,0.046875 -0.140625,0.109375 -0.328125,1.078125 -1,1.3125 -1.3125,1.3125 -0.390625,0 -0.546875,-0.3125 -0.546875,-0.65625 0,-0.21875 0.046875,-0.4375 0.15625,-0.875 z m 0,0"
              transform="translate(148.712,134.765)"
-             id="path828" />
+             id="path828"
+             inkscape:connector-curvature="0" />
         </g>
       </g>
       <g
@@ -96,7 +133,7 @@
          ns1:pdfconverter="pdf2svg"
          ns1:texconverter="pdflatex"
          ns1:version="0.9.1"
-         transform="matrix(2.508191,0,0,2.508191,-223.78178,-252.41075)">
+         transform="matrix(2.0469155,0,0,2.0469155,-155.10111,-189.14861)">
         <g
            id="g903">
           <g
@@ -106,12 +143,13 @@
                id="path899"
                transform="translate(148.712,134.765)"
                d="m 4.84375,-3.796875 c 0.046875,-0.140625 0.046875,-0.15625 0.046875,-0.234375 0,-0.171875 -0.140625,-0.265625 -0.296875,-0.265625 -0.09375,0 -0.25,0.0625 -0.34375,0.203125 -0.015625,0.0625 -0.109375,0.359375 -0.140625,0.546875 -0.078125,0.25 -0.140625,0.53125 -0.203125,0.796875 l -0.453125,1.796875 c -0.03125,0.140625 -0.46875,0.84375 -1.125,0.84375 -0.5,0 -0.609375,-0.4375 -0.609375,-0.8125 C 1.71875,-1.375 1.890625,-2 2.21875,-2.875 2.375,-3.28125 2.421875,-3.390625 2.421875,-3.59375 c 0,-0.4375 -0.3125,-0.8125 -0.8125,-0.8125 -0.953125,0 -1.3125,1.453125 -1.3125,1.53125 0,0.109375 0.09375,0.109375 0.109375,0.109375 0.109375,0 0.109375,-0.03125 0.15625,-0.1875 0.28125,-0.9375 0.671875,-1.234375 1.015625,-1.234375 0.078125,0 0.25,0 0.25,0.3125 0,0.25 -0.109375,0.515625 -0.171875,0.703125 -0.40625,1.0625 -0.578125,1.625 -0.578125,2.09375 0,0.890625 0.625,1.1875 1.21875,1.1875 0.390625,0 0.71875,-0.171875 1,-0.453125 -0.125,0.515625 -0.25,1.015625 -0.640625,1.546875 -0.265625,0.328125 -0.640625,0.625 -1.09375,0.625 -0.140625,0 -0.59375,-0.03125 -0.765625,-0.421875 0.15625,0 0.296875,0 0.421875,-0.125 C 1.328125,1.203125 1.421875,1.0625 1.421875,0.875 1.421875,0.5625 1.15625,0.53125 1.0625,0.53125 0.828125,0.53125 0.5,0.6875 0.5,1.171875 c 0,0.5 0.4375,0.875 1.0625,0.875 1.015625,0 2.046875,-0.90625 2.328125,-2.03125 z m 0,0"
-               style="stroke:none;stroke-width:0" />
+               style="stroke:none;stroke-width:0"
+               inkscape:connector-curvature="0" />
           </g>
         </g>
       </g>
       <g
-         transform="matrix(0,1.5411717,-1.5411717,0,342.31491,-131.28113)"
+         transform="matrix(0,1.5411717,-1.5411717,0,343.57679,-131.32623)"
          ns1:version="0.9.1"
          ns1:texconverter="pdflatex"
          ns1:pdfconverter="pdf2svg"
@@ -150,7 +188,7 @@
         </g>
       </g>
       <g
-         transform="matrix(0,1.5411717,-1.5411717,0,361.29737,-131.40831)"
+         transform="matrix(0,1.5411717,-1.5411717,0,361.48623,-131.32623)"
          ns1:version="0.9.1"
          ns1:texconverter="pdflatex"
          ns1:pdfconverter="pdf2svg"

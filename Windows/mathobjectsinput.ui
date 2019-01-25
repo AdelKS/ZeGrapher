@@ -54,7 +54,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -114,7 +114,7 @@
             <x>0</x>
             <y>0</y>
             <width>304</width>
-            <height>320</height>
+            <height>311</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="Layout_2">
@@ -220,7 +220,7 @@
             <x>0</x>
             <y>0</y>
             <width>304</width>
-            <height>320</height>
+            <height>311</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -373,7 +373,7 @@
             <x>0</x>
             <y>0</y>
             <width>306</width>
-            <height>322</height>
+            <height>313</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -403,7 +403,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>304</width>
-                <height>320</height>
+                <height>311</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -549,7 +549,7 @@
             <x>0</x>
             <y>0</y>
             <width>304</width>
-            <height>320</height>
+            <height>311</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -797,7 +797,7 @@
             <x>0</x>
             <y>0</y>
             <width>304</width>
-            <height>320</height>
+            <height>311</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -932,24 +932,6 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
      </layout>
     </widget>
    </item>

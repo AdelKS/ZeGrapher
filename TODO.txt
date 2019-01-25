@@ -1,6 +1,7 @@
 Currently working on:
     Make the actual exporting with the user given formats
     Implemet tick spacing auto-update in export preview. Unify the code for exportPreview and mainGraph into GraphDraw maybe.
+    Change when the tick values disappear in the main graph on user move: draw bigger than the maingraph widget
 
 - Fix bug with zooming in the main window, it doesn't work sometimes
 - Improve the change of xStep and yStep after zooming. e.g. multiply by 2 till a power of 10 is reached
