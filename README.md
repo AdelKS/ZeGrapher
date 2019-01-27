@@ -1,5 +1,7 @@
 # ZeGrapher
 
+[![Build Status](https://travis-ci.org/AdelKS/ZeGrapher.svg?branch=Bug_Correction)](https://travis-ci.org/AdelKS/ZeGrapher)
+
 ![ZeGrapher example](http://zegrapher.com/screenshots/index.png)
 
 
