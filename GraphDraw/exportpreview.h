@@ -24,6 +24,7 @@
 #include "imagepreview.h"
 #include <QPdfWriter>
 #include <QPageLayout>
+#include <QSvgGenerator>
 
 #define RELATIVE_MIN_SIZE 0.25
 
@@ -74,6 +75,7 @@ public slots:
     void setScale(double scalingFactor);
 
     void exportPDF(QString fileName, SheetSizeType sizeType);
+    void exportSVG(QString fileName);
 
     void setSheetOrientation(QPageLayout::Orientation type);
 

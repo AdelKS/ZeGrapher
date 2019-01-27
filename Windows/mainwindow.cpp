@@ -39,6 +39,7 @@ MainWindow::MainWindow()
     exportWin = new Export(information, this);
     keyboard = new Keyboard();
 
+    setIconSize(QSize(30, 30));
 
     mainGraph = new MainGraph(information); // it has to be the last thing to create.
     setCentralWidget(mainGraph);

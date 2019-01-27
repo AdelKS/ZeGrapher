@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 
-QT += widgets network
+QT += widgets network svg
 
 OUTPUT += Console
 

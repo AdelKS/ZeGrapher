@@ -116,6 +116,9 @@ void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
 
     QPdfWriter *pdfWriter = new QPdfWriter(fileName);
 
+    pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION_STR);
+    pdfWriter->setTitle(tr("Exported graph"));
+
     int targetResolution = int(screenResolution / userScalingFactor);
 
     pdfWriter->setResolution(targetResolution);   
@@ -149,6 +152,42 @@ void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
     painter.end();
 
     delete pdfWriter;
+}
+
+void ExportPreview::exportSVG(QString fileName)
+{
+    graphSettings = information->getSettingsVals();
+
+    QSvgGenerator svgGenerator;
+    svgGenerator.setFileName(fileName);
+
+    svgGenerator.setTitle(tr("Exported graph"));
+    svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION_STR);
+
+    double targetResolution = screenResolution / userScalingFactor;
+
+    svgGenerator.setResolution(int(targetResolution));
+
+    QSize sizePx(int(sheetSizeCm.width() * 0.393701 * targetResolution), int(sheetSizeCm.height() * 0.393701 * targetResolution));
+
+    svgGenerator.setSize(sizePx);
+    svgGenerator.setViewBox(QRect(QPoint(0, 0), sizePx));
+
+    painter.begin(&svgGenerator);
+
+    if(information->getSettingsVals().backgroundColor != QColor(Qt::white))
+    {
+        painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));
+        painter.drawRect(painter.viewport());
+    }
+
+    figureRectScaled = getFigureRect(painter.viewport());
+
+    painter.translate(figureRectScaled.topLeft());
+
+    paint();
+
+    painter.end();
 }
 
 

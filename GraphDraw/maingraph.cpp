@@ -359,6 +359,7 @@ void MainGraph::wheelEvent(QWheelEvent *event)
         graphRange.Ymin -= (graphRange.Ymin - y)*valeur;
 
         moving = true;
+        recalculate = true;
 
         if(graphSettings.smoothing)
             repaintTimer.start();
@@ -1528,10 +1529,9 @@ void MainGraph::zoomX()
     {
         repaintTimer.stop();
 
-
-
         graphRange.Xmin += valeur;
         graphRange.Xmax -= valeur;
+
         moving = true;
 
         emit graphRangeChanged(graphRange);

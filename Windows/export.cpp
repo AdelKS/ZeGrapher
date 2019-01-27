@@ -262,9 +262,13 @@ void Export::getFileName()
     fileName = QFileDialog::getSaveFileName(this, tr("Enter file name in the selected folder"));
     if(!fileName.isEmpty())
     {
+        QString extension;
         if(ui->vectorFormat->isChecked())
-            fileName.append("." + ui->scalableFormatSelection->currentText().toLower());
-        else fileName.append("." + ui->imageFormatSelection->currentText().toLower());
+            extension = "." + ui->scalableFormatSelection->currentText().toLower();
+        else extension = "." + ui->scalableFormatSelection->currentText().toLower();
+
+        if(!fileName.endsWith(extension, Qt::CaseInsensitive))
+            fileName.append(extension);
 
         ui->fileName->setText(fileName);
     }
@@ -278,13 +282,10 @@ void Export::enableExportButton()
 
 void Export::exportGraph()
 {
-    if(!fileName.isEmpty())
-        exportPreview->exportPDF(fileName, ui->customSize->isChecked() ? SheetSizeType::CUSTOM : SheetSizeType::NORMALISED);
-
-    else QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
+    if(fileName.isEmpty())
+        QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
                                                                        "specified along with a destination folder.\n\n"
                                                                        "Please specify them then try again."));
-
     ui->exportButton->setEnabled(false);
     timer.start();
 
@@ -292,11 +293,11 @@ void Export::exportGraph()
     {
         if(ui->scalableFormatSelection->currentText() == "PDF")
         {
-
+            exportPreview->exportPDF(fileName, ui->customSize->isChecked() ? SheetSizeType::CUSTOM : SheetSizeType::NORMALISED);
         }
         else if(ui->scalableFormatSelection->currentText() == "SVG")
         {
-
+            exportPreview->exportSVG(fileName);
         }
     }
     else // image format

@@ -1,5 +1,7 @@
 Currently working on:
-    Make the actual exporting with the user given formats
+    Make the actual exporting with the user given formats, the format left are image format
+    Update the curve sampling method to an adaptive one: once the distance between points is bigger than the target in pixels, update.
+    Change the curve saving from units in pixels to real units, scale the painter instead.
     Implemet tick spacing auto-update in export preview. Unify the code for exportPreview and mainGraph into GraphDraw maybe.
     Change when the tick values disappear in the main graph on user move: draw bigger than the maingraph widget
 
