@@ -1,5 +1,5 @@
 Currently working on:
-    Make the actual exporting with the user given formats, the format left are image format
+    Make the actual exporting with the user given formats, the format left are image formats
     Update the curve sampling method to an adaptive one: once the distance between points is bigger than the target in pixels, update.
     Change the curve saving from units in pixels to real units, scale the painter instead.
     Implemet tick spacing auto-update in export preview. Unify the code for exportPreview and mainGraph into GraphDraw maybe.

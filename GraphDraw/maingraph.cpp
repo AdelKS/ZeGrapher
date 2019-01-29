@@ -244,10 +244,10 @@ void MainGraph::addOtherWidgets()
     yWidget->setAutoFillBackground(true);
 
     vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
-                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-style: solid; border-top-left-radius: 10; border-bottom-right-radius: 10;");
+                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-style: solid; border-top-left-radius: 10; border-bottom-left-radius: 10;");
 
     hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
-                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-top-left-radius: 10; border-bottom-right-radius: 10;");
+                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-top-left-radius: 10; border-top-right-radius: 10;");
     hSlider->setStyleSheet("background-color: none; border: none;");
     zoom2->setStyleSheet("background-color: none; border: none;");
     unZoom2->setStyleSheet("background-color: none; border: none;");
@@ -1432,7 +1432,7 @@ void MainGraph::drawTicksAndNumbers()
 
 bool MainGraph::updateTickSpacing()
 {
-    bool scaleChanged = false;
+    bool tickSpacingChanged = false;
     bool orthonormal = information->isOrthonormal();
 
     if(uniteX * tickIntervals.x < widestXNumber + 32)
@@ -1441,7 +1441,7 @@ bool MainGraph::updateTickSpacing()
             tickIntervals.x *= 2;
         if(orthonormal)
              tickIntervals.y = tickIntervals.x;
-        scaleChanged = true;
+        tickSpacingChanged = true;
     }
     else if(uniteX * tickIntervals.x > 2*widestXNumber + 96)
     {
@@ -1449,7 +1449,7 @@ bool MainGraph::updateTickSpacing()
             tickIntervals.x /= 2;
         if(orthonormal)
              tickIntervals.y = tickIntervals.x;
-        scaleChanged = true;
+        tickSpacingChanged = true;
     }
     if(!orthonormal)
     {
@@ -1457,17 +1457,17 @@ bool MainGraph::updateTickSpacing()
         {
             while(uniteY * tickIntervals.y < 25)
                 tickIntervals.y *= 2;
-            scaleChanged = true;
+            tickSpacingChanged = true;
         }
         else if(uniteY * tickIntervals.y > 150)
         {
             while(uniteY * tickIntervals.y > 150)
                 tickIntervals.y /= 2;
-            scaleChanged = true;
+            tickSpacingChanged = true;
         }
     }
 
-    return scaleChanged;
+    return tickSpacingChanged;
 }
 
 void MainGraph::drawAxes()
