@@ -1,10 +1,10 @@
 [Desktop Entry]
 Name=ZeGrapher
-Comment=Math graphing software
+Comment=Math plotting software
 Comment[fr]=Logiciel de tracé de courbes
 Exec=ZeGrapher
 Terminal=false
 Type=Application
 Icon=ZeGrapher
 MimeType=x-scheme-handler/ZeGrapher;
-Categories=Office;
+Categories=Science;

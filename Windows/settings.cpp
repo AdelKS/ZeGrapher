@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,8 +18,6 @@
 **
 ****************************************************************************/
 
-
-
 #include "Windows/settings.h"
 #include "ui_settings.h"
 
@@ -34,40 +32,51 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     setWindowTitle(tr("Settings"));
     setWindowIcon(QIcon(":/icons/settings.png"));
 
-    axesColorButton = new QColorButton(Qt::black);   
-    ui->formLayout->addRow(tr("Axes color:"), axesColorButton);
+    rangeAdjustmentsWidget = new RangeAdjustments(information->getFuncsList(), information);
+    ui->rangeSettingsLayout->addWidget(rangeAdjustmentsWidget);
+
+    axisSettingsWidget = new AxisSettingsWidget();
+    ui->axisSettingsLayout->addWidget(axisSettingsWidget);
+
+    gridSettingsWidget = new ZeGridSettingsWidget();
+    ui->gridSettingsLayout->addWidget(gridSettingsWidget);
 
     backgroundColorButton = new QColorButton(Qt::white); 
-    ui->formLayout->addRow(tr("Background color:"), backgroundColorButton);
-
-
-    gridColorButton = new QColorButton(Qt::gray);  
-    ui->formLayout->addRow(tr("Grid color:"), gridColorButton);
+    ui->formLayout->addRow(tr("Background color:"), backgroundColorButton);   
 
     defaultColorButton = new QColorButton(Qt::black);  
     ui->formLayout->addRow(tr("Curve default color:"), defaultColorButton);
 
     readSavedSettings();
 
-    parameters.backgroundColor = backgroundColorButton->getCurrentColor();
-    parameters.axesColor = axesColorButton->getCurrentColor();
-    parameters.gridColor = gridColorButton->getCurrentColor();
-    parameters.defaultColor = defaultColorButton->getCurrentColor();
+    viewSettings.graph.backgroundColor = backgroundColorButton->getCurrentColor();
+    viewSettings.graph.defaultColor = defaultColorButton->getCurrentColor();
 
+    makeConnects();
+
+    apply();
+
+}
+
+void Settings::loadDefaults()
+{
+    viewSettings.grid = gridSettingsWidget->getSettings();
+}
+
+void Settings::makeConnects()
+{
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->graphFontSize, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->graphFont, SIGNAL(currentFontChanged(QFont)), this, SLOT(apply()));
     connect(ui->smoothing, SIGNAL(toggled(bool)), this, SLOT(apply()));
-    connect(axesColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(backgroundColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
-    connect(gridColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+
     connect(defaultColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(ui->reset, SIGNAL(released()), this, SLOT(resetToDefaultVals()));
 
-
-    apply();
-
+    connect(axisSettingsWidget, &AxisSettingsWidget::settingsUpdated, this, &Settings::apply);
+    connect(gridSettingsWidget, &ZeGridSettingsWidget::settingsUpdated, this, &Settings::apply);
 }
 
 void Settings::readSavedSettings()
@@ -78,10 +87,6 @@ void Settings::readSavedSettings()
 
     if(settings.contains("background_color"))
         backgroundColorButton->setColor(settings.value("background_color").value<QColor>());
-    if(settings.contains("axes_color"))
-        axesColorButton->setColor(settings.value("axes_color").value<QColor>());
-    if(settings.contains("grid_color"))
-        gridColorButton->setColor(settings.value("grid_color").value<QColor>());
     if(settings.contains("default_color"))
         defaultColorButton->setColor(settings.value("default_color").value<QColor>());
     if(settings.contains("antiasliasing"))
@@ -138,8 +143,6 @@ void Settings::saveSettings()
     settings.beginGroup("graph");
 
     settings.setValue("background_color", backgroundColorButton->getCurrentColor());
-    settings.setValue("axes_color", axesColorButton->getCurrentColor());
-    settings.setValue("grid_color", gridColorButton->getCurrentColor());
     settings.setValue("default_color", defaultColorButton->getCurrentColor());
 
     settings.setValue("antialiasing", ui->smoothing->isChecked());
@@ -179,9 +182,7 @@ void Settings::resetToDefaultVals()
     if(res == QMessageBox::No)
         return;
 
-    axesColorButton->setColor(Qt::black);
     backgroundColorButton->setColor(Qt::white);
-    gridColorButton->setColor(Qt::gray);
     defaultColorButton->setColor(Qt::black);
     ui->distanceWidget->setValue(4);
     ui->graphFontSize->setValue(11);
@@ -189,38 +190,46 @@ void Settings::resetToDefaultVals()
     ui->smoothing->setChecked(true);
     ui->updateCheckAtStart->setChecked(true);
 
-    QSettings settings;
-    settings.clear();
-
     apply();
 }
 
-void Settings::apply()
+bool Settings::checkForUpdatesOnStart()
 {
-    if(axesColorButton->getCurrentColor() == backgroundColorButton->getCurrentColor())
-        QMessageBox::warning(this, tr("Warning"), tr("Axes and background colors are identical"));
-    else if(backgroundColorButton->getCurrentColor() == gridColorButton->getCurrentColor())
-        QMessageBox::warning(this, tr("Warning"), tr("Background and grid colors are identical"));
-    else
-    {
-        double dist = ui->distanceWidget->value();
+    return ui->updateCheckAtStart->isChecked();
+}
 
-        parameters.smoothing = ui->smoothing->isChecked();
-        parameters.distanceBetweenPoints = pow(2, 2-dist/2);
-        parameters.curvesThickness = ui->thicknessWidget->value();
-        parameters.axesColor = axesColorButton->getCurrentColor();
-        parameters.backgroundColor = backgroundColorButton->getCurrentColor();
-        parameters.gridColor = gridColorButton->getCurrentColor();
-        parameters.defaultColor = defaultColorButton->getCurrentColor();
-        parameters.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
+void Settings::updateGraphSettings()
+{
+    viewSettings.graph.backgroundColor = backgroundColorButton->getCurrentColor();
 
-        QFont font(ui->graphFont->currentFont());
-        font.setPixelSize(ui->graphFontSize->value());
+    double dist = ui->distanceWidget->value();
 
-        parameters.graphFont = font;
+    viewSettings.graph.smoothing = ui->smoothing->isChecked();
+    viewSettings.graph.distanceBetweenPoints = pow(2, 2 - dist/2);
+    viewSettings.graph.curvesThickness = ui->thicknessWidget->value();
 
-        information->setSettingsVals(parameters);
-    }
+    viewSettings.graph.defaultColor = defaultColorButton->getCurrentColor();
+
+    QFont font(ui->graphFont->currentFont());
+    font.setPixelSize(ui->graphFontSize->value());
+
+    viewSettings.graph.graphFont = font;
+}
+
+void Settings::apply()
+{   
+    updateGraphSettings();
+
+    axisSettingsWidget->apply();
+    viewSettings.axes = axisSettingsWidget->getSettings();
+
+    rangeAdjustmentsWidget->apply();
+    viewSettings.range = rangeAdjustmentsWidget->getRange();
+
+    gridSettingsWidget->apply();
+    viewSettings.grid = gridSettingsWidget->getSettings();
+
+    information->setViewSettings(viewSettings);
 }
 
 Settings::~Settings()

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -30,7 +30,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     ui->setupUi(this);
     ui->styleWidget->hide();
 
-    style.color = info->getSettingsVals().defaultColor;
+    style.color = info->getGraphSettings().defaultColor;
     style.drawLines = false;
     style.drawPoints = true;
     style.lineStyle = Qt::SolidLine;
@@ -41,7 +41,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
 
     information = info;
 
-    colorButton = new QColorButton(info->getSettingsVals().defaultColor);
+    colorButton = new QColorButton(info->getGraphSettings().defaultColor);
     ui->mainLayout->addWidget(colorButton);
 
     connect(ui->styleButton, SIGNAL(toggled(bool)), ui->styleWidget, SLOT(setVisible(bool)));

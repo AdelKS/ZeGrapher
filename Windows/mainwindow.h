@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,19 +18,15 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef ZEGRAPHER_H
 #define ZEGRAPHER_H
 
 #include "structures.h"
 #include "GraphDraw/maingraph.h"
-#include "Windows/rangeadjustments.h"
 #include "Windows/mathobjectsinput.h"
 #include "Windows/settings.h"
 #include "Windows/values.h"
-#include "about.h"
+#include "Windows/about.h"
 #include "GraphDraw/exportpreview.h"
 #include "Windows/export.h"
 #include "Widgets/keyboard.h"
@@ -38,6 +34,8 @@
 
 #include <QSettings>
 #include <QString>
+#include <QMainWindow>
+
 
 class MainWindow : public QMainWindow
 {
@@ -60,11 +58,9 @@ protected:
     void loadWindowSavedGeomtries();
     void saveWindowsGeometry();
 
-
     Information *information;
     MainGraph *mainGraph;
-    MathObjectsInput *inputWin;
-    RangeAdjustments *rangeWin;
+    MathObjectsInput *inputWin;  
     Settings *settingsWin;
     Values *valuesWin;
     Keyboard *keyboard;

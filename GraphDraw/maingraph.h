@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -25,6 +25,7 @@
 #define MainGraph_H
 
 #include "graphdraw.h"
+
 
 class MainGraph : public GraphDraw
 {
@@ -94,8 +95,7 @@ protected:
     void drawAllParEq();
 
     void updateCenterPosAndScaling();
-    bool updateTickSpacing(); //return true if spacing was changed
-    void drawTicksAndNumbers();
+    void drawGridAndCoordinates();
     void drawPoint();
 
     void moveSavedRegsValues();

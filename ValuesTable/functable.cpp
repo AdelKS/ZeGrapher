@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -153,12 +153,22 @@ void FuncTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
+<<<<<<< HEAD
         GraphRange range = information->getGraphRange();
         GraphTickIntervals tickInterval = information->getGraphTickIntervals();
 
         parameters.range.start = trunc(range.Xmin / tickInterval.x) * tickInterval.x;
         parameters.range.step = tickInterval.x;
         parameters.range.end = range.Xmax;
+=======
+        ZeGraphView range = information->getGraphView();
+
+        // update with new approach
+
+        parameters.range.start = -10;
+        parameters.range.step = 1;
+        parameters.range.end = 10;
+>>>>>>> master
     }
 
     addXValues();

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,17 +18,14 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef RANGEADJUSTMENTS_H
 #define RANGEADJUSTMENTS_H
 
-#include "structures.h"
-#include "information.h"
-#include "Calculus/exprcalculator.h"
-#include "Widgets/numberlineedit.h"
+#include <QMessageBox>
 
+#include "structures.h"
+#include "numberlineedit.h"
+#include "information.h"
 
 namespace Ui {
     class RangeAdjustments;
@@ -39,37 +36,32 @@ class RangeAdjustments : public QWidget
     Q_OBJECT
 
 public:
-    explicit RangeAdjustments(QList<FuncCalculator *> funcsList, GraphRange graphRange, GraphTickIntervals tickIntervals, QWidget *parent = nullptr);
+    explicit RangeAdjustments(QList<FuncCalculator *> funcsList, Information *info, QWidget *parent = nullptr);
+    GraphRange getRange();
     ~RangeAdjustments();
-
-    void setMargin(int margin);
 
 public slots:
     void resetToStandardView();   
-    void setGraphRange(GraphRange range);
-    void setGraphTickIntervals(GraphTickIntervals tickIntervals);
+    void setGraphRange(const GraphRange &range);
     void disableUserInput(bool disable);
     void hideViewOptions(bool hide);
-
-protected slots:
-    void onRangeChange();
-    void onTickIntervalChange();
-
-    void standardView();
     void setOrthonormal(bool state);
+    void apply();
 
 signals:
     void graphRangeChanged(GraphRange range);
-    void graphTickIntervalsChanged(GraphTickIntervals tickIntervals);
     void orthonormalBasisToggled(bool state);
+    void resetToDefaultView();
 
-private:
+protected:
+    void loadDefaults();
+
     GraphRange graphRange;
-    GraphTickIntervals tickIntervals;
-    NumberLineEdit *Xmin, *Xmax, *Xstep, *Ymin, *Ymax, *Ystep;
+    Information *information;    
+
+    NumberLineEdit *Xmin, *Xmax, *Ymin, *Ymax;
     Ui::RangeAdjustments *ui;
-    QMessageBox *messageBox;    
-    ExprCalculator *calculator;
+    QMessageBox *messageBox;
 };
 
 #endif // RANGEADJUSTMENTS_H

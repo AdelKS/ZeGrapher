@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,23 +18,19 @@
 **
 ****************************************************************************/
 
-
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
 #include <cmath>
 #include <QtWidgets>
 
-#define SOFTWARE_VERSION 3.1
-#define SOFTWARE_VERSION_STR "v3.1"
+#define SOFTWARE_VERSION 3.5
+#define SOFTWARE_VERSION_STR "v3.5"
 
-
+// TODO put the following 3 defs into an enum
 #define FROM_CURRENT_GRAPHIC 0
 #define MANUAL_ENTRY 1
 #define PREDEFINED_ENTRY 2
-
-
-
 
 #define MAX_DOUBLE_PREC 13
 
@@ -55,7 +51,8 @@
 
 struct GraphRange
 {
-    double Xmin, Xmax, Ymin, Ymax;
+    double Xmin, Xmax, Ymin, Ymax;    
+    bool orthonormal;
 
     QRectF getRect() const
     {
@@ -64,14 +61,13 @@ struct GraphRange
         graphWin.setTop(Ymax);
         graphWin.setLeft(Xmin);
         graphWin.setRight(Xmax);
-        graphWin.moveTopLeft(QPointF(0, 0));
         return graphWin;
     }
 
     bool operator==(const GraphRange &other)
     {
-        return fabs(Xmin - other.Xmin) < 1e-10 && fabs(Xmax - other.Xmax) < 1e-10 &&
-                fabs(Ymin - other.Ymin) < 1e-10 && fabs(Ymax - other.Ymax) < 1e-10;
+        return fabs(Xmin - other.Xmin) < MIN_RANGE && fabs(Xmax - other.Xmax) < MIN_RANGE &&
+                fabs(Ymin - other.Ymin) < MIN_RANGE && fabs(Ymax - other.Ymax) < MIN_RANGE;
     }
     bool operator!=(const GraphRange &other)
     {
@@ -79,34 +75,7 @@ struct GraphRange
     }
 };
 
-struct GraphTickIntervals
-{
-    double x, y;
-
-    bool operator==(const GraphTickIntervals &other)
-    {
-        return fabs(x - other.x) < 1e-10 && fabs(y - other.y) < 1e-10;
-    }
-    bool operator!=(const GraphTickIntervals &other)
-    {
-        return !((*this) == other);
-    }
-};
-
-struct Point
-{
-    double x, y;
-
-    bool operator<(const Point &b) const
-    {
-        return x < b.x;
-    }
-};
-
-struct Rectangle
-{
-    Point pt1, pt2;
-};
+enum struct ZeAxisName {X, Y};
 
 struct FastTree
 {
@@ -116,18 +85,62 @@ struct FastTree
     FastTree *right;
 };
 
-struct SettingsVals
+enum struct ZeAxisType
 {
-    QColor axesColor;
+    LINEAR, LOG
+};
+
+struct ZeCoordinateDisplayFormat
+{
+    bool decimalGlobalConstant, linDecimalBaseMultiplier, decimalBase;
+};
+
+struct ZeAxisSettings
+{
+    int linearDivider, logDivisions;
+    double globalConstant, base;
+    QString globalConstantStr, baseStr;
+    QColor color;
+    int basePowNum, basePowDenom;
+    ZeCoordinateDisplayFormat coordinateFormatting;
+    ZeAxisType axisType;
+};
+
+struct ZeGraphSettings
+{
     QColor backgroundColor;
-    QColor gridColor;
     QColor defaultColor;
-    short curvesThickness;
+    int curvesThickness;
     double distanceBetweenPoints;
     bool smoothing;
-    bool updateCheckAtStart;
     QFont graphFont;
+};
 
+struct ZeUnidimGridSettings
+{
+    bool showGrid, showSubGrid;
+    double gridLineWidth, subgridLineWidth;
+    QColor gridColor, subgridColor;
+    unsigned int subgridSubDivs;
+    bool showSubgridRelativeCoordinates;
+};
+
+struct ZeGridSettings
+{
+    ZeUnidimGridSettings alongX, alongY;
+};
+
+struct ZeAxesSettings
+{
+    ZeAxisSettings x, y;
+};
+
+struct ZeViewSettings
+{
+    GraphRange range;
+    ZeAxesSettings axes;
+    ZeGridSettings grid;
+    ZeGraphSettings graph;
 };
 
 struct FuncMap
@@ -143,7 +156,8 @@ struct Range
 
 struct TangentPoints
 {
-    Point left, center, right; //the "center" point is the tangent point between the curve and the tangent
+    QPointF left, center, right;
+    //center is the point where the tangent touches the curve, left and right are the edges of the segment
 };
 
 struct ParametricInfo
@@ -171,7 +185,7 @@ struct ParEqValues
 };
 
 
-enum PointStyle { Rhombus, Disc, Square, Triangle, Cross };
+enum struct PointStyle { Rhombus, Disc, Square, Triangle, Cross };
 
 struct DataStyle
 {
@@ -187,7 +201,14 @@ struct SelectorPos
     int index;
 };
 
+struct Point
+{
+    double x, y;
 
-
+    bool operator<(const Point &b) const
+    {
+        return x < b.x;
+    }
+};
 
 #endif // STRUCTURES_H

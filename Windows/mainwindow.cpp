@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,8 +18,12 @@
 **
 ****************************************************************************/
 
-
 #include "Windows/mainwindow.h"
+
+/* TODO:
+ * - Update grid switches
+ * - Fix what's not working
+ * */
 
 MainWindow::MainWindow()
 {
@@ -28,11 +32,10 @@ MainWindow::MainWindow()
 
     information = new Information();
 
-    settingsWin = new Settings(information, this);    
     inputWin = new MathObjectsInput(information, this);
-    // RangeWin should be instanced after inputWin, because needs information->getFuncsList(), updated by inputWin
-    rangeWin = new RangeAdjustments(information->getFuncsList(), information->getGraphRange(),
-                                    information->getGraphTickIntervals(), this);
+    // settingsWin should be instanced after inputWin, because needs information->getFuncsList(), updated by inputWin
+    settingsWin = new Settings(information, this);
+
     aboutWin = new about(this);
     updateCheckWin = new UpdateCheck(this);
     valuesWin = new Values(information, this);
@@ -44,24 +47,19 @@ MainWindow::MainWindow()
     mainGraph = new MainGraph(information); // it has to be the last thing to create.
     setCentralWidget(mainGraph);
 
-
     createDocks();
     createMenus();
+
     makeConnects();
 
     loadWindowSavedGeomtries();
 
-    if(information->getSettingsVals().updateCheckAtStart)
+    if(settingsWin->checkForUpdatesOnStart())
         updateCheckWin->silentCheckForUpdate();
 }
 
 void MainWindow::createDocks()
 {
-    rangeWin->hideViewOptions(true);
-    rangeWinDock = new QDockWidget(tr("View adjustments"), this);
-    rangeWinDock->setWidget(rangeWin);
-    addDockWidget(Qt::LeftDockWidgetArea, rangeWinDock);
-
     mathInputDock = new QDockWidget(tr("Math objects input"), this);
     mathInputDock->setWidget(inputWin);
     addDockWidget(Qt::LeftDockWidgetArea, mathInputDock);
@@ -81,15 +79,11 @@ void MainWindow::createMenus()
     QMenu *menuHelp = menuBar()->addMenu("?");
 
     gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
-    gridButton->setCheckable(true);
 
     QAction *setOrthonormalAction = menuTools->addAction(QIcon(":/icons/orthonormalView.svg"), tr("Toggle orthonormal view"));
     setOrthonormalAction->setCheckable(true);
     connect(setOrthonormalAction, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
-    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool)));
-
-    QAction *resetViewAction = menuTools->addAction(QIcon(":/icons/resetToDefaultView.svg"), tr("Reset to default view"));
-    connect(resetViewAction, SIGNAL(triggered()), rangeWin, SLOT(resetToStandardView()));
+    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool))); 
 
     QAction *showAboutWinAction = menuHelp->addAction(tr("About..."));
     connect(showAboutWinAction, SIGNAL(triggered()), aboutWin, SLOT(exec()));
@@ -119,12 +113,7 @@ void MainWindow::createMenus()
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
     connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(show()));
-    connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(raise()));
-
-    QAction *showRangeWinAction = menuWindows->addAction(QIcon(":/icons/viewRange.svg"), tr("Range edit"));
-    showRangeWinAction->setShortcut(QKeySequence("Ctrl+B"));
-    connect(showRangeWinAction, SIGNAL(triggered()), rangeWinDock, SLOT(show()));
-    connect(showRangeWinAction, SIGNAL(triggered()), rangeWinDock, SLOT(raise()));
+    connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(raise()));   
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.svg"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
@@ -144,7 +133,6 @@ void MainWindow::createMenus()
     toolBar->addAction(resetViewAction);
     toolBar->addSeparator();
     toolBar->addAction(showInputWinAction);
-    toolBar->addAction(showRangeWinAction);
     toolBar->addAction(showValuesWinAction);
     toolBar->addAction(showExportWinAction);
     toolBar->addAction(showSettingsWinAction);
@@ -152,13 +140,14 @@ void MainWindow::createMenus()
 
     statusBar();
 
-    showRangeWinAction->setStatusTip(tr("Edit the displayed range: Xmin, Xmax..."));
     showInputWinAction->setStatusTip(tr("Enter functions, sequences, parametric equations, data..."));
     exitAction->setStatusTip(tr("Exit ZeGrapher."));
     showSettingsWinAction->setStatusTip(tr("Edit axes' color, background color, curve's quality..."));
     showValuesWinAction->setStatusTip(tr("Display the values taken by functions, sequences and parametric equations on tables."));
     resetViewAction->setStatusTip(tr("Reset to default view"));
-    gridButton->setStatusTip(tr("Show/Hide grid"));
+
+    gridButton->setStatusTip(tr("Cycle trough Grid possibilities."));
+
     showKeyboardAction->setStatusTip(tr("Virtual keyboard."));
     showExportWinAction->setStatusTip(tr("Export graph or print."));
 }
@@ -169,9 +158,7 @@ void MainWindow::loadWindowSavedGeomtries()
     if(settings.contains("main_window/geometry"))
         setGeometry(settings.value("main_window/geometry").value<QRect>());
     if(settings.contains("settings_window/geometry"))
-        settingsWin->setGeometry(settings.value("settings_window/geometry").value<QRect>());
-    if(settings.contains("range_window/geometry"))
-        rangeWin->setGeometry(settings.value("range_window/geometry").value<QRect>());
+        settingsWin->setGeometry(settings.value("settings_window/geometry").value<QRect>());   
     if(settings.contains("input_window/geometry"))
         inputWin->setGeometry(settings.value("input_window/geometry").value<QRect>());
     if(settings.contains("values_window/geometry"))
@@ -187,9 +174,7 @@ void MainWindow::saveWindowsGeometry()
     settings.setValue("main_window/geometry", geometry());
 
     if(! settingsWin->geometry().isNull())
-        settings.setValue("settings_window/geometry", settingsWin->geometry());
-    if(! rangeWin->geometry().isNull())
-        settings.setValue("range_window/geometry", rangeWin->geometry());
+        settings.setValue("settings_window/geometry", settingsWin->geometry());    
     if(! inputWin->geometry().isNull())
         settings.setValue("input_window/geometry", inputWin->geometry());
     if(! valuesWin->geometry().isNull())
@@ -204,19 +189,18 @@ void MainWindow::saveWindowsGeometry()
 void MainWindow::makeConnects()
 {
     connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
-    connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));    
+    connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
+}
 
-    connect(rangeWin, SIGNAL(graphRangeChanged(GraphRange)), mainGraph, SLOT(setGraphRange(GraphRange)));
-    connect(rangeWin, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), mainGraph, SLOT(setGraphTickIntervals(GraphTickIntervals)));
+void MainWindow::updateGridButtonIcon()
+{
+    ZeGraphSettings graphSettings = information->getGraphSettings();
 
-    connect(mainGraph, SIGNAL(graphRangeChanged(GraphRange)), rangeWin, SLOT(setGraphRange(GraphRange)));
-    connect(mainGraph, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), rangeWin, SLOT(setGraphTickIntervals(GraphTickIntervals)));
-
-    connect(rangeWin, SIGNAL(graphRangeChanged(GraphRange)), information, SLOT(setGraphRange(GraphRange)));
-    connect(rangeWin, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), information, SLOT(setGraphTickIntervals(GraphTickIntervals)));
-
-    connect(mainGraph, SIGNAL(graphRangeChanged(GraphRange)), information, SLOT(setGraphRange(GraphRange)));
-    connect(mainGraph, SIGNAL(graphTickIntervalsChanged(GraphTickIntervals)), information, SLOT(setGraphTickIntervals(GraphTickIntervals)));
+    if(graphSettings.gridSettings.gridType == ZeGridType::NO_GRID)
+        gridButton->setIcon(QIcon(":/icons/no_grid.png"));
+    else if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
+        gridButton->setIcon(QIcon(":/icons/grid.png"));
+    else gridButton->setIcon(QIcon(":/icons/grid_subgrid.png"));
 }
 
 void MainWindow::showAboutQtWin()

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef GRAPHDRAW_H
 #define GRAPHDRAW_H
 
@@ -32,6 +29,7 @@
 #include "information.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
+#include "GraphDraw/graphview.h"
 
 
 class GraphDraw : public QWidget // Base class from math objects drawing
@@ -40,10 +38,6 @@ class GraphDraw : public QWidget // Base class from math objects drawing
 public:
     explicit GraphDraw(Information *info);
     ~GraphDraw();
-
-public slots:
-    virtual void setGraphRange(GraphRange range);
-    virtual void setGraphTickIntervals(GraphTickIntervals interval);
 
 protected slots:
     void addRegSaver(Regression *reg);
@@ -80,13 +74,13 @@ protected:
     FuncValuesSaver *funcValuesSaver;    
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
-    SettingsVals graphSettings;
+    ZeViewSettings viewSettings;
+
     QPolygonF polygon;
     QPen pen;
     QBrush brush;
     Point centre;
-    GraphRange graphRange;
-    GraphTickIntervals tickIntervals;
+    ZeGraphView *graphView;
 
     double coef;
 

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -33,8 +33,8 @@ public:
     FuncValuesSaver(QList<FuncCalculator *> funcsList, double pxStep);
 
     void setPixelStep(double pxStep);
-    void calculateAll(double new_xUnit, double new_yUnit, GraphRange range);
-    void move(GraphRange range);
+    void calculateAll(double new_xUnit, double new_yUnit, ZeGraphView view);
+    void move(ZeGraphView view);
     int getFuncDrawsNum(int func);
 
     QList<QPolygonF> getCurve(int func, int curve);
@@ -46,9 +46,10 @@ protected slots:
 
 protected:
     void calculateAllFuncColors();
+    double evalFunc(int funId, double x, double k);
 
     Information *information;
-    GraphRange graphRange;
+    ZeGraphView graphView;
     QList<FuncCalculator*> funcs;
 
     double xUnit, yUnit, pixelStep, unitStep;

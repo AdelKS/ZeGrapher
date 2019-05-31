@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,20 +18,12 @@
 **
 ****************************************************************************/
 
-
-
-
-#include "Windows/rangeadjustments.h"
+#include "Widgets/rangeadjustments.h"
 #include "ui_rangeadjustments.h"
 
-RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange graphRange, GraphTickIntervals tickIntervals, QWidget *parent): QWidget(parent)
+RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information *info, QWidget *parent): QWidget(parent)
 {
-    this->graphRange = graphRange;
-    this->tickIntervals = tickIntervals;
-
-    setWindowFlags(Qt::Window);
-
-    calculator = new ExprCalculator(false, funcsList);
+    information = info;
 
     ui = new Ui::RangeAdjustments;
     ui->setupUi(this);
@@ -42,11 +34,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange 
 
     Xmax = new NumberLineEdit(false, funcsList);
     Xmax->setMaximumHeight(27);
-    Xmax->setValue(graphRange.Xmax);
-
-    Xstep = new NumberLineEdit(false, funcsList);
-    Xstep->setMaximumHeight(27);
-    Xstep->setValue(tickIntervals.x);
+    Xmax->setValue(graphRange.Xmax);  
 
     Ymin = new NumberLineEdit(false, funcsList);
     Ymin->setMaximumHeight(27);
@@ -54,46 +42,49 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, GraphRange 
 
     Ymax = new NumberLineEdit(false, funcsList);
     Ymax->setMaximumHeight(27);
-    Ymax->setValue(graphRange.Ymax);
-
-    Ystep = new NumberLineEdit(false, funcsList);
-    Ystep->setMaximumHeight(27);
-    Ystep->setValue(tickIntervals.y);
+    Ymax->setValue(graphRange.Ymax);   
 
     ui->xForm->addRow(new QLabel("x<sub>min</sub>"), Xmin);
-    ui->xForm->addRow(new QLabel("x<sub>max</sub>"), Xmax);
-    ui->xForm->addRow(new QLabel(tr("Δx<sub>tick</sub>")), Xstep);
+    ui->xForm->addRow(new QLabel("x<sub>max</sub>"), Xmax);  
 
     ui->yForm->addRow(new QLabel("y<sub>min</sub>"), Ymin);
     ui->yForm->addRow(new QLabel("y<sub>max</sub>"), Ymax);
-    ui->yForm->addRow(new QLabel(tr("Δy<sub>tick</sub>")), Ystep);
-
 
     messageBox = new QMessageBox(this);
     messageBox->setWindowTitle(tr("Error"));
     messageBox->setIcon(QMessageBox::Warning);
 
-    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(onRangeChange()));
-    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(onRangeChange()));
-    connect(Xstep, SIGNAL(returnPressed()), this, SLOT(onTickIntervalChange()));
+    loadDefaults();
 
-    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(onRangeChange()));
-    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(onRangeChange()));
-    connect(Ystep, SIGNAL(returnPressed()), this, SLOT(onTickIntervalChange()));
+    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
 
-    connect(ui->standardView, SIGNAL(released()), this, SLOT(standardView()));
-    connect(ui->apply, SIGNAL(released()), this, SLOT(onRangeChange()));
+    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
+
+    connect(ui->resetView, SIGNAL(released()), this, SIGNAL(resetToDefaultView()));
+    connect(ui->apply, SIGNAL(released()), this, SLOT(apply()));
     connect(ui->apply, SIGNAL(released()), this, SLOT(onTickIntervalChange()));
-}
-
-void RangeAdjustments::setMargin(int margin)
-{
-    ui->mainLayout->setMargin(margin);
 }
 
 void RangeAdjustments::hideViewOptions(bool hide)
 {
     ui->viewOptionsWidget->setHidden(hide);
+}
+
+void RangeAdjustments::loadDefaults()
+{
+    GraphRange defaultRange;
+    defaultRange.orthonormal = false;
+    defaultRange.Xmax = defaultRange.Ymax = 10;
+    defaultRange.Xmax = defaultRange.Ymax = -10;
+
+    setGraphRange(defaultRange);
+}
+
+GraphRange RangeAdjustments::getRange()
+{
+    return graphRange;
 }
 
 void RangeAdjustments::disableUserInput(bool disable)
@@ -102,10 +93,10 @@ void RangeAdjustments::disableUserInput(bool disable)
     Xmax->setDisabled(disable);
     Ymin->setDisabled(disable);
     Ymax->setDisabled(disable);
-    ui->buttonsWidget->setDisabled(disable);
+    ui->viewOptionsWidget->setDisabled(disable);
 }
 
-void RangeAdjustments::setGraphRange(GraphRange range)
+void RangeAdjustments::setGraphRange(const GraphRange &range)
 {
     const QSignalBlocker blocker1(Xmin);
     const QSignalBlocker blocker2(Xmax);
@@ -119,20 +110,15 @@ void RangeAdjustments::setGraphRange(GraphRange range)
     Ymin->setValue(range.Ymin);
     Ymax->setValue(range.Ymax);
 
+    ui->orthonormal->setChecked(range.orthonormal);
+
     graphRange = range;
 }
 
-void RangeAdjustments::setGraphTickIntervals(GraphTickIntervals tickIntervals)
+void RangeAdjustments::apply()
 {
-    const QSignalBlocker blocker1(Xstep);
-    const QSignalBlocker blocker2(Ystep);
+    ZeViewSettings viewSettings = information->getViewSettings();
 
-    Xstep->setValue(tickIntervals.x);
-    Ystep->setValue(tickIntervals.y);
-}
-
-void RangeAdjustments::onRangeChange()
-{
     Xmin->checkVal();
     Ymin->checkVal();
 
@@ -141,9 +127,6 @@ void RangeAdjustments::onRangeChange()
 
     if(!Xmax->isValid() || !Xmin->isValid() || !Ymax->isValid() || !Ymin->isValid())
         return;
-
-    if(ui->orthonormal->isChecked())
-        Ystep->setValue(Xstep->getValue());
 
     GraphRange oldGraphRange = graphRange;
 
@@ -155,7 +138,14 @@ void RangeAdjustments::onRangeChange()
 
     if(graphRange.Xmin >= graphRange.Xmax)
     {
-        messageBox->setText(tr("X<sub>min</sub> must be smaller than X<sub>max</sub>"));
+        messageBox->setText(tr("x<sub>min</sub> must be smaller than x<sub>max</sub>"));
+        messageBox->exec();
+        return;
+    }
+
+    if(graphRange.Xmin <= 0 && viewSettings.axes.x.axisType == ZeAxisType::LOG)
+    {
+        messageBox->setText(tr("x<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();
         return;
     }
@@ -167,9 +157,16 @@ void RangeAdjustments::onRangeChange()
         return;
     }
 
+    if(graphRange.Ymin <= 0 && viewSettings.axes.y.axisType == ZeAxisType::LOG)
+    {
+        messageBox->setText(tr("y<sub>min</sub> must strictly positive when on a log representation"));
+        messageBox->exec();
+        return;
+    }
+
     if(graphRange.Ymax - graphRange.Ymin < MIN_RANGE || graphRange.Xmax - graphRange.Xmin < MIN_RANGE)
     {
-        messageBox->setText(tr("The view range is too tight for ZeGrapher to distinguish between the upper and lower values."));
+        messageBox->setText(tr("The requested view window is too small."));
         messageBox->exec();
         return;
     }
@@ -181,54 +178,14 @@ void RangeAdjustments::onRangeChange()
     }
 }
 
-void RangeAdjustments::onTickIntervalChange()
-{
-    Xstep->checkVal();
-    Ystep->checkVal();
-
-    if(!Xstep->isValid() || !Ystep->isValid())
-        return;
-
-    GraphTickIntervals oldTickInterval = tickIntervals;
-
-    tickIntervals.x = Xstep->getValue();
-    tickIntervals.y = Ystep->getValue();
-
-    if(tickIntervals != oldTickInterval)
-    {
-        emit graphTickIntervalsChanged(tickIntervals);
-    }
-}
-
 void RangeAdjustments::setOrthonormal(bool state)
 {   
+    graphRange.orthonormal = state;
     Ymax->setEnabled(!state);
     Ymin->setEnabled(!state);
-    Ystep->setEnabled(!state);
-}
-
-void RangeAdjustments::resetToStandardView()
-{
-    standardView();
-    onRangeChange();
-    onTickIntervalChange();
-}
-
-void RangeAdjustments::standardView()
-{
-    Xmax->setValue(10);
-    Xmin->setValue(-10);
-    Xstep->setValue(1);
-
-    Ymax->setValue(10);
-    Ymin->setValue(-10);
-    Ystep->setValue(1);
-
-    onRangeChange();
 }
 
 RangeAdjustments::~RangeAdjustments()
 {
     delete ui;
-    delete calculator;
 }

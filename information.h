@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,14 +18,10 @@
 **
 ****************************************************************************/
 
-
-
-
-
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
-#include <structures.h>
+#include "structures.h"
 #include "Widgets/pareqwidget.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/funccalculator.h"
@@ -41,11 +37,8 @@ class Information: public QObject
 public:
     Information();
 
-    GraphRange getGraphRange();
-    GraphTickIntervals getGraphTickIntervals();
-    bool getGridState();
-    bool isOrthonormal();
-    SettingsVals getSettingsVals();
+    const ZeViewSettings& getViewSettings();
+    const ZeGraphSettings& getGraphSettings();
 
     void addDataList();
     void removeDataList(int index);
@@ -79,8 +72,20 @@ public:
     void setFunctionsList(QList<FuncCalculator*> list);
     QList<FuncCalculator*> getFuncsList();
 
-    void setUnits(Point vec);
-    Point getUnits();
+    bool isOrthonormal();
+
+signals:
+    void newOrthonormalityState(bool orth);
+    void graphRangeChanged(GraphRange range);
+
+    void dataUpdated();
+    void gridStateChange();
+    void updateOccured();
+    void drawStateUpdateOccured();
+    void animationUpdate();
+    void regressionAdded(Regression *reg);
+    void regressionRemoved(Regression *reg);
+    void newViewSettings();
 
 public slots:
     void emitUpdateSignal();
@@ -88,28 +93,11 @@ public slots:
     void emitDrawStateUpdate();
     void emitAnimationUpdate();
 
-signals:
-
-    void newOrthonormalityState(bool orth);
-    void graphRangeChanged(GraphRange range);
-    void graphTickIntervalsChanged(GraphTickIntervals interval);
-
-    void dataUpdated();
-    void updateOccured();
-    void drawStateUpdateOccured();
-    void gridStateChange();
-    void animationUpdate();
-    void regressionAdded(Regression *reg);
-    void regressionRemoved(Regression *reg);
-    void newSettingsVals();
-
-public slots:
-
-    void setGraphRange(GraphRange newWindow);
-    void setGraphTickIntervals(GraphTickIntervals tickInterval);
+    void setGraphRange(const GraphRange &range);
     void setGridState(bool etat);
+    void changeGridState();
     void setOrthonormal(bool state);
-    void setSettingsVals(SettingsVals opt);
+    void setViewSettings(const ZeViewSettings &viewSettings);
 
 protected:
 
@@ -124,11 +112,8 @@ protected:
     QList<FuncCalculator*> functions;
     QList<SeqCalculator*> sequences;
 
-    GraphRange range;
-    GraphTickIntervals tickInterval;
-    SettingsVals parameters;
-    bool orthonormal, gridState, updatingLock;   
-    Point units;
+    ZeViewSettings viewSettings;
+
     QList<ParEqWidget*> *parEqWidgets;
 };
 

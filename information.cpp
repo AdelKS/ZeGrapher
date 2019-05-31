@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,29 +18,11 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "information.h"
 
 Information::Information()
 {
-    range.Xmax = range.Ymax = 10;
-    range.Xmin = range.Ymin = -10;
-    tickInterval.x = tickInterval.y = 1;
 
-    gridState = orthonormal = updatingLock = false;
-
-}
-
-void Information::setUnits(Point vec)
-{
-    units = vec;
-}
-
-Point Information::getUnits()
-{
-    return units;
 }
 
 void Information::emitDataUpdate()
@@ -172,38 +154,40 @@ QList<FuncCalculator*> Information::getFuncsList()
     return functions;
 }
 
-void Information::setGraphRange(GraphRange newWindow)
+void Information::setGraphRange(const GraphRange &range)
 {
-    range = newWindow;
+    viewSettings.range = range;
 
     emit graphRangeChanged(range);
 }
 
-void Information::setGraphTickIntervals(GraphTickIntervals tickInterval)
+void Information::changeGridState()
 {
-    this->tickInterval = tickInterval;
+    if(graphSettings.view.gridType() == ZeGridType::NO_GRID)
+        graphSettings.view.setGridType(ZeGridType::GRID);
+    else if(graphSettings.view.gridType() == ZeGridType::GRID)
+        graphSettings.view.setGridType(ZeGridType::GRID_SUBGRID);
+    else graphSettings.view.setGridType(ZeGridType::NO_GRID);
 
-    emit graphTickIntervalsChanged(tickInterval);
-}
-
-void Information::setGridState(bool etat)
-{
-    gridState = etat;
     emit gridStateChange();
 }
 
 void Information::setOrthonormal(bool state)
 {
-    orthonormal = state;
-    emit newOrthonormalityState(state);
+
     emit updateOccured();
 }
 
-void Information::setSettingsVals(SettingsVals opt)
+bool Information::isOrthonormal()
 {
-    parameters = opt;
+    return viewSettings.orthonormal;
+}
 
-    emit newSettingsVals();
+void Information::setViewSettings(const ZeViewSettings &viewSettings)
+{
+    this->viewSettings = viewSettings;
+
+    emit newViewSettings();
 }
 
 void Information::emitUpdateSignal()
@@ -216,28 +200,7 @@ void Information::emitDrawStateUpdate()
     emit drawStateUpdateOccured();
 }
 
-GraphRange Information::getGraphRange()
+const ZeViewSettings& Information::getViewSettings()
 {
-    return range;
-}
-
-GraphTickIntervals Information::getGraphTickIntervals()
-{
-    return tickInterval;
-}
-
-bool Information::getGridState()
-{
-    return gridState;
-
-}
-
-bool Information::isOrthonormal()
-{
-    return orthonormal;   
-}
-
-SettingsVals Information::getSettingsVals()
-{
-    return parameters;    
+    return viewSettings;
 }

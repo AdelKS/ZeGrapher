@@ -67,7 +67,7 @@ SOURCES += \
     DataPlot/modelwidget.cpp \
     DataPlot/polynomialmodelwidget.cpp \
     Widgets/numberlineedit.cpp \
-    Windows/rangeadjustments.cpp \
+    Widgets/rangeadjustments.cpp \
     Windows/mathobjectsinput.cpp \
     Windows/settings.cpp \
     Windows/values.cpp \
@@ -75,7 +75,10 @@ SOURCES += \
     Windows/mainwindow.cpp \
     Windows/export.cpp \
     GraphDraw/exportpreview.cpp \
-    Widgets/expressionlineedit.cpp
+    Widgets/expressionlineedit.cpp \
+    GraphDraw/graphview.cpp \
+    Widgets/axissettingswidget.cpp \
+    Widgets/zegridsettingswidget.cpp
 
 HEADERS  += \
     information.h \
@@ -124,7 +127,7 @@ HEADERS  += \
     DataPlot/modelwidget.h \
     DataPlot/polynomialmodelwidget.h \
     Widgets/numberlineedit.h \
-    Windows/rangeadjustments.h \
+    Widgets/rangeadjustments.h \
     Windows/mathobjectsinput.h \
     Windows/settings.h \
     Windows/values.h \
@@ -133,7 +136,10 @@ HEADERS  += \
     structures.h \
     Windows/export.h \
     GraphDraw/exportpreview.h \
-    Widgets/expressionlineedit.h
+    Widgets/expressionlineedit.h \
+    GraphDraw/graphview.h \
+    Widgets/axissettingswidget.h \
+    Widgets/zegridsettingswidget.h
 
 
 FORMS    += \
@@ -148,10 +154,12 @@ FORMS    += \
     DataPlot/modelchoicewidget.ui \
     DataPlot/polynomialmodelwidget.ui \
     Widgets/keyboard.ui \
-    Windows/rangeadjustments.ui \
     Windows/mathobjectsinput.ui \
     Windows/settings.ui \
-    Windows/export.ui
+    Windows/export.ui \
+    Widgets/axissettingswidget.ui \
+    Widgets/rangeadjustments.ui \
+    Widgets/zegridsettingswidget.ui
 
 
 RESOURCES += \
@@ -159,8 +167,7 @@ RESOURCES += \
 
 RC_ICONS = appicon.ico
 
-OTHER_FILES += \
-    TODO.txt
+OTHER_FILES +=
 
 isEmpty(APPDATADIR):APPDATADIR=$${PREFIX}/share/appdata
 isEmpty(APPDIR):APPDIR=$${PREFIX}/share/applications
@@ -180,3 +187,7 @@ icon.files = icons/ZeGrapher.png
 translations.files = ZeGrapher_fr.qm
 
 INSTALLS += appdata desktop icon target translations
+
+DISTFILES += \
+    README.md \
+    TODO.md

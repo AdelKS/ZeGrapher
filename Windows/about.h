@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,12 +18,10 @@
 **
 ****************************************************************************/
 
-
-
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include "structures.h"
+#include <QDialog>
 
 namespace Ui {
     class About;
@@ -34,7 +32,7 @@ class about : public QDialog
     Q_OBJECT
 
 public:
-    explicit about(QWidget *parent = 0);
+    explicit about(QWidget *parent = nullptr);
     ~about();
 
 private:

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -60,9 +60,9 @@ void RegressionValuesSaver::recalculate()
     recalculate(Point{xUnit, yUnit}, graphRange);
 }
 
-void RegressionValuesSaver::recalculate(Point graphUnits, GraphRange range)
-{   
-    graphRange = range;
+void RegressionValuesSaver::recalculate(Point graphUnits, const ZeGraphView &graphView)
+{
+    // TODO: use graph view to recalculate
     xUnit = graphUnits.x;
     yUnit = graphUnits.y;
     xUnitStep = pixelStep / xUnit;
@@ -86,7 +86,7 @@ QList<QPolygonF> &RegressionValuesSaver::getCurves()
     return curves;
 }
 
-void RegressionValuesSaver::move(GraphRange newRange)
+void RegressionValuesSaver::move(ZeGraphView newRange)
 {
     graphRange = newRange;
 
@@ -111,7 +111,7 @@ double RegressionValuesSaver::arg(QPointF pt)
 
 Range RegressionValuesSaver::getGraphAngleRange()
 {
-    QRectF graphWin = graphRange.getRect();
+    QRectF graphWin = graphRange.rect();
     Range angleRange;
 
     if(graphWin.contains(0,0))
@@ -179,13 +179,13 @@ void RegressionValuesSaver::cartesianMove()
     drawRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
     drawRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
 
-    double x = curves.first().first().x()/xUnit - xUnitStep;
+    double x = curves.first().first().x() - xUnitStep;
 
     if(x >= drawRange.start)
     {
         while(x >= drawRange.start)
         {
-            curves.first().prepend(QPointF(x * xUnit, - regression->eval(x) * yUnit));
+            curves.first().prepend(QPointF(x ,  regression->eval(x) * yUnit));
             x -= xUnitStep;
         }
     }
@@ -198,13 +198,13 @@ void RegressionValuesSaver::cartesianMove()
         }
     }
 
-    x = curves.first().last().x()/xUnit + xUnitStep;
+    x = curves.first().last().x() + xUnitStep;
 
     if(x >= drawRange.start)
     {
         while(x <= drawRange.end)
         {
-            curves.first() << QPointF(x * xUnit, - regression->eval(x) * yUnit);
+            curves.first() << QPointF(x ,  regression->eval(x));
             x += xUnitStep;
         }
     }
@@ -230,7 +230,7 @@ void RegressionValuesSaver::calculateCartesianRegressionCurve()
 
     while(x <= drawRange.end + xUnitStep)
     {
-        curve << QPointF(x * xUnit, - regression->eval(x) * yUnit);
+        curve << QPointF(x,  regression->eval(x));
         x += xUnitStep;
     }
 
@@ -266,7 +266,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
     QPolygonF curve;
     QPointF pt;
-    QRectF graphRect = graphRange.getRect();
+    QRectF graphRect = graphRange.rect();
 
     while(angle < regRange.end)
     {
@@ -299,7 +299,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
             if(graphRect.contains(pt))
             {
-                curve << QPointF(radius * cos(angle) * xUnit, - radius * sin(angle) * yUnit);
+                curve << QPointF(radius * cos(angle), - radius * sin(angle));
 
                 deltaAngle = min(length(pt) + 0.0000001, fabs(atan(pixelStep/sqrt(QPointF::dotProduct(curve.last(), curve.last())))));
                 angle += deltaAngle;

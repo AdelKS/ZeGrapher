@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,14 +18,12 @@
 **
 ****************************************************************************/
 
-
 #include "GraphDraw/imagepreview.h"
 
 
 ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 {
     information = info;
-    graphSettings.distanceBetweenPoints = 0.125;
     leftMargin = 30;
     rightMargin = 30;
     topMargin = 20;
@@ -45,20 +43,21 @@ ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 
 void ImagePreview::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
 
-    graphSettings = information->getSettingsVals();
+    viewSettings = information->getViewSettings();
 
     painter.begin(this);
 
-    painter.setFont(information->getSettingsVals().graphFont);
+    painter.setFont(information->getGraphSettings().graphFont);
 
-    painter.setBrush(QBrush(graphSettings.backgroundColor));
+    painter.setBrush(QBrush(viewSettings.graph.backgroundColor));
     painter.drawRect(-1, -1, width()+1, height()+1);
 
     updateGraphRect();
     updateCenterPosAndScaling();
-    funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+    funcValuesSaver->calculateAll(uniteX, uniteY, *graphView);
+
     paint();
 
     painter.end();
@@ -154,7 +153,7 @@ void ImagePreview::paint()
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);    
 
-    pen.setColor(information->getSettingsVals().axesColor);
+    pen.setColor(viewSettings.axes.x.color);
     painter.setPen(pen);
 
     updateGraphRect(); // must happen before the next instruction
@@ -172,7 +171,7 @@ void ImagePreview::paint()
 
     painter.translate(QPointF(centre.x, centre.y));
 
-    funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+    funcValuesSaver->calculateAll(uniteX, uniteY, *graphView);
     recalculateRegVals();
 
     drawFunctions();
@@ -186,7 +185,7 @@ void ImagePreview::paint()
 
 void ImagePreview::writeLegends()
 {
-    font = information->getSettingsVals().graphFont;
+    font = information->getGraphSettings().graphFont;
     font.setPixelSize(legendFontSize);
     font.setItalic(italic);
     font.setBold(bold);
@@ -222,25 +221,42 @@ void ImagePreview::writeLegends()
 
 void ImagePreview::drawTicksAndNumbers()
 {
+    // TODO: update this method
+
+    double fontSize = information->getGraphSettings().graphFont.pixelSize();
+    double prec = numPrec;
+
+    font.setPixelSize(fontSize);
+    font.setItalic(false);
+    font.setBold(false);
+    font.setUnderline(false);    
+
     pen.setWidth(1);
-    painter.setFont(graphSettings.graphFont);
+    painter.setFont(viewSettings.graph.graphFont);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double space, pos;
 
-    double Xpos = ceil(graphRange.Xmin / tickIntervals.x) * tickIntervals.x * uniteX;
-    double end = graphRange.Xmax * uniteX;
-    double step = tickIntervals.x * uniteX;
+
+
+    double Xpos;
+
+    ZeGrid grid = graphView.getGrid();
+
+    QList<ZeMainGridLine> &horMainGrid = grid.horizontal.mainGrid;
+
 
     QString num;
 
-    while(Xpos <= end)
+    for(ZeMainGridLine gridLine: horMainGrid)
     {
+        Xpos = gridLine.pos;
+
         if(fabs(Xpos) > 1)
         {
-            if(information->getGridState())
+            if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
             {
                 pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
@@ -248,7 +264,7 @@ void ImagePreview::drawTicksAndNumbers()
                 painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRectScaled.height()));
             }
             pen.setColor(graphSettings.axesColor);
-            pen.setWidth(1);
+
             painter.setPen(pen);
 
             pos = Xpos + centre.x;
@@ -271,10 +287,9 @@ void ImagePreview::drawTicksAndNumbers()
 
 //trace sur l'axe des Y
 
-
-    double Ypos = ceil(graphRange.Ymin / tickIntervals.y) * tickIntervals.y * uniteY;
-    step = tickIntervals.y * uniteY;
-    end = graphRange.Ymax * uniteY;
+    double Ypos = ceil(graphView.Ymin / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep * uniteY;
+    step = graphSettings.gridSettings.yGridStep * uniteY;
+    end = graphView.Ymax * uniteY;
 
     int largestWidth = 0;
 
@@ -282,7 +297,7 @@ void ImagePreview::drawTicksAndNumbers()
     {
         if(fabs(Ypos) > 1)
         {
-            if(information->getGridState())
+            if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
             {
                 pen.setColor(graphSettings.gridColor);
                 pen.setWidthF(0.5);
@@ -331,10 +346,14 @@ void ImagePreview::drawTicksAndNumbers()
 
 void ImagePreview::drawAxes()
 {
+    //TODO: update this method
+
     pen.setWidth(1);
     pen.setColor(graphSettings.axesColor);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
+
+
 
     if(graphRange.Ymin < 0 && graphRange.Ymax > 0)
         painter.drawLine(QPointF(0, centre.y), QPointF(graphRectScaled.width(), centre.y));
@@ -343,37 +362,40 @@ void ImagePreview::drawAxes()
 
     painter.drawRect(graphRectScaled);
 
+
 }
 
 void ImagePreview::updateCenterPosAndScaling()
 {
+    // TODO: update this method
+
     uniteY = double(graphRectScaled.height()) / (graphRange.Ymax - graphRange.Ymin);
     uniteX = double(graphRectScaled.width()) / (graphRange.Xmax - graphRange.Xmin);
 
+
     double rapport = uniteY / uniteX;
+
     if(information->isOrthonormal())
     {
-        graphRange.Ymin *= rapport;
-        graphRange.Ymax *= rapport;
-        uniteY = uniteX;
+
     }
-
-
-    centre.x = - graphRange.Xmin * uniteX;
-    centre.y =  graphRange.Ymax * uniteY;
+    centre.x = - graphView->viewRect().left() * uniteX;
+    centre.y =  graphView->viewRect().top() * uniteY;
 }
 
 QImage* ImagePreview::drawImage()
 {
-    graphSettings = information->getSettingsVals();
+    //TODO: update this method
+
+    viewSettings = information->getViewSettings();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
-    image->fill(graphSettings.backgroundColor.rgb());
+    image->fill(viewSettings.graph.backgroundColor.rgb());
 
     painter.begin(image);
     //trace du background
 
-    pen.setColor(information->getSettingsVals().axesColor);
+    pen.setColor(viewSettings.axes.x.color);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -394,7 +416,7 @@ QImage* ImagePreview::drawImage()
 
     if(recalculate)
     {
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
+        funcValuesSaver->calculateAll(uniteX, uniteY, *graphView);
         recalculateRegVals();
     }
 

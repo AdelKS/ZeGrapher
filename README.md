@@ -2,10 +2,8 @@
 
 [![Build Status](https://travis-ci.org/AdelKS/ZeGrapher.svg?branch=Bug_Correction)](https://travis-ci.org/AdelKS/ZeGrapher)
 
-![ZeGrapher example](http://zegrapher.com/screenshots/index.png)
+![ZeGrapher example](https://zegrapher.com/screenshots/index.png)
 
-
-ZeGrapher is a free and open source software for plotting mathematical objects (functions, sequences, parametric equations) and experimental data on the plane.
-This software is intended to be as easy to use as possible, suitable for high school students.
+ZeGrapher is a free, open source and easy to use software for plotting mathematical objects. It can plot functions, sequences, parametric equations and data on the plane.
 
 Official website: [https://www.zegrapher.com/](http://www.zegrapher.com/)

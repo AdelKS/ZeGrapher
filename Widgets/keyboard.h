@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -35,7 +35,7 @@ class Keyboard : public QWidget
     Q_OBJECT
 
 public:
-    explicit Keyboard(QWidget *parent = 0);
+    explicit Keyboard(QWidget *parent = nullptr);
     ~Keyboard();
      void makeKeyboardConnects();
 

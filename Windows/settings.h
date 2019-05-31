@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,16 +18,22 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
 #include "structures.h"
 #include "information.h"
 #include "Widgets/qcolorbutton.h"
+#include "Widgets/axissettingswidget.h"
+#include "Widgets/rangeadjustments.h"
+#include "Widgets/zegridsettingswidget.h"
 
+/* TODO:
+ * - Give out axis settings to the rest of the program through information
+ * - Save new settings to the hard disk: base, base power etc.
+ * - create a color generator for new math objects, just like Matplotlib
+ *
+ * */
 
 namespace Ui {
     class Settings;
@@ -38,8 +44,10 @@ class Settings : public QWidget
     Q_OBJECT
 
 public:
-    explicit Settings(Information *info, QWidget *parent = 0);
+    explicit Settings(Information *info, QWidget *parent = nullptr);
     ~Settings();
+
+    bool checkForUpdatesOnStart();
 
 public slots:
     void saveSettings();
@@ -50,11 +58,18 @@ private slots:
     void readSavedSettings();
 
 private:
+    void makeConnects();
+    void loadDefaults();
+    void updateGraphSettings();
 
     Information *information;
     Ui::Settings *ui;
-    SettingsVals parameters;
-    QColorButton *axesColorButton, *backgroundColorButton, *gridColorButton, *defaultColorButton;
+    ZeViewSettings viewSettings;
+    ZeAxisName currentEditedGrid;
+    QColorButton *backgroundColorButton, *defaultColorButton;
+    AxisSettingsWidget *axisSettingsWidget;    
+    RangeAdjustments *rangeAdjustmentsWidget;
+    ZeGridSettingsWidget *gridSettingsWidget;
 
 };
 

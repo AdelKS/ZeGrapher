@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2016, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -30,9 +30,7 @@ GraphDraw::GraphDraw(Information *info)
     coef = sqrt(3)/2;
 
     setMinimumSize(QSize(200, 200));
-
-    graphSettings = info->getSettingsVals();
-    graphRange = info->getGraphRange();
+    viewSettings = info->getViewSettings();
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
@@ -46,35 +44,24 @@ GraphDraw::GraphDraw(Information *info)
     moving = false;
     tangentDrawException = -1;
 
-    funcValuesSaver = new FuncValuesSaver(info->getFuncsList(), information->getSettingsVals().distanceBetweenPoints);
+    funcValuesSaver = new FuncValuesSaver(info->getFuncsList(), viewSettings.graph.distanceBetweenPoints);
 
     connect(information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
     connect(information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
-    connect(information, SIGNAL(newSettingsVals()), this, SLOT(updateSettingsVals()));
+    connect(information, SIGNAL(newviewSettings.graph()), this, SLOT(updateSettingsVals()));
 }
 
 void GraphDraw::updateSettingsVals()
 {
-    funcValuesSaver->setPixelStep(information->getSettingsVals().distanceBetweenPoints);
+    viewSettings = information->getViewSettings();
+    funcValuesSaver->setPixelStep(viewSettings.graph.distanceBetweenPoints);
 }
 
 void GraphDraw::addRegSaver(Regression *reg)
 {
-    regValuesSavers << RegressionValuesSaver(information->getSettingsVals().distanceBetweenPoints, reg);
+    regValuesSavers << RegressionValuesSaver(viewSettings.graph.distanceBetweenPoints, reg);
     recalculate = true;
     repaint();
-}
-
-void GraphDraw::setGraphRange(GraphRange range)
-{
-    graphRange = range;
-    update();
-}
-
-void GraphDraw::setGraphTickIntervals(GraphTickIntervals interval)
-{
-    tickIntervals = interval;
-    update();
 }
 
 void GraphDraw::delRegSaver(Regression *reg)
@@ -137,11 +124,6 @@ void GraphDraw::drawDataSet(int id, int width)
     QList<QPointF> list = information->getDataList(id);
     DataStyle style = information->getDataStyle(id);
 
-    for(int i = 0 ; i < list.size(); i++)
-    {
-        list[i].rx() *= uniteX;
-        list[i].ry() *= - uniteY;
-    }
 
     pen.setColor(style.color);
     painter.setPen(pen);
@@ -164,19 +146,19 @@ void GraphDraw::drawDataSet(int id, int width)
         for(int i = 0 ; i < list.size() ; i++)
             switch(style.pointStyle)
             {
-            case Rhombus:
+            case PointStyle::Rhombus:
                 drawRhombus(list[i], width);
                 break;
-            case Disc:
+            case PointStyle::Disc:
                 drawDisc(list[i], width);
                 break;
-            case Square:
+            case PointStyle::Square:
                 drawSquare(list[i], width);
                 break;
-            case Triangle:
+            case PointStyle::Triangle:
                 drawTriangle(list[i], width);
                 break;
-            case Cross:
+            case PointStyle::Cross:
                 drawCross(list[i], width);
                 break;
             }
@@ -190,7 +172,7 @@ void GraphDraw::drawData()
     for(int i = 0 ; i < information->getDataListsCount(); i++)
     {
         if(information->getDataStyle(i).draw)
-            drawDataSet(i, graphSettings.curvesThickness+2);
+            drawDataSet(i, viewSettings.graph.curvesThickness + 2);
     }
 }
 
@@ -212,7 +194,7 @@ void GraphDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curve
 
 void GraphDraw::drawRegressions()
 {
-    painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
 
     for(int reg = 0 ; reg < regValuesSavers.size() ; reg++)
     {
@@ -220,7 +202,7 @@ void GraphDraw::drawRegressions()
         {
             for(int curve = 0 ; curve < regValuesSavers[reg].getCurves().size() ; curve++)
             {
-                drawCurve(graphSettings.curvesThickness, information->getRegression(reg)->getColor(),
+                drawCurve(viewSettings.graph.curvesThickness, information->getRegression(reg)->getColor(),
                           regValuesSavers[reg].getCurves().at(curve));
             }
         }
@@ -231,14 +213,14 @@ void GraphDraw::recalculateRegVals()
 {
     for(auto &regValSaver : regValuesSavers)
     {
-        regValSaver.recalculate(Point{uniteX, uniteY}, graphRange);
+        regValSaver.recalculate(Point{uniteX, uniteY}, *graphView);
     }
 }
 
 
 void GraphDraw::drawFunctions()
 {    
-    painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
 
     for(int func = 0 ; func < funcs.size(); func++)
     {
@@ -246,24 +228,32 @@ void GraphDraw::drawFunctions()
             continue;
 
         for(int curve = 0 ; curve < funcValuesSaver->getFuncDrawsNum(func) ;  curve++)
-            drawCurve(graphSettings.curvesThickness, funcs[func]->getColorSaver()->getColor(curve), funcValuesSaver->getCurve(func, curve));
+            drawCurve(viewSettings.graph.curvesThickness, funcs[func]->getColorSaver()->getColor(curve), funcValuesSaver->getCurve(func, curve));
     }
 }
 
 void GraphDraw::drawOneSequence(int i, int width)
 {
-    if(graphRange.Xmax <= seqs[0]->get_nMin() || trunc(graphRange.Xmax) <= graphRange.Xmin || !seqs[i]->getDrawState())
+    if(graphView->getXmax() <= seqs[0]->get_nMin() ||
+            trunc(graphView->getXmax()) <= graphView->getXmin() ||
+            !seqs[i]->getDrawState())
         return;
 
-     painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
+     painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
      pen.setWidth(width);
 
      QPointF point;
      double posX;
 
-     if(graphRange.Xmin >  seqs[0]->get_nMin())
-         posX = trunc(graphRange.Xmin);
-     else posX = seqs[0]->get_nMin();
+     double viewXmin = graphView->viewRect().left();
+     double viewXmax = graphView->viewRect().right();
+
+     double Xmin = graphView->getXmin();
+     double Xmax = graphView->getXmax();
+
+     if(Xmin >  seqs[0]->get_nMin())
+         posX = viewXmin;
+     else posX = graphView->unitToViewX(seqs[0]->get_nMin());
 
      double step = 1;
 
@@ -274,25 +264,24 @@ void GraphDraw::drawOneSequence(int i, int width)
      double result;
      bool ok = true;
      int end = seqs[i]->getDrawsNum();
-     ColorSaver *colorSaver;
 
-     seqs[i]->getSeqValue(trunc(graphRange.Xmax), ok);
-     colorSaver = seqs[i]->getColorSaver();
+     ColorSaver *colorSaver = seqs[i]->getColorSaver();
+
 
      for(int k = 0; k < end; k++)
      {
          pen.setColor(colorSaver->getColor(k));
          painter.setPen(pen);
 
-         for(double pos = posX; pos < graphRange.Xmax; pos += step)
+         for(double pos = posX; pos < viewXmax; pos += step)
          {
-             result = seqs[i]->getSeqValue(pos, ok, k);
+             result = seqs[i]->getSeqValue(trunc(graphView->unitToViewX(pos)), ok, k);
 
              if(!ok  || !std::isnormal(result))
                  return;
 
-             point.setX(pos * uniteX);
-             point.setY(- result * uniteY);
+             point.setX(pos);
+             point.setY(result);
              painter.drawPoint(point);
          }
      }
@@ -301,7 +290,7 @@ void GraphDraw::drawOneSequence(int i, int width)
 void GraphDraw::drawSequences()
 {
     for(int i = 0 ; i < seqs.size() ; i++)
-        drawOneSequence(i, graphSettings.curvesThickness + 3);
+        drawOneSequence(i, viewSettings.graph.curvesThickness + 3);
 }
 
 void GraphDraw::drawOneTangent(int i)
@@ -309,7 +298,7 @@ void GraphDraw::drawOneTangent(int i)
     if(!tangents->at(i)->isTangentValid())
         return;
 
-    painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
 
     tangents->at(i)->calculateTangentPoints(uniteX, uniteY);
 
@@ -317,18 +306,19 @@ void GraphDraw::drawOneTangent(int i)
 
     pen.setColor(tangents->at(i)->getColor());
 
-    pen.setWidth(graphSettings.curvesThickness);
+    pen.setWidth(viewSettings.graph.curvesThickness);
     painter.setPen(pen);
 
     tangentPoints = tangents->at(i)->getCaracteristicPoints();
-    painter.drawLine(QPointF(tangentPoints.left.x * uniteX, - tangentPoints.left.y * uniteY), QPointF(tangentPoints.right.x * uniteX, - tangentPoints.right.y * uniteY));
+    painter.drawLine(QPointF(graphView->unitToViewX(tangentPoints.left.x()), graphView->unitToViewY(tangentPoints.left.y())),
+                     QPointF(graphView->unitToViewX(tangentPoints.right.x()), graphView->unitToViewY(tangentPoints.right.y())));
 
-    pen.setWidth(graphSettings.curvesThickness + 3);
+    pen.setWidth(viewSettings.graph.curvesThickness + 3);
     painter.setPen(pen);
 
-    painter.drawPoint(QPointF(tangentPoints.left.x * uniteX, - tangentPoints.left.y * uniteY));
-    painter.drawPoint(QPointF(tangentPoints.center.x * uniteX,  -tangentPoints.center.y * uniteY));
-    painter.drawPoint(QPointF(tangentPoints.right.x * uniteX, - tangentPoints.right.y * uniteY));
+    painter.drawPoint(QPointF(graphView->unitToViewX(tangentPoints.left.x()), graphView->unitToViewY(tangentPoints.left.y())));
+    painter.drawPoint(QPointF(graphView->unitToViewX(tangentPoints.center.x()), graphView->unitToViewY(tangentPoints.center.y())));
+    painter.drawPoint(QPointF(graphView->unitToViewX(tangentPoints.right.x()), graphView->unitToViewY(tangentPoints.right.y())));
 }
 
 void GraphDraw::drawTangents()
@@ -342,10 +332,10 @@ void GraphDraw::drawTangents()
 
 void GraphDraw::drawStraightLines()
 {
-    pen.setWidth(graphSettings.curvesThickness);
+    pen.setWidth(viewSettings.graph.curvesThickness);
     QPointF pt1, pt2;
 
-    painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
 
     for(int i = 0 ; i < straightLines->size(); i++)
     {
@@ -357,19 +347,19 @@ void GraphDraw::drawStraightLines()
 
         if(straightLines->at(i)->isVertical())
         {
-            pt1.setX(straightLines->at(i)->getVerticalPos() * uniteX);
-            pt1.setY(-graphRange.Ymax * uniteY);
+            pt1.setX(graphView->unitToViewX(straightLines->at(i)->getVerticalPos()));
+            pt1.setY(graphView->viewRect().top());
 
-            pt2.setX(straightLines->at(i)->getVerticalPos() * uniteX);
-            pt2.setY(-graphRange.Ymin * uniteY);
+            pt2.setX(graphView->unitToViewX(straightLines->at(i)->getVerticalPos()));
+            pt2.setY(graphView->viewRect().bottom());
         }
         else
         {
-            pt1.setX(graphRange.Xmin * uniteX);
-            pt1.setY(- straightLines->at(i)->getOrdinate(graphRange.Xmin) * uniteY);
+            pt1.setX(graphView->viewRect().left());
+            pt1.setY(graphView->unitToViewY(straightLines->at(i)->getOrdinate(graphView->rect().left())));
 
-            pt2.setX(graphRange.Xmax * uniteX);
-            pt2.setY(- straightLines->at(i)->getOrdinate(graphRange.Xmax) * uniteY);
+            pt2.setX(graphView->viewRect().right());
+            pt2.setY(graphView->unitToViewY(straightLines->at(i)->getOrdinate(graphView->rect().right())));
         }
 
         painter.drawLine(pt1, pt2);
@@ -383,8 +373,8 @@ void GraphDraw::drawStaticParEq()
     Point point;
     ColorSaver *colorSaver;
 
-    pen.setWidth(graphSettings.curvesThickness);
-    painter.setRenderHint(QPainter::Antialiasing, graphSettings.smoothing && !moving);
+    pen.setWidth(viewSettings.graph.curvesThickness);
+    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
     painter.setPen(pen);
 
     for(int i = 0; i < parEqs->size(); i++)
@@ -405,7 +395,7 @@ void GraphDraw::drawStaticParEq()
             for(int pos = 0 ; pos < list->at(curve).size(); pos ++)
             {
                 point = list->at(curve).at(pos);
-                polygon << QPointF(point.x * uniteX, - point.y * uniteY);
+                polygon << QPointF(graphView->unitToViewX(point.x), graphView->unitToViewY(point.y));
             }
 
             painter.drawPolyline(polygon);

@@ -26,7 +26,7 @@
 
 #include "regression.h"
 #include "structures.h"
-
+#include "GraphDraw/graphview.h"
 
 class RegressionValuesSaver : public QObject
 {
@@ -43,13 +43,13 @@ public:
 
     Regression* getRegression();
     void setRegression(Regression *reg);
-    void move(GraphRange newRange);
+    void move(ZeGraphView newRange);
 
     QList<QPolygonF> &getCurves();
 
 public slots:
      void recalculate();
-     void recalculate(Point graphUnits, GraphRange range);
+     void recalculate(Point graphUnits, const ZeGraphView &graphView);
 
 protected:
     void calculatePolarRegressionCurve();
@@ -66,7 +66,7 @@ protected:
     double pixelMove;
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
-    GraphRange graphRange;    
+    ZeGraphView graphRange;    
     Range drawRange, graphAngleRange;
 
     QList<QPolygonF> curves;
