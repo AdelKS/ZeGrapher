@@ -92,20 +92,20 @@ void ZeGraphView::setViewRect(QRectF rect)
 
 QRectF ZeGraphView::viewRect() const
 {
-    QRect viewWin;
+    QRectF viewWin;
 
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         viewWin.setLeft(lgXmin);
-        viewWind.setRight(lgXmax);
+        viewWin.setRight(lgXmax);
     }
     else
     {
         viewWin.setLeft(Xmin);
-        viewWind.setRight(Xmax);
+        viewWin.setRight(Xmax);
     }
 
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
         viewWin.setBottom(lgYmin);
         viewWin.setTop(lgYmax);
@@ -121,7 +121,7 @@ QRectF ZeGraphView::viewRect() const
 
 void ZeGraphView::zoomYview(double ratio)
 {
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
         double val = (lgYmax - lgYmin) * ratio;
         setlgYmax(lgYmax + val);
@@ -139,7 +139,7 @@ void ZeGraphView::zoomYview(double ratio)
 
 void ZeGraphView::zoomXview(double ratio)
 {
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         double val = (lgXmax - lgXmin) * ratio;
         setlgXmax(lgXmax + val);
@@ -159,7 +159,7 @@ void ZeGraphView::zoomView(QPointF center, double ratio)
 {
     if((Xmax - Xmin > MIN_RANGE && Ymax - Ymin > MIN_RANGE) || ratio < 0)
     {
-        if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+        if(axesSettings.x.axisType == ZeAxisType::LOG)
         {
             setlgXmax(lgXmax - (lgXmax - center.x())*ratio);
             setlgXmin(lgXmin - (lgXmin - center.x())*ratio);
@@ -170,7 +170,7 @@ void ZeGraphView::zoomView(QPointF center, double ratio)
             setXmin(Xmin - (Xmin - center.x())*ratio);
         }
 
-        if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+        if(axesSettings.x.axisType == ZeAxisType::LOG)
         {
             setlgYmax(lgYmax - (lgYmax - center.y())*ratio);
             setlgYmin(lgYmin - (lgYmin - center.y())*ratio);
@@ -255,7 +255,7 @@ void ZeGraphView::zoomView(QPointF center, double ratio)
 
 void ZeGraphView::translateView(QPointF vec)
 {
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         setlgXmax(lgXmax + vec.x());
         setlgXmin(lgXmin + vec.x());
@@ -266,7 +266,7 @@ void ZeGraphView::translateView(QPointF vec)
         setXmin(Xmin + vec.x());
     }
 
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
         setlgYmax(lgYmax + vec.y());
         setlgYmin(lgYmin + vec.y());
@@ -278,9 +278,9 @@ void ZeGraphView::translateView(QPointF vec)
     }
 }
 
-void ZeGraphView::viewToUnit_y(double viewY) // viewY =
+double ZeGraphView::viewToUnitY(double viewY) const // viewY =
 {
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         return pow(yLogBase, viewY);
     }
@@ -290,11 +290,11 @@ void ZeGraphView::viewToUnit_y(double viewY) // viewY =
     }
 }
 
-const double ZeGraphView::unitToView_y(double unitY)
+double ZeGraphView::unitToViewY(double unitY) const
 {
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
-        return ln(unitY)/ln(yLogBase);
+        return log(unitY)/log(yLogBase);
     }
     else
     {
@@ -322,9 +322,9 @@ double ZeGraphView::getYmax()
     return Ymax;
 }
 
-const double ZeGraphView::viewToUnit_x(double viewX)
+double ZeGraphView::viewToUnitX(double viewX) const
 {
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         return pow(xLogBase, viewX);
     }
@@ -334,11 +334,11 @@ const double ZeGraphView::viewToUnit_x(double viewX)
     }
 }
 
-const double ZeGraphView::unitToView_x(double unitX)
+double ZeGraphView::unitToViewX(double unitX) const
 {
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
-        return ln(unitX)/ln(xLogBase);
+        return log(unitX)/log(xLogBase);
     }
     else
     {
@@ -348,7 +348,7 @@ const double ZeGraphView::unitToView_x(double unitX)
 
 void ZeGraphView::setViewXmin(double val)
 {
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         setlgXmin(val);
     }
@@ -362,7 +362,7 @@ void ZeGraphView::setViewXmin(double val)
 
 void ZeGraphView::setViewXmax(double val)
 {
-    if(viewType == ZeScaleType::X_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
         setlgXmax(val);
     }
@@ -376,7 +376,7 @@ void ZeGraphView::setViewXmax(double val)
 
 void ZeGraphView::setViewYmin(double val)
 {
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
         setlgYmin(val);
     }
@@ -390,7 +390,7 @@ void ZeGraphView::setViewYmin(double val)
 
 void ZeGraphView::setViewYmax(double val)
 {
-    if(viewType == ZeScaleType::Y_LOG || viewType == ZeScaleType::XY_LOG)
+    if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
         setlgYmax(val);
     }
@@ -404,6 +404,7 @@ void ZeGraphView::setViewYmax(double val)
 
 void ZeGraphView::verifyOrthonormality()
 {
+    // TODO: update with only the Size, and to use with both orthonormal and linear
     if(viewWidget != 0 && viewType == ZeScaleType::LINEAR_ORTHONORMAL)
     {
         double uniteY = viewWidget->height() / viewRect().height();
@@ -460,18 +461,4 @@ void ZeGraphView::setYmax(double val)
 {
     Ymax = val;
     lgYmax = log(Ymax)/log(yLogBase);
-}
-
-ZeScaleType ZeGraphView::viewType() const
-{
-    return m_viewType;
-}
-
-ZeGridType ZeGraphView::gridType() const
-{
-    return gridSettings.gridType;
-}
-void ZeGraphView::setGridType(ZeGridType type) const
-{
-    gridSettings.gridType = type;
 }
