@@ -190,4 +190,10 @@ INSTALLS += appdata desktop icon target translations
 
 DISTFILES += \
     README.md \
-    TODO.md
+    TODO.md \
+    appdata/ZeGrapher.appdata.xml \
+    appdata/screenshots/zegrapher-all-windows.png \
+    appdata/screenshots/zegrapher-plot-dialogue.png \
+    appdata/screenshots/zegrapher-plot-iso.png \
+    appdata/screenshots/zegrapher-plot.png \
+    appdata/screenshots/zegrapher-save.png

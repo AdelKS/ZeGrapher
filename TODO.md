@@ -20,6 +20,9 @@ Export branch work:
 - Enable adding additional pins in data tables to represent more than one curve per data table
 - check if sequence draw with diffrent nmin work properly
 
+Other work:
+- update pictures in appdata/screenshots with new window layouts
+
 Possible improvements:
 - Change the curve saving from units in pixels to real units, scale the painter instead.
 - Make a linestyle chooser widget based off a priori on QComboBox and images of line styles.
