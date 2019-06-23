@@ -1,9 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/export.png</file>
         <file>icons/software.png</file>
         <file>icons/print.png</file>
-        <file>icons/valuesTable.png</file>
         <file>icons/zoom-in-icon.png</file>
         <file>icons/zoom-out-icon.png</file>
         <file>icons/functions.png</file>
@@ -33,7 +31,6 @@
         <file>icons/rotatedselector.png</file>
         <file>icons/data.png</file>
         <file>icons/csv.png</file>
-        <file>icons/resetToDefaultView.png</file>
         <file>icons/polynomial.png</file>
         <file>icons/arrow_left.png</file>
         <file>icons/arrow_right.png</file>
