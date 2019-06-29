@@ -329,7 +329,7 @@
              <item>
               <widget class="QLabel" name="linearScaleTickPosLabel">
                <property name="text">
-                <string>Tick position &amp;nbsp; &amp;nbsp; &amp;nbsp; x&lt;sub&gt;k&lt;/sub&gt; = k v&lt;sup&gt;-1&lt;/sup&gt;  b&lt;sup&gt;n &amp;frasl; d&lt;/sup&gt; α</string>
+                <string>Tick position &amp;nbsp; &amp;nbsp; &amp;nbsp; x&lt;sub&gt;k&lt;/sub&gt; = k v  10&lt;sup&gt;n &lt;/sup&gt; α</string>
                </property>
               </widget>
              </item>
@@ -359,110 +359,11 @@
                  <number>4</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="linearScaleTickDescription">
-                  <property name="text">
-                   <string>Constant tick spacing  &amp;nbsp; &amp;nbsp; &amp;nbsp;Δ = v&lt;sup&gt;-1&lt;/sup&gt; b&lt;sup&gt;n&amp;frasl; d&lt;/sup&gt; α</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="logScaleTickDescription">
-                  <property name="text">
-                   <string>p evenly spaced ticks between b&lt;sup&gt;n &amp;frasl; d&lt;/sup&gt; α and b&lt;sup&gt;n+1 &amp;frasl; d&lt;/sup&gt; α</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <layout class="QFormLayout" name="baseFormLayout">
                   <property name="topMargin">
                    <number>0</number>
                   </property>
                  </layout>
-                </item>
-                <item>
-                 <widget class="QWidget" name="widget" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_3">
-                   <property name="leftMargin">
-                    <number>30</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QGroupBox" name="groupBox_3">
-                     <property name="title">
-                      <string>Base fractional power:</string>
-                     </property>
-                     <layout class="QFormLayout" name="formLayout_2">
-                      <property name="labelAlignment">
-                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                      </property>
-                      <property name="horizontalSpacing">
-                       <number>5</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>5</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>5</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>5</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>5</number>
-                      </property>
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="xPowerNumeratorLabel">
-                        <property name="text">
-                         <string>Numerator n=</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="QSpinBox" name="powerNumerator">
-                        <property name="minimum">
-                         <number>-100</number>
-                        </property>
-                        <property name="maximum">
-                         <number>100</number>
-                        </property>
-                        <property name="value">
-                         <number>1</number>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="0">
-                       <widget class="QLabel" name="xPowerDenominatorLabel">
-                        <property name="text">
-                         <string>Denominator d =</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="QSpinBox" name="powerDenominator">
-                        <property name="minimum">
-                         <number>1</number>
-                        </property>
-                        <property name="maximum">
-                         <number>128</number>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
                 </item>
                 <item>
                  <layout class="QFormLayout" name="multiplierFormLayout">
@@ -475,7 +376,7 @@
                   <item row="0" column="0">
                    <widget class="QLabel" name="linDivisionsLabel">
                     <property name="text">
-                     <string>Divider v=</string>
+                     <string>Multiplier v=</string>
                     </property>
                    </widget>
                   </item>
@@ -493,6 +394,70 @@
                    </widget>
                   </item>
                  </layout>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="groupBox_3">
+                  <property name="title">
+                   <string>Base power:</string>
+                  </property>
+                  <layout class="QFormLayout" name="formLayout_2">
+                   <property name="labelAlignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                   <property name="horizontalSpacing">
+                    <number>5</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>20</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>5</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="basePowNumLabel">
+                     <property name="text">
+                      <string>Numerator n=</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QSpinBox" name="basePowNum">
+                     <property name="minimum">
+                      <number>-100</number>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
+                     <property name="value">
+                      <number>1</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="basePowDenomLabel">
+                     <property name="text">
+                      <string>Denominator d =</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QSpinBox" name="basePowDenom">
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>128</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -563,33 +528,13 @@
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLabel" name="linDecimalMultiplierLabel">
-                  <property name="text">
-                   <string>Replace k v&lt;sup&gt;-1&lt;/sup&gt; with value</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QCheckBox" name="linDecimalMultiplier">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
                  <widget class="QLabel" name="replaceBaseWithValueLabel">
                   <property name="text">
                    <string>Replace b&lt;sup&gt;n &amp;frasl; d&lt;/sup&gt; with value</string>
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
+                <item row="1" column="1">
                  <widget class="QCheckBox" name="decimalBase">
                   <property name="text">
                    <string/>

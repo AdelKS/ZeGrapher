@@ -2,7 +2,7 @@
 
 ZeGraphView::ZeGraphView(const ZeViewSettings &viewSettings, QSize widgetSize, QObject *parent) : QObject(parent)
 {
-    this->widgetSize = widgetSize;
+    this->viewPxSize = widgetSize;
 
     setViewSettings(viewSettings);
 }
@@ -20,10 +20,10 @@ void ZeGraphView::setViewSettings(const ZeViewSettings &viewSettings)
 
 void ZeGraphView::setGraphRange(const GraphRange &range)
 {
-    setXmax(range.Xmax);
-    setYmax(range.Ymax);
-    setXmin(range.Xmin);
-    setYmin(range.Ymin);
+    setXmax(range.x.max);
+    setYmax(range.y.max);
+    setXmin(range.x.min);
+    setYmin(range.y.min);
 }
 
 ZeGraphView::ZeGraphView(const ZeGraphView &other, QObject *parent) : QObject(parent)
@@ -183,75 +183,29 @@ void ZeGraphView::zoomView(QPointF center, double ratio)
     }
 }
 
- ZeGrid ZeGraphView::getGrid()
- {
-     ZeGrid grid;
+ZeAxesTicks ZeGraphView::getAxesTicks()
+{
+    ZeAxesTicks axesTicks;
 
-     if(viewWidget == 0)
-         return grid;
+    if(viewPxSize.isNull())
+        return axesTicks;
 
-     if(scaleType == ZeScaleType::LINEAR || scaleType == ZeScaleType::LINEAR_ORTHONORMAL)
-     {
-         grid.horizontal = getOneDirectionLinearGrid(viewWidget->width(), xGridStep, Xmin, Xmax, gridSettings.horSubGridLineCount,
-                                                     30, 150);
-         grid.vertical = getOneDirectionLinearGrid(viewWidget->height(), yGridStep, Ymin, Ymax, gridSettings.verSubGridLineCount,
-                                                   30, 100);
-     }
+    if(axesSettings.x.axisType == ZeAxisType::LINEAR)
+    {
 
-     return grid;
- }
+    }
+
+    return axesTicks;
+}
 
 
- ZeAxisTicks ZeGraphView::getOneDirectionLinearGrid(int pxWidth, double &step, double min, double max,
-                                                       int subGridlineCount, double minTickDist, double maxTickDist)
- {
-     ZeAxisTicks grid;
-
-     ZeMainGridLine gridLine;
-     ZeAxisSubTick subGridLine;
-
-     double scaling = pxWidth / (max-min);
-
-     if(scaling * step < minTickDist)
-         step *= pow(2, trunc(ln(minTickDist)/ln(step*scaling)) + 1);
-     else if(scaling * step > maxTickDist)
-         step *= pow(2, trunc(ln(maxTickDist)/ln(step*scaling)));
+ZeAxisTicks ZeGraphView::getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings axisSettings, QFontMetrics metrics)
+{
+    ZeAxisTicks axisTicks;
 
 
-     gridLine.pos = (trunc(min / step)-1) * step;
-
-     grid.ticks.push_back(pos);
-
-     while(gridLine.pos < max)
-     {
-         gridLine.pos += step;
-         grid.ticks.push_back(pos);
-     }
-
-     double count = subGridlineCount;
-     double p1, p2;
-
-     for(int i = 0 ; i < grid.ticks.size() - 1 ; i++)
-     {
-         p1 = grid.ticks[i].pos;
-         p2 = grid.ticks[i+1].pos;
-
-         for(double j = 1 ; j < count ; j++)
-         {
-             subGridLine.pos = j*p2 + (count-j)*p1;
-             grid.axisSubticks.push_back(subGridLine);
-         }
-     }
-
-     while(!grid.ticks.empty() && grid.ticks.front().pos < min) { grid.ticks.pop_front(); }
-     while(!grid.axisSubticks.empty() && grid.axisSubticks.front().pos < min) { grid.axisSubticks.pop_front(); }
-
-     while(!grid.ticks.empty() && grid.ticks.back().pos > max) { grid.ticks.pop_back(); }
-     while(!grid.axisSubticks.empty() && grid.axisSubticks.back().pos > max) { grid.axisSubticks.pop_back(); }
-
-     return grid;
-
- }
+    return axisTicks;
+}
 
 void ZeGraphView::translateView(QPointF vec)
 {

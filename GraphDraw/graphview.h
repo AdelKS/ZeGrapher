@@ -32,11 +32,8 @@ struct ZeAxisTick
 {
     double pos;
     QString baseStr, globalConstantStr;
-    double globalConstant;
-    double base;
-    double baseMultiplier;
-    int multiplier, divider;
-    int powerNumerator, powerDenominator;
+    double base, globalConstant;
+    long multiplier, subMultiplier, powerNumerator, powerDenominator;
 };
 
 struct ZeAxisSubTick
@@ -51,7 +48,7 @@ struct ZeAxisTicks
     QList<ZeAxisSubTick> axisSubticks;
 };
 
-struct ZeTicks
+struct ZeAxesTicks
 {
     ZeAxisTicks x, y;
 };
@@ -62,7 +59,7 @@ class ZeGraphView : public QObject
     Q_OBJECT
 
 public:
-    explicit ZeGraphView(const ZeViewSettings &viewSettings, QSize widgetSize, QObject *parent = nullptr);
+    explicit ZeGraphView(const ZeViewSettings &viewSettings, QSize viewPxSize, QObject *parent = nullptr);
     ZeGraphView(const ZeGraphView &other, QObject *parent = nullptr);
 
     ZeGraphView& operator=(const ZeGraphView &other);
@@ -102,6 +99,8 @@ public:
     double viewToUnitX(double viewX) const ;
     double unitToViewX(double unitX) const ;
 
+    ZeAxesTicks getAxesTicks();
+
     QRectF rect() const ;
     QRectF lgRect() const ;
     QRectF viewRect() const ;
@@ -112,8 +111,8 @@ signals:
 public slots:
 
 protected:
-    ZeAxisTicks getOneDirectionLinearGrid(int pxWidth, double &step, double min, double max,
-                                               int subGridlineCount, double minTickDist, double maxTickDist);
+    ZeAxisTicks getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings axisSettings, QFontMetrics metrics);
+
     void verifyOrthonormality();
 
     double Xmin, Xmax, Ymin, Ymax;
@@ -122,7 +121,7 @@ protected:
     double xLogBase, yLogBase;    
     double xGridStep, yGridStep;
 
-    QSizeF widgetSize;
+    QSizeF viewPxSize;
 
     ZeAxesSettings axesSettings;
     ZeGridSettings gridSettings;

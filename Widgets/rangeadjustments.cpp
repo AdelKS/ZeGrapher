@@ -30,19 +30,19 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
 
     Xmin = new NumberLineEdit(false, funcsList);
     Xmin->setMaximumHeight(27);
-    Xmin->setValue(graphRange.Xmin);
+    Xmin->setValue(graphRange.x.min);
 
     Xmax = new NumberLineEdit(false, funcsList);
     Xmax->setMaximumHeight(27);
-    Xmax->setValue(graphRange.Xmax);  
+    Xmax->setValue(graphRange.x.max);  
 
     Ymin = new NumberLineEdit(false, funcsList);
     Ymin->setMaximumHeight(27);
-    Ymin->setValue(graphRange.Ymin);
+    Ymin->setValue(graphRange.y.min);
 
     Ymax = new NumberLineEdit(false, funcsList);
     Ymax->setMaximumHeight(27);
-    Ymax->setValue(graphRange.Ymax);   
+    Ymax->setValue(graphRange.y.max);   
 
     ui->xForm->addRow(new QLabel("x<sub>min</sub>"), Xmin);
     ui->xForm->addRow(new QLabel("x<sub>max</sub>"), Xmax);  
@@ -76,8 +76,8 @@ void RangeAdjustments::loadDefaults()
 {
     GraphRange defaultRange;
     defaultRange.orthonormal = false;
-    defaultRange.Xmax = defaultRange.Ymax = 10;
-    defaultRange.Xmax = defaultRange.Ymax = -10;
+    defaultRange.x.max = defaultRange.y.max = 10;
+    defaultRange.x.max = defaultRange.y.max = -10;
 
     setGraphRange(defaultRange);
 }
@@ -104,11 +104,11 @@ void RangeAdjustments::setGraphRange(const GraphRange &range)
     const QSignalBlocker blocker3(Ymin);
     const QSignalBlocker blocker4(Ymax);
 
-    Xmin->setValue(range.Xmin);
-    Xmax->setValue(range.Xmax);
+    Xmin->setValue(range.x.min);
+    Xmax->setValue(range.x.max);
 
-    Ymin->setValue(range.Ymin);
-    Ymax->setValue(range.Ymax);
+    Ymin->setValue(range.y.min);
+    Ymax->setValue(range.y.max);
 
     ui->orthonormal->setChecked(range.orthonormal);
 
@@ -130,41 +130,41 @@ void RangeAdjustments::apply()
 
     GraphRange oldGraphRange = graphRange;
 
-    graphRange.Xmax = Xmax->getValue();
-    graphRange.Xmin = Xmin->getValue();
+    graphRange.x.max = Xmax->getValue();
+    graphRange.x.min = Xmin->getValue();
 
-    graphRange.Ymax = Ymax->getValue();
-    graphRange.Ymin = Ymin->getValue();
+    graphRange.y.max = Ymax->getValue();
+    graphRange.y.min = Ymin->getValue();
 
-    if(graphRange.Xmin >= graphRange.Xmax)
+    if(graphRange.x.min >= graphRange.x.max)
     {
         messageBox->setText(tr("x<sub>min</sub> must be smaller than x<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.Xmin <= 0 && viewSettings.axes.x.axisType == ZeAxisType::LOG)
+    if(graphRange.x.min <= 0 && viewSettings.axes.x.axisType == ZeAxisType::LOG)
     {
         messageBox->setText(tr("x<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.Ymin >= graphRange.Ymax)
+    if(graphRange.y.min >= graphRange.y.max)
     {
         messageBox->setText(tr("Y<sub>min</sub> must be smaller than Y<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.Ymin <= 0 && viewSettings.axes.y.axisType == ZeAxisType::LOG)
+    if(graphRange.y.min <= 0 && viewSettings.axes.y.axisType == ZeAxisType::LOG)
     {
         messageBox->setText(tr("y<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.Ymax - graphRange.Ymin < MIN_RANGE || graphRange.Xmax - graphRange.Xmin < MIN_RANGE)
+    if(graphRange.y.max - graphRange.y.min < MIN_RANGE || graphRange.x.max - graphRange.x.min < MIN_RANGE)
     {
         messageBox->setText(tr("The requested view window is too small."));
         messageBox->exec();

@@ -23,6 +23,7 @@
 
 /* TODO:
  * - Save and load defaults from disk
+ * - Base should be > 1 (Strictly)
  **/
 
 AxisSettingsWidget::AxisSettingsWidget(QWidget *parent): QWidget(parent), ui(new Ui::AxisSettingsWidget)
@@ -60,26 +61,24 @@ void AxisSettingsWidget::axisTypeChanged()
 {
     if(ui->logScale->isChecked())
     {
-        ui->logScaleTickDescription->show();
+        ui->replaceBaseWithValueLabel->setText(tr("Replace b<sup>n &frasl; d</sup> with value"));
         ui->logScaleTickPosLabel->show();
+        ui->basePowDenomLabel->show();
+        ui->basePowDenom->show();
 
         ui->linDivisions->hide();
         ui->linDivisionsLabel->hide();
-        ui->linDecimalMultiplier->hide();
-        ui->linDecimalMultiplierLabel->hide();
-        ui->linearScaleTickDescription->hide();
         ui->linearScaleTickPosLabel->hide();
     }
     else // ui->linScale is checked
     {
-        ui->logScaleTickDescription->hide();
+        ui->replaceBaseWithValueLabel->setText(tr("Replace 10<sup>n</sup> with value"));
         ui->logScaleTickPosLabel->hide();
+        ui->basePowDenomLabel->hide();
+        ui->basePowDenom->hide();
 
         ui->linDivisions->show();
         ui->linDivisionsLabel->show();
-        ui->linDecimalMultiplier->show();
-        ui->linDecimalMultiplierLabel->show();
-        ui->linearScaleTickDescription->show();
         ui->linearScaleTickPosLabel->show();
     }
 }
@@ -113,7 +112,6 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
     ui->powerNumerator->setValue(settings.basePowNum);
 
     ui->decimalBase->setChecked(settings.coordinateFormatting.decimalBase);
-    ui->linDecimalMultiplier->setChecked(settings.coordinateFormatting.linDecimalBaseMultiplier);
     ui->decimalGlobalConstant->setChecked(settings.coordinateFormatting.decimalGlobalConstant);
 }
 
@@ -154,7 +152,6 @@ void AxisSettingsWidget::processUserInput()
     axisSettings.basePowNum = ui->powerNumerator->value();
 
     axisSettings.coordinateFormatting.decimalBase = ui->decimalBase->isChecked();
-    axisSettings.coordinateFormatting.linDecimalBaseMultiplier = ui->linDecimalMultiplier->isChecked();
     axisSettings.coordinateFormatting.decimalGlobalConstant = ui->decimalGlobalConstant->isChecked();
 
     if(currentAxis == ZeAxisName::X)
@@ -172,7 +169,6 @@ void AxisSettingsWidget::resetToDefaults()
     defaultSettings.basePowDenom = 1;
     defaultSettings.basePowNum = 1;
     defaultSettings.coordinateFormatting.decimalBase = false;
-    defaultSettings.coordinateFormatting.linDecimalBaseMultiplier = false;
     defaultSettings.coordinateFormatting.decimalGlobalConstant = false;
     defaultSettings.linearDivider = 10;
     defaultSettings.logDivisions = 8;

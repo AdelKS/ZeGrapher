@@ -20,6 +20,7 @@
 
 #include "Windows/about.h"
 #include "ui_about.h"
+#include "structures.h"
 
 about::about(QWidget *parent) :
     QDialog(parent),

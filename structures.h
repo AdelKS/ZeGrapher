@@ -49,25 +49,35 @@
 #define MAX_SAVED_SEQ_VALS 1000000
 
 
+struct ZeAxisRange
+{
+    double min, max;
+
+    double amplitude()
+    {
+        return fabs(max - min);
+    }
+};
+
 struct GraphRange
 {
-    double Xmin, Xmax, Ymin, Ymax;    
+    ZeAxisRange x, y;
     bool orthonormal;
 
     QRectF getRect() const
     {
         QRectF graphWin;
-        graphWin.setBottom(Ymin);
-        graphWin.setTop(Ymax);
-        graphWin.setLeft(Xmin);
-        graphWin.setRight(Xmax);
+        graphWin.setBottom(y.min);
+        graphWin.setTop(y.max);
+        graphWin.setLeft(x.min);
+        graphWin.setRight(x.max);
         return graphWin;
     }
 
     bool operator==(const GraphRange &other)
     {
-        return fabs(Xmin - other.Xmin) < MIN_RANGE && fabs(Xmax - other.Xmax) < MIN_RANGE &&
-                fabs(Ymin - other.Ymin) < MIN_RANGE && fabs(Ymax - other.Ymax) < MIN_RANGE;
+        return fabs(x.min - other.x.min) < MIN_RANGE && fabs(x.max - other.x.max) < MIN_RANGE &&
+                fabs(y.min - other.y.min) < MIN_RANGE && fabs(y.max - other.y.max) < MIN_RANGE;
     }
     bool operator!=(const GraphRange &other)
     {
@@ -92,7 +102,7 @@ enum struct ZeAxisType
 
 struct ZeCoordinateDisplayFormat
 {
-    bool decimalGlobalConstant, linDecimalBaseMultiplier, decimalBase;
+    bool decimalGlobalConstant, decimalBase;
 };
 
 struct ZeAxisSettings
