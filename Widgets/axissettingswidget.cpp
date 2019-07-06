@@ -34,9 +34,9 @@ AxisSettingsWidget::AxisSettingsWidget(QWidget *parent): QWidget(parent), ui(new
     baseLineEdit->setValue(10);
     ui->baseFormLayout->addRow(tr("base b="), baseLineEdit);
 
-    fixedMultiplierLineEdit = new NumberLineEdit();
-    fixedMultiplierLineEdit->setValue(1);
-    ui->multiplierFormLayout->addRow(tr("Fixed multiplier α="), fixedMultiplierLineEdit);
+    constantMultiplierLineEdit = new NumberLineEdit();
+    constantMultiplierLineEdit->setValue(1);
+    ui->multiplierFormLayout->addRow(tr("Fixed multiplier α="), constantMultiplierLineEdit);
 
     resetToDefaults();
     currentAxis = ZeAxisName::X;
@@ -66,8 +66,8 @@ void AxisSettingsWidget::axisTypeChanged()
         ui->basePowDenomLabel->show();
         ui->basePowDenom->show();
 
-        ui->linDivisions->hide();
-        ui->linDivisionsLabel->hide();
+        ui->linMultiplier->hide();
+        ui->linMultiplierLabel->hide();
         ui->linearScaleTickPosLabel->hide();
     }
     else // ui->linScale is checked
@@ -77,8 +77,8 @@ void AxisSettingsWidget::axisTypeChanged()
         ui->basePowDenomLabel->hide();
         ui->basePowDenom->hide();
 
-        ui->linDivisions->show();
-        ui->linDivisionsLabel->show();
+        ui->linMultiplier->show();
+        ui->linMultiplierLabel->show();
         ui->linearScaleTickPosLabel->show();
     }
 }
@@ -107,9 +107,26 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
     ui->linearScale->setChecked(settings.axisType == ZeAxisType::LINEAR);
     ui->logScale->setChecked(settings.axisType == ZeAxisType::LOG);
 
-    baseLineEdit->setText(settings.baseStr);
-    ui->powerDenominator->setValue(settings.basePowDenom);
-    ui->powerNumerator->setValue(settings.basePowNum);
+    ui->axisLineWidth->setValue(settings.lineWidth);
+
+
+    if(settings.axisType == ZeAxisType::LINEAR)
+    {
+        ui->linMultiplier->setValue(settings.whenLinear.multiplier);
+        ui->basePowNum->setValue(settings.whenLinear.basePowNum);
+
+        constantMultiplierLineEdit->setText(settings.whenLinear.constantMultiplierStr);
+    }
+    else
+    {
+        baseLineEdit->setText(settings.whenLog.baseStr);
+        ui->basePowNum->setValue(settings.whenLog.basePowDenom);
+        ui->basePowDenom->setValue(settings.whenLog.basePowNum);
+
+        constantMultiplierLineEdit->setText(settings.whenLog.constantMultiplierStr);
+    }
+
+
 
     ui->decimalBase->setChecked(settings.coordinateFormatting.decimalBase);
     ui->decimalGlobalConstant->setChecked(settings.coordinateFormatting.decimalGlobalConstant);
@@ -135,21 +152,55 @@ void AxisSettingsWidget::processUserInput()
     ZeAxisSettings &currentSettings = currentAxis == ZeAxisName::X ? axesSettings.x : axesSettings.y;
 
     axisSettings.axisType = ui->linearScale->isChecked() ? ZeAxisType::LINEAR :  ZeAxisType::LOG;
+    axisSettings.color = axisColorButton->getCurrentColor();
+    axisSettings.lineWidth = ui->axisLineWidth->value();
 
-    baseLineEdit->checkVal();
-    if(baseLineEdit->isValid())
+    if(axisSettings.axisType == ZeAxisType::LINEAR)
     {
-        axisSettings.base = baseLineEdit->getValue();
-        axisSettings.baseStr = baseLineEdit->text();
+        axisSettings.whenLinear.multiplier = ui->linMultiplier->value();
+        axisSettings.whenLinear.basePowNum = ui->basePowNum->value();
+
+        constantMultiplierLineEdit->checkVal();
+        if(constantMultiplierLineEdit->isValid())
+        {
+            axisSettings.whenLinear.constantMultiplier = constantMultiplierLineEdit->getValue();
+            axisSettings.whenLinear.constantMultiplierStr = constantMultiplierLineEdit->text();
+        }
+        else
+        {
+            axisSettings.whenLinear.constantMultiplier = currentSettings.whenLinear.constantMultiplier;
+            axisSettings.whenLinear.constantMultiplierStr = currentSettings.whenLinear.constantMultiplierStr;
+        }
     }
     else
     {
-        axisSettings.base = currentSettings.base;
-        axisSettings.baseStr = currentSettings.baseStr;
-    }
+        baseLineEdit->checkVal();
+        if(baseLineEdit->isValid())
+        {
+            axisSettings.whenLog.base = baseLineEdit->getValue();
+            axisSettings.whenLog.baseStr = baseLineEdit->text();
+        }
+        else
+        {
+            axisSettings.whenLog.base = currentSettings.whenLog.base;
+            axisSettings.whenLog.baseStr = currentSettings.whenLog.baseStr;
+        }
 
-    axisSettings.basePowDenom = ui->powerDenominator->value();
-    axisSettings.basePowNum = ui->powerNumerator->value();
+        constantMultiplierLineEdit->checkVal();
+        if(constantMultiplierLineEdit->isValid())
+        {
+            axisSettings.whenLog.constantMultiplier = constantMultiplierLineEdit->getValue();
+            axisSettings.whenLog.constantMultiplierStr = constantMultiplierLineEdit->text();
+        }
+        else
+        {
+            axisSettings.whenLog.constantMultiplier = currentSettings.whenLog.constantMultiplier;
+            axisSettings.whenLog.constantMultiplierStr = currentSettings.whenLog.constantMultiplierStr;
+        }
+
+        axisSettings.whenLog.basePowDenom = ui->basePowDenom->value();
+        axisSettings.whenLog.basePowNum = ui->basePowNum->value();
+    }
 
     axisSettings.coordinateFormatting.decimalBase = ui->decimalBase->isChecked();
     axisSettings.coordinateFormatting.decimalGlobalConstant = ui->decimalGlobalConstant->isChecked();
@@ -164,14 +215,22 @@ void AxisSettingsWidget::resetToDefaults()
     ZeAxisSettings defaultSettings;
 
     defaultSettings.axisType = ZeAxisType::LINEAR;
-    defaultSettings.base = 10;
-    defaultSettings.baseStr = "10";
-    defaultSettings.basePowDenom = 1;
-    defaultSettings.basePowNum = 1;
+    defaultSettings.color = Qt::black;
     defaultSettings.coordinateFormatting.decimalBase = false;
     defaultSettings.coordinateFormatting.decimalGlobalConstant = false;
-    defaultSettings.linearDivider = 10;
-    defaultSettings.logDivisions = 8;
+    defaultSettings.lineWidth = 0.1;
+
+    defaultSettings.whenLog.base = 10;
+    defaultSettings.whenLog.baseStr = "10";
+    defaultSettings.whenLog.basePowDenom = 1;
+    defaultSettings.whenLog.basePowNum = 1;
+    defaultSettings.whenLog.constantMultiplier = 1;
+    defaultSettings.whenLog.constantMultiplierStr = "1";
+
+    defaultSettings.whenLinear.basePowNum = 0;
+    defaultSettings.whenLinear.multiplier = 1;
+    defaultSettings.whenLinear.constantMultiplier = 1;
+    defaultSettings.whenLog.constantMultiplierStr = "1";
 
     axesSettings.x = axesSettings.y = defaultSettings;
 

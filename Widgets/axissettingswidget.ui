@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>396</width>
-    <height>697</height>
+    <height>544</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -59,7 +59,7 @@
         <x>0</x>
         <y>0</y>
         <width>394</width>
-        <height>695</height>
+        <height>542</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -374,14 +374,14 @@
                    <number>0</number>
                   </property>
                   <item row="0" column="0">
-                   <widget class="QLabel" name="linDivisionsLabel">
+                   <widget class="QLabel" name="linMultiplierLabel">
                     <property name="text">
                      <string>Multiplier v=</string>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="1">
-                   <widget class="QSpinBox" name="linDivisions">
+                   <widget class="QSpinBox" name="linMultiplier">
                     <property name="minimum">
                      <number>1</number>
                     </property>

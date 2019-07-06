@@ -105,13 +105,27 @@ struct ZeCoordinateDisplayFormat
     bool decimalGlobalConstant, decimalBase;
 };
 
+struct ZeLogAxisSettings
+{
+    double constantMultiplier, base;
+    QString constantMultiplierStr, baseStr;
+    int basePowNum, basePowDenom;
+};
+
+struct ZeLinAxisSettings
+{
+    int multiplier;
+    double constantMultiplier;
+    QString constantMultiplierStr;
+    int basePowNum;
+};
+
 struct ZeAxisSettings
 {
-    int linearDivider, logDivisions;
-    double globalConstant, base;
-    QString globalConstantStr, baseStr;
     QColor color;
-    int basePowNum, basePowDenom;
+    double lineWidth;
+    ZeLinAxisSettings whenLinear;
+    ZeLogAxisSettings whenLog;
     ZeCoordinateDisplayFormat coordinateFormatting;
     ZeAxisType axisType;
 };

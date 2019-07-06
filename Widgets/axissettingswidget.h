@@ -54,7 +54,7 @@ protected:
     void loadAxisSettingsInUi(const ZeAxisSettings &axesSettings);
 
     Ui::AxisSettingsWidget *ui;
-    NumberLineEdit *baseLineEdit, *fixedMultiplierLineEdit;
+    NumberLineEdit *baseLineEdit, *constantMultiplierLineEdit;
     QColorButton *axisColorButton;
 
     ZeAxisName currentAxis;
