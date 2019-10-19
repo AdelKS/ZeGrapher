@@ -199,10 +199,27 @@ ZeAxesTicks ZeGraphView::getAxesTicks()
 }
 
 
-ZeAxisTicks ZeGraphView::getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings axisSettings, QFontMetrics metrics)
+ZeAxisTicks ZeGraphView::getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings &axisSettings, QFontMetrics metrics)
 {
+
     ZeAxisTicks axisTicks;
 
+    int smallestBasePower = int(floor(log10(range.amplitude())) - 1);
+
+    if(smallestBasePower <= axisSettings.whenLog.basePowNum and axisSettings.whenLog.basePowNum <= smallestBasePower + 2)
+    {
+        // The current settings may be good enough to use as is
+
+    }
+    else
+    {
+        // Redo entirely the tick calculations
+    }
+
+    QList<long> multipliers;
+    double ticksNum = range.amplitude() / 10;
+
+    double tickDistance = double(pxWidth) / ticksNum;
 
     return axisTicks;
 }

@@ -42,8 +42,14 @@ struct ZeAxisSubTick
     int numerator, denominator;
 };
 
+struct ZeOffset
+{
+    long sumOffset, powerOffset;
+};
+
 struct ZeAxisTicks
 {
+    ZeOffset offset;
     QList<ZeAxisTick> ticks;
     QList<ZeAxisSubTick> axisSubticks;
 };
@@ -111,7 +117,7 @@ signals:
 public slots:
 
 protected:
-    ZeAxisTicks getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings axisSettings, QFontMetrics metrics);
+    ZeAxisTicks getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings &axisSettings, QFontMetrics metrics);
 
     void verifyOrthonormality();
 
