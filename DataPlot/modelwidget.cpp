@@ -28,8 +28,6 @@ ModelWidget::ModelWidget(const QList<Point> &dat, Information *info, bool isPola
     layout->setMargin(0);    
     setLayout(layout);
 
-    setMaximumWidth(400);
-
     abscissa = xname;
     ordinate = yname;
     polar = isPolar;

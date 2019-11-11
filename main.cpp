@@ -40,12 +40,16 @@ int main(int argc, char *argv[])
         QString language = settings.value("language").toString();
         if(language == "fr")
             translator.load(":/ZeGrapher_fr.qm");
+        else if(language == "de")
+            translator.load(":/ZeGrapher_de.qm");
     }
     else
     {
         QLocale locale;
         if(locale.language() == QLocale::French)
             translator.load(":/ZeGrapher_fr.qm");
+        else if(locale.language() == QLocale::German)
+            translator.load(":/ZeGrapher_de.qm");
     }
 
     settings.beginGroup("font");

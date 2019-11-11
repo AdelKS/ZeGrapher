@@ -25,8 +25,8 @@
 #include <cmath>
 #include <QtWidgets>
 
-#define SOFTWARE_VERSION 3.02
-#define SOFTWARE_VERSION_STR "v3.0.2"
+#define SOFTWARE_VERSION 3.03
+#define SOFTWARE_VERSION_STR "v3.0.3"
 
 
 #define FROM_CURRENT_GRAPHIC 0

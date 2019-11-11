@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>622</width>
-    <height>175</height>
+    <width>329</width>
+    <height>173</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,7 +21,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>6</number>
+    <number>8</number>
    </property>
    <property name="leftMargin">
     <number>3</number>
@@ -146,8 +146,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>30</width>
-           <height>20</height>
+           <width>27</width>
+           <height>17</height>
           </size>
          </property>
         </spacer>
@@ -156,6 +156,12 @@
         <widget class="QLabel" name="label">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="text">
           <string>Start:</string>
@@ -181,7 +187,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>50</width>
            <height>25</height>
           </size>
          </property>
@@ -194,6 +200,12 @@
         <widget class="QLabel" name="label_2">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="text">
           <string>End:</string>
@@ -219,7 +231,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>50</width>
            <height>25</height>
           </size>
          </property>
@@ -232,6 +244,12 @@
         <widget class="QLabel" name="label_4">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="text">
           <string>Step:</string>
@@ -251,7 +269,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>50</width>
            <height>25</height>
           </size>
          </property>
@@ -263,22 +281,6 @@
       </layout>
      </item>
     </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>10</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -349,10 +351,122 @@
      </item>
     </layout>
    </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <resources/>
  <connections>
+  <connection>
+   <sender>predefined</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>step</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>444</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>740</x>
+     <y>235</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>predefined</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>237</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>predefined</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>end</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>494</x>
+     <y>235</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>predefined</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>start</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>270</x>
+     <y>235</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>predefined</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>101</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>51</x>
+     <y>190</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>predefined</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>620</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
   <connection>
    <sender>fromExpression</sender>
    <signal>toggled(bool)</signal>
@@ -382,102 +496,6 @@
     <hint type="destinationlabel">
      <x>146</x>
      <y>80</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>predefined</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>51</x>
-     <y>190</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>predefined</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>start</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>197</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>270</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>predefined</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>end</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>319</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>494</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>predefined</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>step</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>444</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>740</x>
-     <y>235</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>predefined</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>412</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>620</x>
-     <y>189</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>predefined</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>label_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>237</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>330</x>
-     <y>189</y>
     </hint>
    </hints>
   </connection>

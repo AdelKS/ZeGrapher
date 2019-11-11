@@ -35,6 +35,17 @@ DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(par
     ui = new Ui::DataWindow;
     ui->setupUi(this);
 
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
+    mainLayout->addWidget(ui->retractionButton);
+
+    QSplitter *splitter = new QSplitter();
+    splitter->addWidget(ui->actionsContainerWidget);
+    splitter->addWidget(ui->tableContainerWidget);
+
+    mainLayout->addWidget(splitter);
+
+    ui->modelsScrollArea->setWidget(ui->containerWidget);
+
     widgetState = WIDGET_OPENED;
 
     widgetOpenAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
