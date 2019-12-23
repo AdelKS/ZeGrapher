@@ -24,7 +24,7 @@
 #include "Export/imagesave.h"
 #include "ui_imagesave.h"
 
-ImageSave::ImageSave(Information *info, QWidget *parent) : ui(new Ui::ImageSave), QWidget(parent)
+ImageSave::ImageSave(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui::ImageSave)
 {
     ui->setupUi(this);
 
