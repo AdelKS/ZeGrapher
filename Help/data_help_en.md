@@ -1,12 +1,16 @@
 # Help: Data window
 
+[![english flag](english-icon.png)](data_help_en.html)
+[![french flag](french-icon.png)](data_help_fr.html)
+[![german flag](german-icon.png)](data_help_de.html)
+
 ## Overview
 
-[**Aller à la version en français ![french flag](french-icon.png)**](data_help_fr.html)
+
 
 ![](pins_en.png)<br/>
 
-The main widget in the window is the data table, hovered by ** mouse draggable pins**.
+The main widget in the window is the data table, hovered by **mouse draggable pins**.
 These pins play an important role for the input and visualization.
 
 ### Black pins ![base pin](basePin.png)

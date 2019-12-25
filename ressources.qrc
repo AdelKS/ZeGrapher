@@ -66,5 +66,10 @@
         <file>ZeGrapher_fr.qm</file>
         <file>ZeGrapher_de.qm</file>
         <file>Help/data_help_de.html</file>
+        <file>Help/german-icon.png</file>
+        <file>Help/columnActions_de.png</file>
+        <file>Help/columnFill_de.png</file>
+        <file>Help/lineActions_de.png</file>
+        <file>Help/pins_de.png</file>
     </qresource>
 </RCC>

@@ -183,3 +183,33 @@ icon.files = icons/ZeGrapher.png
 translations.files = ZeGrapher_fr.qm
 
 INSTALLS += appdata desktop icon target translations
+
+DISTFILES += \
+    Help/Rpin.png \
+    Help/Tetapin.png \
+    Help/Xpin.png \
+    Help/Ypin.png \
+    Help/basePin.png \
+    Help/columnActions_de.png \
+    Help/columnActions_en.png \
+    Help/columnActions_fr.png \
+    Help/columnFill_de.png \
+    Help/columnFill_en.png \
+    Help/columnFill_fr.png \
+    Help/data_help_de.html \
+    Help/data_help_de.md \
+    Help/data_help_en.html \
+    Help/data_help_en.md \
+    Help/data_help_fr.html \
+    Help/data_help_fr.md \
+    Help/english-icon.png \
+    Help/french-icon.png \
+    Help/lineActions_de.png \
+    Help/lineActions_en.png \
+    Help/lineActions_fr.png \
+    Help/pins.png \
+    Help/pins_de.png \
+    Help/pins_en.png \
+    Help/polynomialCoefVals_en.png \
+    Help/polynomialCoefVals_fr.png \
+    Help/selector.png

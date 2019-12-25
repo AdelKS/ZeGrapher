@@ -1,5 +1,9 @@
 # Hilfe: Dateneingabe-Fenster
 
+[![english flag](english-icon.png)](data_help_en.html)
+[![french flag](french-icon.png)](data_help_fr.html)
+[![german flag](german-icon.png)](data_help_de.html)
+
 ## Übersicht
 
 [**Go to english version ![english flag](english-icon.png)**](data_help_en.html)
@@ -84,7 +88,7 @@ Werden die Pins auf andere Spalten verschoben oder Werte in den ausgewählten Sp
 
 Der Polynomgrad der Ausgleichskurve kann ausgewählt werden, ebenso der Darstellungsbereich und die Kurvenfarbe. Die Koeffizienten der Ausgleichskurve werden im gleichnamigen Reiter angezeigt.
 
-![](polynomialCoefVals_de.png)
+![](polynomialCoefVals_en.png)
 
 ### Feedback
 
