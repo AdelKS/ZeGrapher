@@ -32,7 +32,8 @@ ImageSave::ImageSave(Information *info, QWidget *parent) : QWidget(parent), ui(n
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;
-    window.Xscale = window.Yscale = 1;
+    window.Xstep = window.Ystep = 1;
+    window.XstepMult = window.YstepMult = 1;
 
     scene = new ImagePreview(info);
     scene->setMinimumSize(150,150);

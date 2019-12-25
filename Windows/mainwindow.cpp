@@ -45,7 +45,8 @@ MainWindow::MainWindow()
 
     window.Xmax = window.Ymax = 10;
     window.Xmin = window.Ymin = -10;
-    window.Xscale = window.Yscale = 1;
+    window.Xstep = window.Ystep = 1;
+    window.XstepMult = window.YstepMult = 1;
 
     setCentralWidget(scene);
 

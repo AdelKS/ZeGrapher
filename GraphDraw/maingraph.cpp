@@ -1311,11 +1311,11 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
     }
 
-    double Xreal = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale;
+    double Xreal = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep;
     double Xpos = Xreal * uniteX + centre.x;
     double pos;
 
-    double step = graphRange.Xscale * uniteX;
+    double step = graphRange.Xstep * uniteX;
 
     double bas = height();
     double haut = 0;
@@ -1357,7 +1357,7 @@ void MainGraph::drawTicksAndNumbers()
         }
 
         Xpos += step;
-        Xreal += graphRange.Xscale;
+        Xreal += graphRange.Xstep;
     }
 
 //trace sur l'axe des Y
@@ -1381,9 +1381,9 @@ void MainGraph::drawTicksAndNumbers()
         posTxt = Xpos + 5;
     }
 
-    double Yreal = trunc(graphRange.Ymax / graphRange.Yscale) * graphRange.Yscale;
+    double Yreal = trunc(graphRange.Ymax / graphRange.Ystep) * graphRange.Ystep;
     Ypos = -Yreal * uniteY + centre.y;
-    step = graphRange.Yscale * uniteY;
+    step = graphRange.Ystep * uniteY;
 
     bas =  0;
     haut =  graphWidth;
@@ -1423,9 +1423,45 @@ void MainGraph::drawTicksAndNumbers()
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
-        Yreal -= graphRange.Yscale;
+        Yreal -= graphRange.Ystep;
         Ypos += step;
     }   
+}
+
+void MainGraph::incrementTickSpacing(double &spacing, int &currentMultiplier)
+{
+    switch (currentMultiplier) {
+    case 1:
+        currentMultiplier = 2;
+        spacing *= 2;
+        break;
+    case 2:
+        currentMultiplier = 5;
+        spacing *= 2.5;
+        break;
+    case 5:
+        currentMultiplier = 1;
+        spacing *= 2;
+        break;
+    }
+}
+
+void MainGraph::decrementTickSpacing(double &spacing, int &currentMultiplier)
+{
+    switch (currentMultiplier) {
+    case 1:
+        currentMultiplier = 5;
+        spacing /= 2;
+        break;
+    case 5:
+        currentMultiplier = 2;
+        spacing /= 2.5;
+        break;
+    case 2:
+        currentMultiplier = 1;
+        spacing /= 2;
+        break;
+    }
 }
 
 bool MainGraph::updateTickSpacing()
@@ -1433,34 +1469,34 @@ bool MainGraph::updateTickSpacing()
     bool scaleChanged = false;
     bool orthonormal = information->isOrthonormal();
 
-    if(uniteX * graphRange.Xscale < widestXNumber + 32)
+    if(uniteX * graphRange.Xstep < widestXNumber + 32)
     {
-        while(uniteX * graphRange.Xscale < widestXNumber + 32)
-            graphRange.Xscale *= 2;
+        while(uniteX * graphRange.Xstep < widestXNumber + 32)
+            incrementTickSpacing(graphRange.Xstep, graphRange.XstepMult);
         if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
+             graphRange.Ystep = graphRange.Xstep;
         scaleChanged = true;
     }
-    else if(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
+    else if(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
     {
-        while(uniteX * graphRange.Xscale > 2*widestXNumber + 96)
-            graphRange.Xscale /= 2;
+        while(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
+            decrementTickSpacing(graphRange.Xstep, graphRange.XstepMult);
         if(orthonormal)
-             graphRange.Yscale = graphRange.Xscale;
+             graphRange.Ystep = graphRange.Xstep;
         scaleChanged = true;
     }
     if(!orthonormal)
     {
-        if(uniteY * graphRange.Yscale < 25)
+        if(uniteY * graphRange.Ystep < 25)
         {
-            while(uniteY * graphRange.Yscale < 25)
-                graphRange.Yscale *= 2;
+            while(uniteY * graphRange.Ystep < 25)
+                incrementTickSpacing(graphRange.Ystep, graphRange.YstepMult);
             scaleChanged = true;
         }
-        else if(uniteY * graphRange.Yscale > 150)
+        else if(uniteY * graphRange.Ystep > 150)
         {
-            while(uniteY * graphRange.Yscale > 150)
-                graphRange.Yscale /= 2;
+            while(uniteY * graphRange.Ystep > 150)
+                decrementTickSpacing(graphRange.Ystep, graphRange.YstepMult);
             scaleChanged = true;
         }
     }

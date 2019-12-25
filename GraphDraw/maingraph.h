@@ -70,7 +70,8 @@ protected slots:
     void lineXReturnPressed();
 
 protected:
-
+    void incrementTickSpacing(double &spacing, int &currentMultiplier);
+    void decrementTickSpacing(double &spacing, int &currentMultiplier);
     void paintEvent(QPaintEvent *event);    
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

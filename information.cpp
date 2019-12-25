@@ -27,7 +27,8 @@ Information::Information()
 {
     range.Xmax = range.Ymax = 10;
     range.Xmin = range.Ymin = -10;
-    range.Xscale = range.Yscale = 1;   
+    range.Xstep = range.Ystep = 1;
+    range.XstepMult = range.YstepMult = 1;
 
     gridState = orthonormal = updatingLock = false;
 

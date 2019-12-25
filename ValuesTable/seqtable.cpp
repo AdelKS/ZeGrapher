@@ -152,8 +152,8 @@ void SeqTable::fillFromRange()
     {
         GraphRange range = information->getRange();
 
-        parameters.range.start = trunc(range.Xmin / range.Xscale) * range.Xscale;
-        parameters.range.step = range.Xscale;
+        parameters.range.start = trunc(range.Xmin / range.Xstep) * range.Xstep;
+        parameters.range.step = range.Xstep;
         parameters.range.end = range.Xmax;
 
         if(seq->get_nMin() > parameters.range.end)

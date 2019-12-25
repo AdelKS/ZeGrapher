@@ -235,9 +235,9 @@ void ImagePreview::placerGraduations()
 
     double space, pos;
 
-    double Xpos = trunc(graphRange.Xmin / graphRange.Xscale) * graphRange.Xscale * uniteX;
+    double Xpos = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep * uniteX;
     double end = graphRange.Xmax * uniteX;
-    double step = graphRange.Xscale * uniteX;
+    double step = graphRange.Xstep * uniteX;
 
     QString num;
 
@@ -277,8 +277,8 @@ void ImagePreview::placerGraduations()
 //trace sur l'axe des Y
 
 
-    double Ypos = ceil(graphRange.Ymin / graphRange.Yscale) * graphRange.Yscale * uniteY;
-    step = graphRange.Yscale * uniteY;
+    double Ypos = ceil(graphRange.Ymin / graphRange.Ystep) * graphRange.Ystep * uniteY;
+    step = graphRange.Ystep * uniteY;
     end = graphRange.Ymax * uniteY;
 
     int largestWidth = 0;

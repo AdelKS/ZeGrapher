@@ -65,7 +65,8 @@
 
 struct GraphRange
 {
-    double Xmin, Xmax, Ymin, Ymax, Xscale, Yscale;
+    double Xmin, Xmax, Ymin, Ymax, Xstep, Ystep;
+    int XstepMult, YstepMult;
 
     QRectF getRect() const
     {
