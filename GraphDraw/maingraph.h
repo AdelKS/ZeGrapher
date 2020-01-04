@@ -31,6 +31,7 @@
 #define TANGENT_RESIZE_HOVER 2
 #define TANGENT_MOVE_HOVER 3
 
+#include "../Widgets/popupwidget.h"
 
 class MainGraph : public GraphDraw
 {
@@ -46,14 +47,9 @@ signals:
     void sizeChanged(int H, int W);
 
 public slots:
-
-    void showHorWidget();
-    void showVerWidget();
     void showXYWidgets();
-
-    void hideHorWidget();
-    void hideVerWidget();
     void hideXYWidgets();
+
     void reactivateSmoothing();
     void updateParEq();
     void updateGraph();
@@ -110,13 +106,13 @@ protected:
     QLineEdit *lineX, *lineY;
     double y1, y2, mouseX, mouseY, widestXNumber;
 
-    bool dispPoint, buttonPresse, sourisSurUneCurve,
-         dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,
-         hHideStarted, vHideStarted, hoveredCurveType, resaveGraph, cancelUpdateSignal,
+    bool dispPoint, buttonPresse, mouseOnCurve,
+         dispRectangle, xyWidgetsState,
+         hoveredCurveType, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;
 
     char typeCurseur;   
-    int  hBottom, vBottom, xyBottom;
+    int  xyBottom;
     QTimer timerX, timerY;
 
     QPolygonF polygon;   
@@ -124,7 +120,7 @@ protected:
     CurveSelection selectedCurve;
     MouseState mouseState;
 
-    QRect rectReel, hWidgetRect, vWidgetRect;
+    QRect rectReel;
     QImage *savedGraph;
     QList <QString> customFunctions;
     QList <QString> customSequences;
@@ -132,13 +128,12 @@ protected:
     QLabel *xTextLabel, *yTextLabel;
     QLabel kLabel;
 
-    QWidget *hWidget, *vWidget, *xWidget, *yWidget;
-    QTimer mouseNotOnHWidget, mouseNotOnVWidget, vWidgetHideTransition,
-           hWidgetHideTransition,vWidgetShowTransition, hWidgetShowTransition,
-           xyWidgetsShowTransition, xyWidgetsHideTransition, timeWaitForXYWidgets,
+    QWidget *xWidget, *yWidget;
+    PopupWidget *hPopupWidget, *vPopupWidget, *xPopupWidget, *yPopupWidget;
+    QTimer xyWidgetsShowTransition, xyWidgetsHideTransition, timeWaitForXYWidgets,
            repaintTimer;
 
-    QPoint hTopLeft, vTopLeft, xTopLeft, yTopLeft;
+    QPoint xTopLeft, yTopLeft;
     Point axesIntersec;   
 };
 

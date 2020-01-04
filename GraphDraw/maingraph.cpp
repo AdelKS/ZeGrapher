@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "GraphDraw/maingraph.h"
 
 
@@ -38,27 +35,6 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     selectedCurve.isSomethingSelected = false;
     cancelUpdateSignal = false;
     resaveTangent = animationUpdate = false;
-
-    mouseNotOnHWidget.setInterval(1000);
-    mouseNotOnHWidget.setSingleShot(true);
-
-    connect(&mouseNotOnHWidget, SIGNAL(timeout()), &hWidgetHideTransition, SLOT(start()));
-
-    mouseNotOnVWidget.setInterval(1000);
-    mouseNotOnVWidget.setSingleShot(true);
-
-    connect(&mouseNotOnVWidget, SIGNAL(timeout()), &vWidgetHideTransition, SLOT(start()));
-
-    hWidgetHideTransition.setInterval(30);
-    vWidgetHideTransition.setInterval(30);
-
-    hWidgetShowTransition.setInterval(30);
-    vWidgetShowTransition.setInterval(30);
-
-    connect(&hWidgetHideTransition, SIGNAL(timeout()), this, SLOT(hideHorWidget()));
-    connect(&vWidgetHideTransition, SIGNAL(timeout()), this, SLOT(hideVerWidget()));
-    connect(&hWidgetShowTransition, SIGNAL(timeout()), this, SLOT(showHorWidget()));
-    connect(&vWidgetShowTransition, SIGNAL(timeout()), this, SLOT(showVerWidget()));
 
     timeWaitForXYWidgets.setInterval(1000);
     timeWaitForXYWidgets.setSingleShot(true);
@@ -85,8 +61,7 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     dispPoint = false;
     buttonPresse = false;
 
-    sourisSurUneCurve = dispRectangle = recalculate = recalculateRegs = false;
-    hHideStarted = vHideStarted = xyWidgetsState = mouseState.hovering = false;   
+    mouseOnCurve = dispRectangle = recalculate = recalculateRegs = false;
     moving = false;
 
     kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF);"
@@ -206,19 +181,28 @@ void MainGraph::addOtherWidgets()
     verLayout->addWidget(vSlider);
     verLayout->addWidget(unZoom1);
 
-    vWidget = new QWidget(this);
+    QWidget *vWidget = new QWidget(this);
     vWidget->setLayout(verLayout);
+
+    vPopupWidget = new PopupWidget(PopupPos::RIGHT, 0.5, this);
+    vPopupWidget->setWidget(vWidget);  
+
+    // -------- Horizontal zoom slider
 
     QHBoxLayout *horLayout = new QHBoxLayout();
     horLayout->addWidget(unZoom2);
     horLayout->addWidget(hSlider);
     horLayout->addWidget(zoom2);
 
-
-    hWidget = new QWidget(this);
+    QWidget *hWidget = new QWidget(this);
     hWidget->setLayout(horLayout);
 
-    xWidget = new QWidget(this);    
+    hPopupWidget = new PopupWidget(PopupPos::BOTTOM, 0.5, this);
+    hPopupWidget->setWidget(hWidget);
+
+    //-------- x label widget
+
+    xWidget = new QWidget(this);
     xWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox1 = new QHBoxLayout();
     hbox1->addStretch();
@@ -229,7 +213,8 @@ void MainGraph::addOtherWidgets()
     xWidget->setAutoFillBackground(true);
 
 
-    yWidget = new QWidget(this);    
+    yWidget = new QWidget(this);
+
     yWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox2 = new QHBoxLayout();
     hbox2->addStretch();
@@ -239,41 +224,17 @@ void MainGraph::addOtherWidgets()
     yWidget->setLayout(hbox2);
     yWidget->setAutoFillBackground(true);
 
-    vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
-                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-style: solid; border-top-left-radius: 10; border-bottom-right-radius: 10;");
+    vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
+                           " border-style: none; border-top-left-radius: 16; border-bottom-left-radius: 16;");
 
-    hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
-                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-top-left-radius: 10; border-bottom-right-radius: 10;");
+    hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
+                           "border-style: none; border-top-left-radius: 16; border-top-right-radius: 16;");
     hSlider->setStyleSheet("background-color: none; border: none;");
     zoom2->setStyleSheet("background-color: none; border: none;");
     unZoom2->setStyleSheet("background-color: none; border: none;");
     vSlider->setStyleSheet("background-color: none; border: none;");
     zoom1->setStyleSheet("background-color: none; border: none;");
     unZoom1->setStyleSheet("background-color: none; border: none;");
-}
-
-void MainGraph::hideHorWidget()
-{   
-    if(hWidget->y() >= hBottom)
-    {
-        hWidgetHideTransition.stop();
-        hWidget->hide();
-        hWidgetState = false;
-        hHideStarted = false;
-    }
-    else hWidget->move(hWidget->x(), hWidget->y()+6);
-}
-
-void MainGraph::hideVerWidget()
-{  
-    if(vWidget->x() >= vBottom)
-    {
-        vWidgetHideTransition.stop();
-        vWidget->hide();
-        vWidgetState = false;
-        vHideStarted = false;
-    }
-    else vWidget->move(vWidget->x()+6, vWidget->y());
 }
 
 void MainGraph::hideXYWidgets()
@@ -287,30 +248,6 @@ void MainGraph::hideXYWidgets()
         xWidget->hide();
         yWidget->hide();
     }
-}
-
-void MainGraph::showHorWidget()
-{    
-    hWidget->show();
-
-    if(hWidget->y() <= hTopLeft.y())
-    {
-        hWidgetState = true;
-        hWidgetShowTransition.stop();
-
-    }
-    else hWidget->move(hWidget->x(), hWidget->y()-6);
-}
-
-void MainGraph::showVerWidget()
-{
-    vWidget->show();
-    if(vWidget->x() <= vTopLeft.x())
-    {
-        vWidgetState = true;
-        vWidgetShowTransition.stop();        
-    }
-    else vWidget->move(vWidget->x()-6, vWidget->y());
 }
 
 void MainGraph::showXYWidgets()
@@ -408,47 +345,14 @@ void MainGraph::newWindowSize()
     emit sizeChanged(graphWidth, graphHeight);
     windowSize = size();
 
-    if(hWidget != NULL)
-    {
-        hTopLeft.setX((width()-hWidget->width())/2);
-        hTopLeft.setY(height()-hWidget->height());
+    vPopupWidget->updatePositions();
+    hPopupWidget->updatePositions();
 
-        hBottom = hTopLeft.y()+hWidget->height()+5;
+    yWidget->move(yTopLeft);
+    xWidget->move(xTopLeft);
 
-        xTopLeft.setX(hTopLeft.x()-xWidget->width());
-        xTopLeft.setY(hTopLeft.y());
-
-        yTopLeft.setX(hTopLeft.x()+hWidget->width());
-        yTopLeft.setY(hTopLeft.y());
-
-        vTopLeft.setX(width()-vWidget->width());
-        vTopLeft.setY((height()-vWidget->height())/2);
-
-        xyBottom = yTopLeft.y()+yWidget->height()+5;
-
-        vBottom = vTopLeft.x()+vWidget->width()+5;
-
-        yWidget->move(yTopLeft);
-        xWidget->move(xTopLeft);
-
-        if(!xyWidgetsState && !selectedCurve.isSomethingSelected)
-            timeWaitForXYWidgets.start();
-
-        vWidget->move(vTopLeft);
-        hWidget->move(hTopLeft);
-
-        hWidgetRect.setTopLeft(hTopLeft);
-        hWidgetRect.setHeight(hWidget->height());
-        hWidgetRect.setWidth(hWidget->width());
-
-        vWidgetRect.setTopLeft(vTopLeft);
-        vWidgetRect.setHeight(vWidget->height());
-        vWidgetRect.setWidth(vWidget->width());
-
-        hWidgetState = true;
-        vWidgetState = true;
-
-    }
+    if(!xyWidgetsState && !selectedCurve.isSomethingSelected)
+        timeWaitForXYWidgets.start();
 }
 
 void MainGraph::paintEvent(QPaintEvent *event)
@@ -466,11 +370,16 @@ void MainGraph::paintEvent(QPaintEvent *event)
        recalculate = true;       
     }
 
-    if(!moving && (typeCurseur == NORMAL || hWidgetHideTransition.isActive() || vWidgetHideTransition.isActive() ||
-            hWidgetShowTransition.isActive() || vWidgetShowTransition.isActive() || hWidgetState || vWidgetState ||
-                   animationUpdate))
+    if(!moving && (typeCurseur == NORMAL or animationUpdate))
+    {
+        qDebug() << "indirect paint";
         indirectPaint();
-    else directPaint();    
+    }
+    else
+    {
+        qDebug() << "direct paint";
+        directPaint();
+    }
 
     event->accept();
 }
@@ -487,7 +396,7 @@ void MainGraph::indirectPaint()
 
     painter.setFont(information->getSettingsVals().graphFont);
 
-    painter.drawImage(QPoint(0,0), *savedGraph);    
+    painter.drawImage(QPoint(0,0), *savedGraph);
     painter.translate(QPointF(centre.x, centre.y));
 
     drawAnimatedParEq();
@@ -512,12 +421,11 @@ void MainGraph::directPaint()
     resaveGraph = true;
 
     painter.begin(this);
-    //trace du background
 
     painter.setFont(information->getSettingsVals().graphFont);
 
     painter.setBrush(QBrush(parameters.backgroundColor));
-    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
+    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);  
 
     updateCenterPosAndScaling();
     drawAxes();
@@ -569,7 +477,7 @@ void MainGraph::directPaint()
     drawData();
 
     if(dispPoint)
-        drawPoint();
+        drawPoint(); 
 
     painter.end();
 }
@@ -954,29 +862,13 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
     mouseX = event->x();
     mouseY = event->y();
 
-    if(hWidgetRect.contains(mouseX, mouseY))
-    {
-        hWidgetHideTransition.stop();
-        hHideStarted = false;
-        hWidgetShowTransition.start();
-    }
-    else if(hWidgetState && !hHideStarted)
-    {
-        mouseNotOnHWidget.start();
-        hHideStarted = true;
-    }
+    if(hPopupWidget->geometry().contains(mouseX, mouseY))
+       hPopupWidget->showWidget();
+    else hPopupWidget->hideWidget();
 
-    if(vWidgetRect.contains(mouseX, mouseY))
-    {        
-        vWidgetHideTransition.stop();
-        vHideStarted = false;
-        vWidgetShowTransition.start();
-    }
-    else if(vWidgetState && !vHideStarted)
-    {
-        mouseNotOnVWidget.start();
-        vHideStarted = true;
-    }
+    if(vPopupWidget->geometry().contains(mouseX, mouseY))
+       vPopupWidget->showWidget();
+    else vPopupWidget->hideWidget();
 
     if(typeCurseur == NORMAL)
     {
@@ -1228,10 +1120,6 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
             }
         }
     }
-
-
-
-
 }
 
 void MainGraph::mouseTangentHoverTest(double x, double y)
