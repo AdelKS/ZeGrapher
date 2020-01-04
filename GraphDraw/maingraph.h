@@ -87,6 +87,7 @@ protected:
     void newWindowSize();
     void directPaint();
     void indirectPaint();
+    void paintGraph(bool bufferPaint = false);
 
     void drawAxes();
     void drawAnimatedParEq();  

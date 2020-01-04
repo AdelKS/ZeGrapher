@@ -424,30 +424,30 @@ void MainGraph::directPaint()
 
     painter.begin(this);
 
+    paintGraph();
+
+    painter.end();
+}
+
+void MainGraph::paintGraph(bool bufferPaint)
+{
     painter.setFont(information->getSettingsVals().graphFont);
 
-    painter.setBrush(QBrush(parameters.backgroundColor));
-    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);  
-
     updateCenterPosAndScaling();
-    drawAxes();
-    drawTicksAndNumbers();
 
     if(updateTickSpacing())
     {
         cancelUpdateSignal = true;
         information->setRange(graphRange);
-
-        painter.setBrush(QBrush(parameters.backgroundColor));
-        painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
-
-        updateCenterPosAndScaling();
-        drawAxes();
-        drawTicksAndNumbers();
     }
 
+    painter.setBrush(QBrush(parameters.backgroundColor));
+    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
-    if(dispRectangle)
+    drawAxes();
+    drawTicksAndNumbers();
+
+    if(not bufferPaint and dispRectangle)
     {
         painter.setBrush(Qt::NoBrush);
         pen.setWidth(1);
@@ -474,14 +474,16 @@ void MainGraph::directPaint()
     drawSequences();
     drawStraightLines();
     drawTangents();
-    drawAllParEq();
+
+    if(bufferPaint)
+        drawStaticParEq();
+    else drawAllParEq();
+
     drawRegressions();
     drawData();
 
-    if(dispPoint)
-        drawPoint(); 
-
-    painter.end();
+    if(not bufferPaint and dispPoint)
+        drawPoint();
 }
 
 void MainGraph::drawHoveringConsequence()
@@ -548,37 +550,8 @@ void MainGraph::resaveImageBuffer()
     savedGraph = new QImage(size(), QImage::Format_RGB32);
 
     painter.begin(savedGraph);
-    //trace du background
 
-    painter.setFont(information->getSettingsVals().graphFont);
-
-    painter.setBrush(QBrush(parameters.backgroundColor));
-    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
-
-    updateCenterPosAndScaling();
-    drawAxes();
-    drawTicksAndNumbers();
-
-    if(recalculate)
-    {
-        recalculate = false;
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphRange);
-        recalculateRegVals();
-    }
-    else if(recalculateRegs)
-    {
-        recalculateRegs = false;
-        recalculateRegVals();
-    }
-
-    painter.translate(QPointF(centre.x, centre.y));
-
-    drawFunctions();
-    drawSequences();
-    drawStraightLines();
-    drawTangents();
-    drawStaticParEq();
-    drawRegressions();
+    paintGraph(true);
 
     painter.end();
 }
@@ -855,7 +828,10 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             win.Ymin = (- rectReel.bottom() + centre.y) / uniteY;
 
             if(win.Xmax - win.Xmin > MIN_RANGE && win.Ymax - win.Ymin > MIN_RANGE)
+            {
+                resaveGraph = true;
                 information->setRange(win);
+            }
 
             typeCurseur = NORMAL;
         }
