@@ -26,9 +26,8 @@
 #include <cfloat>
 #include <QtWidgets>
 
-#define SOFTWARE_VERSION 3.03
-#define SOFTWARE_VERSION_STR "v3.0.3"
-
+#define SOFTWARE_VERSION 3.1
+#define SOFTWARE_VERSION_STR "v3.1"
 
 #define FROM_CURRENT_GRAPHIC 0
 #define MANUAL_ENTRY 1

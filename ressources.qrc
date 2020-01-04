@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>icons/boundaries.png</file>
         <file>icons/saveImage.png</file>
-        <file>icons/software.png</file>
         <file>icons/print.png</file>
         <file>icons/grid.png</file>
         <file>icons/valuesTable.png</file>
@@ -71,5 +70,6 @@
         <file>Help/columnFill_de.png</file>
         <file>Help/lineActions_de.png</file>
         <file>Help/pins_de.png</file>
+        <file>icons/ZeGrapher.png</file>
     </qresource>
 </RCC>

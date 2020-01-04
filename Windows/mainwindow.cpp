@@ -37,7 +37,7 @@ MainWindow::MainWindow()
 
     scene = new MainGraph(information); // it has to be the last thing to create.
 
-    setWindowIcon(QIcon(":/icons/software.png"));
+    setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
     setMinimumSize(700,450);
     setWindowTitle("ZeGrapher");
 
