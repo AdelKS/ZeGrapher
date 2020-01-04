@@ -24,6 +24,7 @@ win32 {
 
 
 SOURCES += \
+    Widgets/popupwidget.cpp \
     main.cpp \
     information.cpp \
     Windows/about.cpp \
@@ -80,6 +81,7 @@ SOURCES += \
     Windows/mainwindow.cpp
 
 HEADERS  += \
+    Widgets/popupwidget.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
