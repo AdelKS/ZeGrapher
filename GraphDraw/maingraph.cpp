@@ -40,10 +40,14 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     repaintTimer.setSingleShot(true);
     connect(&repaintTimer, SIGNAL(timeout()), this, SLOT(reactivateSmoothing()));
 
-    timerX.setInterval(35);
+    zoomMultiplier = DEFAULT_ZOOM_MULTIPLIER;
+
+    screenRefreshRate = 60;
+
+    timerX.setInterval(1000/screenRefreshRate);
     connect(&timerX, SIGNAL(timeout()), this, SLOT(zoomX()));
 
-    timerY.setInterval(35);
+    timerY.setInterval(1000/screenRefreshRate);
     connect(&timerY, SIGNAL(timeout()), this, SLOT(zoomY()));
 
     dispPoint = false;
@@ -330,6 +334,27 @@ void MainGraph::newWindowSize()
     kPopupWidget->updatePositions();
     xPopupWidget->updatePositions();
     yPopupWidget->updatePositions();
+
+}
+
+void MainGraph::showEvent(QShowEvent *event)
+{
+    /* Wait for showEvent to determine screen refresh rate
+       to make zooming as smooth as the screen enables.*/
+
+    GraphDraw::showEvent(event);
+
+    QWindow *appWindow = window()->windowHandle();
+    if(appWindow != nullptr)
+    {
+        screenRefreshRate = appWindow->screen()->refreshRate();
+        qDebug() << "Screen refresh rate: " << screenRefreshRate;
+    }
+    else qDebug() << "Window handle doesn't exist yet at this point";
+
+    timerX.setInterval(1000/screenRefreshRate);
+    timerY.setInterval(1000/screenRefreshRate);
+
 }
 
 void MainGraph::paintEvent(QPaintEvent *event)
@@ -1429,7 +1454,7 @@ void MainGraph::zoomX()
 {
     repaintTimer.stop();
 
-    double valeur = (graphRange.Xmax- graphRange.Xmin) * (double)(hSlider->value()) * 0.0016;
+    double valeur = (graphRange.Xmax- graphRange.Xmin) * (double)(hSlider->value()) * zoomMultiplier / screenRefreshRate;
 
     graphRange.Xmin += valeur;
     graphRange.Xmax -= valeur;
@@ -1450,7 +1475,7 @@ void MainGraph::zoomY()
 {
     repaintTimer.stop();
 
-    double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * 0.0016;
+    double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * zoomMultiplier / screenRefreshRate;
 
     if(!information->isOrthonormal())
     {        

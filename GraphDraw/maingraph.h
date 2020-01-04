@@ -31,6 +31,8 @@
 #define TANGENT_RESIZE_HOVER 2
 #define TANGENT_MOVE_HOVER 3
 
+#define DEFAULT_ZOOM_MULTIPLIER 0.04
+
 #include "../Widgets/popupwidget.h"
 
 class MainGraph : public GraphDraw
@@ -71,6 +73,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void showEvent(QShowEvent *event);
     void addOtherWidgets();
 
     void mouseMoveWithActiveSelection(double x, double y);
@@ -102,7 +105,7 @@ protected:
     Point lastPosSouris, pointPx, pointUnit;
     QSlider *hSlider, *vSlider;
     QLineEdit *lineX, *lineY;
-    double y1, y2, mouseX, mouseY, widestXNumber;
+    double y1, y2, mouseX, mouseY, widestXNumber, screenRefreshRate, zoomMultiplier;
 
     bool dispPoint, buttonPresse, mouseOnCurve,
          dispRectangle, hoveredCurveType, resaveGraph, cancelUpdateSignal,
