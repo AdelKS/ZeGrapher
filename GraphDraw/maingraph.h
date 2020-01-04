@@ -47,8 +47,6 @@ signals:
     void sizeChanged(int H, int W);
 
 public slots:
-    void showXYWidgets();
-    void hideXYWidgets();
 
     void reactivateSmoothing();
     void updateParEq();
@@ -107,13 +105,12 @@ protected:
     double y1, y2, mouseX, mouseY, widestXNumber;
 
     bool dispPoint, buttonPresse, mouseOnCurve,
-         dispRectangle, xyWidgetsState,
-         hoveredCurveType, resaveGraph, cancelUpdateSignal,
+         dispRectangle, hoveredCurveType, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;
 
     char typeCurseur;   
     int  xyBottom;
-    QTimer timerX, timerY;
+    QTimer timerX, timerY, repaintTimer;
 
     QPolygonF polygon;   
     QSize windowSize;  
@@ -126,14 +123,11 @@ protected:
     QList <QString> customSequences;
 
     QLabel *xTextLabel, *yTextLabel;
-    QLabel kLabel;
+    QLabel *kLabel;
+    QWidget *kLabelContainer;
 
-    QWidget *xWidget, *yWidget;
-    PopupWidget *hPopupWidget, *vPopupWidget, *xPopupWidget, *yPopupWidget;
-    QTimer xyWidgetsShowTransition, xyWidgetsHideTransition, timeWaitForXYWidgets,
-           repaintTimer;
+    PopupWidget *hPopupWidget, *vPopupWidget, *xPopupWidget, *yPopupWidget, *kPopupWidget;
 
-    QPoint xTopLeft, yTopLeft;
     Point axesIntersec;   
 };
 

@@ -17,6 +17,7 @@ class PopupWidget : public QWidget
 public:
     explicit PopupWidget(PopupPos pos, double relPos, QWidget *parent = nullptr);
     void setWidget(QWidget *widget);
+    void setState(PopupState state);
     void updatePositions();  
     PopupState getState();
     PopupAnimationState getAnimationState();

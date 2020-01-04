@@ -36,18 +36,6 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     cancelUpdateSignal = false;
     resaveTangent = animationUpdate = false;
 
-    timeWaitForXYWidgets.setInterval(1000);
-    timeWaitForXYWidgets.setSingleShot(true);
-
-    connect(&timeWaitForXYWidgets, SIGNAL(timeout()), &xyWidgetsHideTransition, SLOT(start()));
-
-    xyWidgetsShowTransition.setInterval(30);
-    xyWidgetsHideTransition.setInterval(30);
-
-    connect(&xyWidgetsShowTransition, SIGNAL(timeout()), this, SLOT(showXYWidgets()));
-    connect(&xyWidgetsHideTransition, SIGNAL(timeout()), this, SLOT(hideXYWidgets()));
-
-
     repaintTimer.setInterval(100);
     repaintTimer.setSingleShot(true);
     connect(&repaintTimer, SIGNAL(timeout()), this, SLOT(reactivateSmoothing()));
@@ -64,14 +52,23 @@ MainGraph::MainGraph(Information *info) : GraphDraw(info)
     mouseOnCurve = dispRectangle = recalculate = recalculateRegs = false;
     moving = false;
 
-    kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF);"
-                         " border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
+    kLabel = new QLabel();
+    kLabelContainer = new QWidget();
+
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(10, 4, 10, 6);
+    layout->addWidget(kLabel);
+    kLabelContainer->setLayout(layout);
+
+    kLabelContainer->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
+                          " border-style: none; border-bottom-right-radius: 10; border-bottom-left-radius: 10;");
+
+    kPopupWidget = new PopupWidget(PopupPos::TOP, 0.1, this);
+    kPopupWidget->setWidget(kLabelContainer);
+    kPopupWidget->setState(PopupState::HIDDEN);
 
     customFunctions << "f(x) =" << "g(x) =" << "h(x) =" << "p(x) =" << "r(x) =" << "m(x) =";
     customSequences << "u<sub>n</sub> =" << "v<sub>n</sub> =" << "l<sub>n</sub> =" << "w<sub>n</sub> =" << "q<sub>n</sub> =" << "t<sub>n</sub> =";
-
-    kLabel.setParent(this);
-    kLabel.hide();
 
     savedGraph = NULL;   
 
@@ -202,7 +199,7 @@ void MainGraph::addOtherWidgets()
 
     //-------- x label widget
 
-    xWidget = new QWidget(this);
+    QWidget *xWidget = new QWidget(this);
     xWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox1 = new QHBoxLayout();
     hbox1->addStretch();
@@ -211,9 +208,13 @@ void MainGraph::addOtherWidgets()
     hbox1->addStretch();
     xWidget->setLayout(hbox1);
     xWidget->setAutoFillBackground(true);
+    xWidget->adjustSize();
 
+    xPopupWidget = new PopupWidget(PopupPos::BOTTOM, 0.25, this);
+    xPopupWidget->setWidget(xWidget);
+    xPopupWidget->setState(PopupState::HIDDEN);
 
-    yWidget = new QWidget(this);
+    QWidget *yWidget = new QWidget(this);
 
     yWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox2 = new QHBoxLayout();
@@ -223,6 +224,11 @@ void MainGraph::addOtherWidgets()
     hbox2->addStretch();
     yWidget->setLayout(hbox2);
     yWidget->setAutoFillBackground(true);
+    yWidget->adjustSize();
+
+    yPopupWidget = new PopupWidget(PopupPos::BOTTOM, 0.75, this);
+    yPopupWidget->setWidget(yWidget);
+    yPopupWidget->setState(PopupState::HIDDEN);
 
     vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
                            " border-style: none; border-top-left-radius: 16; border-bottom-left-radius: 16;");
@@ -235,32 +241,6 @@ void MainGraph::addOtherWidgets()
     vSlider->setStyleSheet("background-color: none; border: none;");
     zoom1->setStyleSheet("background-color: none; border: none;");
     unZoom1->setStyleSheet("background-color: none; border: none;");
-}
-
-void MainGraph::hideXYWidgets()
-{
-    xWidget->move(xWidget->x(), xWidget->y()+6);
-    yWidget->move(yWidget->x(), yWidget->y()+6);
-    if(xWidget->y() >= xyBottom)
-    {
-        xyWidgetsState = false;
-        xyWidgetsHideTransition.stop();
-        xWidget->hide();
-        yWidget->hide();
-    }
-}
-
-void MainGraph::showXYWidgets()
-{
-    xWidget->show();
-    yWidget->show();
-    xWidget->move(xWidget->x(), xWidget->y()-6);
-    yWidget->move(yWidget->x(), yWidget->y()-6);
-    if(xWidget->y() <= xTopLeft.y())
-    {
-        xyWidgetsState = true;
-        xyWidgetsShowTransition.stop();
-    }
 }
 
 void MainGraph::lineXReturnPressed()
@@ -347,12 +327,9 @@ void MainGraph::newWindowSize()
 
     vPopupWidget->updatePositions();
     hPopupWidget->updatePositions();
-
-    yWidget->move(yTopLeft);
-    xWidget->move(xTopLeft);
-
-    if(!xyWidgetsState && !selectedCurve.isSomethingSelected)
-        timeWaitForXYWidgets.start();
+    kPopupWidget->updatePositions();
+    xPopupWidget->updatePositions();
+    yPopupWidget->updatePositions();
 }
 
 void MainGraph::paintEvent(QPaintEvent *event)
@@ -372,12 +349,12 @@ void MainGraph::paintEvent(QPaintEvent *event)
 
     if(!moving && (typeCurseur == NORMAL or animationUpdate))
     {
-        qDebug() << "indirect paint";
+        qDebug() << "indirect paint " << qrand();
         indirectPaint();
     }
     else
     {
-        qDebug() << "direct paint";
+        qDebug() << "direct paint " << qrand();
         directPaint();
     }
 
@@ -630,8 +607,9 @@ void MainGraph::checkIfActiveSelectionConflicts()
         if(removeSelection)
         {
             selectedCurve.isSomethingSelected = false;
-            xyWidgetsHideTransition.start();
-            kLabel.hide();
+            xPopupWidget->hideWidget();
+            yPopupWidget->hideWidget();
+            kPopupWidget->hideWidget();
         }
     }
 }
@@ -722,22 +700,6 @@ void MainGraph::drawPoint()
     xTextLabel->setStyleSheet("color: " + parameters.axesColor.name());
     yTextLabel->setStyleSheet("color: " + parameters.axesColor.name());
 
-
-
-    if(selectedCurve.isParametric)
-    {
-        Range kRange;
-        if(selectedCurve.funcType == FUNC_HOVER)
-            kRange = funcs[selectedCurve.id]->getParametricRange();
-        else kRange = seqs[selectedCurve.id]->getKRange();
-
-        kLabel.move(5, 5);
-        double result = kRange.start + selectedCurve.kPos * kRange.step;
-        kLabel.setText("k = " + QString::number(result));
-        kLabel.adjustSize();
-        kLabel.show();
-    }
-
     if(selectedCurve.funcType == FUNC_HOVER)
         pen.setColor(funcs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
     else  pen.setColor(seqs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
@@ -814,8 +776,27 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
                 tangentDrawException = selectedCurve.id;
                 resaveGraph = true;
             }
-            else if(!xyWidgetsState)
-                xyWidgetsShowTransition.start();
+            else
+            {
+                if(selectedCurve.isParametric)
+                {
+                    Range kRange;
+                    if(selectedCurve.funcType == FUNC_HOVER)
+                        kRange = funcs[selectedCurve.id]->getParametricRange();
+                    else kRange = seqs[selectedCurve.id]->getKRange();
+
+                    double result = kRange.start + selectedCurve.kPos * kRange.step;
+                    kLabel->setText("k = " + QString::number(result));
+                    kLabel->adjustSize();
+                    kLabelContainer->adjustSize();
+
+                    kPopupWidget->updatePositions();
+                    kPopupWidget->showWidget();
+                }
+
+                xPopupWidget->showWidget();
+                yPopupWidget->showWidget();
+            }
         }
         else
         {
@@ -825,8 +806,9 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
                     resaveTangent = true;
 
                 selectedCurve.isSomethingSelected = false;
-                xyWidgetsHideTransition.start();
-                kLabel.hide();
+                xPopupWidget->hideWidget();
+                yPopupWidget->hideWidget();
+                kPopupWidget->hideWidget();
 
             }
             else moving = false;            

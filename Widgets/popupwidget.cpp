@@ -53,8 +53,8 @@ void PopupWidget::updatePositions()
         move(QPoint(parentRec.width() * relativePos - floatingWidget->width()/2, - floatingWidget->height() - gap));
 
         if(state == PopupState::SHOWN)
-            floatingWidget->move(0, 0);
-        else floatingWidget->move(0, containerSize.height() - floatingWidget->height());
+            floatingWidget->move(0, containerSize.height() - floatingWidget->height());
+        else floatingWidget->move(0, 0);
 
         break;
         case PopupPos::BOTTOM:
@@ -82,12 +82,18 @@ void PopupWidget::updatePositions()
 
         break;
     }
+
+    if(state == PopupState::SHOWN)
+        floatingWidget->show();
+    else floatingWidget->hide();
 }
 
 void PopupWidget::showWidget()
 {
     if(state == PopupState::SHOWN or animationState == PopupAnimationState::SHOW_ANIMATION)
         return;
+
+    floatingWidget->show();
 
     animator->stop();
 
@@ -116,6 +122,15 @@ void PopupWidget::showWidget()
     animator->start();
 }
 
+void PopupWidget::setState(PopupState state)
+{
+    this->state = state;
+    animator->stop();
+    animationState = PopupAnimationState::IDLE;
+
+    updatePositions();
+}
+
 PopupState PopupWidget::getState()
 {
     return state;
@@ -132,6 +147,7 @@ void PopupWidget::animationFinished()
     {
         case PopupAnimationState::HIDE_ANIMATION:
             state = PopupState::HIDDEN;
+            floatingWidget->hide();
             break;
         case PopupAnimationState::SHOW_ANIMATION:
             state = PopupState::SHOWN;
