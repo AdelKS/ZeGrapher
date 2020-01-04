@@ -142,7 +142,8 @@ void RangeAdjustments::apply()
         return;
     }
 
-    if(range.Ymax - range.Ymin < MIN_RANGE || range.Xmax - range.Xmin < MIN_RANGE)
+    if( (range.Ymax - range.Ymin < MIN_AMPLITUDE or range.Xmax - range.Xmin < MIN_AMPLITUDE) and
+            (range.Xmax - range.Xmin < MAX_AMPLITUDE and range.Ymax - range.Ymin < MAX_AMPLITUDE))
     {
         messageBox->setText(tr("The view range is too tight for ZeGrapher to distinguish between the upper and lower values."));
         messageBox->exec();

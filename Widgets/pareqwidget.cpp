@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "Widgets/pareqwidget.h"
 
 ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : treeCreator(PARAMETRIC_EQ), colorSaver(col)

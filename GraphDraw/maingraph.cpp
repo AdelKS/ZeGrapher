@@ -266,21 +266,24 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     x = (x-centre.x)/uniteX;
     y = -(y-centre.y)/uniteY;
 
-    double valeur = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
+    double multiplier = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
 
-    if((graphRange.Xmax - graphRange.Xmin > MIN_RANGE && graphRange.Ymax - graphRange.Ymin > MIN_RANGE) || valeur < 0)
+    GraphRange win = graphRange;
+
+    win.Xmax -= (win.Xmax - x)*multiplier;
+    win.Xmin -= (win.Xmin - x)*multiplier;
+    win.Ymax -= (win.Ymax - y)*multiplier;
+    win.Ymin -= (win.Ymin - y)*multiplier;
+
+    if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+            (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
     {
-        graphRange.Xmax -= (graphRange.Xmax - x)*valeur;
-        graphRange.Xmin -= (graphRange.Xmin - x)*valeur;
-        graphRange.Ymax -= (graphRange.Ymax - y)*valeur;
-        graphRange.Ymin -= (graphRange.Ymin - y)*valeur;
-
         moving = true;
 
         if(parameters.smoothing)
             repaintTimer.start();
 
-        information->setRange(graphRange);
+        information->setRange(win);
     }
 
     event->accept();
@@ -827,7 +830,8 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             win.Ymax = (- rectReel.top() + centre.y) / uniteY;
             win.Ymin = (- rectReel.bottom() + centre.y) / uniteY;
 
-            if(win.Xmax - win.Xmin > MIN_RANGE && win.Ymax - win.Ymin > MIN_RANGE)
+            if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+                    (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
             {
                 resaveGraph = true;
                 information->setRange(win);
@@ -1430,15 +1434,23 @@ void MainGraph::zoomX()
 {
     repaintTimer.stop();
 
+    GraphRange win = graphRange;
+
     double valeur = (graphRange.Xmax- graphRange.Xmin) * (double)(hSlider->value()) * zoomMultiplier / screenRefreshRate;
 
-    graphRange.Xmin += valeur;
-    graphRange.Xmax -= valeur;
-    moving = true;
-    information->setRange(graphRange);
+    win.Xmin += valeur;
+    win.Xmax -= valeur;
 
-    if(parameters.smoothing)
-        repaintTimer.start();
+    if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+            (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
+    {
+        moving = true;
+
+        if(parameters.smoothing)
+            repaintTimer.start();
+
+        information->setRange(win);
+    }
 }
 
 void MainGraph::stop_X_zoom()
@@ -1453,24 +1465,31 @@ void MainGraph::zoomY()
 
     double valeur = (graphRange.Ymax - graphRange.Ymin) * (double)(vSlider->value()) * zoomMultiplier / screenRefreshRate;
 
+    GraphRange win = graphRange;
+
     if(!information->isOrthonormal())
     {        
-        graphRange.Ymin += valeur;
-        graphRange.Ymax -= valeur;
+        win.Ymin += valeur;
+        win.Ymax -= valeur;
         recalculate = false;
     }
     else
     {
-        graphRange.Xmin += valeur;
-        graphRange.Xmax -= valeur;
+        win.Xmin += valeur;
+        win.Xmax -= valeur;
         recalculate = true;
     }
 
-    moving = true;
-    if(parameters.smoothing)
-        repaintTimer.start();
+    if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+            (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
+    {
+        moving = true;
 
-    information->setRange(graphRange);
+        if(parameters.smoothing)
+            repaintTimer.start();
+
+        information->setRange(win);
+    }
 }
 
 void MainGraph::stop_Y_Zoom()
