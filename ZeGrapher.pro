@@ -162,7 +162,8 @@ FORMS    += \
 RESOURCES += \
     ressources.qrc
 
-RC_ICON = ZeGrapher.ico
+RC_ICONS = ZeGrapher.ico
+ICON = ZeGrapher.icns
 
 OTHER_FILES += \
     TODO.txt
