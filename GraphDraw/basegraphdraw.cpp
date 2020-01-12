@@ -18,10 +18,10 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/imagepreview.h"
+#include "GraphDraw/basegraphdraw.h"
 
 
-ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
+BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info)
 {
     information = info;
     leftMargin = 30;
@@ -41,7 +41,7 @@ ImagePreview::ImagePreview(Information *info) : GraphDraw(info)
 
 }
 
-void ImagePreview::paintEvent(QPaintEvent *event)
+void BaseGraphDraw::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event)
 
@@ -56,7 +56,7 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 
     updateGraphRect();
     updateCenterPosAndScaling();
-    funcValuesSaver->calculateAll(uniteX, uniteY, *graphView);
+    funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
 
     paint();
 
@@ -64,31 +64,31 @@ void ImagePreview::paintEvent(QPaintEvent *event)
 
 }
 
-void ImagePreview::setNumPrec(int prec)
+void BaseGraphDraw::setNumPrec(int prec)
 {
     numPrec = prec;
     update();
 }
 
-void ImagePreview::setBold(bool state)
+void BaseGraphDraw::setBold(bool state)
 {
     bold = state;
     update();
 }
 
-void ImagePreview::setUnderline(bool state)
+void BaseGraphDraw::setUnderline(bool state)
 {
     underline = state;
     update();
 }
 
-void ImagePreview::setItalic(bool state)
+void BaseGraphDraw::setItalic(bool state)
 {
     italic = state;
     update();
 }
 
-void ImagePreview::setlegendFontSize(int size)
+void BaseGraphDraw::setlegendFontSize(int size)
 {
     if(legendState)
     {
@@ -106,7 +106,7 @@ void ImagePreview::setlegendFontSize(int size)
     update();
 }
 
-void ImagePreview::setLegendState(bool show)
+void BaseGraphDraw::setLegendState(bool show)
 {
     if(show && !legendState)
     {
@@ -129,40 +129,33 @@ void ImagePreview::setLegendState(bool show)
     update();
 }
 
-void ImagePreview::setXaxisLegend(QString legend)
+void BaseGraphDraw::setXaxisLegend(QString legend)
 {
     xLegend = legend;
     update();
 }
 
-void ImagePreview::setYaxisLegend(QString legend)
+void BaseGraphDraw::setYaxisLegend(QString legend)
 {
     yLegend = legend;
     update();
 }
 
-void ImagePreview::updateGraphRect()
+void BaseGraphDraw::updateGraphRect()
 {    
     graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
     graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
     graphRectScaled.moveTopLeft(QPoint(0, 0)); // because painter is translated to its top-left corner
 }
 
-void ImagePreview::paint()
+void BaseGraphDraw::paint()
 {
-    painter.setBrush(Qt::NoBrush);
-    painter.setRenderHint(QPainter::Antialiasing, false);    
-
-    pen.setColor(viewSettings.axes.x.color);
-    painter.setPen(pen);
-
     updateGraphRect(); // must happen before the next instruction
     updateCenterPosAndScaling();
 
     painter.translate(leftMargin, topMargin);
 
-    drawTicksAndNumbers();
-    drawAxes();    
+    drawBaseGraph();
 
     if(legendState)
         writeLegends();
@@ -171,7 +164,7 @@ void ImagePreview::paint()
 
     painter.translate(QPointF(centre.x, centre.y));
 
-    funcValuesSaver->calculateAll(uniteX, uniteY, *graphView);
+    funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
     recalculateRegVals();
 
     drawFunctions();
@@ -183,7 +176,7 @@ void ImagePreview::paint()
     drawData();
 }
 
-void ImagePreview::writeLegends()
+void BaseGraphDraw::writeLegends()
 {
     font = information->getGraphSettings().graphFont;
     font.setPixelSize(legendFontSize);
@@ -219,52 +212,39 @@ void ImagePreview::writeLegends()
     }
 }
 
-void ImagePreview::drawTicksAndNumbers()
+void BaseGraphDraw::drawAxisComponentsLinearX()
 {
-    // TODO: update this method
-
-    double fontSize = information->getGraphSettings().graphFont.pixelSize();
-    double prec = numPrec;
-
-    font.setPixelSize(fontSize);
-    font.setItalic(false);
-    font.setBold(false);
-    font.setUnderline(false);    
-
-    pen.setWidth(1);
-    painter.setFont(viewSettings.graph.graphFont);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
+    painter.setFont(information->getGraphSettings().graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double space, pos;
-
-
-
     double Xpos;
-
-    ZeGrid grid = graphView.getGrid();
-
-    QList<ZeMainGridLine> &horMainGrid = grid.horizontal.mainGrid;
-
 
     QString num;
 
-    for(ZeMainGridLine gridLine: horMainGrid)
+    ZeLinAxisTicks xAxisTicks = graphView.getLinearAxisTicks(graphRectScaled.width(),
+                                                             graphView.getGraphRange().x,
+                                                             ZeAxisName::X,
+                                                             fontMetrics);
+
+    const auto &axisSettings = information->getAxesSettings().x;
+    const auto &gridSettings = information->getGridSettings().alongX;
+
+    for(ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
-        Xpos = gridLine.pos;
+        Xpos = axisTick.pos;
 
         if(fabs(Xpos) > 1)
         {
-            if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
+            if(gridSettings.showGrid)
             {
-                pen.setColor(graphSettings.gridColor);
+                pen.setColor(gridSettings.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRectScaled.height()));
             }
-            pen.setColor(graphSettings.axesColor);
-
+            pen.setColor(axisSettings.color);
+            pen.setWidthF(axisSettings.lineWidth);
             painter.setPen(pen);
 
             pos = Xpos + centre.x;
@@ -281,32 +261,43 @@ void ImagePreview::drawTicksAndNumbers()
             space = fontMetrics.width("0");
             painter.drawText(QPointF(pos - space/2, graphRectScaled.height()+15), "0");
         }
-
-        Xpos += step;
     }
+}
 
-//trace sur l'axe des Y
+void BaseGraphDraw::drawAxisComponentsLinearY()
+{
+    painter.setFont(information->getGraphSettings().graphFont);
+    QFontMetrics fontMetrics = painter.fontMetrics();
 
-    double Ypos = ceil(graphView.Ymin / graphSettings.gridSettings.yGridStep) * graphSettings.gridSettings.yGridStep * uniteY;
-    step = graphSettings.gridSettings.yGridStep * uniteY;
-    end = graphView.Ymax * uniteY;
+    double space, pos, largestWidth;
+    double Ypos;
 
-    int largestWidth = 0;
+    QString num;
 
-    while(Ypos <= end)
+    ZeLinAxisTicks yAxisTicks = graphView.getLinearAxisTicks(graphRectScaled.height(),
+                                                             graphView.getGraphRange().y,
+                                                             ZeAxisName::Y,
+                                                             fontMetrics);
+
+    const auto &axisSettings = information->getAxesSettings().y;
+    const auto &gridSettings = information->getGridSettings().alongY;
+
+    for(ZeLinAxisTick &axisTick: yAxisTicks.ticks)
     {
+        Ypos = axisTick.pos;
+
         if(fabs(Ypos) > 1)
         {
-            if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
+            if(gridSettings.showGrid)
             {
-                pen.setColor(graphSettings.gridColor);
+                pen.setColor(gridSettings.gridColor);
                 pen.setWidthF(0.5);
                 painter.setPen(pen);
                 painter.drawLine(QPointF(0, -Ypos + centre.y), QPointF(graphRectScaled.width(), -Ypos + centre.y));
             }
 
-            pen.setColor(graphSettings.axesColor);
-            pen.setWidth(1);
+            pen.setColor(axisSettings.color);
+            pen.setWidth(axisSettings.lineWidth);
             painter.setPen(pen);
 
             pos = -Ypos + centre.y;
@@ -320,19 +311,17 @@ void ImagePreview::drawTicksAndNumbers()
             if(space > largestWidth)
                 largestWidth = space;
 
-            painter.drawText(QPointF(-space, pos + graphSettings.graphFont.pixelSize()/2), num);
+            painter.drawText(QPointF(-space, pos + fontMetrics.height() /2), num);
         }
         else
         {
             pos = -Ypos + centre.y;
             space = fontMetrics.width("0") + 5;
-            painter.drawText(QPointF(-space, pos + graphSettings.graphFont.pixelSize()/2), "0");
+            painter.drawText(QPointF(-space, pos + fontMetrics.height()/2), "0");
         }
 
         if(space > largestWidth)
             largestWidth = space;
-
-        Ypos += step;
     }
 
     if(leftMargin - additionalMargin - largestWidth > 8 || leftMargin - additionalMargin - largestWidth < 4)
@@ -340,38 +329,51 @@ void ImagePreview::drawTicksAndNumbers()
         leftMargin = largestWidth + additionalMargin + 6;
         update();
     }
-
-
 }
 
-void ImagePreview::drawAxes()
+void BaseGraphDraw::drawBaseGraph()
 {
-    //TODO: update this method
+    drawAxes();
+    if(information->getAxesSettings().x.axisType == ZeAxisType::LINEAR)
+        drawAxisComponentsLinearX();
 
-    pen.setWidth(1);
-    pen.setColor(graphSettings.axesColor);
-    painter.setPen(pen);
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    if(information->getAxesSettings().y.axisType == ZeAxisType::LINEAR)
+        drawAxisComponentsLinearY();
+}
 
+void BaseGraphDraw::drawAxes()
+{
+    const auto &graphRange = information->getGraphRange();
+    const auto &axesSettings = information->getAxesSettings();
 
+    if(graphRange.y.min < 0 && graphRange.y.max > 0)
+    {
+        pen.setWidth(axesSettings.x.lineWidth);
+        pen.setColor(axesSettings.x.color);
+        painter.setPen(pen);
+        painter.setRenderHint(QPainter::Antialiasing, false);
 
-    if(graphRange.Ymin < 0 && graphRange.Ymax > 0)
         painter.drawLine(QPointF(0, centre.y), QPointF(graphRectScaled.width(), centre.y));
-    if(graphRange.Xmin < 0 && graphRange.Xmax > 0)
+    }
+    if(graphRange.x.min < 0 && graphRange.x.max > 0)
+    {
+        pen.setWidth(axesSettings.y.lineWidth);
+        pen.setColor(axesSettings.y.color);
+        painter.setPen(pen);
+        painter.setRenderHint(QPainter::Antialiasing, false);
+
         painter.drawLine(QPointF(centre.x, 0), QPointF(centre.x, graphRectScaled.height()));
+    }
 
     painter.drawRect(graphRectScaled);
-
-
 }
 
-void ImagePreview::updateCenterPosAndScaling()
+void BaseGraphDraw::updateCenterPosAndScaling()
 {
     // TODO: update this method
 
-    uniteY = double(graphRectScaled.height()) / (graphRange.Ymax - graphRange.Ymin);
-    uniteX = double(graphRectScaled.width()) / (graphRange.Xmax - graphRange.Xmin);
-
+    uniteY = double(graphRectScaled.height()) / graphView.getViewRect().height();
+    uniteX = double(graphRectScaled.width()) / graphView.getViewRect().width();
 
     double rapport = uniteY / uniteX;
 
@@ -379,11 +381,12 @@ void ImagePreview::updateCenterPosAndScaling()
     {
 
     }
-    centre.x = - graphView->viewRect().left() * uniteX;
-    centre.y =  graphView->viewRect().top() * uniteY;
+
+    centre.x = - graphView.getViewRect().left() * uniteX;
+    centre.y =  graphView.getViewRect().top() * uniteY;
 }
 
-QImage* ImagePreview::drawImage()
+QImage* BaseGraphDraw::drawImage()
 {
     //TODO: update this method
 
@@ -405,7 +408,7 @@ QImage* ImagePreview::drawImage()
 
     updateCenterPosAndScaling();
     drawAxes();
-    drawTicksAndNumbers();
+    drawBaseGraph();
 
     if(legendState)
         writeLegends();
@@ -416,7 +419,7 @@ QImage* ImagePreview::drawImage()
 
     if(recalculate)
     {
-        funcValuesSaver->calculateAll(uniteX, uniteY, *graphView);
+        funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
         recalculateRegVals();
     }
 

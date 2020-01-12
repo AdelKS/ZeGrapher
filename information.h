@@ -38,7 +38,11 @@ public:
     Information();
 
     const ZeViewSettings& getViewSettings();
+
     const ZeGraphSettings& getGraphSettings();
+    const ZeGridSettings& getGridSettings();
+    const ZeAxesSettings& getAxesSettings();
+    const GraphRange& getGraphRange();
 
     void addDataList();
     void removeDataList(int index);

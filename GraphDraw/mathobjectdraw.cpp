@@ -18,12 +18,12 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/graphdraw.h"
+#include "GraphDraw/mathobjectdraw.h"
 #include <iostream>
 
 using namespace std;
 
-GraphDraw::GraphDraw(Information *info)
+MathObjectDraw::MathObjectDraw(Information *info)
 {
     information = info;
 
@@ -51,20 +51,20 @@ GraphDraw::GraphDraw(Information *info)
     connect(information, SIGNAL(newviewSettings.graph()), this, SLOT(updateSettingsVals()));
 }
 
-void GraphDraw::updateSettingsVals()
+void MathObjectDraw::updateSettingsVals()
 {
     viewSettings = information->getViewSettings();
     funcValuesSaver->setPixelStep(viewSettings.graph.distanceBetweenPoints);
 }
 
-void GraphDraw::addRegSaver(Regression *reg)
+void MathObjectDraw::addRegSaver(Regression *reg)
 {
     regValuesSavers << RegressionValuesSaver(viewSettings.graph.distanceBetweenPoints, reg);
     recalculate = true;
     repaint();
 }
 
-void GraphDraw::delRegSaver(Regression *reg)
+void MathObjectDraw::delRegSaver(Regression *reg)
 {
     for(int i = 0 ; i < regValuesSavers.size() ; i++)
         if(regValuesSavers[i].getRegression() == reg)
@@ -73,7 +73,7 @@ void GraphDraw::delRegSaver(Regression *reg)
     repaint();
 }
 
-void GraphDraw::drawRhombus(QPointF pt, double w)
+void MathObjectDraw::drawRhombus(QPointF pt, double w)
 {   
     QPolygonF polygon;
     polygon << pt + QPointF(-w,0) << pt + QPointF(0,w) << pt + QPointF(w,0) << pt + QPointF(0,-w);
@@ -81,12 +81,12 @@ void GraphDraw::drawRhombus(QPointF pt, double w)
     painter.drawPolygon(polygon);
 }
 
-void GraphDraw::drawDisc(QPointF pt, double w)
+void MathObjectDraw::drawDisc(QPointF pt, double w)
 {
     painter.drawEllipse(pt, w, w);
 }
 
-void GraphDraw::drawSquare(QPointF pt, double w)
+void MathObjectDraw::drawSquare(QPointF pt, double w)
 {
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -97,7 +97,7 @@ void GraphDraw::drawSquare(QPointF pt, double w)
     painter.drawRect(rect);
 }
 
-void GraphDraw::drawTriangle(QPointF pt, double w)
+void MathObjectDraw::drawTriangle(QPointF pt, double w)
 {
     w*=2;
     QPolygonF polygon;
@@ -109,7 +109,7 @@ void GraphDraw::drawTriangle(QPointF pt, double w)
     painter.drawPolygon(polygon);
 }
 
-void GraphDraw::drawCross(QPointF pt, double w)
+void MathObjectDraw::drawCross(QPointF pt, double w)
 {
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -119,7 +119,7 @@ void GraphDraw::drawCross(QPointF pt, double w)
     painter.drawLine(pt+QPointF(-2*w, 0), pt+QPointF(2*w, 0));
 }
 
-void GraphDraw::drawDataSet(int id, int width)
+void MathObjectDraw::drawDataSet(int id, int width)
 {
     QList<QPointF> list = information->getDataList(id);
     DataStyle style = information->getDataStyle(id);
@@ -167,7 +167,7 @@ void GraphDraw::drawDataSet(int id, int width)
 
 }
 
-void GraphDraw::drawData()
+void MathObjectDraw::drawData()
 {
     for(int i = 0 ; i < information->getDataListsCount(); i++)
     {
@@ -176,7 +176,7 @@ void GraphDraw::drawData()
     }
 }
 
-void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
+void MathObjectDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
 {
     pen.setWidth(width);
     pen.setColor(color);
@@ -186,13 +186,13 @@ void GraphDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
 
 }
 
-void GraphDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curves)
+void MathObjectDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curves)
 {
     for(QPolygonF curve: curves)
         drawCurve(width, color, curve);
 }
 
-void GraphDraw::drawRegressions()
+void MathObjectDraw::drawRegressions()
 {
     painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
 
@@ -209,7 +209,7 @@ void GraphDraw::drawRegressions()
     }
 }
 
-void GraphDraw::recalculateRegVals()
+void MathObjectDraw::recalculateRegVals()
 {
     for(auto &regValSaver : regValuesSavers)
     {
@@ -218,7 +218,7 @@ void GraphDraw::recalculateRegVals()
 }
 
 
-void GraphDraw::drawFunctions()
+void MathObjectDraw::drawFunctions()
 {    
     painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.smoothing && !moving);
 
@@ -232,7 +232,7 @@ void GraphDraw::drawFunctions()
     }
 }
 
-void GraphDraw::drawOneSequence(int i, int width)
+void MathObjectDraw::drawOneSequence(int i, int width)
 {
     if(graphView->getXmax() <= seqs[0]->get_nMin() ||
             trunc(graphView->getXmax()) <= graphView->getXmin() ||
@@ -287,13 +287,13 @@ void GraphDraw::drawOneSequence(int i, int width)
      }
 }
 
-void GraphDraw::drawSequences()
+void MathObjectDraw::drawSequences()
 {
     for(int i = 0 ; i < seqs.size() ; i++)
         drawOneSequence(i, viewSettings.graph.curvesThickness + 3);
 }
 
-void GraphDraw::drawOneTangent(int i)
+void MathObjectDraw::drawOneTangent(int i)
 {
     if(!tangents->at(i)->isTangentValid())
         return;
@@ -321,7 +321,7 @@ void GraphDraw::drawOneTangent(int i)
     painter.drawPoint(QPointF(graphView->unitToViewX(tangentPoints.right.x()), graphView->unitToViewY(tangentPoints.right.y())));
 }
 
-void GraphDraw::drawTangents()
+void MathObjectDraw::drawTangents()
 {
     for(int i = 0 ; i < tangents->size(); i++)
     {
@@ -330,7 +330,7 @@ void GraphDraw::drawTangents()
     }
 }
 
-void GraphDraw::drawStraightLines()
+void MathObjectDraw::drawStraightLines()
 {
     pen.setWidth(viewSettings.graph.curvesThickness);
     QPointF pt1, pt2;
@@ -366,7 +366,7 @@ void GraphDraw::drawStraightLines()
     }
 }
 
-void GraphDraw::drawStaticParEq()
+void MathObjectDraw::drawStaticParEq()
 {
     QList< QList<Point> > *list;
     QPolygonF polygon;
@@ -404,7 +404,7 @@ void GraphDraw::drawStaticParEq()
 }
 
 
-GraphDraw::~GraphDraw()
+MathObjectDraw::~MathObjectDraw()
 {
     delete funcValuesSaver;
 }

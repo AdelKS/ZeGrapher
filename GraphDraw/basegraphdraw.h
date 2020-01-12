@@ -21,14 +21,14 @@
 #ifndef IMAGEPREVIEW_H
 #define IMAGEPREVIEW_H
 
-#include "graphdraw.h"
+#include "mathobjectdraw.h"
 
 
-class ImagePreview : public GraphDraw
+class BaseGraphDraw : public MathObjectDraw
 {
     Q_OBJECT
 public:
-    explicit ImagePreview(Information *info);
+    explicit BaseGraphDraw(Information *info);
     QImage* drawImage();
 
 public slots:
@@ -47,11 +47,14 @@ protected:
 
     void paintEvent(QPaintEvent *event);
     void updateCenterPosAndScaling();
-    void drawTicksAndNumbers();
+    void drawBaseGraph();
     void drawAxes();
     void paint();
     void updateGraphRect();
     void writeLegends();
+
+    void drawAxisComponentsLinearX();
+    void drawAxisComponentsLinearY();
 
     int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
     int  legendFontSize, numPrec;

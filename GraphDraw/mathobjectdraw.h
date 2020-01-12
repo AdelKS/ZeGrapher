@@ -32,12 +32,12 @@
 #include "GraphDraw/graphview.h"
 
 
-class GraphDraw : public QWidget // Base class from math objects drawing
+class MathObjectDraw : public QWidget // Base class from math objects drawing
 {
     Q_OBJECT
 public:
-    explicit GraphDraw(Information *info);
-    ~GraphDraw();
+    explicit MathObjectDraw(Information *info);
+    ~MathObjectDraw();
 
 protected slots:
     void addRegSaver(Regression *reg);
@@ -68,8 +68,6 @@ protected:
 
     void recalculateRegVals();
 
-
-    int graphWidthPx, graphHeightPx;
     Information *information;
     FuncValuesSaver *funcValuesSaver;    
     QList<RegressionValuesSaver> regValuesSavers;
@@ -80,7 +78,7 @@ protected:
     QPen pen;
     QBrush brush;
     Point centre;
-    ZeGraphView *graphView;
+    ZeGraphView graphView;
 
     double coef;
 

@@ -21,7 +21,7 @@
 
 #include "GraphDraw/exportpreview.h"
 
-ExportPreview::ExportPreview(QSizeF sheetCm, QSize imagePx, ExportType type, Information *info): ImagePreview(info)
+ExportPreview::ExportPreview(QSizeF sheetCm, QSize imagePx, ExportType type, Information *info): BaseGraphDraw(info)
 {
     initialise();
 
@@ -44,7 +44,7 @@ void ExportPreview::updateTargetSupportSizePx()
         QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
         QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
         layout.setOrientation(orientation);
-        targetSupportSizePixels = layout.fullRectPixels(int(screenResolution)).size();
+        targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
 
         if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
             targetSupportSizePixels.transpose();
@@ -71,7 +71,7 @@ void ExportPreview::initialise()
 
     minRelSize = RELATIVE_MIN_SIZE;
 
-    screenResolution = qGuiApp->primaryScreen()->physicalDotsPerInch();
+    screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
     sheetFigureRectRelative.setHeight(1);
     sheetFigureRectRelative.setWidth(1);
@@ -119,7 +119,7 @@ void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
     pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION_STR);
     pdfWriter->setTitle(tr("Exported graph"));
 
-    int targetResolution = int(screenResolution / userScalingFactor);
+    int targetResolution = int(screenDPI / userScalingFactor);
 
     pdfWriter->setResolution(targetResolution);   
 
@@ -164,7 +164,7 @@ void ExportPreview::exportSVG(QString fileName)
     svgGenerator.setTitle(tr("Exported graph"));
     svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION_STR);
 
-    double targetResolution = screenResolution / userScalingFactor;
+    double targetResolution = screenDPI / userScalingFactor;
 
     svgGenerator.setResolution(int(targetResolution));
 
@@ -194,7 +194,6 @@ void ExportPreview::exportSVG(QString fileName)
 void ExportPreview::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
-    graphSettings = information->getSettingsVals();
 
     painter.begin(this);    
 
@@ -324,7 +323,7 @@ QRect ExportPreview::supportRectFromViewRect(QRect viewRect)
 
 void ExportPreview::drawSupport()
 { // draws the sheet on an untransformed view
-    painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));;
+    painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));;
 
     supportRect = supportRectFromViewRect(painter.viewport());
 
@@ -338,7 +337,7 @@ void ExportPreview::drawFigureRect()
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(information->getSettingsVals().axesColor);
+    pen.setColor(information->getAxesSettings().x.color);
     painter.setPen(pen);
     painter.drawRect(figureRect);
 

@@ -161,15 +161,24 @@ void Information::setGraphRange(const GraphRange &range)
     emit graphRangeChanged(range);
 }
 
-void Information::changeGridState()
+const ZeGraphSettings& Information::getGraphSettings()
 {
-    if(graphSettings.view.gridType() == ZeGridType::NO_GRID)
-        graphSettings.view.setGridType(ZeGridType::GRID);
-    else if(graphSettings.view.gridType() == ZeGridType::GRID)
-        graphSettings.view.setGridType(ZeGridType::GRID_SUBGRID);
-    else graphSettings.view.setGridType(ZeGridType::NO_GRID);
+    return viewSettings.graph;
+}
 
-    emit gridStateChange();
+const ZeGridSettings& Information::getGridSettings()
+{
+    return viewSettings.grid;
+}
+
+const ZeAxesSettings& Information::getAxesSettings()
+{
+    return viewSettings.axes;
+}
+
+const GraphRange& Information::getGraphRange()
+{
+    return viewSettings.range;
 }
 
 void Information::setOrthonormal(bool state)

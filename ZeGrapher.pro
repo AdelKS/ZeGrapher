@@ -22,6 +22,8 @@ UI_DIR = .ui
 INCLUDEPATH += .
 
 SOURCES += \
+    GraphDraw/basegraphdraw.cpp \
+    GraphDraw/mathobjectdraw.cpp \
     main.cpp \
     information.cpp \
     Windows/about.cpp \
@@ -43,8 +45,6 @@ SOURCES += \
     ValuesTable/functable.cpp \
     ValuesTable/abstracttable.cpp \
     GraphDraw/maingraph.cpp \
-    GraphDraw/imagepreview.cpp \
-    GraphDraw/graphdraw.cpp \
     DataPlot/rowselectorwidget.cpp \
     DataPlot/rowactionswidget.cpp \
     DataPlot/datawindow.cpp \
@@ -81,6 +81,8 @@ SOURCES += \
     Widgets/zegridsettingswidget.cpp
 
 HEADERS  += \
+    GraphDraw/basegraphdraw.h \
+    GraphDraw/mathobjectdraw.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
@@ -101,8 +103,6 @@ HEADERS  += \
     ValuesTable/functable.h \
     ValuesTable/abstracttable.h \
     GraphDraw/maingraph.h \
-    GraphDraw/imagepreview.h \
-    GraphDraw/graphdraw.h \
     DataPlot/rowselectorwidget.h \
     DataPlot/rowactionswidget.h \
     DataPlot/datawindow.h \

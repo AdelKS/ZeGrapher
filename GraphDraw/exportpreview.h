@@ -21,7 +21,7 @@
 #ifndef PRINTPREVIEW_H
 #define PRINTPREVIEW_H
 
-#include "imagepreview.h"
+#include "basegraphdraw.h"
 #include <QPdfWriter>
 #include <QPageLayout>
 #include <QSvgGenerator>
@@ -37,7 +37,7 @@ enum SheetSizeType {NORMALISED, CUSTOM};
 
 
 
-class ExportPreview : public ImagePreview
+class ExportPreview : public BaseGraphDraw
 {
     Q_OBJECT
 
@@ -70,7 +70,6 @@ public slots:
     void setImageMarginPx(int imageMarginPx);
 
     void setGraphRange(GraphRange range);
-    void setGraphTickIntervals(GraphTickIntervals tickIntervals);
 
     void setScale(double scalingFactor);
 
@@ -105,7 +104,7 @@ protected:
     int imageMarginPx;
     // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
     // the other margin is scaled accordingly
-    double userScalingFactor, screenResolution, currentZoom;
+    double userScalingFactor, screenDPI, currentZoom;
     QSize targetSupportSizePixels;
     QRect figureRect, supportRect, sheetRectScaled;
     QSizeF figureSizeCm, sheetSizeCm;

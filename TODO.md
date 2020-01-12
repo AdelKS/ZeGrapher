@@ -5,6 +5,7 @@ Merge work
     - display tick coordinates properly following the settings (decimal global multiplier or not ...etc)
 - Implement properly reset to default view in settings window for both the linear scale and log and for both axes,
 basing off the base given by the user
+- Make main graph use basegraphdraw (previously imagepreview)
 
 Log view branch work:
 - qpainter will do a graph scale and translation to match pixel units with graph units

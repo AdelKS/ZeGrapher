@@ -112,18 +112,18 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
 
     if(settings.axisType == ZeAxisType::LINEAR)
     {
-        ui->linMultiplier->setValue(settings.whenLinear.multiplier);
-        ui->basePowNum->setValue(settings.whenLinear.basePowNum);
+        ui->linMultiplier->setValue(settings.linSettings.multiplier);
+        ui->basePowNum->setValue(settings.linSettings.basePowNum);
 
-        constantMultiplierLineEdit->setText(settings.whenLinear.constantMultiplierStr);
+        constantMultiplierLineEdit->setText(settings.linSettings.constantMultiplierStr);
     }
     else
     {
-        baseLineEdit->setText(settings.whenLog.baseStr);
-        ui->basePowNum->setValue(settings.whenLog.basePowDenom);
-        ui->basePowDenom->setValue(settings.whenLog.basePowNum);
+        baseLineEdit->setText(settings.logSettings.baseStr);
+        ui->basePowNum->setValue(settings.logSettings.basePowDenom);
+        ui->basePowDenom->setValue(settings.logSettings.basePowNum);
 
-        constantMultiplierLineEdit->setText(settings.whenLog.constantMultiplierStr);
+        constantMultiplierLineEdit->setText(settings.logSettings.constantMultiplierStr);
     }
 
 
@@ -157,19 +157,19 @@ void AxisSettingsWidget::processUserInput()
 
     if(axisSettings.axisType == ZeAxisType::LINEAR)
     {
-        axisSettings.whenLinear.multiplier = ui->linMultiplier->value();
-        axisSettings.whenLinear.basePowNum = ui->basePowNum->value();
+        axisSettings.linSettings.multiplier = ui->linMultiplier->value();
+        axisSettings.linSettings.basePowNum = ui->basePowNum->value();
 
         constantMultiplierLineEdit->checkVal();
         if(constantMultiplierLineEdit->isValid())
         {
-            axisSettings.whenLinear.constantMultiplier = constantMultiplierLineEdit->getValue();
-            axisSettings.whenLinear.constantMultiplierStr = constantMultiplierLineEdit->text();
+            axisSettings.linSettings.constantMultiplier = constantMultiplierLineEdit->getValue();
+            axisSettings.linSettings.constantMultiplierStr = constantMultiplierLineEdit->text();
         }
         else
         {
-            axisSettings.whenLinear.constantMultiplier = currentSettings.whenLinear.constantMultiplier;
-            axisSettings.whenLinear.constantMultiplierStr = currentSettings.whenLinear.constantMultiplierStr;
+            axisSettings.linSettings.constantMultiplier = currentSettings.linSettings.constantMultiplier;
+            axisSettings.linSettings.constantMultiplierStr = currentSettings.linSettings.constantMultiplierStr;
         }
     }
     else
@@ -177,29 +177,29 @@ void AxisSettingsWidget::processUserInput()
         baseLineEdit->checkVal();
         if(baseLineEdit->isValid())
         {
-            axisSettings.whenLog.base = baseLineEdit->getValue();
-            axisSettings.whenLog.baseStr = baseLineEdit->text();
+            axisSettings.logSettings.base = baseLineEdit->getValue();
+            axisSettings.logSettings.baseStr = baseLineEdit->text();
         }
         else
         {
-            axisSettings.whenLog.base = currentSettings.whenLog.base;
-            axisSettings.whenLog.baseStr = currentSettings.whenLog.baseStr;
+            axisSettings.logSettings.base = currentSettings.logSettings.base;
+            axisSettings.logSettings.baseStr = currentSettings.logSettings.baseStr;
         }
 
         constantMultiplierLineEdit->checkVal();
         if(constantMultiplierLineEdit->isValid())
         {
-            axisSettings.whenLog.constantMultiplier = constantMultiplierLineEdit->getValue();
-            axisSettings.whenLog.constantMultiplierStr = constantMultiplierLineEdit->text();
+            axisSettings.logSettings.constantMultiplier = constantMultiplierLineEdit->getValue();
+            axisSettings.logSettings.constantMultiplierStr = constantMultiplierLineEdit->text();
         }
         else
         {
-            axisSettings.whenLog.constantMultiplier = currentSettings.whenLog.constantMultiplier;
-            axisSettings.whenLog.constantMultiplierStr = currentSettings.whenLog.constantMultiplierStr;
+            axisSettings.logSettings.constantMultiplier = currentSettings.logSettings.constantMultiplier;
+            axisSettings.logSettings.constantMultiplierStr = currentSettings.logSettings.constantMultiplierStr;
         }
 
-        axisSettings.whenLog.basePowDenom = ui->basePowDenom->value();
-        axisSettings.whenLog.basePowNum = ui->basePowNum->value();
+        axisSettings.logSettings.basePowDenom = ui->basePowDenom->value();
+        axisSettings.logSettings.basePowNum = ui->basePowNum->value();
     }
 
     axisSettings.coordinateFormatting.decimalBase = ui->decimalBase->isChecked();
@@ -220,17 +220,17 @@ void AxisSettingsWidget::resetToDefaults()
     defaultSettings.coordinateFormatting.decimalGlobalConstant = false;
     defaultSettings.lineWidth = 0.1;
 
-    defaultSettings.whenLog.base = 10;
-    defaultSettings.whenLog.baseStr = "10";
-    defaultSettings.whenLog.basePowDenom = 1;
-    defaultSettings.whenLog.basePowNum = 1;
-    defaultSettings.whenLog.constantMultiplier = 1;
-    defaultSettings.whenLog.constantMultiplierStr = "1";
+    defaultSettings.logSettings.base = 10;
+    defaultSettings.logSettings.baseStr = "10";
+    defaultSettings.logSettings.basePowDenom = 1;
+    defaultSettings.logSettings.basePowNum = 1;
+    defaultSettings.logSettings.constantMultiplier = 1;
+    defaultSettings.logSettings.constantMultiplierStr = "1";
 
-    defaultSettings.whenLinear.basePowNum = 0;
-    defaultSettings.whenLinear.multiplier = 1;
-    defaultSettings.whenLinear.constantMultiplier = 1;
-    defaultSettings.whenLog.constantMultiplierStr = "1";
+    defaultSettings.linSettings.basePowNum = 0;
+    defaultSettings.linSettings.multiplier = 1;
+    defaultSettings.linSettings.constantMultiplier = 1;
+    defaultSettings.logSettings.constantMultiplierStr = "1";
 
     axesSettings.x = axesSettings.y = defaultSettings;
 

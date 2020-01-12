@@ -4,6 +4,8 @@ ZeGraphView::ZeGraphView(const ZeViewSettings &viewSettings, QSize widgetSize, Q
 {
     this->viewPxSize = widgetSize;
 
+    targetTicksNum = TARGET_TICKS_NUM;
+
     setViewSettings(viewSettings);
 }
 
@@ -24,6 +26,19 @@ void ZeGraphView::setGraphRange(const GraphRange &range)
     setYmax(range.y.max);
     setXmin(range.x.min);
     setYmin(range.y.min);
+}
+
+GraphRange ZeGraphView::getGraphRange()
+{
+    GraphRange range;
+
+    range.x.min = Xmin;
+    range.y.min = Ymin;
+
+    range.x.max = Xmax;
+    range.y.max = Ymax;
+
+    return range;
 }
 
 ZeGraphView::ZeGraphView(const ZeGraphView &other, QObject *parent) : QObject(parent)
@@ -60,7 +75,7 @@ ZeGraphView& ZeGraphView::operator=(const ZeGraphView &other)
     return *this;
 }
 
-QRectF ZeGraphView::rect() const
+QRectF ZeGraphView::getRect() const
 {
     QRectF graphWin;
     graphWin.setBottom(Ymin);
@@ -70,7 +85,7 @@ QRectF ZeGraphView::rect() const
     return graphWin;
 }
 
-QRectF ZeGraphView::lgRect() const
+QRectF ZeGraphView::getLogRect() const
 {
     QRectF graphlLgWin;
     graphlLgWin.setBottom(lgYmin);
@@ -90,7 +105,7 @@ void ZeGraphView::setViewRect(QRectF rect)
     verifyOrthonormality();
 }
 
-QRectF ZeGraphView::viewRect() const
+QRectF ZeGraphView::getViewRect() const
 {
     QRectF viewWin;
 
@@ -199,27 +214,55 @@ ZeAxesTicks ZeGraphView::getAxesTicks()
 }
 
 
-ZeAxisTicks ZeGraphView::getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings &axisSettings, QFontMetrics metrics)
+ZeLinAxisTicks ZeGraphView::getLinearAxisTicks(double windowWidth,
+                                            ZeAxisRange range,
+                                            ZeAxisName axisName,
+                                            QFontMetrics metrics)
 {
 
-    ZeAxisTicks axisTicks;
+    ZeLinAxisTicks axisTicks;
+    axisTicks.offset.sumOffset = 0;
+    axisTicks.offset.powerOffset = 0;
 
-    int smallestBasePower = int(floor(log10(range.amplitude())) - 1);
+    ZeLinAxisSettings axisSettings = axisName == ZeAxisName::X ? axesSettings.x.linSettings : axesSettings.y.linSettings;
 
-    if(smallestBasePower <= axisSettings.whenLog.basePowNum and axisSettings.whenLog.basePowNum <= smallestBasePower + 2)
+    const double &constantMultiplier = axisSettings.constantMultiplier;
+    double amplitude = range.amplitude();
+
+    double amplitudeLog10 = floor(log10(amplitude));
+    double minLog10 = floor(log10(range.min / constantMultiplier));
+
+    if(amplitudeLog10 < minLog10 - axisSettings.maxDigitsNum)
     {
-        // The current settings may be good enough to use as is
+        double digitsNum = minLog10 - axisSettings.maxDigitsNum - amplitudeLog10;
 
+        double tenPower = pow(10, digitsNum);
+        axisTicks.offset.sumOffset = trunc(range.min * tenPower) / tenPower;
     }
-    else
+
+    double targetPower = floor(log10(amplitude / constantMultiplier / targetTicksNum));
+
+    double baseStep = pow(10, targetPower);
+    double realStep = baseStep * constantMultiplier;
+    double tenMult = 1;
+
+    ZeLinAxisTick firstTick;
+    firstTick.pos = ceil(range.min / realStep) * realStep;
+    firstTick.multiplier = firstTick.pos / axisSettings.constantMultiplier - axisTicks.offset.sumOffset;
+
+    axisTicks.ticks << firstTick;
+
+    ZeLinAxisTick tick;
+
+    while(axisTicks.ticks.last().pos < range.max)
     {
-        // Redo entirely the tick calculations
+        tick.pos = axisTicks.ticks.last().pos + realStep;
+        tick.multiplier = axisTicks.ticks.last().multiplier + baseStep;
+
+        axisTicks.ticks << tick;
     }
 
-    QList<long> multipliers;
-    double ticksNum = range.amplitude() / 10;
-
-    double tickDistance = double(pxWidth) / ticksNum;
+    axisTicks.ticks.removeLast();
 
     return axisTicks;
 }
@@ -378,8 +421,8 @@ void ZeGraphView::verifyOrthonormality()
     // TODO: update with only the Size, and to use with both orthonormal and linear
     if(viewWidget != 0 && viewType == ZeScaleType::LINEAR_ORTHONORMAL)
     {
-        double uniteY = viewWidget->height() / viewRect().height();
-        double uniteX = viewWidget->width() / viewRect().width();
+        double uniteY = viewWidget->height() / getViewRect().height();
+        double uniteX = viewWidget->width() / getViewRect().width();
 
         double ratio =  uniteX / uniteY;
         zoomYview(ratio);

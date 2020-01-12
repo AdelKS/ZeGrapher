@@ -26,14 +26,22 @@
 #include <QRectF>
 #include <QPair>
 
+#define TARGET_TICKS_NUM 20
+
 #include "structures.h"
 
-struct ZeAxisTick
+
+struct ZeLogAxisTick
 {
     double pos;
     QString baseStr, globalConstantStr;
     double base, globalConstant;
     long multiplier, subMultiplier, powerNumerator, powerDenominator;
+};
+
+struct ZeLinAxisTick
+{
+    double pos, multiplier;
 };
 
 struct ZeAxisSubTick
@@ -44,29 +52,33 @@ struct ZeAxisSubTick
 
 struct ZeOffset
 {
-    long sumOffset, powerOffset;
+    double sumOffset, powerOffset;
 };
 
-struct ZeAxisTicks
+struct ZeLogAxisTicks
 {
-    ZeOffset offset;
-    QList<ZeAxisTick> ticks;
+    QList<ZeLogAxisTick> ticks;
     QList<ZeAxisSubTick> axisSubticks;
 };
 
-struct ZeAxesTicks
+struct ZeLinAxisTicks
 {
-    ZeAxisTicks x, y;
+    ZeOffset offset;
+    QList<ZeLinAxisTick> ticks;
+    QList<ZeAxisSubTick> axisSubticks;
 };
-
 
 class ZeGraphView : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ZeGraphView(const ZeViewSettings &viewSettings, QSize viewPxSize, QObject *parent = nullptr);
-    ZeGraphView(const ZeGraphView &other, QObject *parent = nullptr);
+    explicit ZeGraphView(const ZeViewSettings &viewSettings,
+                         QSize viewPxSize,
+                         QObject *parent = nullptr);
+
+    ZeGraphView(const ZeGraphView &other,
+                QObject *parent = nullptr);
 
     ZeGraphView& operator=(const ZeGraphView &other);
 
@@ -93,6 +105,7 @@ public:
     void setYmax(double val);
 
     void setGraphRange(const GraphRange &range);
+    GraphRange getGraphRange();
 
     double getXmin();
     double getXmax();
@@ -105,19 +118,22 @@ public:
     double viewToUnitX(double viewX) const ;
     double unitToViewX(double unitX) const ;
 
-    ZeAxesTicks getAxesTicks();
+    ZeLinAxisTicks getLinearAxisTicks(double pxWidth,
+                                   ZeAxisRange range,
+                                   ZeAxisName axisName,
+                                   QFontMetrics metrics);
 
-    QRectF rect() const ;
-    QRectF lgRect() const ;
-    QRectF viewRect() const ;
-    void setViewRect(QRectF rect);
+    QRectF getRect() const ;
+    QRectF getLogRect() const ;
+    QRectF getViewRect() const ;
+    void setViewRect(QRectF getRect);
 
 signals:
 
 public slots:
 
 protected:
-    ZeAxisTicks getLinearAxisTicks(int pxWidth, ZeAxisRange range, ZeAxisSettings &axisSettings, QFontMetrics metrics);
+
 
     void verifyOrthonormality();
 
@@ -128,6 +144,7 @@ protected:
     double xGridStep, yGridStep;
 
     QSizeF viewPxSize;
+    double targetTicksNum;
 
     ZeAxesSettings axesSettings;
     ZeGridSettings gridSettings;

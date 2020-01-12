@@ -24,10 +24,10 @@
 #ifndef MainGraph_H
 #define MainGraph_H
 
-#include "graphdraw.h"
+#include "basegraphdraw.h"
 
 
-class MainGraph : public GraphDraw
+class MainGraph : public BaseGraphDraw
 {
     Q_OBJECT
 public:
@@ -37,15 +37,12 @@ public:
     void afficherPtX(double x);
 
 signals:
-    void zoomBoxActive(bool active);    
-    void sizeChanged(int H, int W);
+    void zoomBoxActive(bool active);
 
     void graphRangeChanged(GraphRange range);
-    void graphTickIntervalsChanged(GraphTickIntervals interval);
 
 public slots:
     void setGraphRange(GraphRange range);
-    void setGraphTickIntervals(GraphTickIntervals interval);
 
     void showHorWidget();
     void showVerWidget();
@@ -95,7 +92,7 @@ protected:
     void drawAllParEq();
 
     void updateCenterPosAndScaling();
-    void drawGridAndCoordinates();
+    void drawBaseGraph();
     void drawPoint();
 
     void moveSavedRegsValues();

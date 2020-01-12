@@ -109,23 +109,21 @@ struct ZeLogAxisSettings
 {
     double constantMultiplier, base;
     QString constantMultiplierStr, baseStr;
-    int basePowNum, basePowDenom;
 };
 
 struct ZeLinAxisSettings
 {
-    int multiplier;
     double constantMultiplier;
     QString constantMultiplierStr;
-    int basePowNum;
+    int maxDigitsNum;
 };
 
 struct ZeAxisSettings
 {
     QColor color;
     double lineWidth;
-    ZeLinAxisSettings whenLinear;
-    ZeLogAxisSettings whenLog;
+    ZeLinAxisSettings linSettings;
+    ZeLogAxisSettings logSettings;
     ZeCoordinateDisplayFormat coordinateFormatting;
     ZeAxisType axisType;
 };
@@ -140,7 +138,7 @@ struct ZeGraphSettings
     QFont graphFont;
 };
 
-struct ZeUnidimGridSettings
+struct Ze1DGridSettings
 {
     bool showGrid, showSubGrid;
     double gridLineWidth, subgridLineWidth;
@@ -151,7 +149,7 @@ struct ZeUnidimGridSettings
 
 struct ZeGridSettings
 {
-    ZeUnidimGridSettings alongX, alongY;
+    Ze1DGridSettings alongX, alongY;
 };
 
 struct ZeAxesSettings

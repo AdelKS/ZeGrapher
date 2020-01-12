@@ -27,7 +27,7 @@ void ZeGridSettingsWidget::loadDefaults()
 {
     ui->xGrid->setChecked(true);
 
-    ZeUnidimGridSettings defaultSettings;
+    Ze1DGridSettings defaultSettings;
 
     defaultSettings.showGrid = true;
     defaultSettings.showSubGrid = false;
@@ -74,7 +74,7 @@ void ZeGridSettingsWidget::swapGridData()
 
 void ZeGridSettingsWidget::apply()
 {
-    ZeUnidimGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
+    Ze1DGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
 
     settingsToUpdate.showGrid = ui->showGrid->isChecked();
     settingsToUpdate.showSubGrid = ui->showSubgrid->isChecked();
@@ -96,11 +96,11 @@ void ZeGridSettingsWidget::loadGridSettingsInUi(ZeAxisName name)
         ui->xGrid->setChecked(true);
     else ui->yGrid->setChecked(true);
 
-    const ZeUnidimGridSettings &unidimSettings = name == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
+    const Ze1DGridSettings &unidimSettings = name == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
     loadGridSettingsInUi(unidimSettings);
 }
 
-void ZeGridSettingsWidget::loadGridSettingsInUi(const ZeUnidimGridSettings &unidimGridSettings)
+void ZeGridSettingsWidget::loadGridSettingsInUi(const Ze1DGridSettings &unidimGridSettings)
 {
     ui->showGrid->setChecked(unidimGridSettings.showGrid);
     ui->showSubgrid->setChecked(unidimGridSettings.showSubGrid);

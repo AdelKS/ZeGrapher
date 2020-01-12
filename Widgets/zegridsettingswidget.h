@@ -32,7 +32,7 @@ protected slots:
 
 protected:
     void loadGridSettingsInUi(ZeAxisName name);
-    void loadGridSettingsInUi(const ZeUnidimGridSettings &unidimGridSettings);
+    void loadGridSettingsInUi(const Ze1DGridSettings &unidimGridSettings);
     void makeConnects();
     void loadDefaults();
 
