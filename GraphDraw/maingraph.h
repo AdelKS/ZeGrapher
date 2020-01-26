@@ -27,7 +27,11 @@
 #include "exportpreview.h"
 
 
-class MainGraph : public ExportPreview
+#define DEFAULT_ZOOM_MULTIPLIER 0.04
+
+#include "../Widgets/popupwidget.h"
+
+class MainGraph : public GraphDraw
 {
     Q_OBJECT
 public:
@@ -44,13 +48,6 @@ signals:
 public slots:
     void setGraphRange(GraphRange range);
 
-    void showHorWidget();
-    void showVerWidget();
-    void showXYWidgets();
-
-    void hideHorWidget();
-    void hideVerWidget();
-    void hideXYWidgets();
     void reactivateSmoothing();
     void updateParEq();
     void updateGraph();
@@ -67,12 +64,14 @@ protected slots:
     void lineXReturnPressed();
 
 protected:
-
+    void incrementTickSpacing(double &spacing, int &currentMultiplier);
+    void decrementTickSpacing(double &spacing, int &currentMultiplier);
     void paintEvent(QPaintEvent *event);    
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void showEvent(QShowEvent *event);
     void addOtherWidgets();
 
     void mouseMoveWithActiveSelection(double x, double y);
@@ -86,6 +85,7 @@ protected:
     void newWindowSize();
     void directPaint();
     void indirectPaint();
+    void paintGraph(bool bufferPaint = false);
 
     void drawAxes();
     void drawAnimatedParEq();  
@@ -125,35 +125,31 @@ protected:
     Point lastPosSouris, pointPx, pointUnit;
     QSlider *hSlider, *vSlider;
     QLineEdit *lineX, *lineY;
-    double y1, y2, mouseX, mouseY, widestXNumber;
+    double y1, y2, mouseX, mouseY, widestXNumber, screenRefreshRate, zoomMultiplier;
 
-    bool dispPoint, ongoingMouseClick, dispRectangle, vWidgetState, hWidgetState, xyWidgetsState,
-         hHideStarted, vHideStarted, resaveGraph, cancelUpdateSignal,
+    bool dispPoint, buttonPresse, mouseOnCurve,
+         dispRectangle, hoveredCurveType, resaveGraph, cancelUpdateSignal,
          resaveTangent, animationUpdate;
 
-    CursorType cursorType;
-    int  hBottom, vBottom, xyBottom;
-    QTimer timerX, timerY;
+    char typeCurseur;   
+    int  xyBottom;
+    QTimer timerX, timerY, repaintTimer;
 
     QSize windowSize;  
     CurveSelection selectedCurve;
     MouseState mouseState;
 
-    QRect rectReel, hWidgetRect, vWidgetRect;
+    QRect rectReel;
     QImage *savedGraph;
     QList <QString> customFunctions;
     QList <QString> customSequences;
 
     QLabel *xTextLabel, *yTextLabel;
-    QLabel kLabel;
+    QLabel *kLabel;
+    QWidget *kLabelContainer;
 
-    QWidget *hWidget, *vWidget, *xWidget, *yWidget;
-    QTimer mouseNotOnHWidget, mouseNotOnVWidget, vWidgetHideTransition,
-           hWidgetHideTransition,vWidgetShowTransition, hWidgetShowTransition,
-           xyWidgetsShowTransition, xyWidgetsHideTransition, timeWaitForXYWidgets,
-           repaintTimer;
+    PopupWidget *hPopupWidget, *vPopupWidget, *xPopupWidget, *yPopupWidget, *kPopupWidget;
 
-    QPoint hTopLeft, vTopLeft, xTopLeft, yTopLeft;
     Point axesIntersec;   
 };
 

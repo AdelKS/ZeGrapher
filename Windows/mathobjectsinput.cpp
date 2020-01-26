@@ -73,10 +73,25 @@ QList<QColor> toColorsList(const QList<QVariant> &list)
 
 void MathObjectsInput::showDataHelpWindow()
 {
-    QLocale locale;
-    if(locale.language() == QLocale::French)
-        helpWindow.setSource(QUrl("qrc:///Help/data_help_fr.html"));
-    else helpWindow.setSource(QUrl("qrc:///Help/data_help_en.html"));
+    QSettings settings;
+    if(settings.contains("app/language"))
+    {
+        QString language = settings.value("app/language").toString();
+        if(language == "fr")
+            helpWindow.setSource(QUrl("qrc:///Help/data_help_fr.html"));
+        else if(language == "de")
+            helpWindow.setSource(QUrl("qrc:///Help/data_help_de.html"));
+        else helpWindow.setSource(QUrl("qrc:///Help/data_help_en.html"));
+    }
+    else
+    {
+        QLocale locale;
+        if(locale.language() == QLocale::French)
+            helpWindow.setSource(QUrl("qrc:///Help/data_help_fr.html"));
+        else if(locale.language() == QLocale::German)
+            helpWindow.setSource(QUrl("qrc:///Help/data_help_de.html"));
+        else helpWindow.setSource(QUrl("qrc:///Help/data_help_en.html"));
+    }
 
     helpWindow.setWindowTitle(tr("Help: data fill window."));
 

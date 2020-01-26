@@ -60,7 +60,6 @@ class DataWindow : public QWidget
 public:
     explicit DataWindow(Information *info, int ind, QWidget *parent = 0);
     RetractableWidgetState getRetractableWidgetState();
-    void shrinkActionsWidgetContainer();
 
     ~DataWindow();
 
@@ -104,6 +103,7 @@ protected:
     bool selectorSide;
     RetractableWidgetState widgetState;
     int animation_width;
+    QSplitter *widgetSplitter;
 
     QPropertyAnimation *windowCloseAnimation, *windowOpenAnimation, *widgetCloseAnimation, *widgetOpenAnimation;
     QParallelAnimationGroup *openAnimation, *closeAnimation;

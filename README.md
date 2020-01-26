@@ -7,4 +7,4 @@
 
 ZeGrapher is a free, open source and easy to use software for plotting mathematical objects. It can plot functions, sequences, parametric equations and data on the plane.
 
-Official website: [https://www.zegrapher.com/](https://www.zegrapher.com/)
+Official website: [https://zegrapher.com/](https://zegrapher.com/)

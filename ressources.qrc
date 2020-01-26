@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/software.png</file>
+        <file>icons/boundaries.png</file>
+        <file>icons/saveImage.png</file>
         <file>icons/print.png</file>
         <file>icons/zoom-in-icon.png</file>
         <file>icons/zoom-out-icon.png</file>
@@ -67,5 +68,13 @@
         <file>icons/grid.png</file>
         <file>icons/grid_subgrid.png</file>
         <file>icons/no_grid.png</file>
+        <file>ZeGrapher_de.qm</file>
+        <file>Help/data_help_de.html</file>
+        <file>Help/german-icon.png</file>
+        <file>Help/columnActions_de.png</file>
+        <file>Help/columnFill_de.png</file>
+        <file>Help/lineActions_de.png</file>
+        <file>Help/pins_de.png</file>
+        <file>icons/ZeGrapher.png</file>
     </qresource>
 </RCC>

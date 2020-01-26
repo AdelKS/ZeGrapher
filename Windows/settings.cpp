@@ -118,9 +118,11 @@ void Settings::readSavedSettings()
 
     if(settings.contains("language"))
     {
-        if(settings.value("language").toString() == "en")
-            ui->languageComboBox->setCurrentIndex(0);
-        else  ui->languageComboBox->setCurrentIndex(1);
+        if(settings.value("language").toString() == "fr")
+            ui->languageComboBox->setCurrentIndex(1);
+        else if(settings.value("language").toString() == "de")
+            ui->languageComboBox->setCurrentIndex(2);
+        else ui->languageComboBox->setCurrentIndex(0);
     }
 
     settings.beginGroup("font");
@@ -168,7 +170,10 @@ void Settings::saveSettings()
 
     if(ui->languageComboBox->currentIndex() == 0)
         settings.setValue("language", "en");
-    else settings.setValue("language", "fr");
+    else if(ui->languageComboBox->currentIndex() == 1)
+        settings.setValue("language", "fr");
+    else if(ui->languageComboBox->currentIndex() == 2)
+        settings.setValue("language", "de");
 
     settings.beginGroup("font");
 

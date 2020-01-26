@@ -1,5 +1,9 @@
 # Aide: fenêtre de saisie de données
 
+[![english flag](english-icon.png)](data_help_en.html)
+[![french flag](french-icon.png)](data_help_fr.html)
+[![german flag](german-icon.png)](data_help_de.html)
+
 ## Présentation générale
 
 [**Go to english version ![english flag](english-icon.png)**](data_help_en.html)

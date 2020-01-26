@@ -27,10 +27,14 @@ about::about(QWidget *parent) :
     ui(new Ui::About)
 {
     ui->setupUi(this);
-    ui->logo->setPixmap(QPixmap(":/icons/software.png"));
 
-    ui->versionLabel->setText(SOFTWARE_VERSION_STR);
-    setWindowIcon(QIcon(":/icons/software.png"));    
+    QPixmap logo(":/icons/ZeGrapher.png");
+    logo = logo.scaledToWidth(128, Qt::SmoothTransformation);
+
+    ui->logo->setPixmap(logo);
+
+    ui->versionLabel->setText(QString("<span style='font-size: 15px;'><strong>") + SOFTWARE_VERSION_STR + QString("</strong></span>"));
+    setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
 }
 
 about::~about()

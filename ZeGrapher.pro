@@ -25,10 +25,16 @@ win32 {
 
 INCLUDEPATH += .
 
+win32 {
+    INCLUDEPATH += C:/boost/boost_1_72_0
+}
+
+
 SOURCES += \
     GraphDraw/basegraphdraw.cpp \
     GraphDraw/mathobjectdraw.cpp \
     GraphDraw/viewmapper.cpp \
+    Widgets/popupwidget.cpp \
     main.cpp \
     information.cpp \
     Windows/about.cpp \
@@ -88,6 +94,7 @@ HEADERS  += \
     GraphDraw/basegraphdraw.h \
     GraphDraw/mathobjectdraw.h \
     GraphDraw/viewmapper.h \
+    Widgets/popupwidget.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
@@ -169,7 +176,8 @@ FORMS    += \
 RESOURCES += \
     ressources.qrc
 
-RC_ICONS = appicon.ico
+RC_ICONS = ZeGrapher.ico
+ICON = ZeGrapher.icns
 
 OTHER_FILES +=
 
@@ -193,8 +201,6 @@ translations.files = ZeGrapher_fr.qm
 INSTALLS += appdata desktop icon target translations
 
 DISTFILES += \
-    README.md \
-    TODO.md \
     appdata/ZeGrapher.appdata.xml \
     appdata/screenshots/zegrapher-all-windows.png \
     appdata/screenshots/zegrapher-plot-dialogue.png \

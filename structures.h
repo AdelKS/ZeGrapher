@@ -22,6 +22,7 @@
 #define STRUCTURES_H
 
 #include <cmath>
+#include <cfloat>
 #include <QtWidgets>
 
 #define SOFTWARE_VERSION 3.5
@@ -34,7 +35,23 @@
 
 #define MAX_DOUBLE_PREC 13
 
-#define MIN_RANGE 1E-13
+#define NORMAL 0
+#define ZOOMER 1
+#define DEZOOMER 2
+#define ZOOMBOX 3
+#define DEPLACER 4
+#define NO_CURSOR 5
+
+#define FUNCTION 1
+#define SEQUENCE 2
+#define PARAMETRIC_EQ 3
+#define NORMAL_EXPR 4
+#define DATA_TABLE_EXPR 5 // expression to apply to a column: example: x' = 2 * x multiplies every column's cell value by 2.
+#define MAX_DOUBLE_PREC 15
+
+#define MIN_AMPLITUDE 100 * DBL_EPSILON
+#define MAX_AMPLITUDE DBL_MAX / 100
+
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 

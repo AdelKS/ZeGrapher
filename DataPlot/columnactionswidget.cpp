@@ -54,8 +54,6 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     startingActionsUi->setupUi(startingActions);
     startingActionsUi->remove->hide();
 
-    startingActions->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
     shownWidgets << startingActions;
 
     fillOptions = new QWidget();
@@ -70,8 +68,6 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     connect(fillOptionsUi->end, SIGNAL(returnPressed()), this, SLOT(applyFill()));
     connect(fillOptionsUi->expression, SIGNAL(returnPressed()), this, SLOT(applyFill()));
     connect(fillOptionsUi->apply, SIGNAL(released()), this, SLOT(applyFill()));
-
-    fillOptions->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     lineEditsMapper = new QSignalMapper(this);
     connect(lineEditsMapper, SIGNAL(mapped(QWidget*)), this, SLOT(resetPalette(QWidget*)));

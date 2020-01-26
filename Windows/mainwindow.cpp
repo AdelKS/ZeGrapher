@@ -27,9 +27,6 @@
 
 MainWindow::MainWindow()
 {
-    setWindowIcon(QIcon(":/icons/software.png"));   
-    setWindowTitle("ZeGrapher");
-
     information = new Information();
 
     inputWin = new MathObjectsInput(information, this);
@@ -46,6 +43,9 @@ MainWindow::MainWindow()
 
     mainGraph = new ExportPreview(information); // it has to be the last thing to create.
     setCentralWidget(mainGraph);
+    setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
+    setMinimumSize(700,450);
+    setWindowTitle("ZeGrapher");
 
     createDocks();
     createMenus();

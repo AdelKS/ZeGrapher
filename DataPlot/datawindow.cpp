@@ -35,6 +35,17 @@ DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(par
     ui = new Ui::DataWindow;
     ui->setupUi(this);
 
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
+    mainLayout->addWidget(ui->retractionButton);
+
+    widgetSplitter = new QSplitter();
+    widgetSplitter->addWidget(ui->actionsContainerWidget);
+    widgetSplitter->addWidget(ui->tableContainerWidget);
+
+    mainLayout->addWidget(widgetSplitter);
+
+    ui->modelsScrollArea->setWidget(ui->containerWidget);
+
     widgetState = WIDGET_OPENED;
 
     widgetOpenAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
@@ -175,16 +186,6 @@ DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(par
 
 }
 
-void DataWindow::shrinkActionsWidgetContainer()
-{
-    widgetState = WIDGET_RETRACTED;
-    ui->actionsContainerWidget->setMaximumWidth(0);
-    ui->retractionButton->setIcon(QIcon(":/icons/arrow_left.png"));
-    animation_width = 360;
-    //taken from datawindow.ui's actionsContainerWidget. It's not the best way to do it, but it's the first thing that came to my mind...
-
-}
-
 RetractableWidgetState DataWindow::getRetractableWidgetState()
 {
     return widgetState;
@@ -203,8 +204,11 @@ void DataWindow::animationFinished()
 {
     if(widgetState == WIDGET_OPENED)
         ui->retractionButton->setIcon(QIcon(":/icons/arrow_right.png"));
-    else ui->retractionButton->setIcon(QIcon(":/icons/arrow_left.png"));
-
+    else
+    {
+        ui->retractionButton->setIcon(QIcon(":/icons/arrow_left.png"));
+        ui->actionsContainerWidget->hide();
+    }
 }
 
 void DataWindow::startAnimation()
@@ -233,6 +237,7 @@ void DataWindow::startAnimation()
     }
     else // WIDGET_RETRACTED
     {
+        ui->actionsContainerWidget->show();
         widgetState = WIDGET_OPENED;
 
         openAnimation->stop();

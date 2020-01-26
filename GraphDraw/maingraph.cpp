@@ -40,67 +40,45 @@ MainGraph::MainGraph(Information *info) : ExportPreview(info)
     cancelUpdateSignal = false;
     resaveTangent = animationUpdate = false;
 
-    mouseNotOnHWidget.setInterval(1000);
-    mouseNotOnHWidget.setSingleShot(true);
-
-    connect(&mouseNotOnHWidget, SIGNAL(timeout()), &hWidgetHideTransition, SLOT(start()));
-
-    mouseNotOnVWidget.setInterval(1000);
-    mouseNotOnVWidget.setSingleShot(true);
-
-    connect(&mouseNotOnVWidget, SIGNAL(timeout()), &vWidgetHideTransition, SLOT(start()));
-
-    hWidgetHideTransition.setInterval(30);
-    vWidgetHideTransition.setInterval(30);
-
-    hWidgetShowTransition.setInterval(30);
-    vWidgetShowTransition.setInterval(30);
-
-    connect(&hWidgetHideTransition, SIGNAL(timeout()), this, SLOT(hideHorWidget()));
-    connect(&vWidgetHideTransition, SIGNAL(timeout()), this, SLOT(hideVerWidget()));
-    connect(&hWidgetShowTransition, SIGNAL(timeout()), this, SLOT(showHorWidget()));
-    connect(&vWidgetShowTransition, SIGNAL(timeout()), this, SLOT(showVerWidget()));
-
-    timeWaitForXYWidgets.setInterval(1000);
-    timeWaitForXYWidgets.setSingleShot(true);
-
-    connect(&timeWaitForXYWidgets, SIGNAL(timeout()), &xyWidgetsHideTransition, SLOT(start()));
-
-    xyWidgetsShowTransition.setInterval(30);
-    xyWidgetsHideTransition.setInterval(30);
-
-    connect(&xyWidgetsShowTransition, SIGNAL(timeout()), this, SLOT(showXYWidgets()));
-    connect(&xyWidgetsHideTransition, SIGNAL(timeout()), this, SLOT(hideXYWidgets()));
-
-
     repaintTimer.setInterval(100);
     repaintTimer.setSingleShot(true);
     connect(&repaintTimer, SIGNAL(timeout()), this, SLOT(reactivateSmoothing()));
 
-    timerX.setInterval(35);
+    zoomMultiplier = DEFAULT_ZOOM_MULTIPLIER;
+
+    screenRefreshRate = 60;
+
+    timerX.setInterval(1000/screenRefreshRate);
     connect(&timerX, SIGNAL(timeout()), this, SLOT(zoomX()));
 
-    timerY.setInterval(35);
+    timerY.setInterval(1000/screenRefreshRate);
     connect(&timerY, SIGNAL(timeout()), this, SLOT(zoomY()));
 
     dispPoint = false;
     ongoingMouseClick = false;
 
-    dispRectangle = recalculate = recalculateRegs = false;
-    hHideStarted = vHideStarted = xyWidgetsState = false;
-    mouseState.pointedObjectType = NONE;
+    mouseOnCurve = dispRectangle = recalculate = recalculateRegs = false;
     moving = false;
 
-    kLabel.setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.3 #D0D0D0 , stop: 0.75 #FFFFFF, stop: 1 #FFFFFF);"
-                         " border-width: 1px; border-color: #D0D0D0; border-style: solid; border-radius: 10;");
+    kLabel = new QLabel();
+    kLabelContainer = new QWidget();
+
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->setContentsMargins(10, 4, 10, 6);
+    layout->addWidget(kLabel);
+    kLabelContainer->setLayout(layout);
+
+    kLabelContainer->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
+                          " border-style: none; border-bottom-right-radius: 10; border-bottom-left-radius: 10;");
+
+    kPopupWidget = new PopupWidget(PopupPos::TOP, 0.1, this);
+    kPopupWidget->setWidget(kLabelContainer);
+    kPopupWidget->setState(PopupState::HIDDEN);
 
     customFunctions << "f(x) =" << "g(x) =" << "h(x) =" << "p(x) =" << "r(x) =" << "m(x) =";
     customSequences << "u<sub>n</sub> =" << "v<sub>n</sub> =" << "l<sub>n</sub> =" << "w<sub>n</sub> =" << "q<sub>n</sub> =" << "t<sub>n</sub> =";
 
-    kLabel.setParent(this);
-    kLabel.hide();
-
-    savedGraph = nullptr;
+    savedGraph = NULL;   
 
     setMouseTracking(true);
     cursorType = NORMAL;
@@ -208,19 +186,28 @@ void MainGraph::addOtherWidgets()
     verLayout->addWidget(vSlider);
     verLayout->addWidget(unZoom1);
 
-    vWidget = new QWidget(this);
+    QWidget *vWidget = new QWidget(this);
     vWidget->setLayout(verLayout);
+
+    vPopupWidget = new PopupWidget(PopupPos::RIGHT, 0.5, this);
+    vPopupWidget->setWidget(vWidget);  
+
+    // -------- Horizontal zoom slider
 
     QHBoxLayout *horLayout = new QHBoxLayout();
     horLayout->addWidget(unZoom2);
     horLayout->addWidget(hSlider);
     horLayout->addWidget(zoom2);
 
-
-    hWidget = new QWidget(this);
+    QWidget *hWidget = new QWidget(this);
     hWidget->setLayout(horLayout);
 
-    xWidget = new QWidget(this);
+    hPopupWidget = new PopupWidget(PopupPos::BOTTOM, 0.5, this);
+    hPopupWidget->setWidget(hWidget);
+
+    //-------- x label widget
+
+    QWidget *xWidget = new QWidget(this);
     xWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox1 = new QHBoxLayout();
     hbox1->addStretch();
@@ -229,9 +216,14 @@ void MainGraph::addOtherWidgets()
     hbox1->addStretch();
     xWidget->setLayout(hbox1);
     xWidget->setAutoFillBackground(true);
+    xWidget->adjustSize();
 
+    xPopupWidget = new PopupWidget(PopupPos::BOTTOM, 0.25, this);
+    xPopupWidget->setWidget(xWidget);
+    xPopupWidget->setState(PopupState::HIDDEN);
 
-    yWidget = new QWidget(this);
+    QWidget *yWidget = new QWidget(this);
+
     yWidget->setStyleSheet("border-top-right-radius: 8; border-top-left-radius: 8");
     QHBoxLayout *hbox2 = new QHBoxLayout();
     hbox2->addStretch();
@@ -240,92 +232,23 @@ void MainGraph::addOtherWidgets()
     hbox2->addStretch();
     yWidget->setLayout(hbox2);
     yWidget->setAutoFillBackground(true);
+    yWidget->adjustSize();
 
-    vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
-                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-style: solid; border-top-left-radius: 10; border-bottom-left-radius: 10;");
+    yPopupWidget = new PopupWidget(PopupPos::BOTTOM, 0.75, this);
+    yPopupWidget->setWidget(yWidget);
+    yPopupWidget->setState(PopupState::HIDDEN);
 
-    hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FFFFFF, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #FFFFFF); "
-                           "border-width: 1px; border-color: #D0D0D0; border-style: solid; border-top-left-radius: 10; border-top-right-radius: 10;");
+    vWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
+                           " border-style: none; border-top-left-radius: 16; border-bottom-left-radius: 16;");
+
+    hWidget->setStyleSheet("background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f4f4f4ff, stop: 0.4 #E8E8E8 , stop: 0.6 #E8E8E8, stop: 1 #f4f4f4ff); "
+                           "border-style: none; border-top-left-radius: 16; border-top-right-radius: 16;");
     hSlider->setStyleSheet("background-color: none; border: none;");
     zoom2->setStyleSheet("background-color: none; border: none;");
     unZoom2->setStyleSheet("background-color: none; border: none;");
     vSlider->setStyleSheet("background-color: none; border: none;");
     zoom1->setStyleSheet("background-color: none; border: none;");
     unZoom1->setStyleSheet("background-color: none; border: none;");
-}
-
-void MainGraph::hideHorWidget()
-{
-    if(hWidget->y() >= hBottom)
-    {
-        hWidgetHideTransition.stop();
-        hWidget->hide();
-        hWidgetState = false;
-        hHideStarted = false;
-    }
-    else hWidget->move(hWidget->x(), hWidget->y()+6);
-}
-
-void MainGraph::hideVerWidget()
-{
-    if(vWidget->x() >= vBottom)
-    {
-        vWidgetHideTransition.stop();
-        vWidget->hide();
-        vWidgetState = false;
-        vHideStarted = false;
-    }
-    else vWidget->move(vWidget->x()+6, vWidget->y());
-}
-
-void MainGraph::hideXYWidgets()
-{
-    xWidget->move(xWidget->x(), xWidget->y()+6);
-    yWidget->move(yWidget->x(), yWidget->y()+6);
-    if(xWidget->y() >= xyBottom)
-    {
-        xyWidgetsState = false;
-        xyWidgetsHideTransition.stop();
-        xWidget->hide();
-        yWidget->hide();
-    }
-}
-
-void MainGraph::showHorWidget()
-{
-    hWidget->show();
-
-    if(hWidget->y() <= hTopLeft.y())
-    {
-        hWidgetState = true;
-        hWidgetShowTransition.stop();
-
-    }
-    else hWidget->move(hWidget->x(), hWidget->y()-6);
-}
-
-void MainGraph::showVerWidget()
-{
-    vWidget->show();
-    if(vWidget->x() <= vTopLeft.x())
-    {
-        vWidgetState = true;
-        vWidgetShowTransition.stop();
-    }
-    else vWidget->move(vWidget->x()-6, vWidget->y());
-}
-
-void MainGraph::showXYWidgets()
-{
-    xWidget->show();
-    yWidget->show();
-    xWidget->move(xWidget->x(), xWidget->y()-6);
-    yWidget->move(yWidget->x(), yWidget->y()-6);
-    if(xWidget->y() <= xTopLeft.y())
-    {
-        xyWidgetsState = true;
-        xyWidgetsShowTransition.stop();
-    }
 }
 
 void MainGraph::lineXReturnPressed()
@@ -347,10 +270,25 @@ void MainGraph::wheelEvent(QWheelEvent *event)
     x = (x-centre.x)/uniteX;
     y = -(y-centre.y)/uniteY;
 
-    double ratio = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
+    double multiplier = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
 
-    graphView.zoomView(QPointF(x,y), ratio);
-    information->setGraphRange(graphView.getGraphRange());
+    GraphRange win = graphRange;
+
+    win.Xmax -= (win.Xmax - x)*multiplier;
+    win.Xmin -= (win.Xmin - x)*multiplier;
+    win.Ymax -= (win.Ymax - y)*multiplier;
+    win.Ymin -= (win.Ymin - y)*multiplier;
+
+    if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+            (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
+    {
+        moving = true;
+
+        if(parameters.smoothing)
+            repaintTimer.start();
+
+        information->setRange(win);
+    }
 
     event->accept();
 
@@ -395,47 +333,35 @@ void MainGraph::afficherPtX(double x)
 
 void MainGraph::newWindowSize()
 {
-    if(hWidget != nullptr)
-    {        
-        hTopLeft.setX((width()-hWidget->width())/2);
-        hTopLeft.setY(height()-hWidget->height());
+    emit sizeChanged(graphWidth, graphHeight);
+    windowSize = size();
 
-        hBottom = hTopLeft.y()+hWidget->height()+5;
+    vPopupWidget->updatePositions();
+    hPopupWidget->updatePositions();
+    kPopupWidget->updatePositions();
+    xPopupWidget->updatePositions();
+    yPopupWidget->updatePositions();
 
-        xTopLeft.setX(hTopLeft.x()-xWidget->width());
-        xTopLeft.setY(hTopLeft.y());
+}
 
-        yTopLeft.setX(hTopLeft.x()+hWidget->width());
-        yTopLeft.setY(hTopLeft.y());
+void MainGraph::showEvent(QShowEvent *event)
+{
+    /* Wait for showEvent to determine screen refresh rate
+       to make zooming as smooth as the screen enables.*/
 
-        vTopLeft.setX(width()-vWidget->width());
-        vTopLeft.setY((height()-vWidget->height())/2);
+    GraphDraw::showEvent(event);
 
-        xyBottom = yTopLeft.y()+yWidget->height()+5;
-
-        vBottom = vTopLeft.x()+vWidget->width()+5;
-
-        yWidget->move(yTopLeft);
-        xWidget->move(xTopLeft);
-
-        if(!xyWidgetsState && !selectedCurve.isSomethingSelected)
-            timeWaitForXYWidgets.start();
-
-        vWidget->move(vTopLeft);
-        hWidget->move(hTopLeft);
-
-        hWidgetRect.setTopLeft(hTopLeft);
-        hWidgetRect.setHeight(hWidget->height());
-        hWidgetRect.setWidth(hWidget->width());
-
-        vWidgetRect.setTopLeft(vTopLeft);
-        vWidgetRect.setHeight(vWidget->height());
-        vWidgetRect.setWidth(vWidget->width());
-
-        hWidgetState = true;
-        vWidgetState = true;
-
+    QWindow *appWindow = window()->windowHandle();
+    if(appWindow != nullptr)
+    {
+        screenRefreshRate = appWindow->screen()->refreshRate();
+        qDebug() << "Screen refresh rate: " << screenRefreshRate;
     }
+    else qDebug() << "Window handle doesn't exist yet at this point";
+
+    timerX.setInterval(1000/screenRefreshRate);
+    timerY.setInterval(1000/screenRefreshRate);
+
 }
 
 void MainGraph::paintEvent(QPaintEvent *event)
@@ -447,9 +373,16 @@ void MainGraph::paintEvent(QPaintEvent *event)
        recalculate = true;
     }
 
-    if(!moving and (cursorType == NORMAL or animationUpdate))
+    if(!moving && (typeCurseur == NORMAL or animationUpdate))
+    {
+        qDebug() << "indirect paint " << qrand();
         indirectPaint();
-    else directPaint();
+    }
+    else
+    {
+        qDebug() << "direct paint " << qrand();
+        directPaint();
+    }
 
     event->accept();
 }
@@ -491,25 +424,31 @@ void MainGraph::directPaint()
     resaveGraph = true;
 
     painter.begin(this);
-    //trace du background
 
-    painter.setFont(information->getGraphSettings().graphFont);
+    paintGraph();
 
-    const ZeGraphSettings &graphSettings = information->getGraphSettings();
+    painter.end();
+}
 
-    painter.setBrush(QBrush(graphSettings.backgroundColor));
-
-    painter.drawRect(-1, -1, graphRectScaled.width() + 1, graphRectScaled.height() + 1);
+void MainGraph::paintGraph(bool bufferPaint)
+{
+    painter.setFont(information->getSettingsVals().graphFont);
 
     updateCenterPosAndScaling();
 
-    painter.translate(QPointF(centre.x, centre.y));
-    painter.scale(1/uniteX, -1/uniteY);
+    if(updateTickSpacing())
+    {
+        cancelUpdateSignal = true;
+        information->setRange(graphRange);
+    }
+
+    painter.setBrush(QBrush(parameters.backgroundColor));
+    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
 
     drawAxes();
-    drawBaseGraph();
+    drawTicksAndNumbers();
 
-    if(dispRectangle)
+    if(not bufferPaint and dispRectangle)
     {
         painter.setBrush(Qt::NoBrush);
         pen.setWidth(1);
@@ -536,14 +475,16 @@ void MainGraph::directPaint()
     drawSequences();
     drawStraightLines();
     drawTangents();
-    drawAllParEq();
+
+    if(bufferPaint)
+        drawStaticParEq();
+    else drawAllParEq();
+
     drawRegressions();
     drawData();
 
-    if(dispPoint)
+    if(not bufferPaint and dispPoint)
         drawPoint();
-
-    painter.end();
 }
 
 void MainGraph::drawHoveringConsequence()
@@ -610,38 +551,8 @@ void MainGraph::resaveImageBuffer()
     savedGraph = new QImage(size(), QImage::Format_RGB32);
 
     painter.begin(savedGraph);
-    //trace du background
 
-    painter.setFont(information->getGraphSettings().graphFont);
-
-    painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));
-    painter.drawRect(-1, -1, graphWidthPx+1, graphHeightPx+1);
-
-
-    updateCenterPosAndScaling();
-    drawAxes();
-    drawBaseGraph();
-
-    if(recalculate)
-    {
-        recalculate = false;
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
-        recalculateRegVals();
-    }
-    else if(recalculateRegs)
-    {
-        recalculateRegs = false;
-        recalculateRegVals();
-    }
-
-    painter.translate(QPointF(centre.x, centre.y));
-
-    drawFunctions();
-    drawSequences();
-    drawStraightLines();
-    drawTangents();
-    drawStaticParEq();
-    drawRegressions();
+    paintGraph(true);
 
     painter.end();
 }
@@ -667,8 +578,9 @@ void MainGraph::checkIfActiveSelectionConflicts()
         if(removeSelection)
         {
             selectedCurve.isSomethingSelected = false;
-            xyWidgetsHideTransition.start();
-            kLabel.hide();
+            xPopupWidget->hideWidget();
+            yPopupWidget->hideWidget();
+            kPopupWidget->hideWidget();
         }
     }
 }
@@ -759,23 +671,7 @@ void MainGraph::drawPoint()
     xTextLabel->setStyleSheet("color: " + information->getViewSettings().axes.x.color.name());
     yTextLabel->setStyleSheet("color: " + information->getViewSettings().axes.y.color.name());
 
-
-
-    if(selectedCurve.isParametric)
-    {
-        Range kRange;
-        if(selectedCurve.selectedObject == FUNCTION)
-            kRange = funcs[selectedCurve.id]->getParametricRange();
-        else kRange = seqs[selectedCurve.id]->getKRange();
-
-        kLabel.move(5, 5);
-        double result = kRange.start + selectedCurve.kPos * kRange.step;
-        kLabel.setText("k = " + QString::number(result));
-        kLabel.adjustSize();
-        kLabel.show();
-    }
-
-    if(selectedCurve.selectedObject == FUNCTION)
+    if(selectedCurve.funcType == FUNC_HOVER)
         pen.setColor(funcs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
     else  pen.setColor(seqs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
 
@@ -851,8 +747,27 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
                 tangentDrawException = selectedCurve.id;
                 resaveGraph = true;
             }
-            else if(!xyWidgetsState)
-                xyWidgetsShowTransition.start();
+            else
+            {
+                if(selectedCurve.isParametric)
+                {
+                    Range kRange;
+                    if(selectedCurve.funcType == FUNC_HOVER)
+                        kRange = funcs[selectedCurve.id]->getParametricRange();
+                    else kRange = seqs[selectedCurve.id]->getKRange();
+
+                    double result = kRange.start + selectedCurve.kPos * kRange.step;
+                    kLabel->setText("k = " + QString::number(result));
+                    kLabel->adjustSize();
+                    kLabelContainer->adjustSize();
+
+                    kPopupWidget->updatePositions();
+                    kPopupWidget->showWidget();
+                }
+
+                xPopupWidget->showWidget();
+                yPopupWidget->showWidget();
+            }
         }
         else
         {
@@ -862,8 +777,9 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
                     resaveTangent = true;
 
                 selectedCurve.isSomethingSelected = false;
-                xyWidgetsHideTransition.start();
-                kLabel.hide();
+                xPopupWidget->hideWidget();
+                yPopupWidget->hideWidget();
+                kPopupWidget->hideWidget();
 
             }
             else moving = false;
@@ -884,8 +800,12 @@ void MainGraph::mouseReleaseEvent(QMouseEvent *event)
             viewRect.setTop((- rectReel.top() + centre.y) / uniteY);
             viewRect.setBottom((- rectReel.bottom() + centre.y) / uniteY);
 
-            if(viewRect.width() > MIN_RANGE && viewRect.height() > MIN_RANGE)
-                graphView.setViewRect(viewRect);
+            if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+                    (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
+            {
+                resaveGraph = true;
+                information->setRange(win);
+            }
 
             cursorType = NORMAL;
         }
@@ -899,29 +819,13 @@ void MainGraph::mouseMoveEvent(QMouseEvent *event)
     mouseX = event->x();
     mouseY = event->y();
 
-    if(hWidgetRect.contains(event->pos()))
-    {
-        hWidgetHideTransition.stop();
-        hHideStarted = false;
-        hWidgetShowTransition.start();
-    }
-    else if(hWidgetState && !hHideStarted)
-    {
-        mouseNotOnHWidget.start();
-        hHideStarted = true;
-    }
+    if(hPopupWidget->geometry().contains(mouseX, mouseY))
+       hPopupWidget->showWidget();
+    else hPopupWidget->hideWidget();
 
-    if(vWidgetRect.contains(event->pos()))
-    {
-        vWidgetHideTransition.stop();
-        vHideStarted = false;
-        vWidgetShowTransition.start();
-    }
-    else if(vWidgetState && !vHideStarted)
-    {
-        mouseNotOnVWidget.start();
-        vHideStarted = true;
-    }
+    if(vPopupWidget->geometry().contains(mouseX, mouseY))
+       vPopupWidget->showWidget();
+    else vPopupWidget->hideWidget();
 
     if(cursorType == NORMAL)
     {
@@ -1163,10 +1067,6 @@ void MainGraph::mouseSeqHoverTest(double x, double y)
             }
         }
     }
-
-
-
-
 }
 
 void MainGraph::mouseTangentHoverTest(double x, double y)
@@ -1217,12 +1117,285 @@ void MainGraph::mouseTangentHoverTest(double x, double y)
         update();
 }
 
+void MainGraph::drawTicksAndNumbers()
+{
+    pen.setColor(parameters.axesColor);
+    pen.setWidth(1);
+    painter.setPen(pen);
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    double start, end, Ypos, posTxt;
+
+    //trace sur l'axe des X
+    if(centre.y < 20)
+    {       
+        Ypos = 20;
+        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
+    }
+    else if(graphHeight - centre.y < 20)
+    {       
+        Ypos = graphHeight - 20;
+        posTxt = Ypos - 7;
+    }
+    else
+    {
+        Ypos = centre.y;
+        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
+    }
+
+    double Xreal = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep;
+    double Xpos = Xreal * uniteX + centre.x;
+    double pos;
+
+    double step = graphRange.Xstep * uniteX;
+
+    double bas = height();
+    double haut = 0;
+
+    QString num = QString::number(Xreal, 'g', NUM_PREC);
+    widestXNumber = painter.fontMetrics().width(num);
+
+    start = 5;
+    end = graphWidth - 5;
+
+    if(centre.x < 10)
+        start = 10 + painter.fontMetrics().width(num)/2 + 5;
+    else if(centre.x > graphWidth - 10)
+        end = graphWidth - 10 - painter.fontMetrics().width(num)/2 - 5;
+
+    while(Xpos <= end)
+    {       
+        if(start <= Xpos && fabs(Xpos - centre.x) > 1)
+        {
+            if(start <= Xpos && information->getGridState() && Xpos <= end)
+            {
+                pen.setColor(parameters.gridColor);
+                pen.setWidthF(0.5);
+                painter.setPen(pen);
+                painter.drawLine(QPointF(Xpos, bas), QPointF(Xpos, haut));
+
+                pen.setColor(parameters.axesColor);
+                pen.setWidth(1);
+                painter.setPen(pen);
+            }
+
+            painter.drawLine(QPointF(Xpos, Ypos -3), QPointF(Xpos, Ypos));
+            num = QString::number(Xreal, 'g', NUM_PREC);
+            pos = Xpos - painter.fontMetrics().width(num)/2;
+            painter.drawText(QPointF(pos, posTxt), num);
+
+            if(painter.fontMetrics().width(num) > widestXNumber)
+                widestXNumber = painter.fontMetrics().width(num);
+        }
+
+        Xpos += step;
+        Xreal += graphRange.Xstep;
+    }
+
+//trace sur l'axe des Y
+
+    bool drawOnRight = false;
+
+    if(centre.x < 10)
+    {
+        Xpos = 10;
+        posTxt = Xpos + 4;
+    }
+    else if(graphWidth - centre.x < 10)
+    {
+        Xpos = graphWidth - 10;
+        posTxt = Xpos - 8;
+        drawOnRight = true;
+    }
+    else
+    {
+        Xpos = centre.x;
+        posTxt = Xpos + 5;
+    }
+
+    double Yreal = trunc(graphRange.Ymax / graphRange.Ystep) * graphRange.Ystep;
+    Ypos = -Yreal * uniteY + centre.y;
+    step = graphRange.Ystep * uniteY;
+
+    bas =  0;
+    haut =  graphWidth;
+
+    start = 5;
+    end = graphHeight - 5;
+
+
+    if(graphHeight - centre.y < 10)
+        end = graphHeight - 50;
+    else if(centre.y < 10)
+        start = 50;
+
+
+    double txtCorr = + painter.fontMetrics().ascent()/2 - 2;
+
+    while(Ypos <= end)
+    {        
+        if(start <= Ypos && fabs(Ypos - centre.y) > 1)
+        {
+            if(information->getGridState())
+            {
+                pen.setColor(parameters.gridColor);
+                pen.setWidthF(0.5);
+                painter.setPen(pen);
+                painter.drawLine(QPointF(bas, Ypos), QPointF(haut, Ypos));
+
+                pen.setColor(parameters.axesColor);
+                pen.setWidth(1);
+                painter.setPen(pen);
+            }
+
+            painter.drawLine(QPointF(Xpos  -3, Ypos), QPointF(Xpos, Ypos));
+            num = QString::number(Yreal, 'g', NUM_PREC);
+            if(drawOnRight)
+                painter.drawText(QPointF(posTxt - painter.fontMetrics().width(num), Ypos + txtCorr), num);
+            else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
+        }
+
+        Yreal -= graphRange.Ystep;
+        Ypos += step;
+    }   
+}
+
+void MainGraph::incrementTickSpacing(double &spacing, int &currentMultiplier)
+{
+    switch (currentMultiplier) {
+    case 1:
+        currentMultiplier = 2;
+        spacing *= 2;
+        break;
+    case 2:
+        currentMultiplier = 5;
+        spacing *= 2.5;
+        break;
+    case 5:
+        currentMultiplier = 1;
+        spacing *= 2;
+        break;
+    }
+}
+
+void MainGraph::decrementTickSpacing(double &spacing, int &currentMultiplier)
+{
+    switch (currentMultiplier) {
+    case 1:
+        currentMultiplier = 5;
+        spacing /= 2;
+        break;
+    case 5:
+        currentMultiplier = 2;
+        spacing /= 2.5;
+        break;
+    case 2:
+        currentMultiplier = 1;
+        spacing /= 2;
+        break;
+    }
+}
+
+bool MainGraph::updateTickSpacing()
+{
+    bool scaleChanged = false;
+    bool orthonormal = information->isOrthonormal();
+
+    if(uniteX * graphRange.Xstep < widestXNumber + 32)
+    {
+        while(uniteX * graphRange.Xstep < widestXNumber + 32)
+            incrementTickSpacing(graphRange.Xstep, graphRange.XstepMult);
+        if(orthonormal)
+             graphRange.Ystep = graphRange.Xstep;
+        scaleChanged = true;
+    }
+    else if(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
+    {
+        while(uniteX * graphRange.Xstep > 2*widestXNumber + 96)
+            decrementTickSpacing(graphRange.Xstep, graphRange.XstepMult);
+        if(orthonormal)
+             graphRange.Ystep = graphRange.Xstep;
+        scaleChanged = true;
+    }
+    if(!orthonormal)
+    {
+        if(uniteY * graphRange.Ystep < 25)
+        {
+            while(uniteY * graphRange.Ystep < 25)
+                incrementTickSpacing(graphRange.Ystep, graphRange.YstepMult);
+            scaleChanged = true;
+        }
+        else if(uniteY * graphRange.Ystep > 150)
+        {
+            while(uniteY * graphRange.Ystep > 150)
+                decrementTickSpacing(graphRange.Ystep, graphRange.YstepMult);
+            scaleChanged = true;
+        }
+    }
+
+    return scaleChanged;
+}
+
+void MainGraph::drawAxes()
+{
+    // *********** remarque: les y sont positifs en dessous de l'axe x, step au dessus !! ************//
+    pen.setWidth(1);
+    pen.setColor(parameters.axesColor);
+    painter.setPen(pen);    
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    axesIntersec.y = centre.y;
+    axesIntersec.x = centre.x;
+
+    if(graphRange.Ymin > -20/uniteY)
+        axesIntersec.y = graphHeight - 20;
+    else if(graphRange.Ymax < 20/uniteY)
+        axesIntersec.y = 20;
+
+    if(graphRange.Xmin > -10/uniteX)
+        axesIntersec.x = 10;
+    else if(graphRange.Xmax < 10/uniteX)
+        axesIntersec.x = graphWidth - 10;
+
+
+    //ordinates axis
+    painter.drawLine(QPointF(axesIntersec.x, 0), QPointF(axesIntersec.x, graphHeight));
+
+    //abscissa axis
+    painter.drawLine(QPointF(0, axesIntersec.y), QPointF(graphWidth, axesIntersec.y));
+
+
+    if(graphRange.Ymin > -20/uniteY)
+    {
+        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-6), QPointF(axesIntersec.x+3, axesIntersec.y-4));
+        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-9), QPointF(axesIntersec.x+3, axesIntersec.y-7));
+
+        pen.setColor(parameters.backgroundColor);
+        painter.setPen(pen);
+
+        painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y-6), QPointF(axesIntersec.x, axesIntersec.y-7));
+    }
+    else if(graphRange.Ymax < 20/uniteY)
+    {
+        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+6), QPointF(axesIntersec.x+3, axesIntersec.y+4));
+        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+9), QPointF(axesIntersec.x+3, axesIntersec.y+7));
+
+        pen.setColor(parameters.backgroundColor);
+        painter.setPen(pen);
+
+        painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y+6), QPointF(axesIntersec.x, axesIntersec.y+7));
+    }
+}
+
 void MainGraph::zoomX()
 {
     double valeur = (graphRange.Xmax- graphRange.Xmin) * double(hSlider->value()) * 0.0016;
 
     double ratio = (graphView.getViewRect().right()- graphView.getViewRect().left()) * (double)(hSlider->value()) * 0.0016;
-
+    /* TODO: Put that in the graphView code
+      if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
+            (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
+    */
     graphView.zoomXview(ratio);
     moving = true;
     information->setRange(graphView);

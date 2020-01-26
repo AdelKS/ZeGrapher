@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>data_help_en</title>  
+    <style>
+      body { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; word-wrap: break-word; padding: 20px; background-color: rgb(255, 255, 255); margin-left: 32px; margin-top: 20px; font-size: 20px; color: rgb(200, 204, 213); background-color: rgb(47, 51, 61); }
+      h1, h2, h3, h4, h5, h6 {  margin-top: 16px; margin-bottom: 16px; font-weight: bold; vertical-align: middle;  }
+
+      h1 { padding-bottom: 5px; font-size: 36px; color: rgb(240, 244, 243); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238);}
+      h2 { padding-bottom: 5px; font-size: 30px; color: rgb(240, 244, 243); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238);}
+      h3 { font-size: 26px; color: rgb(240, 244, 243);}
+      h4 { font-size: 24px; color: rgb(240, 244, 243);}
+      h5 { font-size: 22px; color: rgb(240, 244, 243);}
+      h6 { font-size: 22px; color: rgb(240, 244, 243);}
+      p, blockquote, ul, ol, dl, table, pre { margin-top: 0px; margin-bottom: 16px; }
+
+      ul, ol { padding-left: 32px; }
+      ul ul, ul ol, ol ol, ol ul { margin-top: 0px; margin-bottom: 0px; }
+      li > p { margin-top: 16px; }
+      blockquote { padding: 0px 15px; color: rgb(119, 119, 119); border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); }
+
+      blockquote p { font-size: 16px; }
+      h1, h2 { border-color: rgb(24, 26, 31); }
+      a { color: rgb(100, 148, 237); }
+      hr { background-color: rgb(67, 73, 86); }
+      blockquote { color: rgb(157, 165, 180); border-left-color: rgba(157, 165, 180, 0.6); }
+    </style>
+  </head>
+  <body>
+    <h1 id="hilfe-dateneingabe-fenster">Hilfe: Dateneingabe-Fenster</h1>
+
+    <p>
+      <a href="data_help_en.html"><img src="qrc:///Help/english-icon.png" alt="english flag"></a>
+      <a href="data_help_fr.html"><img src="qrc:///Help/french-icon.png" alt="french flag"></a>
+      <a href="data_help_de.html"><img src="qrc:///Help/german-icon.png" alt="german flag"></a>
+    </p>
+
+    <h2  id="%C3%BCbersicht">&#xDC;bersicht</h2>
+    <p><img src="qrc:///Help/pins_de.png" alt><br></p>
+    <p>Der wichtigste Bereich des Dateneingabe-Fensters ist die Datentabelle mit den <strong> Daten-Pins </strong> am oberen Rand, die sich mit der Maus verschieben lassen.<br>
+    Diese Pins spielen eine wichtige Rolle bei der Eingabe und der Visualisierung der Daten.</p>
+    <h3  id="schwarze-pins-basis-pinbasepinpng">Schwarze Pins <img src="qrc:///Help/basePin.png" alt="Basis-Pin"></h3>
+
+    <p><img src="qrc:///Help/Xpin.png" alt="pin x"> kennzeichnet die Spalte mit den Werten f&#xFC;r die X-Achse. Entsprechendes gilt f&#xFC;r <img src="qrc:///Help/Ypin.png" alt="pin y"> (Y-Achse) bzw. f&#xFC;r <img src="qrc:///Help/Rpin.png" alt="pin r"> und <img src="qrc:///Help/Tetapin.png" alt="pin teta"> bei der Verwendung von Polarkoordinaten.</p>
+    <h3  id="auswahl-pin-auswahl-pinselectorpng">Auswahl-Pin <img src="qrc:///Help/selector.png" alt="Auswahl-Pin"></h3>
+
+    <p>Der Auswahl-Pin l&#xE4;sst sich am oberen Rand auf oder zwischen den Spalten platzieren, ebenso am linken Rand auf einer Zeile oder zwischen zwei Zeilen. Er erm&#xF6;glicht folgende Aktionen:</p>
+    <ul>
+    <li>
+    <p><strong>Auf Spalten:</strong> <a href="#ColumnActions">F&#xFC;llen, Sortieren, L&#xF6;schen</a> der markierten Spalte oder das Einf&#xFC;gen einer neuen Spalte, wenn er zwischen zwei Spalten platziert wird.</p>
+    </li>
+    <li>
+    <p><strong>Auf Zeilen:</strong> L&#xF6;schen der markierten Zeile oder das Einf&#xFC;gen einer neue Zeile, wenn er zwischen zwei Zeilen platziert wird.</p>
+    <p><img src="qrc:///Help/lineActions_de.png" alt></p>
+    </li>
+    </ul>
+    <h3  id="ausgleichskurven-regressionsanalyse">Ausgleichskurven (Regressionsanalyse)</h3>
+
+    <p>ZeGrapher kann Ausgleichskurven nach der Methode der kleinsten Quadrate berechnen: Die Ausgleichskurve kann entweder anhand der Datenpunkte selbst oder anhand der Abschnitte zwischen zwei benachbarten Datenpunkt berechnet werden.</p>
+    <p><strong>Anmerkung:</strong> In dieser Version ist nur die Berechnung von einfachen polynomialen Ausgleichskurven m&#xF6;glich.</p>
+    <h2  id="praktische-anwendung">Praktische Anwendung</h2>
+
+    <h3  id="a-idcolumnactions-spalte-bearbeitena"><a id="ColumnActions" href> Spalte bearbeiten</a></h3>
+
+    <p>Wenn der Auswahl-Pin <img src="qrc:///Help/selector.png" alt="Auswahl-Pin"> auf einer Spalte positioniert wird, sind folgende Aktionen m&#xF6;glich.</p>
+    <p><img src="qrc:///Help/columnActions_de.png" alt><br></p>
+    <h4  id="umbenennen">Umbenennen</h4>
+
+    <p>Nach Doppelklick auf den Spaltennamen (initial &quot;Umbenennen!&quot;) erscheint ein Dialog, in dem ein neuer Name eingegeben werden kann.</p>
+    <p><strong>Anmerkung:</strong> In Spaltennamen sind nur Buchstaben und Unterstriche erlaubt.</p>
+    <h4  id="sortieren">Sortieren</h4>
+
+    <p>Damit k&#xF6;nnen die Werte in der Spalte sortiert werden. Wahlweise kann nur die ausgew&#xE4;hle Spalte oder die ganze Tabelle anhand der ausgew&#xE4;hlten Spalte sortiert werden.</p>
+    <h4  id="f%C3%BCllen">F&#xFC;llen</h4>
+
+    <p>Die Werte in der ausgew&#xE4;hlte Spalte k&#xF6;nnen entweder anhand einer Formel berechnet oder automatisch erzeugt werden.</p>
+    <p><img src="qrc:///Help/columnFill_de.png" alt><br></p>
+    <h5  id="1-berechnung-ahand-eines-ausdrucks">1. Berechnung ahand eines Ausdrucks</h5>
+
+    <p><em>Die in den Zellen enthaltenen Werte werden anhand des angegebenen Ausdrucks berechnet.</em></p>
+    <p>Zur Berechnung der Zellwerte k&#xF6;nnen Werte aus einer anderen Spalte verwendet werden. Dazu muss der Spaltenname als Variable verwendet werden.</p>
+    <blockquote>
+    <p><strong>Beispiel:</strong> x&apos; = 2 * Volumen (Volumen ist in diesem Fall der Name einer anderen Spalte)<br><br>
+    Auf diese Weise lassen sich auch die Zellwerte einer Spalte in eine andere Spalte kopieren.</p>
+    </blockquote>
+    <p>Wenn die ausgew&#xE4;hlte Spalte bereits Werte enth&#xE4;lt, so lassen sich diese auch selbst im Ausdruck verwenden, indem sie mit &quot;x&quot; oder dem eigenen Spaltennamen referenziert werden.</p>
+    <blockquote>
+    <p><strong>Beispiel:</strong> x&apos; = cos(x) <br><br>
+    Der Zellinhalt wird durch den Kosinus des Ursprungswertes ersetzt.</p>
+    </blockquote>
+    <p>Alle g&#xE4;ngigen Funktionen (die auf der virtuellen Tastatur) k&#xF6;nnen im Ausdruck verwendet werden, ebenso eingegebene Funktionen (f,g,h... usw.).</p>
+    <h5  id="2-automatisch-bef%C3%BCllen">2. Automatisch bef&#xFC;llen</h5>
+
+    <p>Die Spalte wird automatisch bef&#xFC;llt, ausgehend vom angegebenen Startwert, der bis zum Erreichen des Endwertes um das angegebene Intervall erh&#xF6;ht wird.</p>
+    <h3  id="ausgleichskurven">Ausgleichskurven</h3>
+
+    <p><em>In dieser Version ist nur die Berechnung von einfachen polynomialen Ausgleichskurven m&#xF6;glich.</em></p>
+    <p>Die Ausgleichskurve n&#xE4;hert sich den Punkten in den mit <img src="qrc:///Help/Xpin.png" alt="pin x"> und <img src="qrc:///Help/Ypin.png" alt="pin y"> (bzw. <img src="qrc:///Help/Rpin.png" alt="pin r"> und <img src="qrc:///Help/Tetapin.png" alt="pin teta">) markierten Spalten an.<br>
+    Werden die Pins auf andere Spalten verschoben oder Werte in den ausgew&#xE4;hlten Spalten hinzugef&#xFC;gt, so wird die Ausgleichskurve automatisch angepasst.</p>
+    <h4  id="regressionsanalyse">Regressionsanalyse</h4>
+
+    <p>Der Polynomgrad der Ausgleichskurve kann ausgew&#xE4;hlt werden, ebenso der Darstellungsbereich und die Kurvenfarbe. Die Koeffizienten der Ausgleichskurve werden im gleichnamigen Reiter angezeigt.</p>
+    <p><img src="qrc:///Help/polynomialCoefVals_en.png" alt></p>
+    <h3  id="feedback">Feedback</h3>
+
+    <p>Haben Sie einen Fehler gefunden oder einen Vorschlag zur Verbesserung von ZeGrapher? Eine Mail an <a href="mailto:contact@zegrapher.com">contact@zegrapher.com</a> ist jederzeit willkommen!</p>
+  </body>
+</html>
