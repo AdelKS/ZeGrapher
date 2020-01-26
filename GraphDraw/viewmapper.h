@@ -68,19 +68,17 @@ struct ZeLinAxisTicks
     QList<ZeAxisSubTick> axisSubticks;
 };
 
-class ZeGraphView : public QObject
+class ZeViewMapper : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ZeGraphView(const ZeViewSettings &viewSettings,
-                         QSize viewPxSize,
-                         QObject *parent = nullptr);
+    explicit ZeViewMapper(QObject *parent = nullptr);
 
-    ZeGraphView(const ZeGraphView &other,
+    ZeViewMapper(const ZeViewMapper &other,
                 QObject *parent = nullptr);
 
-    ZeGraphView& operator=(const ZeGraphView &other);
+    ZeViewMapper& operator=(const ZeViewMapper &other);
 
     void zoomYview(double ratio);
     void zoomXview(double ratio);
@@ -134,14 +132,10 @@ public slots:
 
 protected:
 
-
     void verifyOrthonormality();
 
     double Xmin, Xmax, Ymin, Ymax;
     double lgXmin, lgXmax, lgYmin, lgYmax;
-
-    double xLogBase, yLogBase;    
-    double xGridStep, yGridStep;
 
     QSizeF viewPxSize;
     double targetTicksNum;

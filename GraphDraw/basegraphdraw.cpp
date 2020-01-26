@@ -41,29 +41,6 @@ BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info)
 
 }
 
-void BaseGraphDraw::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event)
-
-    viewSettings = information->getViewSettings();
-
-    painter.begin(this);
-
-    painter.setFont(information->getGraphSettings().graphFont);
-
-    painter.setBrush(QBrush(viewSettings.graph.backgroundColor));
-    painter.drawRect(-1, -1, width()+1, height()+1);
-
-    updateGraphRect();
-    updateCenterPosAndScaling();
-    funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
-
-    paint();
-
-    painter.end();
-
-}
-
 void BaseGraphDraw::setNumPrec(int prec)
 {
     numPrec = prec;
@@ -377,7 +354,7 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 
     double rapport = uniteY / uniteX;
 
-    if(information->isOrthonormal())
+    if(information->getAxesSettings().orthonormal)
     {
 
     }

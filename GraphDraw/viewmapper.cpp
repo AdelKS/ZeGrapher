@@ -1,26 +1,19 @@
-#include "graphview.h"
+#include "viewmapper.h"
 
-ZeGraphView::ZeGraphView(const ZeViewSettings &viewSettings, QSize widgetSize, QObject *parent) : QObject(parent)
+ZeViewMapper::ZeViewMapper(QObject *parent) : QObject(parent)
 {
-    this->viewPxSize = widgetSize;
-
     targetTicksNum = TARGET_TICKS_NUM;
-
-    setViewSettings(viewSettings);
 }
 
-void ZeGraphView::setViewSettings(const ZeViewSettings &viewSettings)
+void ZeViewMapper::setViewSettings(const ZeViewSettings &viewSettings)
 {
     axesSettings = viewSettings.axes;
-    xLogBase = pow(axesSettings.x.base, double(axesSettings.x.basePowNum)/double(axesSettings.x.basePowDenom));
-    yLogBase = pow(axesSettings.y.base, double(axesSettings.y.basePowNum)/double(axesSettings.y.basePowDenom));
-
     gridSettings = viewSettings.grid;
 
     setGraphRange(viewSettings.range);
 }
 
-void ZeGraphView::setGraphRange(const GraphRange &range)
+void ZeViewMapper::setGraphRange(const GraphRange &range)
 {
     setXmax(range.x.max);
     setYmax(range.y.max);
@@ -28,7 +21,7 @@ void ZeGraphView::setGraphRange(const GraphRange &range)
     setYmin(range.y.min);
 }
 
-GraphRange ZeGraphView::getGraphRange()
+GraphRange ZeViewMapper::getGraphRange()
 {
     GraphRange range;
 
@@ -41,7 +34,7 @@ GraphRange ZeGraphView::getGraphRange()
     return range;
 }
 
-ZeGraphView::ZeGraphView(const ZeGraphView &other, QObject *parent) : QObject(parent)
+ZeViewMapper::ZeViewMapper(const ZeViewMapper &other, QObject *parent) : QObject(parent)
 {
     Xmin = other.Xmin;
     Xmax = other.Xmax;
@@ -52,12 +45,9 @@ ZeGraphView::ZeGraphView(const ZeGraphView &other, QObject *parent) : QObject(pa
     lgXmax = other.lgXmax;
     lgYmin = other.lgYmin;
     lgYmax = other.lgYmax;
-
-    xLogBase = other.xLogBase;
-    yLogBase = other.yLogBase;
 }
 
-ZeGraphView& ZeGraphView::operator=(const ZeGraphView &other)
+ZeViewMapper& ZeViewMapper::operator=(const ZeViewMapper &other)
 {
     Xmin = other.Xmin;
     Xmax = other.Xmax;
@@ -68,14 +58,11 @@ ZeGraphView& ZeGraphView::operator=(const ZeGraphView &other)
     lgXmax = other.lgXmax;
     lgYmin = other.lgYmin;
     lgYmax = other.lgYmax;
-
-    xLogBase = other.xLogBase;
-    yLogBase = other.yLogBase;
 
     return *this;
 }
 
-QRectF ZeGraphView::getRect() const
+QRectF ZeViewMapper::getRect() const
 {
     QRectF graphWin;
     graphWin.setBottom(Ymin);
@@ -85,7 +72,7 @@ QRectF ZeGraphView::getRect() const
     return graphWin;
 }
 
-QRectF ZeGraphView::getLogRect() const
+QRectF ZeViewMapper::getLogRect() const
 {
     QRectF graphlLgWin;
     graphlLgWin.setBottom(lgYmin);
@@ -95,7 +82,7 @@ QRectF ZeGraphView::getLogRect() const
     return graphlLgWin;
 }
 
-void ZeGraphView::setViewRect(QRectF rect)
+void ZeViewMapper::setViewRect(QRectF rect)
 {
     setViewXmax(rect.right());
     setViewXmin(rect.left());
@@ -105,7 +92,7 @@ void ZeGraphView::setViewRect(QRectF rect)
     verifyOrthonormality();
 }
 
-QRectF ZeGraphView::getViewRect() const
+QRectF ZeViewMapper::getViewRect() const
 {
     QRectF viewWin;
 
@@ -134,7 +121,7 @@ QRectF ZeGraphView::getViewRect() const
     return viewWin;
 }
 
-void ZeGraphView::zoomYview(double ratio)
+void ZeViewMapper::zoomYview(double ratio)
 {
     if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
@@ -152,7 +139,7 @@ void ZeGraphView::zoomYview(double ratio)
     verifyOrthonormality();
 }
 
-void ZeGraphView::zoomXview(double ratio)
+void ZeViewMapper::zoomXview(double ratio)
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -170,7 +157,7 @@ void ZeGraphView::zoomXview(double ratio)
     verifyOrthonormality();
 }
 
-void ZeGraphView::zoomView(QPointF center, double ratio)
+void ZeViewMapper::zoomView(QPointF center, double ratio)
 {
     if((Xmax - Xmin > MIN_RANGE && Ymax - Ymin > MIN_RANGE) || ratio < 0)
     {
@@ -198,23 +185,7 @@ void ZeGraphView::zoomView(QPointF center, double ratio)
     }
 }
 
-ZeAxesTicks ZeGraphView::getAxesTicks()
-{
-    ZeAxesTicks axesTicks;
-
-    if(viewPxSize.isNull())
-        return axesTicks;
-
-    if(axesSettings.x.axisType == ZeAxisType::LINEAR)
-    {
-
-    }
-
-    return axesTicks;
-}
-
-
-ZeLinAxisTicks ZeGraphView::getLinearAxisTicks(double windowWidth,
+ZeLinAxisTicks ZeViewMapper::getLinearAxisTicks(double windowWidth,
                                             ZeAxisRange range,
                                             ZeAxisName axisName,
                                             QFontMetrics metrics)
@@ -267,7 +238,7 @@ ZeLinAxisTicks ZeGraphView::getLinearAxisTicks(double windowWidth,
     return axisTicks;
 }
 
-void ZeGraphView::translateView(QPointF vec)
+void ZeViewMapper::translateView(QPointF vec)
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -292,7 +263,7 @@ void ZeGraphView::translateView(QPointF vec)
     }
 }
 
-double ZeGraphView::viewToUnitY(double viewY) const // viewY =
+double ZeViewMapper::viewToUnitY(double viewY) const // viewY =
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -304,7 +275,7 @@ double ZeGraphView::viewToUnitY(double viewY) const // viewY =
     }
 }
 
-double ZeGraphView::unitToViewY(double unitY) const
+double ZeViewMapper::unitToViewY(double unitY) const
 {
     if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
@@ -316,27 +287,27 @@ double ZeGraphView::unitToViewY(double unitY) const
     }
 }
 
-double ZeGraphView::getXmin()
+double ZeViewMapper::getXmin()
 {
     return Xmin;
 }
 
-double ZeGraphView::getXmax()
+double ZeViewMapper::getXmax()
 {
     return Xmax;
 }
 
-double ZeGraphView::getYmin()
+double ZeViewMapper::getYmin()
 {
     return Ymin;
 }
 
-double ZeGraphView::getYmax()
+double ZeViewMapper::getYmax()
 {
     return Ymax;
 }
 
-double ZeGraphView::viewToUnitX(double viewX) const
+double ZeViewMapper::viewToUnitX(double viewX) const
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -348,7 +319,7 @@ double ZeGraphView::viewToUnitX(double viewX) const
     }
 }
 
-double ZeGraphView::unitToViewX(double unitX) const
+double ZeViewMapper::unitToViewX(double unitX) const
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -360,7 +331,7 @@ double ZeGraphView::unitToViewX(double unitX) const
     }
 }
 
-void ZeGraphView::setViewXmin(double val)
+void ZeViewMapper::setViewXmin(double val)
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -374,7 +345,7 @@ void ZeGraphView::setViewXmin(double val)
     verifyOrthonormality();
 }
 
-void ZeGraphView::setViewXmax(double val)
+void ZeViewMapper::setViewXmax(double val)
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -388,7 +359,7 @@ void ZeGraphView::setViewXmax(double val)
     verifyOrthonormality();
 }
 
-void ZeGraphView::setViewYmin(double val)
+void ZeViewMapper::setViewYmin(double val)
 {
     if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
@@ -402,7 +373,7 @@ void ZeGraphView::setViewYmin(double val)
     verifyOrthonormality();
 }
 
-void ZeGraphView::setViewYmax(double val)
+void ZeViewMapper::setViewYmax(double val)
 {
     if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
@@ -416,7 +387,7 @@ void ZeGraphView::setViewYmax(double val)
     verifyOrthonormality();
 }
 
-void ZeGraphView::verifyOrthonormality()
+void ZeViewMapper::verifyOrthonormality()
 {
     // TODO: update with only the Size, and to use with both orthonormal and linear
     if(viewWidget != 0 && viewType == ZeScaleType::LINEAR_ORTHONORMAL)
@@ -429,49 +400,49 @@ void ZeGraphView::verifyOrthonormality()
     }
 }
 
-void ZeGraphView::setlgXmin(double val)
+void ZeViewMapper::setlgXmin(double val)
 {
     lgXmin = val;
     Xmin = pow(xLogBase, lgXmin);
 }
 
-void ZeGraphView::setlgXmax(double val)
+void ZeViewMapper::setlgXmax(double val)
 {
     lgXmax = val;
     Xmax = pow(xLogBase, lgXmax);
 }
 
-void ZeGraphView::setlgYmin(double val)
+void ZeViewMapper::setlgYmin(double val)
 {
     lgYmin = val;
     Ymin = pow(yLogBase, lgYmin);
 }
 
-void ZeGraphView::setlgYmax(double val)
+void ZeViewMapper::setlgYmax(double val)
 {
     lgYmax = val;
     Ymax = pow(yLogBase, lgYmax);
 }
 
-void ZeGraphView::setXmin(double val)
+void ZeViewMapper::setXmin(double val)
 {
     Xmin = val;
     lgXmin = log(Xmin)/log(xLogBase);
 }
 
-void ZeGraphView::setXmax(double val)
+void ZeViewMapper::setXmax(double val)
 {
     Xmax = val;
     lgXmax = log(Xmax)/log(xLogBase);
 }
 
-void ZeGraphView::setYmin(double val)
+void ZeViewMapper::setYmin(double val)
 {
     Ymin = val;
     lgYmin = log(Ymin)/log(yLogBase);
 }
 
-void ZeGraphView::setYmax(double val)
+void ZeViewMapper::setYmax(double val)
 {
     Ymax = val;
     lgYmax = log(Ymax)/log(yLogBase);

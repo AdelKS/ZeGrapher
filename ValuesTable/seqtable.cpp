@@ -150,22 +150,11 @@ void SeqTable::fillFromRange()
 {
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
     {
-<<<<<<< HEAD
-        GraphRange range = information->getGraphRange();
-        GraphTickIntervals tickInterval = information->getGraphTickIntervals();
-
-        parameters.range.start = trunc(range.Xmin / tickInterval.x) * tickInterval.x;
-        parameters.range.step = tickInterval.x;
-        parameters.range.end = range.Xmax;
-=======
-        ZeGraphView range = information->getGraphView();
-
-        //change here with the new approach
+        //TODO: change here with the new approach
 
         parameters.range.start = -10;
         parameters.range.step = 1;
         parameters.range.end = 10;
->>>>>>> master
 
         if(seq->get_nMin() > parameters.range.end)
             return;

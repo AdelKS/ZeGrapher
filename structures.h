@@ -62,7 +62,6 @@ struct ZeAxisRange
 struct GraphRange
 {
     ZeAxisRange x, y;
-    bool orthonormal;
 
     QRectF getRect() const
     {
@@ -154,7 +153,8 @@ struct ZeGridSettings
 
 struct ZeAxesSettings
 {
-    ZeAxisSettings x, y;
+    ZeAxisSettings x, y;    
+    bool orthonormal;
 };
 
 struct ZeViewSettings
@@ -176,9 +176,19 @@ struct Range
     double start, end, step;
 };
 
+struct Point
+{
+    double x, y;
+
+    bool operator<(const Point &b) const
+    {
+        return x < b.x;
+    }
+};
+
 struct TangentPoints
 {
-    QPointF left, center, right;
+    Point left, center, right;
     //center is the point where the tangent touches the curve, left and right are the edges of the segment
 };
 
@@ -221,16 +231,6 @@ struct SelectorPos
 {
     bool inbetween;
     int index;
-};
-
-struct Point
-{
-    double x, y;
-
-    bool operator<(const Point &b) const
-    {
-        return x < b.x;
-    }
 };
 
 #endif // STRUCTURES_H

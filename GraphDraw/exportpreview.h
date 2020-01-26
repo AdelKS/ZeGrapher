@@ -42,7 +42,7 @@ class ExportPreview : public BaseGraphDraw
     Q_OBJECT
 
 public:
-    explicit ExportPreview(QSizeF sheetSizeCm, QSize imageSizePx, ExportType exportType, Information *info);
+    explicit ExportPreview(Information *info);
 
     void setExportType(ExportType type);
     double getMinFigureRelativeSize();

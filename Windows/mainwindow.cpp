@@ -44,7 +44,7 @@ MainWindow::MainWindow()
 
     setIconSize(QSize(30, 30));
 
-    mainGraph = new MainGraph(information); // it has to be the last thing to create.
+    mainGraph = new ExportPreview(information); // it has to be the last thing to create.
     setCentralWidget(mainGraph);
 
     createDocks();

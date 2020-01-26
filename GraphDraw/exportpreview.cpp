@@ -21,14 +21,9 @@
 
 #include "GraphDraw/exportpreview.h"
 
-ExportPreview::ExportPreview(QSizeF sheetCm, QSize imagePx, ExportType type, Information *info): BaseGraphDraw(info)
+ExportPreview::ExportPreview(Information *info): BaseGraphDraw(info)
 {
     initialise();
-
-    setSheetSizeCm(sheetCm);
-    setImageSizePx(imagePx);
-
-    setExportType(type);
 }
 
 void ExportPreview::setExportType(ExportType type)
@@ -57,11 +52,6 @@ void ExportPreview::updateTargetSupportSizePx()
 
 void ExportPreview::initialise()
 {
-    graphSettings.distanceBetweenPoints = information->getSettingsVals().distanceBetweenPoints;
-
-    graphRange = information->getGraphRange();
-    tickIntervals = information->getGraphTickIntervals();
-
     orientation = QPageLayout::Landscape;
     moveType = NOTHING;
     setMouseTracking(true);
@@ -112,8 +102,6 @@ void ExportPreview::setScale(double scalingFactor)
 
 void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
 {
-    graphSettings = information->getSettingsVals();
-
     QPdfWriter *pdfWriter = new QPdfWriter(fileName);
 
     pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION_STR);
@@ -156,8 +144,6 @@ void ExportPreview::exportPDF(QString fileName, SheetSizeType sizeType)
 
 void ExportPreview::exportSVG(QString fileName)
 {
-    graphSettings = information->getSettingsVals();
-
     QSvgGenerator svgGenerator;
     svgGenerator.setFileName(fileName);
 
@@ -175,9 +161,9 @@ void ExportPreview::exportSVG(QString fileName)
 
     painter.begin(&svgGenerator);
 
-    if(information->getSettingsVals().backgroundColor != QColor(Qt::white))
+    if(information->getGraphSettings().backgroundColor != QColor(Qt::white))
     {
-        painter.setBrush(QBrush(information->getSettingsVals().backgroundColor));
+        painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));
         painter.drawRect(painter.viewport());
     }
 
@@ -616,15 +602,4 @@ void ExportPreview::mouseReleaseEvent(QMouseEvent *event)
 void ExportPreview::wheelEvent(QWheelEvent *event)
 {
     Q_UNUSED(event);
-}
-
-void ExportPreview::setGraphRange(GraphRange range)
-{
-    graphRange = range;
-    update();
-}
-void ExportPreview::setGraphTickIntervals(GraphTickIntervals tickIntervals)
-{
-    this->tickIntervals = tickIntervals;
-    update();
 }

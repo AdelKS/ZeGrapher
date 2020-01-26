@@ -42,7 +42,7 @@ double FuncValuesSaver::evalFunc(int funId, double x, double k)
 }
 
 
-void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, const ZeGraphView &view)
+void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, const ZeViewMapper &view)
 {
     xUnit = new_xUnit;
     yUnit = new_yUnit;
@@ -122,7 +122,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, const ZeG
     }
 }
 
-void FuncValuesSaver::move(const ZeGraphView &view)
+void FuncValuesSaver::move(const ZeViewMapper &view)
 {
     double x = 0, k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
     int k_pos = 0;

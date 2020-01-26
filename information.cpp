@@ -187,11 +187,6 @@ void Information::setOrthonormal(bool state)
     emit updateOccured();
 }
 
-bool Information::isOrthonormal()
-{
-    return viewSettings.orthonormal;
-}
-
 void Information::setViewSettings(const ZeViewSettings &viewSettings)
 {
     this->viewSettings = viewSettings;

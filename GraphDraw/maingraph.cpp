@@ -21,7 +21,7 @@
 #include "GraphDraw/maingraph.h"
 
 
-MainGraph::MainGraph(Information *info) : BaseGraphDraw(info)
+MainGraph::MainGraph(Information *info) : ExportPreview(info)
 {
     
     setMinimumSize(QSize(200, 200));
@@ -396,7 +396,7 @@ void MainGraph::afficherPtX(double x)
 void MainGraph::newWindowSize()
 {
     if(hWidget != nullptr)
-    {
+    {        
         hTopLeft.setX((width()-hWidget->width())/2);
         hTopLeft.setY(height()-hWidget->height());
 
@@ -495,9 +495,11 @@ void MainGraph::directPaint()
 
     painter.setFont(information->getGraphSettings().graphFont);
 
+    const ZeGraphSettings &graphSettings = information->getGraphSettings();
+
     painter.setBrush(QBrush(graphSettings.backgroundColor));
 
-    painter.drawRect(-1, -1, graphWidth+1, graphHeight+1);
+    painter.drawRect(-1, -1, graphRectScaled.width() + 1, graphRectScaled.height() + 1);
 
     updateCenterPosAndScaling();
 

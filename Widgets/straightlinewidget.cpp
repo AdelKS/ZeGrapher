@@ -176,9 +176,9 @@ void StraightLineWidget::validate()
     }
 }
 
-double StraightLineWidget::getOrdinate(double abscissa)
+double StraightLineWidget::getY(double x)
 {
-    return (val_c - val_a * abscissa)/val_b;
+    return (val_c - val_a * x)/val_b;
 }
 
 double StraightLineWidget::getVerticalPos()

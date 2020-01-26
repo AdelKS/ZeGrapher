@@ -38,14 +38,6 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
 
     setWindowTitle(tr("Export"));
 
-    rangeWidget = new RangeAdjustments(info->getFuncsList(), info->getGraphRange(), info->getGraphTickIntervals());
-    rangeWidget->setMargin(0);
-    rangeWidget->disableUserInput(ui->linkToMainGraph->isChecked());
-
-    connect(ui->linkToMainGraph, SIGNAL(toggled(bool)), rangeWidget, SLOT(disableUserInput(bool)));
-
-    ui->graphViewLayout->addWidget(rangeWidget);
-
     ui->sheetSizeSubWidget->setEnabled(false);
 
     orthonormal = false;

@@ -19,11 +19,16 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 UI_DIR = .ui
 
+win32 {
+    INCLUDEPATH += C:/boost_1_72_0
+}
+
 INCLUDEPATH += .
 
 SOURCES += \
     GraphDraw/basegraphdraw.cpp \
     GraphDraw/mathobjectdraw.cpp \
+    GraphDraw/viewmapper.cpp \
     main.cpp \
     information.cpp \
     Windows/about.cpp \
@@ -76,13 +81,13 @@ SOURCES += \
     Windows/export.cpp \
     GraphDraw/exportpreview.cpp \
     Widgets/expressionlineedit.cpp \
-    GraphDraw/graphview.cpp \
     Widgets/axissettingswidget.cpp \
     Widgets/zegridsettingswidget.cpp
 
 HEADERS  += \
     GraphDraw/basegraphdraw.h \
     GraphDraw/mathobjectdraw.h \
+    GraphDraw/viewmapper.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
@@ -137,7 +142,6 @@ HEADERS  += \
     Windows/export.h \
     GraphDraw/exportpreview.h \
     Widgets/expressionlineedit.h \
-    GraphDraw/graphview.h \
     Widgets/axissettingswidget.h \
     Widgets/zegridsettingswidget.h
 

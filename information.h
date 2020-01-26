@@ -76,8 +76,6 @@ public:
     void setFunctionsList(QList<FuncCalculator*> list);
     QList<FuncCalculator*> getFuncsList();
 
-    bool isOrthonormal();
-
 signals:
     void newOrthonormalityState(bool orth);
     void graphRangeChanged(GraphRange range);

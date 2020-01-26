@@ -60,7 +60,7 @@ void RegressionValuesSaver::recalculate()
     recalculate(Point{xUnit, yUnit}, graphRange);
 }
 
-void RegressionValuesSaver::recalculate(Point graphUnits, const ZeGraphView &graphView)
+void RegressionValuesSaver::recalculate(Point graphUnits, const ZeViewMapper &graphView)
 {
     // TODO: use graph view to recalculate
     xUnit = graphUnits.x;
@@ -86,7 +86,7 @@ QList<QPolygonF> &RegressionValuesSaver::getCurves()
     return curves;
 }
 
-void RegressionValuesSaver::move(ZeGraphView newRange)
+void RegressionValuesSaver::move(ZeViewMapper newRange)
 {
     graphRange = newRange;
 
@@ -176,8 +176,8 @@ void RegressionValuesSaver::polarMove()
 
 void RegressionValuesSaver::cartesianMove()
 {    
-    drawRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
-    drawRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
+    drawRange.start = std::max(graphRange.getXmin(), regression->getDrawRange().start);
+    drawRange.end = std::min(graphRange.getXmax(), regression->getDrawRange().end);
 
     double x = curves.first().first().x() - xUnitStep;
 

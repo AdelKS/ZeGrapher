@@ -33,8 +33,8 @@ public:
     FuncValuesSaver(QList<FuncCalculator *> funcsList, double pxStep);
 
     void setPixelStep(double pxStep);
-    void calculateAll(double new_xUnit, double new_yUnit, const ZeGraphView &view);
-    void move(const ZeGraphView &view);
+    void calculateAll(double new_xUnit, double new_yUnit, const ZeViewMapper &view);
+    void move(const ZeViewMapper &view);
     int getFuncDrawsNum(int func);
 
     QList<QPolygonF> getCurve(int func, int curve);

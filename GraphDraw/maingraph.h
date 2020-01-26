@@ -24,10 +24,10 @@
 #ifndef MainGraph_H
 #define MainGraph_H
 
-#include "basegraphdraw.h"
+#include "exportpreview.h"
 
 
-class MainGraph : public BaseGraphDraw
+class MainGraph : public ExportPreview
 {
     Q_OBJECT
 public:

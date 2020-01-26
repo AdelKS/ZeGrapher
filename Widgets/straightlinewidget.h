@@ -37,7 +37,7 @@ public:
     void validate();
     void changeID(int id);
 
-    double getOrdinate(double abscissa);
+    double getY(double x);
     double getVerticalPos();
 
     QColor getColor();

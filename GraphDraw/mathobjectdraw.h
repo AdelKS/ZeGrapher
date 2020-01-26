@@ -29,7 +29,7 @@
 #include "information.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
-#include "GraphDraw/graphview.h"
+#include "GraphDraw/viewmapper.h"
 
 
 class MathObjectDraw : public QWidget // Base class from math objects drawing
@@ -78,7 +78,7 @@ protected:
     QPen pen;
     QBrush brush;
     Point centre;
-    ZeGraphView graphView;
+    ZeViewMapper graphView;
 
     double coef;
 

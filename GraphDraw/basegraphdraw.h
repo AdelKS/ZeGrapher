@@ -45,7 +45,6 @@ public slots:
 
 protected:
 
-    void paintEvent(QPaintEvent *event);
     void updateCenterPosAndScaling();
     void drawBaseGraph();
     void drawAxes();

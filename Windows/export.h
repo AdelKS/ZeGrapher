@@ -24,7 +24,6 @@
 
 #include <QWidget>
 #include "GraphDraw/exportpreview.h"
-#include "Windows/rangeadjustments.h"
 
 namespace Ui {
     class Export;
@@ -73,7 +72,6 @@ protected slots:
 protected:    
     void makeUiConnects();
     void resizeEvent(QResizeEvent *event);
-    RangeAdjustments *rangeWidget;
     Ui::Export *ui;
     QTabWidget *tabWidget;
     ExportPreview *exportPreview;
