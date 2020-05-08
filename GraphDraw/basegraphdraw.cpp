@@ -141,7 +141,7 @@ void BaseGraphDraw::paint()
 
     painter.translate(QPointF(centre.x, centre.y));
 
-    funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
+    funcValuesSaver->calculateAll(uniteX, uniteY, viewMapper);
     recalculateRegVals();
 
     drawFunctions();
@@ -199,8 +199,8 @@ void BaseGraphDraw::drawAxisComponentsLinearX()
 
     QString num;
 
-    ZeLinAxisTicks xAxisTicks = graphView.getLinearAxisTicks(graphRectScaled.width(),
-                                                             graphView.getGraphRange().x,
+    ZeLinAxisTicks xAxisTicks = viewMapper.getLinearAxisTicks(graphRectScaled.width(),
+                                                             viewMapper.getGraphRange().x,
                                                              ZeAxisName::X,
                                                              fontMetrics);
 
@@ -251,8 +251,8 @@ void BaseGraphDraw::drawAxisComponentsLinearY()
 
     QString num;
 
-    ZeLinAxisTicks yAxisTicks = graphView.getLinearAxisTicks(graphRectScaled.height(),
-                                                             graphView.getGraphRange().y,
+    ZeLinAxisTicks yAxisTicks = viewMapper.getLinearAxisTicks(graphRectScaled.height(),
+                                                             viewMapper.getGraphRange().y,
                                                              ZeAxisName::Y,
                                                              fontMetrics);
 
@@ -349,8 +349,8 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 {
     // TODO: update this method
 
-    uniteY = double(graphRectScaled.height()) / graphView.getViewRect().height();
-    uniteX = double(graphRectScaled.width()) / graphView.getViewRect().width();
+    uniteY = double(graphRectScaled.height()) / viewMapper.getViewRect().height();
+    uniteX = double(graphRectScaled.width()) / viewMapper.getViewRect().width();
 
     double rapport = uniteY / uniteX;
 
@@ -359,8 +359,8 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 
     }
 
-    centre.x = - graphView.getViewRect().left() * uniteX;
-    centre.y =  graphView.getViewRect().top() * uniteY;
+    centre.x = - viewMapper.getViewRect().left() * uniteX;
+    centre.y =  viewMapper.getViewRect().top() * uniteY;
 }
 
 QImage* BaseGraphDraw::drawImage()
@@ -396,7 +396,7 @@ QImage* BaseGraphDraw::drawImage()
 
     if(recalculate)
     {
-        funcValuesSaver->calculateAll(uniteX, uniteY, graphView);
+        funcValuesSaver->calculateAll(uniteX, uniteY, viewMapper);
         recalculateRegVals();
     }
 

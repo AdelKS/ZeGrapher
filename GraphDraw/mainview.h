@@ -37,12 +37,12 @@ enum SheetSizeType {NORMALISED, CUSTOM};
 
 
 
-class ExportPreview : public BaseGraphDraw
+class MainView : public BaseGraphDraw
 {
     Q_OBJECT
 
 public:
-    explicit ExportPreview(Information *info);
+    explicit MainView(Information *info);
 
     void setExportType(ExportType type);
     double getMinFigureRelativeSize();

@@ -23,7 +23,7 @@
 #define PRINT_H
 
 #include <QWidget>
-#include "GraphDraw/exportpreview.h"
+#include "GraphDraw/mainview.h"
 
 namespace Ui {
     class Export;
@@ -74,7 +74,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
     Ui::Export *ui;
     QTabWidget *tabWidget;
-    ExportPreview *exportPreview;
+    MainView *exportPreview;
     QTimer timer;
     QString fileName;
     bool orthonormal;

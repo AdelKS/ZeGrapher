@@ -41,7 +41,7 @@ MainWindow::MainWindow()
 
     setIconSize(QSize(30, 30));
 
-    mainGraph = new ExportPreview(information); // it has to be the last thing to create.
+    mainGraph = new MainView(information); // it has to be the last thing to create.
     setCentralWidget(mainGraph);
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
     setMinimumSize(700,450);

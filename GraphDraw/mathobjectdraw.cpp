@@ -213,7 +213,7 @@ void MathObjectDraw::recalculateRegVals()
 {
     for(auto &regValSaver : regValuesSavers)
     {
-        regValSaver.recalculate(Point{uniteX, uniteY}, graphView);
+        regValSaver.recalculate(Point{uniteX, uniteY}, viewMapper);
     }
 }
 
@@ -234,8 +234,8 @@ void MathObjectDraw::drawFunctions()
 
 void MathObjectDraw::drawOneSequence(int i, int width)
 {
-    if(graphView.getXmax() <= seqs[0]->get_nMin() ||
-            trunc(graphView.getXmax()) <= graphView.getXmin() ||
+    if(viewMapper.getXmax() <= seqs[0]->get_nMin() ||
+            trunc(viewMapper.getXmax()) <= viewMapper.getXmin() ||
             !seqs[i]->getDrawState())
         return;
 
@@ -245,15 +245,15 @@ void MathObjectDraw::drawOneSequence(int i, int width)
      QPointF point;
      double posX;
 
-     double viewXmin = graphView.getViewRect().left();
-     double viewXmax = graphView.getViewRect().right();
+     double viewXmin = viewMapper.getViewRect().left();
+     double viewXmax = viewMapper.getViewRect().right();
 
-     double Xmin = graphView.getXmin();
-     double Xmax = graphView.getXmax();
+     double Xmin = viewMapper.getXmin();
+     double Xmax = viewMapper.getXmax();
 
      if(Xmin >  seqs[0]->get_nMin())
          posX = viewXmin;
-     else posX = graphView.unitToViewX(seqs[0]->get_nMin());
+     else posX = viewMapper.unitToViewX(seqs[0]->get_nMin());
 
      double step = 1;
 
@@ -275,7 +275,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
 
          for(double pos = posX; pos < viewXmax; pos += step)
          {
-             result = seqs[i]->getSeqValue(trunc(graphView.unitToViewX(pos)), ok, k);
+             result = seqs[i]->getSeqValue(trunc(viewMapper.unitToViewX(pos)), ok, k);
 
              if(!ok  || !std::isnormal(result))
                  return;
@@ -310,15 +310,15 @@ void MathObjectDraw::drawOneTangent(int i)
     painter.setPen(pen);
 
     tangentPoints = tangents->at(i)->getCaracteristicPoints();
-    painter.drawLine(QPointF(graphView.unitToViewX(tangentPoints.left.x), graphView.unitToViewY(tangentPoints.left.y)),
-                     QPointF(graphView.unitToViewX(tangentPoints.right.x), graphView.unitToViewY(tangentPoints.right.y)));
+    painter.drawLine(QPointF(viewMapper.unitToViewX(tangentPoints.left.x), viewMapper.unitToViewY(tangentPoints.left.y)),
+                     QPointF(viewMapper.unitToViewX(tangentPoints.right.x), viewMapper.unitToViewY(tangentPoints.right.y)));
 
     pen.setWidth(viewSettings.graph.curvesThickness + 3);
     painter.setPen(pen);
 
-    painter.drawPoint(QPointF(graphView.unitToViewX(tangentPoints.left.x), graphView.unitToViewY(tangentPoints.left.y)));
-    painter.drawPoint(QPointF(graphView.unitToViewX(tangentPoints.center.x), graphView.unitToViewY(tangentPoints.center.y)));
-    painter.drawPoint(QPointF(graphView.unitToViewX(tangentPoints.right.x), graphView.unitToViewY(tangentPoints.right.y)));
+    painter.drawPoint(QPointF(viewMapper.unitToViewX(tangentPoints.left.x), viewMapper.unitToViewY(tangentPoints.left.y)));
+    painter.drawPoint(QPointF(viewMapper.unitToViewX(tangentPoints.center.x), viewMapper.unitToViewY(tangentPoints.center.y)));
+    painter.drawPoint(QPointF(viewMapper.unitToViewX(tangentPoints.right.x), viewMapper.unitToViewY(tangentPoints.right.y)));
 }
 
 void MathObjectDraw::drawTangents()
@@ -347,19 +347,19 @@ void MathObjectDraw::drawStraightLines()
 
         if(straightLines->at(i)->isVertical())
         {
-            pt1.setX(graphView.unitToViewX(straightLines->at(i)->getVerticalPos()));
-            pt1.setY(graphView.getViewRect().top());
+            pt1.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()));
+            pt1.setY(viewMapper.getViewRect().top());
 
-            pt2.setX(graphView.unitToViewX(straightLines->at(i)->getVerticalPos()));
-            pt2.setY(graphView.getViewRect().bottom());
+            pt2.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()));
+            pt2.setY(viewMapper.getViewRect().bottom());
         }
         else
         {
-            pt1.setX(graphView.getViewRect().left());
-            pt1.setY(graphView.unitToViewY(straightLines->at(i)->getY(graphView.getXmin())));
+            pt1.setX(viewMapper.getViewRect().left());
+            pt1.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmin())));
 
-            pt2.setX(graphView.getViewRect().right());
-            pt2.setY(graphView.unitToViewY(straightLines->at(i)->getY(graphView.getXmax())));
+            pt2.setX(viewMapper.getViewRect().right());
+            pt2.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmax())));
         }
 
         painter.drawLine(pt1, pt2);
@@ -395,7 +395,7 @@ void MathObjectDraw::drawStaticParEq()
             for(int pos = 0 ; pos < list->at(curve).size(); pos ++)
             {
                 point = list->at(curve).at(pos);
-                polygon << QPointF(graphView.unitToViewX(point.x), graphView.unitToViewY(point.y));
+                polygon << QPointF(viewMapper.unitToViewX(point.x), viewMapper.unitToViewY(point.y));
             }
 
             painter.drawPolyline(polygon);

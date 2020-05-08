@@ -32,7 +32,9 @@ win32 {
 
 SOURCES += \
     GraphDraw/basegraphdraw.cpp \
+    GraphDraw/mainview.cpp \
     GraphDraw/mathobjectdraw.cpp \
+    GraphDraw/subgraph.cpp \
     GraphDraw/viewmapper.cpp \
     Widgets/popupwidget.cpp \
     main.cpp \
@@ -55,7 +57,6 @@ SOURCES += \
     ValuesTable/pareqtable.cpp \
     ValuesTable/functable.cpp \
     ValuesTable/abstracttable.cpp \
-    GraphDraw/maingraph.cpp \
     DataPlot/rowselectorwidget.cpp \
     DataPlot/rowactionswidget.cpp \
     DataPlot/datawindow.cpp \
@@ -85,14 +86,15 @@ SOURCES += \
     Windows/updatecheck.cpp \
     Windows/mainwindow.cpp \
     Windows/export.cpp \
-    GraphDraw/exportpreview.cpp \
     Widgets/expressionlineedit.cpp \
     Widgets/axissettingswidget.cpp \
     Widgets/zegridsettingswidget.cpp
 
 HEADERS  += \
     GraphDraw/basegraphdraw.h \
+    GraphDraw/mainview.h \
     GraphDraw/mathobjectdraw.h \
+    GraphDraw/subgraph.h \
     GraphDraw/viewmapper.h \
     Widgets/popupwidget.h \
     information.h \
@@ -114,7 +116,6 @@ HEADERS  += \
     ValuesTable/pareqtable.h \
     ValuesTable/functable.h \
     ValuesTable/abstracttable.h \
-    GraphDraw/maingraph.h \
     DataPlot/rowselectorwidget.h \
     DataPlot/rowactionswidget.h \
     DataPlot/datawindow.h \
@@ -147,7 +148,6 @@ HEADERS  += \
     Windows/mainwindow.h \
     structures.h \
     Windows/export.h \
-    GraphDraw/exportpreview.h \
     Widgets/expressionlineedit.h \
     Widgets/axissettingswidget.h \
     Widgets/zegridsettingswidget.h

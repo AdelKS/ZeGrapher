@@ -22,12 +22,12 @@
 #define ZEGRAPHER_H
 
 #include "structures.h"
-#include "GraphDraw/maingraph.h"
+#include "GraphDraw/subgraph.h"
 #include "Windows/mathobjectsinput.h"
 #include "Windows/settings.h"
 #include "Windows/values.h"
 #include "Windows/about.h"
-#include "GraphDraw/exportpreview.h"
+#include "GraphDraw/mainview.h"
 #include "Windows/export.h"
 #include "Widgets/keyboard.h"
 #include "Windows/updatecheck.h"
@@ -59,7 +59,7 @@ protected:
     void saveWindowsGeometry();
 
     Information *information;
-    MainGraph *mainGraph;
+    MainView *mainGraph;
     MathObjectsInput *inputWin;  
     Settings *settingsWin;
     Values *valuesWin;

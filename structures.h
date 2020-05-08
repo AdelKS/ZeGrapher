@@ -42,13 +42,6 @@
 #define DEPLACER 4
 #define NO_CURSOR 5
 
-#define FUNCTION 1
-#define SEQUENCE 2
-#define PARAMETRIC_EQ 3
-#define NORMAL_EXPR 4
-#define DATA_TABLE_EXPR 5 // expression to apply to a column: example: x' = 2 * x multiplies every column's cell value by 2.
-#define MAX_DOUBLE_PREC 15
-
 #define MIN_AMPLITUDE 100 * DBL_EPSILON
 #define MAX_AMPLITUDE DBL_MAX / 100
 
@@ -92,8 +85,8 @@ struct GraphRange
 
     bool operator==(const GraphRange &other)
     {
-        return fabs(x.min - other.x.min) < MIN_RANGE && fabs(x.max - other.x.max) < MIN_RANGE &&
-                fabs(y.min - other.y.min) < MIN_RANGE && fabs(y.max - other.y.max) < MIN_RANGE;
+        return fabs(x.min - other.x.min) < MIN_AMPLITUDE && fabs(x.max - other.x.max) < MIN_AMPLITUDE &&
+                fabs(y.min - other.y.min) < MIN_AMPLITUDE && fabs(y.max - other.y.max) < MIN_AMPLITUDE;
     }
     bool operator!=(const GraphRange &other)
     {

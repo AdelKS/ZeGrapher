@@ -78,7 +78,7 @@ protected:
     QPen pen;
     QBrush brush;
     Point centre;
-    ZeViewMapper graphView;
+    ZeViewMapper viewMapper;
 
     double coef;
 

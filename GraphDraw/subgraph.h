@@ -1,156 +1,153 @@
-/****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
-**
-**  This file is part of ZeGrapher's source code.
-**
-**  ZeGrapher is free software: you may copy, redistribute and/or modify it
-**  under the terms of the GNU General Public License as published by the
-**  Free Software Foundation, either version 3 of the License, or (at your
-**  option) any later version.
-**
-**  This file is distributed in the hope that it will be useful, but
-**  WITHOUT ANY WARRANTY; without even the implied warranty of
-**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-**  General Public License for more details.
-**
-**  You should have received a copy of the GNU General Public License
-**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**
-****************************************************************************/
+///****************************************************************************
+//**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+//**
+//**  This file is part of ZeGrapher's source code.
+//**
+//**  ZeGrapher is free software: you may copy, redistribute and/or modify it
+//**  under the terms of the GNU General Public License as published by the
+//**  Free Software Foundation, either version 3 of the License, or (at your
+//**  option) any later version.
+//**
+//**  This file is distributed in the hope that it will be useful, but
+//**  WITHOUT ANY WARRANTY; without even the implied warranty of
+//**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//**  General Public License for more details.
+//**
+//**  You should have received a copy of the GNU General Public License
+//**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//**
+//****************************************************************************/
+
+//#ifndef MainGraph_H
+//#define MainGraph_H
+
+//#include "basegraphdraw.h"
 
 
+//#define DEFAULT_ZOOM_MULTIPLIER 0.04
 
+//#include "../Widgets/popupwidget.h"
 
-#ifndef MainGraph_H
-#define MainGraph_H
+//class SubGraph : public BaseGraphDraw
+//{
+//    Q_OBJECT
+//public:
+//    explicit SubGraph(Information *info);
+//    ~SubGraph();
 
-#include "exportpreview.h"
+//    void afficherPtX(double x);
 
+//signals:
+//    void zoomBoxActive(bool active);
 
-#define DEFAULT_ZOOM_MULTIPLIER 0.04
+//    void graphRangeChanged(GraphRange range);
 
-#include "../Widgets/popupwidget.h"
+//public slots:
+//    void setGraphRange(GraphRange range);
 
-class MainGraph : public GraphDraw
-{
-    Q_OBJECT
-public:
-    explicit MainGraph(Information *info);
-    ~MainGraph();
+//    void reactivateSmoothing();
+//    void updateParEq();
+//    void updateGraph();
+//    void updateData();
 
-    void afficherPtX(double x);
+//protected slots:
 
-signals:
-    void zoomBoxActive(bool active);
+//    void zoomX();
+//    void stop_X_zoom();
 
-    void graphRangeChanged(GraphRange range);
+//    void zoomY();
+//    void stop_Y_Zoom();
 
-public slots:
-    void setGraphRange(GraphRange range);
+//    void lineXReturnPressed();
 
-    void reactivateSmoothing();
-    void updateParEq();
-    void updateGraph();
-    void updateData();
+//protected:
+//    void incrementTickSpacing(double &spacing, int &currentMultiplier);
+//    void decrementTickSpacing(double &spacing, int &currentMultiplier);
+//    void paintEvent(QPaintEvent *event);
+//    void mousePressEvent(QMouseEvent *event);
+//    void mouseMoveEvent(QMouseEvent *event);
+//    void mouseReleaseEvent(QMouseEvent *event);
+//    void wheelEvent(QWheelEvent *event);
+//    void showEvent(QShowEvent *event);
+//    void addOtherWidgets();
 
-protected slots:
+//    void mouseMoveWithActiveSelection(double x, double y);
+//    void mouseFuncHoverTest(double x, double y);
+//    void mouseSeqHoverTest(double x, double y);
+//    void mouseTangentHoverTest(double x, double y);
+//    void resaveImageBuffer();
+//    void addTangentToBuffer();
+//    void drawHoveringConsequence();
 
-    void zoomX();
-    void stop_X_zoom();
+//    void newWindowSize();
+//    void directPaint();
+//    void indirectPaint();
+//    void paintGraph(bool bufferPaint = false);
 
-    void zoomY();
-    void stop_Y_Zoom();
+//    void drawAxes();
+//    void drawAnimatedParEq();
+//    void drawAllParEq();
 
-    void lineXReturnPressed();
+//    void updateCenterPosAndScaling();
+//    void drawBaseGraph();
+//    void drawPoint();
 
-protected:
-    void incrementTickSpacing(double &spacing, int &currentMultiplier);
-    void decrementTickSpacing(double &spacing, int &currentMultiplier);
-    void paintEvent(QPaintEvent *event);    
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void showEvent(QShowEvent *event);
-    void addOtherWidgets();
+//    void moveSavedRegsValues();
 
-    void mouseMoveWithActiveSelection(double x, double y);
-    void mouseFuncHoverTest(double x, double y);
-    void mouseSeqHoverTest(double x, double y);
-    void mouseTangentHoverTest(double x, double y);
-    void resaveImageBuffer();    
-    void addTangentToBuffer();
-    void drawHoveringConsequence();  
+//    void checkIfActiveSelectionConflicts();
 
-    void newWindowSize();
-    void directPaint();
-    void indirectPaint();
-    void paintGraph(bool bufferPaint = false);
+//    enum CursorType {NORMAL, DEZOOMER, ZOOMBOX, DEPLACER, NO_CURSOR};
+//    enum SelectableMathObject {NONE, FUNCTION, SEQUENCE, TANGENT_RESIZE, TANGENT_MOVE};
 
-    void drawAxes();
-    void drawAnimatedParEq();  
-    void drawAllParEq();
+//    struct MouseState
+//    {
+//        bool tangentHovering;
+//        bool isParametric;
+//        int tangentPtSelection;
+//        SelectableMathObject pointedObjectType;
+//        int kPos;
+//        int id;
+//    };
 
-    void updateCenterPosAndScaling();
-    void drawBaseGraph();
-    void drawPoint();
+//    struct CurveSelection
+//    {
+//        bool tangentSelection;
+//        bool isSomethingSelected;
+//        bool isParametric;
+//        SelectableMathObject selectedObject;
+//        int tangentPtSelection, id, kPos;
+//    };
 
-    void moveSavedRegsValues();
+//    ExprCalculator *exprCalculator;
+//    Point lastPosSouris, pointPx, pointUnit;
+//    QSlider *hSlider, *vSlider;
+//    QLineEdit *lineX, *lineY;
+//    double y1, y2, mouseX, mouseY, widestXNumber, screenRefreshRate, zoomMultiplier;
 
-    void checkIfActiveSelectionConflicts();
+//    bool dispPoint, buttonPresse, mouseOnCurve, ongoingMouseClick,
+//         dispRectangle, hoveredCurveType, resaveGraph, cancelUpdateSignal,
+//         resaveTangent, animationUpdate;
 
-    enum CursorType {NORMAL, DEZOOMER, ZOOMBOX, DEPLACER, NO_CURSOR};
-    enum SelectableMathObject {NONE, FUNCTION, SEQUENCE, TANGENT_RESIZE, TANGENT_MOVE};
+//    char typeCurseur;
+//    int  xyBottom;
+//    QTimer timerX, timerY, repaintTimer;
 
-    struct MouseState
-    {
-        bool tangentHovering;
-        bool isParametric;
-        int tangentPtSelection;
-        SelectableMathObject pointedObjectType;
-        int kPos;
-        int id;
-    };
+//    QSize windowSize;
+//    CurveSelection selectedCurve;
+//    MouseState mouseState;
 
-    struct CurveSelection
-    {
-        bool tangentSelection;
-        bool isSomethingSelected;
-        bool isParametric;
-        SelectableMathObject selectedObject;
-        int tangentPtSelection, id, kPos;
-    };
+//    QRect rectReel;
+//    QImage *savedGraph;
+//    QList <QString> customFunctions;
+//    QList <QString> customSequences;
 
-    ExprCalculator *exprCalculator;
-    Point lastPosSouris, pointPx, pointUnit;
-    QSlider *hSlider, *vSlider;
-    QLineEdit *lineX, *lineY;
-    double y1, y2, mouseX, mouseY, widestXNumber, screenRefreshRate, zoomMultiplier;
+//    QLabel *xTextLabel, *yTextLabel;
+//    QLabel *kLabel;
+//    QWidget *kLabelContainer;
 
-    bool dispPoint, buttonPresse, mouseOnCurve,
-         dispRectangle, hoveredCurveType, resaveGraph, cancelUpdateSignal,
-         resaveTangent, animationUpdate;
+//    PopupWidget *hPopupWidget, *vPopupWidget, *xPopupWidget, *yPopupWidget, *kPopupWidget;
 
-    char typeCurseur;   
-    int  xyBottom;
-    QTimer timerX, timerY, repaintTimer;
+//    Point axesIntersec;
+//};
 
-    QSize windowSize;  
-    CurveSelection selectedCurve;
-    MouseState mouseState;
-
-    QRect rectReel;
-    QImage *savedGraph;
-    QList <QString> customFunctions;
-    QList <QString> customSequences;
-
-    QLabel *xTextLabel, *yTextLabel;
-    QLabel *kLabel;
-    QWidget *kLabelContainer;
-
-    PopupWidget *hPopupWidget, *vPopupWidget, *xPopupWidget, *yPopupWidget, *kPopupWidget;
-
-    Point axesIntersec;   
-};
-
-#endif // MainGraph_H
+//#endif // MainGraph_H

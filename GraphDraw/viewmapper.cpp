@@ -159,7 +159,7 @@ void ZeViewMapper::zoomXview(double ratio)
 
 void ZeViewMapper::zoomView(QPointF center, double ratio)
 {
-    if((Xmax - Xmin > MIN_RANGE && Ymax - Ymin > MIN_RANGE) || ratio < 0)
+    if(MAX_AMPLITUDE > Xmax - Xmin > MIN_AMPLITUDE && MAX_AMPLITUDE > Ymax - Ymin > MIN_AMPLITUDE)
     {
         if(axesSettings.x.axisType == ZeAxisType::LOG)
         {
@@ -267,7 +267,7 @@ double ZeViewMapper::viewToUnitY(double viewY) const // viewY =
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
-        return pow(yLogBase, viewY);
+        return pow(axesSettings.y.logSettings.base, viewY);
     }
     else
     {
@@ -279,7 +279,7 @@ double ZeViewMapper::unitToViewY(double unitY) const
 {
     if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
-        return log(unitY)/log(yLogBase);
+        return log(unitY)/log(axesSettings.y.logSettings.base);
     }
     else
     {
@@ -311,7 +311,7 @@ double ZeViewMapper::viewToUnitX(double viewX) const
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
-        return pow(xLogBase, viewX);
+        return pow(axesSettings.x.logSettings.base, viewX);
     }
     else
     {
@@ -323,7 +323,7 @@ double ZeViewMapper::unitToViewX(double unitX) const
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
-        return log(unitX)/log(xLogBase);
+        return log(unitX)/log(axesSettings.x.logSettings.base);
     }
     else
     {
@@ -389,11 +389,12 @@ void ZeViewMapper::setViewYmax(double val)
 
 void ZeViewMapper::verifyOrthonormality()
 {
-    // TODO: update with only the Size, and to use with both orthonormal and linear
-    if(viewWidget != 0 && viewType == ZeScaleType::LINEAR_ORTHONORMAL)
+    // TODO: do somethings when it's log
+    if(axesSettings.orthonormal and axesSettings.x.axisType == ZeAxisType::LINEAR
+            and axesSettings.y.axisType == ZeAxisType::LINEAR)
     {
-        double uniteY = viewWidget->height() / getViewRect().height();
-        double uniteX = viewWidget->width() / getViewRect().width();
+        double uniteY = viewPxSize.height() / getViewRect().height();
+        double uniteX = viewPxSize.width() / getViewRect().width();
 
         double ratio =  uniteX / uniteY;
         zoomYview(ratio);
@@ -403,47 +404,47 @@ void ZeViewMapper::verifyOrthonormality()
 void ZeViewMapper::setlgXmin(double val)
 {
     lgXmin = val;
-    Xmin = pow(xLogBase, lgXmin);
+    Xmin = pow(axesSettings.x.logSettings.base, lgXmin);
 }
 
 void ZeViewMapper::setlgXmax(double val)
 {
     lgXmax = val;
-    Xmax = pow(xLogBase, lgXmax);
+    Xmax = pow(axesSettings.x.logSettings.base, lgXmax);
 }
 
 void ZeViewMapper::setlgYmin(double val)
 {
     lgYmin = val;
-    Ymin = pow(yLogBase, lgYmin);
+    Ymin = pow(axesSettings.y.logSettings.base, lgYmin);
 }
 
 void ZeViewMapper::setlgYmax(double val)
 {
     lgYmax = val;
-    Ymax = pow(yLogBase, lgYmax);
+    Ymax = pow(axesSettings.y.logSettings.base, lgYmax);
 }
 
 void ZeViewMapper::setXmin(double val)
 {
     Xmin = val;
-    lgXmin = log(Xmin)/log(xLogBase);
+    lgXmin = log(Xmin)/log(axesSettings.x.logSettings.base);
 }
 
 void ZeViewMapper::setXmax(double val)
 {
     Xmax = val;
-    lgXmax = log(Xmax)/log(xLogBase);
+    lgXmax = log(Xmax)/log(axesSettings.x.logSettings.base);
 }
 
 void ZeViewMapper::setYmin(double val)
 {
     Ymin = val;
-    lgYmin = log(Ymin)/log(yLogBase);
+    lgYmin = log(Ymin)/log(axesSettings.y.logSettings.base);
 }
 
 void ZeViewMapper::setYmax(double val)
 {
     Ymax = val;
-    lgYmax = log(Ymax)/log(yLogBase);
+    lgYmax = log(Ymax)/log(axesSettings.y.logSettings.base);
 }

@@ -30,7 +30,7 @@ Export::Export(Information *info, QWidget *parent) : QWidget(parent), ui(new Ui:
     QSize imageSize(ui->imageWidth->value(), ui->imageHeight->value());
     ExportType exportType = ui->vectorFormat->isChecked() ? ExportType::VECTORIAL : ExportType::IMAGE;
 
-    exportPreview = new ExportPreview(sheetSize, imageSize, exportType, info);
+    exportPreview = new MainView(sheetSize, imageSize, exportType, info);
     exportPreview->setImageMarginPx(ui->imageMargin->value());
     exportPreview->setSheetMarginCm(ui->sheetMargin->value());
 
