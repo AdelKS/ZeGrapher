@@ -18,10 +18,10 @@
 **
 ****************************************************************************/
 
-
-
 #ifndef DATATABLE_H
 #define DATATABLE_H
+
+#include <algorithm>
 
 #include "structures.h"
 #include "information.h"

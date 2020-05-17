@@ -27,6 +27,8 @@
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
 #include "Widgets/zegridsettingswidget.h"
+#include "GraphDraw/mainview.h"
+#include "Windows/mathobjectsinput.h"
 
 /* TODO:
  * - Give out axis settings to the rest of the program through information
@@ -44,13 +46,14 @@ class Settings : public QWidget
     Q_OBJECT
 
 public:
-    explicit Settings(Information *info, QWidget *parent = nullptr);
+    explicit Settings(MainView *mainView, Information *info, QWidget *parent = nullptr);
     ~Settings();
 
     bool checkForUpdatesOnStart();
 
 public slots:
     void saveSettings();
+    void showExportSettings();
 
 private slots:
     void resetToDefaultVals();
@@ -63,7 +66,10 @@ private:
     void updateGraphSettings();
 
     Information *information;
-    Ui::Settings *ui;
+    Ui::Settings *ui;    
+    MainView *mainView;
+    QTimer timer;
+    MathObjectsInput *inputWidget;
     ZeViewSettings viewSettings;
     ZeAxisName currentEditedGrid;
     QColorButton *backgroundColorButton, *defaultColorButton;

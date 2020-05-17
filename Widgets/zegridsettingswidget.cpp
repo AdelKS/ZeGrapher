@@ -56,12 +56,14 @@ void ZeGridSettingsWidget::makeConnects()
     connect(ui->yGrid, &QRadioButton::toggled, this, &ZeGridSettingsWidget::swapGridData);
 
     connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
-    connect(ui->gridLineWidth, &QDoubleSpinBox::valueChanged, this, &ZeGridSettingsWidget::apply);
+
     connect(ui->showSubgrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
-    connect(ui->subgridDivs, &QSpinBox::valueChanged, this, &ZeGridSettingsWidget::apply);
     connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
     connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
     connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
+
+    connect(ui->gridLineWidth, SIGNAL(valueChanged()), this, SLOT(apply()));
+    connect(ui->subgridDivs, SIGNAL(valueChanged()), this, SLOT(apply()));
 }
 
 void ZeGridSettingsWidget::swapGridData()

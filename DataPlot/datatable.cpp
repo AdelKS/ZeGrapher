@@ -18,8 +18,6 @@
 **
 ****************************************************************************/
 
-
-
 #include "DataPlot/datatable.h"
 
 int refCol;
@@ -259,8 +257,8 @@ void DataTable::sortColumnSwapCells(int col, bool ascending)
     col = tableWidget->horizontalHeader()->logicalIndex(col);
 
     if(ascending)
-        qSort(values[col].begin(), values[col].end(), doubleCompareAscend);
-    else qSort(values[col].begin(), values[col].end(), doubleCompareDescend);
+        std::sort(values[col].begin(), values[col].end(), doubleCompareAscend);
+    else std::sort(values[col].begin(), values[col].end(), doubleCompareDescend);
 
     disableChecking = true;
 

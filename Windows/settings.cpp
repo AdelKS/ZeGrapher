@@ -21,9 +21,10 @@
 #include "Windows/settings.h"
 #include "ui_settings.h"
 
-Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
+Settings::Settings(MainView *mainView, Information *info, QWidget *parent): QWidget(parent)
 {
     information = info;
+    this->mainView = mainView;
 
     ui = new Ui::Settings;
     ui->setupUi(this);
@@ -31,6 +32,10 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     setWindowFlags(Qt::Window);
     setWindowTitle(tr("Settings"));
     setWindowIcon(QIcon(":/icons/settings.png"));
+
+    // to be instanced first so information->funcsList gets populated
+    inputWidget = new MathObjectsInput(information, this);
+    ui->objectsInputLayout->addWidget(inputWidget);
 
     rangeAdjustmentsWidget = new RangeAdjustments(information->getFuncsList(), information);
     ui->rangeSettingsLayout->addWidget(rangeAdjustmentsWidget);

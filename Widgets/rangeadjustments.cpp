@@ -21,6 +21,8 @@
 #include "Widgets/rangeadjustments.h"
 #include "ui_rangeadjustments.h"
 
+/* TODO: Take care of the orthonormal setting */
+
 RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information *info, QWidget *parent): QWidget(parent)
 {
     information = info;
@@ -75,7 +77,6 @@ void RangeAdjustments::hideViewOptions(bool hide)
 void RangeAdjustments::loadDefaults()
 {
     GraphRange defaultRange;
-    defaultRange.orthonormal = false;
     defaultRange.x.max = defaultRange.y.max = 10;
     defaultRange.x.max = defaultRange.y.max = -10;
 
@@ -109,8 +110,6 @@ void RangeAdjustments::setGraphRange(const GraphRange &range)
 
     Ymin->setValue(range.y.min);
     Ymax->setValue(range.y.max);
-
-    ui->orthonormal->setChecked(range.orthonormal);
 
     graphRange = range;
 }
@@ -164,7 +163,7 @@ void RangeAdjustments::apply()
         return;
     }
 
-    if(graphRange.y.max - graphRange.y.min < MIN_RANGE || graphRange.x.max - graphRange.x.min < MIN_RANGE)
+    if(graphRange.y.amplitude() < MIN_AMPLITUDE || graphRange.x.amplitude() < MIN_AMPLITUDE)
     {
         messageBox->setText(tr("The requested view window is too small."));
         messageBox->exec();
@@ -179,8 +178,7 @@ void RangeAdjustments::apply()
 }
 
 void RangeAdjustments::setOrthonormal(bool state)
-{   
-    graphRange.orthonormal = state;
+{
     Ymax->setEnabled(!state);
     Ymin->setEnabled(!state);
 }

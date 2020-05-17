@@ -21,6 +21,8 @@
 #ifndef GRAPHDRAW_H
 #define GRAPHDRAW_H
 
+#include <QWidget>
+
 #include "structures.h"
 #include "Calculus/funccalculator.h"
 #include "Widgets/tangentwidget.h"

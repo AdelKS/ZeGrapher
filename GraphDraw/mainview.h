@@ -18,24 +18,19 @@
 **
 ****************************************************************************/
 
-#ifndef PRINTPREVIEW_H
-#define PRINTPREVIEW_H
+#ifndef MAINVIEW_H
+#define MAINVIEW_H
 
 #include "basegraphdraw.h"
 #include <QPdfWriter>
 #include <QPageLayout>
 #include <QSvgGenerator>
 
-#define RELATIVE_MIN_SIZE 0.25
-
 enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
                       BOTTOMLEFT_CORNER, BOTTOMRIGHT_CORNER, LEFT_SIDE,
                      TOP_SIDE, RIGHT_SIDE, BOTTOM_SIDE, ALL};
 
-enum ExportType {VECTORIAL, IMAGE};
 enum SheetSizeType {NORMALISED, CUSTOM};
-
-
 
 class MainView : public BaseGraphDraw
 {
@@ -44,14 +39,11 @@ class MainView : public BaseGraphDraw
 public:
     explicit MainView(Information *info);
 
-    void setExportType(ExportType type);
+    void onSizeUnitChange();
     double getMinFigureRelativeSize();
     QSize getTargetSupportSizePixels();
 
 signals:
-    void newFigureSizeCm(QSizeF sizeCm);
-    void newFigureSizePx(QSize sizePx);
-
     void newZoomValue(double value);
 
 public slots:
@@ -60,18 +52,9 @@ public slots:
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 
-    void setSheetFigureSizeCm(QSizeF sizeCm);
-    void setImageFigureSizePx(QSize sizePx);
-
-    void setSheetSizeCm(QSizeF sizeCm);
-    void setImageSizePx(QSize sizePx);
-
-    void setSheetMarginCm(double sheetMarginCm);
-    void setImageMarginPx(int imageMarginPx);
+    void onSizeSettingsChange();
 
     void setGraphRange(GraphRange range);
-
-    void setScale(double scalingFactor);
 
     void exportPDF(QString fileName, SheetSizeType sizeType);
     void exportSVG(QString fileName);
@@ -81,8 +64,6 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *event);
-
-    void initialise();
 
     void drawSupport();
     void drawGraph();
@@ -108,7 +89,7 @@ protected:
     QSize targetSupportSizePixels;
     QRect figureRect, supportRect, sheetRectScaled;
     QSizeF figureSizeCm, sheetSizeCm;
-    QSize figureSizePx, imageSizePx;
+    QSize figureSizePx, sheetSizePx;
 
     QRectF sheetFigureRectRelative, imageFigureRectRelative;
     QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
@@ -117,8 +98,6 @@ protected:
     MouseActionType moveType;
     QString fileName;
 
-    ExportType exportType;
-
 };
 
-#endif // PRINTPREVIEW_H
+#endif // MAINVIEW_H

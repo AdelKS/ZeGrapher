@@ -27,22 +27,20 @@
 
 MainWindow::MainWindow()
 {
-    information = new Information();
+    information = new Information();    
 
-    inputWin = new MathObjectsInput(information, this);
-    // settingsWin should be instanced after inputWin, because needs information->getFuncsList(), updated by inputWin
-    settingsWin = new Settings(information, this);
-
-    aboutWin = new about(this);
+    aboutWin = new About(this);
     updateCheckWin = new UpdateCheck(this);
     valuesWin = new Values(information, this);
-    exportWin = new Export(information, this);
     keyboard = new Keyboard();
 
     setIconSize(QSize(30, 30));
 
     mainGraph = new MainView(information); // it has to be the last thing to create.
     setCentralWidget(mainGraph);
+
+    settingsWin = new Settings(mainGraph, information, this);
+
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
     setMinimumSize(700,450);
     setWindowTitle("ZeGrapher");
@@ -60,14 +58,14 @@ MainWindow::MainWindow()
 
 void MainWindow::createDocks()
 {
-    mathInputDock = new QDockWidget(tr("Math objects input"), this);
-    mathInputDock->setWidget(inputWin);
-    addDockWidget(Qt::LeftDockWidgetArea, mathInputDock);
+    inputDock = new QDockWidget(tr("Math objects input"), this);
+    inputDock->setWidget(settingsWin);
+    addDockWidget(Qt::LeftDockWidgetArea, inputDock);
 
     settingsWinDock = new QDockWidget(tr("Settings"), this);
     settingsWinDock->setWidget(settingsWin);
     addDockWidget(Qt::LeftDockWidgetArea, settingsWinDock);
-    tabifyDockWidget(mathInputDock, settingsWinDock);
+    tabifyDockWidget(inputDock, settingsWinDock);
     settingsWinDock->close();
 }
 
@@ -77,8 +75,6 @@ void MainWindow::createMenus()
     QMenu *menuTools = menuBar()->addMenu(tr("Tools"));
     QMenu *menuWindows = menuBar()->addMenu(tr("Windows"));
     QMenu *menuHelp = menuBar()->addMenu("?");
-
-    gridButton = menuTools->addAction(QIcon(":/icons/grid.png"), tr("Show/Hide the grid"));
 
     QAction *setOrthonormalAction = menuTools->addAction(QIcon(":/icons/orthonormalView.svg"), tr("Toggle orthonormal view"));
     setOrthonormalAction->setCheckable(true);
@@ -96,8 +92,7 @@ void MainWindow::createMenus()
 
     QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.svg"), tr("Export graph..."));
     showExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
-    connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(show()));
-    connect(showExportWinAction, SIGNAL(triggered()), exportWin, SLOT(raise()));
+    connect(showExportWinAction, &QAction::triggered, settingsWin, &Settings::showExportSettings);
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
@@ -112,8 +107,8 @@ void MainWindow::createMenus()
 
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
-    connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(show()));
-    connect(showInputWinAction, SIGNAL(triggered()), mathInputDock, SLOT(raise()));   
+    connect(showInputWinAction, SIGNAL(triggered()), inputDock, SLOT(show()));
+    connect(showInputWinAction, SIGNAL(triggered()), inputDock, SLOT(raise()));
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.svg"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
@@ -128,9 +123,7 @@ void MainWindow::createMenus()
     QToolBar *toolBar = new QToolBar(tr("Windows and actions"));
     addToolBar(Qt::LeftToolBarArea, toolBar);
 
-    toolBar->addAction(gridButton);
     toolBar->addAction(setOrthonormalAction);
-    toolBar->addAction(resetViewAction);
     toolBar->addSeparator();
     toolBar->addAction(showInputWinAction);
     toolBar->addAction(showValuesWinAction);
@@ -144,9 +137,6 @@ void MainWindow::createMenus()
     exitAction->setStatusTip(tr("Exit ZeGrapher."));
     showSettingsWinAction->setStatusTip(tr("Edit axes' color, background color, curve's quality..."));
     showValuesWinAction->setStatusTip(tr("Display the values taken by functions, sequences and parametric equations on tables."));
-    resetViewAction->setStatusTip(tr("Reset to default view"));
-
-    gridButton->setStatusTip(tr("Cycle trough Grid possibilities."));
 
     showKeyboardAction->setStatusTip(tr("Virtual keyboard."));
     showExportWinAction->setStatusTip(tr("Export graph or print."));
@@ -188,19 +178,7 @@ void MainWindow::saveWindowsGeometry()
 
 void MainWindow::makeConnects()
 {
-    connect(gridButton, SIGNAL(triggered(bool)), information, SLOT(setGridState(bool)));
     connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
-}
-
-void MainWindow::updateGridButtonIcon()
-{
-    ZeGraphSettings graphSettings = information->getGraphSettings();
-
-    if(graphSettings.gridSettings.gridType == ZeGridType::NO_GRID)
-        gridButton->setIcon(QIcon(":/icons/no_grid.png"));
-    else if(graphSettings.gridSettings.gridType == ZeGridType::GRID)
-        gridButton->setIcon(QIcon(":/icons/grid.png"));
-    else gridButton->setIcon(QIcon(":/icons/grid_subgrid.png"));
 }
 
 void MainWindow::showAboutQtWin()

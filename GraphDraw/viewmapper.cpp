@@ -159,7 +159,9 @@ void ZeViewMapper::zoomXview(double ratio)
 
 void ZeViewMapper::zoomView(QPointF center, double ratio)
 {
-    if(MAX_AMPLITUDE > Xmax - Xmin > MIN_AMPLITUDE && MAX_AMPLITUDE > Ymax - Ymin > MIN_AMPLITUDE)
+    double Xamp = Xmax - Xmin , Yamp = Ymax - Ymin;
+    if(MAX_AMPLITUDE > Xamp && Xamp > MIN_AMPLITUDE &&
+            MAX_AMPLITUDE > Yamp && Yamp > MIN_AMPLITUDE)
     {
         if(axesSettings.x.axisType == ZeAxisType::LOG)
         {
@@ -215,7 +217,6 @@ ZeLinAxisTicks ZeViewMapper::getLinearAxisTicks(double windowWidth,
 
     double baseStep = pow(10, targetPower);
     double realStep = baseStep * constantMultiplier;
-    double tenMult = 1;
 
     ZeLinAxisTick firstTick;
     firstTick.pos = ceil(range.min / realStep) * realStep;

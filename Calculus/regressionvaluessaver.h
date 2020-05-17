@@ -66,7 +66,7 @@ protected:
     double pixelMove;
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
-    ZeViewMapper graphRange;    
+    ZeViewMapper viewMapper;
     Range drawRange, graphAngleRange;
 
     QList<QPolygonF> curves;

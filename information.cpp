@@ -161,6 +161,16 @@ void Information::setGraphRange(const GraphRange &range)
     emit graphRangeChanged(range);
 }
 
+const ZeSizeSettings& Information::getGraphSizeSettings()
+{
+    return viewSettings.graph.sizeSettings;
+}
+
+const ZeZoomSettings& Information::getGraphZoomSettings()
+{
+    return viewSettings.graph.zoomSettings;
+}
+
 const ZeGraphSettings& Information::getGraphSettings()
 {
     return viewSettings.graph;
@@ -194,6 +204,22 @@ void Information::setViewSettings(const ZeViewSettings &viewSettings)
     emit newViewSettings();
 }
 
+
+void Information::setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings)
+{
+    viewSettings.graph.sizeSettings = graphSizeSettings;
+
+    emit graphSizeSettingsChanged();
+}
+
+
+void Information::setGraphZoomSettings(const ZeZoomSettings &zoomSettings)
+{
+    viewSettings.graph.zoomSettings = zoomSettings;
+
+    emit graphZoomSettingsChanged();
+}
+
 void Information::emitUpdateSignal()
 {
     emit updateOccured();
@@ -207,4 +233,14 @@ void Information::emitDrawStateUpdate()
 const ZeViewSettings& Information::getViewSettings()
 {
     return viewSettings;
+}
+
+void Information::setExportFileName(QString fileName)
+{
+    exportFileName = fileName;
+}
+
+QString Information::getExportFileName()
+{
+    return exportFileName;
 }

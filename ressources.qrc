@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/boundaries.png</file>
-        <file>icons/saveImage.png</file>
         <file>icons/print.png</file>
         <file>icons/zoom-in-icon.png</file>
         <file>icons/zoom-out-icon.png</file>

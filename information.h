@@ -39,6 +39,8 @@ public:
 
     const ZeViewSettings& getViewSettings();
 
+    const ZeZoomSettings& getGraphZoomSettings();
+    const ZeSizeSettings& getGraphSizeSettings();
     const ZeGraphSettings& getGraphSettings();
     const ZeGridSettings& getGridSettings();
     const ZeAxesSettings& getAxesSettings();
@@ -76,6 +78,9 @@ public:
     void setFunctionsList(QList<FuncCalculator*> list);
     QList<FuncCalculator*> getFuncsList();
 
+    void setExportFileName(QString fileName);
+    QString getExportFileName();
+
 signals:
     void newOrthonormalityState(bool orth);
     void graphRangeChanged(GraphRange range);
@@ -88,6 +93,10 @@ signals:
     void regressionAdded(Regression *reg);
     void regressionRemoved(Regression *reg);
     void newViewSettings();
+    void sizeSettingsChanged();
+
+    void graphSizeSettingsChanged();
+    void graphZoomSettingsChanged();
 
 public slots:
     void emitUpdateSignal();
@@ -100,6 +109,8 @@ public slots:
     void changeGridState();
     void setOrthonormal(bool state);
     void setViewSettings(const ZeViewSettings &viewSettings);
+    void setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings);
+    void setGraphZoomSettings(const ZeZoomSettings &zoomSettings);
 
 protected:
 
@@ -115,6 +126,7 @@ protected:
     QList<SeqCalculator*> sequences;
 
     ZeViewSettings viewSettings;
+    QString exportFileName;
 
     QList<ParEqWidget*> *parEqWidgets;
 };

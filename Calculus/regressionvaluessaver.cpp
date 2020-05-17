@@ -57,7 +57,7 @@ void RegressionValuesSaver::setRegression(Regression *reg)
 
 void RegressionValuesSaver::recalculate()
 {
-    recalculate(Point{xUnit, yUnit}, graphRange);
+    recalculate(Point{xUnit, yUnit}, viewMapper);
 }
 
 void RegressionValuesSaver::recalculate(Point graphUnits, const ZeViewMapper &graphView)
@@ -88,7 +88,7 @@ QList<QPolygonF> &RegressionValuesSaver::getCurves()
 
 void RegressionValuesSaver::move(ZeViewMapper newRange)
 {
-    graphRange = newRange;
+    viewMapper = newRange;
 
     if(regression->isPolar())
         polarMove();
@@ -111,7 +111,7 @@ double RegressionValuesSaver::arg(QPointF pt)
 
 Range RegressionValuesSaver::getGraphAngleRange()
 {
-    QRectF graphWin = graphRange.getRect();
+    QRectF graphWin = viewMapper.getRect();
     Range angleRange;
 
     if(graphWin.contains(0,0))
@@ -176,8 +176,8 @@ void RegressionValuesSaver::polarMove()
 
 void RegressionValuesSaver::cartesianMove()
 {    
-    drawRange.start = std::max(graphRange.getXmin(), regression->getDrawRange().start);
-    drawRange.end = std::min(graphRange.getXmax(), regression->getDrawRange().end);
+    drawRange.start = std::max(viewMapper.getXmin(), regression->getDrawRange().start);
+    drawRange.end = std::min(viewMapper.getXmax(), regression->getDrawRange().end);
 
     double x = curves.first().first().x() - xUnitStep;
 
@@ -220,8 +220,8 @@ void RegressionValuesSaver::cartesianMove()
 
 void RegressionValuesSaver::calculateCartesianRegressionCurve()
 {    
-    drawRange.start = std::max(graphRange.Xmin, regression->getDrawRange().start);
-    drawRange.end = std::min(graphRange.Xmax, regression->getDrawRange().end);
+    drawRange.start = std::max(viewMapper.getXmin(), regression->getDrawRange().start);
+    drawRange.end = std::min(viewMapper.getXmax(), regression->getDrawRange().end);
 
     double x = drawRange.start - xUnitStep;
 
@@ -266,7 +266,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
     QPolygonF curve;
     QPointF pt;
-    QRectF graphRect = graphRange.getRect();
+    QRectF graphRect = viewMapper.getRect();
 
     while(angle < regRange.end)
     {

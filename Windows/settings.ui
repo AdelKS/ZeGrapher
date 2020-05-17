@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>409</height>
+    <width>391</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -51,8 +51,14 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
+     <widget class="QWidget" name="math">
+      <attribute name="title">
+       <string>Math</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="objectsInputLayout"/>
+     </widget>
      <widget class="QWidget" name="graph">
       <attribute name="title">
        <string>Graph</string>
@@ -79,7 +85,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>4</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -125,9 +131,9 @@
            </property>
           </layout>
          </widget>
-         <widget class="QWidget" name="grids">
+         <widget class="QWidget" name="grid">
           <attribute name="title">
-           <string>Grids</string>
+           <string>Grid</string>
           </attribute>
           <layout class="QVBoxLayout" name="gridSettingsLayout">
            <property name="leftMargin">
@@ -143,6 +149,31 @@
             <number>0</number>
            </property>
           </layout>
+         </widget>
+         <widget class="QWidget" name="sizes">
+          <attribute name="title">
+           <string>Sizes</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="sizeAdjustmentsLayout">
+           <property name="leftMargin">
+            <number>2</number>
+           </property>
+           <property name="topMargin">
+            <number>2</number>
+           </property>
+           <property name="rightMargin">
+            <number>2</number>
+           </property>
+           <property name="bottomMargin">
+            <number>2</number>
+           </property>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="exportTab">
+          <attribute name="title">
+           <string>Export</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="exportLayout"/>
          </widget>
          <widget class="QWidget" name="general">
           <attribute name="title">
@@ -402,8 +433,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>504</width>
-            <height>346</height>
+            <width>377</width>
+            <height>539</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -641,27 +672,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget_4" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-     </layout>
     </widget>
    </item>
   </layout>

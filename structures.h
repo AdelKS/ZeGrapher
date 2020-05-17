@@ -58,6 +58,8 @@
 #define EPSILON 0.001
 #define MAX_SAVED_SEQ_VALS 1000000
 
+#define RELATIVE_MIN_SIZE 0.25 // How much the graph can be smaller than its container sheet/background
+
 
 struct ZeAxisRange
 {
@@ -137,8 +139,35 @@ struct ZeAxisSettings
     ZeAxisType axisType;
 };
 
+struct ZeSizeSettings
+{
+    enum SizeUnit {PIXEL, CENTIMETER};
+    enum SizingType {FITWINDOW, CUSTOM};
+
+    SizeUnit sizeUnit;
+    SizingType sizingType;
+
+    double scalingFactor;
+
+    QSize pxFigureSize, pxSheetSize;
+    int pxMargins;
+
+    QSizeF cmFigureSize, cmSheetSize;
+    double cmMargins;
+};
+
+struct ZeZoomSettings
+{
+    enum ZoomingType {FITSHEET, CUSTOM};
+
+    ZoomingType zoomingType;
+    double zoom;
+};
+
 struct ZeGraphSettings
 {
+    ZeZoomSettings zoomSettings;
+    ZeSizeSettings sizeSettings;
     QColor backgroundColor;
     QColor defaultColor;
     int curvesThickness;
@@ -242,5 +271,7 @@ struct SelectorPos
     bool inbetween;
     int index;
 };
+
+
 
 #endif // STRUCTURES_H

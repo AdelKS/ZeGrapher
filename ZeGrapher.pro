@@ -36,7 +36,11 @@ SOURCES += \
     GraphDraw/mathobjectdraw.cpp \
     GraphDraw/subgraph.cpp \
     GraphDraw/viewmapper.cpp \
+    Widgets/export.cpp \
+    Widgets/graphsizeadjusments.cpp \
+    Widgets/mainviewcontainer.cpp \
     Widgets/popupwidget.cpp \
+    Widgets/sheetzoom.cpp \
     main.cpp \
     information.cpp \
     Windows/about.cpp \
@@ -85,7 +89,6 @@ SOURCES += \
     Windows/values.cpp \
     Windows/updatecheck.cpp \
     Windows/mainwindow.cpp \
-    Windows/export.cpp \
     Widgets/expressionlineedit.cpp \
     Widgets/axissettingswidget.cpp \
     Widgets/zegridsettingswidget.cpp
@@ -96,7 +99,11 @@ HEADERS  += \
     GraphDraw/mathobjectdraw.h \
     GraphDraw/subgraph.h \
     GraphDraw/viewmapper.h \
+    Widgets/export.h \
+    Widgets/graphsizeadjusments.h \
+    Widgets/mainviewcontainer.h \
     Widgets/popupwidget.h \
+    Widgets/sheetzoom.h \
     information.h \
     Windows/about.h \
     Widgets/tangentwidget.h \
@@ -147,13 +154,15 @@ HEADERS  += \
     Windows/updatecheck.h \
     Windows/mainwindow.h \
     structures.h \
-    Windows/export.h \
     Widgets/expressionlineedit.h \
     Widgets/axissettingswidget.h \
     Widgets/zegridsettingswidget.h
 
 
 FORMS    += \
+    Widgets/export.ui \
+    Widgets/graphsizeadjusments.ui \
+    Widgets/sheetzoom.ui \
     Windows/about.ui \
     Widgets/datawidget.ui \
     DataPlot/startingactions.ui \
@@ -167,7 +176,6 @@ FORMS    += \
     Widgets/keyboard.ui \
     Windows/mathobjectsinput.ui \
     Windows/settings.ui \
-    Windows/export.ui \
     Widgets/axissettingswidget.ui \
     Widgets/rangeadjustments.ui \
     Widgets/zegridsettingswidget.ui

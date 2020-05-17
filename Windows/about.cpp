@@ -22,7 +22,7 @@
 #include "ui_about.h"
 #include "structures.h"
 
-about::about(QWidget *parent) :
+About::About(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::About)
 {
@@ -37,7 +37,7 @@ about::about(QWidget *parent) :
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
 }
 
-about::~about()
+About::~About()
 {
     delete ui;
 }

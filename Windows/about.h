@@ -27,13 +27,13 @@ namespace Ui {
     class About;
 }
 
-class about : public QDialog
+class About : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit about(QWidget *parent = nullptr);
-    ~about();
+    explicit About(QWidget *parent = nullptr);
+    ~About();
 
 private:
     Ui::About *ui;

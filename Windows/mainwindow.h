@@ -28,14 +28,12 @@
 #include "Windows/values.h"
 #include "Windows/about.h"
 #include "GraphDraw/mainview.h"
-#include "Windows/export.h"
 #include "Widgets/keyboard.h"
 #include "Windows/updatecheck.h"
 
 #include <QSettings>
 #include <QString>
 #include <QMainWindow>
-
 
 class MainWindow : public QMainWindow
 {
@@ -60,15 +58,13 @@ protected:
 
     Information *information;
     MainView *mainGraph;
-    MathObjectsInput *inputWin;  
     Settings *settingsWin;
     Values *valuesWin;
     Keyboard *keyboard;
-    about *aboutWin;
-    Export *exportWin;
+    About *aboutWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
-    QDockWidget *mathInputDock, *rangeWinDock, *settingsWinDock;
+    QDockWidget *inputDock, *rangeWinDock, *settingsWinDock;
 
     QSettings settings;
 
