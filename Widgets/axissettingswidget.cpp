@@ -66,8 +66,6 @@ void AxisSettingsWidget::axisTypeChanged()
         ui->basePowDenomLabel->show();
         ui->basePowDenom->show();
 
-        ui->linMultiplier->hide();
-        ui->linMultiplierLabel->hide();
         ui->linearScaleTickPosLabel->hide();
     }
     else // ui->linScale is checked
@@ -77,8 +75,6 @@ void AxisSettingsWidget::axisTypeChanged()
         ui->basePowDenomLabel->hide();
         ui->basePowDenom->hide();
 
-        ui->linMultiplier->show();
-        ui->linMultiplierLabel->show();
         ui->linearScaleTickPosLabel->show();
     }
 }
@@ -112,16 +108,11 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
 
     if(settings.axisType == ZeAxisType::LINEAR)
     {
-        ui->linMultiplier->setValue(settings.linSettings.multiplier);
-        ui->basePowNum->setValue(settings.linSettings.basePowNum);
-
         constantMultiplierLineEdit->setText(settings.linSettings.constantMultiplierStr);
     }
     else
     {
         baseLineEdit->setText(settings.logSettings.baseStr);
-        ui->basePowNum->setValue(settings.logSettings.basePowDenom);
-        ui->basePowDenom->setValue(settings.logSettings.basePowNum);
 
         constantMultiplierLineEdit->setText(settings.logSettings.constantMultiplierStr);
     }
@@ -157,9 +148,6 @@ void AxisSettingsWidget::processUserInput()
 
     if(axisSettings.axisType == ZeAxisType::LINEAR)
     {
-        axisSettings.linSettings.multiplier = ui->linMultiplier->value();
-        axisSettings.linSettings.basePowNum = ui->basePowNum->value();
-
         constantMultiplierLineEdit->checkVal();
         if(constantMultiplierLineEdit->isValid())
         {
@@ -197,9 +185,6 @@ void AxisSettingsWidget::processUserInput()
             axisSettings.logSettings.constantMultiplier = currentSettings.logSettings.constantMultiplier;
             axisSettings.logSettings.constantMultiplierStr = currentSettings.logSettings.constantMultiplierStr;
         }
-
-        axisSettings.logSettings.basePowDenom = ui->basePowDenom->value();
-        axisSettings.logSettings.basePowNum = ui->basePowNum->value();
     }
 
     axisSettings.coordinateFormatting.decimalBase = ui->decimalBase->isChecked();
@@ -222,13 +207,9 @@ void AxisSettingsWidget::resetToDefaults()
 
     defaultSettings.logSettings.base = 10;
     defaultSettings.logSettings.baseStr = "10";
-    defaultSettings.logSettings.basePowDenom = 1;
-    defaultSettings.logSettings.basePowNum = 1;
     defaultSettings.logSettings.constantMultiplier = 1;
     defaultSettings.logSettings.constantMultiplierStr = "1";
 
-    defaultSettings.linSettings.basePowNum = 0;
-    defaultSettings.linSettings.multiplier = 1;
     defaultSettings.linSettings.constantMultiplier = 1;
     defaultSettings.logSettings.constantMultiplierStr = "1";
 

@@ -53,7 +53,6 @@ public:
 
 public slots:
     void saveSettings();
-    void showExportSettings();
 
 private slots:
     void resetToDefaultVals();

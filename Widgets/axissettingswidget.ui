@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>444</width>
-    <height>657</height>
+    <width>335</width>
+    <height>637</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,8 +58,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>442</width>
-        <height>655</height>
+        <width>316</width>
+        <height>640</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -329,7 +329,7 @@
              <item>
               <widget class="QLabel" name="linearScaleTickPosLabel">
                <property name="text">
-                <string>Tick position &amp;nbsp; &amp;nbsp; &amp;nbsp; x&lt;sub&gt;k&lt;/sub&gt; = k v  10&lt;sup&gt;n &lt;/sup&gt; α</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tick position       x&lt;span style=&quot; vertical-align:sub;&quot;&gt;k&lt;/span&gt; = k 10&lt;span style=&quot; vertical-align:super;&quot;&gt;n &lt;/span&gt;α&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
               </widget>
              </item>
@@ -373,26 +373,6 @@
                   <property name="topMargin">
                    <number>0</number>
                   </property>
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="linMultiplierLabel">
-                    <property name="text">
-                     <string>Multiplier v=</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QSpinBox" name="linMultiplier">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>100</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                  </item>
                  </layout>
                 </item>
                 <item>

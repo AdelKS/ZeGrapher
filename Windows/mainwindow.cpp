@@ -48,8 +48,6 @@ MainWindow::MainWindow()
     createDocks();
     createMenus();
 
-    makeConnects();
-
     loadWindowSavedGeomtries();
 
     if(settingsWin->checkForUpdatesOnStart())
@@ -148,13 +146,9 @@ void MainWindow::loadWindowSavedGeomtries()
     if(settings.contains("main_window/geometry"))
         setGeometry(settings.value("main_window/geometry").value<QRect>());
     if(settings.contains("settings_window/geometry"))
-        settingsWin->setGeometry(settings.value("settings_window/geometry").value<QRect>());   
-    if(settings.contains("input_window/geometry"))
-        inputWin->setGeometry(settings.value("input_window/geometry").value<QRect>());
+        settingsWin->setGeometry(settings.value("settings_window/geometry").value<QRect>());
     if(settings.contains("values_window/geometry"))
         valuesWin->setGeometry(settings.value("values_window/geometry").value<QRect>());
-    if(settings.contains("export_window/geometry"))
-        exportWin->setGeometry(settings.value("export_window/geometry").value<QRect>());
     if(settings.contains("virtual_keyboard_window/geometry"))
         keyboard->setGeometry(settings.value("virtual_keyboard_window/geometry").value<QRect>());
 }
@@ -164,21 +158,11 @@ void MainWindow::saveWindowsGeometry()
     settings.setValue("main_window/geometry", geometry());
 
     if(! settingsWin->geometry().isNull())
-        settings.setValue("settings_window/geometry", settingsWin->geometry());    
-    if(! inputWin->geometry().isNull())
-        settings.setValue("input_window/geometry", inputWin->geometry());
+        settings.setValue("settings_window/geometry", settingsWin->geometry());
     if(! valuesWin->geometry().isNull())
         settings.setValue("values_window/geometry", valuesWin->geometry());
-    if(! exportWin->geometry().isNull())
-        settings.setValue("export_window/geometry", exportWin->geometry());
     if(! keyboard->geometry().isNull())
         settings.setValue("virtual_keyboard_window/geometry", keyboard->geometry());
-}
-
-
-void MainWindow::makeConnects()
-{
-    connect(inputWin, SIGNAL(displayKeyboard()), keyboard, SLOT(show()));
 }
 
 void MainWindow::showAboutQtWin()

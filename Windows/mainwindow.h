@@ -50,7 +50,6 @@ protected:
     void closeEvent(QCloseEvent *evenement);
 
     void createDocks();
-    void makeConnects();
     void createMenus();
     void createZoomWidgets();
     void loadWindowSavedGeomtries();
