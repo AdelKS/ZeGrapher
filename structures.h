@@ -114,12 +114,26 @@ enum struct ZeAxisType
 struct ZeCoordinateDisplayFormat
 {
     bool decimalGlobalConstant, decimalBase;
+
+    bool operator !=(const ZeCoordinateDisplayFormat &other)
+    {
+        return decimalGlobalConstant != other.decimalGlobalConstant or
+                decimalBase != other.decimalBase;
+    }
 };
 
 struct ZeLogAxisSettings
 {
     double constantMultiplier, base;
     QString constantMultiplierStr, baseStr;
+
+    bool operator !=(const ZeLogAxisSettings &other)
+    {
+        return constantMultiplier != other.constantMultiplier or
+                base != other.base or
+                constantMultiplierStr != other.constantMultiplierStr or
+                baseStr != other.baseStr;
+    }
 };
 
 struct ZeLinAxisSettings
@@ -127,6 +141,13 @@ struct ZeLinAxisSettings
     double constantMultiplier;
     QString constantMultiplierStr;
     int maxDigitsNum;
+
+    bool operator !=(const ZeLinAxisSettings &other)
+    {
+        return constantMultiplier != other.constantMultiplier or
+                constantMultiplierStr != other.constantMultiplierStr or
+                maxDigitsNum != other.maxDigitsNum;
+    }
 };
 
 struct ZeAxisSettings
@@ -137,6 +158,16 @@ struct ZeAxisSettings
     ZeLogAxisSettings logSettings;
     ZeCoordinateDisplayFormat coordinateFormatting;
     ZeAxisType axisType;
+
+    bool operator !=(const ZeAxisSettings &other)
+    {
+        return color != other.color or
+                lineWidth != other.lineWidth or
+                linSettings != other.linSettings or
+                logSettings != other.logSettings or
+                coordinateFormatting != other.coordinateFormatting or
+                axisType != other.axisType;
+    }
 };
 
 struct ZeSizeSettings
@@ -154,6 +185,19 @@ struct ZeSizeSettings
 
     QSizeF cmFigureSize, cmSheetSize;
     double cmMargins;
+
+    bool operator !=(const ZeSizeSettings &other)
+    {
+        return sizeUnit != other.sizeUnit or
+                sizingType != other.sizingType or
+                scalingFactor != other.scalingFactor or
+                pxFigureSize != other.pxFigureSize or
+                pxSheetSize != other.pxSheetSize or
+                pxMargins != other.pxMargins or
+                cmFigureSize != other.cmFigureSize or
+                cmSheetSize != other.cmSheetSize or
+                cmMargins != other.cmMargins;
+    }
 };
 
 struct ZeZoomSettings
@@ -162,6 +206,12 @@ struct ZeZoomSettings
 
     ZoomingType zoomingType;
     double zoom;
+
+    bool operator !=(const ZeZoomSettings &other)
+    {
+        return zoomingType != other.zoomingType or
+                zoom != other.zoom;
+    }
 };
 
 struct ZeGraphSettings
@@ -174,6 +224,18 @@ struct ZeGraphSettings
     double distanceBetweenPoints;
     bool smoothing;
     QFont graphFont;
+
+    bool operator !=(const ZeGraphSettings &other)
+    {
+        return zoomSettings != other.zoomSettings or
+                sizeSettings != other.sizeSettings or
+                backgroundColor != other.backgroundColor or
+                defaultColor != other.defaultColor or
+                curvesThickness != other.curvesThickness or
+                distanceBetweenPoints != other.distanceBetweenPoints or
+                smoothing != other.smoothing or
+                graphFont != other.graphFont;
+    }
 };
 
 struct Ze1DGridSettings
@@ -183,17 +245,39 @@ struct Ze1DGridSettings
     QColor gridColor, subgridColor;
     unsigned int subgridSubDivs;
     bool showSubgridRelativeCoordinates;
+
+    bool operator !=(const Ze1DGridSettings &other)
+    {
+        return showGrid != other.showGrid or
+                showSubGrid != other.showSubGrid or
+                gridLineWidth != other.gridLineWidth or
+                subgridLineWidth != other.subgridLineWidth or
+                gridColor != other.gridColor or
+                subgridColor != other.subgridColor or
+                subgridSubDivs != other.subgridSubDivs or
+                showSubgridRelativeCoordinates != other.showSubgridRelativeCoordinates;
+    }
 };
 
 struct ZeGridSettings
 {
     Ze1DGridSettings alongX, alongY;
+
+    bool operator !=(const ZeGridSettings &other)
+    {
+        return alongX != other.alongX or alongY != other.alongY;
+    }
 };
 
 struct ZeAxesSettings
 {
     ZeAxisSettings x, y;    
     bool orthonormal;
+
+    bool operator !=(const ZeAxesSettings &other)
+    {
+        return orthonormal != other.orthonormal or x != other.x or y != other.y;
+    }
 };
 
 struct ZeViewSettings
