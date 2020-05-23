@@ -48,7 +48,7 @@ class Settings : public QWidget
     Q_OBJECT
 
 public:
-    explicit Settings(MainView *mainView, Information *info, QWidget *parent = nullptr);
+    explicit Settings(Information *info, QWidget *parent = nullptr);
     ~Settings();
 
     bool checkForUpdatesOnStart();
@@ -68,8 +68,7 @@ private:
     void updateGraphSettings();
 
     Information *information;
-    Ui::Settings *ui;    
-    MainView *mainView;
+    Ui::Settings *ui;
     QTimer timer;
     MathObjectsInput *inputWidget;
     ZeViewSettings viewSettings;

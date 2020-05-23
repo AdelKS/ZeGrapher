@@ -21,10 +21,9 @@
 #include "Windows/settings.h"
 #include "ui_settings.h"
 
-Settings::Settings(MainView *mainView, Information *info, QWidget *parent): QWidget(parent)
+Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
 {
     information = info;
-    this->mainView = mainView;
 
     ui = new Ui::Settings;
     ui->setupUi(this);
@@ -40,10 +39,10 @@ Settings::Settings(MainView *mainView, Information *info, QWidget *parent): QWid
     rangeAdjustmentsWidget = new RangeAdjustments(information->getFuncsList(), information);
     ui->rangeSettingsLayout->addWidget(rangeAdjustmentsWidget);
 
-    axisSettingsWidget = new AxisSettingsWidget();
+    axisSettingsWidget = new AxisSettingsWidget(information);
     ui->axisSettingsLayout->addWidget(axisSettingsWidget);
 
-    gridSettingsWidget = new ZeGridSettingsWidget();
+    gridSettingsWidget = new ZeGridSettingsWidget(information);
     ui->gridSettingsLayout->addWidget(gridSettingsWidget);
 
     backgroundColorButton = new QColorButton(Qt::white); 

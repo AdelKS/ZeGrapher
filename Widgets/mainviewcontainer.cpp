@@ -11,8 +11,8 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     sheetZoom = new SheetZoom(information, this);
     sheetZoom->move(0, 0);
 
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(resizeMainView()));
+    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(resizeMainView()));
 
 }
 

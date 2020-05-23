@@ -17,7 +17,6 @@ public:
 
 protected slots:
     void resizeMainView();
-    void onSizeSettingsChange();
 
 protected:
     Information *information;

@@ -48,7 +48,7 @@ MathObjectDraw::MathObjectDraw(Information *info)
 
     connect(information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
     connect(information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
-    connect(information, SIGNAL(newviewSettings.graph()), this, SLOT(updateSettingsVals()));
+    connect(information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
 }
 
 void MathObjectDraw::updateSettingsVals()

@@ -49,7 +49,6 @@ protected slots:
 protected:
     void closeEvent(QCloseEvent *evenement);
 
-    void createDocks();
     void createMenus();
     void createZoomWidgets();
     void loadWindowSavedGeomtries();
@@ -63,7 +62,7 @@ protected:
     About *aboutWin;
     UpdateCheck *updateCheckWin;
     QAction *gridButton;
-    QDockWidget *inputDock, *rangeWinDock, *settingsWinDock;
+    QDockWidget *inputDock;
 
     QSettings settings;
 

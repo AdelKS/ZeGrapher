@@ -59,6 +59,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     messageBox->setIcon(QMessageBox::Warning);
 
     loadDefaults();
+    information->setGraphRange(graphRange);
 
     connect(Xmax, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
     connect(Xmin, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
@@ -80,7 +81,7 @@ void RangeAdjustments::loadDefaults()
 {
     GraphRange defaultRange;
     defaultRange.x.max = defaultRange.y.max = 10;
-    defaultRange.x.max = defaultRange.y.max = -10;
+    defaultRange.x.min = defaultRange.y.min = -10;
 
     setGraphRange(defaultRange);
 }

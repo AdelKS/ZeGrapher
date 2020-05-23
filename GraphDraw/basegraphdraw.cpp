@@ -356,7 +356,7 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 
     if(information->getAxesSettings().orthonormal)
     {
-
+        // TODO
     }
 
     centre.x = - viewMapper.getViewRect().left() * uniteX;

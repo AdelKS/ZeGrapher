@@ -23,7 +23,6 @@ protected slots:
     void zoomOut();
     void onExternalZoomSettingsChange();
     void onZoomValueChange();
-    void resizeExportPreview();
 
     void updateZoomSettings();
 

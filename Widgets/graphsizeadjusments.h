@@ -27,10 +27,6 @@ public slots:
 
     void sizeUnitChanged();
 
-    void enableExportButton();
-    void getFileName();
-    void exportGraph();
-
 protected slots:
     void onSizeSettingsChange();
     void onExternalSizeSettingsChange();

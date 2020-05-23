@@ -91,7 +91,7 @@ signals:
     void animationUpdate();
     void regressionAdded(Regression *reg);
     void regressionRemoved(Regression *reg);
-    void newViewSettings();
+    void viewSettingsChanged();
     void sizeSettingsChanged();
     void axesSettingsChanged();
     void gridSettingsChanged();

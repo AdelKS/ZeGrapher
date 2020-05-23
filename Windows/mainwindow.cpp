@@ -32,39 +32,33 @@ MainWindow::MainWindow()
     aboutWin = new About(this);
     updateCheckWin = new UpdateCheck(this);
     valuesWin = new Values(information, this);
-    keyboard = new Keyboard();
+    keyboard = new Keyboard();    
+    settingsWin = new Settings(information, this);
 
     setIconSize(QSize(30, 30));
 
-    mainGraph = new MainView(information); // it has to be the last thing to create.
+    // MainView has to be the last class to be instanced
+    mainGraph = new MainView(information);
     setCentralWidget(mainGraph);
 
-    settingsWin = new Settings(mainGraph, information, this);
 
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
     setMinimumSize(700,450);
     setWindowTitle("ZeGrapher");
 
-    createDocks();
+    // Create dock widget
+
+    inputDock = new QDockWidget(tr("User settings"), this);
+    inputDock->setWidget(settingsWin);
+    addDockWidget(Qt::LeftDockWidgetArea, inputDock);
+
+
     createMenus();
 
     loadWindowSavedGeomtries();
 
     if(settingsWin->checkForUpdatesOnStart())
         updateCheckWin->silentCheckForUpdate();
-}
-
-void MainWindow::createDocks()
-{
-    inputDock = new QDockWidget(tr("Math objects input"), this);
-    inputDock->setWidget(settingsWin);
-    addDockWidget(Qt::LeftDockWidgetArea, inputDock);
-
-    settingsWinDock = new QDockWidget(tr("Settings"), this);
-    settingsWinDock->setWidget(settingsWin);
-    addDockWidget(Qt::LeftDockWidgetArea, settingsWinDock);
-    tabifyDockWidget(inputDock, settingsWinDock);
-    settingsWinDock->close();
 }
 
 void MainWindow::createMenus()
@@ -94,8 +88,9 @@ void MainWindow::createMenus()
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
-    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWinDock, SLOT(show()));
-    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWinDock, SLOT(raise()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), inputDock, SLOT(show()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), inputDock, SLOT(raise()));
+    // TODO: add slot in settingsWin so it displays the settings tab
 
     menuFile->addSeparator();
 
@@ -105,8 +100,7 @@ void MainWindow::createMenus()
 
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
-    connect(showInputWinAction, SIGNAL(triggered()), inputDock, SLOT(show()));
-    connect(showInputWinAction, SIGNAL(triggered()), inputDock, SLOT(raise()));
+    // TODO: add slot in settingsWin so it displays the input tab
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.svg"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));

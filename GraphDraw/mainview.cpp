@@ -308,6 +308,11 @@ void MainView::drawFigureRect()
     painter.setPen(pen);
 }
 
+void MainView::setGraphRange(GraphRange range)
+{
+
+}
+
 void MainView::scaleView(const QRect &refSheetRect)
 {
     double newZoom;

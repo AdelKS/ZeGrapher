@@ -204,7 +204,7 @@ void MathObjectsInput::setInfoClass(Information *info)
     information = info;   
     information->setParEqsListPointer(&parEqWidgets);
     information->setTangentsListPointer(&tangentWidgets);
-    information->setStraightLinesListPointer(&straightlineWidgets);   
+    information->setStraightLinesListPointer(&straightlineWidgets);
 }
 
 void MathObjectsInput::draw()

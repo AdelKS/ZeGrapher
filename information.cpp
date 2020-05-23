@@ -204,7 +204,7 @@ void Information::setViewSettings(const ZeViewSettings &viewSettings)
 {
     this->viewSettings = viewSettings;
 
-    emit newViewSettings();
+    emit viewSettingsChanged();
 }
 
 

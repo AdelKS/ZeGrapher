@@ -59,8 +59,6 @@ public slots:
     void exportPDF(QString fileName, SheetSizeType sizeType);
     void exportSVG(QString fileName);
 
-    void setSheetOrientation(QPageLayout::Orientation type);
-
 
 protected:
     void paintEvent(QPaintEvent *event);

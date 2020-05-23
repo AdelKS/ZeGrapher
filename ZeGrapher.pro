@@ -20,15 +20,11 @@ MOC_DIR = .moc
 UI_DIR = .ui
 
 win32 {
+# Modify this line in Windows to boost's folder to be able to compile
     INCLUDEPATH += C:/boost_1_72_0
 }
 
 INCLUDEPATH += .
-
-win32 {
-    INCLUDEPATH += C:/boost/boost_1_72_0
-}
-
 
 SOURCES += \
     GraphDraw/basegraphdraw.cpp \
