@@ -26,8 +26,9 @@
  * - Base should be > 1 (Strictly)
  **/
 
-AxisSettingsWidget::AxisSettingsWidget(QWidget *parent): QWidget(parent), ui(new Ui::AxisSettingsWidget)
+AxisSettingsWidget::AxisSettingsWidget(Information *information, QWidget *parent): QWidget(parent), ui(new Ui::AxisSettingsWidget)
 {
+    this->information = information;
     ui->setupUi(this);
 
     baseLineEdit = new NumberLineEdit();
@@ -54,7 +55,7 @@ void AxisSettingsWidget::apply()
 {
     processUserInput();
 
-    emit settingsUpdated();
+    information->setAxesSettings(axesSettings);
 }
 
 void AxisSettingsWidget::axisTypeChanged()

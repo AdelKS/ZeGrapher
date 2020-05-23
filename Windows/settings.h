@@ -21,6 +21,8 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <QWidget>
+
 #include "structures.h"
 #include "information.h"
 #include "Widgets/qcolorbutton.h"
@@ -53,6 +55,7 @@ public:
 
 public slots:
     void saveSettings();
+    void showExportSettings();
 
 private slots:
     void resetToDefaultVals();

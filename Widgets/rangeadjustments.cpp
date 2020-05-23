@@ -21,6 +21,8 @@
 #include "Widgets/rangeadjustments.h"
 #include "ui_rangeadjustments.h"
 
+#include <boost/fusion/container/vector/detail/begin_impl.hpp>
+
 /* TODO: Take care of the orthonormal setting */
 
 RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information *info, QWidget *parent): QWidget(parent)
@@ -58,14 +60,14 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
 
     loadDefaults();
 
-    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
+    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
 
-    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
-    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
+    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
 
     connect(ui->resetView, SIGNAL(released()), this, SIGNAL(resetToDefaultView()));
-    connect(ui->apply, SIGNAL(released()), this, SLOT(apply()));
+    connect(ui->apply, SIGNAL(released()), this, SLOT(processUserInput()));
     connect(ui->apply, SIGNAL(released()), this, SLOT(onTickIntervalChange()));
 }
 
@@ -81,6 +83,12 @@ void RangeAdjustments::loadDefaults()
     defaultRange.x.max = defaultRange.y.max = -10;
 
     setGraphRange(defaultRange);
+}
+
+
+void RangeAdjustments::resetToStandardView()
+{
+    // TODO
 }
 
 GraphRange RangeAdjustments::getRange()
@@ -116,6 +124,13 @@ void RangeAdjustments::setGraphRange(const GraphRange &range)
 
 void RangeAdjustments::apply()
 {
+    processUserInput();
+
+    information->setGraphRange(graphRange);
+}
+
+void RangeAdjustments::processUserInput()
+{
     ZeViewSettings viewSettings = information->getViewSettings();
 
     Xmin->checkVal();
@@ -127,54 +142,50 @@ void RangeAdjustments::apply()
     if(!Xmax->isValid() || !Xmin->isValid() || !Ymax->isValid() || !Ymin->isValid())
         return;
 
-    GraphRange oldGraphRange = graphRange;
+    GraphRange newGraphRange;
 
-    graphRange.x.max = Xmax->getValue();
-    graphRange.x.min = Xmin->getValue();
+    newGraphRange.x.max = Xmax->getValue();
+    newGraphRange.x.min = Xmin->getValue();
 
-    graphRange.y.max = Ymax->getValue();
-    graphRange.y.min = Ymin->getValue();
+    newGraphRange.y.max = Ymax->getValue();
+    newGraphRange.y.min = Ymin->getValue();
 
-    if(graphRange.x.min >= graphRange.x.max)
+    if(newGraphRange.x.min >= newGraphRange.x.max)
     {
         messageBox->setText(tr("x<sub>min</sub> must be smaller than x<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.x.min <= 0 && viewSettings.axes.x.axisType == ZeAxisType::LOG)
+    if(newGraphRange.x.min <= 0 && viewSettings.axes.x.axisType == ZeAxisType::LOG)
     {
         messageBox->setText(tr("x<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.y.min >= graphRange.y.max)
+    if(newGraphRange.y.min >= newGraphRange.y.max)
     {
         messageBox->setText(tr("Y<sub>min</sub> must be smaller than Y<sub>max</sub>"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.y.min <= 0 && viewSettings.axes.y.axisType == ZeAxisType::LOG)
+    if(newGraphRange.y.min <= 0 && viewSettings.axes.y.axisType == ZeAxisType::LOG)
     {
         messageBox->setText(tr("y<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();
         return;
     }
 
-    if(graphRange.y.amplitude() < MIN_AMPLITUDE || graphRange.x.amplitude() < MIN_AMPLITUDE)
+    if(newGraphRange.y.amplitude() < MIN_AMPLITUDE || newGraphRange.x.amplitude() < MIN_AMPLITUDE)
     {
         messageBox->setText(tr("The requested view window is too small."));
         messageBox->exec();
         return;
     }
 
-    if(oldGraphRange != graphRange)
-    {
-        qDebug() << "Change in values detected!";
-        emit graphRangeChanged(graphRange);
-    }
+    graphRange = newGraphRange;
 }
 
 void RangeAdjustments::setOrthonormal(bool state)

@@ -86,7 +86,6 @@ signals:
     void graphRangeChanged(GraphRange range);
 
     void dataUpdated();
-    void gridStateChange();
     void updateOccured();
     void drawStateUpdateOccured();
     void animationUpdate();
@@ -94,7 +93,8 @@ signals:
     void regressionRemoved(Regression *reg);
     void newViewSettings();
     void sizeSettingsChanged();
-
+    void axesSettingsChanged();
+    void gridSettingsChanged();
     void graphSizeSettingsChanged();
     void graphZoomSettingsChanged();
 
@@ -105,12 +105,12 @@ public slots:
     void emitAnimationUpdate();
 
     void setGraphRange(const GraphRange &range);
-    void setGridState(bool etat);
-    void changeGridState();
     void setOrthonormal(bool state);
     void setViewSettings(const ZeViewSettings &viewSettings);
     void setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings);
     void setGraphZoomSettings(const ZeZoomSettings &zoomSettings);
+    void setAxesSettings(const ZeAxesSettings &axesSettings);
+    void setGridSettings(const ZeGridSettings &gridSettings);
 
 protected:
 

@@ -68,6 +68,11 @@ void Settings::loadDefaults()
     viewSettings.grid = gridSettingsWidget->getSettings();
 }
 
+void Settings::showExportSettings()
+{
+
+}
+
 void Settings::makeConnects()
 {
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
@@ -230,13 +235,13 @@ void Settings::apply()
 {   
     updateGraphSettings();
 
-    axisSettingsWidget->apply();
+    axisSettingsWidget->processUserInput();
     viewSettings.axes = axisSettingsWidget->getSettings();
 
-    rangeAdjustmentsWidget->apply();
+    rangeAdjustmentsWidget->processUserInput();
     viewSettings.range = rangeAdjustmentsWidget->getRange();
 
-    gridSettingsWidget->apply();
+    gridSettingsWidget->processUserInput();
     viewSettings.grid = gridSettingsWidget->getSettings();
 
     information->setViewSettings(viewSettings);

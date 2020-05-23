@@ -22,8 +22,10 @@
 #define AXISSETTINGS_H
 
 #include <QWidget>
+
 #include "numberlineedit.h"
 #include "qcolorbutton.h"
+#include "information.h"
 
 namespace Ui {
 class AxisSettingsWidget;
@@ -34,7 +36,7 @@ class AxisSettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit AxisSettingsWidget(QWidget *parent = nullptr);
+    explicit AxisSettingsWidget(Information *information, QWidget *parent = nullptr);
     ZeAxisSettings getSettings(ZeAxisName name);
     ZeAxesSettings getSettings();
     ~AxisSettingsWidget();
@@ -56,6 +58,7 @@ protected:
     Ui::AxisSettingsWidget *ui;
     NumberLineEdit *baseLineEdit, *constantMultiplierLineEdit;
     QColorButton *axisColorButton;
+    Information *information;
 
     ZeAxisName currentAxis;
     ZeAxesSettings axesSettings;

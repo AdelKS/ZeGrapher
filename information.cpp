@@ -156,9 +156,12 @@ QList<FuncCalculator*> Information::getFuncsList()
 
 void Information::setGraphRange(const GraphRange &range)
 {
-    viewSettings.range = range;
+    if(viewSettings.range != range)
+    {
+        viewSettings.range = range;
 
-    emit graphRangeChanged(range);
+        emit graphRangeChanged(range);
+    }
 }
 
 const ZeSizeSettings& Information::getGraphSizeSettings()
@@ -207,18 +210,47 @@ void Information::setViewSettings(const ZeViewSettings &viewSettings)
 
 void Information::setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings)
 {
-    viewSettings.graph.sizeSettings = graphSizeSettings;
+    if(viewSettings.graph.sizeSettings != graphSizeSettings)
+    {
+        viewSettings.graph.sizeSettings = graphSizeSettings;
 
-    emit graphSizeSettingsChanged();
+        emit graphSizeSettingsChanged();
+    }
 }
 
 
 void Information::setGraphZoomSettings(const ZeZoomSettings &zoomSettings)
 {
-    viewSettings.graph.zoomSettings = zoomSettings;
+    if(viewSettings.graph.zoomSettings != zoomSettings)
+    {
+        viewSettings.graph.zoomSettings = zoomSettings;
 
-    emit graphZoomSettingsChanged();
+        emit graphZoomSettingsChanged();
+    }
 }
+
+
+void Information::setGridSettings(const ZeGridSettings &gridSettings)
+{
+    if(viewSettings.grid != gridSettings)
+    {
+        viewSettings.grid = gridSettings;
+
+        emit gridSettingsChanged();
+    }
+}
+
+
+void Information::setAxesSettings(const ZeAxesSettings &axesSettings)
+{
+    if(viewSettings.axes != axesSettings)
+    {
+        viewSettings.axes = axesSettings;
+
+        emit axesSettingsChanged();
+    }
+}
+
 
 void Information::emitUpdateSignal()
 {

@@ -46,6 +46,7 @@ public slots:
     void disableUserInput(bool disable);
     void hideViewOptions(bool hide);
     void setOrthonormal(bool state);
+    void processUserInput();
     void apply();
 
 signals:

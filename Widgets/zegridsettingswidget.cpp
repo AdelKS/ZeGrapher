@@ -1,10 +1,11 @@
 #include "zegridsettingswidget.h"
 #include "ui_zegridsettingswidget.h"
 
-ZeGridSettingsWidget::ZeGridSettingsWidget(QWidget *parent) :
+ZeGridSettingsWidget::ZeGridSettingsWidget(Information *information, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ZeGridSettingsWidget)
 {
+    this->information = information;
     ui->setupUi(this);
 
     gridColorButton = new QColorButton(Qt::gray);
@@ -49,32 +50,32 @@ void ZeGridSettingsWidget::loadDefaults()
 
 void ZeGridSettingsWidget::makeConnects()
 {
-    connect(gridColorButton, &QColorButton::colorChanged, this, &ZeGridSettingsWidget::apply);
-    connect(subgridColorButton, &QColorButton::colorChanged, this, &ZeGridSettingsWidget::apply);
+    connect(gridColorButton, &QColorButton::colorChanged, this, &ZeGridSettingsWidget::processUserInput);
+    connect(subgridColorButton, &QColorButton::colorChanged, this, &ZeGridSettingsWidget::processUserInput);
 
     connect(ui->xGrid, &QRadioButton::toggled, this, &ZeGridSettingsWidget::swapGridData);
     connect(ui->yGrid, &QRadioButton::toggled, this, &ZeGridSettingsWidget::swapGridData);
 
-    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
+    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
 
-    connect(ui->showSubgrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
-    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
-    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
-    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::apply);
+    connect(ui->showSubgrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
+    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
+    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
+    connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
 
-    connect(ui->gridLineWidth, SIGNAL(valueChanged()), this, SLOT(apply()));
-    connect(ui->subgridDivs, SIGNAL(valueChanged()), this, SLOT(apply()));
+    connect(ui->gridLineWidth, SIGNAL(valueChanged()), this, SLOT(processUserInput()));
+    connect(ui->subgridDivs, SIGNAL(valueChanged()), this, SLOT(processUserInput()));
 }
 
 void ZeGridSettingsWidget::swapGridData()
 {
     ZeAxisName newChosenAxis = ui->xGrid->isChecked() ? ZeAxisName::X : ZeAxisName::Y;
-    apply();
+    processUserInput();
     if(newChosenAxis != currentAxis)
         loadGridSettingsInUi(newChosenAxis);
 }
 
-void ZeGridSettingsWidget::apply()
+void ZeGridSettingsWidget::processUserInput()
 {
     Ze1DGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
 
@@ -86,8 +87,13 @@ void ZeGridSettingsWidget::apply()
     settingsToUpdate.subgridColor = subgridColorButton->getCurrentColor();
     settingsToUpdate.gridLineWidth = ui->gridLineWidth->value();
     settingsToUpdate.subgridLineWidth = ui->subGridLineWidth->value();
+}
 
-    emit settingsUpdated();
+void ZeGridSettingsWidget::apply()
+{
+    processUserInput();
+
+    information->setGridSettings(gridSettings);
 }
 
 void ZeGridSettingsWidget::loadGridSettingsInUi(ZeAxisName name)

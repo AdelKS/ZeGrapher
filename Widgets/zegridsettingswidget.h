@@ -7,6 +7,7 @@
 
 #include "structures.h"
 #include "qcolorbutton.h"
+#include "information.h"
 
 namespace Ui {
 class ZeGridSettingsWidget;
@@ -17,7 +18,7 @@ class ZeGridSettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ZeGridSettingsWidget(QWidget *parent = nullptr);
+    explicit ZeGridSettingsWidget(Information *information, QWidget *parent = nullptr);
     ZeGridSettings getSettings();
     ~ZeGridSettingsWidget();
 
@@ -25,6 +26,7 @@ signals:
     void settingsUpdated();
 
 public slots:
+    void processUserInput();
     void apply();
 
 protected slots:
@@ -40,6 +42,7 @@ protected:
     Ui::ZeGridSettingsWidget *ui;
     ZeGridSettings gridSettings;
     ZeAxisName currentAxis;
+    Information *information;
 };
 
 #endif // ZEGRIDSETTINGSWIDGET_H
