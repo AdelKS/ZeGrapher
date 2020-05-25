@@ -123,12 +123,12 @@
 <context>
     <name>ColumnActionsWidget</name>
     <message>
-        <location filename="DataPlot/columnactionswidget.cpp" line="100"/>
+        <location filename="DataPlot/columnactionswidget.cpp" line="96"/>
         <source>Confirm column deletion?</source>
         <translation>Spalte wirklich löschen?</translation>
     </message>
     <message>
-        <location filename="DataPlot/columnactionswidget.cpp" line="106"/>
+        <location filename="DataPlot/columnactionswidget.cpp" line="102"/>
         <source>Insert column</source>
         <translation>Spalte einfügen</translation>
     </message>
@@ -185,7 +185,7 @@
     <name>DataWidget</name>
     <message>
         <location filename="Widgets/datawidget.ui" line="20"/>
-        <location filename="Widgets/datawidget.cpp" line="161"/>
+        <location filename="Widgets/datawidget.cpp" line="158"/>
         <source>Data</source>
         <translation>Daten</translation>
     </message>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="177"/>
-        <location filename="DataPlot/datawindow.cpp" line="410"/>
+        <location filename="DataPlot/datawindow.cpp" line="415"/>
         <source>Column actions:</source>
         <translation>Spalte bearbeiten:</translation>
     </message>
@@ -239,43 +239,43 @@
         <translation>Regressionen:</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="352"/>
+        <location filename="DataPlot/datawindow.ui" line="605"/>
         <source>Add</source>
         <translation>Hinzufügen</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="431"/>
+        <location filename="DataPlot/datawindow.ui" line="333"/>
         <source>Coordinates :</source>
         <translation>Koordinatensystem :</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="450"/>
+        <location filename="DataPlot/datawindow.ui" line="352"/>
         <source>Cartesian</source>
         <translation>Kartesisch</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.ui" line="481"/>
+        <location filename="DataPlot/datawindow.ui" line="380"/>
         <source>Polar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="70"/>
-        <location filename="DataPlot/datawindow.cpp" line="301"/>
+        <location filename="DataPlot/datawindow.cpp" line="81"/>
+        <location filename="DataPlot/datawindow.cpp" line="306"/>
         <source>Data fill window: data</source>
         <translation>Dateneingabe-Fenster: Daten</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="403"/>
+        <location filename="DataPlot/datawindow.cpp" line="408"/>
         <source>Between-two-lines actions:</source>
         <translation>Zeilenzwischenraum bearbeiten:</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="404"/>
+        <location filename="DataPlot/datawindow.cpp" line="409"/>
         <source>Line actions:</source>
         <translation>Zeile bearbeiten:</translation>
     </message>
     <message>
-        <location filename="DataPlot/datawindow.cpp" line="409"/>
+        <location filename="DataPlot/datawindow.cpp" line="414"/>
         <source>Between-two-columns actions:</source>
         <translation>Spaltenzwischenraum bearbeiten:</translation>
     </message>
@@ -303,27 +303,27 @@
         <translation>Automatisch befüllen:</translation>
     </message>
     <message>
-        <location filename="DataPlot/filloptions.ui" line="161"/>
+        <location filename="DataPlot/filloptions.ui" line="167"/>
         <source>Start:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="DataPlot/filloptions.ui" line="199"/>
+        <location filename="DataPlot/filloptions.ui" line="211"/>
         <source>End:</source>
         <translation>Ende:</translation>
     </message>
     <message>
-        <location filename="DataPlot/filloptions.ui" line="237"/>
+        <location filename="DataPlot/filloptions.ui" line="255"/>
         <source>Step:</source>
         <translation>Intervall:</translation>
     </message>
     <message>
-        <location filename="DataPlot/filloptions.ui" line="307"/>
+        <location filename="DataPlot/filloptions.ui" line="309"/>
         <source>back</source>
         <translation>zurück</translation>
     </message>
     <message>
-        <location filename="DataPlot/filloptions.ui" line="333"/>
+        <location filename="DataPlot/filloptions.ui" line="335"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
@@ -428,7 +428,7 @@
         <translation>Schriftgröße:</translation>
     </message>
     <message>
-        <location filename="Export/imagesave.cpp" line="63"/>
+        <location filename="Export/imagesave.cpp" line="64"/>
         <source>Save picture</source>
         <translation>Bild speichern</translation>
     </message>
@@ -534,138 +534,138 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="64"/>
+        <location filename="Windows/mainwindow.cpp" line="65"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="65"/>
+        <location filename="Windows/mainwindow.cpp" line="66"/>
         <source>Tools</source>
         <translation>Werkzeuge</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="66"/>
+        <location filename="Windows/mainwindow.cpp" line="67"/>
         <source>Windows</source>
         <translation>Fenster</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="69"/>
+        <location filename="Windows/mainwindow.cpp" line="70"/>
         <source>Show/Hide the grid</source>
         <translation>Koordinaten­netz</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="72"/>
+        <location filename="Windows/mainwindow.cpp" line="73"/>
         <source>Toggle orthonormal view</source>
         <translation>Orthonormale Ansicht</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="77"/>
-        <location filename="Windows/mainwindow.cpp" line="150"/>
+        <location filename="Windows/mainwindow.cpp" line="78"/>
+        <location filename="Windows/mainwindow.cpp" line="151"/>
         <source>Reset to default view</source>
         <translation>Ansicht zurücksetzen</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="80"/>
+        <location filename="Windows/mainwindow.cpp" line="81"/>
         <source>About...</source>
         <translation>Über...</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="83"/>
+        <location filename="Windows/mainwindow.cpp" line="84"/>
         <source>About Qt</source>
         <translation>Über Qt</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="86"/>
+        <location filename="Windows/mainwindow.cpp" line="87"/>
         <source>Check for updates</source>
         <translation>Nach Updates suchen</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="89"/>
+        <location filename="Windows/mainwindow.cpp" line="90"/>
         <source>Print...</source>
         <translation>Drucken...</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="94"/>
+        <location filename="Windows/mainwindow.cpp" line="95"/>
         <source>Image export...</source>
         <translation>Als Bild exportieren...</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="99"/>
+        <location filename="Windows/mainwindow.cpp" line="100"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="106"/>
+        <location filename="Windows/mainwindow.cpp" line="107"/>
         <source>Exit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="110"/>
+        <location filename="Windows/mainwindow.cpp" line="111"/>
         <source>Functions</source>
         <translation>Funktionen</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="115"/>
+        <location filename="Windows/mainwindow.cpp" line="116"/>
         <source>Range edit</source>
         <translation>Darstellungsbereich</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="120"/>
+        <location filename="Windows/mainwindow.cpp" line="121"/>
         <source>Values table</source>
         <translation>Wertetabelle</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="125"/>
+        <location filename="Windows/mainwindow.cpp" line="126"/>
         <source>numeric keyboard</source>
         <translation>Tastatur</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="130"/>
+        <location filename="Windows/mainwindow.cpp" line="131"/>
         <source>Windows and actions</source>
         <translation>Fenster und Aktionen</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="145"/>
+        <location filename="Windows/mainwindow.cpp" line="146"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
         <translation>Darstellungsbereich bearbeiten: Xmin, Xmax...</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="146"/>
+        <location filename="Windows/mainwindow.cpp" line="147"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
         <translation>Eingabe von Funktionen, Folgen, parametrischen Gleichungen, Daten,...</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="147"/>
+        <location filename="Windows/mainwindow.cpp" line="148"/>
         <source>Exit ZeGrapher.</source>
         <translation>ZeGrapher beenden.</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="148"/>
+        <location filename="Windows/mainwindow.cpp" line="149"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
         <translation>Anpassen der Achsen- und Hintergrund-Farbe, der Kurvenqualität,...</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="149"/>
+        <location filename="Windows/mainwindow.cpp" line="150"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
         <translation>Wertetabellen von Funktionen, Folgen und parametrischen Gleichungen anzeigen.</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="151"/>
+        <location filename="Windows/mainwindow.cpp" line="152"/>
         <source>Show/Hide grid</source>
         <translation>Koordinaten­netz anzeigen/verbergen</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="152"/>
+        <location filename="Windows/mainwindow.cpp" line="153"/>
         <source>Export the graph as an image.</source>
         <translation>Diagramm als Bild exportieren.</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="153"/>
+        <location filename="Windows/mainwindow.cpp" line="154"/>
         <source>Virtual keyboard.</source>
         <translation>Virtuelle Tastatur.</translation>
     </message>
     <message>
-        <location filename="Windows/mainwindow.cpp" line="154"/>
+        <location filename="Windows/mainwindow.cpp" line="155"/>
         <source>Print, or export in PDF.</source>
         <translation>Drucken oder als PDF exportieren.</translation>
     </message>
@@ -785,7 +785,7 @@
         <translation>Zeichnen</translation>
     </message>
     <message>
-        <location filename="Windows/mathobjectsinput.cpp" line="82"/>
+        <location filename="Windows/mathobjectsinput.cpp" line="97"/>
         <source>Help: data fill window.</source>
         <translation>Hilfe: Dateneingabe-Fenster.</translation>
     </message>
@@ -867,30 +867,30 @@
 <context>
     <name>ParEqWidget</name>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="93"/>
-        <location filename="Widgets/pareqwidget.cpp" line="109"/>
+        <location filename="Widgets/pareqwidget.cpp" line="90"/>
+        <location filename="Widgets/pareqwidget.cpp" line="106"/>
         <source>The increment period is too small...</source>
         <translation>Das Schrittintervall ist zu kein...</translation>
     </message>
     <message>
+        <location filename="Widgets/pareqwidget.cpp" line="515"/>
         <location filename="Widgets/pareqwidget.cpp" line="518"/>
-        <location filename="Widgets/pareqwidget.cpp" line="521"/>
-        <location filename="Widgets/pareqwidget.cpp" line="544"/>
+        <location filename="Widgets/pareqwidget.cpp" line="541"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="518"/>
+        <location filename="Widgets/pareqwidget.cpp" line="515"/>
         <source>Step value for the &quot;t&quot; parameter is not compatible with the entered range, in parametric equation</source>
         <translation>Das Schrittintervall für den Parameter &quot;t&quot; passt nicht zum Wertebereich der Parametrischen Gleichung</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="521"/>
+        <location filename="Widgets/pareqwidget.cpp" line="518"/>
         <source>Too many points to calculate on parametric equation</source>
         <translation>Die angegebenen Werte ergeben zu viele Punkte zur Berechnung der Parametrischen Gleichung</translation>
     </message>
     <message>
-        <location filename="Widgets/pareqwidget.cpp" line="545"/>
+        <location filename="Widgets/pareqwidget.cpp" line="542"/>
         <source>Step value for the &quot;k&quot; parameter is not compatible with the entered range, in parametric equation (P&lt;sub&gt;</source>
         <translation>Das Schrittintervall für den Parameter &quot;k&quot; passt nicht zum Wertebereich der Parametrischen Gleichung (P&lt;sub&gt;</translation>
     </message>
@@ -1209,17 +1209,17 @@
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="132"/>
+        <location filename="Windows/rangeadjustments.cpp" line="134"/>
         <source>X&lt;sub&gt;min&lt;/sub&gt; must be smaller than X&lt;sub&gt;max&lt;/sub&gt;</source>
         <translation>X&lt;sub&gt;min&lt;/sub&gt; muss kleiner sein als X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="138"/>
+        <location filename="Windows/rangeadjustments.cpp" line="140"/>
         <source>Y&lt;sub&gt;min&lt;/sub&gt; must be smaller than Y&lt;sub&gt;max&lt;/sub&gt;</source>
         <translation>Y&lt;sub&gt;min&lt;/sub&gt; muss kleiner sein als Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/rangeadjustments.cpp" line="145"/>
+        <location filename="Windows/rangeadjustments.cpp" line="148"/>
         <source>The view range is too tight for ZeGrapher to distinguish between the upper and lower values.</source>
         <translation>Der Darstellungsbereich ist zu klein. ZeGrapher kann die Werte so nicht mehr unterscheiden.</translation>
     </message>
@@ -1368,7 +1368,7 @@
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
-        <location filename="Windows/settings.ui" line="297"/>
+        <location filename="Windows/settings.ui" line="302"/>
         <source>Font family:</source>
         <translation>Schriftart:</translation>
     </message>
@@ -1379,7 +1379,7 @@
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
-        <location filename="Windows/settings.ui" line="304"/>
+        <location filename="Windows/settings.ui" line="309"/>
         <source>Font size:</source>
         <translation>Schriftgröße:</translation>
     </message>
@@ -1419,7 +1419,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="352"/>
+        <location filename="Windows/settings.ui" line="294"/>
+        <source>Deutsche</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="357"/>
         <source>Reset</source>
         <translation>Standard wiederherstellen</translation>
     </message>
@@ -1444,28 +1449,28 @@
         <translation>Standard-Farbe der Kurven:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="182"/>
+        <location filename="Windows/settings.cpp" line="187"/>
         <source>Reset to default values ?</source>
         <translation>Standardwerte wiederherstellen ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="182"/>
+        <location filename="Windows/settings.cpp" line="187"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Wollen Sie wirklich die Standardwerte wiederherstellen ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="205"/>
-        <location filename="Windows/settings.cpp" line="207"/>
+        <location filename="Windows/settings.cpp" line="210"/>
+        <location filename="Windows/settings.cpp" line="212"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="205"/>
+        <location filename="Windows/settings.cpp" line="210"/>
         <source>Axes and background colors are identical</source>
         <translation>Die Achsen und der Hintergrund haben die gleiche Farbe</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="207"/>
+        <location filename="Windows/settings.cpp" line="212"/>
         <source>Background and grid colors are identical</source>
         <translation>Der Hintergrund und das Koordinaten­netz haben die gleiche Farbe</translation>
     </message>
@@ -1618,8 +1623,9 @@
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="75"/>
-        <source>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</source>
-        <translation>Eine neue Version ist verfügbar!&lt;br/&gt;Sie können die neue Version herunterladen unter &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Hinweis:&lt;/u&gt; Sie können die automatische Suche nach Updates in den Einstellungen ein- bzw. ausschalten</translation>
+        <source>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</source>
+        <oldsource>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</oldsource>
+        <translation>Eine neue Version ist verfügbar!&lt;br/&gt;Sie können die neue Version herunterladen unter &lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Hinweis:&lt;/u&gt; Sie können die automatische Suche nach Updates in den Einstellungen ein- bzw. ausschalten</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="83"/>
