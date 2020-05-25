@@ -8,7 +8,10 @@ QT += widgets printsupport network
 
 TARGET = ZeGrapher
 TEMPLATE = app
-TRANSLATIONS = ZeGrapher_fr.ts
+TRANSLATIONS = ZeGrapher_fr.ts \
+               ZeGrapher_de.ts \
+               ZeGrapher_zh.ts
+
 CONFIG += c++11
 QMAKE_LFLAGS_RELEASE = -s
 
