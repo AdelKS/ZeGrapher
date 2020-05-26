@@ -68,8 +68,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     connect(Ymin, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
 
     connect(ui->resetView, SIGNAL(released()), this, SIGNAL(resetToDefaultView()));
-    connect(ui->apply, SIGNAL(released()), this, SLOT(processUserInput()));
-    connect(ui->apply, SIGNAL(released()), this, SLOT(onTickIntervalChange()));
+    connect(ui->apply, SIGNAL(released()), this, SLOT(apply()));
 }
 
 void RangeAdjustments::hideViewOptions(bool hide)

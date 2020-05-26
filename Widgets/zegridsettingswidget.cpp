@@ -63,8 +63,8 @@ void ZeGridSettingsWidget::makeConnects()
     connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
     connect(ui->showGrid, &QCheckBox::toggled, this, &ZeGridSettingsWidget::processUserInput);
 
-    connect(ui->gridLineWidth, SIGNAL(valueChanged()), this, SLOT(processUserInput()));
-    connect(ui->subgridDivs, SIGNAL(valueChanged()), this, SLOT(processUserInput()));
+    connect(ui->gridLineWidth, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+    connect(ui->subgridDivs, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 }
 
 void ZeGridSettingsWidget::swapGridData()

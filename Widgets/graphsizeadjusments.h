@@ -9,13 +9,13 @@ namespace Ui {
 class graphSizeAdjusments;
 }
 
-class graphSizeAdjusments : public QWidget
+class GraphSizeAdjusments : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit graphSizeAdjusments(Information *information, QWidget *parent = nullptr);
-    ~graphSizeAdjusments();
+    explicit GraphSizeAdjusments(Information *information, QWidget *parent = nullptr);
+    ~GraphSizeAdjusments();
 
 signals:
     void centimeterUnitEnabled();
@@ -24,8 +24,6 @@ signals:
 public slots:
     void setSheetFigureSizeCm(QSizeF sizeCm);
     void setImageFigureSizePx(QSize sizePx);
-
-    void sizeUnitChanged();
 
 protected slots:
     void onSizeSettingsChange();
@@ -37,6 +35,8 @@ protected slots:
     void swapImageHeightAndWidth();
 
     void constrainFigureSizeWidgets();
+
+    void updateWidgetVisibility();
 
 private:
     void makeConnects();

@@ -45,6 +45,9 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     gridSettingsWidget = new ZeGridSettingsWidget(information);
     ui->gridSettingsLayout->addWidget(gridSettingsWidget);
 
+    sizeAdjusmentsWidget = new GraphSizeAdjusments(information);
+    ui->sizeAdjustmentsLayout->addWidget(sizeAdjusmentsWidget);
+
     backgroundColorButton = new QColorButton(Qt::white); 
     ui->formLayout->addRow(tr("Background color:"), backgroundColorButton);   
 

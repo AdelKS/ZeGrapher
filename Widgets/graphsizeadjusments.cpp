@@ -1,7 +1,7 @@
 #include "graphsizeadjusments.h"
 #include "ui_graphsizeadjusments.h"
 
-graphSizeAdjusments::graphSizeAdjusments(Information *information, QWidget *parent) :
+GraphSizeAdjusments::GraphSizeAdjusments(Information *information, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::graphSizeAdjusments)
 {
@@ -12,9 +12,12 @@ graphSizeAdjusments::graphSizeAdjusments(Information *information, QWidget *pare
     // ui->sheetSizeSubWidget->setEnabled(false);
 
     makeConnects();
+
+    updateWidgetVisibility();
+    onStandardSheetSizeChange();
 }
 
-void graphSizeAdjusments::onSizeSettingsChange()
+void GraphSizeAdjusments::onSizeSettingsChange()
 {
     constrainFigureSizeWidgets();
 
@@ -37,7 +40,57 @@ void graphSizeAdjusments::onSizeSettingsChange()
     connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 }
 
-void graphSizeAdjusments::onExternalSizeSettingsChange()
+void GraphSizeAdjusments::updateWidgetVisibility()
+{
+    if(ui->customSizing->isChecked())
+    {
+        if(ui->pixelUnit->isChecked())
+        {
+            ui->pxSizeWidget->show();
+            ui->pxFigSizeWidget->show();
+
+            ui->cmSizeWidget->hide();
+            ui->cmFigSizeWidget->hide();
+        }
+        else
+        {
+            ui->pxSizeWidget->hide();
+            ui->pxFigSizeWidget->hide();
+
+            ui->cmSizeWidget->show();
+            ui->cmFigSizeWidget->show();
+        }
+
+        onStandardSheetSizeChange();
+    }
+    else
+    {
+        ui->cmSizeWidget->hide();
+        ui->pxSizeWidget->hide();
+    }
+
+    // Margins and figure sizes
+    if(ui->pixelUnit->isChecked())
+    {
+        ui->pxMarginWidget->show();
+        ui->pxFigSizeWidget->show();
+
+        ui->cmMarginWidget->hide();
+        ui->cmFigSizeWidget->hide();
+    }
+    else
+    {
+        ui->pxMarginWidget->hide();
+        ui->pxFigSizeWidget->hide();
+
+        ui->cmMarginWidget->show();
+        ui->cmFigSizeWidget->show();
+    }
+
+
+}
+
+void GraphSizeAdjusments::onExternalSizeSettingsChange()
 {
     sizeSettings = information->getGraphSizeSettings();
 
@@ -69,7 +122,7 @@ void graphSizeAdjusments::onExternalSizeSettingsChange()
     constrainFigureSizeWidgets();
 }
 
-void graphSizeAdjusments::makeConnects()
+void GraphSizeAdjusments::makeConnects()
 {
     connect(ui->sheetMarginCm, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
     connect(ui->sheetMarginPx, SIGNAL(valueChanged(int)), this, SLOT(onSizeSettingsChange()));
@@ -93,14 +146,18 @@ void graphSizeAdjusments::makeConnects()
     connect(ui->A3, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
     connect(ui->A4, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
     connect(ui->A5, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
+    connect(ui->customSize, SIGNAL(clicked(bool)), this, SLOT(onStandardSheetSizeChange()));
 
     connect(ui->sheetSizeSwap, SIGNAL(released()), this, SLOT(swapSheetHeightAndWidth()));
     connect(ui->imageSizeSwap, SIGNAL(released()), this, SLOT(swapImageHeightAndWidth()));
 
     connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onStandardSheetSizeChange()));
+
+    connect(ui->pixelUnit, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
+    connect(ui->fitWindow, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
 }
 
-void graphSizeAdjusments::constrainFigureSizeWidgets()
+void GraphSizeAdjusments::constrainFigureSizeWidgets()
 {
     const QSignalBlocker blocker(ui->figureHeightCm);
     const QSignalBlocker blocker1(ui->figureWidthCm);
@@ -129,7 +186,7 @@ void graphSizeAdjusments::constrainFigureSizeWidgets()
 }
 
 
-void graphSizeAdjusments::setSheetFigureSizeCm(QSizeF sizeCm)
+void GraphSizeAdjusments::setSheetFigureSizeCm(QSizeF sizeCm)
 {
     ui->figureHeightCm->blockSignals(true);
     ui->figureWidthCm->blockSignals(true);
@@ -141,7 +198,7 @@ void graphSizeAdjusments::setSheetFigureSizeCm(QSizeF sizeCm)
     ui->figureWidthCm->blockSignals(false);
 }
 
-void graphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
+void GraphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
 {
     ui->figureHeightPx->blockSignals(true);
     ui->figureWidthPx->blockSignals(true);
@@ -153,10 +210,13 @@ void graphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
     ui->figureWidthPx->blockSignals(false);
 }
 
-void graphSizeAdjusments::onStandardSheetSizeChange()
+void GraphSizeAdjusments::onStandardSheetSizeChange()
 {
     if(not ui->customSize->isChecked())
-    {
+    {        
+        ui->sheetSizeSubWidget->hide();
+        ui->orientationSelector->show();
+
         QPageLayout layout;
         QSizeF sheetSize;
 
@@ -199,9 +259,14 @@ void graphSizeAdjusments::onStandardSheetSizeChange()
 
         constrainFigureSizeWidgets();
     }
+    else
+    {
+        ui->sheetSizeSubWidget->show();
+        ui->orientationSelector->hide();
+    }
 }
 
-void graphSizeAdjusments::swapSheetHeightAndWidth()
+void GraphSizeAdjusments::swapSheetHeightAndWidth()
 {
     const QSignalBlocker blocker(ui->sheetHeightCm);
     const QSignalBlocker blocker2(ui->sheetWidthCm);
@@ -215,7 +280,7 @@ void graphSizeAdjusments::swapSheetHeightAndWidth()
     onSizeSettingsChange();
 }
 
-void graphSizeAdjusments::swapImageHeightAndWidth()
+void GraphSizeAdjusments::swapImageHeightAndWidth()
 {
     const QSignalBlocker blocker(ui->sheetHeightPx);
     const QSignalBlocker blocker2(ui->sheetWidthPx);
@@ -227,33 +292,7 @@ void graphSizeAdjusments::swapImageHeightAndWidth()
     onSizeSettingsChange();
 }
 
-void graphSizeAdjusments::sizeUnitChanged()
-{
-    // showing and hiding the necessary widgets
-
-    if(ui->centimeterUnit->isChecked())
-    {
-        emit centimeterUnitEnabled();
-
-        ui->imageSizeWidget->hide();
-        ui->imageFigureSizeWidget->hide();
-
-        ui->sheetSizeWidget->show();
-        ui->sheetFigureSizeWidget->show();
-    }
-    else
-    {
-        emit pixelUnitEnabled();
-
-        ui->imageSizeWidget->show();
-        ui->imageFigureSizeWidget->show();
-
-        ui->sheetSizeWidget->hide();
-        ui->sheetFigureSizeWidget->hide();
-    }
-}
-
-graphSizeAdjusments::~graphSizeAdjusments()
+GraphSizeAdjusments::~GraphSizeAdjusments()
 {
     delete ui;
 }

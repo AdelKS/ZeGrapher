@@ -37,8 +37,6 @@ BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info)
     numPrec = NUM_PREC;
 
     connect(information, SIGNAL(updateOccured()), this, SLOT(update()));
-    connect(information, SIGNAL(gridStateChange()), this, SLOT(update()));
-
 }
 
 void BaseGraphDraw::setNumPrec(int prec)

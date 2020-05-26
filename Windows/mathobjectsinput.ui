@@ -78,7 +78,7 @@
       <enum>QTabWidget::West</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -108,6 +108,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -116,8 +122,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>462</width>
-            <height>488</height>
+            <width>463</width>
+            <height>492</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="Layout_2">
@@ -206,10 +212,10 @@
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
+          <enum>QFrame::Plain</enum>
          </property>
          <property name="lineWidth">
           <number>0</number>
@@ -222,8 +228,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>462</width>
-            <height>488</height>
+            <width>463</width>
+            <height>492</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -375,8 +381,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>464</width>
-            <height>490</height>
+            <width>463</width>
+            <height>492</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -405,8 +411,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>462</width>
-                <height>488</height>
+                <width>461</width>
+                <height>490</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -543,6 +549,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -551,8 +563,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>462</width>
-            <height>488</height>
+            <width>463</width>
+            <height>492</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -791,6 +803,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -799,8 +817,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>462</width>
-            <height>488</height>
+            <width>463</width>
+            <height>492</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_12">

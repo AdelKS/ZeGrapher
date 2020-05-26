@@ -29,6 +29,7 @@
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
 #include "Widgets/zegridsettingswidget.h"
+#include "Widgets/graphsizeadjusments.h"
 #include "GraphDraw/mainview.h"
 #include "Windows/mathobjectsinput.h"
 
@@ -77,6 +78,7 @@ private:
     AxisSettingsWidget *axisSettingsWidget;    
     RangeAdjustments *rangeAdjustmentsWidget;
     ZeGridSettingsWidget *gridSettingsWidget;
+    GraphSizeAdjusments *sizeAdjusmentsWidget;
 
 };
 
