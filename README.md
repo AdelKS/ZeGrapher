@@ -1,4 +1,4 @@
-# ZeGrapher
+![ZeGrapher logo with name](ZeGrapher_named_logo.svg)
 
 [![Build Status](https://travis-ci.org/AdelKS/ZeGrapher.svg?branch=master)](https://travis-ci.org/AdelKS/ZeGrapher)
 [![Gitter](https://badges.gitter.im/ZeGrapher/community.svg)](https://gitter.im/ZeGrapher/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
