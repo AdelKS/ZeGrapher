@@ -23,7 +23,6 @@
 
 #include "structures.h"
 #include "GraphDraw/subgraph.h"
-#include "Windows/mathobjectsinput.h"
 #include "Windows/settings.h"
 #include "Windows/values.h"
 #include "Windows/about.h"

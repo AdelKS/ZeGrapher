@@ -80,7 +80,7 @@ SOURCES += \
     DataPlot/polynomialmodelwidget.cpp \
     Widgets/numberlineedit.cpp \
     Widgets/rangeadjustments.cpp \
-    Windows/mathobjectsinput.cpp \
+    Widgets/mathobjectsinput.cpp \
     Windows/settings.cpp \
     Windows/values.cpp \
     Windows/updatecheck.cpp \
@@ -144,7 +144,7 @@ HEADERS  += \
     DataPlot/polynomialmodelwidget.h \
     Widgets/numberlineedit.h \
     Widgets/rangeadjustments.h \
-    Windows/mathobjectsinput.h \
+    Widgets/mathobjectsinput.h \
     Windows/settings.h \
     Windows/values.h \
     Windows/updatecheck.h \
@@ -170,7 +170,7 @@ FORMS    += \
     DataPlot/modelchoicewidget.ui \
     DataPlot/polynomialmodelwidget.ui \
     Widgets/keyboard.ui \
-    Windows/mathobjectsinput.ui \
+    Widgets/mathobjectsinput.ui \
     Windows/settings.ui \
     Widgets/axissettingswidget.ui \
     Widgets/rangeadjustments.ui \

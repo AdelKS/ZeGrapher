@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "Windows/mathobjectsinput.h"
+#include "Widgets/mathobjectsinput.h"
 #include "ui_mathobjectsinput.h"
 
 

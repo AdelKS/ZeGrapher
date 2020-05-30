@@ -31,7 +31,7 @@
 #include "Widgets/zegridsettingswidget.h"
 #include "Widgets/graphsizeadjusments.h"
 #include "GraphDraw/mainview.h"
-#include "Windows/mathobjectsinput.h"
+#include "Widgets/mathobjectsinput.h"
 
 /* TODO:
  * - Give out axis settings to the rest of the program through information
