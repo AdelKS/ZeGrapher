@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #ifndef MATHOBJECTSINPUT_H
 #define MATHOBJECTSINPUT_H
 

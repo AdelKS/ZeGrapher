@@ -48,6 +48,9 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     sizeAdjusmentsWidget = new GraphSizeAdjusments(information);
     ui->sizeAdjustmentsLayout->addWidget(sizeAdjusmentsWidget);
 
+    exportWidget = new Export(information);
+    ui->exportLayout->addWidget(exportWidget);
+
     backgroundColorButton = new QColorButton(Qt::white); 
     ui->formLayout->addRow(tr("Background color:"), backgroundColorButton);   
 

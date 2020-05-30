@@ -26,7 +26,6 @@ public slots:
     void enableExportButton();
     void getFileName();
     void exportGraph();
-    void exportFormatChanged();
 
 protected slots:
     void updateFileNameExtension();

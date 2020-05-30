@@ -9,35 +9,10 @@ Export::Export(Information *information, QWidget *parent) :
 
     this->information = information;
 
-    exportFormatChanged();
+    timer.setSingleShot(true);
+    timer.setInterval(2000);
 
     makeConnects();
-}
-
-void Export::exportFormatChanged()
-{
-    const ZeSizeSettings &sizeSettings = information->getGraphSettings().sizeSettings;
-
-    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-    {
-        ui->imageWidget->setEnabled(false);
-        ui->imageFormat->setEnabled(false);
-
-        ui->vectorFormat->setChecked(true);
-        ui->vectorFormat->setEnabled(true);
-        ui->vectorWidget->setEnabled(true);
-    }
-    else
-    {
-        ui->imageWidget->setEnabled(true);
-        ui->imageFormat->setEnabled(true);
-        ui->imageFormat->setChecked(true);
-
-        ui->vectorFormat->setEnabled(false);
-        ui->vectorWidget->setEnabled(false);
-    }
-
-    updateFileNameExtension();
 }
 
 void Export::makeConnects()
@@ -45,6 +20,9 @@ void Export::makeConnects()
     connect(ui->exportButton, SIGNAL(released()), this, SLOT(exportGraph()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(enableExportButton()));
     connect(ui->chooseLocation, SIGNAL(released()), this, SLOT(getFileName()));
+    connect(ui->imageFormatSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(updateFileNameExtension()));
+    connect(ui->scalableFormatSelection, SIGNAL(currentIndexChanged(int)), this, SLOT(updateFileNameExtension()));
+    connect(ui->imageFormat, SIGNAL(toggled(bool)), this, SLOT(updateFileNameExtension()));
 }
 
 void Export::getFileName()
@@ -58,7 +36,7 @@ void Export::updateFileNameExtension()
 {
     if(ui->vectorFormat->isChecked())
         extension = "." + ui->scalableFormatSelection->currentText().toLower();
-    else extension = "." + ui->scalableFormatSelection->currentText().toLower();
+    else extension = "." + ui->imageFormatSelection->currentText().toLower();
 
     if(!fileName.isEmpty())
     {
@@ -74,9 +52,13 @@ void Export::enableExportButton()
 void Export::exportGraph()
 {
     if(fileName.isEmpty())
+    {
         QMessageBox::critical(this, tr("Unspecified export file"), tr("A file name needs to be "
-                                                                       "specified along with a destination folder.\n\n"
+                                                                       "specified along with a destination folder. "
                                                                        "Please specify them then try again."));
+        return;
+    }
+
     information->setExportFileName(fileName + extension);
 
     ui->exportButton->setEnabled(false);

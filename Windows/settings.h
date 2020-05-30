@@ -30,6 +30,7 @@
 #include "Widgets/rangeadjustments.h"
 #include "Widgets/zegridsettingswidget.h"
 #include "Widgets/graphsizeadjusments.h"
+#include "Widgets/export.h"
 #include "GraphDraw/mainview.h"
 #include "Widgets/mathobjectsinput.h"
 
@@ -79,6 +80,7 @@ private:
     RangeAdjustments *rangeAdjustmentsWidget;
     ZeGridSettingsWidget *gridSettingsWidget;
     GraphSizeAdjusments *sizeAdjusmentsWidget;
+    Export *exportWidget;
 
 };
 

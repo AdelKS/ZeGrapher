@@ -41,7 +41,6 @@ MainWindow::MainWindow()
     mainGraph = new MainView(information);
     setCentralWidget(mainGraph);
 
-
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
     setMinimumSize(700,450);
     setWindowTitle("ZeGrapher");
@@ -51,7 +50,6 @@ MainWindow::MainWindow()
     inputDock = new QDockWidget(tr("User settings"), this);
     inputDock->setWidget(settingsWin);
     addDockWidget(Qt::LeftDockWidgetArea, inputDock);
-
 
     createMenus();
 
