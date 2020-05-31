@@ -15,6 +15,7 @@ class GraphSizeAdjusments : public QWidget
 
 public:
     explicit GraphSizeAdjusments(Information *information, QWidget *parent = nullptr);
+    const ZeSizeSettings &getSettings();
     ~GraphSizeAdjusments();
 
 signals:
@@ -25,8 +26,10 @@ public slots:
     void setSheetFigureSizeCm(QSizeF sizeCm);
     void setImageFigureSizePx(QSize sizePx);
 
+    void processUserInput();
+    void apply();
+
 protected slots:
-    void onSizeSettingsChange();
     void onExternalSizeSettingsChange();
 
     void onStandardSheetSizeChange();

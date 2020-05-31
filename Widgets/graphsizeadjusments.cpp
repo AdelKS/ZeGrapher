@@ -17,7 +17,7 @@ GraphSizeAdjusments::GraphSizeAdjusments(Information *information, QWidget *pare
     onStandardSheetSizeChange();
 }
 
-void GraphSizeAdjusments::onSizeSettingsChange()
+void GraphSizeAdjusments::processUserInput()
 {
     constrainFigureSizeWidgets();
 
@@ -34,10 +34,20 @@ void GraphSizeAdjusments::onSizeSettingsChange()
 
     sizeSettings.cmSheetSize = QSizeF(ui->sheetWidthCm->value(), ui->sheetHeightCm->value());
     sizeSettings.pxSheetSize = QSize(ui->sheetWidthPx->value(), ui->sheetHeightPx->value());
+}
+
+void GraphSizeAdjusments::apply()
+{
+    processUserInput();
 
     information->disconnect(this);
     information->setGraphSizeSettings(sizeSettings);
     connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
+}
+
+const ZeSizeSettings &GraphSizeAdjusments::getSettings()
+{
+    return sizeSettings;
 }
 
 void GraphSizeAdjusments::updateWidgetVisibility()
@@ -124,24 +134,24 @@ void GraphSizeAdjusments::onExternalSizeSettingsChange()
 
 void GraphSizeAdjusments::makeConnects()
 {
-    connect(ui->sheetMarginCm, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
-    connect(ui->sheetMarginPx, SIGNAL(valueChanged(int)), this, SLOT(onSizeSettingsChange()));
+    connect(ui->sheetMarginCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+    connect(ui->sheetMarginPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
-    connect(ui->scalingFactor, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
+    connect(ui->scalingFactor, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 
-    connect(ui->figureHeightCm, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
-    connect(ui->figureWidthCm, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
+    connect(ui->figureHeightCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+    connect(ui->figureWidthCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 
-    connect(ui->figureHeightPx, SIGNAL(valueChanged(int)), this, SLOT(onSizeSettingsChange()));
-    connect(ui->figureWidthPx, SIGNAL(valueChanged(int)), this, SLOT(onSizeSettingsChange()));
+    connect(ui->figureHeightPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->figureWidthPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
     connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 
-    connect(ui->sheetHeightCm, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
-    connect(ui->sheetWidthCm, SIGNAL(valueChanged(double)), this, SLOT(onSizeSettingsChange()));
+    connect(ui->sheetHeightCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+    connect(ui->sheetWidthCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 
-    connect(ui->sheetHeightPx, SIGNAL(valueChanged(int)), this, SLOT(onSizeSettingsChange()));
-    connect(ui->sheetWidthPx, SIGNAL(valueChanged(int)), this, SLOT(onSizeSettingsChange()));
+    connect(ui->sheetHeightPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->sheetWidthPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
     connect(ui->A3, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
     connect(ui->A4, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
@@ -277,7 +287,7 @@ void GraphSizeAdjusments::swapSheetHeightAndWidth()
 
     ui->orientationSelector->setCurrentIndex((ui->orientationSelector->currentIndex() + 1) % 2);
 
-    onSizeSettingsChange();
+    processUserInput();
 }
 
 void GraphSizeAdjusments::swapImageHeightAndWidth()
@@ -289,7 +299,7 @@ void GraphSizeAdjusments::swapImageHeightAndWidth()
     ui->sheetHeightPx->setValue(ui->sheetWidthPx->value());
     ui->sheetWidthPx->setValue(tmp);
 
-    onSizeSettingsChange();
+    processUserInput();
 }
 
 GraphSizeAdjusments::~GraphSizeAdjusments()

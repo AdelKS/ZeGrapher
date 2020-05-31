@@ -249,6 +249,9 @@ void Settings::apply()
     gridSettingsWidget->processUserInput();
     viewSettings.grid = gridSettingsWidget->getSettings();
 
+    sizeAdjusmentsWidget->processUserInput();
+    viewSettings.graph.sizeSettings = sizeAdjusmentsWidget->getSettings();
+
     information->setViewSettings(viewSettings);
 }
 
