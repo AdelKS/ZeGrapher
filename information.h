@@ -44,6 +44,7 @@ public:
     const ZeGraphSettings& getGraphSettings();
     const ZeGridSettings& getGridSettings();
     const ZeAxesSettings& getAxesSettings();
+    const ZeEstheticSettings &getEstheticSettings();
     const GraphRange& getGraphRange();
 
     void addDataList();
@@ -97,6 +98,7 @@ signals:
     void gridSettingsChanged();
     void graphSizeSettingsChanged();
     void graphZoomSettingsChanged();
+    void estheticSettingsChanged();
 
 public slots:
     void emitUpdateSignal();
@@ -111,6 +113,7 @@ public slots:
     void setGraphZoomSettings(const ZeZoomSettings &zoomSettings);
     void setAxesSettings(const ZeAxesSettings &axesSettings);
     void setGridSettings(const ZeGridSettings &gridSettings);
+    void setEstheticSettings(const ZeEstheticSettings &estheticSettings);
 
 protected:
 

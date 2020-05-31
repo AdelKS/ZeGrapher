@@ -25,7 +25,6 @@
 
 #include "structures.h"
 #include "information.h"
-#include "Widgets/qcolorbutton.h"
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
 #include "Widgets/zegridsettingswidget.h"
@@ -33,6 +32,7 @@
 #include "Widgets/export.h"
 #include "GraphDraw/mainview.h"
 #include "Widgets/mathobjectsinput.h"
+#include "Widgets/estheticsettings.h"
 
 /* TODO:
  * - Give out axis settings to the rest of the program through information
@@ -60,26 +60,22 @@ public slots:
     void showExportSettings();
 
 private slots:
-    void resetToDefaultVals();
+    void resetToDefaults();
     void apply();
-    void readSavedSettings();
+    void loadSettingsFromDisk();
 
 private:
-    void makeConnects();
-    void loadDefaults();
-    void updateGraphSettings();
-
     Information *information;
     Ui::Settings *ui;
     QTimer timer;
     MathObjectsInput *inputWidget;
     ZeViewSettings viewSettings;
-    ZeAxisName currentEditedGrid;
-    QColorButton *backgroundColorButton, *defaultColorButton;
+    ZeAxisName currentEditedGrid;   
     AxisSettingsWidget *axisSettingsWidget;    
     RangeAdjustments *rangeAdjustmentsWidget;
     ZeGridSettingsWidget *gridSettingsWidget;
     GraphSizeAdjusments *sizeAdjusmentsWidget;
+    EstheticSettings *estheticSettingsWidget;
     Export *exportWidget;
 
 };

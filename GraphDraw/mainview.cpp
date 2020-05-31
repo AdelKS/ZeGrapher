@@ -102,9 +102,9 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
 
     painter.begin(pdfWriter);
 
-    if(information->getGraphSettings().backgroundColor != QColor(Qt::white))
+    if(information->getGraphSettings().estheticSettings.backgroundColor != QColor(Qt::white))
     {
-        painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));
+        painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
         painter.drawRect(painter.viewport());
     }
 
@@ -138,9 +138,9 @@ void MainView::exportSVG(QString fileName)
 
     painter.begin(&svgGenerator);
 
-    if(information->getGraphSettings().backgroundColor != QColor(Qt::white))
+    if(information->getGraphSettings().estheticSettings.backgroundColor != QColor(Qt::white))
     {
-        painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));
+        painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
         painter.drawRect(painter.viewport());
     }
 
@@ -286,7 +286,7 @@ QRect MainView::supportRectFromViewRect(QRect viewRect)
 
 void MainView::drawSupport()
 { // draws the sheet on an untransformed view
-    painter.setBrush(QBrush(information->getGraphSettings().backgroundColor));;
+    painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));;
 
     supportRect = supportRectFromViewRect(painter.viewport());
 

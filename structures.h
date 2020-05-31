@@ -214,10 +214,8 @@ struct ZeZoomSettings
     }
 };
 
-struct ZeGraphSettings
+struct ZeEstheticSettings
 {
-    ZeZoomSettings zoomSettings;
-    ZeSizeSettings sizeSettings;
     QColor backgroundColor;
     QColor defaultColor;
     int curvesThickness;
@@ -225,16 +223,28 @@ struct ZeGraphSettings
     bool smoothing;
     QFont graphFont;
 
-    bool operator !=(const ZeGraphSettings &other)
+    bool operator !=(const ZeEstheticSettings &other)
     {
-        return zoomSettings != other.zoomSettings or
-                sizeSettings != other.sizeSettings or
-                backgroundColor != other.backgroundColor or
+        return  backgroundColor != other.backgroundColor or
                 defaultColor != other.defaultColor or
                 curvesThickness != other.curvesThickness or
                 distanceBetweenPoints != other.distanceBetweenPoints or
                 smoothing != other.smoothing or
                 graphFont != other.graphFont;
+    }
+};
+
+struct ZeGraphSettings
+{
+    ZeZoomSettings zoomSettings;
+    ZeSizeSettings sizeSettings;
+    ZeEstheticSettings estheticSettings;
+
+    bool operator !=(const ZeGraphSettings &other)
+    {
+        return  zoomSettings != other.zoomSettings or
+                sizeSettings != other.sizeSettings or
+                estheticSettings != other.estheticSettings;
     }
 };
 

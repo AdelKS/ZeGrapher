@@ -189,6 +189,11 @@ const ZeAxesSettings& Information::getAxesSettings()
     return viewSettings.axes;
 }
 
+const ZeEstheticSettings& Information::getEstheticSettings()
+{
+    return viewSettings.graph.estheticSettings;
+}
+
 const GraphRange& Information::getGraphRange()
 {
     return viewSettings.range;
@@ -238,6 +243,17 @@ void Information::setGridSettings(const ZeGridSettings &gridSettings)
 
         emit gridSettingsChanged();
     }
+}
+
+void Information::setEstheticSettings(const ZeEstheticSettings &estheticSettings)
+{
+    if(viewSettings.graph.estheticSettings != estheticSettings)
+    {
+        viewSettings.graph.estheticSettings = estheticSettings;
+
+        emit estheticSettingsChanged();
+    }
+
 }
 
 

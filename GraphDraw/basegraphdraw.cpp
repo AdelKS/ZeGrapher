@@ -153,7 +153,7 @@ void BaseGraphDraw::paint()
 
 void BaseGraphDraw::writeLegends()
 {
-    font = information->getGraphSettings().graphFont;
+    font = information->getGraphSettings().estheticSettings.graphFont;
     font.setPixelSize(legendFontSize);
     font.setItalic(italic);
     font.setBold(bold);
@@ -189,7 +189,7 @@ void BaseGraphDraw::writeLegends()
 
 void BaseGraphDraw::drawAxisComponentsLinearX()
 {
-    painter.setFont(information->getGraphSettings().graphFont);
+    painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double space, pos;
@@ -241,7 +241,7 @@ void BaseGraphDraw::drawAxisComponentsLinearX()
 
 void BaseGraphDraw::drawAxisComponentsLinearY()
 {
-    painter.setFont(information->getGraphSettings().graphFont);
+    painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double space, pos, largestWidth;
@@ -368,7 +368,7 @@ QImage* BaseGraphDraw::drawImage()
     viewSettings = information->getViewSettings();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
-    image->fill(viewSettings.graph.backgroundColor.rgb());
+    image->fill(viewSettings.graph.estheticSettings.backgroundColor.rgb());
 
     painter.begin(image);
     //trace du background

@@ -32,6 +32,7 @@ SOURCES += \
     GraphDraw/mathobjectdraw.cpp \
     GraphDraw/subgraph.cpp \
     GraphDraw/viewmapper.cpp \
+    Widgets/estheticsettings.cpp \
     Widgets/export.cpp \
     Widgets/graphsizeadjusments.cpp \
     Widgets/mainviewcontainer.cpp \
@@ -95,6 +96,7 @@ HEADERS  += \
     GraphDraw/mathobjectdraw.h \
     GraphDraw/subgraph.h \
     GraphDraw/viewmapper.h \
+    Widgets/estheticsettings.h \
     Widgets/export.h \
     Widgets/graphsizeadjusments.h \
     Widgets/mainviewcontainer.h \
@@ -156,6 +158,7 @@ HEADERS  += \
 
 
 FORMS    += \
+    Widgets/estheticsettings.ui \
     Widgets/export.ui \
     Widgets/graphsizeadjusments.ui \
     Widgets/sheetzoom.ui \

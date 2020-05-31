@@ -30,7 +30,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     ui->setupUi(this);
     ui->styleWidget->hide();
 
-    style.color = info->getGraphSettings().defaultColor;
+    style.color = info->getGraphSettings().estheticSettings.defaultColor;
     style.drawLines = false;
     style.drawPoints = true;
     style.lineStyle = Qt::SolidLine;
@@ -41,7 +41,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
 
     information = info;
 
-    colorButton = new QColorButton(info->getGraphSettings().defaultColor);
+    colorButton = new QColorButton(info->getGraphSettings().estheticSettings.defaultColor);
     ui->mainLayout->addWidget(colorButton);
 
     connect(ui->styleButton, SIGNAL(toggled(bool)), ui->styleWidget, SLOT(setVisible(bool)));
