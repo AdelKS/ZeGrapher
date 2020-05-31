@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>42</height>
+    <width>282</width>
+    <height>36</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,14 +60,14 @@
           <widget class="QPushButton" name="zoomIn">
            <property name="minimumSize">
             <size>
-             <width>36</width>
-             <height>36</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>36</width>
-             <height>36</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
            <property name="text">
@@ -79,8 +79,8 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>24</width>
-             <height>24</height>
+             <width>20</width>
+             <height>20</height>
             </size>
            </property>
           </widget>
@@ -90,13 +90,13 @@
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>36</height>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>36</height>
+             <height>30</height>
             </size>
            </property>
            <property name="prefix">
@@ -123,14 +123,14 @@
           <widget class="QPushButton" name="zoomOut">
            <property name="minimumSize">
             <size>
-             <width>36</width>
-             <height>36</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>36</width>
-             <height>36</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
            <property name="text">
@@ -142,24 +142,11 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_10">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
-          </spacer>
+          </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="fitSheet">
@@ -171,13 +158,6 @@
            </property>
            <property name="checked">
             <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="hundredPercent">
-           <property name="text">
-            <string>100 %</string>
            </property>
           </widget>
          </item>

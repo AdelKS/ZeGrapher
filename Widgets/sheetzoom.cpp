@@ -10,7 +10,7 @@ SheetZoom::SheetZoom(Information *information, QWidget *parent) :
 
     connect(ui->zoomIn, &QPushButton::released, this, &SheetZoom::zoomIn);
     connect(ui->zoomOut, &QPushButton::released, this, &SheetZoom::zoomOut);
-    connect(ui->zoomPercentage, SIGNAL(valueChanged()), this, SLOT(onZoomValueChange()));
+    connect(ui->zoomPercentage, SIGNAL(valueChanged(double)), this, SLOT(onZoomValueChange()));
 
     updateZoomSettings();
 }

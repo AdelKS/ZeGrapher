@@ -38,8 +38,8 @@ MainWindow::MainWindow()
     setIconSize(QSize(30, 30));
 
     // MainView has to be the last class to be instanced
-    mainGraph = new MainView(information);
-    setCentralWidget(mainGraph);
+    mainGraphContainer = new MainViewContainer(information);
+    setCentralWidget(mainGraphContainer);
 
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
     setMinimumSize(700,450);
