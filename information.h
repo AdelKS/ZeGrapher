@@ -46,6 +46,7 @@ public:
     const ZeAxesSettings& getAxesSettings();
     const ZeEstheticSettings &getEstheticSettings();
     const GraphRange& getGraphRange();
+    const ZeAppSettings& getAppSettings();
 
     void addDataList();
     void removeDataList(int index);
@@ -114,6 +115,7 @@ public slots:
     void setAxesSettings(const ZeAxesSettings &axesSettings);
     void setGridSettings(const ZeGridSettings &gridSettings);
     void setEstheticSettings(const ZeEstheticSettings &estheticSettings);
+    void setAppSettings(const ZeAppSettings& appSettings);
 
 protected:
 
@@ -129,6 +131,7 @@ protected:
     QList<SeqCalculator*> sequences;
 
     ZeViewSettings viewSettings;
+    ZeAppSettings appSettings;
     QString exportFileName;
 
     QList<ParEqWidget*> *parEqWidgets;

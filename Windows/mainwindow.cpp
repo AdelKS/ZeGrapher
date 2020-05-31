@@ -55,7 +55,7 @@ MainWindow::MainWindow()
 
     loadWindowSavedGeomtries();
 
-    if(settingsWin->checkForUpdatesOnStart())
+    if(information->getAppSettings().startupUpdateCheck)
         updateCheckWin->silentCheckForUpdate();
 }
 
@@ -166,7 +166,7 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 {
     /* Save windows geometry */
     saveWindowsGeometry();
-    settingsWin->saveSettings();
+    settingsWin->saveSettingsToDisk();
     keyboard->close();
     evenement->accept();
 }

@@ -33,7 +33,7 @@
 #include "GraphDraw/mainview.h"
 #include "Widgets/mathobjectsinput.h"
 #include "Widgets/estheticsettings.h"
-
+#include "Widgets/appsettings.h"
 /* TODO:
  * - Give out axis settings to the rest of the program through information
  * - Save new settings to the hard disk: base, base power etc.
@@ -53,16 +53,12 @@ public:
     explicit Settings(Information *info, QWidget *parent = nullptr);
     ~Settings();
 
-    bool checkForUpdatesOnStart();
-
 public slots:
-    void saveSettings();
+    void saveSettingsToDisk();
     void showExportSettings();
 
 private slots:
-    void resetToDefaults();
     void apply();
-    void loadSettingsFromDisk();
 
 private:
     Information *information;
@@ -77,6 +73,7 @@ private:
     GraphSizeAdjusments *sizeAdjusmentsWidget;
     EstheticSettings *estheticSettingsWidget;
     Export *exportWidget;
+    AppSettings *appSettingsWidget;
 
 };
 

@@ -298,6 +298,15 @@ struct ZeViewSettings
     ZeGraphSettings graph;
 };
 
+struct ZeAppSettings
+{
+    enum struct Language {ENGLISH, FRENCH, GERMAN};
+
+    bool startupUpdateCheck;
+    Language language;
+    QFont font;
+};
+
 struct FuncMap
 {
     bool funcType;

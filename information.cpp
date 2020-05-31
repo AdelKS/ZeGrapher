@@ -199,6 +199,12 @@ const GraphRange& Information::getGraphRange()
     return viewSettings.range;
 }
 
+
+const ZeAppSettings& Information::getAppSettings()
+{
+    return appSettings;
+}
+
 void Information::setOrthonormal(bool state)
 {
 
@@ -254,6 +260,11 @@ void Information::setEstheticSettings(const ZeEstheticSettings &estheticSettings
         emit estheticSettingsChanged();
     }
 
+}
+
+void Information::setAppSettings(const ZeAppSettings& appSettings)
+{
+    this->appSettings = appSettings;
 }
 
 
