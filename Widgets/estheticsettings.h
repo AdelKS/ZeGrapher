@@ -23,10 +23,10 @@ public slots:
     void resetToDefaults();
     void apply();
     void processUserInput();
+    void saveSettingsToDisk();
 
 private:    
     void loadSettingsFromDisk();
-    void saveSettingsToDisk();
     void makeConnects();
 
     Information *information;

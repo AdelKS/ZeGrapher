@@ -17,6 +17,8 @@ EstheticSettings::EstheticSettings(Information *information, QWidget *parent) :
 
     estheticSettings.backgroundColor = backgroundColorButton->getCurrentColor();
     estheticSettings.defaultColor = defaultColorButton->getCurrentColor();
+
+    loadSettingsFromDisk();
 }
 
 void EstheticSettings::makeConnects()
@@ -101,6 +103,8 @@ void EstheticSettings::loadSettingsFromDisk()
         ui->distanceWidget->setValue(settings.value("quality").toInt());
     if(settings.contains("thickness"))
         ui->thicknessWidget->setValue(settings.value("thickness").toInt());
+
+    apply();
 }
 
 void EstheticSettings::saveSettingsToDisk()
