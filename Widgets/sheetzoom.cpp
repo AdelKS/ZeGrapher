@@ -17,7 +17,7 @@ SheetZoom::SheetZoom(Information *information, QWidget *parent) :
 
 void SheetZoom::updateZoomSettings()
 {
-    zoomSettings.zoom = ui->zoomPercentage->value();
+    zoomSettings.zoom = ui->zoomPercentage->value() / 100;
     zoomSettings.zoomingType = ui->fitSheet->isChecked() ? ZeZoomSettings::FITSHEET : ZeZoomSettings::CUSTOM;
 
     information->setGraphZoomSettings(zoomSettings);
@@ -51,7 +51,7 @@ void SheetZoom::onExternalZoomSettingsChange()
 
 
     ui->fitSheet->setChecked(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET);
-    ui->zoomPercentage->setValue(zoomSettings.zoom);
+    ui->zoomPercentage->setValue(zoomSettings.zoom * 100);
 }
 
 void SheetZoom::onZoomValueChange()

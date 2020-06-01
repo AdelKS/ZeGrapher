@@ -60,6 +60,7 @@
 
 #define RELATIVE_MIN_SIZE 0.25 // How much the graph can be smaller than its container sheet/background
 
+#define CM_PER_INCH 2.54
 
 struct ZeAxisRange
 {

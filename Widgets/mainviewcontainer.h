@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QScrollArea>
+#include <algorithm>
 
 class MainViewContainer : public QScrollArea
 {
@@ -22,6 +23,8 @@ protected slots:
 protected:
     void resizeEvent(QResizeEvent *event);
 
+
+    double screenDPI;
     Information *information;
     MainView *mainView;
     SheetZoom *sheetZoom;

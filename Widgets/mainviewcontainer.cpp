@@ -3,6 +3,7 @@
 MainViewContainer::MainViewContainer(Information *information, QWidget *parent) : QScrollArea(parent)
 {
     this->information = information;
+    setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     mainView = new MainView(information);
 
@@ -18,7 +19,9 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setContentsMargins(2, 2, 2, 4);
     layout->addWidget(sheetZoom);
-    zoomContainer->setLayout(layout);
+    zoomContainer->setLayout(layout);    
+
+    screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
     zoomPopup = new PopupWidget(PopupPos::TOP, 0.5, this);
     zoomPopup->setWidget(zoomContainer);
@@ -34,34 +37,41 @@ void MainViewContainer::resizeMainView()
     const auto &sizeSettings = information->getGraphSettings().sizeSettings;
     const auto &zoomSettings = information->getGraphZoomSettings();
 
-    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {
         if(mainView->size() != contentsRect().size())
             mainView->resize(contentsRect().size());
-    }
-    else if(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
-    {
-        if(sizeSettings.sizeUnit == ZeSizeSettings::SizeUnit::CENTIMETER)
-        {
-            if(mainView->size() != contentsRect().size())
-                mainView->resize(contentsRect().size());
-        }
-        else
-        {
-            if(contentsRect().size().width() > sizeSettings.pxSheetSize.width() &&
-                    contentsRect().size().height() > sizeSettings.pxSheetSize.height())
-                mainView->resize(sizeSettings.pxSheetSize.width(), sizeSettings.pxSheetSize.height());
-            else if(mainView->size() != contentsRect().size())
-                mainView->resize(contentsRect().size());
-        }
 
+        if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
+        {
+            ZeSizeSettings newSizeSettings = sizeSettings;
+
+            newSizeSettings.cmSheetSize = QSizeF(double(contentsRect().size().width()) / screenDPI * CM_PER_INCH,
+                                                 double(contentsRect().size().height()) / screenDPI * CM_PER_INCH);
+
+            newSizeSettings.pxSheetSize = contentsRect().size();
+
+            information->setGraphSizeSettings(newSizeSettings);
+        }
     }
     else
     {
-        QSize targetSize = mainView->getTargetSupportSizePixels();
-        targetSize.setHeight(int(double(targetSize.height()) * zoomSettings.zoom / 100));
-        targetSize.setWidth(int(double(targetSize.width()) * zoomSettings.zoom / 100));
-        mainView->resize(targetSize);
+        double zoom = std::max(zoomSettings.zoom, 1.0);
+
+        if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+        {
+            QSize newSize(int(sizeSettings.cmSheetSize.width() / CM_PER_INCH * screenDPI * zoom),
+                          int(sizeSettings.cmSheetSize.height() / CM_PER_INCH * screenDPI * zoom));
+
+            mainView->resize(newSize);
+        }
+        else
+        {
+            QSize newSize(int(sizeSettings.pxSheetSize.width() * zoom),
+                          int(sizeSettings.pxSheetSize.height() * zoom));
+
+            mainView->resize(newSize);
+        }
     }
 }
 

@@ -42,7 +42,7 @@ void GraphSizeAdjusments::apply()
 
     information->disconnect(this);
     information->setGraphSizeSettings(sizeSettings);
-    connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
+    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 }
 
 const ZeSizeSettings &GraphSizeAdjusments::getSettings()
@@ -145,7 +145,7 @@ void GraphSizeAdjusments::makeConnects()
     connect(ui->figureHeightPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->figureWidthPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
-    connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
+    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 
     connect(ui->sheetHeightCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
     connect(ui->sheetWidthCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));

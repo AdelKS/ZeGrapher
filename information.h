@@ -94,7 +94,6 @@ signals:
     void regressionAdded(Regression *reg);
     void regressionRemoved(Regression *reg);
     void viewSettingsChanged();
-    void sizeSettingsChanged();
     void axesSettingsChanged();
     void gridSettingsChanged();
     void graphSizeSettingsChanged();

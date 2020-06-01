@@ -36,7 +36,7 @@ MainView::MainView(Information *info): BaseGraphDraw(info)
     relFigRect.setWidth(1);
     relFigRect.moveTopLeft(QPointF(0, 0));
 
-    connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 void MainView::onSizeUnitChange()
@@ -46,20 +46,30 @@ void MainView::onSizeUnitChange()
 
 void MainView::updateTargetSupportSizePx()
 {
-    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
     {
-        // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
-        QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
-        QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
-        layout.setOrientation(orientation);
-        targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
-
-        if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
-            targetSupportSizePixels.transpose();
+        targetSupportSizePixels = parentWidget()->size();
+        /* The MainView calss is inside the MainViewContainer who's
+        /* a QScrollArea. Fit window means that MainView should
+           exactly fit the scrollArea */
     }
     else
     {
-        targetSupportSizePixels = sizeSettings.pxSheetSize;
+        if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+        {
+            // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
+            QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
+            QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
+            layout.setOrientation(orientation);
+            targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
+
+            if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
+                targetSupportSizePixels.transpose();
+        }
+        else
+        {
+            targetSupportSizePixels = sizeSettings.pxSheetSize;
+        }
     }
 }
 
@@ -485,6 +495,8 @@ void MainView::updateFigureSize()
 
         sizeSettings.cmFigureSize.setWidth(relFigRect.width() * (sizeSettings.cmSheetSize.width() - 2*sizeSettings.cmMargins));
         sizeSettings.cmFigureSize.setHeight(relFigRect.height() * (sizeSettings.cmSheetSize.height() - 2*sizeSettings.cmMargins));
+
+
 
         if(oldCmFigureSize != sizeSettings.cmFigureSize)
         {
