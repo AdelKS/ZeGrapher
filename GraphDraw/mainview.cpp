@@ -26,21 +26,17 @@ MainView::MainView(Information *info): BaseGraphDraw(info)
     orientation = QPageLayout::Landscape;
     moveType = NOTHING;
     setMouseTracking(true);
-    userScalingFactor = 1;
-    sheetMarginCm = 0;
-    imageMarginPx = 0;
+    sizeSettings.scalingFactor = 1;
 
     minRelSize = RELATIVE_MIN_SIZE;
 
     screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
-    sheetFigureRectRelative.setHeight(1);
-    sheetFigureRectRelative.setWidth(1);
-    sheetFigureRectRelative.moveTopLeft(QPointF(0, 0));
+    relFigRect.setHeight(1);
+    relFigRect.setWidth(1);
+    relFigRect.moveTopLeft(QPointF(0, 0));
 
-    imageFigureRectRelative.setHeight(1);
-    imageFigureRectRelative.setWidth(1);
-    imageFigureRectRelative.moveTopLeft(QPointF(0, 0));
+    connect(information, SIGNAL(sizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 void MainView::onSizeUnitChange()
@@ -50,10 +46,10 @@ void MainView::onSizeUnitChange()
 
 void MainView::updateTargetSupportSizePx()
 {
-    if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
+    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
     {
-        // TODO: determine orientation from the sheet size: whether or not sheetsizecm height > width
-        QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
+        // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
+        QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
         QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
         layout.setOrientation(orientation);
         targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
@@ -63,7 +59,7 @@ void MainView::updateTargetSupportSizePx()
     }
     else
     {
-        targetSupportSizePixels = sheetSizePx;
+        targetSupportSizePixels = sizeSettings.pxSheetSize;
     }
 }
 
@@ -84,14 +80,14 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
     pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION_STR);
     pdfWriter->setTitle(tr("Exported graph"));
 
-    int targetResolution = int(screenDPI / userScalingFactor);
+    int targetResolution = int(screenDPI / sizeSettings.scalingFactor);
 
     pdfWriter->setResolution(targetResolution);   
 
     QPageLayout layout;
     layout.setUnits(QPageLayout::Millimeter);
 
-    QSizeF sheetSizeMm(sheetSizeCm.width() * 10, sheetSizeCm.height() * 10);
+    QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
     layout.setPageSize(QPageSize(sheetSizeMm, QPageSize::Millimeter, "", QPageSize::FuzzyOrientationMatch));
 
     if(sizeType == SheetSizeType::NORMALISED)
@@ -127,11 +123,11 @@ void MainView::exportSVG(QString fileName)
     svgGenerator.setTitle(tr("Exported graph"));
     svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION_STR);
 
-    double targetResolution = screenDPI / userScalingFactor;
+    double targetResolution = screenDPI / sizeSettings.scalingFactor;
 
     svgGenerator.setResolution(int(targetResolution));
 
-    QSize sizePx(int(sheetSizeCm.width() * 0.393701 * targetResolution), int(sheetSizeCm.height() * 0.393701 * targetResolution));
+    QSize sizePx(int(sizeSettings.cmSheetSize.width() * 0.393701 * targetResolution), int(sizeSettings.cmSheetSize.height() * 0.393701 * targetResolution));
 
     svgGenerator.setSize(sizePx);
     svgGenerator.setViewBox(QRect(QPoint(0, 0), sizePx));
@@ -215,13 +211,13 @@ QRect MainView::getDrawableRect(const QRect &refSupportRect)
 
     if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
     {
-        marginTopLeft.setX(int(sheetMarginCm / sheetSizeCm.width() * double(supportSize.width())));
-        marginTopLeft.setY(int(sheetMarginCm / sheetSizeCm.height() * double(supportSize.height())));
+        marginTopLeft.setX(int(sizeSettings.cmMargins / sizeSettings.cmSheetSize.width() * double(supportSize.width())));
+        marginTopLeft.setY(int(sizeSettings.cmMargins / sizeSettings.cmSheetSize.height() * double(supportSize.height())));
     }
     else
     {
-        marginTopLeft.setX(int(double(imageMarginPx) / double(sheetSizePx.width()) * double(supportSize.width())));
-        marginTopLeft.setY(int(double(imageMarginPx) / double(sheetSizePx.height()) * double(supportSize.height())));
+        marginTopLeft.setX(int(double(sizeSettings.pxMargins) / double(sizeSettings.pxSheetSize.width()) * double(supportSize.width())));
+        marginTopLeft.setY(int(double(sizeSettings.pxMargins) / double(sizeSettings.pxSheetSize.height()) * double(supportSize.height())));
     }
 
     QRect drawableRect;
@@ -235,20 +231,15 @@ QRect MainView::getDrawableRect(const QRect &refSupportRect)
 QRect MainView::getFigureRect(const QRect &refSupportRect)
 {
     QRect rect;
-    QRectF relRect;
     QPoint graphRectTopLeft;
-
-    if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
-        relRect = sheetFigureRectRelative;
-    else relRect = imageFigureRectRelative;
 
     QRect drawableRect = getDrawableRect(refSupportRect);
 
-    graphRectTopLeft.setX(int(relRect.topLeft().x() * double(drawableRect.width())));
-    graphRectTopLeft.setY(int(relRect.topLeft().y() * double(drawableRect.height())));
+    graphRectTopLeft.setX(int(relFigRect.topLeft().x() * double(drawableRect.width())));
+    graphRectTopLeft.setY(int(relFigRect.topLeft().y() * double(drawableRect.height())));
 
-    rect.setWidth(int(relRect.width() * drawableRect.width()));
-    rect.setHeight(int(relRect.height() * drawableRect.height()));
+    rect.setWidth(int(relFigRect.width() * drawableRect.width()));
+    rect.setHeight(int(relFigRect.height() * drawableRect.height()));
     rect.moveTopLeft(drawableRect.topLeft() + graphRectTopLeft);
 
     return rect;
@@ -256,29 +247,37 @@ QRect MainView::getFigureRect(const QRect &refSupportRect)
 
 QRect MainView::supportRectFromViewRect(QRect viewRect)
 {
-    double ratio, targetRatio;
-
-    ratio = double(viewRect.height()) / double(viewRect.width());
-
-    if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
-        targetRatio = sheetSizeCm.height() / sheetSizeCm.width();
-    else targetRatio = double(sheetSizePx.height()) / double(sheetSizePx.width());
+    const auto &sizeSettings = information->getGraphSizeSettings();
 
     QRect rect;
 
-    if(ratio <= targetRatio)
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
     {
-        rect.setHeight(viewRect.height());
-        rect.setWidth(int(double(viewRect.height()) / targetRatio));
-
-        rect.moveTopLeft(QPoint((viewRect.width() - rect.width())/2, 0));
+        rect = viewRect;
     }
     else
     {
-        rect.setHeight(int(double(viewRect.width()) * targetRatio));
-        rect.setWidth(viewRect.width());
+        double ratio, targetRatio;
+        ratio = double(viewRect.height()) / double(viewRect.width());
 
-        rect.moveTopLeft(QPoint(0, (viewRect.height() - rect.height())/2));
+        if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+            targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
+        else targetRatio = double(sizeSettings.pxSheetSize.height()) / double(sizeSettings.pxSheetSize.width());
+
+        if(ratio <= targetRatio)
+        {
+            rect.setHeight(viewRect.height());
+            rect.setWidth(int(double(viewRect.height()) / targetRatio));
+
+            rect.moveTopLeft(QPoint((viewRect.width() - rect.width())/2, 0));
+        }
+        else
+        {
+            rect.setHeight(int(double(viewRect.width()) * targetRatio));
+            rect.setWidth(viewRect.width());
+
+            rect.moveTopLeft(QPoint(0, (viewRect.height() - rect.height())/2));
+        }
     }
 
     return rect;
@@ -323,10 +322,10 @@ void MainView::scaleView(const QRect &refSheetRect)
     }
     else
     {       
-        newZoom = double(refSheetRect.width()) / double(sheetSizePx.width());
+        newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
     }
 
-    if(fabs(newZoom - currentZoom) > 0.001)
+    if(fabs(newZoom - zoomSettings.zoom) > 0.001)
     {
         ZeZoomSettings zoomSettings = information->getGraphZoomSettings();
 
@@ -336,9 +335,9 @@ void MainView::scaleView(const QRect &refSheetRect)
         information->setGraphZoomSettings(zoomSettings);
     }
 
-    currentZoom = newZoom;
+    zoomSettings.zoom = newZoom;
 
-    double totalScaleFactor = currentZoom * userScalingFactor;
+    double totalScaleFactor = zoomSettings.zoom * sizeSettings.scalingFactor;
 
 
     painter.scale(totalScaleFactor, totalScaleFactor);
@@ -359,26 +358,20 @@ void MainView::drawGraph()
 
 void MainView::onSizeSettingsChange()
 {
-    const auto &sizeSettings = information->getGraphSizeSettings();
+    sizeSettings = information->getGraphSizeSettings();
 
-    this->sheetMarginCm = sizeSettings.cmMargins;
-    this->imageMarginPx = sizeSettings.pxMargins;
+    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+    {
+        relFigRect.setWidth(sizeSettings.cmFigureSize.width() / (sizeSettings.cmSheetSize.width() - 2*sizeSettings.cmMargins));
+        relFigRect.setHeight(sizeSettings.cmFigureSize.height() / (sizeSettings.cmSheetSize.height() - 2*sizeSettings.cmMargins));
+    }
+    else
+    {
+        relFigRect.setWidth(double(sizeSettings.pxFigureSize.width()) / double(sizeSettings.pxSheetSize.width() - 2*sizeSettings.pxMargins));
+        relFigRect.setHeight(double(sizeSettings.pxFigureSize.height()) / (sizeSettings.pxSheetSize.height() - 2*sizeSettings.pxMargins));
+    }
 
-    userScalingFactor = sizeSettings.scalingFactor;
-
-    figureSizeCm = sizeSettings.cmFigureSize;
-    sheetFigureRectRelative.setWidth(figureSizeCm.width() / (sheetSizeCm.width() - 2*sheetMarginCm));
-    sheetFigureRectRelative.setHeight(figureSizeCm.height() / (sheetSizeCm.height() - 2*sheetMarginCm));
     constrainFigureRectRel();
-
-    figureSizePx = sizeSettings.pxFigureSize;
-    imageFigureRectRelative.setWidth(double(figureSizePx.width()) / double(sheetSizePx.width() - 2*imageMarginPx));
-    imageFigureRectRelative.setHeight(double(figureSizePx.height()) / double(sheetSizePx.height() - 2*imageMarginPx));
-    constrainFigureRectRel();
-
-    sheetSizeCm = sizeSettings.cmSheetSize;
-    sheetSizePx = sizeSettings.pxSheetSize;
-
     updateFigureSize();
     updateTargetSupportSizePx();
 
@@ -473,18 +466,9 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
         pt.setX(pt.x() / double(drawableRect.width()));
         pt.setY(pt.y() / double(drawableRect.height()));
 
-        if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
-        {
-            sheetFigureRectRelative.setWidth(double(figureRect.width()) / double(drawableRect.width()));
-            sheetFigureRectRelative.setHeight(double(figureRect.height()) / double(drawableRect.height()));
-            sheetFigureRectRelative.moveTopLeft(pt);
-        }
-        else
-        {
-            imageFigureRectRelative.setWidth(double(figureRect.width()) / double(drawableRect.width()));
-            imageFigureRectRelative.setHeight(double(figureRect.height()) / double(drawableRect.height()));
-            imageFigureRectRelative.moveTopLeft(pt);           
-        }
+        relFigRect.setWidth(double(figureRect.width()) / double(drawableRect.width()));
+        relFigRect.setHeight(double(figureRect.height()) / double(drawableRect.height()));
+        relFigRect.moveTopLeft(pt);
 
         constrainFigureRectRel();
         updateFigureSize();
@@ -497,84 +481,51 @@ void MainView::updateFigureSize()
 {
     if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
     {
-        QSizeF oldFigureSizeCm = figureSizeCm;
+        QSizeF oldCmFigureSize = sizeSettings.cmFigureSize;
 
-        figureSizeCm.setWidth(sheetFigureRectRelative.width() * (sheetSizeCm.width() - 2*sheetMarginCm));
-        figureSizeCm.setHeight(sheetFigureRectRelative.height() * (sheetSizeCm.height() - 2*sheetMarginCm));
+        sizeSettings.cmFigureSize.setWidth(relFigRect.width() * (sizeSettings.cmSheetSize.width() - 2*sizeSettings.cmMargins));
+        sizeSettings.cmFigureSize.setHeight(relFigRect.height() * (sizeSettings.cmSheetSize.height() - 2*sizeSettings.cmMargins));
 
-        if(oldFigureSizeCm != figureSizeCm)
+        if(oldCmFigureSize != sizeSettings.cmFigureSize)
         {
-            ZeSizeSettings sizeSettings = information->getGraphSizeSettings();
-
-            sizeSettings.cmFigureSize = figureSizeCm;
-
             information->setGraphSizeSettings(sizeSettings);
         }
     }
     else
     {
-        QSizeF oldFigureSizePx = figureSizePx;
+        QSizeF oldPxFigureSize = sizeSettings.pxFigureSize;
 
-        figureSizePx.setWidth(int(imageFigureRectRelative.width() * double(sheetSizePx.width() - 2*imageMarginPx)));
-        figureSizePx.setHeight(int(imageFigureRectRelative.height() * double(sheetSizePx.height() - 2*imageMarginPx)));
+        sizeSettings.pxFigureSize.setWidth(int(relFigRect.width() * double(sizeSettings.pxSheetSize.width() - 2*sizeSettings.pxMargins)));
+        sizeSettings.pxFigureSize.setHeight(int(relFigRect.height() * double(sizeSettings.pxSheetSize.height() - 2*sizeSettings.pxMargins)));
 
-        if(oldFigureSizePx != figureSizePx)
+        if(oldPxFigureSize != sizeSettings.pxFigureSize)
         {
-            ZeSizeSettings sizeSettings = information->getGraphSizeSettings();
-
-            sizeSettings.pxFigureSize = figureSizePx;
-
             information->setGraphSizeSettings(sizeSettings);
         }
     }
 }
 
 void MainView::constrainFigureRectRel()
-{
-    if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
-    {
-        if(sheetFigureRectRelative.width() > 1)
-            sheetFigureRectRelative.setWidth(1);
-        if(sheetFigureRectRelative.height() > 1)
-            sheetFigureRectRelative.setHeight(1);
+{    
+    if(relFigRect.width() > 1)
+        relFigRect.setWidth(1);
+    if(relFigRect.height() > 1)
+        relFigRect.setHeight(1);
 
-        if(sheetFigureRectRelative.width() < minRelSize)
-            sheetFigureRectRelative.setWidth(minRelSize);
-        if(sheetFigureRectRelative.height() < minRelSize)
-            sheetFigureRectRelative.setHeight(minRelSize);
+    if(relFigRect.width() < minRelSize)
+        relFigRect.setWidth(minRelSize);
+    if(relFigRect.height() < minRelSize)
+        relFigRect.setHeight(minRelSize);
 
-        if(sheetFigureRectRelative.left() < 0)
-            sheetFigureRectRelative.moveLeft(0);
-        if(sheetFigureRectRelative.right() > 1)
-            sheetFigureRectRelative.moveRight(1);
+    if(relFigRect.left() < 0)
+        relFigRect.moveLeft(0);
+    if(relFigRect.right() > 1)
+        relFigRect.moveRight(1);
 
-        if(sheetFigureRectRelative.bottom() > 1)
-            sheetFigureRectRelative.moveBottom(1);
-        if(sheetFigureRectRelative.top() < 0)
-            sheetFigureRectRelative.moveTop(0);      
-    }
-    else
-    {
-        if(imageFigureRectRelative.width() > 1)
-            imageFigureRectRelative.setWidth(1);
-        if(imageFigureRectRelative.height() > 1)
-            imageFigureRectRelative.setHeight(1);
-
-        if(imageFigureRectRelative.width() < minRelSize)
-            imageFigureRectRelative.setWidth(minRelSize);
-        if(imageFigureRectRelative.height() < minRelSize)
-            imageFigureRectRelative.setHeight(minRelSize);
-
-        if(imageFigureRectRelative.left() < 0)
-            imageFigureRectRelative.moveLeft(0);
-        if(imageFigureRectRelative.right() > 1)
-            imageFigureRectRelative.moveRight(1);
-
-        if(imageFigureRectRelative.bottom() > 1)
-            imageFigureRectRelative.moveBottom(1);
-        if(imageFigureRectRelative.top() < 0)
-            imageFigureRectRelative.moveTop(0);
-    }
+    if(relFigRect.bottom() > 1)
+        relFigRect.moveBottom(1);
+    if(relFigRect.top() < 0)
+        relFigRect.moveTop(0);
 
 }
 

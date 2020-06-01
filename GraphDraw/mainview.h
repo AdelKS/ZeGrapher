@@ -79,17 +79,16 @@ protected:
 
     QPageLayout::Orientation orientation;
     double minRelSize;
-    double sheetMarginCm;
-    int imageMarginPx;
     // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
     // the other margin is scaled accordingly
-    double userScalingFactor, screenDPI, currentZoom;
+    double screenDPI;
     QSize targetSupportSizePixels;
-    QRect figureRect, supportRect, sheetRectScaled;
-    QSizeF figureSizeCm, sheetSizeCm;
-    QSize figureSizePx, sheetSizePx;
+    QRect figureRect, supportRect, sheetRectScaled;   
 
-    QRectF sheetFigureRectRelative, imageFigureRectRelative;
+    ZeSizeSettings sizeSettings;
+    ZeZoomSettings zoomSettings;
+
+    QRectF relFigRect;
     QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 
     QPoint lastMousePos ;
