@@ -71,5 +71,6 @@
         <file>Help/lineActions_de.png</file>
         <file>Help/pins_de.png</file>
         <file>icons/ZeGrapher.png</file>
+        <file>ZeGrapher_zh.qm</file>
     </qresource>
 </RCC>

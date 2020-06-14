@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh_tw">
+<TS version="2.1" language="zh_TW">
 <context>
     <name>About</name>
     <message>
         <location filename="Windows/about.ui" line="14"/>
         <source>About...</source>
-        <translation >關於...</translation>
+        <translation>關於...</translation>
     </message>
     <message>
         <location filename="Windows/about.ui" line="81"/>
@@ -15,12 +15,13 @@
     </message>
     <message>
         <location filename="Windows/about.ui" line="117"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation >&lt;html>&lt;head/>&lt;body>
-&lt;p>&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;>ZeGrapher 是個自由軟體, 發佈於 GNU GPLv3 授權. 它的原式碼可以於&lt;/span>&lt;a href=&quot;http://zegrapher.com&quot;>&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;>官網&lt;/span>&lt;/a>&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;> 或 &lt;/span>&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;>&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;>Github&lt;/span>&lt;/a>&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;> (最後版本)&lt;/span>下載.&lt;/p>
-&lt;p>&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;>官網: &lt;/span>&lt;a href=&quot;http://zegrapher.com&quot;>&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;>zegrapher.com&lt;/span>&lt;/a>&lt;/p>
-&lt;p>&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;>你遇到bug嗎? 你有令ZeGrapher更好的點子嗎? 或是其他? 請隨時與我聯繫 &lt;/span>&lt;a href=&quot;mailto:contact@zegrapher.com&quot;>&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;>contact@zegrapher.com&lt;/span>&lt;/a>&lt;/p>
-&lt;/body>&lt;/html></translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;https://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher 是個自由軟體, 發佈於 GNU GPLv3 授權. 它的原式碼可以於&lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;官網&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; 或 &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (最後版本)&lt;/span&gt;下載.&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;官網: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;你遇到bug嗎? 你有令ZeGrapher更好的點子嗎? 或是其他? 請隨時與我聯繫 &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="Windows/about.ui" line="182"/>
@@ -56,7 +57,7 @@
     <message>
         <location filename="DataPlot/csvconfig.ui" line="24"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher only supports the &lt;a href=&quot;http://fr.wikipedia.org/wiki/Comma-separated_values&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt; fromat for importing and exporting data.&lt;br/&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;This format is supported by Excel and Calc (LibreOffice).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html>&lt;head/>&lt;body>&lt;p>ZeGrapher 只支援 &lt;a href=&quot;https://zh.wikipedia.org/wiki/CSV&quot;>&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;>CSV&lt;/span>&lt;/a> 格式的匯入匯出.&lt;br/>&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;>Excel 和 Calc (LibreOffice)皆支援此格式.&lt;/span>&lt;/p>&lt;/body>&lt;/html></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher 只支援 &lt;a href=&quot;https://zh.wikipedia.org/wiki/CSV&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt; 格式的匯入匯出.&lt;br/&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Excel 和 Calc (LibreOffice)皆支援此格式.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="DataPlot/csvconfig.ui" line="36"/>
@@ -181,7 +182,7 @@
     <message>
         <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Column names can only have letters and &quot;_&quot;</source>
-        <translation>行名只能包含字母和 "_"</translation>
+        <translation>行名只能包含字母和 &quot;_&quot;</translation>
     </message>
 </context>
 <context>
@@ -298,7 +299,7 @@
     <message>
         <location filename="DataPlot/filloptions.ui" line="98"/>
         <source>x&apos; =</source>
-        <translation>x' = </translation>
+        <translation>x&apos; = </translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="133"/>
@@ -941,7 +942,7 @@
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="201"/>
         <source>Draw</source>
-        <translation >畫</translation>
+        <translation>畫</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="226"/>
@@ -1210,12 +1211,12 @@
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="134"/>
         <source>X&lt;sub&gt;min&lt;/sub&gt; must be smaller than X&lt;sub&gt;max&lt;/sub&gt;</source>
-        <translation>X&lt;sub>min&lt;/sub>必需小於X&lt;sub>max&lt;/sub></translation>
+        <translation>X&lt;sub&gt;min&lt;/sub&gt;必需小於X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="140"/>
         <source>Y&lt;sub&gt;min&lt;/sub&gt; must be smaller than Y&lt;sub&gt;max&lt;/sub&gt;</source>
-        <translation>Y&lt;sub>min&lt;/sub> 必需小於 Y&lt;sub>max&lt;/sub></translation>
+        <translation>Y&lt;sub&gt;min&lt;/sub&gt; 必需小於 Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="148"/>
@@ -1241,7 +1242,7 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="67"/>
         <source>NB: First values must be separated by &apos;;&apos;</source>
-        <translation>注意:第一個值必需以";"分隔</translation>
+        <translation>注意:第一個值必需以&quot;;&quot;分隔</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="171"/>
@@ -1277,7 +1278,7 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="451"/>
         <source> with a value that is lower than n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation>含有小於n&lt;sub>min&lt;/sub>的值</translation>
+        <translation>含有小於n&lt;sub&gt;min&lt;/sub&gt;的值</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="472"/>
@@ -1322,8 +1323,16 @@
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="193"/>
+        <source>You must enter an integer value that is greater than n&lt;sub&gt;min&lt;/sub&gt;</source>
+        <translation>您必須輸入大於 n&lt;sub&gt;min&lt;/sub&gt; 的整數值</translation>
+    </message>
+    <message>
+        <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</source>
+        <translation type="vanished">您必須輸入大於 n&lt;sub&gt;min&lt;/sub&gt; 的整數值</translation>
+    </message>
+    <message>
         <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation>您必須輸入一個大於 n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;的整數</translation>
+        <translation type="vanished">您必須輸入一個大於 n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;的整數</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="202"/>
@@ -1366,7 +1375,7 @@
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
-        <location filename="Windows/settings.ui" line="302"/>
+        <location filename="Windows/settings.ui" line="310"/>
         <source>Font family:</source>
         <translation>字體系列:</translation>
     </message>
@@ -1377,7 +1386,7 @@
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
-        <location filename="Windows/settings.ui" line="309"/>
+        <location filename="Windows/settings.ui" line="317"/>
         <source>Font size:</source>
         <translation>字型大小</translation>
     </message>
@@ -1407,22 +1416,19 @@
         <translation>語言:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="284"/>
         <source>English</source>
-        <translation>英文</translation>
+        <translation type="vanished">英文</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="289"/>
         <source>Français</source>
-        <translation>法文</translation>
+        <translation type="vanished">法文</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="294"/>
         <source>Deutsche</source>
-        <translation>德文</translation>
+        <translation type="vanished">德文</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="357"/>
+        <location filename="Windows/settings.ui" line="365"/>
         <source>Reset</source>
         <translation>重啟</translation>
     </message>
@@ -1447,28 +1453,28 @@
         <translation>曲線預顏色:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="187"/>
+        <location filename="Windows/settings.cpp" line="191"/>
         <source>Reset to default values ?</source>
         <translation>重置為預設值?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="187"/>
+        <location filename="Windows/settings.cpp" line="191"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>您確定要恢復為預設值嗎？</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="210"/>
-        <location filename="Windows/settings.cpp" line="212"/>
+        <location filename="Windows/settings.cpp" line="214"/>
+        <location filename="Windows/settings.cpp" line="216"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="210"/>
+        <location filename="Windows/settings.cpp" line="214"/>
         <source>Axes and background colors are identical</source>
         <translation>軸和背景色相同</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="212"/>
+        <location filename="Windows/settings.cpp" line="216"/>
         <source>Background and grid colors are identical</source>
         <translation>背景和網格顏色相同</translation>
     </message>
@@ -1600,7 +1606,7 @@
     <message>
         <location filename="Windows/updatecheck.cpp" line="18"/>
         <source>Please check that you are connected to the internet then try again.&lt;br/&gt;If the problem persists, you can check manually at &lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;Current version: </source>
-        <translation>請檢查您是否已連上網路，然後重試. &lt;br/>若問題仍然存在,您可以在&lt;a href=&apos;zegrapher.com&apos;>zegrapher.com&lt;/a> 手動檢查.&lt;br/>當前版本:</translation>
+        <translation>請檢查您是否已連上網路，然後重試. &lt;br/&gt;若問題仍然存在,您可以在&lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt; 手動檢查.&lt;br/&gt;當前版本:</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="28"/>
@@ -1623,7 +1629,7 @@
         <location filename="Windows/updatecheck.cpp" line="75"/>
         <source>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</source>
         <oldsource>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</oldsource>
-        <translation>有新版可用!&lt;br/>拜訪&lt;a href=https://zegrapher.com>zegrapher.com&lt;/a>以下載更新. &lt;br/>&lt;br/>&lt;u>注:&lt;/u>您可以在設置中啟用/禁用自動更新檢查功能.</translation>
+        <translation>有新版可用!&lt;br/&gt;拜訪&lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;以下載更新. &lt;br/&gt;&lt;br/&gt;&lt;u&gt;注:&lt;/u&gt;您可以在設置中啟用/禁用自動更新檢查功能.</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="83"/>

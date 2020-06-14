@@ -121,6 +121,8 @@ void Settings::readSavedSettings()
             ui->languageComboBox->setCurrentIndex(1);
         else if(settings.value("language").toString() == "de")
             ui->languageComboBox->setCurrentIndex(2);
+        else if(settings.value("language").toString() == "zh")
+            ui->languageComboBox->setCurrentIndex(3);
         else ui->languageComboBox->setCurrentIndex(0);
     }
 
@@ -175,6 +177,8 @@ void Settings::saveSettings()
         settings.setValue("language", "fr");
     else if(ui->languageComboBox->currentIndex() == 2)
         settings.setValue("language", "de");
+    else if(ui->languageComboBox->currentIndex() == 3)
+        settings.setValue("language", "zh");
 
     settings.beginGroup("font");
 

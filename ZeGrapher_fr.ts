@@ -15,7 +15,8 @@
     </message>
     <message>
         <location filename="Windows/about.ui" line="117"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;https://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher est un logiciel libre et gratuit, distributé sous la licence GNU GPLv3. Son code source est disponible en libre accès sur son &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;site officiel&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; ou bien sur &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (pour le dernier en date)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Site officiel: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Vous avez trouvé un bug ? Vous avez des idées pour améliorer ZeGrapher ? Autre chose ? Un mail en parlant à &lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt; est le bienvenue!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -1649,8 +1650,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="193"/>
+        <source>You must enter an integer value that is greater than n&lt;sub&gt;min&lt;/sub&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation>Vous devez saisir un nombre entier supérieur à n&lt;sub&gt;min&lt;/sub&gt;</translation>
+        <translation type="vanished">Vous devez saisir un nombre entier supérieur à n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="202"/>
@@ -1692,13 +1697,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
-        <location filename="Windows/settings.ui" line="302"/>
+        <location filename="Windows/settings.ui" line="310"/>
         <source>Font family:</source>
         <translation>Police d&apos;écriture:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
-        <location filename="Windows/settings.ui" line="309"/>
+        <location filename="Windows/settings.ui" line="317"/>
         <source>Font size:</source>
         <translation>Taille d&apos;écriture:</translation>
     </message>
@@ -1779,22 +1784,15 @@ de mises à jour:</translation>
         <translation type="vanished">&lt;strong&gt;Langue:&lt;/strong&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="284"/>
         <source>English</source>
-        <translation>English</translation>
+        <translation type="vanished">English</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="289"/>
         <source>Français</source>
-        <translation>Français</translation>
+        <translation type="vanished">Français</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="294"/>
-        <source>Deutsche</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="Windows/settings.ui" line="357"/>
+        <location filename="Windows/settings.ui" line="365"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>
@@ -1820,28 +1818,28 @@ de mises à jour:</translation>
 des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="187"/>
+        <location filename="Windows/settings.cpp" line="191"/>
         <source>Reset to default values ?</source>
         <translation>Rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="187"/>
+        <location filename="Windows/settings.cpp" line="191"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Êtes-vous sûr de vouloir rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="210"/>
-        <location filename="Windows/settings.cpp" line="212"/>
+        <location filename="Windows/settings.cpp" line="214"/>
+        <location filename="Windows/settings.cpp" line="216"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="210"/>
+        <location filename="Windows/settings.cpp" line="214"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="212"/>
+        <location filename="Windows/settings.cpp" line="216"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>

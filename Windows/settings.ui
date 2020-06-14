@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>384</width>
+    <width>385</width>
     <height>409</height>
    </rect>
   </property>
@@ -279,19 +279,27 @@
           <height>25</height>
          </size>
         </property>
+        <property name="currentText">
+         <string notr="true">English</string>
+        </property>
         <item>
          <property name="text">
-          <string>English</string>
+          <string notr="true">English</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Français</string>
+          <string notr="true">Français</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Deutsche</string>
+          <string notr="true">Deutsche</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">中文</string>
          </property>
         </item>
        </widget>

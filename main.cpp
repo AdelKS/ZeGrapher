@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
             translator.load(":/ZeGrapher_fr.qm");
         else if(language == "de")
             translator.load(":/ZeGrapher_de.qm");
+        else if(language == "zh")
+            translator.load(":/ZeGrapher_zh.qm");
     }
     else
     {
@@ -50,6 +52,8 @@ int main(int argc, char *argv[])
             translator.load(":/ZeGrapher_fr.qm");
         else if(locale.language() == QLocale::German)
             translator.load(":/ZeGrapher_de.qm");
+        else if(locale.language() == QLocale::Chinese)
+            translator.load(":/ZeGrapher_zh.qm");
     }
 
     settings.beginGroup("font");
