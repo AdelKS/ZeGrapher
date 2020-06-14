@@ -96,8 +96,6 @@ void GraphSizeAdjusments::updateWidgetVisibility()
         ui->cmMarginWidget->show();
         ui->cmFigSizeWidget->show();
     }
-
-
 }
 
 void GraphSizeAdjusments::onExternalSizeSettingsChange()
@@ -112,6 +110,23 @@ void GraphSizeAdjusments::onExternalSizeSettingsChange()
         ui->fitWindow->setChecked(true);
     else ui->customSize->setChecked(true);
 
+    const QSignalBlocker blocker1(ui->sheetMarginCm);
+    const QSignalBlocker blocker2(ui->sheetMarginPx);
+
+    const QSignalBlocker blocker3(ui->figureWidthCm);
+    const QSignalBlocker blocker4(ui->figureHeightCm);
+
+    const QSignalBlocker blocker5(ui->figureWidthPx);
+    const QSignalBlocker blocker6(ui->figureHeightPx);
+
+    const QSignalBlocker blocker7(ui->scalingFactor);
+
+    const QSignalBlocker blocker8(ui->sheetWidthCm);
+    const QSignalBlocker blocker9(ui->sheetHeightCm);
+
+    const QSignalBlocker blocker10(ui->sheetWidthPx);
+    const QSignalBlocker blocker11(ui->sheetHeightPx);
+
     ui->sheetMarginCm->setValue(sizeSettings.cmMargins);
     ui->sheetMarginPx->setValue(sizeSettings.pxMargins);
 
@@ -121,7 +136,7 @@ void GraphSizeAdjusments::onExternalSizeSettingsChange()
     ui->figureWidthPx->setValue(sizeSettings.pxFigureSize.width());
     ui->figureHeightPx->setValue(sizeSettings.pxFigureSize.height());
 
-    sizeSettings.scalingFactor = ui->scalingFactor->value();
+    ui->scalingFactor->setValue(sizeSettings.scalingFactor);
 
     ui->sheetWidthCm->setValue(sizeSettings.cmSheetSize.width());
     ui->sheetHeightCm->setValue(sizeSettings.cmSheetSize.height());
@@ -169,12 +184,6 @@ void GraphSizeAdjusments::makeConnects()
 
 void GraphSizeAdjusments::constrainFigureSizeWidgets()
 {
-    const QSignalBlocker blocker(ui->figureHeightCm);
-    const QSignalBlocker blocker1(ui->figureWidthCm);
-
-    const QSignalBlocker blocker2(ui->figureHeightPx);
-    const QSignalBlocker blocker3(ui->figureWidthPx);
-
     double smallest = ui->sheetHeightCm->value() < ui->sheetWidthCm->value() ? ui->sheetHeightCm->value() : ui->sheetWidthCm->value();
     double minRelSize = RELATIVE_MIN_SIZE;
 

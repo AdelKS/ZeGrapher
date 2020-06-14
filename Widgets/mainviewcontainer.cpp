@@ -39,9 +39,6 @@ void MainViewContainer::resizeMainView()
 
     if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {
-        if(mainView->size() != contentsRect().size())
-            mainView->resize(contentsRect().size());
-
         if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
         {
             ZeSizeSettings newSizeSettings = sizeSettings;
@@ -51,8 +48,13 @@ void MainViewContainer::resizeMainView()
 
             newSizeSettings.pxSheetSize = contentsRect().size();
 
+            disconnect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(resizeMainView()));
             information->setGraphSizeSettings(newSizeSettings);
+            connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(resizeMainView()));
         }
+
+        if(mainView->size() != contentsRect().size())
+            mainView->resize(contentsRect().size());
     }
     else
     {

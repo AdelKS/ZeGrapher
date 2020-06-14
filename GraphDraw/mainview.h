@@ -83,6 +83,7 @@ protected:
     // the other margin is scaled accordingly
     double screenDPI;
     QSize targetSupportSizePixels;
+    QSizeF relMargins;
     QRect figureRect, supportRect, sheetRectScaled;   
 
     ZeSizeSettings sizeSettings;
