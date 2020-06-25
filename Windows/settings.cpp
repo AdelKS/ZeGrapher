@@ -78,6 +78,12 @@ void Settings::readSavedSettings()
 {
     QSettings settings;
 
+    if(not settings.contains("app/version") or settings.value("app/version").toFloat() != SOFTWARE_VERSION)
+    {
+        settings.clear();
+        return;
+    }
+
     settings.beginGroup("graph");
 
     if(settings.contains("background_color"))
@@ -170,6 +176,7 @@ void Settings::saveSettings()
     settings.beginGroup("app");
 
     settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
+    settings.setValue("version", SOFTWARE_VERSION);
 
     if(ui->languageComboBox->currentIndex() == 0)
         settings.setValue("language", "en");
