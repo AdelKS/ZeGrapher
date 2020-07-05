@@ -1,28 +1,71 @@
 language: cpp
-compiler: gcc
-os: linux
-dist: xenial
 
-before_install:
-  - sudo add-apt-repository ppa:beineri/opt-qt-5.12.8-xenial -y
-  - sudo apt-get update -qq
+compiler:
+  - gcc
+
+jobs:
+  include:
+    - os: linux
+      dist: xenial
+    - os: osx
+      osx_image: xcode12
+
+addons:
+  homebrew:
+    packages:
+    - qt
+    - boost
+
+  apt:
+    sources:
+      - sourceline: 'ppa:beineri/opt-qt-5.12.8-xenial'
+    packages:
+    - qt512base
+    - qt512svg
+    - libboost-math-dev
+    - libgl-dev
 
 install:
-  - sudo apt-get -y install qt512base qt512svg libboost-math-dev libgl-dev
-  - source /opt/qt*/bin/qt*-env.sh
+  - |
+    if [ $TRAVIS_OS_NAME == "linux" ]; then 
+      source /opt/qt*/bin/qt*-env.sh
+    fi
+  - |
+    if [ $TRAVIS_OS_NAME == "osx" ]; then
+      export PATH=$PATH:/usr/local/opt/qt/bin
+      export CPATH=$CPATH:/usr/local/include/
+    fi
 
 script:
-  - qmake CONFIG+=release PREFIX=/usr
-  - make -j$(nproc)
-  - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
-  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-  - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage -extra-plugins=iconengines,imageformats
+  - |
+    if [ $TRAVIS_OS_NAME == "linux" ]; then
+      qmake CONFIG+=release PREFIX=/usr
+      make -j$(nproc)
+      make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+      chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+      unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+      ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage -extra-plugins=iconengines,imageformats
+    fi
+  - |
+    if [ $TRAVIS_OS_NAME == "osx" ]; then
+      qmake -config release
+      make -j$(nproc)
+      macdeployqt ZeGrapher.app -dmg
+    fi
 
 after_success:
-  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh ZeGrapher*.AppImage*
+  - |
+    if [ $TRAVIS_OS_NAME == "linux" ]; then
+      wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+      bash upload.sh ZeGrapher*.AppImage*
+    fi
+  - |
+    if [ $TRAVIS_OS_NAME == "osx" ]; then
+      wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+      export UPLOADTOOL_SUFFIX="osx"
+      bash upload.sh ZeGrapher.dmg
+    fi
   
 branches:
   except:
