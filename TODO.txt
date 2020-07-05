@@ -1,1 +1,0 @@
-Animation refresh speed to match with screen refresh rate

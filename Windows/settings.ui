@@ -163,28 +163,6 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="graphFontSize">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Size in pixel</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>20</number>
-        </property>
-        <property name="value">
-         <number>11</number>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
@@ -208,6 +186,34 @@
         </property>
         <property name="tristate">
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="graphFontSize">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Size in pixel</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>8.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>20.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+        <property name="value">
+         <double>9.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -318,25 +324,6 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="appFontSize">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>25</height>
-         </size>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>20</number>
-        </property>
-        <property name="value">
-         <number>12</number>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QFontComboBox" name="appFontFamily">
         <property name="sizePolicy">
@@ -353,6 +340,46 @@
         </property>
         <property name="sizeAdjustPolicy">
          <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="appFontSize">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::UpDownArrows</enum>
+        </property>
+        <property name="correctionMode">
+         <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+        </property>
+        <property name="keyboardTracking">
+         <bool>true</bool>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>8.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>20.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+        <property name="stepType">
+         <enum>QAbstractSpinBox::DefaultStepType</enum>
+        </property>
+        <property name="value">
+         <double>9.000000000000000</double>
         </property>
        </widget>
       </item>

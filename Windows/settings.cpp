@@ -60,7 +60,7 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
 
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
-    connect(ui->graphFontSize, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->graphFontSize, SIGNAL(valueChanged(double)), this, SLOT(apply()));
     connect(ui->graphFont, SIGNAL(currentFontChanged(QFont)), this, SLOT(apply()));
     connect(ui->smoothing, SIGNAL(toggled(bool)), this, SLOT(apply()));
     connect(axesColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
@@ -78,7 +78,7 @@ void Settings::readSavedSettings()
 {
     QSettings settings;
 
-    if(not settings.contains("app/version") or settings.value("app/version").toFloat() != SOFTWARE_VERSION)
+    if(not settings.contains("app/version") or settings.value("app/version").toString() != SOFTWARE_VERSION_STR)
     {
         settings.clear();
         return;
@@ -99,8 +99,8 @@ void Settings::readSavedSettings()
 
     settings.beginGroup("font");
 
-    if(settings.contains("pixel_size"))
-        ui->graphFontSize->setValue(settings.value("pixel_size").toInt());
+    if(settings.contains("size"))
+        ui->graphFontSize->setValue(settings.value("size").toInt());
     if(settings.contains("family"))
         ui->graphFont->setCurrentFont(QFont(settings.value("family").toString()));
 
@@ -136,9 +136,9 @@ void Settings::readSavedSettings()
 
     QFontInfo fontInfo(qApp->font());
 
-    if(settings.contains("pixel_size"))
-        ui->appFontSize->setValue(settings.value("pixel_size").toInt());
-    else ui->appFontSize->setValue(fontInfo.pixelSize());
+    if(settings.contains("size"))
+        ui->appFontSize->setValue(settings.value("size").toDouble());
+    else ui->appFontSize->setValue(fontInfo.pointSize());
 
     if(settings.contains("family"))
         ui->appFontFamily->setFont(QFont(settings.value("family").toString()));
@@ -159,7 +159,7 @@ void Settings::saveSettings()
     settings.setValue("antialiasing", ui->smoothing->isChecked());
 
     settings.beginGroup("font");
-    settings.setValue("pixel_size", ui->graphFontSize->value());
+    settings.setValue("size", ui->graphFontSize->value());
     settings.setValue("family", ui->graphFont->currentFont().family());
 
     settings.endGroup();
@@ -176,7 +176,7 @@ void Settings::saveSettings()
     settings.beginGroup("app");
 
     settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
-    settings.setValue("version", SOFTWARE_VERSION);
+    settings.setValue("version", SOFTWARE_VERSION_STR);
 
     if(ui->languageComboBox->currentIndex() == 0)
         settings.setValue("language", "en");
@@ -189,7 +189,7 @@ void Settings::saveSettings()
 
     settings.beginGroup("font");
 
-    settings.setValue("pixel_size", ui->appFontSize->value());
+    settings.setValue("size", ui->appFontSize->value());
     settings.setValue("family", ui->appFontFamily->currentFont().family());
 }
 
@@ -235,7 +235,7 @@ void Settings::apply()
         parameters.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
 
         QFont font(ui->graphFont->currentFont());
-        font.setPixelSize(ui->graphFontSize->value());
+        font.setPointSizeF(ui->graphFontSize->value());
 
         parameters.graphFont = font;
 

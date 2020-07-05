@@ -58,10 +58,10 @@ int main(int argc, char *argv[])
 
     settings.beginGroup("font");
 
-    if(settings.contains("family") && settings.contains("pixel_size"))
+    if(settings.contains("family") && settings.contains("size"))
     {
         QFont font;
-        font.setPixelSize(settings.value("pixel_size").toInt());
+        font.setPointSizeF(settings.value("size").toDouble());
         font.setFamily(settings.value("family").toString());
         font.setStyleStrategy(QFont::PreferAntialias);
         a.setFont(font);
