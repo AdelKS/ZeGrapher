@@ -72,5 +72,7 @@
         <file>Help/pins_de.png</file>
         <file>icons/ZeGrapher.png</file>
         <file>ZeGrapher_zh.qm</file>
+        <file>Help/data_help_zh.html</file>
+        <file>Help/taiwan-icon.png</file>
     </qresource>
 </RCC>
