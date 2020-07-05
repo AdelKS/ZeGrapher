@@ -1170,21 +1170,7 @@ void MainGraph::drawTicksAndNumbers()
     double start, end, Ypos, posTxt;
 
     //trace sur l'axe des X
-    if(centre.y < 20)
-    {       
-        Ypos = 20;
-        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
-    }
-    else if(graphHeight - centre.y < 20)
-    {       
-        Ypos = graphHeight - 20;
-        posTxt = Ypos - 7;
-    }
-    else
-    {
-        Ypos = centre.y;
-        posTxt = Ypos + parameters.graphFont.pixelSize() + 3;
-    }
+
 
     double Xreal = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep;
     double Xpos = Xreal * uniteX + centre.x;
@@ -1196,15 +1182,37 @@ void MainGraph::drawTicksAndNumbers()
     double haut = 0;
 
     QString num = QString::number(Xreal, 'g', NUM_PREC);
-    widestXNumber = painter.fontMetrics().width(num);
+    int num_width = painter.fontMetrics().boundingRect(num).width();
+    int num_height = painter.fontMetrics().boundingRect(num).height();
+
+    auto update_postTxt_y = [&]()
+    {
+        if(centre.y < 20)
+        {
+            Ypos = 20;
+            posTxt = Ypos + num_height + 3;
+        }
+        else if(graphHeight - centre.y < 20)
+        {
+            Ypos = graphHeight - 20;
+            posTxt = Ypos - 7;
+        }
+        else
+        {
+            Ypos = centre.y;
+            posTxt = Ypos + num_height + 3;
+        }
+    };
+
+    widestXNumber = num_width;
 
     start = 5;
     end = graphWidth - 5;
 
     if(centre.x < 10)
-        start = 10 + painter.fontMetrics().width(num)/2 + 5;
+        start = 10 + num_width/2 + 5;
     else if(centre.x > graphWidth - 10)
-        end = graphWidth - 10 - painter.fontMetrics().width(num)/2 - 5;
+        end = graphWidth - 10 - num_width/2 - 5;
 
     while(Xpos <= end)
     {       
@@ -1224,11 +1232,15 @@ void MainGraph::drawTicksAndNumbers()
 
             painter.drawLine(QPointF(Xpos, Ypos -3), QPointF(Xpos, Ypos));
             num = QString::number(Xreal, 'g', NUM_PREC);
-            pos = Xpos - painter.fontMetrics().width(num)/2;
+            num_width = painter.fontMetrics().boundingRect(num).width();
+            num_height = painter.fontMetrics().boundingRect(num).height();
+            update_postTxt_y();
+
+            pos = Xpos - num_width/2;
             painter.drawText(QPointF(pos, posTxt), num);
 
-            if(painter.fontMetrics().width(num) > widestXNumber)
-                widestXNumber = painter.fontMetrics().width(num);
+            if(num_width > widestXNumber)
+                widestXNumber = num_width;
         }
 
         Xpos += step;
@@ -1293,8 +1305,9 @@ void MainGraph::drawTicksAndNumbers()
 
             painter.drawLine(QPointF(Xpos  -3, Ypos), QPointF(Xpos, Ypos));
             num = QString::number(Yreal, 'g', NUM_PREC);
+            num_width = painter.fontMetrics().boundingRect(num).width();
             if(drawOnRight)
-                painter.drawText(QPointF(posTxt - painter.fontMetrics().width(num), Ypos + txtCorr), num);
+                painter.drawText(QPointF(posTxt - num_width, Ypos + txtCorr), num);
             else painter.drawText(QPointF(posTxt, Ypos + txtCorr), num);
         }
 
