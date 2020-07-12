@@ -191,7 +191,7 @@ ICON = ZeGrapher.icns
 
 OTHER_FILES +=
 
-isEmpty(APPDATADIR):APPDATADIR=$${PREFIX}/share/appdata
+isEmpty(APPDATADIR):APPDATADIR=$${PREFIX}/share/metainfo
 isEmpty(APPDIR):APPDIR=$${PREFIX}/share/applications
 isEmpty(DSRDIR):DSRDIR=$${PREFIX}/share/$${TARGET}
 isEmpty(ICONDIR):ICONDIR=$${PREFIX}/share/icons/hicolor/128x128/apps
