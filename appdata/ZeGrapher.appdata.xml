@@ -15,11 +15,14 @@
     <p>
         Here is what Zegrapher v3.0 can offer you:<br/>
         <ul>
-            <li>Visualize up to six functions simultaneously. All the usual functions can be called: they're all written on a virtual keyboard. <br/>
-                On a given function, others can be called, so it is possible to associate or compose functions.</li>
+            <li>Visualize up to six functions simultaneously. </li>
+            <ul>
+              <li>All the usual functions can be called: they are written on a virtual keyboard.</li>              
+              <li>On a given function, others can be called, so it is possible to associate or compose functions.</li>
+            </ul>
             <li>Numerical sequence plotting, they can be defined by a recurrent relation or explicitly.</li>
             <li>Parametric equation plotting. The curves can be animated, with adjustable smoothness (frame rate) and speed (ms per step).</li>
-            <li>Experimental data plot and polynomial fit (regression). Data can be imported/exported from a CSV file.
+            <li>Experimental data plot and polynomial fit (regression). Data can be imported/exported from a CSV file. </li>
             <li>Parametric plot for functions, sequences and parametric equations: the parameter symbol to use is "k".</li>
             <li>Plot tangents: they can be moved and resized simply with the mouse.</li>
             <li>Plot derivatives and antiderviatives.</li>
