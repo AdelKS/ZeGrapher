@@ -1,34 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> -->
-
-<application>
-  <id type="desktop">ZeGrapher.desktop</id>
-  <name>ZeGrapher</name>
-  <summary>Plot mathematical functions and tabular data</summary>
+<component type="desktop">
+  <id>ZeGrapher.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>ZeGrapher</name>
+  <summary>Fast and intuitive math graphing software</summary>
   <description>
     <p>
-      ZeGrapher is a plotting program for functions, sequences,
-      parametric equations, and tabular data. It has been designed to
-      be as easy to use as possible.
+        ZeGrapher is an ergonomic, intuitive and fast software for plotting
+        mathematical objects (functions, sequences, parametric equations)
+        and experimental data on the plane (with polynomial fitting, CSV
+        import/export).
     </p>
     <p>
-      ZeGrapher supports importing and exporting of tabular data from
-      and to CSV files and polynomial (regression) fits, plotting of
-      tangents (the point can be selected interactively). Calculation
-      and plotting of derivatives and integrals is also possible.
-    </p>
-    <p>
-      Plots can be exported in various image formats and as PDF files.
+        Here is what Zegrapher v3.0 can offer you:<br/>
+        <ul>
+            <li>Visualize up to six functions simultaneously. </li>
+            <ul>
+              <li>All the usual functions can be called: they are written on a virtual keyboard.</li>              
+              <li>On a given function, others can be called, so it is possible to associate or compose functions.</li>
+            </ul>
+            <li>Numerical sequence plotting, they can be defined by a recurrent relation or explicitly.</li>
+            <li>Parametric equation plotting. The curves can be animated, with adjustable smoothness (frame rate) and speed (ms per step).</li>
+            <li>Experimental data plot and polynomial fit (regression). Data can be imported/exported from a CSV file. </li>
+            <li>Parametric plot for functions, sequences and parametric equations: the parameter symbol to use is "k".</li>
+            <li>Plot tangents: they can be moved and resized simply with the mouse.</li>
+            <li>Plot derivatives and antiderviatives.</li>
+            <li>Print the graph, with the following options :</li>
+            <ul>
+                <li>Choose the size and the position of the graph on the sheet.</li>
+                <li>Print in color or gray-scale.</li>
+                <li>Export on a PDF file.</li>
+            </ul>
+            <li>Export to all common image formats (png, jpeg, tiff, gif...).</li>
+            <li>Display a table of values with different options.</li>
+            <li>Navigate on the graph :</li>
+            <ul>
+                <li>Select a curve to display the coordinates of its points.</li>
+                <li>Zoom/unzoom on each axis separately or together, with the mouse on a point, or on a rectangular region.</li>
+                <li>Move the graph.</li>
+            </ul>
+            <li>Customize the presentation :</li>
+            <ul>
+                <li>Change all the colors: axes, background, functions...</li>
+                <li>Chose the program's and graph's font</li>
+                <li>Adjust the plotting precision. Note that it will also affect rendering speed.</li>
+                <li>Show/hide a grid.</li>
+                <li>Activate/deactivate curves' smoothing.</li>
+                <li>Plot the graph on an orthonormal basis.</li>
+            </ul>
+        </ul>
     </p>
   </description>
-  <url type="homepage">https://en.zegrapher.com/</url>
   <screenshots>
-    <screenshot type="default">https://in.waw.pl/~zbyszek/zegrapher/zegrapher-plot.png</screenshot>
-    <screenshot>https://in.waw.pl/~zbyszek/zegrapher/zegrapher-all-windows.png</screenshot>
-    <screenshot>https://in.waw.pl/~zbyszek/zegrapher/zegrapher-save.png</screenshot>
+    <screenshot type="default">
+      <image>https://zegrapher.com/screenshots/2g.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/3g.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/4g.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/7g.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/12g.png</image>
+    </screenshot>
   </screenshots>
-  <!-- FIXME: change this to an upstream email address for spec updates
-  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
-   -->
-</application>
+  <url type="homepage">https://zegrapher.com/</url>
+  <url type="bugtracker">https://github.com/AdelKS/ZeGrapher/issues</url>
+  <update_contact>eclipseo_at_fedoraproject.org</update_contact>
+</component>
