@@ -129,7 +129,7 @@ void CSVhandler::apply()
         return;
     }
 
-    if(ui->delimiter->text().isEmpty())
+    if(ui->customSeparator->isChecked() and ui->delimiter->text().isEmpty())
     {
         QMessageBox::warning(this, tr("Error"), tr("Separator was not specified."));
         return;
@@ -142,8 +142,9 @@ void CSVhandler::apply()
         if(file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text))
         {
             QTextStream out(&file);
+            QString delimiter = ui->tabSeparator->isChecked() ? "\t" : ui->delimiter->text();
             for(int i = 0 ; i < values.size(); i++)
-                out << values[i].join(ui->delimiter->text()) << '\n';
+                out << values[i].join(delimiter) << '\n';
 
             file.close();
         }
@@ -156,8 +157,9 @@ void CSVhandler::apply()
         if(file.open(QFile::ReadOnly | QFile::Text))
         {
             QTextStream in(&file);
+            QString delimiter = ui->tabSeparator->isChecked() ? "\t" : ui->delimiter->text();
             while(!in.atEnd())
-                values << in.readLine().split(ui->delimiter->text());
+                values << in.readLine().split(delimiter);
 
             file.close();
             emit dataFromCSV(values);
