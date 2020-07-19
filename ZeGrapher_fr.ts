@@ -123,18 +123,28 @@ p, li { white-space: pre-wrap; }
         <translation>Séparateur : </translation>
     </message>
     <message>
-        <location filename="DataPlot/csvconfig.ui" line="56"/>
+        <location filename="DataPlot/csvconfig.ui" line="43"/>
         <source>File : </source>
         <oldsource>Fichier : </oldsource>
         <translation>Fichier : </translation>
     </message>
     <message>
-        <location filename="DataPlot/csvconfig.ui" line="90"/>
+        <location filename="DataPlot/csvconfig.ui" line="77"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="DataPlot/csvconfig.ui" line="116"/>
+        <location filename="DataPlot/csvconfig.ui" line="88"/>
+        <source>Tab</source>
+        <translation>Tab</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/csvconfig.ui" line="95"/>
+        <source>Custom:</source>
+        <translation>Personnalisé:</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/csvconfig.ui" line="137"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -961,7 +971,7 @@ p, li { white-space: pre-wrap; }
         <translation>Tracer</translation>
     </message>
     <message>
-        <location filename="Windows/mathobjectsinput.cpp" line="97"/>
+        <location filename="Windows/mathobjectsinput.cpp" line="101"/>
         <source>Help: data fill window.</source>
         <translation>Aide: Fenêtre de saisie de données.</translation>
     </message>
@@ -1651,7 +1661,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="193"/>
         <source>You must enter an integer value that is greater than n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous devez entrer une valeur supérieure à n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
         <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</source>
@@ -1697,34 +1707,34 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
-        <location filename="Windows/settings.ui" line="310"/>
+        <location filename="Windows/settings.ui" line="296"/>
         <source>Font family:</source>
         <translation>Police d&apos;écriture:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
-        <location filename="Windows/settings.ui" line="317"/>
+        <location filename="Windows/settings.ui" line="303"/>
         <source>Font size:</source>
         <translation>Taille d&apos;écriture:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="191"/>
+        <location filename="Windows/settings.ui" line="169"/>
         <source>Curves smoothing:</source>
         <translation>Lissage des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="226"/>
+        <location filename="Windows/settings.ui" line="232"/>
         <source>Application&apos;s settings:</source>
         <translation>Réglages du logiciel:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="241"/>
+        <location filename="Windows/settings.ui" line="247"/>
         <source>Update-check at start:</source>
         <translation>Vérifier l&apos;existence
 de mises à jour:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="264"/>
+        <location filename="Windows/settings.ui" line="270"/>
         <source>Language:</source>
         <translation>Langue:</translation>
     </message>
@@ -1751,7 +1761,7 @@ de mises à jour:</translation>
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Taille de la police:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="175"/>
+        <location filename="Windows/settings.ui" line="201"/>
         <source>Size in pixel</source>
         <translation>Taille en pixels</translation>
     </message>
@@ -1792,7 +1802,7 @@ de mises à jour:</translation>
         <translation type="vanished">Français</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="365"/>
+        <location filename="Windows/settings.ui" line="372"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>
@@ -1818,30 +1828,40 @@ de mises à jour:</translation>
 des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="191"/>
+        <location filename="Windows/settings.cpp" line="201"/>
         <source>Reset to default values ?</source>
         <translation>Rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="191"/>
+        <location filename="Windows/settings.cpp" line="201"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Êtes-vous sûr de vouloir rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="214"/>
-        <location filename="Windows/settings.cpp" line="216"/>
+        <location filename="Windows/settings.cpp" line="224"/>
+        <location filename="Windows/settings.cpp" line="226"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="214"/>
+        <location filename="Windows/settings.cpp" line="224"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="216"/>
+        <location filename="Windows/settings.cpp" line="226"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="242"/>
+        <source>Restart required</source>
+        <translation>Redémarrage requis</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="242"/>
+        <source>ZeGrapher needs to be restarted for the language change to take effect.</source>
+        <translation>ZeGrapher doit être redémarré pour que le changement de langue prenne effet.</translation>
     </message>
 </context>
 <context>

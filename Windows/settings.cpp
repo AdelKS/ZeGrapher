@@ -51,12 +51,19 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     defaultColorButton->setFixedSize(20,20);
     ui->formLayout->addRow(tr("Curve default color:"), defaultColorButton);
 
-    readSavedSettings();
+
 
     parameters.backgroundColor = backgroundColorButton->getCurrentColor();
     parameters.axesColor = axesColorButton->getCurrentColor();
     parameters.gridColor = gridColorButton->getCurrentColor();
     parameters.defaultColor = defaultColorButton->getCurrentColor();
+
+    shortLang << "en" << "fr" << "de" << "zh";
+    longLangs << "English" << "Français" << "Deutsche" << "中文";
+
+    ui->languageComboBox->addItems(longLangs);
+
+    readSavedSettings();
 
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
@@ -67,6 +74,7 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     connect(backgroundColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(gridColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(defaultColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(apply()));
     connect(ui->reset, SIGNAL(released()), this, SLOT(resetToDefaultVals()));
 
 
@@ -123,13 +131,15 @@ void Settings::readSavedSettings()
 
     if(settings.contains("language"))
     {
-        if(settings.value("language").toString() == "fr")
-            ui->languageComboBox->setCurrentIndex(1);
-        else if(settings.value("language").toString() == "de")
-            ui->languageComboBox->setCurrentIndex(2);
-        else if(settings.value("language").toString() == "zh")
-            ui->languageComboBox->setCurrentIndex(3);
-        else ui->languageComboBox->setCurrentIndex(0);
+        currentLang = settings.value("language").toString();
+
+        if(shortLang.contains(currentLang))
+            ui->languageComboBox->setCurrentIndex(shortLang.indexOf(currentLang));
+        else
+        {
+            currentLang = "en";
+            ui->languageComboBox->setCurrentIndex(shortLang.indexOf("en"));
+        }
     }
 
     settings.beginGroup("font");
@@ -178,14 +188,7 @@ void Settings::saveSettings()
     settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
     settings.setValue("version", SOFTWARE_VERSION_STR);
 
-    if(ui->languageComboBox->currentIndex() == 0)
-        settings.setValue("language", "en");
-    else if(ui->languageComboBox->currentIndex() == 1)
-        settings.setValue("language", "fr");
-    else if(ui->languageComboBox->currentIndex() == 2)
-        settings.setValue("language", "de");
-    else if(ui->languageComboBox->currentIndex() == 3)
-        settings.setValue("language", "zh");
+    settings.setValue("language", shortLang[ui->languageComboBox->currentIndex()]);
 
     settings.beginGroup("font");
 
@@ -233,6 +236,12 @@ void Settings::apply()
         parameters.gridColor = gridColorButton->getCurrentColor();
         parameters.defaultColor = defaultColorButton->getCurrentColor();
         parameters.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
+
+        if(ui->languageComboBox->currentIndex() != shortLang.indexOf(currentLang))
+        {
+            QMessageBox::information(this, tr("Restart required"), tr("ZeGrapher needs to be restarted for the language change to take effect."));
+            currentLang = shortLang[ui->languageComboBox->currentIndex()];
+        }
 
         QFont font(ui->graphFont->currentFont());
         font.setPointSizeF(ui->graphFontSize->value());

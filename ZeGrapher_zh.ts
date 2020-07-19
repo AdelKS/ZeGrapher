@@ -65,17 +65,27 @@
         <translation>分隔符 :</translation>
     </message>
     <message>
-        <location filename="DataPlot/csvconfig.ui" line="56"/>
+        <location filename="DataPlot/csvconfig.ui" line="43"/>
         <source>File : </source>
         <translation>檔案 :</translation>
     </message>
     <message>
-        <location filename="DataPlot/csvconfig.ui" line="90"/>
+        <location filename="DataPlot/csvconfig.ui" line="77"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="DataPlot/csvconfig.ui" line="116"/>
+        <location filename="DataPlot/csvconfig.ui" line="88"/>
+        <source>Tab</source>
+        <translation>Tab</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/csvconfig.ui" line="95"/>
+        <source>Custom:</source>
+        <translation>習俗:</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/csvconfig.ui" line="137"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -787,7 +797,7 @@
         <translation>繪圖</translation>
     </message>
     <message>
-        <location filename="Windows/mathobjectsinput.cpp" line="97"/>
+        <location filename="Windows/mathobjectsinput.cpp" line="101"/>
         <source>Help: data fill window.</source>
         <translation>說明: 資料填充視窗</translation>
     </message>
@@ -1324,7 +1334,7 @@
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="193"/>
         <source>You must enter an integer value that is greater than n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation>您必須輸入一個大於 n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;的整數</translation>
+        <translation>您必須輸入一個大於 n&lt;sub&gt;min&lt;/sub&gt; 的整數</translation>
     </message>
     <message>
         <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;</source>
@@ -1371,7 +1381,7 @@
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
-        <location filename="Windows/settings.ui" line="310"/>
+        <location filename="Windows/settings.ui" line="296"/>
         <source>Font family:</source>
         <translation>字型:</translation>
     </message>
@@ -1382,32 +1392,32 @@
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
-        <location filename="Windows/settings.ui" line="317"/>
+        <location filename="Windows/settings.ui" line="303"/>
         <source>Font size:</source>
         <translation>字型大小:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="175"/>
+        <location filename="Windows/settings.ui" line="201"/>
         <source>Size in pixel</source>
         <translation>像素大小</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="191"/>
+        <location filename="Windows/settings.ui" line="169"/>
         <source>Curves smoothing:</source>
         <translation>曲線平滑:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="226"/>
+        <location filename="Windows/settings.ui" line="232"/>
         <source>Application&apos;s settings:</source>
         <translation>應用程式設定:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="241"/>
+        <location filename="Windows/settings.ui" line="247"/>
         <source>Update-check at start:</source>
         <translation>開始時進行更新檢查:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="264"/>
+        <location filename="Windows/settings.ui" line="270"/>
         <source>Language:</source>
         <translation>語言:</translation>
     </message>
@@ -1424,7 +1434,7 @@
         <translation type="vanished">德文</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="365"/>
+        <location filename="Windows/settings.ui" line="372"/>
         <source>Reset</source>
         <translation>重設</translation>
     </message>
@@ -1449,30 +1459,40 @@
         <translation>曲線預設顏色:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="191"/>
+        <location filename="Windows/settings.cpp" line="201"/>
         <source>Reset to default values ?</source>
         <translation>重置為預設值?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="191"/>
+        <location filename="Windows/settings.cpp" line="201"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>您確定要恢復為預設值嗎？</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="214"/>
-        <location filename="Windows/settings.cpp" line="216"/>
+        <location filename="Windows/settings.cpp" line="224"/>
+        <location filename="Windows/settings.cpp" line="226"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="214"/>
+        <location filename="Windows/settings.cpp" line="224"/>
         <source>Axes and background colors are identical</source>
         <translation>軸和背景色相同</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="216"/>
+        <location filename="Windows/settings.cpp" line="226"/>
         <source>Background and grid colors are identical</source>
         <translation>背景和網格顏色相同</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="242"/>
+        <source>Restart required</source>
+        <translation>需要重啟</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.cpp" line="242"/>
+        <source>ZeGrapher needs to be restarted for the language change to take effect.</source>
+        <translation>ZeGrapher需要重新啟動才能使語言更改生效.</translation>
     </message>
 </context>
 <context>

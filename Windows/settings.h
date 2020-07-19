@@ -28,7 +28,6 @@
 #include "information.h"
 #include "Widgets/qcolorbutton.h"
 
-
 namespace Ui {
     class Settings;
 }
@@ -55,6 +54,8 @@ private:
     Ui::Settings *ui;
     SettingsVals parameters;
     QColorButton *axesColorButton, *backgroundColorButton, *gridColorButton, *defaultColorButton;
+    QString currentLang;
+    QStringList shortLang, longLangs;
 
 };
 

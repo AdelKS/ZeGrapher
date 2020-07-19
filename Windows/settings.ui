@@ -286,28 +286,8 @@
          </size>
         </property>
         <property name="currentText">
-         <string notr="true">English</string>
+         <string notr="true"/>
         </property>
-        <item>
-         <property name="text">
-          <string notr="true">English</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string notr="true">Français</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string notr="true">Deutsche</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string notr="true">中文</string>
-         </property>
-        </item>
        </widget>
       </item>
       <item row="2" column="0">
