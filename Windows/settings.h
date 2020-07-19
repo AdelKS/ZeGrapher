@@ -47,6 +47,7 @@ private slots:
     void resetToDefaultVals();
     void apply();
     void readSavedSettings();
+    void onAppSettingsChange();
 
 private:
 
@@ -54,7 +55,8 @@ private:
     Ui::Settings *ui;
     SettingsVals parameters;
     QColorButton *axesColorButton, *backgroundColorButton, *gridColorButton, *defaultColorButton;
-    QString currentLang;
+    QString currentAppLang, currentAppFont;
+    double currentAppFontSize;
     QStringList shortLang, longLangs;
 
 };

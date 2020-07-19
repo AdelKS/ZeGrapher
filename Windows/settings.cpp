@@ -30,6 +30,8 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     ui = new Ui::Settings;
     ui->setupUi(this);
 
+    ui->restartRequiredLabel->hide();
+
     setWindowFlags(Qt::Window);
 
     setWindowIcon(QIcon(":/icons/settings.png"));
@@ -74,9 +76,11 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     connect(backgroundColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(gridColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
     connect(defaultColorButton, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
-    connect(ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(apply()));
-    connect(ui->reset, SIGNAL(released()), this, SLOT(resetToDefaultVals()));
 
+    connect(ui->reset, SIGNAL(released()), this, SLOT(resetToDefaultVals()));
+    connect(ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onAppSettingsChange()));
+    connect(ui->appFontFamily, SIGNAL(currentFontChanged(QFont)), this, SLOT(onAppSettingsChange()));
+    connect(ui->appFontSize, SIGNAL(valueChanged(double)), this, SLOT(onAppSettingsChange()));
 
     apply();
 
@@ -131,13 +135,13 @@ void Settings::readSavedSettings()
 
     if(settings.contains("language"))
     {
-        currentLang = settings.value("language").toString();
+        currentAppLang = settings.value("language").toString();
 
-        if(shortLang.contains(currentLang))
-            ui->languageComboBox->setCurrentIndex(shortLang.indexOf(currentLang));
+        if(shortLang.contains(currentAppLang))
+            ui->languageComboBox->setCurrentIndex(shortLang.indexOf(currentAppLang));
         else
         {
-            currentLang = "en";
+            currentAppLang = "en";
             ui->languageComboBox->setCurrentIndex(shortLang.indexOf("en"));
         }
     }
@@ -150,10 +154,13 @@ void Settings::readSavedSettings()
         ui->appFontSize->setValue(settings.value("size").toDouble());
     else ui->appFontSize->setValue(fontInfo.pointSize());
 
-    if(settings.contains("family"))
-        ui->appFontFamily->setFont(QFont(settings.value("family").toString()));
-    else ui->appFontFamily->setFont(fontInfo.family());
+    currentAppFontSize = ui->appFontSize->value();
 
+    if(settings.contains("family"))
+        ui->appFontFamily->setCurrentFont(QFont(settings.value("family").toString()));
+    else ui->appFontFamily->setCurrentFont(fontInfo.family());
+
+    currentAppFont = ui->appFontFamily->currentFont().family();
 }
 
 void Settings::saveSettings()
@@ -237,12 +244,6 @@ void Settings::apply()
         parameters.defaultColor = defaultColorButton->getCurrentColor();
         parameters.updateCheckAtStart = ui->updateCheckAtStart->isChecked();
 
-        if(ui->languageComboBox->currentIndex() != shortLang.indexOf(currentLang))
-        {
-            QMessageBox::information(this, tr("Restart required"), tr("ZeGrapher needs to be restarted for the language change to take effect."));
-            currentLang = shortLang[ui->languageComboBox->currentIndex()];
-        }
-
         QFont font(ui->graphFont->currentFont());
         font.setPointSizeF(ui->graphFontSize->value());
 
@@ -250,6 +251,17 @@ void Settings::apply()
 
         information->setSettingsVals(parameters);
     }
+}
+
+void Settings::onAppSettingsChange()
+{
+    if(ui->languageComboBox->currentIndex() != shortLang.indexOf(currentAppLang) or
+       ui->appFontSize->value() != currentAppFontSize or
+       ui->appFontFamily->currentFont().family() != currentAppFont)
+    {
+        ui->restartRequiredLabel->show();
+    }
+    else ui->restartRequiredLabel->hide();
 }
 
 Settings::~Settings()
