@@ -42,10 +42,15 @@ script:
       qmake CONFIG+=release PREFIX=/usr
       make -j$(nproc)
       make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
-      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-      chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+      wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+      chmod a+x linuxdeploy-x86_64.AppImage
+
+      wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
+      chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
+
       unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-      ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage -extra-plugins=iconengines,imageformats
+      ./linuxdeploy-x86_64.AppImage --list-plugins
+      ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt --output appimage
     fi
   - |
     if [ $TRAVIS_OS_NAME == "osx" ]; then
