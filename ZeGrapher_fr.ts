@@ -1739,6 +1739,11 @@ de mises à jour:</translation>
         <translation>Langue:</translation>
     </message>
     <message>
+        <location filename="Windows/settings.ui" line="384"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Restart required for changes to take effect&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Redémarrage requis pour appliquer les changements&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Curves quality:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Qualité des courbes:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1802,66 +1807,64 @@ de mises à jour:</translation>
         <translation type="vanished">Français</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="372"/>
+        <location filename="Windows/settings.ui" line="391"/>
         <source>Reset</source>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="39"/>
+        <location filename="Windows/settings.cpp" line="41"/>
         <source>Axes color:</source>
         <translation>Couleur des axes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="43"/>
+        <location filename="Windows/settings.cpp" line="45"/>
         <source>Background color:</source>
         <translation>Couleur du fond:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="48"/>
+        <location filename="Windows/settings.cpp" line="50"/>
         <source>Grid color:</source>
         <translation>Couleur de la grille:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="52"/>
+        <location filename="Windows/settings.cpp" line="54"/>
         <source>Curve default color:</source>
         <translation>Couleur par défaut
 des courbes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="201"/>
+        <location filename="Windows/settings.cpp" line="208"/>
         <source>Reset to default values ?</source>
         <translation>Rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="201"/>
+        <location filename="Windows/settings.cpp" line="208"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Êtes-vous sûr de vouloir rétablir les valeurs par défaut ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="224"/>
-        <location filename="Windows/settings.cpp" line="226"/>
+        <location filename="Windows/settings.cpp" line="231"/>
+        <location filename="Windows/settings.cpp" line="233"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="224"/>
+        <location filename="Windows/settings.cpp" line="231"/>
         <source>Axes and background colors are identical</source>
         <translation>Les couleurs du fond et des axes sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="226"/>
+        <location filename="Windows/settings.cpp" line="233"/>
         <source>Background and grid colors are identical</source>
         <translation>Les couleurs du fond et du quadrillage sont identiques</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="242"/>
         <source>Restart required</source>
-        <translation>Redémarrage requis</translation>
+        <translation type="vanished">Redémarrage requis</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="242"/>
         <source>ZeGrapher needs to be restarted for the language change to take effect.</source>
-        <translation>ZeGrapher doit être redémarré pour que le changement de langue prenne effet.</translation>
+        <translation type="vanished">ZeGrapher doit être redémarré pour que le changement de langue prenne effet.</translation>
     </message>
 </context>
 <context>

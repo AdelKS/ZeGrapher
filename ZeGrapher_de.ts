@@ -1424,65 +1424,68 @@
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="372"/>
+        <location filename="Windows/settings.ui" line="384"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Restart required for changes to take effect&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Neustart erforderlich, damit die Änderungen wirksam werden&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="391"/>
         <source>Reset</source>
         <translation>Standard wiederherstellen</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="39"/>
+        <location filename="Windows/settings.cpp" line="41"/>
         <source>Axes color:</source>
         <translation>Farbe der Achsen:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="43"/>
+        <location filename="Windows/settings.cpp" line="45"/>
         <source>Background color:</source>
         <translation>Hintergrundfarbe:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="48"/>
+        <location filename="Windows/settings.cpp" line="50"/>
         <source>Grid color:</source>
         <translation>Farbe des Koordinaten­netzes:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="52"/>
+        <location filename="Windows/settings.cpp" line="54"/>
         <source>Curve default color:</source>
         <translation>Standard-Farbe der Kurven:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="201"/>
+        <location filename="Windows/settings.cpp" line="208"/>
         <source>Reset to default values ?</source>
         <translation>Standardwerte wiederherstellen ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="201"/>
+        <location filename="Windows/settings.cpp" line="208"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>Wollen Sie wirklich die Standardwerte wiederherstellen ?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="224"/>
-        <location filename="Windows/settings.cpp" line="226"/>
+        <location filename="Windows/settings.cpp" line="231"/>
+        <location filename="Windows/settings.cpp" line="233"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="224"/>
+        <location filename="Windows/settings.cpp" line="231"/>
         <source>Axes and background colors are identical</source>
         <translation>Die Achsen und der Hintergrund haben die gleiche Farbe</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="226"/>
+        <location filename="Windows/settings.cpp" line="233"/>
         <source>Background and grid colors are identical</source>
         <translation>Der Hintergrund und das Koordinaten­netz haben die gleiche Farbe</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="242"/>
         <source>Restart required</source>
-        <translation>Neustart erforderlich</translation>
+        <translation type="vanished">Neustart erforderlich</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="242"/>
         <source>ZeGrapher needs to be restarted for the language change to take effect.</source>
-        <translation>ZeGrapher muss neu gestartet werden, damit der Sprachwechsel wirksam wird.</translation>
+        <translation type="vanished">ZeGrapher muss neu gestartet werden, damit der Sprachwechsel wirksam wird.</translation>
     </message>
 </context>
 <context>

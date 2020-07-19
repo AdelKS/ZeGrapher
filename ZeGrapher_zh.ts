@@ -1402,6 +1402,11 @@
         <translation>像素大小</translation>
     </message>
     <message>
+        <location filename="Windows/settings.ui" line="384"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Restart required for changes to take effect&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;需要重新啟動才能使更改生效&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="Windows/settings.ui" line="169"/>
         <source>Curves smoothing:</source>
         <translation>曲線平滑:</translation>
@@ -1434,65 +1439,63 @@
         <translation type="vanished">德文</translation>
     </message>
     <message>
-        <location filename="Windows/settings.ui" line="372"/>
+        <location filename="Windows/settings.ui" line="391"/>
         <source>Reset</source>
         <translation>重設</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="39"/>
+        <location filename="Windows/settings.cpp" line="41"/>
         <source>Axes color:</source>
         <translation>軸色:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="43"/>
+        <location filename="Windows/settings.cpp" line="45"/>
         <source>Background color:</source>
         <translation>背景顏色:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="48"/>
+        <location filename="Windows/settings.cpp" line="50"/>
         <source>Grid color:</source>
         <translation>網格顏色:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="52"/>
+        <location filename="Windows/settings.cpp" line="54"/>
         <source>Curve default color:</source>
         <translation>曲線預設顏色:</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="201"/>
+        <location filename="Windows/settings.cpp" line="208"/>
         <source>Reset to default values ?</source>
         <translation>重置為預設值?</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="201"/>
+        <location filename="Windows/settings.cpp" line="208"/>
         <source>Are you sure you want to restore the default values ?</source>
         <translation>您確定要恢復為預設值嗎？</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="224"/>
-        <location filename="Windows/settings.cpp" line="226"/>
+        <location filename="Windows/settings.cpp" line="231"/>
+        <location filename="Windows/settings.cpp" line="233"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="224"/>
+        <location filename="Windows/settings.cpp" line="231"/>
         <source>Axes and background colors are identical</source>
         <translation>軸和背景色相同</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="226"/>
+        <location filename="Windows/settings.cpp" line="233"/>
         <source>Background and grid colors are identical</source>
         <translation>背景和網格顏色相同</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="242"/>
         <source>Restart required</source>
-        <translation>需要重啟</translation>
+        <translation type="vanished">需要重啟</translation>
     </message>
     <message>
-        <location filename="Windows/settings.cpp" line="242"/>
         <source>ZeGrapher needs to be restarted for the language change to take effect.</source>
-        <translation>ZeGrapher需要重新啟動才能使語言更改生效.</translation>
+        <translation type="vanished">ZeGrapher需要重新啟動才能使語言更改生效.</translation>
     </message>
 </context>
 <context>
