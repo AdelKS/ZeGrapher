@@ -45,33 +45,21 @@ void MainView::onSizeUnitChange()
 }
 
 void MainView::updateTargetSupportSizePx()
-{
-    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
+{    
+    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
     {
-        const auto &pxSize = parentWidget()->size();
+        // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
+        QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
+        QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
+        layout.setOrientation(orientation);
+        targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
 
-        targetSupportSizePixels = pxSize;
-        /* The MainView calss is inside the MainViewContainer who's
-           a QScrollArea. Fit window means that MainView should
-           exactly fit the scrollArea */      
+        if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
+            targetSupportSizePixels.transpose();
     }
     else
     {
-        if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-        {
-            // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
-            QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
-            QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
-            layout.setOrientation(orientation);
-            targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
-
-            if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
-                targetSupportSizePixels.transpose();
-        }
-        else
-        {
-            targetSupportSizePixels = sizeSettings.pxSheetSize;
-        }
+        targetSupportSizePixels = sizeSettings.pxSheetSize;
     }
 }
 
@@ -164,6 +152,12 @@ void MainView::exportSVG(QString fileName)
 
 void MainView::paintEvent(QPaintEvent *event)
 {
+    if(size() != currentSize)
+    {
+        currentSize = size();
+        onWidgetSizeChange();
+    }
+
     Q_UNUSED(event);
 
     painter.begin(this);    
@@ -361,28 +355,6 @@ void MainView::drawGraph()
     paint();
 }
 
-void MainView::onSizeSettingsChange()
-{
-    sizeSettings = information->getGraphSizeSettings();
-
-    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-    {
-        relFigRect.setWidth(sizeSettings.cmFigureSize.width() / (sizeSettings.cmSheetSize.width() - 2*sizeSettings.cmMargins));
-        relFigRect.setHeight(sizeSettings.cmFigureSize.height() / (sizeSettings.cmSheetSize.height() - 2*sizeSettings.cmMargins));
-    }
-    else
-    {
-        relFigRect.setWidth(double(sizeSettings.pxFigureSize.width()) / double(sizeSettings.pxSheetSize.width() - 2*sizeSettings.pxMargins));
-        relFigRect.setHeight(double(sizeSettings.pxFigureSize.height()) / (sizeSettings.pxSheetSize.height() - 2*sizeSettings.pxMargins));
-    }
-
-    constrainFigureRectRel();
-    updateFigureSize();
-    updateTargetSupportSizePx();
-
-    update();
-}
-
 void MainView::mousePressEvent(QMouseEvent *event)
 {
     if(topLeft.contains(event->pos()))
@@ -479,6 +451,46 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
         update();
     }
 
+}
+
+void MainView::onWidgetSizeChange()
+{
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
+    {
+        const auto &pxSize = parentWidget()->size();
+
+        sizeSettings.pxSheetSize = pxSize;
+        sizeSettings.cmSheetSize = QSizeF(pxSize) / CM_PER_INCH * screenDPI;
+
+        information->setGraphSizeSettings(sizeSettings);
+        /* The MainView calss is inside the MainViewContainer who's
+           a QScrollArea. Fit window means that MainView should
+           exactly fit the scrollArea */
+    }
+}
+
+void MainView::onSizeSettingsChange()
+{
+
+    updateTargetSupportSizePx();
+
+    sizeSettings = information->getGraphSizeSettings();
+
+    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+    {
+        relFigRect.setWidth(sizeSettings.cmFigureSize.width() / (sizeSettings.cmSheetSize.width()));
+        relFigRect.setHeight(sizeSettings.cmFigureSize.height() / (sizeSettings.cmSheetSize.height()));
+    }
+    else
+    {
+        relFigRect.setWidth(double(sizeSettings.pxFigureSize.width()) / double(sizeSettings.pxSheetSize.width()));
+        relFigRect.setHeight(double(sizeSettings.pxFigureSize.height()) / (sizeSettings.pxSheetSize.height() ));
+    }
+
+    constrainFigureRectRel();
+    updateFigureSize();
+
+    update();
 }
 
 void MainView::updateFigureSize()

@@ -1,3 +1,6 @@
+Latest work:
+- make maingraph fill the entire scroll area container when set to fill
+
 Merge work
 - Make GraphDraw and mainGraph use the new settings:
     - calculate ticks from the axisSettings with graphview (or maybe come up with a diffrent approach)

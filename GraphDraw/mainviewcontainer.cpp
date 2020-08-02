@@ -9,6 +9,10 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
 
     setWidget(mainView);
 
+    setWidgetResizable(true);
+
+    mainView->onSizeSettingsChange();
+
     sheetZoom = new SheetZoom(information);
 
     QWidget *zoomContainer = new QWidget();
@@ -26,62 +30,12 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     zoomPopup = new PopupWidget(PopupPos::TOP, 0.5, this);
     zoomPopup->setWidget(zoomContainer);
     zoomPopup->setState(PopupState::SHOWN);
-
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(resizeMainView()));
-    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(resizeMainView()));
-
-}
-
-void MainViewContainer::resizeMainView()
-{
-    const auto &sizeSettings = information->getGraphSettings().sizeSettings;
-    const auto &zoomSettings = information->getGraphZoomSettings();
-
-    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
-    {
-        if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
-        {
-            ZeSizeSettings newSizeSettings = sizeSettings;
-
-            newSizeSettings.cmSheetSize = QSizeF(double(contentsRect().size().width()) / screenDPI * CM_PER_INCH,
-                                                 double(contentsRect().size().height()) / screenDPI * CM_PER_INCH);
-
-            newSizeSettings.pxSheetSize = contentsRect().size();
-
-            disconnect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(resizeMainView()));
-            information->setGraphSizeSettings(newSizeSettings);
-            connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(resizeMainView()));
-        }
-
-        if(mainView->size() != contentsRect().size())
-            mainView->resize(contentsRect().size());
-    }
-    else
-    {
-        double zoom = std::max(zoomSettings.zoom, 1.0);
-
-        if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-        {
-            QSize newSize(int(sizeSettings.cmSheetSize.width() / CM_PER_INCH * screenDPI * zoom),
-                          int(sizeSettings.cmSheetSize.height() / CM_PER_INCH * screenDPI * zoom));
-
-            mainView->resize(newSize);
-        }
-        else
-        {
-            QSize newSize(int(sizeSettings.pxSheetSize.width() * zoom),
-                          int(sizeSettings.pxSheetSize.height() * zoom));
-
-            mainView->resize(newSize);
-        }
-    }
 }
 
 void MainViewContainer::resizeEvent(QResizeEvent *event)
 {
     QScrollArea::resizeEvent(event);
 
-    resizeMainView();
     zoomPopup->updatePositions();
 }
 

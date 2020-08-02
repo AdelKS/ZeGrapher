@@ -17,12 +17,9 @@ class MainViewContainer : public QScrollArea
 public:
     MainViewContainer(Information *information, QWidget *parent = nullptr);
     ~MainViewContainer();
-protected slots:
-    void resizeMainView();
 
 protected:
     void resizeEvent(QResizeEvent *event);
-
 
     double screenDPI;
     Information *information;

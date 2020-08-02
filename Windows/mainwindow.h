@@ -25,7 +25,7 @@
 #include "Windows/settings.h"
 #include "Windows/values.h"
 #include "Windows/about.h"
-#include "Widgets/mainviewcontainer.h"
+#include "GraphDraw/mainviewcontainer.h"
 #include "Widgets/keyboard.h"
 #include "Windows/updatecheck.h"
 

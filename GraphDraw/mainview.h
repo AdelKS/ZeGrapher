@@ -62,6 +62,7 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *event);
+    void onWidgetSizeChange();
 
     void drawSupport();
     void drawGraph();
@@ -79,6 +80,7 @@ protected:
 
     QPageLayout::Orientation orientation;
     double minRelSize;
+    QSize currentSize;
     // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
     // the other margin is scaled accordingly
     double screenDPI;
