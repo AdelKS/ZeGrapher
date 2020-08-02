@@ -32,11 +32,11 @@ SOURCES += \
     GraphDraw/mathobjectdraw.cpp \
     GraphDraw/subgraph.cpp \
     GraphDraw/viewmapper.cpp \
+    GraphDraw/mainviewcontainer.cpp \
     Widgets/appsettings.cpp \
     Widgets/estheticsettings.cpp \
     Widgets/export.cpp \
     Widgets/graphsizeadjusments.cpp \
-    Widgets/mainviewcontainer.cpp \
     Widgets/popupwidget.cpp \
     Widgets/sheetzoom.cpp \
     main.cpp \
@@ -97,11 +97,11 @@ HEADERS  += \
     GraphDraw/mathobjectdraw.h \
     GraphDraw/subgraph.h \
     GraphDraw/viewmapper.h \
+    GraphDraw/mainviewcontainer.h \
     Widgets/appsettings.h \
     Widgets/estheticsettings.h \
     Widgets/export.h \
     Widgets/graphsizeadjusments.h \
-    Widgets/mainviewcontainer.h \
     Widgets/popupwidget.h \
     Widgets/sheetzoom.h \
     information.h \
@@ -211,6 +211,7 @@ translations.files = ZeGrapher_fr.qm
 INSTALLS += appdata desktop icon target translations
 
 DISTFILES += \
+    TODO.md \
     appdata/ZeGrapher.appdata.xml \
     appdata/screenshots/zegrapher-all-windows.png \
     appdata/screenshots/zegrapher-plot-dialogue.png \
