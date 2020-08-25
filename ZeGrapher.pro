@@ -204,7 +204,7 @@ target.path = $$INSTROOT$$BINDIR
 translations.path = $$INSTROOT$$DSRDIR/locale
 
 desktop.files = ZeGrapher.desktop
-appdata.files =  ZeGrapher.appdata.xml
+appdata.files = appdata/ZeGrapher.appdata.xml
 icon.files = icons/ZeGrapher.png
 translations.files = ZeGrapher_fr.qm
 
