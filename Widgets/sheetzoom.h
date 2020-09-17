@@ -15,6 +15,7 @@ class SheetZoom : public QWidget
 
 public:
     explicit SheetZoom(Information *information, QWidget *parent = nullptr);
+    void resetZoom();
     ~SheetZoom();
 
 protected slots:

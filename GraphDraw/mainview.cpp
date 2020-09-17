@@ -37,6 +37,7 @@ MainView::MainView(Information *info): BaseGraphDraw(info)
     relFigRect.moveTopLeft(QPointF(0, 0));
 
     connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onZoomSettingsChange()));
 }
 
 void MainView::onSizeUnitChange()
@@ -46,6 +47,17 @@ void MainView::onSizeUnitChange()
 
 void MainView::updateTargetSupportSizePx()
 {    
+    sizeSettings = information->getGraphSizeSettings();
+
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
+    {
+        sizeSettings.pxSheetSize = size();
+        sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDPI * CM_PER_INCH;
+
+        QSignalBlocker(information);
+        information->setGraphSizeSettings(sizeSettings);
+    }
+
     if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
     {
         // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
@@ -152,12 +164,6 @@ void MainView::exportSVG(QString fileName)
 
 void MainView::paintEvent(QPaintEvent *event)
 {
-    if(size() != currentSize)
-    {
-        currentSize = size();
-        onWidgetSizeChange();
-    }
-
     Q_UNUSED(event);
 
     painter.begin(this);    
@@ -249,12 +255,14 @@ QRect MainView::getFigureRect(const QRect &refSupportRect)
 QRect MainView::supportRectFromViewRect(QRect viewRect)
 {
     QRect rect;
+    zoomSettings = information->getGraphZoomSettings();
+    sizeSettings = information->getGraphSizeSettings();
 
     if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
     {
         rect = viewRect;
     }
-    else
+    else if(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {
         double ratio, targetRatio;
         ratio = double(viewRect.height()) / double(viewRect.width());
@@ -278,13 +286,20 @@ QRect MainView::supportRectFromViewRect(QRect viewRect)
             rect.moveTopLeft(QPoint(0, (viewRect.height() - rect.height())/2));
         }
     }
+    else
+    {
+        rect.setSize(sizeSettings.pxSheetSize);
+        rect.translate(viewRect.center() - rect.center());
+    }
 
     return rect;
 }
 
 void MainView::drawSupport()
 { // draws the sheet on an untransformed view
-    painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));;
+    painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
+
+    QSize widgetSize = size();
 
     supportRect = supportRectFromViewRect(painter.viewport());
 
@@ -313,31 +328,30 @@ void MainView::setGraphRange(GraphRange range)
 
 void MainView::scaleView(const QRect &refSheetRect)
 {
-    double newZoom;
+    auto zoomSettings = information->getGraphZoomSettings();
 
-    if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
+    if(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {
-        newZoom = double(refSheetRect.width()) / double(targetSupportSizePixels.width());
+        double newZoom;
+
+        if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
+        {
+            newZoom = double(refSheetRect.width()) / double(targetSupportSizePixels.width());
+        }
+        else
+        {
+            newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
+        }
+
+        if(fabs(newZoom - zoomSettings.zoom) > 0.001)
+        {
+            zoomSettings.zoom = newZoom;
+
+            information->setGraphZoomSettings(zoomSettings);
+        }
     }
-    else
-    {       
-        newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
-    }
-
-    if(fabs(newZoom - zoomSettings.zoom) > 0.001)
-    {
-        ZeZoomSettings zoomSettings = information->getGraphZoomSettings();
-
-        zoomSettings.zoomingType = ZeZoomSettings::CUSTOM;
-        zoomSettings.zoom = newZoom;
-
-        information->setGraphZoomSettings(zoomSettings);
-    }
-
-    zoomSettings.zoom = newZoom;
 
     double totalScaleFactor = zoomSettings.zoom * sizeSettings.scalingFactor;
-
 
     painter.scale(totalScaleFactor, totalScaleFactor);
 }
@@ -403,7 +417,7 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
     {
         QPoint dr = event->pos() - lastMousePos;
         lastMousePos = event->pos();
-
+        auto zoomSettings = information->getGraphZoomSettings();
         switch(moveType)
         {
         case TOPLEFT_CORNER:
@@ -453,26 +467,12 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
 
 }
 
-void MainView::onWidgetSizeChange()
-{
-    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
-    {
-        const auto &pxSize = parentWidget()->size();
-
-        sizeSettings.pxSheetSize = pxSize;
-        sizeSettings.cmSheetSize = QSizeF(pxSize) / CM_PER_INCH * screenDPI;
-
-        information->setGraphSizeSettings(sizeSettings);
-        /* The MainView calss is inside the MainViewContainer who's
-           a QScrollArea. Fit window means that MainView should
-           exactly fit the scrollArea */
-    }
-}
-
 void MainView::onSizeSettingsChange()
 {
 
     updateTargetSupportSizePx();
+
+    // Add function here that calcualtes the needed widget size
 
     sizeSettings = information->getGraphSizeSettings();
 
@@ -490,6 +490,11 @@ void MainView::onSizeSettingsChange()
     constrainFigureRectRel();
     updateFigureSize();
 
+    update();
+}
+
+void MainView::onZoomSettingsChange()
+{
     update();
 }
 

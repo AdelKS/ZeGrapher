@@ -20,6 +20,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
 
     double screenDPI;
     Information *information;

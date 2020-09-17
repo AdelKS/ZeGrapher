@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>293</width>
-    <height>666</height>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -184,7 +184,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="customSizing">
+       <widget class="QRadioButton" name="customSheetSize">
         <property name="text">
          <string>Custom</string>
         </property>
@@ -290,7 +290,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="customSize">
+          <widget class="QPushButton" name="userDefinedSize">
            <property name="text">
             <string>Custom</string>
            </property>
@@ -869,18 +869,18 @@
  </resources>
  <connections>
   <connection>
-   <sender>customSize</sender>
+   <sender>userDefinedSize</sender>
    <signal>toggled(bool)</signal>
    <receiver>sheetSizeSubWidget</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>292</y>
+     <x>283</x>
+     <y>248</y>
     </hint>
     <hint type="destinationlabel">
-     <x>239</x>
-     <y>269</y>
+     <x>273</x>
+     <y>349</y>
     </hint>
    </hints>
   </connection>

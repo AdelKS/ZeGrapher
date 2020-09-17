@@ -53,16 +53,16 @@ public slots:
     void wheelEvent(QWheelEvent *event);
 
     void onSizeSettingsChange();
-
     void setGraphRange(GraphRange range);
 
     void exportPDF(QString fileName, SheetSizeType sizeType);
     void exportSVG(QString fileName);
+    void onZoomSettingsChange();
 
 
 protected:
     void paintEvent(QPaintEvent *event);
-    void onWidgetSizeChange();
+
 
     void drawSupport();
     void drawGraph();

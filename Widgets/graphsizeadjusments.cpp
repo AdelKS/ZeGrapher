@@ -10,6 +10,7 @@ GraphSizeAdjusments::GraphSizeAdjusments(Information *information, QWidget *pare
     this->information = information;
 
     // ui->sheetSizeSubWidget->setEnabled(false);
+    screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
     makeConnects();
 
@@ -52,7 +53,7 @@ const ZeSizeSettings &GraphSizeAdjusments::getSettings()
 
 void GraphSizeAdjusments::updateWidgetVisibility()
 {
-    if(ui->customSizing->isChecked())
+    if(ui->customSheetSize->isChecked())
     {
         if(ui->pixelUnit->isChecked())
         {
@@ -108,7 +109,7 @@ void GraphSizeAdjusments::onExternalSizeSettingsChange()
 
     if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
         ui->fitWindow->setChecked(true);
-    else ui->customSize->setChecked(true);
+    else ui->customSheetSize->setChecked(true);
 
     const QSignalBlocker blocker1(ui->sheetMarginCm);
     const QSignalBlocker blocker2(ui->sheetMarginPx);
@@ -171,7 +172,7 @@ void GraphSizeAdjusments::makeConnects()
     connect(ui->A3, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
     connect(ui->A4, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
     connect(ui->A5, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
-    connect(ui->customSize, SIGNAL(clicked(bool)), this, SLOT(onStandardSheetSizeChange()));
+    connect(ui->userDefinedSize, SIGNAL(clicked()), this, SLOT(onStandardSheetSizeChange()));
 
     connect(ui->sheetSizeSwap, SIGNAL(released()), this, SLOT(swapSheetHeightAndWidth()));
     connect(ui->imageSizeSwap, SIGNAL(released()), this, SLOT(swapImageHeightAndWidth()));
@@ -180,6 +181,9 @@ void GraphSizeAdjusments::makeConnects()
 
     connect(ui->pixelUnit, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
     connect(ui->fitWindow, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
+
+    connect(ui->pixelUnit, SIGNAL(toggled(bool)), this, SLOT(apply()));
+    connect(ui->fitWindow, SIGNAL(toggled(bool)), this, SLOT(apply()));
 }
 
 void GraphSizeAdjusments::constrainFigureSizeWidgets()
@@ -196,7 +200,7 @@ void GraphSizeAdjusments::constrainFigureSizeWidgets()
 
     smallest = ui->sheetHeightPx->value() < ui->sheetWidthPx->value() ? ui->sheetHeightPx->value() : ui->sheetWidthPx->value();
 
-    ui->sheetMarginPx->setMaximum(int(smallest * (1 - minRelSize) / 2));
+    ui->sheetMarginPx->setMaximum(int(smallest * (1 - minRelSize)));
     ui->figureHeightPx->setMaximum(ui->sheetHeightPx->value() - 2 * ui->sheetMarginPx->value());
     ui->figureHeightPx->setMinimum(int(smallest * minRelSize));
 
@@ -231,7 +235,7 @@ void GraphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
 
 void GraphSizeAdjusments::onStandardSheetSizeChange()
 {
-    if(not ui->customSize->isChecked())
+    if(not ui->userDefinedSize->isChecked())
     {        
         ui->sheetSizeSubWidget->hide();
         ui->orientationSelector->show();
@@ -275,7 +279,6 @@ void GraphSizeAdjusments::onStandardSheetSizeChange()
 
         ui->sheetWidthCm->setValue(sheetSize.width());
         ui->sheetHeightCm->setValue(sheetSize.height());
-
         constrainFigureSizeWidgets();
     }
     else
@@ -283,6 +286,8 @@ void GraphSizeAdjusments::onStandardSheetSizeChange()
         ui->sheetSizeSubWidget->show();
         ui->orientationSelector->hide();
     }
+
+    apply();
 }
 
 void GraphSizeAdjusments::swapSheetHeightAndWidth()
@@ -296,7 +301,7 @@ void GraphSizeAdjusments::swapSheetHeightAndWidth()
 
     ui->orientationSelector->setCurrentIndex((ui->orientationSelector->currentIndex() + 1) % 2);
 
-    processUserInput();
+    apply();
 }
 
 void GraphSizeAdjusments::swapImageHeightAndWidth()

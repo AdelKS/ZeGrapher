@@ -8,7 +8,6 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     mainView = new MainView(information);
 
     setWidget(mainView);
-
     setWidgetResizable(true);
 
     mainView->onSizeSettingsChange();
@@ -37,6 +36,13 @@ void MainViewContainer::resizeEvent(QResizeEvent *event)
     QScrollArea::resizeEvent(event);
 
     zoomPopup->updatePositions();
+}
+
+void MainViewContainer::showEvent(QShowEvent *event)
+{
+    QScrollArea::showEvent(event);
+
+    sheetZoom->resetZoom();
 }
 
 MainViewContainer::~MainViewContainer()

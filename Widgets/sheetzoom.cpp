@@ -11,8 +11,16 @@ SheetZoom::SheetZoom(Information *information, QWidget *parent) :
     connect(ui->zoomIn, &QPushButton::released, this, &SheetZoom::zoomIn);
     connect(ui->zoomOut, &QPushButton::released, this, &SheetZoom::zoomOut);
     connect(ui->zoomPercentage, SIGNAL(valueChanged(double)), this, SLOT(onZoomValueChange()));
+    connect(ui->fitSheet, SIGNAL(toggled(bool)), this, SLOT(updateZoomSettings()));
+
+    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onExternalZoomSettingsChange()));
 
     updateZoomSettings();
+}
+
+void SheetZoom::resetZoom()
+{
+    ui->zoomPercentage->setValue(100);
 }
 
 void SheetZoom::updateZoomSettings()
@@ -48,7 +56,6 @@ void SheetZoom::onExternalZoomSettingsChange()
 
     const QSignalBlocker blocker(ui->fitSheet);
     const QSignalBlocker blocker2(ui->zoomPercentage);
-
 
     ui->fitSheet->setChecked(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET);
     ui->zoomPercentage->setValue(zoomSettings.zoom * 100);

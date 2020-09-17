@@ -44,6 +44,7 @@ protected slots:
 private:
     void makeConnects();
 
+    double screenDPI;
     ZeSizeSettings sizeSettings;
     Information *information;
     Ui::graphSizeAdjusments *ui;
