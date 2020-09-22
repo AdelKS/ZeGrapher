@@ -18,7 +18,6 @@
 **
 ****************************************************************************/
 
-
 #include "GraphDraw/mainview.h"
 
 MainView::MainView(Information *info): BaseGraphDraw(info)
@@ -45,6 +44,25 @@ void MainView::onSizeUnitChange()
     updateTargetSupportSizePx();
 }
 
+void MainView::updateWidgetSize()
+{
+    sizeSettings = information->getGraphSizeSettings();
+    zoomSettings = information->getGraphZoomSettings();
+
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
+    {
+        resize(parentWidget()->size());
+    }
+    else
+    {
+        if(zoomSettings.zoom > 1)
+            resize((QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom).toSize());
+        else resize(sizeSettings.pxSheetSize);
+    }
+
+    emit widgetResized();
+}
+
 void MainView::updateTargetSupportSizePx()
 {    
     sizeSettings = information->getGraphSizeSettings();
@@ -54,7 +72,6 @@ void MainView::updateTargetSupportSizePx()
         sizeSettings.pxSheetSize = size();
         sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDPI * CM_PER_INCH;
 
-        QSignalBlocker(information);
         information->setGraphSizeSettings(sizeSettings);
     }
 
@@ -165,6 +182,13 @@ void MainView::exportSVG(QString fileName)
 void MainView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
+
+    if(currentSize != size())
+    {
+        currentSize = size();
+        updateWidgetSize();
+        onSizeSettingsChange();
+    }
 
     painter.begin(this);    
 
@@ -299,8 +323,6 @@ void MainView::drawSupport()
 { // draws the sheet on an untransformed view
     painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
 
-    QSize widgetSize = size();
-
     supportRect = supportRectFromViewRect(painter.viewport());
 
     painter.drawRect(supportRect);
@@ -328,7 +350,7 @@ void MainView::setGraphRange(GraphRange range)
 
 void MainView::scaleView(const QRect &refSheetRect)
 {
-    auto zoomSettings = information->getGraphZoomSettings();
+    zoomSettings = information->getGraphZoomSettings();
 
     if(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {

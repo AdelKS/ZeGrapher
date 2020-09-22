@@ -45,6 +45,7 @@ public:
 
 signals:
     void newZoomValue(double value);
+    void widgetResized();
 
 public slots:
     void mousePressEvent(QMouseEvent *event);
@@ -54,6 +55,7 @@ public slots:
 
     void onSizeSettingsChange();
     void setGraphRange(GraphRange range);
+    void updateWidgetSize();
 
     void exportPDF(QString fileName, SheetSizeType sizeType);
     void exportSVG(QString fileName);

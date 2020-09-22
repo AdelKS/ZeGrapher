@@ -8,7 +8,7 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     mainView = new MainView(information);
 
     setWidget(mainView);
-    setWidgetResizable(true);
+    setWidgetResizable(false);
 
     mainView->onSizeSettingsChange();
 
@@ -29,12 +29,15 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     zoomPopup = new PopupWidget(PopupPos::TOP, 0.5, this);
     zoomPopup->setWidget(zoomContainer);
     zoomPopup->setState(PopupState::SHOWN);
+
+    connect(mainView, SIGNAL(widgetResized()), this, SLOT(update()));
 }
 
 void MainViewContainer::resizeEvent(QResizeEvent *event)
 {
     QScrollArea::resizeEvent(event);
 
+    mainView->updateWidgetSize();
     zoomPopup->updatePositions();
 }
 
