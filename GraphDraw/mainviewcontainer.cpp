@@ -22,7 +22,7 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setContentsMargins(2, 2, 2, 4);
     layout->addWidget(sheetZoom);
-    zoomContainer->setLayout(layout);    
+    zoomContainer->setLayout(layout);
 
     screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
 
@@ -30,7 +30,7 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
     zoomPopup->setWidget(zoomContainer);
     zoomPopup->setState(PopupState::SHOWN);
 
-    connect(mainView, SIGNAL(widgetResized()), this, SLOT(update()));
+//    connect(mainView, SIGNAL(widgetResized()), this, SLOT(update()));
 }
 
 void MainViewContainer::resizeEvent(QResizeEvent *event)

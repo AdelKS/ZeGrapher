@@ -55,9 +55,7 @@ void MainView::updateWidgetSize()
     }
     else
     {
-        if(zoomSettings.zoom > 1)
-            resize((QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom).toSize());
-        else resize(sizeSettings.pxSheetSize);
+        resize((QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom).toSize());
     }
 
     emit widgetResized();
@@ -312,7 +310,7 @@ QRect MainView::supportRectFromViewRect(QRect viewRect)
     }
     else
     {
-        rect.setSize(sizeSettings.pxSheetSize);
+        rect.setSize((QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom).toSize());
         rect.translate(viewRect.center() - rect.center());
     }
 
@@ -517,6 +515,7 @@ void MainView::onSizeSettingsChange()
 
 void MainView::onZoomSettingsChange()
 {
+    updateWidgetSize();
     update();
 }
 
