@@ -74,5 +74,8 @@
         <file>Help/lineActions_de.png</file>
         <file>Help/pins_de.png</file>
         <file>icons/ZeGrapher.png</file>
+        <file>icons/fit-sheet.svg</file>
+        <file>icons/zoom-in-icon.svg</file>
+        <file>icons/zoom-out-icon.svg</file>
     </qresource>
 </RCC>

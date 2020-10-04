@@ -149,14 +149,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="fitSheet">
-           <property name="autoFillBackground">
-            <bool>false</bool>
+          <widget class="QPushButton" name="fitSheet">
+           <property name="maximumSize">
+            <size>
+             <width>27</width>
+             <height>30</height>
+            </size>
            </property>
            <property name="text">
-            <string>Fit sheet</string>
+            <string/>
            </property>
-           <property name="checked">
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="checkable">
             <bool>true</bool>
            </property>
           </widget>

@@ -8,6 +8,8 @@ SheetZoom::SheetZoom(Information *information, QWidget *parent) :
     ui->setupUi(this);
     this->information = information;
 
+    ui->fitSheet->setIcon(QIcon(":/icons/fit-sheet.svg"));
+
     connect(ui->zoomIn, &QPushButton::released, this, &SheetZoom::zoomIn);
     connect(ui->zoomOut, &QPushButton::released, this, &SheetZoom::zoomOut);
     connect(ui->zoomPercentage, SIGNAL(valueChanged(double)), this, SLOT(onZoomValueChange()));
