@@ -28,6 +28,7 @@ INCLUDEPATH += .
 
 SOURCES += \
     GraphDraw/basegraphdraw.cpp \
+    GraphDraw/gridcalculator.cpp \
     GraphDraw/mainview.cpp \
     GraphDraw/mathobjectdraw.cpp \
     GraphDraw/subgraph.cpp \
@@ -93,6 +94,7 @@ SOURCES += \
 
 HEADERS  += \
     GraphDraw/basegraphdraw.h \
+    GraphDraw/gridcalculator.h \
     GraphDraw/mainview.h \
     GraphDraw/mathobjectdraw.h \
     GraphDraw/subgraph.h \

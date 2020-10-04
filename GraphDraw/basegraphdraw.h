@@ -22,6 +22,7 @@
 #define IMAGEPREVIEW_H
 
 #include "mathobjectdraw.h"
+#include "gridcalculator.h"
 
 
 class BaseGraphDraw : public MathObjectDraw
@@ -52,9 +53,10 @@ protected:
     void updateGraphRect();
     void writeLegends();
 
-    void drawAxisComponentsLinearX();
-    void drawAxisComponentsLinearY();
+    void drawLinAxisGridTicksX();
+    void drawLinAxisGridTicksY();
 
+    GridCalculator gridCalculator;
     int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
     int  legendFontSize, numPrec;
     QRect figureRectScaled, graphRectScaled;

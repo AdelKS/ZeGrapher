@@ -267,7 +267,6 @@ void Information::setAppSettings(const ZeAppSettings& appSettings)
     this->appSettings = appSettings;
 }
 
-
 void Information::setAxesSettings(const ZeAxesSettings &axesSettings)
 {
     if(viewSettings.axes != axesSettings)
@@ -277,7 +276,6 @@ void Information::setAxesSettings(const ZeAxesSettings &axesSettings)
         emit axesSettingsChanged();
     }
 }
-
 
 void Information::emitUpdateSignal()
 {

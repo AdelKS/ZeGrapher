@@ -160,6 +160,7 @@ void AxisSettingsWidget::processUserInput()
             axisSettings.linSettings.constantMultiplier = currentSettings.linSettings.constantMultiplier;
             axisSettings.linSettings.constantMultiplierStr = currentSettings.linSettings.constantMultiplierStr;
         }
+        axisSettings.linSettings.maxDigitsNum = ui->maxDigits->value();
     }
     else
     {

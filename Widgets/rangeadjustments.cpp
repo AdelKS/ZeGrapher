@@ -21,8 +21,6 @@
 #include "Widgets/rangeadjustments.h"
 #include "ui_rangeadjustments.h"
 
-#include <boost/fusion/container/vector/detail/begin_impl.hpp>
-
 /* TODO: Take care of the orthonormal setting */
 
 RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information *info, QWidget *parent): QWidget(parent)

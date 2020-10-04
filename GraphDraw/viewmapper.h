@@ -26,47 +26,7 @@
 #include <QRectF>
 #include <QPair>
 
-#define TARGET_TICKS_NUM 20
-
 #include "structures.h"
-
-
-struct ZeLogAxisTick
-{
-    double pos;
-    QString baseStr, globalConstantStr;
-    double base, globalConstant;
-    long multiplier, subMultiplier, powerNumerator, powerDenominator;
-};
-
-struct ZeLinAxisTick
-{
-    double pos, multiplier;
-};
-
-struct ZeAxisSubTick
-{
-    double pos;
-    int numerator, denominator;
-};
-
-struct ZeOffset
-{
-    double sumOffset, powerOffset;
-};
-
-struct ZeLogAxisTicks
-{
-    QList<ZeLogAxisTick> ticks;
-    QList<ZeAxisSubTick> axisSubticks;
-};
-
-struct ZeLinAxisTicks
-{
-    ZeOffset offset;
-    QList<ZeLinAxisTick> ticks;
-    QList<ZeAxisSubTick> axisSubticks;
-};
 
 class ZeViewMapper : public QObject
 {
@@ -102,7 +62,6 @@ public:
     void setYmin(double val);
     void setYmax(double val);
 
-    void setGraphRange(const GraphRange &range);
     GraphRange getGraphRange();
 
     double getXmin();
@@ -116,10 +75,7 @@ public:
     double viewToUnitX(double viewX) const ;
     double unitToViewX(double unitX) const ;
 
-    ZeLinAxisTicks getLinearAxisTicks(double pxWidth,
-                                   ZeAxisRange range,
-                                   ZeAxisName axisName,
-                                   QFontMetrics metrics);
+
 
     QRectF getRect() const ;
     QRectF getLogRect() const ;
@@ -129,6 +85,7 @@ public:
 signals:
 
 public slots:
+    void setGraphRange(const GraphRange &range);
 
 protected:
 
@@ -138,7 +95,6 @@ protected:
     double lgXmin, lgXmax, lgYmin, lgYmax;
 
     QSizeF viewPxSize;
-    double targetTicksNum;
 
     ZeAxesSettings axesSettings;
     ZeGridSettings gridSettings;

@@ -21,7 +21,7 @@
 #include "GraphDraw/basegraphdraw.h"
 
 
-BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info)
+BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info), gridCalculator(info, this)
 {
     information = info;
     leftMargin = 30;
@@ -35,7 +35,9 @@ BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info)
     additionalMargin = 0;
     bold = italic = underline = false;
     numPrec = NUM_PREC;
+    viewMapper.setGraphRange(information->getGraphRange());
 
+    connect(information, SIGNAL(graphRangeChanged(GraphRange)), &viewMapper, SLOT(setGraphRange(GraphRange)));
     connect(information, SIGNAL(updateOccured()), this, SLOT(update()));
 }
 
@@ -187,7 +189,7 @@ void BaseGraphDraw::writeLegends()
     }
 }
 
-void BaseGraphDraw::drawAxisComponentsLinearX()
+void BaseGraphDraw::drawLinAxisGridTicksX()
 {
     painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
@@ -197,7 +199,7 @@ void BaseGraphDraw::drawAxisComponentsLinearX()
 
     QString num;
 
-    ZeLinAxisTicks xAxisTicks = viewMapper.getLinearAxisTicks(graphRectScaled.width(),
+    ZeLinAxisTicks xAxisTicks = gridCalculator.getLinearAxisTicks(graphRectScaled.width(),
                                                              viewMapper.getGraphRange().x,
                                                              ZeAxisName::X,
                                                              fontMetrics);
@@ -207,7 +209,7 @@ void BaseGraphDraw::drawAxisComponentsLinearX()
 
     for(ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
-        Xpos = axisTick.pos;
+        Xpos = axisTick.pos * uniteX;
 
         if(fabs(Xpos) > 1)
         {
@@ -239,7 +241,7 @@ void BaseGraphDraw::drawAxisComponentsLinearX()
     }
 }
 
-void BaseGraphDraw::drawAxisComponentsLinearY()
+void BaseGraphDraw::drawLinAxisGridTicksY()
 {
     painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
@@ -249,7 +251,7 @@ void BaseGraphDraw::drawAxisComponentsLinearY()
 
     QString num;
 
-    ZeLinAxisTicks yAxisTicks = viewMapper.getLinearAxisTicks(graphRectScaled.height(),
+    ZeLinAxisTicks yAxisTicks = gridCalculator.getLinearAxisTicks(graphRectScaled.height(),
                                                              viewMapper.getGraphRange().y,
                                                              ZeAxisName::Y,
                                                              fontMetrics);
@@ -259,7 +261,7 @@ void BaseGraphDraw::drawAxisComponentsLinearY()
 
     for(ZeLinAxisTick &axisTick: yAxisTicks.ticks)
     {
-        Ypos = axisTick.pos;
+        Ypos = axisTick.pos * uniteY;
 
         if(fabs(Ypos) > 1)
         {
@@ -310,10 +312,10 @@ void BaseGraphDraw::drawBaseGraph()
 {
     drawAxes();
     if(information->getAxesSettings().x.axisType == ZeAxisType::LINEAR)
-        drawAxisComponentsLinearX();
+        drawLinAxisGridTicksX();
 
     if(information->getAxesSettings().y.axisType == ZeAxisType::LINEAR)
-        drawAxisComponentsLinearY();
+        drawLinAxisGridTicksY();
 }
 
 void BaseGraphDraw::drawAxes()
@@ -321,7 +323,9 @@ void BaseGraphDraw::drawAxes()
     const auto &graphRange = information->getGraphRange();
     const auto &axesSettings = information->getAxesSettings();
 
-    if(graphRange.y.min < 0 && graphRange.y.max > 0)
+    const auto &viewRect = viewMapper.getViewRect();
+
+    if(viewRect.left() < 0 && viewRect.right()> 0)
     {
         pen.setWidth(axesSettings.x.lineWidth);
         pen.setColor(axesSettings.x.color);
@@ -330,7 +334,7 @@ void BaseGraphDraw::drawAxes()
 
         painter.drawLine(QPointF(0, centre.y), QPointF(graphRectScaled.width(), centre.y));
     }
-    if(graphRange.x.min < 0 && graphRange.x.max > 0)
+    if(viewRect.bottom() < 0 && viewRect.top() > 0)
     {
         pen.setWidth(axesSettings.y.lineWidth);
         pen.setColor(axesSettings.y.color);
@@ -345,10 +349,10 @@ void BaseGraphDraw::drawAxes()
 
 void BaseGraphDraw::updateCenterPosAndScaling()
 {
-    // TODO: update this method
+    // TODO: update this method not working here
 
-    uniteY = double(graphRectScaled.height()) / viewMapper.getViewRect().height();
-    uniteX = double(graphRectScaled.width()) / viewMapper.getViewRect().width();
+    uniteY = double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
+    uniteX = double(graphRectScaled.width()) / fabs(viewMapper.getViewRect().width());
 
     double rapport = uniteY / uniteX;
 
@@ -382,7 +386,6 @@ QImage* BaseGraphDraw::drawImage()
     painter.translate(leftMargin, topMargin);
 
     updateCenterPosAndScaling();
-    drawAxes();
     drawBaseGraph();
 
     if(legendState)
