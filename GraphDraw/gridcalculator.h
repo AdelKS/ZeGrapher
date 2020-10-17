@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-#include "structures.h"
 #include "information.h"
 
 #define TARGET_TICKS_NUM 20

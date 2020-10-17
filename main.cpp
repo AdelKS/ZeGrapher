@@ -38,27 +38,23 @@ int main(int argc, char *argv[])
 
     if(settings.contains("language"))
     {
-        QString language = settings.value("language").toString();
-        if(language == "fr")
-            translator.load(":/ZeGrapher_fr.qm");
-        else if(language == "de")
-            translator.load(":/ZeGrapher_de.qm");
+        QLocale::Language language = settings.value("language").toLocale().language();
+        if(supportedLangs.contains(language))
+            translator.load(":/ZeGrapher_" + langToShortString(language) + ".qm");
     }
     else
     {
-        QLocale locale;
-        if(locale.language() == QLocale::French)
-            translator.load(":/ZeGrapher_fr.qm");
-        else if(locale.language() == QLocale::German)
-            translator.load(":/ZeGrapher_de.qm");
+        QLocale::Language language = QLocale::system().language();
+        if(supportedLangs.contains(language))
+            translator.load(":/ZeGrapher_" + langToShortString(language) + ".qm");
     }
 
     settings.beginGroup("font");
 
-    if(settings.contains("family") && settings.contains("pixel_size"))
+    if(settings.contains("family") && settings.contains("size"))
     {
         QFont font;
-        font.setPixelSize(settings.value("pixel_size").toInt());
+        font.setPointSizeF(settings.value("size").toDouble());
         font.setFamily(settings.value("family").toString());
         font.setStyleStrategy(QFont::PreferAntialias);
         a.setFont(font);

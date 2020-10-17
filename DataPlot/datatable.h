@@ -23,7 +23,6 @@
 
 #include <algorithm>
 
-#include "structures.h"
 #include "information.h"
 #include "Calculus/exprcalculator.h"
 

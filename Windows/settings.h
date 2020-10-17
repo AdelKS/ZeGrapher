@@ -23,7 +23,6 @@
 
 #include <QWidget>
 
-#include "structures.h"
 #include "information.h"
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
@@ -40,6 +39,7 @@
  * - create a color generator for new math objects, just like Matplotlib
  *
  * */
+
 
 namespace Ui {
     class Settings;
@@ -63,6 +63,7 @@ private slots:
 private:
     Information *information;
     Ui::Settings *ui;
+    
     QTimer timer;
     MathObjectsInput *inputWidget;
     ZeViewSettings viewSettings;

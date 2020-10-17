@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>data_help_en</title>  
+    <style>
+    body { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; word-wrap: break-word; padding: 20px; background-color: rgb(255, 255, 255); margin-left: 32px; margin-top: 20px; font-size: 20px; color: rgb(200, 204, 213); background-color: rgb(47, 51, 61); }
+    h1, h2, h3, h4, h5, h6 {  margin-top: 16px; margin-bottom: 16px; font-weight: bold; vertical-align: middle;  }
+
+    h1 { padding-bottom: 5px; font-size: 36px; color: rgb(240, 244, 243); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238);}
+    h2 { padding-bottom: 5px; font-size: 30px; color: rgb(240, 244, 243); border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238);}
+    h3 { font-size: 26px; color: rgb(240, 244, 243);}
+    h4 { font-size: 24px; color: rgb(240, 244, 243);}
+    h5 { font-size: 22px; color: rgb(240, 244, 243);}
+    h6 { font-size: 22px; color: rgb(240, 244, 243);}
+    p, blockquote, ul, ol, dl, table, pre { margin-top: 0px; margin-bottom: 16px; }
+
+    ul, ol { padding-left: 32px; }
+    ul ul, ul ol, ol ol, ol ul { margin-top: 0px; margin-bottom: 0px; }
+    li > p { margin-top: 16px; }
+    blockquote { padding: 0px 15px; color: rgb(119, 119, 119); border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); }
+
+    blockquote p { font-size: 16px; }
+    h1, h2 { border-color: rgb(24, 26, 31); }
+    a { color: rgb(100, 148, 237); }
+    hr { background-color: rgb(67, 73, 86); }
+    blockquote { color: rgb(157, 165, 180); border-left-color: rgba(157, 165, 180, 0.6); }
+    </style>
+</head>
+<body>
+<h1 id="說明-資料視窗">說明: 資料視窗</h1>
+<p>
+    <a href="data_help_en.html"><img src="qrc:///Help/english-icon.png" alt="english flag" /></a>
+    <a href="data_help_fr.html"><img src="qrc:///Help/french-icon.png" alt="french flag" /></a> 
+    <a href="data_help_de.html"><img src="qrc:///Help/german-icon.png" alt="german flag" /></a>
+    <a href="data_help_zh.html"><img src="qrc:///Help/taiwan-icon.png" alt="taiwan flag" /></a>
+</p>
+<h2 id="總覽">總覽</h2>
+<p><img src="qrc:///Help/pins_en.png" /><br/></p>
+<p>視窗中的主要單元是一個資料表格，由<strong>滑鼠拖曳圖釘</strong>浮游。這些圖釘在輸入與視覺化上擔任重要功能。</p>
+<h3 id="黑色圖釘-基本圖釘">黑色圖釘 <img src="qrc:///Help/basePin.png" alt="基本圖釘" /></h3>
+<p>在橫軸上 <img src="qrc:///Help/Xpin.png" alt="釘 x" /> 點包含橫坐標數值。相同概念適用於<img src="qrc:///Help/Ypin.png" alt="釘 y" />或極座標中的 <img src="qrc:///Help/Rpin.png" alt="釘 r" /> 和 <img src="qrc:///Help/Tetapin.png" alt="釘 θ" />，當把圖釘移至新的欄位上後會自動更新對應圖形。</p>
+<h3 id="已選圖釘-已選圖釘">已選圖釘 <img src="qrc:///Help/selector.png" alt="已選圖釘" /></h3>
+<p>當放置於橫軸上側或縱軸左側時，此圖釘便可執行數個操作:</p>
+<ul>
+<li><strong>於橫軸:</strong> <a href="#ColumnActions">填充, 排序, 刪除</a> 或若放置於兩欄之間就插入新欄。</li>
+<li><p><strong>於縱軸:</strong> 刪除或若置於在兩行之間就插入新行。</p>
+<p><img src="qrc:///Help/lineActions_en.png" /></p></li>
+</ul>
+<h3 id="曲線擬合-curve-fitting">曲線擬合 (Curve fitting)</h3>
+<p>透過ZeGrapher以最小平方法(Least squares)計算曲線擬合: 曲線可以用逼近資料點或分段線性函式(Piecewise linear function)連接而成。</p>
+<p><strong>備註:</strong> 在目前版本中只能使用多項式回歸(Polynomial regression)。</p>
+<h2 id="實際用途">實際用途</h2>
+<h3 id="欄位動作"><a id=ColumnActions> 欄位動作</a></h3>
+<p>選取的圖釘 <img src="qrc:///Help/selector.png" alt="圖釘選擇器" /> 拖進一個欄位時，有數個操作可以執行。</p>
+<p><img src="qrc:///Help/columnActions_en.png" /><br/></p>
+<h4 id="更名">更名</h4>
+<p>當要替欄位更名時，在它的標題上連點(標示“重新命名!”的最開頭)，會跳出一個對話框要求輸入新名稱。</p>
+<p><strong>備註:</strong> 只允許字母與底線。</p>
+<h4 id="排序">排序</h4>
+<p>欄位的數值可以被排序。而當需要交換兩個格內的數值時，你可以選擇要專換整行或是僅單格。</p>
+<h4 id="填充">填充</h4>
+<p><strong>有兩種填充模式可以使用:</strong> 以表達式或是自動填充。</p>
+<p><img src="qrc:///Help/columnFill_en.png" /><br/></p>
+<h5 id="以表達式填寫">1. 以表達式填寫</h5>
+<p><em>輸入的表達式會套用在選取欄位的每一個格子。</em></p>
+<p>同一行的其他欄的數值可以使用在表達式中: 可以用欄位名稱為變數來引用它們。</p>
+<blockquote>
+<p><strong>範例:</strong> x’ = 2 * volume (volume 在此是其他欄位的標題)<br/> 你可以用這方法將欄位複製到其它。</p>
+</blockquote>
+<p>如果選擇欄位中已有數值，其值可以被用在表達式中: 你可以用“x”或欄位名來引用它們。</p>
+<blockquote>
+<p><strong>範例:</strong> x’ = cos(x) <br/> 對所有格子: 以其COS值取代之。</p>
+</blockquote>
+<p>所有常用函式(存在於虛擬鍵盤中的)都可用在表達式中，以及已繪製函式(f,g,h… 等)。</p>
+<h5 id="自動填寫">2. 自動填寫</h5>
+<p>你需要輸入一個起始值`結束值和間隔，這整欄會自動被填充。</p>
+<h3 id="曲線擬合-curve-fitting-1">曲線擬合 (Curve fitting)</h3>
+<p><em>在目前版本中只能使用多項式回歸(Polynomial regression)。</em></p>
+<p>在新增一個擬合曲線後，會以欄中<a href="Xpin.png">針 x</a> 和 <img src="qrc:///Help/Ypin.png" alt="針 y" /> (或 <img src="qrc:///Help/Rpin.png" alt="針 r" /> 和 <img src="qrc:///Help/Tetapin.png" alt="針 teta" />)來逼近整欄包含數值。 如果圖釘移到其他欄未或欄位中增加新數值，擬合曲線會自動更新。</p>
+<h4 id="多項式回歸polynomial-regression">多項式回歸(Polynomial regression)</h4>
+<p>可以選擇多項式的度數，以及其繪製間隔與顏色，這些係數的值都顯示在“數值”頁籤中。</p>
+<p><img src="qrc:///Help/polynomialCoefVals_en.png" /></p>
+<h3 id="意見回饋">意見回饋</h3>
+<p>你有遇到BUG嗎? 你有點子可以改進ZeGrapher嗎? 或是其他? 歡迎來信<a href="mailto:contact@zegrapher.com">contact@zegrapher.com</a>永遠歡迎!</p>
+
+</body>
+</html>

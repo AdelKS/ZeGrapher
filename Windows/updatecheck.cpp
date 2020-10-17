@@ -73,7 +73,7 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
         if(latestVersion > SOFTWARE_VERSION)
         {
             statusLabel->setText(tr("A new version is available!<br/>"
-                                    "To download it, visit <a href=http://zegrapher.com>zegrapher.com</a><br/><br/>"
+                                    "To download it, visit <a href=https://zegrapher.com>zegrapher.com</a><br/><br/>"
                                     "<u>Note:</u> You can enable/disable the automatic update check in the settings"));
 
             QDialog::exec();

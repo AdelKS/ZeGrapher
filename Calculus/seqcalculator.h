@@ -26,7 +26,6 @@
 #ifndef SEQCALCULATOR_H
 #define SEQCALCULATOR_H
 
-#include "structures.h"
 #include "treecreator.h"
 #include "funccalculator.h"
 #include "colorsaver.h"

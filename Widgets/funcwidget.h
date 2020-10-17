@@ -24,7 +24,6 @@
 #ifndef FUNCWIDGET_H
 #define FUNCWIDGET_H
 
-#include "structures.h"
 #include "Calculus/funccalculator.h"
 #include "Widgets/abstractfuncwidget.h"
 #include "Widgets/integrationwidget.h"

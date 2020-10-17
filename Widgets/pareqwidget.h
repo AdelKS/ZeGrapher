@@ -25,7 +25,7 @@
 #define PAREQWIDGET_H
 
 #include <QWidget>
-#include "structures.h"
+
 #include "Widgets/parconfwidget.h"
 #include "Calculus/funccalculator.h"
 #include "Calculus/treecreator.h"

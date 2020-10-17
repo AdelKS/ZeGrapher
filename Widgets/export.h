@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QTimer>
 
-#include "structures.h"
 #include "information.h"
 
 namespace Ui {

@@ -18,9 +18,6 @@
 **
 ****************************************************************************/
 
-
-
-
 #include "Widgets/abstractfuncwidget.h"
 
 AbstractFuncWidget::AbstractFuncWidget() : treeCreator(ObjectType::FUNCTION)
@@ -35,7 +32,6 @@ void AbstractFuncWidget::addMainWidgets()
 
     QHBoxLayout *firstContainerLayout = new QHBoxLayout;
     firstContainerLayout->setMargin(0);
-    firstContainerLayout->setSpacing(4);
 
     drawCheckBox = new QCheckBox();
     drawCheckBox->setChecked(true);

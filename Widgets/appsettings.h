@@ -28,10 +28,15 @@ protected:
     void loadSettingsFromDisk();
 
 private:
+    void fillSupportedLanguages();
     void makeConnects();
 
+    QFont currentAppFont;
+    double currentAppFontSize;
+    QString currentLanguage;
     Information *information;
     ZeAppSettings appSettings;
+
     Ui::AppSettings *ui;
 };
 

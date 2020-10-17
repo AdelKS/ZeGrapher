@@ -76,11 +76,13 @@ void Settings::apply()
     axisSettingsWidget->processUserInput();
     viewSettings.axes = axisSettingsWidget->getSettings();
 
+
     rangeAdjustmentsWidget->processUserInput();
     viewSettings.range = rangeAdjustmentsWidget->getRange();
 
     gridSettingsWidget->processUserInput();
     viewSettings.grid = gridSettingsWidget->getSettings();
+
 
     sizeAdjusmentsWidget->processUserInput();
     viewSettings.graph.sizeSettings = sizeAdjusmentsWidget->getSettings();
@@ -89,6 +91,7 @@ void Settings::apply()
     viewSettings.graph.estheticSettings = estheticSettingsWidget->getSettings();
 
     information->setViewSettings(viewSettings);
+
 }
 
 Settings::~Settings()

@@ -21,7 +21,6 @@
 #ifndef ZEGRAPHER_H
 #define ZEGRAPHER_H
 
-#include "structures.h"
 #include "Windows/settings.h"
 #include "Windows/values.h"
 #include "Windows/about.h"

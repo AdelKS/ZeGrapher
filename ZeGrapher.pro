@@ -11,8 +11,11 @@ OUTPUT += Console
 
 TARGET = ZeGrapher
 TEMPLATE = app
-TRANSLATIONS = ZeGrapher_fr.ts
-CONFIG += c++11
+TRANSLATIONS = ZeGrapher_fr.ts \
+               ZeGrapher_de.ts \
+               ZeGrapher_zh.ts
+
+CONFIG += c++17
 QMAKE_LFLAGS_RELEASE = -s
 
 OBJECTS_DIR = .obj

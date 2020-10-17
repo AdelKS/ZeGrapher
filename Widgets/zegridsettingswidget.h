@@ -5,7 +5,6 @@
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 
-#include "structures.h"
 #include "qcolorbutton.h"
 #include "information.h"
 

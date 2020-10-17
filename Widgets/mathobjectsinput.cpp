@@ -81,6 +81,8 @@ void MathObjectsInput::showDataHelpWindow()
             helpWindow.setSource(QUrl("qrc:///Help/data_help_fr.html"));
         else if(language == "de")
             helpWindow.setSource(QUrl("qrc:///Help/data_help_de.html"));
+        else if(language == "zh")
+            helpWindow.setSource(QUrl("qrc:///Help/data_help_zh.html"));
         else helpWindow.setSource(QUrl("qrc:///Help/data_help_en.html"));
     }
     else
@@ -90,6 +92,8 @@ void MathObjectsInput::showDataHelpWindow()
             helpWindow.setSource(QUrl("qrc:///Help/data_help_fr.html"));
         else if(locale.language() == QLocale::German)
             helpWindow.setSource(QUrl("qrc:///Help/data_help_de.html"));
+        else if(locale.language() == QLocale::Chinese)
+            helpWindow.setSource(QUrl("qrc:///Help/data_help_zh.html"));
         else helpWindow.setSource(QUrl("qrc:///Help/data_help_en.html"));
     }
 

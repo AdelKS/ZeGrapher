@@ -23,7 +23,6 @@
 
 #include <QMessageBox>
 
-#include "structures.h"
 #include "numberlineedit.h"
 #include "information.h"
 

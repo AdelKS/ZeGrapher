@@ -23,7 +23,6 @@
 
 #include <QWidget>
 
-#include "structures.h"
 #include "Calculus/funccalculator.h"
 #include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"

@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de_DE">
+<TS version="2.1" language="zh_TW">
 <context>
     <name>About</name>
     <message>
         <location filename="Windows/about.ui" line="14"/>
         <source>About...</source>
-        <translation>Über...</translation>
+        <translation>關於...</translation>
     </message>
     <message>
         <location filename="Windows/about.ui" line="81"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher&lt;br/&gt;&lt;/span&gt;&#xa0; &#xa0; &#xa0; &#xa0;by Adel Kara Slimane&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher&lt;br/&gt;&lt;/span&gt;       von Adel Kara Slimane&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:14pt; font-weight:600;&quot;&gt;ZeGrapher&lt;br/&gt;&lt;/span&gt;&#xa0; &#xa0; &#xa0; &#xa0;by Adel Kara Slimane&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="Windows/about.ui" line="117"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;https://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher is a free software, distributed under the GNU GPLv3 license. Its source code is available for download in its &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;official website&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; or &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (for the latest one)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Official website: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Did you encouter a bug ? You have ideas to make ZeGrapher better ? Something else ? Feel free to reach me at &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher ist freie Software und steht unter der Lizenz GNU GPLv3 zur Verfügung. Der Quelltext kann von der &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;offiziellen Webseite&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; oder von &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (aktuellste Version) heruntergeladen werden.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Offizielle Webseite: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;Haben Sie einen Fehler gefunden oder einen Vorschlag zur Verbesserung von ZeGrapher? Dann schreiben Sie mir unter &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;ZeGrapher 是個自由軟體, 發佈於 GNU GPLv3 授權. 它的原式碼可以於&lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;官網&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; 或 &lt;/span&gt;&lt;a href=&quot;https://github.com/AdelKS/ZeGrapher&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;Github&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt; (最後版本)&lt;/span&gt;下載.&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;官網: &lt;/span&gt;&lt;a href=&quot;http://zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot; font-family:&apos;Sans&apos;; font-size:12pt;&quot;&gt;你遇到bug嗎? 你有令ZeGrapher更好的點子嗎? 或是其他? 請隨時與我聯繫 &lt;/span&gt;&lt;a href=&quot;mailto:contact@zegrapher.com&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:12pt; text-decoration: underline; color:#007af4;&quot;&gt;contact@zegrapher.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="Windows/about.ui" line="182"/>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation>結束</translation>
     </message>
 </context>
 <context>
@@ -30,22 +34,22 @@
     <message>
         <location filename="ValuesTable/abstracttable.cpp" line="33"/>
         <source>Back</source>
-        <translation>Zurück</translation>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="ValuesTable/abstracttable.cpp" line="34"/>
         <source>Export</source>
-        <translation>Exportieren</translation>
+        <translation>匯出</translation>
     </message>
     <message>
         <location filename="ValuesTable/abstracttable.cpp" line="87"/>
         <source>Precision:</source>
-        <translation>Genauigkeit:</translation>
+        <translation>精度:</translation>
     </message>
     <message>
         <location filename="ValuesTable/abstracttable.cpp" line="89"/>
         <source> digits</source>
-        <translation> Kommastellen</translation>
+        <translation>數字</translation>
     </message>
 </context>
 <context>
@@ -53,23 +57,22 @@
     <message>
         <location filename="DataPlot/csvconfig.ui" line="24"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher only supports the &lt;a href=&quot;http://fr.wikipedia.org/wiki/Comma-separated_values&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt; fromat for importing and exporting data.&lt;br/&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;This format is supported by Excel and Calc (LibreOffice).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translatorcomment>Source text contains French Wikipedia link</translatorcomment>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher kann Daten nur im &lt;a href=&quot;https://de.wikipedia.org/wiki/CSV_(Dateiformat)&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt; Format importieren und exportieren.&lt;br/&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Diese Format wird z.B. von Excel und Calc (LibreOffice) unterstützt.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ZeGrapher 只支援 &lt;a href=&quot;https://zh.wikipedia.org/wiki/CSV&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;CSV&lt;/span&gt;&lt;/a&gt; 格式的匯入匯出.&lt;br/&gt;&lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;Excel 和 Calc (LibreOffice)皆支援此格式.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="DataPlot/csvconfig.ui" line="36"/>
         <source>Separator : </source>
-        <translation>Trennzeichen : </translation>
+        <translation>分隔符 :</translation>
     </message>
     <message>
         <location filename="DataPlot/csvconfig.ui" line="43"/>
         <source>File : </source>
-        <translation>Datei : </translation>
+        <translation>檔案 :</translation>
     </message>
     <message>
         <location filename="DataPlot/csvconfig.ui" line="77"/>
         <source>...</source>
-        <translation></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="DataPlot/csvconfig.ui" line="88"/>
@@ -79,12 +82,12 @@
     <message>
         <location filename="DataPlot/csvconfig.ui" line="95"/>
         <source>Custom:</source>
-        <translation>Benutzerdefiniert:</translation>
+        <translation>習俗:</translation>
     </message>
     <message>
         <location filename="DataPlot/csvconfig.ui" line="137"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -92,43 +95,43 @@
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="30"/>
         <source>Data (*.csv)</source>
-        <translation>Daten (*.csv)</translation>
+        <translation>資料 (*.csv)</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="54"/>
         <source>Open data from file</source>
-        <translation>Daten aus Datei einlesen</translation>
+        <translation>從檔案中開啟資料</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="55"/>
         <source>Open</source>
-        <translation>Öffnen</translation>
+        <translation>開啟</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="68"/>
         <source>Save data</source>
-        <translation>Daten speichern</translation>
+        <translation>儲存資料</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="69"/>
         <source>Save</source>
-        <translation>Speichern</translation>
+        <translation>儲存</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="128"/>
         <location filename="DataPlot/csvhandler.cpp" line="134"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="128"/>
         <source>Target file was not specified.</source>
-        <translation>Ausgabedatei nicht angegeben.</translation>
+        <translation>未指定目標檔案</translation>
     </message>
     <message>
         <location filename="DataPlot/csvhandler.cpp" line="134"/>
         <source>Separator was not specified.</source>
-        <translation>Trennzeichen nicht angegeben.</translation>
+        <translation>未指定分隔符</translation>
     </message>
 </context>
 <context>
@@ -136,12 +139,12 @@
     <message>
         <location filename="DataPlot/columnactionswidget.cpp" line="96"/>
         <source>Confirm column deletion?</source>
-        <translation>Spalte wirklich löschen?</translation>
+        <translation>確認刪除欄?</translation>
     </message>
     <message>
         <location filename="DataPlot/columnactionswidget.cpp" line="102"/>
         <source>Insert column</source>
-        <translation>Spalte einfügen</translation>
+        <translation>插入欄</translation>
     </message>
 </context>
 <context>
@@ -149,17 +152,17 @@
     <message>
         <location filename="DataPlot/confirmdelete.ui" line="14"/>
         <source>Confirmation</source>
-        <translation>Bestätigen</translation>
+        <translation>確定</translation>
     </message>
     <message>
         <location filename="DataPlot/confirmdelete.ui" line="48"/>
         <source>No</source>
-        <translation>Nein</translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="DataPlot/confirmdelete.ui" line="87"/>
         <source>Yes</source>
-        <translation>Ja</translation>
+        <translation>是</translation>
     </message>
 </context>
 <context>
@@ -169,27 +172,27 @@
         <location filename="DataPlot/datatable.cpp" line="176"/>
         <location filename="DataPlot/datatable.cpp" line="530"/>
         <source>Rename me!</source>
-        <translation>Umbenennen!</translation>
+        <translation>重新命名!</translation>
     </message>
     <message>
         <location filename="DataPlot/datatable.cpp" line="587"/>
         <source>New name for column</source>
-        <translation>Neuer Spaltenname</translation>
+        <translation>欄的新名稱</translation>
     </message>
     <message>
         <location filename="DataPlot/datatable.cpp" line="587"/>
         <source>Please enter a name for this column:</source>
-        <translation>Bitte Name für diese Spalte eingeben:</translation>
+        <translation>請為此欄輸入名稱:</translation>
     </message>
     <message>
         <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="DataPlot/datatable.cpp" line="593"/>
         <source>Column names can only have letters and &quot;_&quot;</source>
-        <translation>Spaltennamen dürfen nur Buchstaben und &quot;_&quot; enthalten</translation>
+        <translation>欄名只能包含字母和 &quot;_&quot;</translation>
     </message>
 </context>
 <context>
@@ -198,22 +201,22 @@
         <location filename="Widgets/datawidget.ui" line="20"/>
         <location filename="Widgets/datawidget.cpp" line="158"/>
         <source>Data</source>
-        <translation>Daten</translation>
+        <translation>資料</translation>
     </message>
     <message>
         <location filename="Widgets/datawidget.ui" line="100"/>
         <source>Table</source>
-        <translation>Tabelle</translation>
+        <translation>表格</translation>
     </message>
     <message>
         <location filename="Widgets/datawidget.ui" line="200"/>
         <source>Points</source>
-        <translation>Punkte</translation>
+        <translation>點</translation>
     </message>
     <message>
         <location filename="Widgets/datawidget.ui" line="234"/>
         <source>Segments</source>
-        <translation>Strecken</translation>
+        <translation>線段</translation>
     </message>
 </context>
 <context>
@@ -221,74 +224,74 @@
     <message>
         <location filename="DataPlot/datawindow.ui" line="14"/>
         <source>Data fill window</source>
-        <translation>Dateneingabe-Fenster</translation>
+        <translation>資料填充視窗</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="116"/>
         <source>Data:</source>
-        <translation>Daten:</translation>
+        <translation>資料:</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="123"/>
         <source>Import</source>
-        <translation>Importieren</translation>
+        <translation>匯入</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="130"/>
         <source>Export</source>
-        <translation>Exportieren</translation>
+        <translation>匯出</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="177"/>
         <location filename="DataPlot/datawindow.cpp" line="415"/>
         <source>Column actions:</source>
-        <translation>Spalte bearbeiten:</translation>
+        <translation>此欄操作:</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="229"/>
         <source>Regressions:</source>
-        <translation>Regressionen:</translation>
-    </message>
-    <message>
-        <location filename="DataPlot/datawindow.ui" line="605"/>
-        <source>Add</source>
-        <translation>Hinzufügen</translation>
+        <translation>回歸:</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="333"/>
         <source>Coordinates :</source>
-        <translation>Koordinatensystem :</translation>
+        <translation>座標系 :</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="352"/>
         <source>Cartesian</source>
-        <translation>Kartesisch</translation>
+        <translation>直角坐標</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.ui" line="380"/>
         <source>Polar</source>
-        <translation></translation>
+        <translation>極座標</translation>
+    </message>
+    <message>
+        <location filename="DataPlot/datawindow.ui" line="605"/>
+        <source>Add</source>
+        <translation>新增</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="81"/>
         <location filename="DataPlot/datawindow.cpp" line="306"/>
         <source>Data fill window: data</source>
-        <translation>Dateneingabe-Fenster: Daten</translation>
+        <translation>資料填充視窗: 資料</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="408"/>
         <source>Between-two-lines actions:</source>
-        <translation>Zeilenzwischenraum bearbeiten:</translation>
+        <translation>兩行之間的操作:</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="409"/>
         <source>Line actions:</source>
-        <translation>Zeile bearbeiten:</translation>
+        <translation>行操作:</translation>
     </message>
     <message>
         <location filename="DataPlot/datawindow.cpp" line="414"/>
         <source>Between-two-columns actions:</source>
-        <translation>Spaltenzwischenraum bearbeiten:</translation>
+        <translation>兩欄之間的操作:</translation>
     </message>
 </context>
 <context>
@@ -296,47 +299,47 @@
     <message>
         <location filename="DataPlot/filloptions.ui" line="20"/>
         <source>Representaion range</source>
-        <translation>Darstellungsbereich</translation>
+        <translation>繪圖範圍</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="58"/>
         <source>From expression:</source>
-        <translation>Startausdruck:</translation>
+        <translation>以表達式:</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="98"/>
         <source>x&apos; =</source>
-        <translation></translation>
+        <translation>x&apos; = </translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="133"/>
         <source>Auto-fill:</source>
-        <translation>Automatisch befüllen:</translation>
+        <translation>自動填充:</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="167"/>
         <source>Start:</source>
-        <translation></translation>
+        <translation>開始:</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="211"/>
         <source>End:</source>
-        <translation>Ende:</translation>
+        <translation>結束:</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="255"/>
         <source>Step:</source>
-        <translation>Intervall:</translation>
+        <translation>刻度:</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="309"/>
         <source>back</source>
-        <translation>zurück</translation>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="DataPlot/filloptions.ui" line="335"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>套用</translation>
     </message>
 </context>
 <context>
@@ -344,12 +347,12 @@
     <message>
         <location filename="Calculus/funccalculator.cpp" line="210"/>
         <source>This function calls itself in its expression.</source>
-        <translation>Diese Funktion ruft sich selber auf.</translation>
+        <translation>此函式在表達式中自我呼叫.</translation>
     </message>
     <message>
         <location filename="Calculus/funccalculator.cpp" line="224"/>
         <source>This function calls another function that is either undefined or makes an inifite calling loop.</source>
-        <translation>Diese Funktion ruft eine undefinierte Funktion auf oder verursacht eine Endlosschleife.</translation>
+        <translation>此函式呼叫其他函式且其為未定義或無限呼叫迴圈</translation>
     </message>
 </context>
 <context>
@@ -357,17 +360,17 @@
     <message>
         <location filename="ValuesTable/functable.cpp" line="56"/>
         <source>Function: </source>
-        <translation>Funktion: </translation>
+        <translation>函數:</translation>
     </message>
     <message>
         <location filename="ValuesTable/functable.cpp" line="178"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="ValuesTable/functable.cpp" line="178"/>
         <source>Syntax error in this entry</source>
-        <translation>Der Ausdruck enthält einen Syntaxfehler</translation>
+        <translation>此項中的語法錯誤</translation>
     </message>
 </context>
 <context>
@@ -376,72 +379,72 @@
         <location filename="Export/imagesave.ui" line="14"/>
         <location filename="Export/imagesave.ui" line="444"/>
         <source>Save</source>
-        <translation>Speichern</translation>
+        <translation>儲存</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="33"/>
         <source>Image size</source>
-        <translation>Bildgröße</translation>
+        <translation>圖片大小</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="54"/>
         <source>Graph size</source>
-        <translation>Wie Original</translation>
+        <translation>圖形大小</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="64"/>
         <source>Custom size:</source>
-        <translation>Benutzerdefiniert:</translation>
+        <translation>自定大小:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="85"/>
         <source>Width:</source>
-        <translation>Breite:</translation>
+        <translation>寬:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="129"/>
         <source> px</source>
-        <translation></translation>
+        <translation> px</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="145"/>
         <source>Height:</source>
-        <translation>Höhe:</translation>
+        <translation>高:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="191"/>
         <source>Precision:</source>
-        <translation>Genauigkeit:</translation>
+        <translation>精度:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="204"/>
         <source> digits</source>
-        <translation> Kommastellen</translation>
+        <translation>數字</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="238"/>
         <source>Legend</source>
-        <translation>Achsenbeschriftung</translation>
+        <translation>標籤</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="256"/>
         <source>X axis:</source>
-        <translation>X-Achse:</translation>
+        <translation>X軸:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="273"/>
         <source>Y axis:</source>
-        <translation>Y-Achse:</translation>
+        <translation>Y軸:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.ui" line="385"/>
         <source>Font size:</source>
-        <translation>Schriftgröße:</translation>
+        <translation>字型大小:</translation>
     </message>
     <message>
         <location filename="Export/imagesave.cpp" line="64"/>
         <source>Save picture</source>
-        <translation>Bild speichern</translation>
+        <translation>保存圖片</translation>
     </message>
 </context>
 <context>
@@ -449,7 +452,7 @@
     <message>
         <location filename="Widgets/integrationwidget.cpp" line="28"/>
         <source>Initial conditions:</source>
-        <translation>Startbedingungen:</translation>
+        <translation>初始狀態:</translation>
     </message>
 </context>
 <context>
@@ -457,89 +460,87 @@
     <message>
         <location filename="Widgets/keyboard.ui" line="20"/>
         <source>Virtual keyboard</source>
-        <translation>Virtuelle Tastatur</translation>
+        <translation>虛擬鍵盤</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="404"/>
         <source>functions variables</source>
-        <translation>Funktionsvariable</translation>
+        <translation>函數變量</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="461"/>
         <source>sequences variable</source>
-        <translation>Folgenvariable</translation>
+        <translation>序列變量</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="486"/>
         <source>paramètre</source>
-        <translatorcomment>Source text is French</translatorcomment>
-        <translation>Parameter</translation>
+        <translation>參量</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="534"/>
         <source>error function.</source>
-        <translation>Fehlerfunktion.</translation>
+        <translation>錯誤函式.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="553"/>
         <source>complementary error function.</source>
-        <translation>komplementäre Fehlerfunktion.</translation>
+        <translation>互補錯誤函數.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="572"/>
         <source>round to the nearest greater integer</source>
-        <translation>auf die nächsthöhere ganze Zahl aufrunden</translation>
+        <translation>四捨五入到最接近的較大整數</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="594"/>
         <source>square root</source>
-        <translation>Quardatwurzel</translation>
+        <translation>平方根</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="717"/>
         <source>Antiderivative</source>
-        <translation>Stammfunktion</translation>
+        <translation>反導函數</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="852"/>
         <source>Function</source>
-        <translation>Funktion</translation>
+        <translation>函數</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="880"/>
         <source>Derivative</source>
-        <translation>Ableitung</translation>
+        <translation>導出</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="946"/>
         <source>round to the nearest lower integer</source>
-        <translation>auf die nächstniedrigere ganze Zahl abrunden</translation>
+        <translation>四捨五入最接近的下整數</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="987"/>
         <source>absolute value</source>
-        <translation>absoluter Wert</translation>
+        <translation>絕對值</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1015"/>
         <source>eulerian gamma function.</source>
-        <translation>Eulersche Gammafunktion.</translation>
+        <translation>歐拉伽馬函數.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1031"/>
         <source>reciprocal hyperbolic cosinus.</source>
-        <translation>Areakosinus hyperbolicus.</translation>
+        <translation>倒數雙曲線餘弦.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1050"/>
         <source>reciprocal hyperbolic sinus.</source>
-        <translation>Areasinus hyperbolicus.</translation>
+        <translation>倒數雙曲線竇.</translation>
     </message>
     <message>
         <location filename="Widgets/keyboard.ui" line="1072"/>
         <source>tangente hyperbolique réciproque.</source>
-        <translatorcomment>Source text is French</translatorcomment>
-        <translation>Arkustangens hyperbolicus.</translation>
+        <translation>倒數雙曲正切</translation>
     </message>
 </context>
 <context>
@@ -547,138 +548,138 @@
     <message>
         <location filename="Windows/mainwindow.cpp" line="65"/>
         <source>File</source>
-        <translation>Datei</translation>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="66"/>
         <source>Tools</source>
-        <translation>Werkzeuge</translation>
+        <translation>工具</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="67"/>
         <source>Windows</source>
-        <translation>Fenster</translation>
+        <translation>視窗</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="70"/>
         <source>Show/Hide the grid</source>
-        <translation>Koordinaten­netz</translation>
+        <translation>顯示/隱藏網格</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="73"/>
         <source>Toggle orthonormal view</source>
-        <translation>Orthonormale Ansicht</translation>
+        <translation>切換標準化視圖</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="78"/>
         <location filename="Windows/mainwindow.cpp" line="151"/>
         <source>Reset to default view</source>
-        <translation>Ansicht zurücksetzen</translation>
+        <translation>重置為預設視圖</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="81"/>
         <source>About...</source>
-        <translation>Über...</translation>
+        <translation>關於...</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="84"/>
         <source>About Qt</source>
-        <translation>Über Qt</translation>
+        <translation>關於Qt</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="87"/>
         <source>Check for updates</source>
-        <translation>Nach Updates suchen</translation>
+        <translation>檢查更新</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="90"/>
         <source>Print...</source>
-        <translation>Drucken...</translation>
+        <translation>列印...</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="95"/>
         <source>Image export...</source>
-        <translation>Als Bild exportieren...</translation>
+        <translation>匯出圖片...</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="100"/>
         <source>Settings</source>
-        <translation>Einstellungen</translation>
+        <translation>設定值</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="107"/>
         <source>Exit</source>
-        <translation>Beenden</translation>
+        <translation>離開</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="111"/>
         <source>Functions</source>
-        <translation>Funktionen</translation>
+        <translation>函式</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="116"/>
         <source>Range edit</source>
-        <translation>Darstellungsbereich</translation>
+        <translation>範圍編輯</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="121"/>
         <source>Values table</source>
-        <translation>Wertetabelle</translation>
+        <translation>數值表</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="126"/>
         <source>numeric keyboard</source>
-        <translation>Tastatur</translation>
+        <translation>虛擬鍵盤</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="131"/>
         <source>Windows and actions</source>
-        <translation>Fenster und Aktionen</translation>
+        <translation>視窗和操作</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="146"/>
         <source>Edit the displayed range: Xmin, Xmax...</source>
-        <translation>Darstellungsbereich bearbeiten: Xmin, Xmax...</translation>
+        <translation>編輯顯示的範圍: X軸上下限...</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="147"/>
         <source>Enter functions, sequences, parametric equations, data...</source>
-        <translation>Eingabe von Funktionen, Folgen, parametrischen Gleichungen, Daten,...</translation>
+        <translation>輸入函數,序列,參數方程式,資料...</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="148"/>
         <source>Exit ZeGrapher.</source>
-        <translation>ZeGrapher beenden.</translation>
+        <translation>離開ZeGrapher.</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="149"/>
         <source>Edit axes&apos; color, background color, curve&apos;s quality...</source>
-        <translation>Anpassen der Achsen- und Hintergrund-Farbe, der Kurvenqualität,...</translation>
+        <translation>編輯軸顏色, 背景顏色, 畫布品質...</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="150"/>
         <source>Display the values taken by functions, sequences and parametric equations on tables.</source>
-        <translation>Wertetabellen von Funktionen, Folgen und parametrischen Gleichungen anzeigen.</translation>
+        <translation>在表上顯示函數,序列和參數方程式所取的值.</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="152"/>
         <source>Show/Hide grid</source>
-        <translation>Koordinaten­netz anzeigen/verbergen</translation>
+        <translation>顯示/隱藏網格</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="153"/>
         <source>Export the graph as an image.</source>
-        <translation>Diagramm als Bild exportieren.</translation>
+        <translation>將圖形匯出為圖片</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="154"/>
         <source>Virtual keyboard.</source>
-        <translation>Virtuelle Tastatur.</translation>
+        <translation>虛擬鍵盤</translation>
     </message>
     <message>
         <location filename="Windows/mainwindow.cpp" line="155"/>
         <source>Print, or export in PDF.</source>
-        <translation>Drucken oder als PDF exportieren.</translation>
+        <translation>列印, 或匯出為PDF</translation>
     </message>
 </context>
 <context>
@@ -686,119 +687,119 @@
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="32"/>
         <source>Functions</source>
-        <translation>Funktionen</translation>
+        <translation>函數</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="82"/>
         <source>&amp;Functions</source>
-        <translation>&amp;Funktionen</translation>
+        <translation>函數(&amp;F)</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="85"/>
         <source>Numerical functions</source>
-        <translation>Numerische Funktionen</translation>
+        <translation>數值函數</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="164"/>
         <source>&amp;Sequences</source>
-        <translation>&amp;Folgen</translation>
+        <translation>序列(&amp;S)</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="167"/>
         <source>Numerical sequences</source>
-        <translation>Numerische Folgen</translation>
+        <translation>數值序列</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="259"/>
         <source>n&lt;sub&gt;min&lt;/sub&gt; =</source>
-        <translation></translation>
+        <translation>n&lt;sub&gt;min&lt;/sub&gt; =</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="332"/>
         <source>Straight &amp;lines</source>
-        <translation>&amp;Geraden</translation>
+        <translation>直線(&amp;L)</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="335"/>
         <source>Straight lines and tangents</source>
-        <translation>Geraden und Tangenten</translation>
+        <translation>直線和切線</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="438"/>
         <source>Add :</source>
-        <translation>Hinzufügen :</translation>
+        <translation>新增 :</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="451"/>
         <source>Straight line</source>
-        <translation>Gerade</translation>
+        <translation>直線</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="464"/>
         <source>Tangent</source>
-        <translation>Tangente</translation>
+        <translation>切線</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="509"/>
         <source>&amp;Parametric</source>
-        <translation>&amp;Parametrisch</translation>
+        <translation>參數(&amp;P)</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="574"/>
         <source>Animation control:</source>
-        <translation>Animation:</translation>
+        <translation>動畫控制:</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="583"/>
         <source>Increment period:</source>
-        <translation>Schrittintervall:</translation>
+        <translation>遞增期:</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="617"/>
         <source>milliseconds per step.</source>
-        <translation>Millisekunden pro Schritt.</translation>
+        <translation>毫秒/刻度.</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="620"/>
         <source>ms/step</source>
-        <translation>ms/Schritt</translation>
+        <translation>毫秒/刻度</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="629"/>
         <source>Refresh rate:</source>
-        <translation>Wiederholrate:</translation>
+        <translation>刷新率:</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="663"/>
         <source>Hz</source>
-        <translation></translation>
+        <translation>Hz</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="708"/>
         <location filename="Windows/mathobjectsinput.ui" line="824"/>
         <source>Add</source>
-        <translation>Hinzufügen</translation>
+        <translation>新增</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="751"/>
         <source>&amp;Data</source>
-        <translation>&amp;Daten</translation>
+        <translation>資料(&amp;D)</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="872"/>
         <source>Keyboard</source>
-        <translation>Tastatur</translation>
+        <translation>鍵盤</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.ui" line="907"/>
         <location filename="Windows/mathobjectsinput.cpp" line="44"/>
         <source>Plot</source>
-        <translation>Zeichnen</translation>
+        <translation>繪圖</translation>
     </message>
     <message>
         <location filename="Windows/mathobjectsinput.cpp" line="101"/>
         <source>Help: data fill window.</source>
-        <translation>Hilfe: Dateneingabe-Fenster.</translation>
+        <translation>說明: 資料填充視窗</translation>
     </message>
 </context>
 <context>
@@ -806,22 +807,22 @@
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="26"/>
         <source>Regression type</source>
-        <translation>Regressionsmethode</translation>
+        <translation>回歸類型</translation>
     </message>
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="36"/>
         <source>Regression type: </source>
-        <translation>Regressionsmethode: </translation>
+        <translation>回歸類型: </translation>
     </message>
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="44"/>
         <source>Polynomial</source>
-        <translation></translation>
+        <translation>多項式</translation>
     </message>
     <message>
         <location filename="DataPlot/modelchoicewidget.ui" line="60"/>
         <source>Ok</source>
-        <translation></translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -829,32 +830,32 @@
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="28"/>
         <source>Adjustments for </source>
-        <translation>Wertebereich für </translation>
+        <translation>的調整</translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="60"/>
         <source>Animate</source>
-        <translation>Animieren</translation>
+        <translation>動畫化</translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="68"/>
         <source>Keep tracks</source>
-        <translation>Kurve beibehalten</translation>
+        <translation>持續追踪</translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="93"/>
         <source>Start:</source>
-        <translation></translation>
+        <translation>開始:</translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="94"/>
         <source> End:</source>
-        <translation> Ende:</translation>
+        <translation>結束:</translation>
     </message>
     <message>
         <location filename="Widgets/parconfwidget.cpp" line="95"/>
         <source> Step:</source>
-        <translation> Intervall:</translation>
+        <translation>刻度:</translation>
     </message>
 </context>
 <context>
@@ -862,17 +863,17 @@
     <message>
         <location filename="ValuesTable/pareqtable.cpp" line="80"/>
         <source>Parametric equation: </source>
-        <translation>Parametrische Gleichung: </translation>
+        <translation>參數方程式: </translation>
     </message>
     <message>
         <location filename="ValuesTable/pareqtable.cpp" line="176"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="ValuesTable/pareqtable.cpp" line="176"/>
         <source>Syntax error in this entry</source>
-        <translation>Der Ausdruck enthält einen Syntaxfehler</translation>
+        <translation>此項中的語法錯誤</translation>
     </message>
 </context>
 <context>
@@ -881,29 +882,29 @@
         <location filename="Widgets/pareqwidget.cpp" line="90"/>
         <location filename="Widgets/pareqwidget.cpp" line="106"/>
         <source>The increment period is too small...</source>
-        <translation>Das Schrittintervall ist zu kein...</translation>
+        <translation>增量週期太小...</translation>
     </message>
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="515"/>
         <location filename="Widgets/pareqwidget.cpp" line="518"/>
         <location filename="Widgets/pareqwidget.cpp" line="541"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="515"/>
         <source>Step value for the &quot;t&quot; parameter is not compatible with the entered range, in parametric equation</source>
-        <translation>Das Schrittintervall für den Parameter &quot;t&quot; passt nicht zum Wertebereich der Parametrischen Gleichung</translation>
+        <translation>參數方程式中參數&quot;k&quot;的刻度值與輸入範圍不相容</translation>
     </message>
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="518"/>
         <source>Too many points to calculate on parametric equation</source>
-        <translation>Die angegebenen Werte ergeben zu viele Punkte zur Berechnung der Parametrischen Gleichung</translation>
+        <translation>參數方程式中要計算的點太多</translation>
     </message>
     <message>
         <location filename="Widgets/pareqwidget.cpp" line="542"/>
         <source>Step value for the &quot;k&quot; parameter is not compatible with the entered range, in parametric equation (P&lt;sub&gt;</source>
-        <translation>Das Schrittintervall für den Parameter &quot;k&quot; passt nicht zum Wertebereich der Parametrischen Gleichung (P&lt;sub&gt;</translation>
+        <translation>參數方程式中參數&quot;k&quot;的刻度值與輸入範圍不相容(P&lt;sub&gt;</translation>
     </message>
 </context>
 <context>
@@ -911,98 +912,97 @@
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="26"/>
         <source>Polynomial regression</source>
-        <translation>Polynomiale Ausgleichskurve</translation>
+        <translation>多項式回歸</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="57"/>
         <source>Settings</source>
-        <translation>Einstellungen</translation>
+        <translation>設定值</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="66"/>
         <source>The fitting polynomial is calculated by the least squares method</source>
-        <translatorcomment>https://de.wikipedia.org/wiki/Methode_der_kleinsten_Quadrate</translatorcomment>
-        <translation>Die polynomiale Ausgleichskurve wird mit der Methode der kleinsten Quadrate berechnet</translation>
+        <translation>擬合多項式由最小平方法計算</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="78"/>
         <source>Polynomial order:</source>
-        <translation>Polynomgrad:</translation>
+        <translation>多項式階數次序:</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="137"/>
         <source>Polynomial computation</source>
-        <translation>Berechnungsmethode</translation>
+        <translation>多項式計算</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="146"/>
         <source>C&amp;lose to the points</source>
-        <translation>Entlang der &amp;Punkte</translation>
+        <translation>近似至點(&amp;L)</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="156"/>
         <source>Close to the seg&amp;ments</source>
-        <translation>Entlang der &amp;Abschnitte</translation>
+        <translation>近似至線段(&amp;M)</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="180"/>
         <source>Plot</source>
-        <translation>Zeichnen</translation>
+        <translation>繪圖</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="201"/>
         <source>Draw</source>
-        <translation>Zeichnen</translation>
+        <translation>畫</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="226"/>
         <source>Draw interval:</source>
-        <translation>Darstellungsbereich:</translation>
+        <translation>繪製刻度:</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="232"/>
         <source>Data range</source>
-        <translation>Wie Datenbereich</translation>
+        <translation>資料范圍</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="247"/>
         <source>Relative e&amp;xtrapolation of </source>
-        <translation>Relative E&amp;xtrapolation </translation>
+        <translation>相對外推(&amp;X)</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="263"/>
         <source>x</source>
-        <translation></translation>
+        <translation>x</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="286"/>
         <source>User defined :</source>
-        <translation>Benutzerdefiniert :</translation>
+        <translation>使用者自定義:</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="312"/>
         <source>Values</source>
-        <translation>Koeffizienten</translation>
+        <translation>值</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.ui" line="387"/>
         <source>P(x) =</source>
-        <translation></translation>
+        <translation>P(x) =</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="197"/>
         <source>Start:</source>
-        <translation></translation>
+        <translation>開始:</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="200"/>
         <source>End:</source>
-        <translation>Ende:</translation>
+        <translation>結束:</translation>
     </message>
     <message>
         <location filename="DataPlot/polynomialmodelwidget.cpp" line="219"/>
         <source>color:</source>
-        <translation>Farbe:</translation>
+        <translation>顏色:</translation>
     </message>
 </context>
 <context>
@@ -1014,176 +1014,175 @@
         <location filename="Export/print.cpp" line="33"/>
         <location filename="Export/print.cpp" line="88"/>
         <source>Print</source>
-        <translation>Drucken</translation>
+        <translation>列印</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="33"/>
         <source>global parameters:</source>
-        <translation>Druckeigenschaften:</translation>
+        <translation>整體參數:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="44"/>
         <source>Copies :</source>
-        <translation>Exemplare :</translation>
+        <translation>份數:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="67"/>
         <source>Orientation:</source>
-        <translation>Ausrichtung:</translation>
+        <translation>方向:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="81"/>
         <source>Portrait</source>
-        <translation>Hochformat</translation>
+        <translation>直式</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="86"/>
         <source>Landscape</source>
-        <translation>Querformat</translation>
+        <translation>橫式</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="94"/>
         <source>Coloration :</source>
-        <translation>Farbe :</translation>
+        <translation>著色:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="108"/>
         <source>Color</source>
-        <translation>Farbe</translation>
+        <translation>彩色</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="113"/>
         <source>Grayscale</source>
-        <translation>Graustufen</translation>
+        <translation>灰階</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="136"/>
         <source>Resolution:</source>
-        <translation>Auflösung:</translation>
+        <translation>解析度:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="145"/>
         <source>Screen resolution</source>
-        <translation>Bildschirmauflösung</translation>
+        <translation>螢幕解析度</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="157"/>
         <source>Predefined:</source>
-        <translation>Vordefiniert:</translation>
+        <translation>自訂:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="173"/>
         <source> ppp</source>
-        <translation></translation>
+        <translation> ppp</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="197"/>
         <source>Printing:</source>
-        <translation>Drucken:</translation>
+        <translation>列印:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="208"/>
         <source>on a sheet</source>
-        <translation>auf Drucker</translation>
+        <translation>至印表機</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="245"/>
         <source>Printer:</source>
-        <translation>Drucker:</translation>
+        <translation>影印機</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="271"/>
         <source>to a file (PDF, PostScript)</source>
-        <translation>in Datei (PDF, PostScript)</translation>
+        <translation>至檔案(PDF,PostScript)</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="324"/>
         <source>...</source>
-        <translation></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="339"/>
         <source>Graph</source>
-        <translation>Diagramm</translation>
+        <translation>圖形</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="360"/>
         <source>Precision:</source>
-        <translation>Genauigkeit:</translation>
+        <translation>精度:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="401"/>
         <source>Graph size:</source>
-        <translation>Größe:</translation>
+        <translation>圖形大小:</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="418"/>
         <source>Height</source>
-        <translation>Höhe</translation>
+        <translation>高度</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="425"/>
         <source>Width</source>
-        <translation>Breite</translation>
+        <translation>寛度</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="438"/>
         <location filename="Export/print.ui" line="460"/>
         <source> cm</source>
-        <translation></translation>
+        <translation> cm</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="495"/>
         <location filename="Export/print.ui" line="501"/>
         <source>Legends</source>
-        <translation>Achsenbeschriftung</translation>
+        <translation>標籤</translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="519"/>
         <source>X axis :</source>
-        <translation>X-Achse :</translation>
+        <translation>X軸: </translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="536"/>
         <source>Y axis :</source>
-        <translation>Y-Achse :</translation>
+        <translation>Y軸: </translation>
     </message>
     <message>
         <location filename="Export/print.ui" line="648"/>
         <source>Font size:</source>
-        <translation>Schriftgröße:</translation>
+        <translation>字型大小: </translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="74"/>
         <source>Create PDF</source>
-        <translation>PDF erzeugen</translation>
+        <translation>建立PDF</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="87"/>
         <source>Save</source>
-        <translation>Speichern</translation>
+        <translation>儲存</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="103"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="103"/>
         <source>You are about to print, do you want to continue?
  Please check settings before printing.</source>
-        <translation>Möchten Sie wirklich Drucken?
- Bitte überprüfen Sie vorher die Einstellungen.</translation>
+        <translation>您將要列印，是否要繼續？ 列印前請檢查裝置。</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="132"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="Export/print.cpp" line="132"/>
         <source>Please select a directory to create the PDF file in.</source>
-        <translation>Bitte wählen Sie ein Verzeichnis aus, in welchem das PDF erzeugt werden soll.</translation>
+        <translation>請選擇目錄以建立PDF檔案。</translation>
     </message>
 </context>
 <context>
@@ -1191,48 +1190,48 @@
     <message>
         <location filename="Windows/rangeadjustments.ui" line="26"/>
         <source>Representation range</source>
-        <translation>Darstellungsbereich</translation>
+        <translation>繪圖範圍</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.ui" line="118"/>
         <location filename="Windows/rangeadjustments.ui" line="125"/>
         <source>&lt;strong&gt;&lt;em&gt;Step&lt;/em&gt;&lt;/strong&gt;</source>
-        <translation>&lt;strong&gt;&lt;em&gt;Intervall&lt;/em&gt;&lt;/strong&gt;</translation>
+        <translation>&lt;strong&gt;&lt;em&gt;刻度&lt;/em&gt;&lt;/strong&gt;</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.ui" line="140"/>
         <source>Orthonormal view</source>
-        <translation>Orthonormale Ansicht</translation>
+        <translation>標準化視圖</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.ui" line="168"/>
         <source>Standard View</source>
-        <translation>Standardansicht</translation>
+        <translation>預設視圖</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.ui" line="200"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>套用</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="65"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="134"/>
         <source>X&lt;sub&gt;min&lt;/sub&gt; must be smaller than X&lt;sub&gt;max&lt;/sub&gt;</source>
-        <translation>X&lt;sub&gt;min&lt;/sub&gt; muss kleiner sein als X&lt;sub&gt;max&lt;/sub&gt;</translation>
+        <translation>X&lt;sub&gt;min&lt;/sub&gt;必需小於X&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="140"/>
         <source>Y&lt;sub&gt;min&lt;/sub&gt; must be smaller than Y&lt;sub&gt;max&lt;/sub&gt;</source>
-        <translation>Y&lt;sub&gt;min&lt;/sub&gt; muss kleiner sein als Y&lt;sub&gt;max&lt;/sub&gt;</translation>
+        <translation>Y&lt;sub&gt;min&lt;/sub&gt; 必需小於 Y&lt;sub&gt;max&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="Windows/rangeadjustments.cpp" line="148"/>
         <source>The view range is too tight for ZeGrapher to distinguish between the upper and lower values.</source>
-        <translation>Der Darstellungsbereich ist zu klein. ZeGrapher kann die Werte so nicht mehr unterscheiden.</translation>
+        <translation>視圖範圍太小,以致ZeGrapher無法區分上限值和下限值。</translation>
     </message>
 </context>
 <context>
@@ -1240,12 +1239,12 @@
     <message>
         <location filename="DataPlot/rowactionswidget.cpp" line="27"/>
         <source>Insert a line</source>
-        <translation>Zeile einfügen</translation>
+        <translation>插入行</translation>
     </message>
     <message>
         <location filename="DataPlot/rowactionswidget.cpp" line="28"/>
         <source>Remove a line</source>
-        <translation>Zeile löschen</translation>
+        <translation>刪除行</translation>
     </message>
 </context>
 <context>
@@ -1253,64 +1252,63 @@
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="67"/>
         <source>NB: First values must be separated by &apos;;&apos;</source>
-        <translation>NB: Die Anfangsglieder müssen mit &apos;;&apos; getrennt werden</translation>
+        <translation>注意:第一個值必需以&quot;;&quot;分隔</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="171"/>
         <source>An error occured while trying to calculate the entered first values.</source>
-        <translation>Fehler bei der Berechnung der Anfangsglieder.</translation>
+        <translation>嘗試計算輸入的第一個值時發生錯誤。</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="287"/>
         <source>Invalid crossed recursion between this sequence and the other(s) it calls in its expression.</source>
-        <translatorcomment>https://de.wikipedia.org/wiki/Zirkelbezug</translatorcomment>
-        <translation>Ungültiger Zirkelbezug zwischen dieser Folge und den darin referenzierten Folgen.</translation>
+        <translation>此序列與其在表達式中調用的其他序列之間的無效交叉遞迴。</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="428"/>
         <source>Invalid recursion.</source>
-        <translation>Ungültige Rekursion.</translation>
+        <translation>無效的遞迴</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="434"/>
         <source>Insufficient number of entered first values.</source>
-        <translation>Zu wenige Anfangsglieder angegeben.</translation>
+        <translation>輸入的第一個值數量不足</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="445"/>
         <location filename="Calculus/seqcalculator.cpp" line="451"/>
         <source>This sequence calls </source>
-        <translation>Diese Folge bezieht sich auf die Folge </translation>
+        <translation>此序列調用</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="445"/>
         <source> with a non-integral value.</source>
-        <translation> mit einem ungültigen Wert.</translation>
+        <translation>含有非整數值.</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="451"/>
         <source> with a value that is lower than n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation> mit einem Wert kleiner n&lt;sub&gt;min&lt;/sub&gt;</translation>
+        <translation>含有小於n&lt;sub&gt;min&lt;/sub&gt;的值</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="472"/>
         <source>This sequence calls in its expression a function who is either invalid or undefined.</source>
-        <translation>Diese Folge ruft eine ungültige oder nicht definierte Funktion auf.</translation>
+        <translation>該序列在其表達式中調用一個無效或未定義的函數.</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="480"/>
         <source>The entered first values use an undefined or an invalid function.</source>
-        <translation>Die angegebenen Anfangsglieder verwenden eine ungültige oder nicht definierte Funktion.</translation>
+        <translation>輸入的第一個值使用了未定義或無效的函數</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="488"/>
         <source>This sequence uses another sequence who is either invalid or undefined.</source>
-        <translation>Diese Folge verwendet eine andere Folge, die entweder ungültig oder nicht definiert ist.</translation>
+        <translation>該序列使用另一個無效或未定義的序列。</translation>
     </message>
     <message>
         <location filename="Calculus/seqcalculator.cpp" line="496"/>
         <source>The entered first values use an undefined or an invalid sequence.</source>
-        <translation>Die angegebenen Anfangsglieder verwenden eine ungültige oder nicht definierte Folge.</translation>
+        <translation>輸入的第一個值使用未定義或無效的序列.</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1316,7 @@
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="51"/>
         <source>Sequence: </source>
-        <translation>Folge: </translation>
+        <translation>序列: </translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="187"/>
@@ -1326,27 +1324,27 @@
         <location filename="ValuesTable/seqtable.cpp" line="202"/>
         <location filename="ValuesTable/seqtable.cpp" line="294"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="187"/>
         <source>Syntax error in this entry</source>
-        <translation>Der Ausdruck enthält einen Syntaxfehler</translation>
+        <translation>此輸入的語法錯誤</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="193"/>
         <source>You must enter an integer value that is greater than n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation>Sie müssen einen Wert größer als n&lt;sub&gt;min&lt;/sub&gt; eingeben</translation>
+        <translation>您必須輸入一個大於 n&lt;sub&gt;min&lt;/sub&gt; 的整數</translation>
     </message>
     <message>
-        <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;</source>
-        <translation type="vanished">Hier muss eine ganze Zahl größer  n&lt;sub&gt;min&lt;/sub&gt; eingegeben werden</translation>
+        <source>You must enter an integer value that is greater that n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;</source>
+        <translation type="vanished">您必須輸入一個大於 n&lt;sub&gt;min&lt;/sub&gt;n&lt;sub&gt;min&lt;/sub&gt;的整數</translation>
     </message>
     <message>
         <location filename="ValuesTable/seqtable.cpp" line="202"/>
         <location filename="ValuesTable/seqtable.cpp" line="294"/>
         <source>Error while calculating this sequence&apos;s terms, changing &quot;k&quot; value might solve the error.</source>
-        <translation>Fehler bei der Berechnung des Folgen-Terms. Vielleicht lässt sich der Fehler beheben, indem der Parameter &quot;k&quot; verändert wird.</translation>
+        <translation>計算此序列時出錯, 改變 &quot;k&quot;值可能可以解決錯誤.</translation>
     </message>
 </context>
 <context>
@@ -1354,138 +1352,150 @@
     <message>
         <location filename="Windows/settings.ui" line="32"/>
         <source>Settings</source>
-        <translation>Einstellungen</translation>
+        <translation>設定值</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="51"/>
         <source>Graph&apos;s settings:</source>
-        <translation>Diagrammeinstellungen:</translation>
+        <translation>圖形設定:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="69"/>
         <source>If the quality is increased, the execution speed is decreased and conversely.</source>
-        <translation>Eine höhere Genauigkeit reduziert die Geschwindikeit der Berechnung und umgekehrt.</translation>
+        <translation>如果品質提高執行速度就會降低，反之亦然</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="72"/>
         <source>Curves quality:</source>
-        <translation>Kurvengenauigkeit:</translation>
+        <translation>曲線品質:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="85"/>
         <source>Distance in pixels</source>
-        <translation>Abstand in Pixel</translation>
+        <translation>距離(像素)</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="104"/>
         <source>Curves thickness:</source>
-        <translation>Linienbreite:</translation>
+        <translation>曲線粗細:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="127"/>
         <location filename="Windows/settings.ui" line="296"/>
         <source>Font family:</source>
-        <translation>Schriftart:</translation>
+        <translation>字型:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="159"/>
         <source>Digits size shown on the graph</source>
-        <translation>Größe der Schriftzeichen im Diagramm</translation>
+        <translation>圖上顯示的位數</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="162"/>
         <location filename="Windows/settings.ui" line="303"/>
         <source>Font size:</source>
-        <translation>Schriftgröße:</translation>
+        <translation>字型大小:</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="201"/>
         <source>Size in pixel</source>
-        <translation>Größe in Pixel</translation>
-    </message>
-    <message>
-        <location filename="Windows/settings.ui" line="169"/>
-        <source>Curves smoothing:</source>
-        <translation>Kurvenglättung:</translation>
-    </message>
-    <message>
-        <location filename="Windows/settings.ui" line="232"/>
-        <source>Application&apos;s settings:</source>
-        <translation>Programmeinstellunen:</translation>
-    </message>
-    <message>
-        <location filename="Windows/settings.ui" line="247"/>
-        <source>Update-check at start:</source>
-        <translation>Beim Start nach Updates suchen:</translation>
-    </message>
-    <message>
-        <location filename="Windows/settings.ui" line="270"/>
-        <source>Language:</source>
-        <translation>Sprache:</translation>
+        <translation>像素大小</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="384"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Restart required for changes to take effect&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Neustart erforderlich, damit die Änderungen wirksam werden&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;需要重新啟動才能使更改生效&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="169"/>
+        <source>Curves smoothing:</source>
+        <translation>曲線平滑:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="232"/>
+        <source>Application&apos;s settings:</source>
+        <translation>應用程式設定:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="247"/>
+        <source>Update-check at start:</source>
+        <translation>開始時進行更新檢查:</translation>
+    </message>
+    <message>
+        <location filename="Windows/settings.ui" line="270"/>
+        <source>Language:</source>
+        <translation>語言:</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation type="vanished">英文</translation>
+    </message>
+    <message>
+        <source>Français</source>
+        <translation type="vanished">法文</translation>
+    </message>
+    <message>
+        <source>Deutsche</source>
+        <translation type="vanished">德文</translation>
     </message>
     <message>
         <location filename="Windows/settings.ui" line="391"/>
         <source>Reset</source>
-        <translation>Standard wiederherstellen</translation>
+        <translation>重設</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="41"/>
         <source>Axes color:</source>
-        <translation>Farbe der Achsen:</translation>
+        <translation>軸色:</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="45"/>
         <source>Background color:</source>
-        <translation>Hintergrundfarbe:</translation>
+        <translation>背景顏色:</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="50"/>
         <source>Grid color:</source>
-        <translation>Farbe des Koordinaten­netzes:</translation>
+        <translation>網格顏色:</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="54"/>
         <source>Curve default color:</source>
-        <translation>Standard-Farbe der Kurven:</translation>
+        <translation>曲線預設顏色:</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="208"/>
         <source>Reset to default values ?</source>
-        <translation>Standardwerte wiederherstellen ?</translation>
+        <translation>重置為預設值?</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="208"/>
         <source>Are you sure you want to restore the default values ?</source>
-        <translation>Wollen Sie wirklich die Standardwerte wiederherstellen ?</translation>
+        <translation>您確定要恢復為預設值嗎？</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="231"/>
         <location filename="Windows/settings.cpp" line="233"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="231"/>
         <source>Axes and background colors are identical</source>
-        <translation>Die Achsen und der Hintergrund haben die gleiche Farbe</translation>
+        <translation>軸和背景色相同</translation>
     </message>
     <message>
         <location filename="Windows/settings.cpp" line="233"/>
         <source>Background and grid colors are identical</source>
-        <translation>Der Hintergrund und das Koordinaten­netz haben die gleiche Farbe</translation>
+        <translation>背景和網格顏色相同</translation>
     </message>
     <message>
         <source>Restart required</source>
-        <translation type="vanished">Neustart erforderlich</translation>
+        <translation type="vanished">需要重啟</translation>
     </message>
     <message>
         <source>ZeGrapher needs to be restarted for the language change to take effect.</source>
-        <translation type="vanished">ZeGrapher muss neu gestartet werden, damit der Sprachwechsel wirksam wird.</translation>
+        <translation type="vanished">ZeGrapher需要重新啟動才能使語言更改生效.</translation>
     </message>
 </context>
 <context>
@@ -1493,47 +1503,47 @@
     <message>
         <location filename="DataPlot/sortoptions.ui" line="20"/>
         <source>Sort options</source>
-        <translation>Sortier-Optionen</translation>
+        <translation>排序選項</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="34"/>
         <source>Sorting order:</source>
-        <translation>Sortierreihenfolge:</translation>
+        <translation>排序方向:</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="64"/>
         <source>Increasing</source>
-        <translation>Aufsteigend</translation>
+        <translation>遞增</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="77"/>
         <source>Decreasing</source>
-        <translation>Absteigend</translation>
+        <translation>遞減</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="100"/>
         <source>Switching between:</source>
-        <translation>Tabelle sortieren:</translation>
+        <translation>資料交換:</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="130"/>
         <source>&amp;Lines</source>
-        <translation>Ganze &amp;Zeilen</translation>
+        <translation>整行 (&amp;L)</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="143"/>
         <source>Colu&amp;mn&apos;s cells only</source>
-        <translation>Nur die ausgewählte &amp;Spalte</translation>
+        <translation>僅限該欄單元 (&amp;M)</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="167"/>
         <source>Back</source>
-        <translation>Zurück</translation>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="DataPlot/sortoptions.ui" line="193"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>套用</translation>
     </message>
 </context>
 <context>
@@ -1541,22 +1551,22 @@
     <message>
         <location filename="DataPlot/startingactions.ui" line="20"/>
         <source>Starting actions</source>
-        <translation>Aktionen</translation>
+        <translation>開始操作</translation>
     </message>
     <message>
         <location filename="DataPlot/startingactions.ui" line="53"/>
         <source>Fill</source>
-        <translation>Füllen</translation>
+        <translation>填入</translation>
     </message>
     <message>
         <location filename="DataPlot/startingactions.ui" line="60"/>
         <source>Sort</source>
-        <translation>Sortieren</translation>
+        <translation>排序</translation>
     </message>
     <message>
         <location filename="DataPlot/startingactions.ui" line="67"/>
         <source>Delete</source>
-        <translation>Löschen</translation>
+        <translation>刪除</translation>
     </message>
 </context>
 <context>
@@ -1564,17 +1574,17 @@
     <message>
         <location filename="Widgets/straightlinewidget.cpp" line="175"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="Widgets/straightlinewidget.cpp" line="175"/>
         <source>Error on straight line</source>
-        <translation>Fehler auf der Geraden</translation>
+        <translation>直線誤差</translation>
     </message>
     <message>
         <location filename="Widgets/straightlinewidget.cpp" line="175"/>
         <source>x and y coefficients can&apos;t be simultaneously equal to zero.</source>
-        <translation>die Koeffizienten x und y dürfen nicht beide gleich null sein.</translation>
+        <translation>x和y係數不能同時等於零.</translation>
     </message>
 </context>
 <context>
@@ -1582,27 +1592,27 @@
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="70"/>
         <source>tangent to :</source>
-        <translation>Tangente für :</translation>
+        <translation>切線:</translation>
     </message>
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="93"/>
         <source>at:  x =</source>
-        <translation>bei:  x =</translation>
+        <translation>在: x</translation>
     </message>
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="155"/>
         <source>with k =</source>
-        <translation>mit k =</translation>
+        <translation>與k =</translation>
     </message>
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="200"/>
         <source>Choosen Function</source>
-        <translation>Ausgewählte Funktion</translation>
+        <translation>選擇函數</translation>
     </message>
     <message>
         <location filename="Widgets/tangentwidget.cpp" line="201"/>
         <source>Invalid</source>
-        <translation>Ungültig</translation>
+        <translation>無效</translation>
     </message>
 </context>
 <context>
@@ -1610,40 +1620,40 @@
     <message>
         <location filename="Windows/updatecheck.cpp" line="13"/>
         <source>Update check</source>
-        <translation>Suche nach Updates</translation>
+        <translation>檢查更新</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="18"/>
         <source>Please check that you are connected to the internet then try again.&lt;br/&gt;If the problem persists, you can check manually at &lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;Current version: </source>
-        <translation>Bitte prüfen Sie ihre Internet-Verbindung und versuchen Sie es erneut.&lt;br/&gt;Sollte das Problem weiter bestehen, können Sie manuell nach einer neuen Version suchen unter &lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;Installierte Version: </translation>
+        <translation>請檢查您是否已連上網路，然後重試. &lt;br/&gt;若問題仍然存在,您可以在&lt;a href=&apos;zegrapher.com&apos;&gt;zegrapher.com&lt;/a&gt; 手動檢查.&lt;br/&gt;當前版本:</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="28"/>
         <location filename="Windows/updatecheck.cpp" line="58"/>
         <source>Failed to lookup the latest version.&lt;br/&gt;</source>
-        <translation>Fehler bei der Suche nach der neuesten Version.&lt;br/&gt;</translation>
+        <translation>尋找最新版本失敗.&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="33"/>
         <location filename="Windows/updatecheck.cpp" line="43"/>
         <source>Looking for a possible update, please wait...</source>
-        <translation>Suche nach Updates, bitte warten...</translation>
+        <translation>尋找可用更新中,請等待...</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="69"/>
         <source>Error while reading latest version file...</source>
-        <translation>Fehler beim Zugriff auf die Liste der neuen Versionen...</translation>
+        <translation>讀取最新版檔案時出錯...</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="75"/>
         <source>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</source>
         <oldsource>A new version is available!&lt;br/&gt;To download it, visit &lt;a href=http://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Note:&lt;/u&gt; You can enable/disable the automatic update check in the settings</oldsource>
-        <translation>Eine neue Version ist verfügbar!&lt;br/&gt;Sie können die neue Version herunterladen unter &lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;&lt;u&gt;Hinweis:&lt;/u&gt; Sie können die automatische Suche nach Updates in den Einstellungen ein- bzw. ausschalten</translation>
+        <translation>有新版可用!&lt;br/&gt;拜訪&lt;a href=https://zegrapher.com&gt;zegrapher.com&lt;/a&gt;以下載更新. &lt;br/&gt;&lt;br/&gt;&lt;u&gt;注:&lt;/u&gt;您可以在設置中啟用/禁用自動更新檢查功能.</translation>
     </message>
     <message>
         <location filename="Windows/updatecheck.cpp" line="83"/>
         <source>You have the latest version.</source>
-        <translation>Sie haben bereits die neueste Version installiert.</translation>
+        <translation>您有最新版本.</translation>
     </message>
 </context>
 <context>
@@ -1651,12 +1661,12 @@
     <message>
         <location filename="Windows/values.cpp" line="32"/>
         <source>Values table</source>
-        <translation>Wertetabelle</translation>
+        <translation>值表</translation>
     </message>
     <message>
         <location filename="Windows/values.cpp" line="35"/>
         <source>Add</source>
-        <translation>Hinzufügen</translation>
+        <translation>新增</translation>
     </message>
 </context>
 <context>
@@ -1664,72 +1674,72 @@
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="49"/>
         <source>Function</source>
-        <translation>Funktion</translation>
+        <translation>函數</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="50"/>
         <source>Sequence</source>
-        <translation>Folge</translation>
+        <translation>序列</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="51"/>
         <source>Parametric equation</source>
-        <translation>Parametrische Gleichung</translation>
+        <translation>參數方程式</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="59"/>
         <source>Type :</source>
-        <translation>Typ :</translation>
+        <translation>類型:</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="60"/>
         <source>Name :</source>
-        <translation></translation>
+        <translation>名稱:</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="64"/>
         <source>Entry values:</source>
-        <translation>Eingabewerte:</translation>
+        <translation>輸入值:</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="70"/>
         <source>Graphs values.</source>
-        <translation>Darstellungsbereich.</translation>
+        <translation>圖形值.</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="78"/>
         <source>Manul entry.</source>
-        <translation>Manuell eingeben.</translation>
+        <translation>手動輸入.</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="84"/>
         <source>Empty cells :</source>
-        <translation>Anzahl Werte:</translation>
+        <translation>單元數 :</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="110"/>
         <source>Auto-fill</source>
-        <translation>Automatisch befüllen</translation>
+        <translation>自動填充</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="115"/>
         <source>Start:</source>
-        <translation></translation>
+        <translation>開始:</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="126"/>
         <source>Step:</source>
-        <translation>Intervall:</translation>
+        <translation>刻度:</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="147"/>
         <source>Cells number:</source>
-        <translation>Anzahl Werte:</translation>
+        <translation>單元數:</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="183"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>套用</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="256"/>
@@ -1740,42 +1750,42 @@
         <location filename="ValuesTable/valuestableconf.cpp" line="306"/>
         <location filename="ValuesTable/valuestableconf.cpp" line="313"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="256"/>
         <source>Start value must be an integer.</source>
-        <translation>Der Startwert muss eine ganze Zahl sein.</translation>
+        <translation>起始值須為整數</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="261"/>
         <source>Start value must be greater than n&lt;sub&gt;min&lt;/sub&gt;.</source>
-        <translation>Der Startwert muss größer sein als n&lt;sub&gt;min&lt;/sub&gt;.</translation>
+        <translation>起始值必須大於 n&lt;sub&gt;min&lt;/sub&gt;</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="266"/>
         <source>Step value must be positive.</source>
-        <translation>Das Schrittintervall muss positiv sein.</translation>
+        <translation>刻度值必須為正.</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="277"/>
         <source>Please select a type</source>
-        <translation>Bitte einen Funktionstyp auswählen</translation>
+        <translation>請選擇一種類型</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="282"/>
         <source>Please select a name</source>
-        <translation>Bitte einen Funktionsnamen auswählen</translation>
+        <translation>請選擇一個名字</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="306"/>
         <source>Could not evaluate start value.</source>
-        <translation>Kann Startwert nicht berechnen.</translation>
+        <translation>無法求得起始值.</translation>
     </message>
     <message>
         <location filename="ValuesTable/valuestableconf.cpp" line="313"/>
         <source>Syntax error on step value.</source>
-        <translation>Syntaxfehler im Schrittintervall.</translation>
+        <translation>刻度值的語法錯誤.</translation>
     </message>
 </context>
 </TS>

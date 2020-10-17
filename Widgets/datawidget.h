@@ -23,7 +23,6 @@
 #ifndef DATAWIDGET_H
 #define DATAWIDGET_H
 
-#include "structures.h"
 #include "qcolorbutton.h"
 #include "DataPlot/datawindow.h"
 #include "GraphDraw/mathobjectdraw.h"

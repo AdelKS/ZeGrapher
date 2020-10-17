@@ -24,7 +24,6 @@
 #ifndef VALUESTABLECONF_H
 #define VALUESTABLECONF_H
 
-#include "structures.h"
 #include "information.h"
 #include "Calculus/exprcalculator.h"
 

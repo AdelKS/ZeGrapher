@@ -190,7 +190,7 @@ void SeqTable::cellEdited(QStandardItem *item)
 
     if(x != floor(x) || x < seq->get_nMin())
     {
-        QMessageBox::warning(this, tr("Error"), tr("You must enter an integer value that is greater that n<sub>min</sub>"));
+        QMessageBox::warning(this, tr("Error"), tr("You must enter an integer value that is greater than n<sub>min</sub>"));
         return;
     }
 

@@ -42,8 +42,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>394</width>
-        <height>219</height>
+        <width>380</width>
+        <height>269</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -183,7 +183,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QSpinBox" name="appFontSize">
+           <widget class="QDoubleSpinBox" name="appFontSize">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -196,18 +196,31 @@
               <height>25</height>
              </size>
             </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
             <property name="minimum">
-             <number>8</number>
+             <double>8.000000000000000</double>
             </property>
             <property name="maximum">
-             <number>20</number>
+             <double>25.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
             </property>
             <property name="value">
-             <number>12</number>
+             <double>12.000000000000000</double>
             </property>
            </widget>
           </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="restartRequiredLabel">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;A restart is required for changes to take effect.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
         </widget>
        </item>
        <item>

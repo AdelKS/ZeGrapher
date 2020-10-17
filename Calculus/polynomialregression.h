@@ -26,7 +26,6 @@
 #define POLYNOMIALREGRESSION_H
 
 #include "polynomial.h"
-#include "structures.h"
 #include "regression.h"
 #include <QList>
 

@@ -62,6 +62,21 @@
 
 #define CM_PER_INCH 2.54
 
+// Update here for the new supported languages
+// TODO: Move to Locales and sepecify countries so nativeLanguage wroks well.
+inline const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
+
+inline QString langToShortString(QLocale::Language lang)
+{
+    if(lang == QLocale::French)
+        return "fr";
+    else if(lang == QLocale::German)
+        return "de";
+    else if(lang == QLocale::Chinese)
+        return "zh";
+    else return "en";
+}
+
 struct ZeAxisRange
 {
     double min, max;
@@ -301,10 +316,8 @@ struct ZeViewSettings
 
 struct ZeAppSettings
 {
-    enum struct Language {ENGLISH, FRENCH, GERMAN};
-
     bool startupUpdateCheck;
-    Language language;
+    QLocale::Language language;
     QFont font;
 };
 
