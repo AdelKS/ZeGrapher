@@ -64,7 +64,7 @@ after_success:
     if [ $TRAVIS_OS_NAME == "linux" ]; then
       wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
       export UPLOADTOOL_BODY="This is an experimental feature preview version. It is not intended for normal use, it is likely to crash and give wrong results.\nTravis CI build log: https://travis-ci.com/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/"
-      export UPLOADTOOL_SUFFIX="preview-unstable"
+      export UPLOADTOOL_SUFFIX="preview-unstable-linux"
       export UPLOADTOOL_ISPRERELEASE=true
       bash upload.sh ZeGrapher*.AppImage*
     fi
@@ -72,7 +72,7 @@ after_success:
     if [ $TRAVIS_OS_NAME == "osx" ]; then
       wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
       export UPLOADTOOL_BODY="This is an experimental feature preview version. It is not intended for normal use, it is likely to crash and give wrong results.\nTravis CI build log: https://travis-ci.com/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/"
-      export UPLOADTOOL_SUFFIX="preview-unstable-osx"
+      export UPLOADTOOL_SUFFIX="preview-unstable-macos"
       export UPLOADTOOL_ISPRERELEASE=true
       bash upload.sh ZeGrapher.dmg
     fi
