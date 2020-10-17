@@ -28,9 +28,17 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
 
     zoomPopup = new PopupWidget(PopupPos::TOP, 0.5, this);
     zoomPopup->setWidget(zoomContainer);
-    zoomPopup->setState(PopupState::SHOWN);
 
-//    connect(mainView, SIGNAL(widgetResized()), this, SLOT(update()));
+    onSizeSettingsChange();
+
+    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+}
+
+void MainViewContainer::onSizeSettingsChange()
+{
+    if(information->getGraphSizeSettings().sizingType == ZeSizeSettings::SizingType::FITWINDOW)
+        zoomPopup->hideWidget();
+    else zoomPopup->showWidget();
 }
 
 void MainViewContainer::resizeEvent(QResizeEvent *event)

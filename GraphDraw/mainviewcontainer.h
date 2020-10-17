@@ -18,6 +18,9 @@ public:
     MainViewContainer(Information *information, QWidget *parent = nullptr);
     ~MainViewContainer();
 
+protected slots:
+    void onSizeSettingsChange();
+
 protected:
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);
