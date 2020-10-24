@@ -41,7 +41,6 @@ public:
 
     void onSizeUnitChange();
     double getMinFigureRelativeSize();
-    QSize getTargetSupportSizePixels();
 
 signals:
     void newZoomValue(double value);
@@ -64,6 +63,7 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *event);
+    void updateSizeValues();
 
 
     void drawSupport();
@@ -77,7 +77,6 @@ protected:
     QRect getDrawableRect(const QRect &refSupportRect);
     void scaleView(const QRect &refSheetRect);
     void setMaximalCanvas();
-    void updateTargetSupportSizePx();
     void updateFigureSize();
 
     QPageLayout::Orientation orientation;
@@ -86,8 +85,6 @@ protected:
     // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
     // the other margin is scaled accordingly
     double screenDPI;
-    QSize targetSupportSizePixels;
-    QSizeF relMargins;
     QRect figureRect, supportRect, sheetRectScaled;   
 
     ZeSizeSettings sizeSettings;

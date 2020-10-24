@@ -39,16 +39,8 @@ MainView::MainView(Information *info): BaseGraphDraw(info)
     connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onZoomSettingsChange()));
 }
 
-void MainView::onSizeUnitChange()
-{
-    updateTargetSupportSizePx();
-}
-
 void MainView::updateWidgetSize()
 {
-    sizeSettings = information->getGraphSizeSettings();
-    zoomSettings = information->getGraphZoomSettings();
-
     if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {
         resize(parentWidget()->size());
@@ -59,40 +51,6 @@ void MainView::updateWidgetSize()
     }
 
     emit widgetResized();
-}
-
-void MainView::updateTargetSupportSizePx()
-{    
-    sizeSettings = information->getGraphSizeSettings();
-
-    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
-    {
-        sizeSettings.pxSheetSize = size();
-        sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDPI * CM_PER_INCH;
-
-        information->setGraphSizeSettings(sizeSettings);
-    }
-
-    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-    {
-        // TODO: determine orientation from the sheet size: whether or not sizeSettings.cmSheetSize height > width
-        QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
-        QPageLayout layout(QPageSize(sheetSizeMm, QPageSize::Millimeter), orientation, QMarginsF(), QPageLayout::Millimeter);
-        layout.setOrientation(orientation);
-        targetSupportSizePixels = layout.fullRectPixels(int(screenDPI)).size();
-
-        if(fabs(layout.fullRect().width() / layout.fullRect().height() - sheetSizeMm.width() / sheetSizeMm.height()) > 0.01)
-            targetSupportSizePixels.transpose();
-    }
-    else
-    {
-        targetSupportSizePixels = sizeSettings.pxSheetSize;
-    }
-}
-
-QSize MainView::getTargetSupportSizePixels()
-{
-    return targetSupportSizePixels;
 }
 
 double MainView::getMinFigureRelativeSize()
@@ -176,10 +134,31 @@ void MainView::exportSVG(QString fileName)
     painter.end();
 }
 
+void MainView::updateSizeValues()
+{    
+    zoomSettings = information->getGraphZoomSettings();
+    sizeSettings = information->getGraphSizeSettings();
+
+    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
+    {
+        sizeSettings.pxSheetSize = size();
+        sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDPI * CM_PER_INCH;
+    }
+
+    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+    {
+        sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * screenDPI / CM_PER_INCH).toSize();
+    }
+
+    information->setGraphSizeSettings(sizeSettings);
+}
+
 
 void MainView::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
+
+    updateSizeValues();
 
     if(currentSize != size())
     {
@@ -261,24 +240,26 @@ QRect MainView::getDrawableRect(const QRect &refSupportRect)
 
 QRect MainView::getFigureRect(const QRect &refSupportRect)
 {
-    QRect rect;
-    QPoint graphRectTopLeft;
+    int margin = sizeSettings.pxMargins;
+    QMargins margins(margin, margin, margin, margin);
 
-    graphRectTopLeft.setX(int(relFigRect.topLeft().x() * double(refSupportRect.width())));
-    graphRectTopLeft.setY(int(relFigRect.topLeft().y() * double(refSupportRect.height())));
+    QRect refSupportRectMarginless = refSupportRect.marginsRemoved(margins);
+    QRect figRect;
+    figRect.setWidth(int(round(relFigRect.width() * double(refSupportRectMarginless.width()))));
+    figRect.setHeight(int(round(relFigRect.height() * double(refSupportRectMarginless.height()))));
 
-    rect.setWidth(int(relFigRect.width() * refSupportRect.width()));
-    rect.setHeight(int(relFigRect.height() * refSupportRect.height()));
-    rect.moveTopLeft(refSupportRect.topLeft() + graphRectTopLeft);
+    QPoint topLeft;
+    topLeft.setX(int(round(relFigRect.topLeft().x() * double(refSupportRectMarginless.width()))) + margin);
+    topLeft.setY(int(round(relFigRect.topLeft().y() * double(refSupportRectMarginless.height())))+ margin);
 
-    return rect;
+    figRect.moveTopLeft(topLeft);
+
+    return figRect;
 }
 
 QRect MainView::supportRectFromViewRect(QRect viewRect)
 {
     QRect rect;
-    zoomSettings = information->getGraphZoomSettings();
-    sizeSettings = information->getGraphSizeSettings();
 
     if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
     {
@@ -348,20 +329,9 @@ void MainView::setGraphRange(GraphRange range)
 
 void MainView::scaleView(const QRect &refSheetRect)
 {
-    zoomSettings = information->getGraphZoomSettings();
-
     if(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
     {
-        double newZoom;
-
-        if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
-        {
-            newZoom = double(refSheetRect.width()) / double(targetSupportSizePixels.width());
-        }
-        else
-        {
-            newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
-        }
+        double newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
 
         if(fabs(newZoom - zoomSettings.zoom) > 0.001)
         {
@@ -437,7 +407,7 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
     {
         QPoint dr = event->pos() - lastMousePos;
         lastMousePos = event->pos();
-        auto zoomSettings = information->getGraphZoomSettings();
+
         switch(moveType)
         {
         case TOPLEFT_CORNER:
@@ -471,14 +441,17 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
             break;
         }
 
+        int marginVal = sizeSettings.pxMargins;
+        QMargins margins(marginVal, marginVal, marginVal, marginVal);\
+        QRect marginlessSupport = supportRect.marginsRemoved(margins);
 
-        QPointF pt = figureRect.topLeft() - supportRect.topLeft();
-        pt.setX(pt.x() / double(supportRect.width()));
-        pt.setY(pt.y() / double(supportRect.height()));
+        QPointF topLeft = figureRect.topLeft() - marginlessSupport.topLeft();
+        topLeft.setX(topLeft.x() / double(marginlessSupport.width()));
+        topLeft.setY(topLeft.y() / double(marginlessSupport.height()));
 
-        relFigRect.setWidth(double(figureRect.width()) / double(supportRect.width()));
-        relFigRect.setHeight(double(figureRect.height()) / double(supportRect.height()));
-        relFigRect.moveTopLeft(pt);
+        relFigRect.setWidth(double(figureRect.width()) / double(marginlessSupport.width()));
+        relFigRect.setHeight(double(figureRect.height()) / double(marginlessSupport.height()));
+        relFigRect.moveTopLeft(topLeft);
 
         constrainFigureRectRel();
         updateFigureSize();
@@ -489,9 +462,6 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
 
 void MainView::onSizeSettingsChange()
 {
-
-    updateTargetSupportSizePx();
-
     // Add function here that calcualtes the needed widget size
 
     sizeSettings = information->getGraphSizeSettings();
@@ -527,29 +497,16 @@ void MainView::updateFigureSize()
     sizeSettings.pxFigureSize.setWidth(int(relFigRect.width() * double(sizeSettings.pxSheetSize.width())));
     sizeSettings.pxFigureSize.setHeight(int(relFigRect.height() * double(sizeSettings.pxSheetSize.height())));
 
-    disconnect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
     information->setGraphSizeSettings(sizeSettings);
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 void MainView::constrainFigureRectRel()
 {
-    if(sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-    {
-        relMargins.setWidth(sizeSettings.cmMargins / sizeSettings.cmSheetSize.width());
-        relMargins.setHeight(sizeSettings.cmMargins / sizeSettings.cmSheetSize.height());
-    }
-    else
-    {
-        relMargins.setWidth(double(sizeSettings.pxMargins) / double(sizeSettings.pxSheetSize.width()));
-        relMargins.setHeight(double(sizeSettings.pxMargins) / double(sizeSettings.pxSheetSize.height()));
-    }
+    if(relFigRect.width() > 1)
+        relFigRect.setWidth(1);
 
-    if(relFigRect.width() > 1 - 2*relMargins.width())
-        relFigRect.setWidth(1 - 2*relMargins.width());
-
-    if(relFigRect.height() > 1 - 2*relMargins.height())
-        relFigRect.setHeight(1 - 2*relMargins.height());
+    if(relFigRect.height() > 1)
+        relFigRect.setHeight(1);
     //------------------------------
 
     if(relFigRect.width() < minRelSize)
@@ -559,18 +516,18 @@ void MainView::constrainFigureRectRel()
         relFigRect.setHeight(minRelSize);
     //------------------------------
 
-    if(relFigRect.left() < relMargins.width())
-        relFigRect.moveLeft(relMargins.width());
+    if(relFigRect.left() < 0)
+        relFigRect.moveLeft(0);
 
-    if(relFigRect.right() > 1 - relMargins.width())
-        relFigRect.moveRight(1 - relMargins.width());
+    if(relFigRect.right() > 1)
+        relFigRect.moveRight(1);
     //------------------------------
 
-    if(relFigRect.bottom() > 1 - relMargins.height())
-        relFigRect.moveBottom(1 - relMargins.height());
+    if(relFigRect.bottom() > 1)
+        relFigRect.moveBottom(1);
 
-    if(relFigRect.top() < relMargins.height())
-        relFigRect.moveTop(relMargins.height());
+    if(relFigRect.top() < 0)
+        relFigRect.moveTop(0);
 }
 
 void MainView::mouseReleaseEvent(QMouseEvent *event)

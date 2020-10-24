@@ -80,23 +80,35 @@ void GraphSizeAdjusments::updateWidgetVisibility()
         ui->pxSizeWidget->hide();
     }
 
-    // Margins and figure sizes
+    //margin
     if(ui->pixelUnit->isChecked())
     {
         ui->pxMarginWidget->show();
-        ui->pxFigSizeWidget->show();
-
         ui->cmMarginWidget->hide();
-        ui->cmFigSizeWidget->hide();
     }
     else
     {
         ui->pxMarginWidget->hide();
-        ui->pxFigSizeWidget->hide();
-
         ui->cmMarginWidget->show();
+    }
+
+    // figure sizes
+    if(ui->pixelUnit->isChecked() and ui->figCustomSize->isChecked())
+    {
+        ui->pxFigSizeWidget->show();
+        ui->cmFigSizeWidget->hide();
+    }
+    else if(ui->centimeterUnit->isChecked() and ui->figCustomSize->isChecked())
+    {
+        ui->pxFigSizeWidget->hide();
         ui->cmFigSizeWidget->show();
     }
+    else
+    {
+        ui->cmFigSizeWidget->hide();
+        ui->pxFigSizeWidget->hide();
+    }
+
 }
 
 void GraphSizeAdjusments::onExternalSizeSettingsChange()
@@ -178,6 +190,9 @@ void GraphSizeAdjusments::makeConnects()
     connect(ui->imageSizeSwap, SIGNAL(released()), this, SLOT(swapImageHeightAndWidth()));
 
     connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onStandardSheetSizeChange()));
+
+    connect(ui->figFitsBackground, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
+    connect(ui->figCustomSize, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
 
     connect(ui->pixelUnit, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
     connect(ui->fitWindow, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
