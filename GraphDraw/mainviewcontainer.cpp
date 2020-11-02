@@ -36,7 +36,7 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
 
 void MainViewContainer::onSizeSettingsChange()
 {
-    if(information->getGraphSizeSettings().sizingType == ZeSizeSettings::SizingType::FITWINDOW)
+    if(information->getGraphSizeSettings().sheetFillsWindow)
         zoomPopup->hideWidget();
     else zoomPopup->showWidget();
 }

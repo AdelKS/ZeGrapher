@@ -23,7 +23,8 @@ void GraphSizeAdjusments::processUserInput()
     constrainFigureSizeWidgets();
 
     sizeSettings.sizeUnit = ui->pixelUnit->isChecked() ? ZeSizeSettings::PIXEL : ZeSizeSettings::CENTIMETER;
-    sizeSettings.sizingType = ui->fitWindow->isChecked() ? ZeSizeSettings::FITWINDOW : ZeSizeSettings::CUSTOM;
+    sizeSettings.sheetFillsWindow = ui->fillWindow->isChecked();
+    sizeSettings.figureFillsSheet = ui->figFillsBackground->isChecked();
 
     sizeSettings.cmMargins = ui->sheetMarginCm->value();
     sizeSettings.pxMargins = ui->sheetMarginPx->value();
@@ -80,17 +81,26 @@ void GraphSizeAdjusments::updateWidgetVisibility()
         ui->pxSizeWidget->hide();
     }
 
-    //margin
-    if(ui->pixelUnit->isChecked())
+    //margins
+    if(ui->figFillsBackground->isChecked())
     {
-        ui->pxMarginWidget->show();
+        ui->pxMarginWidget->hide();
         ui->cmMarginWidget->hide();
     }
     else
     {
-        ui->pxMarginWidget->hide();
-        ui->cmMarginWidget->show();
+        if(ui->pixelUnit->isChecked())
+        {
+            ui->pxMarginWidget->show();
+            ui->cmMarginWidget->hide();
+        }
+        else
+        {
+            ui->pxMarginWidget->hide();
+            ui->cmMarginWidget->show();
+        }
     }
+
 
     // figure sizes
     if(ui->pixelUnit->isChecked() and ui->figCustomSize->isChecked())
@@ -108,7 +118,6 @@ void GraphSizeAdjusments::updateWidgetVisibility()
         ui->cmFigSizeWidget->hide();
         ui->pxFigSizeWidget->hide();
     }
-
 }
 
 void GraphSizeAdjusments::onExternalSizeSettingsChange()
@@ -119,8 +128,8 @@ void GraphSizeAdjusments::onExternalSizeSettingsChange()
         ui->pixelUnit->setChecked(true);
     else ui->centimeterUnit->setChecked(true);
 
-    if(sizeSettings.sizingType == ZeSizeSettings::FITWINDOW)
-        ui->fitWindow->setChecked(true);
+    if(sizeSettings.sheetFillsWindow)
+        ui->fillWindow->setChecked(true);
     else ui->customSheetSize->setChecked(true);
 
     const QSignalBlocker blocker1(ui->sheetMarginCm);
@@ -191,14 +200,17 @@ void GraphSizeAdjusments::makeConnects()
 
     connect(ui->orientationSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(onStandardSheetSizeChange()));
 
-    connect(ui->figFitsBackground, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
+    connect(ui->figFillsBackground, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
     connect(ui->figCustomSize, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
 
     connect(ui->pixelUnit, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
-    connect(ui->fitWindow, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
+    connect(ui->fillWindow, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
 
     connect(ui->pixelUnit, SIGNAL(toggled(bool)), this, SLOT(apply()));
-    connect(ui->fitWindow, SIGNAL(toggled(bool)), this, SLOT(apply()));
+    connect(ui->fillWindow, SIGNAL(toggled(bool)), this, SLOT(apply()));
+
+    connect(ui->figFillsBackground, SIGNAL(toggled(bool)), this, SLOT(apply()));
+    connect(ui->figFillsBackground, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
 }
 
 void GraphSizeAdjusments::constrainFigureSizeWidgets()

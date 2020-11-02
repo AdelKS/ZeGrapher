@@ -174,9 +174,9 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="fitWindow">
+       <widget class="QRadioButton" name="fillWindow">
         <property name="text">
-         <string>Fit window</string>
+         <string>Fill window</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -707,9 +707,9 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="figFitsBackground">
+       <widget class="QRadioButton" name="figFillsBackground">
         <property name="text">
-         <string>Fit background</string>
+         <string>Fill background</string>
         </property>
         <property name="checked">
          <bool>true</bool>

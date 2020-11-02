@@ -178,10 +178,9 @@ struct ZeAxisSettings
 struct ZeSizeSettings
 {
     enum SizeUnit {PIXEL, CENTIMETER};
-    enum SizingType {FITWINDOW, CUSTOM};
 
     SizeUnit sizeUnit;
-    SizingType sizingType;
+    bool sheetFillsWindow, figureFillsSheet;
 
     double scalingFactor;
 
@@ -194,7 +193,7 @@ struct ZeSizeSettings
     bool operator !=(const ZeSizeSettings &other)
     {
         return sizeUnit != other.sizeUnit or
-                sizingType != other.sizingType or
+                sheetFillsWindow != other.sheetFillsWindow or
                 scalingFactor != other.scalingFactor or
                 pxFigureSize != other.pxFigureSize or
                 pxSheetSize != other.pxSheetSize or
