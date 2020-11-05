@@ -13,7 +13,9 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
                                             QFontMetrics metrics)
 {
 
-    const ZeAxesSettings &axesSettings = information->getAxesSettings();
+    const ZeAxisSettings &axisSettings = axisName == ZeAxisName::X ? information->getAxesSettings().x : information->getAxesSettings().y;
+
+    double pxPerUnit = windowWidth / range.amplitude();
 
     ZeLinAxisTicks axisTicks;
     axisTicks.offset.sumOffset = 0;
@@ -37,12 +39,35 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
 
     double targetPower = floor(log10(amplitude / constantMultiplier / targetTicksNum));
 
-    double baseStep = pow(10, targetPower);
-    double realStep = baseStep * constantMultiplier;
+    double baseStep;
+    double realStep;
+    double baseMultiplier = 1;
+
+    double maxStrPxSize = 0;
+
+    realStep = baseStep * baseMultiplier * constantMultiplier;
+    baseStep = pow(10, targetPower);
 
     ZeLinAxisTick firstTick;
     firstTick.pos = ceil(range.min / realStep) * realStep;
-    firstTick.multiplier = firstTick.pos / axisSettings.constantMultiplier - axisTicks.offset.sumOffset;
+    firstTick.multiplier = firstTick.pos / axisSettings.constantMultiplier / baseMultiplier - axisTicks.offset.sumOffset;
+
+    double pos = firstTick.pos;
+    QString posStr;
+
+    while(pos < range.max)
+    {
+        posStr = QString(pos, 'g', axisSettings.maxDigitsNum);
+
+        if(metrics.horizontalAdvance(posStr) > maxStrPxSize)
+        {
+
+        }
+
+
+        axisTicks.ticks << tick;
+    }
+
 
     axisTicks.ticks << firstTick;
 
@@ -52,11 +77,19 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     {
         tick.pos = axisTicks.ticks.last().pos + realStep;
         tick.multiplier = axisTicks.ticks.last().multiplier + baseStep;
+        tick.posStr = QString(tick.pos, 'g', axisSettings.maxDigitsNum);
+
+        if(metrics.horizontalAdvance(tick.posStr) > maxCoordinateSize)
+        {
+
+        }
+
 
         axisTicks.ticks << tick;
     }
 
     axisTicks.ticks.removeLast();
+
 
     return axisTicks;
 }

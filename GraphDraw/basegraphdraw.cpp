@@ -228,7 +228,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
             painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
             painter.drawLine(QPointF(pos, graphRectScaled.height()-4), QPointF(pos, graphRectScaled.height()));
-            num = QString::number(Xpos/uniteX, 'g', numPrec);
+            num = QString::number(axisTick.pos, 'g', numPrec);
             space = fontMetrics.width(num);
             painter.drawText(QPointF(pos - space/2, graphRectScaled.height()+15), num);
         }
@@ -246,7 +246,8 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
     painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
-    double space, pos, largestWidth;
+    double pos;
+    int space, largestWidth = 0;
     double Ypos;
 
     QString num;
@@ -325,7 +326,7 @@ void BaseGraphDraw::drawAxes()
 
     const auto &viewRect = viewMapper.getViewRect();
 
-    if(viewRect.left() < 0 && viewRect.right()> 0)
+    if(viewRect.left() < 0 && viewRect.right() > 0)
     {
         pen.setWidth(axesSettings.x.lineWidth);
         pen.setColor(axesSettings.x.color);
