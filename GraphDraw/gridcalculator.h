@@ -17,7 +17,7 @@ struct ZeLogAxisTick
 
 struct ZeLinAxisTick
 {
-    double pos, multiplier;
+    double pos;
     QString posStr;
 };
 

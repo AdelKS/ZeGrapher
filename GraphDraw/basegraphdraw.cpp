@@ -38,6 +38,7 @@ BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info), gridCalc
     viewMapper.setGraphRange(information->getGraphRange());
 
     connect(information, SIGNAL(graphRangeChanged(GraphRange)), &viewMapper, SLOT(setGraphRange(GraphRange)));
+    connect(information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(update()));
     connect(information, SIGNAL(updateOccured()), this, SLOT(update()));
 }
 

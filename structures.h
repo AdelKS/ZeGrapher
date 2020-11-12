@@ -62,6 +62,10 @@
 
 #define CM_PER_INCH 2.54
 
+// Maximum and minimum relative size between the abscissa text and the horizontal tick spacing
+#define MAX_REL_TICK_SPACING 0.8
+#define MIN_REL_TICK_SPACING 0.2
+
 // extern definitions for the supported languages
 extern const QList<QLocale::Language> supportedLangs;
 extern QString langToShortString(QLocale::Language lang);

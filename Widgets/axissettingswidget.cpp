@@ -214,6 +214,7 @@ void AxisSettingsWidget::resetToDefaults()
 
     defaultSettings.linSettings.constantMultiplier = 1;
     defaultSettings.logSettings.constantMultiplierStr = "1";
+    defaultSettings.linSettings.maxDigitsNum = 5;
 
     axesSettings.x = axesSettings.y = defaultSettings;
 
