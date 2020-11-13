@@ -1,9 +1,4 @@
-Latest work:
-- make maingraph fill the entire scroll area container when set to fill
-
-Merge work
 - Make GraphDraw and mainGraph use the new settings:
-    - calculate ticks from the axisSettings with graphview (or maybe come up with a diffrent approach)
     - update graphview to handle new approach and definitions
     - display tick coordinates properly following the settings (decimal global multiplier or not ...etc)
 - Implement properly reset to default view in settings window for both the linear scale and log and for both axes,
