@@ -48,18 +48,15 @@ int main(int argc, char *argv[])
 
     settings.beginGroup("app");
 
+    QLocale::Language language;
+
     if(settings.contains("language"))
-    {
-        QLocale::Language language = settings.value("language").toLocale().language();
-        if(supportedLangs.contains(language))
-            translator.load(":/ZeGrapher_" + langToShortString(language) + ".qm");
-    }
-    else
-    {
-        QLocale::Language language = QLocale::system().language();
-        if(supportedLangs.contains(language))
-            translator.load(":/ZeGrapher_" + langToShortString(language) + ".qm");
-    }
+        language = settings.value("language").toLocale().language();
+    else language = QLocale::system().language();
+
+    QString langString = langToShortString(language);
+    if(supportedLangs.contains(language))
+        translator.load(":/Translations/ZeGrapher_" + langToShortString(language) + ".qm");
 
     settings.beginGroup("font");
 
