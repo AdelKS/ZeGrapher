@@ -32,25 +32,44 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
 
     Xmin = new NumberLineEdit(false, funcsList);
     Xmin->setMaximumHeight(27);
-    Xmin->setValue(graphRange.x.min);
+    Xmin->setValue(graphRange.x.min);    
+    Xmin->setAlignment(Qt::AlignHCenter);
 
     Xmax = new NumberLineEdit(false, funcsList);
     Xmax->setMaximumHeight(27);
-    Xmax->setValue(graphRange.x.max);  
+    Xmax->setValue(graphRange.x.max);
+    Xmax->setAlignment(Qt::AlignHCenter);
 
     Ymin = new NumberLineEdit(false, funcsList);
     Ymin->setMaximumHeight(27);
-    Ymin->setValue(graphRange.y.min);
+    Ymin->setValue(graphRange.y.min);    
+    Ymin->setAlignment(Qt::AlignHCenter);
 
     Ymax = new NumberLineEdit(false, funcsList);
     Ymax->setMaximumHeight(27);
-    Ymax->setValue(graphRange.y.max);   
+    Ymax->setValue(graphRange.y.max);
+    Ymax->setAlignment(Qt::AlignHCenter);
 
-    ui->xForm->addRow(new QLabel("x<sub>min</sub>"), Xmin);
-    ui->xForm->addRow(new QLabel("x<sub>max</sub>"), Xmax);  
+    QVBoxLayout *xminLayout = new QVBoxLayout();
+    xminLayout->addWidget(new QLabel("x<sub>min</sub>"), 0, Qt::AlignHCenter);
+    xminLayout->addWidget(Xmin, 0, Qt::AlignHCenter);
 
-    ui->yForm->addRow(new QLabel("y<sub>min</sub>"), Ymin);
-    ui->yForm->addRow(new QLabel("y<sub>max</sub>"), Ymax);
+    QVBoxLayout *xmaxLayout = new QVBoxLayout();
+    xmaxLayout->addWidget(new QLabel("x<sub>max</sub>"), 0, Qt::AlignHCenter);
+    xmaxLayout->addWidget(Xmax, 0, Qt::AlignHCenter);
+
+    QVBoxLayout *ymaxLayout = new QVBoxLayout();
+    ymaxLayout->addWidget(new QLabel("y<sub>max</sub>"), 0, Qt::AlignHCenter);
+    ymaxLayout->addWidget(Ymax, 0, Qt::AlignHCenter);
+
+    QVBoxLayout *yminLayout = new QVBoxLayout();
+    yminLayout->addWidget(new QLabel("y<sub>min</sub>"), 0, Qt::AlignHCenter);
+    yminLayout->addWidget(Ymin, 0, Qt::AlignHCenter);
+
+    ui->gridLayout->addLayout(xminLayout, 1, 0);
+    ui->gridLayout->addLayout(xmaxLayout, 1, 2);
+    ui->gridLayout->addLayout(yminLayout, 2, 1);
+    ui->gridLayout->addLayout(ymaxLayout, 0, 1);
 
     messageBox = new QMessageBox(this);
     messageBox->setWindowTitle(tr("Error"));
@@ -59,11 +78,11 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     loadDefaults();
     information->setGraphRange(graphRange);
 
-    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
-    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
+    connect(Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
 
-    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
-    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(processUserInput()));
+    connect(Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
+    connect(Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
 
     connect(ui->resetView, SIGNAL(released()), this, SIGNAL(resetToDefaultView()));
     connect(ui->apply, SIGNAL(released()), this, SLOT(apply()));
