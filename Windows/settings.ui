@@ -36,20 +36,56 @@
     <normaloff>:/icons/settings.png</normaloff>:/icons/settings.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
-   <property name="leftMargin">
+   <property name="spacing">
     <number>4</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="rangeAdjustmentsLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>5</horstretch>
+       <verstretch>5</verstretch>
+      </sizepolicy>
+     </property>
      <property name="currentIndex">
       <number>1</number>
      </property>
@@ -101,7 +137,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>4</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -109,11 +145,11 @@
          <property name="documentMode">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="range">
+         <widget class="QWidget" name="general">
           <attribute name="title">
-           <string>Range</string>
+           <string>General</string>
           </attribute>
-          <layout class="QVBoxLayout" name="rangeSettingsLayout">
+          <layout class="QVBoxLayout" name="graphGeneralSettingsLayout">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -132,7 +168,10 @@
           <attribute name="title">
            <string>Axes</string>
           </attribute>
-          <layout class="QVBoxLayout" name="axisSettingsLayout">
+          <layout class="QVBoxLayout" name="axesLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -172,16 +211,16 @@
           </attribute>
           <layout class="QVBoxLayout" name="sizeAdjustmentsLayout">
            <property name="leftMargin">
-            <number>2</number>
+            <number>0</number>
            </property>
            <property name="topMargin">
-            <number>2</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
-            <number>2</number>
+            <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>2</number>
+            <number>0</number>
            </property>
           </layout>
          </widget>
@@ -189,13 +228,20 @@
           <attribute name="title">
            <string>Export</string>
           </attribute>
-          <layout class="QVBoxLayout" name="exportLayout"/>
-         </widget>
-         <widget class="QWidget" name="general">
-          <attribute name="title">
-           <string>General</string>
-          </attribute>
-          <layout class="QVBoxLayout" name="graphGeneralSettingsLayout"/>
+          <layout class="QVBoxLayout" name="exportLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+          </layout>
          </widget>
         </widget>
        </item>

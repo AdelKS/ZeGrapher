@@ -37,10 +37,10 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     ui->objectsInputLayout->addWidget(inputWidget);
 
     rangeAdjustmentsWidget = new RangeAdjustments(information->getFuncsList(), information);
-    ui->rangeSettingsLayout->addWidget(rangeAdjustmentsWidget);
+    ui->rangeAdjustmentsLayout->addWidget(rangeAdjustmentsWidget);
 
     axisSettingsWidget = new AxisSettingsWidget(information);
-    ui->axisSettingsLayout->addWidget(axisSettingsWidget);
+    ui->axesLayout->addWidget(axisSettingsWidget);
 
     gridSettingsWidget = new ZeGridSettingsWidget(information);
     ui->gridSettingsLayout->addWidget(gridSettingsWidget);

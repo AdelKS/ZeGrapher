@@ -19,16 +19,12 @@
 ****************************************************************************/
 
 #include "Widgets/rangeadjustments.h"
-#include "ui_rangeadjustments.h"
 
 /* TODO: Take care of the orthonormal setting */
 
 RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information *info, QWidget *parent): QWidget(parent)
 {
     information = info;
-
-    ui = new Ui::RangeAdjustments;
-    ui->setupUi(this);
 
     Xmin = new NumberLineEdit(false, funcsList);
     Xmin->setMaximumHeight(27);
@@ -66,10 +62,30 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     yminLayout->addWidget(new QLabel("y<sub>min</sub>"), 0, Qt::AlignHCenter);
     yminLayout->addWidget(Ymin, 0, Qt::AlignHCenter);
 
-    ui->gridLayout->addLayout(xminLayout, 1, 0);
-    ui->gridLayout->addLayout(xmaxLayout, 1, 2);
-    ui->gridLayout->addLayout(yminLayout, 2, 1);
-    ui->gridLayout->addLayout(ymaxLayout, 0, 1);
+    QGridLayout *gridLayout = new QGridLayout(this);
+    gridLayout->addLayout(xminLayout, 1, 0);
+    gridLayout->addLayout(xmaxLayout, 1, 2);
+    gridLayout->addLayout(yminLayout, 2, 1);
+    gridLayout->addLayout(ymaxLayout, 0, 1);
+
+    QHBoxLayout *buttonsBox = new QHBoxLayout();
+    buttonsBox->setMargin(0);
+
+    orthonormalButton = new QPushButton();
+    orthonormalButton->setFixedSize(30, 30);
+    orthonormalButton->setIconSize(QSize(26, 26));
+    orthonormalButton->setIcon(QIcon(":/icons/orthonormalView.svg"));
+
+    resetButton = new QPushButton();
+    resetButton->setFixedSize(30, 30);
+    resetButton->setIconSize(QSize(26, 26));
+    resetButton->setIcon(QIcon(":/icons/resetToDefaultView.svg"));
+
+    buttonsBox->addStretch();
+    buttonsBox->addWidget(orthonormalButton);
+    buttonsBox->addWidget(resetButton);
+
+    gridLayout->addLayout(buttonsBox, 0, 2);
 
     messageBox = new QMessageBox(this);
     messageBox->setWindowTitle(tr("Error"));
@@ -84,13 +100,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     connect(Ymax, SIGNAL(returnPressed()), this, SLOT(apply()));
     connect(Ymin, SIGNAL(returnPressed()), this, SLOT(apply()));
 
-    connect(ui->resetView, SIGNAL(released()), this, SIGNAL(resetToDefaultView()));
-    connect(ui->apply, SIGNAL(released()), this, SLOT(apply()));
-}
-
-void RangeAdjustments::hideViewOptions(bool hide)
-{
-    ui->viewOptionsWidget->setHidden(hide);
+    connect(resetButton, SIGNAL(released()), this, SIGNAL(resetToDefaultView()));
 }
 
 void RangeAdjustments::loadDefaults()
@@ -119,7 +129,6 @@ void RangeAdjustments::disableUserInput(bool disable)
     Xmax->setDisabled(disable);
     Ymin->setDisabled(disable);
     Ymax->setDisabled(disable);
-    ui->viewOptionsWidget->setDisabled(disable);
 }
 
 void RangeAdjustments::setGraphRange(const GraphRange &range)
@@ -213,5 +222,5 @@ void RangeAdjustments::setOrthonormal(bool state)
 
 RangeAdjustments::~RangeAdjustments()
 {
-    delete ui;
+
 }

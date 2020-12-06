@@ -184,7 +184,6 @@ FORMS    += \
     Widgets/mathobjectsinput.ui \
     Windows/settings.ui \
     Widgets/axissettingswidget.ui \
-    Widgets/rangeadjustments.ui \
     Widgets/zegridsettingswidget.ui
 
 

@@ -26,10 +26,6 @@
 #include "numberlineedit.h"
 #include "information.h"
 
-namespace Ui {
-    class RangeAdjustments;
-}
-
 class RangeAdjustments : public QWidget
 {
     Q_OBJECT
@@ -43,7 +39,6 @@ public slots:
     void resetToStandardView();   
     void setGraphRange(const GraphRange &range);
     void disableUserInput(bool disable);
-    void hideViewOptions(bool hide);
     void setOrthonormal(bool state);
     void processUserInput();
     void apply();
@@ -59,8 +54,8 @@ protected:
     GraphRange graphRange;
     Information *information;    
 
+    QPushButton *orthonormalButton, *resetButton;
     NumberLineEdit *Xmin, *Xmax, *Ymin, *Ymax;
-    Ui::RangeAdjustments *ui;
     QMessageBox *messageBox;
 };
 
