@@ -37,18 +37,29 @@ AxisSettingsWidget::AxisSettingsWidget(Information *information, QWidget *parent
 
     constantMultiplierLineEdit = new NumberLineEdit();
     constantMultiplierLineEdit->setValue(1);
-    ui->multiplierFormLayout->addRow(tr("Fixed multiplier α="), constantMultiplierLineEdit);
 
-    resetToDefaults();
+    QHBoxLayout *multiplierLayout = new QHBoxLayout();
+    multiplierLayout->setMargin(0);
+    multiplierLayout->addWidget(new QLabel("α ="));
+    multiplierLayout->addWidget(constantMultiplierLineEdit);
+    ui->tickSettingsForm->addRow(tr("Multiplier"), multiplierLayout);
+
+    axisColorButton = new QColorButton();
+    ui->axisSettingsForm->addRow(tr("Color"), axisColorButton);
+
+    gridColorButton = new QColorButton(Qt::gray);
+    ui->gridFormLayout->addRow(tr("Color"), gridColorButton);
+
+    subgridColorButton = new QColorButton(Qt::gray);
+    ui->subgridFormLayout->addRow(tr("Color"), subgridColorButton);
+
+    loadDefaults();
     currentAxis = ZeAxisName::X;
     loadAxisSettingsInUi(axesSettings.x);
 
-    axisColorButton = new QColorButton();
-    ui->generalSettingsLayout->addRow(tr("Color"), axisColorButton);
+    makeConnects();
 
-    connect(ui->linearScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
-    connect(ui->logScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
-    connect(ui->xAxis, &QPushButton::toggled, this, &AxisSettingsWidget::swapAxisData);
+    axisTypeChanged();
 }
 
 void AxisSettingsWidget::apply()
@@ -56,25 +67,22 @@ void AxisSettingsWidget::apply()
     processUserInput();
 
     information->setAxesSettings(axesSettings);
+    information->setGridSettings(gridSettings);
 }
 
 void AxisSettingsWidget::axisTypeChanged()
 {
     if(ui->logScale->isChecked())
-    {
-        ui->replaceBaseWithValueLabel->setText(tr("Replace b<sup>n &frasl; d</sup> with value"));
+    {       
         ui->logScaleTickPosLabel->show();
-        ui->basePowDenomLabel->show();
-        ui->basePowDenom->show();
+        ui->baseWidget->show();
 
         ui->linearScaleTickPosLabel->hide();
     }
     else // ui->linScale is checked
     {
-        ui->replaceBaseWithValueLabel->setText(tr("Replace 10<sup>n</sup> with value"));
         ui->logScaleTickPosLabel->hide();
-        ui->basePowDenomLabel->hide();
-        ui->basePowDenom->hide();
+        ui->baseWidget->hide();
 
         ui->linearScaleTickPosLabel->show();
     }
@@ -89,7 +97,6 @@ void AxisSettingsWidget::swapAxisData()
 
     if(newChosenAxis != currentAxis)
         loadAxisSettingsInUi(newChosenAxis);
-
 }
 
 void AxisSettingsWidget::loadAxisSettingsInUi(ZeAxisName name)
@@ -117,11 +124,6 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
 
         constantMultiplierLineEdit->setText(settings.logSettings.constantMultiplierStr);
     }
-
-
-
-    ui->decimalBase->setChecked(settings.coordinateFormatting.decimalBase);
-    ui->decimalGlobalConstant->setChecked(settings.coordinateFormatting.decimalGlobalConstant);
 }
 
 ZeAxisSettings AxisSettingsWidget::getSettings(ZeAxisName name)
@@ -189,22 +191,28 @@ void AxisSettingsWidget::processUserInput()
         }
     }
 
-    axisSettings.coordinateFormatting.decimalBase = ui->decimalBase->isChecked();
-    axisSettings.coordinateFormatting.decimalGlobalConstant = ui->decimalGlobalConstant->isChecked();
-
     if(currentAxis == ZeAxisName::X)
         axesSettings.x = axisSettings;
     else axesSettings.y = axisSettings;
+
+    Ze1DGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
+
+    settingsToUpdate.showGrid = ui->gridGroup->isChecked();
+    settingsToUpdate.showSubGrid = ui->subGridGroup->isChecked();
+    settingsToUpdate.showSubgridRelativeCoordinates = ui->showSubGridRelativePos->isChecked();
+    settingsToUpdate.subgridSubDivs = ui->subgridDivs->value();
+    settingsToUpdate.gridColor = gridColorButton->getCurrentColor();
+    settingsToUpdate.subgridColor = subgridColorButton->getCurrentColor();
+    settingsToUpdate.gridLineWidth = ui->gridLineWidth->value();
+    settingsToUpdate.subgridLineWidth = ui->subGridLineWidth->value();
 }
 
-void AxisSettingsWidget::resetToDefaults()
+void AxisSettingsWidget::loadDefaults()
 {
     ZeAxisSettings defaultSettings;
 
     defaultSettings.axisType = ZeAxisType::LINEAR;
     defaultSettings.color = Qt::black;
-    defaultSettings.coordinateFormatting.decimalBase = false;
-    defaultSettings.coordinateFormatting.decimalGlobalConstant = false;
     defaultSettings.lineWidth = 0.1;
 
     defaultSettings.logSettings.base = 10;
@@ -218,9 +226,76 @@ void AxisSettingsWidget::resetToDefaults()
 
     axesSettings.x = axesSettings.y = defaultSettings;
 
-    loadAxisSettingsInUi(ZeAxisName::X);
+    // Grid settings
+
+    ui->gridGroup->setChecked(true);
+
+    Ze1DGridSettings defaultGridSettings;
+
+    defaultGridSettings.showGrid = true;
+    defaultGridSettings.showSubGrid = false;
+    defaultGridSettings.showSubgridRelativeCoordinates = false;
+    defaultGridSettings.subgridSubDivs = 1;
+    defaultGridSettings.gridColor = Qt::gray;
+    // TODO: update grid default colors
+    defaultGridSettings.subgridColor = Qt::gray;
+
+    // TODO: fine tune grid and subgrid widths, check what antialiasing does.
+    defaultGridSettings.gridLineWidth = 1;
+    defaultGridSettings.subgridLineWidth = 0.5;
+
+    gridSettings.alongX = defaultGridSettings;
+    gridSettings.alongY = defaultGridSettings;
+
+    loadGridSettingsInUi(ZeAxisName::X);
 
     emit settingsUpdated();
+}
+
+void AxisSettingsWidget::makeConnects()
+{
+    connect(gridColorButton, &QColorButton::colorChanged, this, &AxisSettingsWidget::processUserInput);
+    connect(subgridColorButton, &QColorButton::colorChanged, this, &AxisSettingsWidget::processUserInput);
+
+    connect(ui->subGridGroup, SIGNAL(toggled()), this, SLOT(processUserInput));
+    connect(ui->gridGroup, SIGNAL(toggled()), this, SLOT(processUserInput));
+
+    connect(ui->gridLineWidth, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+    connect(ui->subgridDivs, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+
+    connect(ui->linearScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
+    connect(ui->logScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
+
+    connect(ui->xAxis, &QPushButton::toggled, this, &AxisSettingsWidget::swapAxisData);
+    connect(ui->xAxis, &QRadioButton::toggled, this, &AxisSettingsWidget::swapGridData);
+}
+
+void AxisSettingsWidget::swapGridData()
+{
+    ZeAxisName newChosenAxis = ui->xAxis->isChecked() ? ZeAxisName::X : ZeAxisName::Y;
+    processUserInput();
+    if(newChosenAxis != currentAxis)
+        loadGridSettingsInUi(newChosenAxis);
+}
+
+void AxisSettingsWidget::loadGridSettingsInUi(ZeAxisName name)
+{
+    currentAxis = name;
+
+    const Ze1DGridSettings &unidimSettings = name == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
+    loadGridSettingsInUi(unidimSettings);
+}
+
+void AxisSettingsWidget::loadGridSettingsInUi(const Ze1DGridSettings &unidimGridSettings)
+{
+    ui->gridGroup->setChecked(unidimGridSettings.showGrid);
+    ui->subGridGroup->setChecked(unidimGridSettings.showSubGrid);
+    ui->showSubGridRelativePos->setChecked(unidimGridSettings.showSubgridRelativeCoordinates);
+    ui->subgridDivs->setValue(unidimGridSettings.subgridSubDivs);
+    gridColorButton->setColor(unidimGridSettings.gridColor);
+    subgridColorButton->setColor(unidimGridSettings.subgridColor);
+    ui->gridLineWidth->setValue(unidimGridSettings.gridLineWidth);
+    ui->subGridLineWidth->setValue(unidimGridSettings.subgridLineWidth);
 }
 
 AxisSettingsWidget::~AxisSettingsWidget()

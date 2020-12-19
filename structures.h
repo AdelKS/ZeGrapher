@@ -165,7 +165,6 @@ struct ZeAxisSettings
     double lineWidth;
     ZeLinAxisSettings linSettings;
     ZeLogAxisSettings logSettings;
-    ZeCoordinateDisplayFormat coordinateFormatting;
     ZeAxisType axisType;
 
     bool operator !=(const ZeAxisSettings &other)
@@ -174,7 +173,6 @@ struct ZeAxisSettings
                 lineWidth != other.lineWidth or
                 linSettings != other.linSettings or
                 logSettings != other.logSettings or
-                coordinateFormatting != other.coordinateFormatting or
                 axisType != other.axisType;
     }
 };

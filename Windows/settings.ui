@@ -137,7 +137,7 @@
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>4</number>
+          <number>1</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -166,31 +166,12 @@
          </widget>
          <widget class="QWidget" name="axes">
           <attribute name="title">
-           <string>Axes</string>
+           <string>Axes &amp;&amp; Grid</string>
           </attribute>
           <layout class="QVBoxLayout" name="axesLayout">
            <property name="spacing">
             <number>6</number>
            </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="grid">
-          <attribute name="title">
-           <string>Grid</string>
-          </attribute>
-          <layout class="QVBoxLayout" name="gridSettingsLayout">
            <property name="leftMargin">
             <number>0</number>
            </property>

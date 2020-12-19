@@ -42,9 +42,6 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     axisSettingsWidget = new AxisSettingsWidget(information);
     ui->axesLayout->addWidget(axisSettingsWidget);
 
-    gridSettingsWidget = new ZeGridSettingsWidget(information);
-    ui->gridSettingsLayout->addWidget(gridSettingsWidget);
-
     sizeAdjusmentsWidget = new GraphSizeAdjusments(information);
     ui->sizeAdjustmentsLayout->addWidget(sizeAdjusmentsWidget);
 
@@ -60,6 +57,7 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     apply();
 
 }
+
 void Settings::showExportSettings()
 {
     // TODO
@@ -76,13 +74,8 @@ void Settings::apply()
     axisSettingsWidget->processUserInput();
     viewSettings.axes = axisSettingsWidget->getSettings();
 
-
     rangeAdjustmentsWidget->processUserInput();
     viewSettings.range = rangeAdjustmentsWidget->getRange();
-
-    gridSettingsWidget->processUserInput();
-    viewSettings.grid = gridSettingsWidget->getSettings();
-
 
     sizeAdjusmentsWidget->processUserInput();
     viewSettings.graph.sizeSettings = sizeAdjusmentsWidget->getSettings();

@@ -44,24 +44,33 @@ public:
 public slots:
     void apply();
     void processUserInput();
-    void resetToDefaults();
+    void loadDefaults();
 
 signals:
     void settingsUpdated();
+
+protected slots:
+    void swapGridData();
 
 protected:
     void axisTypeChanged();
     void swapAxisData();
     void loadAxisSettingsInUi(ZeAxisName name);
     void loadAxisSettingsInUi(const ZeAxisSettings &axesSettings);
+    void loadGridSettingsInUi(ZeAxisName name);
+    void loadGridSettingsInUi(const Ze1DGridSettings &unidimGridSettings);
+
+    void makeConnects();
 
     Ui::AxisSettingsWidget *ui;
     NumberLineEdit *baseLineEdit, *constantMultiplierLineEdit;
     QColorButton *axisColorButton;
     Information *information;
+    QColorButton *gridColorButton, *subgridColorButton;
 
     ZeAxisName currentAxis;
     ZeAxesSettings axesSettings;
+    ZeGridSettings gridSettings;
 };
 
 #endif // AXISSETTINGS_H

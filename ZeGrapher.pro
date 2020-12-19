@@ -92,8 +92,7 @@ SOURCES += \
     Windows/updatecheck.cpp \
     Windows/mainwindow.cpp \
     Widgets/expressionlineedit.cpp \
-    Widgets/axissettingswidget.cpp \
-    Widgets/zegridsettingswidget.cpp
+    Widgets/axissettingswidget.cpp
 
 HEADERS  += \
     GraphDraw/basegraphdraw.h \
@@ -160,8 +159,7 @@ HEADERS  += \
     Windows/mainwindow.h \
     structures.h \
     Widgets/expressionlineedit.h \
-    Widgets/axissettingswidget.h \
-    Widgets/zegridsettingswidget.h
+    Widgets/axissettingswidget.h
 
 
 FORMS    += \
@@ -183,8 +181,7 @@ FORMS    += \
     Widgets/keyboard.ui \
     Widgets/mathobjectsinput.ui \
     Windows/settings.ui \
-    Widgets/axissettingswidget.ui \
-    Widgets/zegridsettingswidget.ui
+    Widgets/axissettingswidget.ui
 
 
 RESOURCES += \
