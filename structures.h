@@ -74,7 +74,7 @@ struct ZeAxisRange
 {
     double min, max;
 
-    double amplitude()
+    double amplitude() const
     {
         return fabs(max - min);
     }
@@ -163,6 +163,7 @@ struct ZeAxisSettings
 {
     QColor color;
     double lineWidth;
+    int tickRelSpacing;
     ZeLinAxisSettings linSettings;
     ZeLogAxisSettings logSettings;
     ZeAxisType axisType;
@@ -171,6 +172,7 @@ struct ZeAxisSettings
     {
         return color != other.color or
                 lineWidth != other.lineWidth or
+                tickRelSpacing != other.tickRelSpacing or
                 linSettings != other.linSettings or
                 logSettings != other.logSettings or
                 axisType != other.axisType;

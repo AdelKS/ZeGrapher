@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>299</width>
-    <height>711</height>
+    <height>716</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -64,8 +64,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>285</width>
-        <height>712</height>
+        <width>299</width>
+        <height>716</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -201,7 +201,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>46</width>
+              <width>53</width>
               <height>20</height>
              </size>
             </property>
@@ -280,7 +280,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>45</width>
+              <width>52</width>
               <height>20</height>
              </size>
             </property>
@@ -435,23 +435,22 @@
              <item row="0" column="0">
               <widget class="QLabel" name="label">
                <property name="text">
-                <string>Tick spacing</string>
+                <string>Relative spacing</string>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QSlider" name="tickSpacing">
-               <property name="minimum">
-                <number>-100</number>
+              <widget class="QSpinBox" name="tickRelSpacing">
+               <property name="toolTip">
+                <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Affects the spacing algorithm: value 0 makes it compute the tightest grid possible on the given axis,&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;each increment of 1 makes the algorithm chose the next wider grid subdivision&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="maximum">
-                <number>100</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="invertedAppearance">
-                <bool>false</bool>
+                <number>5</number>
                </property>
               </widget>
              </item>

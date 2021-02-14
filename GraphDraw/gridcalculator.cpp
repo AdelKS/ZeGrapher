@@ -7,6 +7,20 @@ GridCalculator::GridCalculator(Information *info, QObject *parent) : QObject(par
     targetTicksNum = TARGET_TICKS_NUM;
 }
 
+double nextMultiplier(double baseMultiplier)
+{
+    if(baseMultiplier == 2)
+        return 2.5;
+    else return 2;
+}
+
+double previousMultiplier(double baseMultiplier)
+{
+    if(baseMultiplier == 2)
+        return 2;
+    else return 2.5;
+}
+
 void base10Inc(int &targetPower, double &baseMultiplier)
 {
     if(baseMultiplier == 1)
@@ -27,18 +41,42 @@ void base10Dec(int &targetPower, double &baseMultiplier)
         targetPower--;
         baseMultiplier = 5;
     }
-    if(baseMultiplier == 2)
+    else if(baseMultiplier == 2)
         baseMultiplier = 1;
-    if(baseMultiplier == 5)
+    else if(baseMultiplier == 5)
         baseMultiplier = 2;
 
 }
 
-ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
-                                            ZeAxisRange range,
-                                            ZeAxisName axisName,
-                                            QFontMetrics metrics)
+int getMaxStrPxSize(ZeAxisName axisname, const ZeAxisRange &range, const QString cstMulStr, double realStep, int maxDigitsNum, const QFontMetrics &metrics)
 {
+    double pos = ceil(range.min / realStep) * realStep;
+    int maxStrPxSize = 0, currentStrPxSize = 0;
+    QString posStr;
+
+    while(pos < range.max)
+    {
+        posStr.setNum(pos, 'g', maxDigitsNum);
+        posStr += cstMulStr;
+
+        currentStrPxSize = axisname == ZeAxisName::X ? metrics.horizontalAdvance(posStr) : metrics.height() ;
+
+        if(currentStrPxSize > maxStrPxSize)
+            maxStrPxSize = currentStrPxSize;
+
+        pos += realStep;
+    }
+
+    return maxStrPxSize;
+}
+
+ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
+                                            const ZeAxisRange &range,
+                                            ZeAxisName axisName,
+                                            const QFontMetrics &metrics)
+{
+
+    qDebug() << "New tick spacing calculation";
 
     const ZeLinAxisSettings &axisSettings = axisName == ZeAxisName::X ? information->getAxesSettings().x.linSettings : information->getAxesSettings().y.linSettings;
 
@@ -64,7 +102,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
 
     int targetPower = lround(log10(amplitude / constantMultiplier / targetTicksNum));
 
-    double baseStep = pow(10, targetPower);
+    double baseStep;
     double realStep;
     double baseMultiplier = 1;
     double pos;
@@ -74,32 +112,37 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
 
     bool goodSpacing = false;
 
+    int previousLoopChange = 0;
+
     while(not goodSpacing)
     {
-        realStep = baseStep * baseMultiplier * constantMultiplier;
         baseStep = pow(10, targetPower);
+        realStep = baseStep * baseMultiplier * constantMultiplier;
 
-        pos = ceil(range.min / realStep) * realStep;
-        QString posStr;
+        int maxStrPxSize = getMaxStrPxSize(axisName, range, axisSettings.constantMultiplierStr, realStep, axisSettings.maxDigitsNum, metrics);
 
-        while(pos < range.max)
+        // TODO: Fix the tick spacing update and use tickSpacing
+        if(double(maxStrPxSize) - realStep * pxPerUnit > 0)
         {
-            posStr.setNum(pos, 'g', axisSettings.maxDigitsNum);
-            posStr += axisSettings.constantMultiplierStr;
-
-            currentStrPxSize = axisName == ZeAxisName::X ? metrics.horizontalAdvance(posStr) : metrics.height() ;
-
-            if(currentStrPxSize > maxStrPxSize)
-                maxStrPxSize = currentStrPxSize;
-
-            pos += realStep;
-        }
-
-        if(double(maxStrPxSize) > MAX_REL_TICK_SPACING * realStep * pxPerUnit)
             base10Inc(targetPower, baseMultiplier);
-        else if(double(maxStrPxSize) < MIN_REL_TICK_SPACING * realStep * pxPerUnit)
+            previousLoopChange = 1;
+        }
+        else if(realStep * pxPerUnit / previousMultiplier(baseMultiplier) - double(maxStrPxSize) > 0 and previousLoopChange != 1)
+        {
             base10Dec(targetPower, baseMultiplier);
+            previousLoopChange = -1;
+        }
         else goodSpacing = true;
+    }
+
+    int relTickSpacing = axisName == ZeAxisName::X ? information->getAxesSettings().x.tickRelSpacing : information->getAxesSettings().y.tickRelSpacing;
+
+    if(relTickSpacing > 0)
+    {
+        for(int i=0; i < relTickSpacing; i++)
+            base10Inc(targetPower, baseMultiplier);
+        baseStep = pow(10, targetPower);
+        realStep = baseStep * baseMultiplier * constantMultiplier;
     }
 
     ZeLinAxisTick tick;

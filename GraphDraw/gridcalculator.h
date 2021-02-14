@@ -52,9 +52,9 @@ public:
     explicit GridCalculator(Information *info, QObject *parent = nullptr);
 
     ZeLinAxisTicks getLinearAxisTicks(double pxWidth,
-                                   ZeAxisRange range,
+                                   const ZeAxisRange &range,
                                    ZeAxisName axisName,
-                                   QFontMetrics metrics);
+                                   const QFontMetrics &metrics);
 
 signals:
 

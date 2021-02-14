@@ -112,7 +112,7 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
     ui->logScale->setChecked(settings.axisType == ZeAxisType::LOG);
 
     ui->axisLineWidth->setValue(settings.lineWidth);
-
+    ui->tickRelSpacing->setValue(settings.tickRelSpacing);
 
     if(settings.axisType == ZeAxisType::LINEAR)
     {
@@ -148,6 +148,7 @@ void AxisSettingsWidget::processUserInput()
     axisSettings.axisType = ui->linearScale->isChecked() ? ZeAxisType::LINEAR :  ZeAxisType::LOG;
     axisSettings.color = axisColorButton->getCurrentColor();
     axisSettings.lineWidth = ui->axisLineWidth->value();
+    axisSettings.tickRelSpacing = ui->tickRelSpacing->value();
 
     if(axisSettings.axisType == ZeAxisType::LINEAR)
     {
@@ -223,6 +224,7 @@ void AxisSettingsWidget::loadDefaults()
     defaultSettings.linSettings.constantMultiplier = 1;
     defaultSettings.logSettings.constantMultiplierStr = "1";
     defaultSettings.linSettings.maxDigitsNum = 5;
+    defaultSettings.tickRelSpacing = 0;
 
     axesSettings.x = axesSettings.y = defaultSettings;
 
@@ -254,14 +256,16 @@ void AxisSettingsWidget::loadDefaults()
 
 void AxisSettingsWidget::makeConnects()
 {
-    connect(gridColorButton, &QColorButton::colorChanged, this, &AxisSettingsWidget::processUserInput);
-    connect(subgridColorButton, &QColorButton::colorChanged, this, &AxisSettingsWidget::processUserInput);
+    connect(gridColorButton, &QColorButton::colorChanged, this, &AxisSettingsWidget::apply);
+    connect(subgridColorButton, &QColorButton::colorChanged, this, &AxisSettingsWidget::apply);
 
-    connect(ui->subGridGroup, SIGNAL(toggled()), this, SLOT(processUserInput));
-    connect(ui->gridGroup, SIGNAL(toggled()), this, SLOT(processUserInput));
+    connect(ui->subGridGroup, SIGNAL(clicked(bool)), this, SLOT(apply()));
+    connect(ui->gridGroup, SIGNAL(clicked(bool)), this, SLOT(apply()));
 
     connect(ui->gridLineWidth, SIGNAL(valueChanged(double)), this, SLOT(apply()));
     connect(ui->subgridDivs, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+
+    connect(ui->tickRelSpacing, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
     connect(ui->linearScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
     connect(ui->logScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
