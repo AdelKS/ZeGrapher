@@ -205,8 +205,10 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                                                              ZeAxisName::X,
                                                              fontMetrics);
 
-    const auto &axisSettings = information->getAxesSettings().x;
-    const auto &gridSettings = information->getGridSettings().alongX;
+    const ZeAxisSettings &axisSettings = information->getAxesSettings().x;
+    const Ze1DGridSettings &gridSettings = information->getGridSettings().x;
+
+    pen.setCapStyle(Qt::FlatCap);
 
     for(ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
@@ -217,9 +219,11 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
             if(gridSettings.showGrid)
             {
                 pen.setColor(gridSettings.gridColor);
-                pen.setWidthF(0.5);
+                pen.setWidthF(gridSettings.gridLineWidth);
                 painter.setPen(pen);
+                painter.setRenderHint(QPainter::Antialiasing, false);
                 painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRectScaled.height()));
+                painter.setRenderHint(QPainter::Antialiasing, true);
             }
             pen.setColor(axisSettings.color);
             pen.setWidthF(axisSettings.lineWidth);
@@ -227,8 +231,11 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
             pos = Xpos + centre.x;
 
+            painter.setRenderHint(QPainter::Antialiasing, false);
             painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
             painter.drawLine(QPointF(pos, graphRectScaled.height()-4), QPointF(pos, graphRectScaled.height()));
+            painter.setRenderHint(QPainter::Antialiasing, true);
+
             num = QString::number(axisTick.pos, 'g', numPrec);
             space = fontMetrics.width(num);
             painter.drawText(QPointF(pos - space/2, graphRectScaled.height()+15), num);
@@ -259,7 +266,9 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                                                              fontMetrics);
 
     const auto &axisSettings = information->getAxesSettings().y;
-    const auto &gridSettings = information->getGridSettings().alongY;
+    const auto &gridSettings = information->getGridSettings().y;
+
+    pen.setCapStyle(Qt::FlatCap);
 
     for(ZeLinAxisTick &axisTick: yAxisTicks.ticks)
     {
@@ -270,9 +279,11 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
             if(gridSettings.showGrid)
             {
                 pen.setColor(gridSettings.gridColor);
-                pen.setWidthF(0.5);
+                pen.setWidthF(gridSettings.gridLineWidth);
                 painter.setPen(pen);
+                painter.setRenderHint(QPainter::Antialiasing, false);
                 painter.drawLine(QPointF(0, -Ypos + centre.y), QPointF(graphRectScaled.width(), -Ypos + centre.y));
+                painter.setRenderHint(QPainter::Antialiasing, true);
             }
 
             pen.setColor(axisSettings.color);
@@ -281,8 +292,10 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
             pos = -Ypos + centre.y;
 
+            painter.setRenderHint(QPainter::Antialiasing, false);
             painter.drawLine(QPointF(4, pos), QPointF(0, pos));
             painter.drawLine(QPointF(graphRectScaled.width() - 4, pos), QPointF(graphRectScaled.width(), pos));
+            painter.setRenderHint(QPainter::Antialiasing, true);
 
             num = QString::number(Ypos/uniteY, 'g', numPrec);
             space = fontMetrics.width(num) + 5;

@@ -103,7 +103,9 @@ void AxisSettingsWidget::loadAxisSettingsInUi(ZeAxisName name)
 {
     currentAxis = name;
     const ZeAxisSettings &settings = name == ZeAxisName::X ? axesSettings.x : axesSettings.y;
+    const Ze1DGridSettings &gridSettings1D = name == ZeAxisName::X ? gridSettings.x : gridSettings.y;
     loadAxisSettingsInUi(settings);
+    loadGridSettingsInUi(gridSettings1D);
 }
 
 void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
@@ -126,16 +128,21 @@ void AxisSettingsWidget::loadAxisSettingsInUi(const ZeAxisSettings &settings)
     }
 }
 
-ZeAxisSettings AxisSettingsWidget::getSettings(ZeAxisName name)
+ZeAxisSettings AxisSettingsWidget::getAxisSettings(ZeAxisName name)
 {
     if(name == ZeAxisName::X)
         return axesSettings.x;
     else return axesSettings.y;
 }
 
-ZeAxesSettings AxisSettingsWidget::getSettings()
+ZeAxesSettings AxisSettingsWidget::getAxesSettings()
 {
     return axesSettings;
+}
+
+ZeGridSettings AxisSettingsWidget::getGridSettings()
+{
+    return gridSettings;
 }
 
 void AxisSettingsWidget::processUserInput()
@@ -196,7 +203,7 @@ void AxisSettingsWidget::processUserInput()
         axesSettings.x = axisSettings;
     else axesSettings.y = axisSettings;
 
-    Ze1DGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
+    Ze1DGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.x : gridSettings.y;
 
     settingsToUpdate.showGrid = ui->gridGroup->isChecked();
     settingsToUpdate.showSubGrid = ui->subGridGroup->isChecked();
@@ -214,7 +221,7 @@ void AxisSettingsWidget::loadDefaults()
 
     defaultSettings.axisType = ZeAxisType::LINEAR;
     defaultSettings.color = Qt::black;
-    defaultSettings.lineWidth = 0.1;
+    defaultSettings.lineWidth = 1.0;
 
     defaultSettings.logSettings.base = 10;
     defaultSettings.logSettings.baseStr = "10";
@@ -243,15 +250,13 @@ void AxisSettingsWidget::loadDefaults()
     defaultGridSettings.subgridColor = Qt::gray;
 
     // TODO: fine tune grid and subgrid widths, check what antialiasing does.
-    defaultGridSettings.gridLineWidth = 1;
-    defaultGridSettings.subgridLineWidth = 0.5;
+    defaultGridSettings.gridLineWidth = 0.6;
+    defaultGridSettings.subgridLineWidth = 0.3;
 
-    gridSettings.alongX = defaultGridSettings;
-    gridSettings.alongY = defaultGridSettings;
+    gridSettings.x = defaultGridSettings;
+    gridSettings.y = defaultGridSettings;
 
     loadGridSettingsInUi(ZeAxisName::X);
-
-    emit settingsUpdated();
 }
 
 void AxisSettingsWidget::makeConnects()
@@ -266,6 +271,7 @@ void AxisSettingsWidget::makeConnects()
     connect(ui->subgridDivs, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
     connect(ui->tickRelSpacing, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(ui->axisLineWidth, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 
     connect(ui->linearScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
     connect(ui->logScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
@@ -286,7 +292,7 @@ void AxisSettingsWidget::loadGridSettingsInUi(ZeAxisName name)
 {
     currentAxis = name;
 
-    const Ze1DGridSettings &unidimSettings = name == ZeAxisName::X ? gridSettings.alongX : gridSettings.alongY;
+    const Ze1DGridSettings &unidimSettings = name == ZeAxisName::X ? gridSettings.x : gridSettings.y;
     loadGridSettingsInUi(unidimSettings);
 }
 

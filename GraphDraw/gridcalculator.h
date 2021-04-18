@@ -29,7 +29,8 @@ struct ZeAxisSubTick
 
 struct ZeOffset
 {
-    double sumOffset, powerOffset;
+    double sumOffset;
+    int sumPowerOffset, basePowerOffset;
 };
 
 struct ZeLogAxisTicks

@@ -37,8 +37,9 @@ class AxisSettingsWidget : public QWidget
 
 public:
     explicit AxisSettingsWidget(Information *information, QWidget *parent = nullptr);
-    ZeAxisSettings getSettings(ZeAxisName name);
-    ZeAxesSettings getSettings();
+    ZeAxisSettings getAxisSettings(ZeAxisName name);
+    ZeAxesSettings getAxesSettings();
+    ZeGridSettings getGridSettings();
     ~AxisSettingsWidget();
 
 public slots:

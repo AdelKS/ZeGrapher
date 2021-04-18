@@ -279,11 +279,11 @@ struct Ze1DGridSettings
 
 struct ZeGridSettings
 {
-    Ze1DGridSettings alongX, alongY;
+    Ze1DGridSettings x, y;
 
     bool operator !=(const ZeGridSettings &other)
     {
-        return alongX != other.alongX or alongY != other.alongY;
+        return x != other.x or y != other.y;
     }
 };
 

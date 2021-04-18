@@ -72,7 +72,8 @@ void Settings::saveSettingsToDisk()
 void Settings::apply()
 {
     axisSettingsWidget->processUserInput();
-    viewSettings.axes = axisSettingsWidget->getSettings();
+    viewSettings.axes = axisSettingsWidget->getAxesSettings();
+    viewSettings.grid = axisSettingsWidget->getGridSettings();
 
     rangeAdjustmentsWidget->processUserInput();
     viewSettings.range = rangeAdjustmentsWidget->getRange();
@@ -84,7 +85,6 @@ void Settings::apply()
     viewSettings.graph.estheticSettings = estheticSettingsWidget->getSettings();
 
     information->setViewSettings(viewSettings);
-
 }
 
 Settings::~Settings()

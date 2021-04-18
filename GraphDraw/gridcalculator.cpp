@@ -1,4 +1,9 @@
+#include <cfenv>
+#include <algorithm>
+
 #include "gridcalculator.h"
+
+using namespace std;
 
 GridCalculator::GridCalculator(Information *info, QObject *parent) : QObject(parent)
 {
@@ -83,8 +88,6 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     double pxPerUnit = windowWidth / range.amplitude();
 
     ZeLinAxisTicks axisTicks;
-    axisTicks.offset.sumOffset = 0;
-    axisTicks.offset.powerOffset = 0;
 
     const double &constantMultiplier = axisSettings.constantMultiplier;
     double amplitude = range.amplitude();
@@ -121,7 +124,6 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
 
         int maxStrPxSize = getMaxStrPxSize(axisName, range, axisSettings.constantMultiplierStr, realStep, axisSettings.maxDigitsNum, metrics);
 
-        // TODO: Fix the tick spacing update and use tickSpacing
         if(double(maxStrPxSize) - realStep * pxPerUnit > 0)
         {
             base10Inc(targetPower, baseMultiplier);
@@ -143,6 +145,22 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
             base10Inc(targetPower, baseMultiplier);
         baseStep = pow(10, targetPower);
         realStep = baseStep * baseMultiplier * constantMultiplier;
+    }
+
+    fesetround(FE_DOWNWARD);
+    int maxRangePower = max(lrint(log10(fabs(range.max))), lrint(log10(fabs(range.min))));
+
+    QString axisNameStr = axisName == ZeAxisName::X ? "x axis" : "y axis";
+    qDebug() << axisNameStr << " Max range power " << maxRangePower;
+    qDebug() << axisNameStr << " step power " << targetPower;
+
+    axisTicks.offset.sumOffset = 0;
+    axisTicks.offset.sumPowerOffset = 0;
+    axisTicks.offset.basePowerOffset = 0;
+    if(abs(targetPower) > axisSettings.maxDigitsNum or
+            maxRangePower - targetPower > axisSettings.maxDigitsNum)
+    {
+//        axisTicks.offset.basePowerOffset = targetPower - axisSettings;
     }
 
     ZeLinAxisTick tick;
