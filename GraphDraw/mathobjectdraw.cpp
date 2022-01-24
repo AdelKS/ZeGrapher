@@ -188,7 +188,7 @@ void MathObjectDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
 
 void MathObjectDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &curves)
 {
-    for(QPolygonF curve: curves)
+    for(const QPolygonF &curve: curves)
         drawCurve(width, color, curve);
 }
 
@@ -277,11 +277,12 @@ void MathObjectDraw::drawOneSequence(int i, int width)
          {
              result = seqs[i]->getSeqValue(trunc(viewMapper.unitToViewX(pos)), ok, k);
 
-             if(!ok  || !std::isnormal(result))
+             if(!ok  || !std::isfinite(result))
                  return;
 
-             point.setX(pos);
-             point.setY(result);
+             point.setX(pos * uniteX);
+             // the view is inverted
+             point.setY(- result * uniteY);
              painter.drawPoint(point);
          }
      }

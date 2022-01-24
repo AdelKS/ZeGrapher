@@ -88,7 +88,7 @@ void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, const ZeV
                 }
                 else
                 {
-                    curvePart <<  QPointF( x ,  view.unitToViewY(y));
+                    curvePart <<  QPointF( x * xUnit ,  - view.unitToViewY(y)*yUnit);
 
                     n = curvePart.size();
                     if(n > 1)
