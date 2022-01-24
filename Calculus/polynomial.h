@@ -34,10 +34,9 @@ class Polynomial
 {
 
 public:
-    Polynomial(const Polynomial &pol);    
     Polynomial(int monicMonomialDegree);
     Polynomial(QList<double> coefs);
-    Polynomial();    
+    Polynomial();
 
     void translateX(double Dx);
     void translateY(double Dy);

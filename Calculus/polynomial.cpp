@@ -23,11 +23,6 @@
 #include <boost/math/special_functions/binomial.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
-Polynomial::Polynomial(const Polynomial &pol) : translation(pol.translation), coefficients(pol.coefficients),
-    translatedCoefficients(pol.translatedCoefficients)
-{
-}
-
 Polynomial::Polynomial(int monicMonomialDegree) : translation(0)
 {
     for(int i = 0 ; i < monicMonomialDegree ; i++)
@@ -85,10 +80,10 @@ double Polynomial::getXTranslation() const
 }
 
 void Polynomial::translateX(double Dx)
-{    
+{
     translation -= Dx;
 
-    translatedCoefficients.clear();    
+    translatedCoefficients.clear();
 
     QList<double> DxPowTable;
     DxPowTable.reserve(coefficients.size());
