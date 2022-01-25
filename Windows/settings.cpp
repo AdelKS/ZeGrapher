@@ -54,8 +54,6 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     appSettingsWidget = new AppSettings(information);
     ui->appSettingsLayout->addWidget(appSettingsWidget);
 
-    apply();
-
 }
 
 void Settings::showExportSettings()
@@ -67,24 +65,6 @@ void Settings::saveSettingsToDisk()
 {
     appSettingsWidget->saveSettingsToDisk();
     estheticSettingsWidget->saveSettingsToDisk();
-}
-
-void Settings::apply()
-{
-    axisSettingsWidget->processUserInput();
-    viewSettings.axes = axisSettingsWidget->getAxesSettings();
-    viewSettings.grid = axisSettingsWidget->getGridSettings();
-
-    rangeAdjustmentsWidget->processUserInput();
-    viewSettings.range = rangeAdjustmentsWidget->getRange();
-
-    sizeAdjusmentsWidget->processUserInput();
-    viewSettings.graph.sizeSettings = sizeAdjusmentsWidget->getSettings();
-
-    estheticSettingsWidget->processUserInput();
-    viewSettings.graph.estheticSettings = estheticSettingsWidget->getSettings();
-
-    information->setViewSettings(viewSettings);
 }
 
 Settings::~Settings()

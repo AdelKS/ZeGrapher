@@ -69,7 +69,7 @@ public:
     QList<TangentWidget*>* getTangentsList();
 
     void setStraightLinesListPointer(QList<StraightLineWidget*> *list);
-    QList<StraightLineWidget*>* getStraightLinesList(); 
+    QList<StraightLineWidget*>* getStraightLinesList();
 
     void checkParametricEquations();
 
@@ -107,7 +107,6 @@ public slots:
 
     void setGraphRange(const GraphRange &range);
     void setOrthonormal(bool state);
-    void setViewSettings(const ZeViewSettings &viewSettings);
     void setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings);
     void setGraphZoomSettings(const ZeZoomSettings &zoomSettings);
     void setAxesSettings(const ZeAxesSettings &axesSettings);

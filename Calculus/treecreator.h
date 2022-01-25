@@ -24,6 +24,14 @@
 #include "structures.h"
 #include "calculusdefines.h"
 
+/* TODO: update approach as the following:
+    - Parse: aka cut each atom in a formula
+    - Evaluate type of atom: separator, number
+    - Treat number in a special as to make 1.2E+33 as one atom
+    - Check for validity
+    - Enable setting custom names for functions and variables
+    - Performance improvement: flatten trees
+*/
 
 enum ObjectType {FUNCTION, SEQUENCE, PARAMETRIC_EQ, NORMAL_EXPR, DATA_TABLE_EXPR};
 

@@ -211,14 +211,6 @@ void Information::setOrthonormal(bool state)
     emit updateOccured();
 }
 
-void Information::setViewSettings(const ZeViewSettings &viewSettings)
-{
-    this->viewSettings = viewSettings;
-
-    emit viewSettingsChanged();
-}
-
-
 void Information::setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings)
 {
     if(viewSettings.graph.sizeSettings != graphSizeSettings)

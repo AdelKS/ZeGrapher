@@ -56,18 +56,15 @@ public slots:
     void saveSettingsToDisk();
     void showExportSettings();
 
-private slots:
-    void apply();
-
 private:
     Information *information;
     Ui::Settings *ui;
-    
+
     QTimer timer;
     MathObjectsInput *inputWidget;
     ZeViewSettings viewSettings;
-    ZeAxisName currentEditedGrid;   
-    AxisSettingsWidget *axisSettingsWidget;    
+    ZeAxisName currentEditedGrid;
+    AxisSettingsWidget *axisSettingsWidget;
     RangeAdjustments *rangeAdjustmentsWidget;
     GraphSizeAdjusments *sizeAdjusmentsWidget;
     EstheticSettings *estheticSettingsWidget;

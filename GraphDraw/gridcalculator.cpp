@@ -164,18 +164,18 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     }
 
     ZeLinAxisTick tick;
-    tick.pos = ceil(range.min / realStep) * realStep;
+    tick.pos = (floor(range.min / realStep) - 1) * realStep;
     tick.posStr.setNum(tick.pos, 'g', axisSettings.maxDigitsNum);
 
-    while(tick.pos < range.max)
+    do
     {
-        axisTicks.ticks << tick;
-
         tick.pos += realStep;
         tick.posStr.setNum(tick.pos, 'g', axisSettings.maxDigitsNum);
         tick.posStr += axisSettings.constantMultiplierStr;
 
-    }
+        axisTicks.ticks << tick;
+
+    }while(tick.pos < range.max);
 
     return axisTicks;
 }

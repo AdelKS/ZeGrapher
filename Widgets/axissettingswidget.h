@@ -56,10 +56,7 @@ protected slots:
 protected:
     void axisTypeChanged();
     void swapAxisData();
-    void loadAxisSettingsInUi(ZeAxisName name);
-    void loadAxisSettingsInUi(const ZeAxisSettings &axesSettings);
-    void loadGridSettingsInUi(ZeAxisName name);
-    void loadGridSettingsInUi(const Ze1DGridSettings &unidimGridSettings);
+    void loadSettingsInUi(ZeAxisName axisName);
 
     void makeConnects();
 
@@ -70,7 +67,10 @@ protected:
     QColorButton *gridColorButton, *subgridColorButton;
 
     ZeAxisName currentAxis;
+    ZeAxisSettings axisDefaultSettings;
     ZeAxesSettings axesSettings;
+
+    Ze1DGridSettings gridDefaultSettings1D;
     ZeGridSettings gridSettings;
 };
 

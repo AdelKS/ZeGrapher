@@ -133,6 +133,8 @@ struct ZeCoordinateDisplayFormat
 
 struct ZeLogAxisSettings
 {
+    ZeLogAxisSettings(): constantMultiplier(1), base(10), constantMultiplierStr(), baseStr("10") {};
+
     double constantMultiplier, base;
     QString constantMultiplierStr, baseStr;
 
@@ -147,6 +149,8 @@ struct ZeLogAxisSettings
 
 struct ZeLinAxisSettings
 {
+    ZeLinAxisSettings(): constantMultiplier(1), constantMultiplierStr(), maxDigitsNum(3) {};
+
     double constantMultiplier;
     QString constantMultiplierStr;
     int maxDigitsNum;
@@ -159,14 +163,14 @@ struct ZeLinAxisSettings
     }
 };
 
-struct ZeAxisSettings
+class ZeAxisSettings
 {
-    QColor color;
-    double lineWidth;
-    int tickRelSpacing;
-    ZeLinAxisSettings linSettings;
-    ZeLogAxisSettings logSettings;
-    ZeAxisType axisType;
+public:
+    ZeAxisSettings() : color(Qt::black), lineWidth(1),
+        tickRelSpacing(0), linSettings(), logSettings(),
+        axisType(ZeAxisType::LINEAR)
+    {
+    }
 
     bool operator !=(const ZeAxisSettings &other)
     {
@@ -177,6 +181,13 @@ struct ZeAxisSettings
                 logSettings != other.logSettings or
                 axisType != other.axisType;
     }
+
+    QColor color;
+    double lineWidth;
+    int tickRelSpacing;
+    ZeLinAxisSettings linSettings;
+    ZeLogAxisSettings logSettings;
+    ZeAxisType axisType;
 };
 
 struct ZeSizeSettings
@@ -258,6 +269,12 @@ struct ZeGraphSettings
 
 struct Ze1DGridSettings
 {
+    Ze1DGridSettings(): showGrid(true), showSubGrid(false),
+                        gridLineWidth(0.6), subgridLineWidth(0.4),
+                        gridColor(Qt::gray), subgridColor(Qt::gray),
+                        subgridSubDivs(2), showSubgridRelativeCoordinates(false)
+                        {};
+
     bool showGrid, showSubGrid;
     double gridLineWidth, subgridLineWidth;
     QColor gridColor, subgridColor;
@@ -289,7 +306,9 @@ struct ZeGridSettings
 
 struct ZeAxesSettings
 {
-    ZeAxisSettings x, y;    
+    ZeAxesSettings(): x(), y(), orthonormal(false) {};
+
+    ZeAxisSettings x, y;
     bool orthonormal;
 
     bool operator !=(const ZeAxesSettings &other)
