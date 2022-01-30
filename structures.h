@@ -400,6 +400,14 @@ struct SelectorPos
     int index;
 };
 
+QPointF operator*(QPointF &pt, const QPointF &scalar)
+{
+    QPointF res(pt);
+    res.setX(res.x() * scalar.x());
+    res.setY(res.y() * scalar.y());
+    return res;
+}
+
 
 
 #endif // STRUCTURES_H

@@ -74,7 +74,7 @@ void MathObjectDraw::delRegSaver(Regression *reg)
 }
 
 void MathObjectDraw::drawRhombus(QPointF pt, double w)
-{   
+{
     QPolygonF polygon;
     polygon << pt + QPointF(-w,0) << pt + QPointF(0,w) << pt + QPointF(w,0) << pt + QPointF(0,-w);
 
@@ -139,29 +139,34 @@ void MathObjectDraw::drawDataSet(int id, int width)
     }
 
     brush.setColor(style.color);
-    painter.setBrush(brush);    
+    painter.setBrush(brush);
 
     if(style.drawPoints)
     {
-        for(int i = 0 ; i < list.size() ; i++)
-            switch(style.pointStyle)
-            {
-            case PointStyle::Rhombus:
-                drawRhombus(list[i], width);
-                break;
-            case PointStyle::Disc:
-                drawDisc(list[i], width);
-                break;
-            case PointStyle::Square:
-                drawSquare(list[i], width);
-                break;
-            case PointStyle::Triangle:
-                drawTriangle(list[i], width);
-                break;
-            case PointStyle::Cross:
-                drawCross(list[i], width);
-                break;
-            }
+        void (MathObjectDraw::*draw_function_ptr)(QPointF, double);
+        switch(style.pointStyle)
+        {
+        case PointStyle::Rhombus:
+            draw_function_ptr = &MathObjectDraw::drawRhombus;
+            break;
+        case PointStyle::Disc:
+            draw_function_ptr = &MathObjectDraw::drawDisc;
+            break;
+        case PointStyle::Square:
+            draw_function_ptr = &MathObjectDraw::drawSquare;
+            break;
+        case PointStyle::Triangle:
+            draw_function_ptr = &MathObjectDraw::drawTriangle;
+            break;
+        case PointStyle::Cross:
+            draw_function_ptr = &MathObjectDraw::drawCross;
+            break;
+        }
+
+        for(const QPointF &pt: list)
+        {
+            (this->*draw_function_ptr)(pt, width);
+        }
     }
 
 
@@ -219,7 +224,7 @@ void MathObjectDraw::recalculateRegVals()
 
 
 void MathObjectDraw::drawFunctions()
-{    
+{
     painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
 
     for(int func = 0 ; func < funcs.size(); func++)
@@ -348,19 +353,19 @@ void MathObjectDraw::drawStraightLines()
 
         if(straightLines->at(i)->isVertical())
         {
-            pt1.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()));
+            pt1.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()) * uniteX);
             pt1.setY(viewMapper.getViewRect().top());
 
-            pt2.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()));
+            pt2.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()) * uniteX);
             pt2.setY(viewMapper.getViewRect().bottom());
         }
         else
         {
-            pt1.setX(viewMapper.getViewRect().left());
-            pt1.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmin())));
+            pt1.setX(viewMapper.getViewRect().left() * uniteX);
+            pt1.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmin())) * uniteY);
 
-            pt2.setX(viewMapper.getViewRect().right());
-            pt2.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmax())));
+            pt2.setX(viewMapper.getViewRect().right() * uniteX);
+            pt2.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmax())) * uniteY);
         }
 
         painter.drawLine(pt1, pt2);
@@ -396,7 +401,7 @@ void MathObjectDraw::drawStaticParEq()
             for(int pos = 0 ; pos < list->at(curve).size(); pos ++)
             {
                 point = list->at(curve).at(pos);
-                polygon << QPointF(viewMapper.unitToViewX(point.x), viewMapper.unitToViewY(point.y));
+                polygon << QPointF(viewMapper.unitToViewX(point.x) * uniteX, viewMapper.unitToViewY(point.y) * uniteY);
             }
 
             painter.drawPolyline(polygon);

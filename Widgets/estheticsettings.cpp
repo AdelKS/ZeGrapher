@@ -19,6 +19,8 @@ EstheticSettings::EstheticSettings(Information *information, QWidget *parent) :
     estheticSettings.defaultColor = defaultColorButton->getCurrentColor();
 
     loadSettingsFromDisk();
+
+    makeConnects();
 }
 
 void EstheticSettings::makeConnects()

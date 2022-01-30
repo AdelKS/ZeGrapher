@@ -249,7 +249,7 @@ void Information::setEstheticSettings(const ZeEstheticSettings &estheticSettings
     {
         viewSettings.graph.estheticSettings = estheticSettings;
 
-        emit estheticSettingsChanged();
+         emit estheticSettingsChanged();
     }
 
 }

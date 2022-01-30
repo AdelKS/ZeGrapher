@@ -46,7 +46,7 @@ public:
     void translateView(QPointF vec);
 
     void setViewSettings(const ZeViewSettings &viewSettings);
-    
+
     void setViewXmin(double val);
     void setViewXmax(double val);
     void setViewYmin(double val);
