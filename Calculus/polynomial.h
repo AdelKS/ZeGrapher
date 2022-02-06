@@ -35,7 +35,7 @@ class Polynomial
 
 public:
     Polynomial(int monicMonomialDegree);
-    Polynomial(QList<double> coefs);
+    Polynomial(std::vector<double> &&coefs);
     Polynomial();
 
     void translateX(double Dx);
@@ -49,8 +49,8 @@ public:
     double getTranslatedCoef(int degree) const;
     double getXTranslation() const;
 
-    QList<double> getCoefs();
-    QList<double> getTranslatedCoefs();
+    const std::vector<double> &getCoefs();
+    const std::vector<double> &getTranslatedCoefs();
     int degree() const;
     Polynomial antiderivative();
 
@@ -65,7 +65,7 @@ public:
 
 protected:
     double translation;
-    QList<double> coefficients, translatedCoefficients;
+    std::vector<double> coefficients, translatedCoefficients;
 
 };
 
@@ -75,7 +75,7 @@ Polynomial operator*(const Polynomial &P, const Polynomial &Q);
 Polynomial operator*(double scal, const Polynomial &Q);
 
 double continuousScalarProduct(const Polynomial &P, const Polynomial &Q, double a, double b);
-double discreteScalarProduct(const Polynomial &P, const Polynomial &Q, const QList<Point> &data);
+double discreteScalarProduct(const Polynomial &P, const Polynomial &Q, const std::vector<Point> &data);
 
 
 #endif // POLYNOMIAL_H

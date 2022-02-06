@@ -60,7 +60,7 @@ void RegressionValuesSaver::recalculate()
     recalculate(Point{xUnit, yUnit}, viewMapper);
 }
 
-void RegressionValuesSaver::recalculate(Point graphUnits, const ZeViewMapper &graphView)
+void RegressionValuesSaver::recalculate(const Point &graphUnits, const ZeViewMapper &graphView)
 {
     // TODO: use graph view to recalculate
     xUnit = graphUnits.x;

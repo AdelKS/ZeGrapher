@@ -29,7 +29,8 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) : treeCreator(ObjectType::SEQUENCE), firstValsTreeCreator(ObjectType::NORMAL_EXPR)
+SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) :
+    treeCreator(ObjectType::SEQUENCE), firstValsTreeCreator(ObjectType::NORMAL_EXPR)
 {   
     seqNum = id;
     isExprValidated = isValid = isKRangeValid = blockCalculatingFromTree = false;

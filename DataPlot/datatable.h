@@ -36,6 +36,8 @@ public:
     explicit DataTable(Information *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
     ~DataTable();
 
+    std::list<std::vector<double>>::const_iterator get_column_const_it(uint index) const;
+
     QSize getVerticalHeaderSize();
     QSize getHorizontalHeaderSize();
 
@@ -44,8 +46,10 @@ public:
     int getColumnCount();
     int getRowCount();
 
-    QList<QStringList> getData();
-    QList<QList<double> > &getValues();
+    const std::vector<double> &getSelectedColumn() const;
+
+    QList<QStringList> getStringData();
+    const std::vector<double> &getColumnConst(uint index) const;
 
     void fillColumnFromRange(int col, Range range);
     bool fillColumnFromExpr(int col, QString expr);
@@ -86,9 +90,22 @@ protected:
     void removeUnnecessaryColumns();
     void removeUnnecessaryRows();
 
+    void swapDataRows(uint row1, uint row2);
+
+    void updateTableFromData(bool refresh_all_columns = true,
+                             bool refresh_all_rows = true,
+                             uint row = 0, uint col = 0);
+
+    auto column_it(uint index);
+
     bool eventFilter(QObject *obj, QEvent *event);
 
+    bool rowCmpAscend(uint row_a, uint row_b);
+    bool rowCmpDescend(uint row_a, uint row_b);
 
+    std::vector<double> &getColumn(uint index);
+
+    uint selectedCol;
 
     bool disableChecking;
     ExprCalculator *calculator;
@@ -96,7 +113,7 @@ protected:
     int cellHeight, cellWidth, verticalHeaderWidth;
     Information *information;
     QTableWidget *tableWidget;
-    QList<QList<double> > values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
+    std::list<std::vector<double>> values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
                                     row insertion will be implemented */
     QStringList columnNames;
     QRegExp nameValidator;

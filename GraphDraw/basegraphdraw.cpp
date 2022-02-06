@@ -143,7 +143,7 @@ void BaseGraphDraw::paint()
 
     painter.translate(QPointF(centre.x, centre.y));
 
-    funcValuesSaver->calculateAll(uniteX, uniteY, viewMapper);
+    funcValuesSaver->calculateAll(pxPerUnit, viewMapper);
     recalculateRegVals();
 
     drawFunctions();
@@ -218,7 +218,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
     for(ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
-        Xpos = axisTick.pos * uniteX;
+        Xpos = axisTick.pos * pxPerUnit.x;
 
         if(information->getGraphRange().x.min < axisTick.pos && axisTick.pos < information->getGraphRange().x.max)
         {
@@ -275,7 +275,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
                 if(information->getGraphRange().x.min < cur_pos && cur_pos < information->getGraphRange().x.max)
-                    painter.drawLine(QPointF(cur_pos * uniteX + centre.x, 0), QPointF(cur_pos * uniteX + centre.x, graphRectScaled.height()));
+                    painter.drawLine(QPointF(cur_pos * pxPerUnit.x + centre.x, 0), QPointF(cur_pos * pxPerUnit.x + centre.x, graphRectScaled.height()));
 
             }
         }
@@ -313,7 +313,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
     for(ZeLinAxisTick &axisTick: yAxisTicks.ticks)
     {
-        Ypos = axisTick.pos * uniteY;
+        Ypos = axisTick.pos * pxPerUnit.y;
 
         if(information->getGraphRange().y.min < axisTick.pos && axisTick.pos < information->getGraphRange().y.max)
         {
@@ -339,7 +339,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                 painter.drawLine(QPointF(graphRectScaled.width() - 4, pos), QPointF(graphRectScaled.width(), pos));
 
 
-                num = QString::number(Ypos/uniteY, 'g', numPrec);
+                num = QString::number(Ypos/pxPerUnit.y, 'g', numPrec);
                 space = fontMetrics.boundingRect(num).width() + 5;
 
                 if(space > largestWidth)
@@ -376,7 +376,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
                 if(information->getGraphRange().y.min < cur_pos && cur_pos < information->getGraphRange().y.max)
-                    painter.drawLine(QPointF(0, -cur_pos * uniteY + centre.y), QPointF(graphRectScaled.width(), -cur_pos * uniteY + centre.y));
+                    painter.drawLine(QPointF(0, -cur_pos * pxPerUnit.y + centre.y), QPointF(graphRectScaled.width(), -cur_pos * pxPerUnit.y + centre.y));
             }
         }
 
@@ -439,18 +439,18 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 {
     // TODO: update this method not working here
 
-    uniteY = double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
-    uniteX = double(graphRectScaled.width()) / fabs(viewMapper.getViewRect().width());
+    pxPerUnit.y = double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
+    pxPerUnit.x = double(graphRectScaled.width()) / fabs(viewMapper.getViewRect().width());
 
-    double rapport = uniteY / uniteX;
+    double rapport = pxPerUnit.y / pxPerUnit.x;
 
     if(information->getAxesSettings().orthonormal)
     {
         // TODO
     }
 
-    centre.x = - viewMapper.getViewRect().left() * uniteX;
-    centre.y =  viewMapper.getViewRect().top() * uniteY;
+    centre.x = - viewMapper.getViewRect().left() * pxPerUnit.x;
+    centre.y =  viewMapper.getViewRect().top() * pxPerUnit.y;
 }
 
 QImage* BaseGraphDraw::drawImage()
@@ -485,7 +485,7 @@ QImage* BaseGraphDraw::drawImage()
 
     if(recalculate)
     {
-        funcValuesSaver->calculateAll(uniteX, uniteY, viewMapper);
+        funcValuesSaver->calculateAll(pxPerUnit, viewMapper);
         recalculateRegVals();
     }
 

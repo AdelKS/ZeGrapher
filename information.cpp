@@ -30,46 +30,27 @@ void Information::emitDataUpdate()
     emit dataUpdated();
 }
 
-void Information::addDataList()
+void Information::addDataList(const std::shared_ptr<UserData const> &userData)
 {
-    data << QList<QPointF>();
-
-    DataStyle style;
-    dataStyle << style;
+    userDataSets.push_back(userData);
 }
 
-void Information::removeDataList(int index)
+void Information::removeDataList(const std::shared_ptr<UserData const> &userData)
 {
-    data.removeAt(index);
-    dataStyle.removeAt(index);
+    userDataSets.remove(userData);
     emit updateOccured();
-}
-
-void Information::setDataStyle(int index, DataStyle style)
-{
-    dataStyle[index] = style;
-    emit dataUpdated();
-}
-
-void Information::setData(int index, QList<QPointF> list)
-{
-    data[index] = list;
-    emit dataUpdated();
 }
 
 int Information::getDataListsCount()
 {
-    return data.size();
+    return userDataSets.size();
 }
 
-QList<QPointF> Information::getDataList(int index)
+std::shared_ptr<const UserData> Information::getDataPoints(int index)
 {
-    return data[index];
-}
-
-DataStyle Information::getDataStyle(int index)
-{
-    return dataStyle[index];
+    auto it = userDataSets.begin();
+    std::advance(it, index);
+    return *it;
 }
 
 void Information::addDataRegression(Regression *reg)

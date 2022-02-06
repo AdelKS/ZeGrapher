@@ -29,20 +29,17 @@
 #include "./modelchoicewidget.h"
 #include "./polynomialmodelwidget.h"
 
-enum State {ChoiceWidget, PolynomialWidget};
-
 class ModelWidget : public QFrame
 {
     Q_OBJECT
 
 public:
-    explicit ModelWidget(const QList<Point> &dat, Information *info, bool isPolar, QString xname, QString yname, QWidget *parent = 0);
-    ~ModelWidget();
+    explicit ModelWidget(const std::weak_ptr<UserData> &userData, Information *info,
+                         QString xname, QString yname, QWidget *parent = nullptr);
 
 public slots:
 
-    void setPolar(bool state);
-    void setData(const QList<Point> &data);
+    void refreshModel();
     void setAbscissaName(QString name);
     void setOrdinateName(QString name);
 
@@ -54,12 +51,13 @@ signals:
     void removeMe(ModelWidget *model);
 
 private:
+    enum State {ChoiceWidget, PolynomialWidget};
+
     State currentState;
-    QList<Point> data;
     Information *information;
-    bool polar;
     QString abscissa, ordinate;
 
+    std::weak_ptr<const UserData> userData;
     QVBoxLayout *layout;
     ModelChoiceWidget *modelChoice;
     PolynomialModelWidget *polynomialModel;

@@ -47,11 +47,11 @@ protected slots:
 
 protected:
 
-    inline void drawRhombus(QPointF pt,double w);
-    inline void drawDisc(QPointF pt, double w);
-    inline void drawSquare(QPointF pt, double w);
-    inline void drawTriangle(QPointF pt, double w);
-    inline void drawCross(QPointF pt, double w);
+    inline void drawRhombus(const QPointF &pt,double w);
+    inline void drawDisc(const QPointF &pt, double w);
+    inline void drawSquare(const QPointF &pt, double w);
+    inline void drawTriangle(const QPointF &pt, double w);
+    inline void drawCross(const QPointF &pt, double w);
 
     void drawOneSequence(int id, int width);
     void drawDataSet(int id, int width);
@@ -83,7 +83,7 @@ protected:
 
     double coef;
 
-    double uniteX, uniteY;
+    Point pxPerUnit;
     bool moving, recalculate, recalculateRegs;
     int tangentDrawException;
 

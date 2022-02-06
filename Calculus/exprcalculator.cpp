@@ -53,7 +53,7 @@ double ExprCalculator::calculateExpression(QString expr, bool &ok, double k_val)
     return result;
 }
 
-void ExprCalculator::setAdditionnalVarsValues(QList<double> values)
+void ExprCalculator::setAdditionnalVarsValues(const std::vector<double> &values)
 {
     additionnalVarsValues = values;
 }

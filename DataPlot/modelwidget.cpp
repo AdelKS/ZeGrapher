@@ -22,37 +22,29 @@
 #include "modelwidget.h"
 
 
-ModelWidget::ModelWidget(const QList<Point> &dat, Information *info, bool isPolar, QString xname, QString yname, QWidget *parent) : QFrame(parent)
+ModelWidget::ModelWidget(const std::weak_ptr<UserData> &userData, Information *info,
+              QString xname, QString yname, QWidget *parent):
+    QFrame(parent), currentState(ChoiceWidget), information(info), abscissa(xname), ordinate(yname), userData(userData)
 {
     layout = new QVBoxLayout(this);
     layout->setMargin(0);    
     setLayout(layout);
 
-    abscissa = xname;
-    ordinate = yname;
-    polar = isPolar;
-
     setFrameStyle(QFrame::Raised);
     setFrameShape(QFrame::StyledPanel);
 
-    data = dat;
-    information = info;
-
     modelChoice = new ModelChoiceWidget();
     layout->addWidget(modelChoice);
-    currentState = ChoiceWidget;
 
     connect(modelChoice, SIGNAL(modelSelected(ModelType)), this, SLOT(displaySelectedModel(ModelType)));
     connect(modelChoice, SIGNAL(removeMe()), this, SLOT(emitRemoveMeSignal()));
 }
 
-void ModelWidget::setData(const QList<Point> &dat)
+void ModelWidget::refreshModel()
 {
-    data = dat;
-
    if(currentState == PolynomialWidget)
    {
-        polynomialModel->setData(data);
+        polynomialModel->refreshModel();
    }
 }
 
@@ -72,16 +64,6 @@ void ModelWidget::setOrdinateName(QString name)
         polynomialModel->setOrdinateName(name);
 }
 
-void ModelWidget::setPolar(bool state)
-{
-    polar = state;
-
-    if(currentState == PolynomialWidget)
-    {
-        polynomialModel->setPolar(state);
-    }
-}
-
 void ModelWidget::emitRemoveMeSignal()
 {
     emit removeMe(this);
@@ -93,16 +75,11 @@ void ModelWidget::displaySelectedModel(ModelType model)
 
   if(model == PolynomialModel)
   {
-        polynomialModel = new PolynomialModelWidget(data, information, abscissa, ordinate, polar);
+        polynomialModel = new PolynomialModelWidget(userData, information, abscissa, ordinate);
         layout->addWidget(polynomialModel);        
         currentState = PolynomialWidget;
 
         connect(polynomialModel, SIGNAL(removeMe()), this, SLOT(emitRemoveMeSignal()));
 
     }// other cases will be added when new modeling types would be implemented
-}
-
-ModelWidget::~ModelWidget()
-{
-
 }

@@ -30,23 +30,23 @@
 
 #include "structures.h"
 
+// Remove dependence on Qt, to be usable as a standalone library
+
 class Regression : public QObject
 {
     Q_OBJECT
 
 public:
     explicit Regression();
-    ~Regression();
 
     virtual double eval(double x) const = 0;
     virtual QString getInfo() const = 0;
 
-    QList<Point> getData();
     QString getAbscissaName();
     QString getOrdinateName();
     bool getDrawState();
     int getDataNum();
-    bool isPolar();
+    virtual bool isPolar() = 0;
     Range getDrawRange();
     QColor getColor();    
 
@@ -59,17 +59,13 @@ public slots:
     void setOrdinateName(QString name);
     void setColor(QColor col);
     void setDrawState(bool state);
-    void setDataNumber(int num);
-    void setPolar(bool state);
 
 protected:
 
-    QList<Point> dataPoints;
     QColor color;
-    int dataNum;
     Range range;
     QString abscissa, ordinate;
-    bool drawState, polar, valid;
+    bool drawState, valid;
 
 };
 

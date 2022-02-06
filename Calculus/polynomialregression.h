@@ -32,25 +32,26 @@
 enum ApproxMethod { ApproachPoints = true, ApproachSegments = false};
 enum DrawRange {Manual, LimitedToData, RelativeExtrapolation};
 
+// TODO: Remove dependence on Qt
+
 class PolynomialRegression : public Regression
 {
     Q_OBJECT
 
 public:
-    explicit PolynomialRegression(int polynomialDegree, ApproxMethod method, DrawRange drawRange, double rangecoef, bool draw, bool isPolar);
+    explicit PolynomialRegression(const std::weak_ptr<const UserData> &userData,
+                                  int polynomialDegree, ApproxMethod method,
+                                  DrawRange drawRange, double rangecoef, bool draw);
     ~PolynomialRegression();
 
     double eval(double x) const;
     QString getInfo() const;
 
-    void setData(const QList<Point> &data);
+    void refresh();
     void setDrawRangeCalculusMethod(DrawRange option);
     void setRange(Range rg);
+    bool isPolar();
 
-signals:
-    void coefsUpdated(QList<double> coefs);
-
-public slots:
     void setApproxMethod(ApproxMethod method);
     void setRelativeRangeCoef(double coef);
     void setPolynomialRegressionDegree(int deg);  
@@ -65,7 +66,9 @@ protected:
     void calculateRegressionPolynomials();
     void normaliseData();
 
-    int regressionDegree;
+    std::weak_ptr<const UserData> userData;
+
+    uint regressionDegree;
 
     DrawRange rangeOption;
     double rangeCoef;
@@ -73,14 +76,14 @@ protected:
     Polynomial continuousPol, discretePol;
     ApproxMethod approxMethod;
     double xmin, xmax, xamp, ymin, ymax, yamp; //integration segment for dot product: integrate between min and max
-    QList<Polynomial> orthonormalBasisDiscrete, orthonormalBasisContinuous;
-    QList<Point> normalisedData;
+    std::vector<Polynomial> orthonormalBasisDiscrete, orthonormalBasisContinuous;
+    std::vector<Point> normalisedData;
 };
 
-double discreteScalarProduct(const QList<Point> &data, const Polynomial &P);
-double continuousScalarProduct(const QList<Point> &data, const Polynomial &P);
+double discreteScalarProduct(const Polynomial &P, const std::vector<Point> &data);
+double continuousScalarProduct(const Polynomial &P, const std::vector<Point> &data);
 
 double continuousNorm(const Polynomial &P, double xmin, double xmax);
-double discreteNorm(const Polynomial &P, const QList<Point> &data);
+double discreteNorm(const Polynomial &P, const std::vector<Point> &data);
 
 #endif // POLYNOMIALREGRESSION_H

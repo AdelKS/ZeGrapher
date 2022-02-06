@@ -24,17 +24,13 @@
 
 #include "polynomialregression.h"
 
-PolynomialRegression::PolynomialRegression(int polynomialDegree, ApproxMethod method, DrawRange drawRange, double rangecoef, bool draw, bool isPolar) : Regression()
+PolynomialRegression::PolynomialRegression(const std::weak_ptr<const UserData> &userData,
+                                           int polynomialDegree, ApproxMethod method,
+                                           DrawRange drawRange, double rangecoef, bool draw) :
+    Regression(), userData(userData), regressionDegree(polynomialDegree), rangeOption(drawRange),
+    rangeCoef(rangecoef), approxMethod(method)
 {
-    approxMethod = method;
-    regressionDegree = polynomialDegree;
-    rangeOption = drawRange;
-    rangeCoef = rangecoef;
     drawState = draw;
-    polar = isPolar;
-
-    range.step = 1; //this variable is useless in this class
-    range.start = range.end = 1; //to avoid bugs
 }
 
 double PolynomialRegression::eval(double x) const
@@ -49,18 +45,16 @@ QString PolynomialRegression::getInfo() const
     return QString(); // need to be implemented
 }
 
-void PolynomialRegression::setData(const QList<Point> &data)
+void PolynomialRegression::refresh()
 {
-    if(data.size() <= 1)
+
+    if(userData.lock()->dataPoints.size() <= 1)
     {
         valid = false;
         return;
     }
 
     valid = true;
-
-    dataPoints = data;
-    qSort(dataPoints);
 
     updateMinMax();
 
@@ -77,34 +71,25 @@ void PolynomialRegression::setData(const QList<Point> &data)
 void PolynomialRegression::updateNormalisedData()
 {
     normalisedData.clear();
-    normalisedData.reserve(dataPoints.size());
+    normalisedData.reserve(userData.lock()->dataPoints.size());
 
-    Point pt;
-    for(auto point : dataPoints)
+    for(const auto &point : userData.lock()->dataPoints)
     {
-        pt.x = 2*(point.x - xmin)/xamp - 1;
-        pt.y = 2*(point.y - ymin)/yamp - 1;
-
-        normalisedData << pt;
+        normalisedData.emplace_back(Point({2*(point.x - xmin)/xamp - 1, 2*(point.y - ymin)/yamp - 1}));
     }
 
 }
 
 void PolynomialRegression::updateMinMax()
 {
-    xmin = dataPoints.first().x;
-    xmax = dataPoints.last().x;
+    auto &&minmax_x = std::minmax_element(userData.lock()->dataPoints.cbegin(), userData.lock()->dataPoints.cend());
+    xmin = minmax_x.first->x;
+    xmax = minmax_x.second->x;
     xamp = xmax - xmin;
 
-    ymin = ymax = dataPoints.first().y;
-
-    for(auto point : dataPoints)
-    {
-        if(point.y < ymin)
-            ymin = point.y;
-        else if(point.y > ymax)
-            ymax = point.y;
-    }
+    auto &&minmax_y = std::minmax_element(userData.lock()->dataPoints.cbegin(), userData.lock()->dataPoints.cend(), ptCompY);
+    ymin = minmax_y.first->y;
+    ymax = minmax_y.second->y;
     yamp = ymax - ymin;
 }
 
@@ -140,6 +125,11 @@ void PolynomialRegression::setRange(Range rg)
     emit regressionModified();
 }
 
+bool PolynomialRegression::isPolar()
+{
+    return !userData.lock()->cartesian;
+}
+
 void PolynomialRegression::setRelativeRangeCoef(double coef)
 {
     rangeCoef = coef;
@@ -153,10 +143,10 @@ void PolynomialRegression::calculateRegressionPolynomials()
     continuousPol.resetToZero();
     discretePol.resetToZero();
 
-    for(int n = 0 ; n < orthonormalBasisContinuous.size() && n <= regressionDegree ; n++)
-         continuousPol += continuousScalarProduct(normalisedData, orthonormalBasisContinuous.at(n)) * orthonormalBasisContinuous.at(n);
-    for(int n = 0 ; n < orthonormalBasisDiscrete.size() && n <= regressionDegree ; n++)
-        discretePol += discreteScalarProduct(normalisedData, orthonormalBasisDiscrete.at(n)) * orthonormalBasisDiscrete.at(n);
+    for(uint n = 0 ; n < orthonormalBasisContinuous.size() && n <= regressionDegree ; n++)
+         continuousPol += continuousScalarProduct(orthonormalBasisContinuous.at(n), normalisedData) * orthonormalBasisContinuous.at(n);
+    for(uint n = 0 ; n < orthonormalBasisDiscrete.size() && n <= regressionDegree ; n++)
+        discretePol += discreteScalarProduct(orthonormalBasisDiscrete.at(n), normalisedData) * orthonormalBasisDiscrete.at(n);
 
     continuousPol.translateX(1);
     continuousPol.expand(xamp/2);    
@@ -173,10 +163,6 @@ void PolynomialRegression::calculateRegressionPolynomials()
     discretePol.translateY(1);
     discretePol *= yamp/2;
     discretePol.translateY(ymin);
-
-    if(approxMethod == ApproachPoints)
-        emit coefsUpdated(discretePol.getTranslatedCoefs());
-    else emit coefsUpdated(continuousPol.getTranslatedCoefs());
 }
 
 void PolynomialRegression::setPolynomialRegressionDegree(int deg)
@@ -191,13 +177,6 @@ void PolynomialRegression::setPolynomialRegressionDegree(int deg)
 void PolynomialRegression::setApproxMethod(ApproxMethod method)
 {
     approxMethod = method;
-
-    emit regressionModified();
-
-    if(approxMethod == ApproachPoints)
-        emit coefsUpdated(discretePol.getTranslatedCoefs());
-    else emit coefsUpdated(continuousPol.getTranslatedCoefs());
-
 }
 
 void PolynomialRegression::recalculateOrthonormalBasis()
@@ -214,64 +193,62 @@ void PolynomialRegression::updateOrthonormalBasis()
 
     if(regressionDegree > orthonormalBasisContinuous.size() - 1)
     {
-        if(orthonormalBasisContinuous.isEmpty())
+        if(orthonormalBasisContinuous.empty())
         {
             Polynomial P(0);
             P *= 1/continuousNorm(P, -1, 1);
-            orthonormalBasisContinuous << P;
+            orthonormalBasisContinuous.emplace_back(std::move(P));
         }
 
-        for(int n = orthonormalBasisContinuous.size(); n <= regressionDegree ; n++)
+        for(uint n = orthonormalBasisContinuous.size(); n <= regressionDegree ; n++)
         {
             Polynomial P(n);
 
-            for(int i = 0 ; i < orthonormalBasisContinuous.size(); i++)
+            for(uint i = 0 ; i < orthonormalBasisContinuous.size(); i++)
                 P -= continuousScalarProduct(P, orthonormalBasisContinuous.at(i), -1, 1) * orthonormalBasisContinuous.at(i);
 
             P *= 1/continuousNorm(P, -1, 1);
-            orthonormalBasisContinuous << P;
-
+            orthonormalBasisContinuous.emplace_back(std::move(P));
         }
     }
     if(regressionDegree > orthonormalBasisDiscrete.size() - 1)
     {
-        if(orthonormalBasisDiscrete.isEmpty())
+        if(orthonormalBasisDiscrete.empty())
         {
             Polynomial P(0);
             P *= 1/discreteNorm(P, normalisedData);
-            orthonormalBasisDiscrete << P;
+            orthonormalBasisDiscrete.emplace_back(std::move(P));
         }
 
-        for(int n = orthonormalBasisDiscrete.size(); n <= regressionDegree && n < dataPoints.size(); n++)
+        for(uint n = orthonormalBasisDiscrete.size(); n <= regressionDegree && n < normalisedData.size(); n++)
         {
             Polynomial P(n);
 
-            for(int i = 0 ; i < orthonormalBasisDiscrete.size(); i++)
+            for(uint i = 0 ; i < orthonormalBasisDiscrete.size(); i++)
                 P -= discreteScalarProduct(P, orthonormalBasisDiscrete.at(i), normalisedData) * orthonormalBasisDiscrete.at(i);
 
             P *= 1/discreteNorm(P, normalisedData);
-            orthonormalBasisDiscrete << P;
+            orthonormalBasisDiscrete.emplace_back(std::move(P));
         }
     }
 }
 
-double discreteScalarProduct(const QList<Point> &data, const Polynomial &P)
+double discreteScalarProduct(const Polynomial &P, const std::vector<Point> &data)
 {
     double res = 0;
 
-    for(int i = 0 ; i < data.size() ; i++)
-        res += data[i].y * P.eval(data[i].x);
+    for(const Point &pt: data)
+        res += pt.y * P.eval(pt.x);
 
     return res;
-
 }
 
-double continuousScalarProduct(const QList<Point> &data, const Polynomial &P)
+double continuousScalarProduct(const Polynomial &P, const std::vector<Point> &data)
 {
     double res = 0;
     Polynomial segment, prod;
 
-    for(int i = 0 ; i < data.size() - 1 ; i++)
+    for(uint i = 0 ; i < data.size() - 1 ; i++)
     {
         segment.setAffine(data[i], data[i+1]);
         prod = (segment * P).antiderivative();
@@ -288,13 +265,13 @@ double continuousNorm(const Polynomial &P, double xmin, double xmax)
     return sqrt(Q.eval(xmax) - Q.eval(xmin));
 }
 
-double discreteNorm(const Polynomial &P, const QList<Point> &data)
+double discreteNorm(const Polynomial &P, const std::vector<Point> &data)
 {    
     double res = 0, tmp;
 
-    for(int i = 0 ; i < data.size() ; i++)
+    for(const Point &pt: data)
     {
-        tmp = P.eval(data[i].x);
+        tmp = P.eval(pt.x);
         res += tmp * tmp;
     }
 

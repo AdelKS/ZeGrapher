@@ -25,38 +25,38 @@
 
 Polynomial::Polynomial(int monicMonomialDegree) : translation(0)
 {
-    for(int i = 0 ; i < monicMonomialDegree ; i++)
-        coefficients << 0;
+    coefficients.assign(monicMonomialDegree+1, 0);
 
-    coefficients << 1;
+    coefficients[monicMonomialDegree] = 1;
 }
 
-Polynomial::Polynomial(QList<double> coefs) : translation(0)
+Polynomial::Polynomial(std::vector<double> &&coefs) : translation(0), coefficients(std::move(coefs))
 {
-    coefficients = coefs;
+
 }
 
-QList<double> Polynomial::getCoefs()
+const std::vector<double> &Polynomial::getCoefs()
 {
     return coefficients;
 }
 
-QList<double> Polynomial::getTranslatedCoefs()
+const std::vector<double> &Polynomial::getTranslatedCoefs()
 {
     if(translation == 0)
         return coefficients;
     else return translatedCoefficients;
 }
 
-Polynomial::Polynomial()
+Polynomial::Polynomial() : coefficients({0})
 {
-    coefficients << 0;
 }
 
 void Polynomial::resetToZero()
 {
+    translatedCoefficients.clear();
+    translation = 0;
     coefficients.clear();
-    coefficients << 0;
+    coefficients.push_back(0);
 }
 
 double Polynomial::eval(double xval) const
@@ -85,20 +85,20 @@ void Polynomial::translateX(double Dx)
 
     translatedCoefficients.clear();
 
-    QList<double> DxPowTable;
+    std::vector<double> DxPowTable;
     DxPowTable.reserve(coefficients.size());
 
     double DxPow = 1;
 
-    for(int i = 0 ; i < coefficients.size() ; i++)
+    for(uint i = 0 ; i < coefficients.size() ; i++)
     {
-        translatedCoefficients << 0;
-        DxPowTable << DxPow;
+        translatedCoefficients.push_back(0);
+        DxPowTable.push_back(DxPow);
         DxPow *= translation;
     }
 
-    for(int n = 0 ; n < coefficients.size() ; n++)
-        for(int k = 0 ; k <= n ; k++)
+    for(uint n = 0 ; n < coefficients.size() ; n++)
+        for(uint k = 0 ; k <= n ; k++)
             translatedCoefficients[k] += coefficients[n] * boost::math::binomial_coefficient<double>(n,k) * DxPowTable[n-k];
 }
 
@@ -147,17 +147,21 @@ int Polynomial::degree() const
 
 Polynomial Polynomial::antiderivative()
 {
-    QList<double> coefs = coefficients;
-    coefs.push_front(0);
+    std::vector<double> coefs;
+    coefs.reserve(coefficients.size()+1);
+    coefs.push_back(0);
+
+    for(const double &val: coefficients)
+        coefs.push_back(val);
 
     double val = 1;
-    for(int i = 1 ; i < coefs.size() ; i++)
+    for(uint i = 1 ; i < coefs.size() ; i++)
     {
         coefs[i] /= val;
         val++;
     }
 
-    Polynomial pol(coefs);
+    Polynomial pol(std::move(coefs));
     pol.translateX(translation);
 
     return pol;
@@ -169,7 +173,7 @@ void Polynomial::setAffine(Point A, Point B)
     translatedCoefficients.clear();
 
     coefficients.clear();
-    coefficients << 0 << 0;
+    coefficients.assign(2, 0);
 
     coefficients[1] = (B.y - A.y) / (B.x - A.x);
     coefficients[0] = A.y - coefficients[1] * A.x;
@@ -177,32 +181,25 @@ void Polynomial::setAffine(Point A, Point B)
 
 Polynomial& Polynomial::operator+=(const Polynomial &P)
 {
-    QList<double> coefs;
     int deg = std::max(degree(), P.degree());
+    coefficients.resize(deg, 0);
 
-    if(P.getXTranslation() != 0 || translation != 0)
-    {
-        double meanTranslation = (P.getXTranslation() + translation)/2;
-        Polynomial Q(P);
-        Q.translateX(Q.translation - meanTranslation);
-        translateX(translation - meanTranslation);
-    }
+    double translation_diff = translation - P.getXTranslation();
+    if(translation_diff != 0)
+        translateX(translation_diff);
 
     for(int i = 0 ; i <= deg ; i++)
-        coefs << getCoef(i) + P.getCoef(i);
-
-    coefficients = coefs;
-    translation = 0;
+        coefficients[i] += P.getCoef(i);
 
     return *this;
 }
 
 Polynomial& Polynomial::operator*=(double scal)
 {
-    for(int i = 0 ; i < coefficients.size() ; i++)
+    for(uint i = 0 ; i < coefficients.size() ; i++)
         coefficients[i] *= scal;
 
-    for(int i = 0 ; i < translatedCoefficients.size() ; i++)
+    for(uint i = 0 ; i < translatedCoefficients.size() ; i++)
         translatedCoefficients[i] *= scal;
 
     return *this;
@@ -210,36 +207,33 @@ Polynomial& Polynomial::operator*=(double scal)
 
 Polynomial& Polynomial::operator*=(const Polynomial &P)
 {
-    Polynomial Q(P);
-    QList<double> coefs;
+    std::vector<double> coefs;
     int deg = degree() + P.degree();
+    coefs.assign(deg, 0);
 
-    for(int i = 0 ; i <=  deg ; i++)
-        coefs << 0;
-
-    if(P.getXTranslation() != 0 || translation != 0)
-    {
-        double meanTranslation = (P.getXTranslation() + translation)/2;
-        Q.translateX(meanTranslation - Q.translation);
-        translateX(meanTranslation - translation);
-    }
+    double translation_diff = translation - P.getXTranslation();
+    if(translation_diff != 0)
+        translateX(translation_diff);
 
     for(int i = 0 ; i <= degree() ; i++)
         for(int j = 0 ; j <= P.degree() ; j++)
-            coefs[i+j] += getCoef(i) * Q.getCoef(j);
+            coefs[i+j] += coefficients[i] * P.getCoef(j);
 
-    coefficients = coefs;
-    translation = 0;
-
+    coefficients = std::move(coefs);
     return *this;
 }
 
 Polynomial& Polynomial::operator-=(const Polynomial &P)
 {
-    Polynomial Q(P);
-    Q *= -1;
+    int deg = std::max(degree(), P.degree());
+    coefficients.resize(deg, 0);
 
-    operator +=(Q);
+    double translation_diff = translation - P.getXTranslation();
+    if(translation_diff != 0)
+        translateX(translation_diff);
+
+    for(int i = 0 ; i <= deg ; i++)
+        coefficients[i] -= P.getCoef(i);
 
     return *this;
 }
@@ -286,14 +280,13 @@ double continuousScalarProduct(const Polynomial &P, const Polynomial &Q, double 
     return D.eval(b) - D.eval(a);
 }
 
-double discreteScalarProduct(const Polynomial &P, const Polynomial &Q, const QList<Point> &data)
+double discreteScalarProduct(const Polynomial &P, const Polynomial &Q, const std::vector<Point> &data)
 {
-    Polynomial D(P);
-    D *= Q;
+    Polynomial D(P * Q);
 
     double res = 0;
-    for(int i = 0 ; i < data.size() ; i++)
-        res += D.eval(data[i].x);
+    for(const Point &pt: data)
+        res += D.eval(pt.x);
 
     return res;
 }

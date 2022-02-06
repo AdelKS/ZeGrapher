@@ -22,22 +22,17 @@
 #include "polynomialmodelwidget.h"
 #include "ui_polynomialmodelwidget.h"
 
-PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Information *info, QString xname, QString yname, bool pol, QWidget *parent) :
-    QWidget(parent), ui(new Ui::PolynomialModelWidget)
+PolynomialModelWidget::PolynomialModelWidget(const std::weak_ptr<const UserData> &userData,
+                                             Information *info, QString xname, QString yname,
+                                             QWidget *parent):
+    QWidget(parent), ui(new Ui::PolynomialModelWidget), abscissa(xname), ordinate(yname), information(info), userData(userData)
 {
     ui->setupUi(this);
 
-    abscissa = xname;
-    ordinate = yname; //the abscissa and ordinate would mean the polar angle and radius respectively   
-
-    polar = pol;
-    data = dat;
-    information = info;
-
     addWidgetsToUI();
 
-    regression = new PolynomialRegression(ui->degree->value(), (ApproxMethod)ui->approachPoints->isChecked(), LimitedToData,
-                                          ui->relativeExtrapol->value(), ui->drawModel->isChecked(), pol);
+    regression = new PolynomialRegression(userData, ui->degree->value(), ApproxMethod(ui->approachPoints->isChecked()), LimitedToData,
+                                          ui->relativeExtrapol->value(), ui->drawModel->isChecked());
 
     connect(regression, SIGNAL(rangeUpdated()), this, SLOT(updateManualRangeFields()));
     connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
@@ -46,7 +41,6 @@ PolynomialModelWidget::PolynomialModelWidget(const QList<Point> &dat, Informatio
     information->addDataRegression(regression);
 
     regression->setColor(information->getGraphSettings().estheticSettings.defaultColor);
-    regression->setData(dat); //
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));
     connect(colorButton, SIGNAL(colorChanged(QColor)), regression, SLOT(setColor(QColor)));
@@ -244,21 +238,13 @@ void PolynomialModelWidget::setOrdinateName(QString name)
     regression->setOrdinateName(name);   
 }
 
-void PolynomialModelWidget::setData(const QList<Point> &dat)
+void PolynomialModelWidget::refreshModel()
 {    
-    regression->setData(dat);
-}
-
-void PolynomialModelWidget::setPolar(bool pol)
-{   
-    polar = pol;
-    regression->setPolar(pol);
+    regression->refresh();
 }
 
 PolynomialModelWidget::~PolynomialModelWidget()
 {
-    delete ui;
-
     information->removeDataRegression(regression);
 
     delete regression;

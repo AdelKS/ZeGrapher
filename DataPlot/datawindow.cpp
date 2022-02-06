@@ -23,12 +23,13 @@
 #include "ui_datawindow.h"
 
 
-DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(parent)
+DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
+                       Information *info, QWidget *parent):
+    QWidget(parent), modelData(userData)
 {
 
     setWindowFlags(Qt::Window);
 
-    index = ind;
     xindex = STARTING_XPIN_INDEX;
     yindex = STARTING_YPIN_INDEX;
 
@@ -78,7 +79,7 @@ DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(par
 
     connect(ui->retractionButton, SIGNAL(released()), this, SLOT(startAnimation()));
 
-    setWindowTitle(tr("Data fill window: data") + QString::number(ind+1));
+    setWindowTitle(tr("Data fill window"));
 
     information = info;
     selectorSide = COLUMN_SELECTION;
@@ -165,6 +166,9 @@ DataWindow::DataWindow(Information *info, int ind, QWidget *parent): QWidget(par
     connect(columnActionsWidget, SIGNAL(insertColumnClicked(int)), dataTable, SLOT(insertColumn(int)));
     connect(columnActionsWidget, SIGNAL(removeColumnClicked(int)), dataTable, SLOT(removeColumn(int)));
 
+    connect(columnActionsWidget, SIGNAL(insertColumnClicked(int)), this, SLOT(remakeDataList()));
+    connect(columnActionsWidget, SIGNAL(removeColumnClicked(int)), this, SLOT(remakeDataList()));
+
     connect(dataTable, SIGNAL(newColumnCount(int)), columnSelector, SLOT(setColumnCount(int)));
     connect(dataTable, SIGNAL(newColumnCount(int)), columnActionsWidget, SLOT(setColumnCount(int)));
     connect(dataTable, SIGNAL(newRowCount(int)), rowSelector, SLOT(setRowCount(int)));
@@ -193,9 +197,6 @@ RetractableWidgetState DataWindow::getRetractableWidgetState()
 
 void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
 {
-    Q_UNUSED(logicalIndex);
-    Q_UNUSED(newVisualIndex);
-
     if(oldVisualIndex == xindex || oldVisualIndex == yindex || newVisualIndex == xindex || newVisualIndex == yindex)
         remakeDataList();
 }
@@ -261,7 +262,7 @@ void DataWindow::addModel()
     QString xname = dataTable->getColumnName(xindex);
     QString yname = dataTable->getColumnName(yindex);
 
-    ModelWidget *modelWidget = new ModelWidget(modelData, information, ui->polar->isChecked(), xname, yname);
+    ModelWidget *modelWidget = new ModelWidget(modelData, information, xname, yname);
     modelWidgets << modelWidget;
 
     ui->modelsLayout->addWidget(modelWidget);
@@ -287,8 +288,9 @@ void DataWindow::displayHelp()
 
 void DataWindow::coordinateSystemChanged(bool polar)
 {
-    for(int i = 0 ; i < modelWidgets.size() ; i++)
-        modelWidgets[i]->setPolar(polar);
+    modelData.lock()->cartesian = !polar;
+
+    information->emitDataUpdate();
 }
 
 void DataWindow::removeModelWidget(ModelWidget *w)
@@ -298,12 +300,6 @@ void DataWindow::removeModelWidget(ModelWidget *w)
     delete w;
 
     information->emitDataUpdate();
-}
-
-void DataWindow::changeIndex(int ind)
-{
-    index = ind;
-    setWindowTitle(tr("Data fill window: data") + QString::number(ind+1));
 }
 
 void DataWindow::dataChanged()
@@ -319,57 +315,30 @@ void DataWindow::dataChanged()
 void DataWindow::cellValChanged(int row, int col)
 {
     Q_UNUSED(row);
-
     if(col == xindex || col == yindex)
         remakeDataList();
 }
 
 void DataWindow::remakeDataList()
 {
-    const QList<QList<double> > &values = dataTable->getValues();
-    QList<QPointF> dataList;
-    QPointF point;
+    const int &col_x_index = dataTable->colLogicalIndex(xindex);
+    const int &col_y_index = dataTable->colLogicalIndex(yindex);
 
-    Point dataPt;
+    const std::vector<double> &x_data = *dataTable->get_column_const_it(col_x_index);
+    const std::vector<double> &y_data = *dataTable->get_column_const_it(col_y_index);
 
-    modelData.clear();
+    auto &dataPoints = modelData.lock()->dataPoints;
+    dataPoints.clear();
 
-    int logicalX = dataTable->colLogicalIndex(xindex);
-    int logicalY = dataTable->colLogicalIndex(yindex);
-
-    for(int row = 0 ; row < values[0].size(); row++)
+    for(uint i = 0 ; i < x_data.size() && i < x_data.size() ; i++)
     {
-        if(!std::isnan(values[logicalX][row]) && !std::isnan(values[logicalY][row]))
-        {
-            if(ui->polar->isChecked())
-            {
-                point.setX(values[logicalY][row] * cos( values[logicalX][row]));
-                point.setY(values[logicalY][row] * sin( values[logicalX][row]));
-            }
-            else
-            {
-                point.setX(values[logicalX][row]);
-                point.setY(values[logicalY][row]);
-            }
+        if(!std::isfinite(x_data[i]) || !std::isfinite(y_data[i]))
+            continue;
 
-            dataList << point;
-
-            dataPt.x = values[logicalX][row];
-            dataPt.y = values[logicalY][row];
-
-            modelData << dataPt;
-        }
+        dataPoints.emplace_back(Point({x_data[i], y_data[i]}));
     }
 
-    for(int i = 0 ; i < modelWidgets.size() ; i++)
-    {
-        modelWidgets[i]->setData(modelData);
-        modelWidgets[i]->setAbscissaName(dataTable->getColumnName(xindex));
-        modelWidgets[i]->setOrdinateName(dataTable->getColumnName(yindex));
-    }
-
-
-    information->setData(index, dataList);
+    information->emitDataUpdate();
 }
 
 void DataWindow::openData()
@@ -379,7 +348,7 @@ void DataWindow::openData()
 
 void DataWindow::saveData()
 {
-    csvHandler->saveCSV(dataTable->getData());
+    csvHandler->saveCSV(dataTable->getStringData());
 }
 
 void DataWindow::selectorInColumnSelection()

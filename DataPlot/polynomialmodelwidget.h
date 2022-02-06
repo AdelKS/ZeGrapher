@@ -46,11 +46,12 @@ class PolynomialModelWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit PolynomialModelWidget(const QList<Point> &dat, Information *info, QString xname, QString yname, bool pol, QWidget *parent = 0);
+    explicit PolynomialModelWidget(const std::weak_ptr<const UserData> &userData,
+                                   Information *info, QString xname, QString yname,
+                                   QWidget *parent = nullptr);
     void setAbscissaName(QString name);
     void setOrdinateName(QString name);
-    void setData(const QList<Point> &dat);
-    void setPolar(bool pol);
+    void refreshModel();
     ~PolynomialModelWidget();
 
 signals:
@@ -66,12 +67,12 @@ protected slots:
 
 protected:
     void addWidgetsToUI();    
+    void refreshDataPoints();
 
     Ui::PolynomialModelWidget *ui;
     QString abscissa, ordinate;
     Information *information;
-    bool polar;
-    QList<Point> data;
+    std::weak_ptr<const UserData> userData;
     NumberLineEdit *startVal, *endVal;
     QColorButton *colorButton;
 

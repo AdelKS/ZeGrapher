@@ -24,16 +24,8 @@
 
 #include "regression.h"
 
-Regression::Regression()
+Regression::Regression(): color(Qt::black), drawState(true), valid(false)
 {
-    polar = false;
-    color = Qt::black;
-    valid = false;
-}
-
-QList<Point> Regression::getData()
-{
-    return dataPoints;
 }
 
 void Regression::setAbscissaName(QString name)
@@ -56,21 +48,10 @@ QString Regression::getOrdinateName()
     return ordinate;
 }
 
-void Regression::setPolar(bool state)
-{
-    polar = state;
-    emit regressionModified();
-}
-
 void Regression::setDrawState(bool state)
 {
     drawState = state;
     emit regressionModified();
-}
-
-void Regression::setDataNumber(int num)
-{
-    dataNum = num;
 }
 
 void Regression::setColor(QColor col)
@@ -79,19 +60,9 @@ void Regression::setColor(QColor col)
     emit regressionModified();
 }
 
-bool Regression::isPolar()
-{
-    return polar;
-}
-
 bool Regression::getDrawState()
 {
     return drawState && valid;
-}
-
-int Regression::getDataNum()
-{
-    return dataNum;
 }
 
 Range Regression::getDrawRange()
@@ -102,10 +73,5 @@ Range Regression::getDrawRange()
 QColor Regression::getColor()
 {
     return color;
-}
-
-Regression::~Regression()
-{
-
 }
 

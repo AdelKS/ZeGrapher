@@ -42,10 +42,10 @@ double FuncValuesSaver::evalFunc(int funId, double x, double k)
 }
 
 
-void FuncValuesSaver::calculateAll(double new_xUnit, double new_yUnit, const ZeViewMapper &view)
+void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &view)
 {
-    xUnit = new_xUnit;
-    yUnit = new_yUnit;
+    xUnit = pxPerUnit.x;
+    yUnit = pxPerUnit.y;
     unitStep = pixelStep / xUnit;
 
     double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;

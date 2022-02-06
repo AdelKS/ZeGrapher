@@ -48,7 +48,7 @@ public:
 
 public slots:
      void recalculate();
-     void recalculate(Point graphUnits, const ZeViewMapper &graphView);
+     void recalculate(const Point &graphUnits, const ZeViewMapper &graphView);
 
 protected:
     void calculatePolarRegressionCurve();

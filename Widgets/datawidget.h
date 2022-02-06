@@ -36,11 +36,11 @@ class DataWidget : public QWidget
     Q_OBJECT
     
 public:
-    explicit DataWidget(int num, Information *info, QWidget *parent = 0);
+    explicit DataWidget(Information *info, QWidget *parent = 0);
     void setWidgetNum(int num);
     void closeDataWindow();
+    std::shared_ptr<const UserData> getUserData();
     DataWindow *getDataWindow();
-    ~DataWidget();
 
 protected slots:
     void emitRemoveSignal();
@@ -55,15 +55,13 @@ signals:
     void removeMe(DataWidget *widget);
     
 private:
-
-    int widgetNum;
     QList<PointStyle> pointStyleMap;
     QList<Qt::PenStyle> lineStyleMap;
     Information *information;
     Ui::DataWidget *ui;
     QColorButton *colorButton;
     DataWindow *dataWindow;
-    DataStyle style;
+    std::shared_ptr<UserData> userData;
 };
 
 #endif // DATAWIDGET_H

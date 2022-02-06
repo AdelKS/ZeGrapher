@@ -55,13 +55,14 @@ protected:
     FastTree* createFastTree(int debut, int fin);
 
     ObjectType funcType;
-    QStringList refFunctions, functions, sequences, antiderivatives, derivatives, constants, vars, customVars;
+    static const QStringList refFunctions;
+    QStringList functions, sequences, antiderivatives, derivatives, constants, vars, customVars;
     QList<double> constantsVals;
 
     QList<QChar> operators;
-    QList<short> decompPriorites, decompTypes, operatorsPriority, operatorsTypes;
-    QList<double> decompValues;
-    QList<bool> authorizedVars;
+    std::vector<ushort> decompPriorites, decompTypes, operatorsPriority, operatorsTypes;
+    std::vector<double> decompValues;
+    std::vector<bool> authorizedVars;
     QString pi;
 
 };

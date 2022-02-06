@@ -58,12 +58,10 @@ class DataWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataWindow(Information *info, int ind, QWidget *parent = 0);
+    explicit DataWindow(const std::shared_ptr<UserData> &userData, Information *info, QWidget *parent = 0);
     RetractableWidgetState getRetractableWidgetState();
 
     ~DataWindow();
-
-    void changeIndex(int ind);
 
 signals:
     void showHelpWindow();
@@ -89,7 +87,7 @@ protected slots:
 
 protected:    
 
-    int index, xindex, yindex;    
+    int xindex, yindex;
     Ui::DataWindow *ui;
     Information *information;
     QGroupBox *actionsGroupBox;
@@ -107,7 +105,7 @@ protected:
 
     QPropertyAnimation *windowCloseAnimation, *windowOpenAnimation, *widgetCloseAnimation, *widgetOpenAnimation;
     QParallelAnimationGroup *openAnimation, *closeAnimation;
-    QList<Point> modelData;
+    std::weak_ptr<UserData> modelData;
     QList<ModelWidget*> modelWidgets;
 };
 

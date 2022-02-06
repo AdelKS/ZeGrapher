@@ -23,21 +23,11 @@
 #include "Widgets/datawidget.h"
 #include "ui_datawidget.h"
 
-DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::DataWidget)
+DataWidget::DataWidget(Information *info, QWidget *parent) :
+    QWidget(parent), ui(new Ui::DataWidget), userData(std::make_shared<UserData>())
 {
     ui->setupUi(this);
     ui->styleWidget->hide();
-
-    style.color = info->getGraphSettings().estheticSettings.defaultColor;
-    style.drawLines = false;
-    style.drawPoints = true;
-    style.lineStyle = Qt::SolidLine;
-    style.pointStyle = PointStyle::Rhombus;
-    style.draw = true;
-
-    info->setDataStyle(num, style);
 
     information = info;
 
@@ -74,7 +64,7 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     ui->mainLayout->addWidget(removeButton);
 
     QSettings settings;
-    dataWindow = new DataWindow(info, num, this);
+    dataWindow = new DataWindow(userData, info, this);
 
     if(settings.contains("data_window/geometry"))
         dataWindow->setGeometry(settings.value("data_window/geometry").value<QRect>());
@@ -87,8 +77,6 @@ DataWidget::DataWidget(int num, Information *info, QWidget *parent) :
     connect(ui->draw, SIGNAL(toggled(bool)), this, SLOT(changeDrawState(bool)));
     connect(ui->drawPoints, SIGNAL(toggled(bool)), this, SLOT(drawPoints(bool)));
     connect(ui->drawSegments, SIGNAL(toggled(bool)), this, SLOT(drawSegments(bool)));
-
-     setWidgetNum(num);
 }
 
 DataWindow* DataWidget::getDataWindow()
@@ -96,56 +84,61 @@ DataWindow* DataWidget::getDataWindow()
     return dataWindow;
 }
 
+std::shared_ptr<const UserData> DataWidget::getUserData()
+{
+    return userData;
+}
+
 void DataWidget::drawSegments(bool draw)
 {
-    if(style.drawLines != draw)
+    if(userData->style.drawLines != draw)
     {
-        style.drawLines = draw;
-        information->setDataStyle(widgetNum, style);
+        userData->style.drawLines = draw;
+        information->emitDataUpdate();
     }
 }
 
 void DataWidget::drawPoints(bool draw)
 {
-    if(style.drawPoints != draw)
+    if(userData->style.drawPoints != draw)
     {
-        style.drawPoints = draw;
-        information->setDataStyle(widgetNum, style);
+        userData->style.drawPoints = draw;
+        information->emitDataUpdate();
     }
 }
 
 void DataWidget::setColor(QColor color)
 {
-    if(style.color != color)
+    if(userData->style.color != color)
     {
-        style.color = color;
-        information->setDataStyle(widgetNum, style);
+        userData->style.color = color;
+        information->emitDataUpdate();
     }
 }
 
 void DataWidget::newLineStyle(int index)
 {
-    if(style.lineStyle != lineStyleMap[index])
+    if(userData->style.lineStyle != lineStyleMap[index])
     {
-        style.lineStyle = lineStyleMap[index];
-        information->setDataStyle(widgetNum, style);
+        userData->style.lineStyle = lineStyleMap[index];
+        information->emitDataUpdate();
     }
 }
 
 void DataWidget::newPointStyle(int index)
 {
-    if(style.pointStyle != pointStyleMap[index])
+    if(userData->style.pointStyle != pointStyleMap[index])
     {
-        style.pointStyle = pointStyleMap[index];
-        information->setDataStyle(widgetNum, style);
+        userData->style.pointStyle = pointStyleMap[index];
+        information->emitDataUpdate();
     }
 
 }
 
 void DataWidget::changeDrawState(bool draw)
 {
-    style.draw = draw;
-    information->setDataStyle(widgetNum, style);
+    userData->style.draw = draw;
+    information->emitDataUpdate();
 }
 
 void DataWidget::closeDataWindow()
@@ -153,19 +146,7 @@ void DataWidget::closeDataWindow()
     dataWindow->close();
 }
 
-void DataWidget::setWidgetNum(int num)
-{
-    widgetNum = num;
-    ui->nameLabel->setText("(" + tr("Data") + " " + QString::number(num+1) + ") :");
-    dataWindow->changeIndex(num);
-}
-
 void DataWidget::emitRemoveSignal()
 {
     emit removeMe(this);
-}
-
-DataWidget::~DataWidget()
-{
-    delete dataWindow;
 }

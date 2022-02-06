@@ -1,1 +1,8 @@
 ZeGrapher.pro.user
+moc_*
+*.o
+ui_*.h
+qrc_*.cpp
+Makefile
+release/*
+debug/*

@@ -267,8 +267,8 @@
 //    double x = event->pos().x();
 //    double y = event->pos().y();
 
-//    x = (x-centre.x)/uniteX;
-//    y = -(y-centre.y)/uniteY;
+//    x = (x-centre.x)/pxPerUnit.x;
+//    y = -(y-centre.y)/pxPerUnit.y;
 
 //    double multiplier = tanh((double)(event->angleDelta().y()) / 1024) / 1.1;
 
@@ -384,7 +384,7 @@
 
 //    painter.drawImage(QPoint(0,0), *savedGraph);
 //    painter.translate(QPointF(centre.x, centre.y));
-//    painter.scale(1/uniteX, -1/uniteY);
+//    painter.scale(1/pxPerUnit.x, -1/pxPerUnit.y);
 
 //    drawAnimatedParEq();
 //    drawData();
@@ -439,7 +439,7 @@
 //    if(recalculate)
 //    {
 //        recalculate = false;
-//        funcValuesSaver->calculateAll(uniteX, uniteY, viewMapper);
+//        funcValuesSaver->calculateAll(pxPerUnit.x, pxPerUnit.y, viewMapper);
 //        recalculateRegVals();
 //    }
 //    else if(recalculateRegs)
@@ -491,15 +491,15 @@
 
 //        if(mouseState.pointedObjectType == TANGENT_MOVE)
 //        {
-//            QPointF pt(points.center.x * uniteX, - points.center.y * uniteY);
+//            QPointF pt(points.center.x * pxPerUnit.x, - points.center.y * pxPerUnit.y);
 //            painter.drawPoint(pt);
 //        }
 //        else
 //        {
-//            QPointF pt1(points.left.x * uniteX, - points.left.y * uniteY);
+//            QPointF pt1(points.left.x * pxPerUnit.x, - points.left.y * pxPerUnit.y);
 //            painter.drawPoint(pt1);
 
-//            QPointF pt2(points.right.x * uniteX, - points.right.y * uniteY);
+//            QPointF pt2(points.right.x * pxPerUnit.x, - points.right.y * pxPerUnit.y);
 //            painter.drawPoint(pt2);
 //        }
 //    }
@@ -615,7 +615,7 @@
 //                for(int pos = 0 ; pos < listEnd; pos ++)
 //                {
 //                    point = list->at(curve).at(pos);
-//                    polygon << QPointF(point.x * uniteX, - point.y * uniteY);
+//                    polygon << QPointF(point.x * pxPerUnit.x, - point.y * pxPerUnit.y);
 //                }
 
 //                if(parWidget->keepTracks() || !parWidget->is_t_Animated())
@@ -664,8 +664,8 @@
 //    painter.setPen(pen);
 //    painter.setRenderHint(QPainter::Antialiasing);
 
-//    pointPx.x = pointUnit.x * uniteX;
-//    pointPx.y = -pointUnit.y * uniteY;
+//    pointPx.x = pointUnit.x * pxPerUnit.x;
+//    pointPx.y = -pointUnit.y * pxPerUnit.y;
 
 //    painter.drawPoint(pointPx.x, pointPx.y);
 
@@ -776,10 +776,10 @@
 //        if(rectReel.height() > 10 && rectReel.width() > 10)
 //        {
 //            QRectF viewRect;
-//            viewRect.setRight((rectReel.right() - centre.x) / uniteX);
-//            viewRect.setLeft((rectReel.left() - centre.x) / uniteX);
-//            viewRect.setTop((- rectReel.top() + centre.y) / uniteY);
-//            viewRect.setBottom((- rectReel.bottom() + centre.y) / uniteY);
+//            viewRect.setRight((rectReel.right() - centre.x) / pxPerUnit.x);
+//            viewRect.setLeft((rectReel.left() - centre.x) / pxPerUnit.x);
+//            viewRect.setTop((- rectReel.top() + centre.y) / pxPerUnit.y);
+//            viewRect.setBottom((- rectReel.bottom() + centre.y) / pxPerUnit.y);
 
 //            if( (win.Xmax - win.Xmin > MIN_AMPLITUDE and win.Ymax - win.Ymin > MIN_AMPLITUDE) and
 //                    (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
@@ -810,8 +810,8 @@
 
 //    if(cursorType == NORMAL)
 //    {
-//        double x = viewMapper.viewToUnitX((mouseX - centre.x) / uniteX);
-//        double y = viewMapper.viewToUnitY(- (mouseY - centre.y) / uniteY);
+//        double x = viewMapper.viewToUnitX((mouseX - centre.x) / pxPerUnit.x);
+//        double y = viewMapper.viewToUnitY(- (mouseY - centre.y) / pxPerUnit.y);
 
 //        if(selectedCurve.isSomethingSelected)
 //        {
@@ -843,8 +843,8 @@
 
 //        if(ongoingMouseClick && !(selectedCurve.isSomethingSelected && selectedCurve.tangentSelection))
 //        {
-//            double dx = -(mouseX - lastPosSouris.x)/uniteX;
-//            double dy = (mouseY - lastPosSouris.y)/uniteY;
+//            double dx = -(mouseX - lastPosSouris.x)/pxPerUnit.x;
+//            double dy = (mouseY - lastPosSouris.y)/pxPerUnit.y;
 
 //            cancelUpdateSignal = true;
 //            viewMapper.translateView(QPointF(dx, dy));
@@ -917,8 +917,8 @@
 //            start = trunc(viewMapper.getViewRect().left());
 //        else start = seqs[0]->get_nMin();
 
-//        if(uniteX < 1)
-//            step = 5*trunc(1/uniteX);
+//        if(pxPerUnit.x < 1)
+//            step = 5*trunc(1/pxPerUnit.x);
 
 //        if(fabs(trunc((x-start)/step) - (x-start)/step) < 0.5*step)
 //            pointUnit.x = trunc((x-start)/step) * step + start;
@@ -937,7 +937,7 @@
 //    }
 //    else if(selectedCurve.selectedObject == TANGENT_RESIZE)
 //    {
-//         double dx = (mouseX - lastPosSouris.x)/uniteX;
+//         double dx = (mouseX - lastPosSouris.x)/pxPerUnit.x;
 //         tangents->at(selectedCurve.id)->resizeTangent(dx, selectedCurve.tangentPtSelection);
 //    }
 //    else if(selectedCurve.selectedObject == TANGENT_MOVE)
@@ -972,7 +972,7 @@
 //            {
 //                if(!(selectedCurve.isSomethingSelected && selectedCurve.selectedObject == FUNCTION && draw == selectedCurve.kPos && i == selectedCurve.id))
 //                {
-//                    if((fabs(calcY - y) * uniteY) < information->getGraphSettings().curvesThickness + 1)
+//                    if((fabs(calcY - y) * pxPerUnit.y) < information->getGraphSettings().curvesThickness + 1)
 //                    {
 //                        mouseState.tangentHovering = false;
 //                        mouseState.pointedObjectType = FUNCTION;
@@ -1007,10 +1007,10 @@
 //            start = trunc(viewMapper.getViewRect().left());
 //        else start = nMin;
 
-//        if(uniteX < 1)
-//             step = 5*trunc(1/uniteX);
+//        if(pxPerUnit.x < 1)
+//             step = 5*trunc(1/pxPerUnit.x);
 
-//        if(fabs((trunc((x-start)/step) - (x-start)/step) * uniteX) < double(information->getGraphSettings().curvesThickness) + 2)
+//        if(fabs((trunc((x-start)/step) - (x-start)/step) * pxPerUnit.x) < double(information->getGraphSettings().curvesThickness) + 2)
 
 //            intAbscissa = trunc((x-start)/step) * step + start;
 
@@ -1034,7 +1034,7 @@
 
 //                if(!(selectedCurve.isSomethingSelected && selectedCurve.selectedObject == SEQUENCE && draw == selectedCurve.kPos && i == selectedCurve.id))
 //                {
-//                    if((fabs(calcY - y) * uniteY) < information->getGraphSettings().curvesThickness + 3)
+//                    if((fabs(calcY - y) * pxPerUnit.y) < information->getGraphSettings().curvesThickness + 3)
 //                    {
 //                        mouseState.tangentHovering = false;
 //                        mouseState.pointedObjectType = SEQUENCE;
@@ -1066,7 +1066,7 @@
 
 //        tangentPoints = tangent->getCaracteristicPoints();
 
-//        if(fabs(tangentPoints.left.x() - x) < 4/uniteX && fabs(tangentPoints.left.y() - y) < 4/uniteY)
+//        if(fabs(tangentPoints.left.x() - x) < 4/pxPerUnit.x && fabs(tangentPoints.left.y() - y) < 4/pxPerUnit.y)
 //        {
 //            mouseState.tangentHovering = true;
 //            mouseState.tangentPtSelection = -1; //-1 for left point, so when we add dx to the tangent's lenght, we multiply it by -1
@@ -1075,7 +1075,7 @@
 //            found = true;
 //            //recalculate = false;
 //        }
-//        else if(fabs(tangentPoints.right.x() - x) < 4/uniteX && fabs(tangentPoints.right.y() - y) < 4/uniteY)
+//        else if(fabs(tangentPoints.right.x() - x) < 4/pxPerUnit.x && fabs(tangentPoints.right.y() - y) < 4/pxPerUnit.y)
 //        {
 //            mouseState.tangentHovering = true;
 //            mouseState.tangentPtSelection = 1;
@@ -1084,7 +1084,7 @@
 //            found = true;
 //            //recalculate = false;
 //        }
-//        else if(fabs(tangentPoints.center.x() - x) < 5/uniteX && fabs(tangentPoints.center.y() - y) < 5/uniteY)
+//        else if(fabs(tangentPoints.center.x() - x) < 5/pxPerUnit.x && fabs(tangentPoints.center.y() - y) < 5/pxPerUnit.y)
 //        {
 //            mouseState.tangentHovering = true;
 //            mouseState.pointedObjectType = TANGENT_MOVE;
@@ -1125,10 +1125,10 @@
 //    }
 
 //    double Xreal = trunc(graphRange.Xmin / graphRange.Xstep) * graphRange.Xstep;
-//    double Xpos = Xreal * uniteX + centre.x;
+//    double Xpos = Xreal * pxPerUnit.x + centre.x;
 //    double pos;
 
-//    double step = graphRange.Xstep * uniteX;
+//    double step = graphRange.Xstep * pxPerUnit.x;
 
 //    double bas = height();
 //    double haut = 0;
@@ -1195,8 +1195,8 @@
 //    }
 
 //    double Yreal = trunc(graphRange.Ymax / graphRange.Ystep) * graphRange.Ystep;
-//    Ypos = -Yreal * uniteY + centre.y;
-//    step = graphRange.Ystep * uniteY;
+//    Ypos = -Yreal * pxPerUnit.y + centre.y;
+//    step = graphRange.Ystep * pxPerUnit.y;
 
 //    bas =  0;
 //    haut =  graphWidth;
@@ -1288,14 +1288,14 @@
 //    axesIntersec.y = centre.y;
 //    axesIntersec.x = centre.x;
 
-//    if(graphRange.Ymin > -20/uniteY)
+//    if(graphRange.Ymin > -20/pxPerUnit.y)
 //        axesIntersec.y = graphHeight - 20;
-//    else if(graphRange.Ymax < 20/uniteY)
+//    else if(graphRange.Ymax < 20/pxPerUnit.y)
 //        axesIntersec.y = 20;
 
-//    if(graphRange.Xmin > -10/uniteX)
+//    if(graphRange.Xmin > -10/pxPerUnit.x)
 //        axesIntersec.x = 10;
-//    else if(graphRange.Xmax < 10/uniteX)
+//    else if(graphRange.Xmax < 10/pxPerUnit.x)
 //        axesIntersec.x = graphWidth - 10;
 
 
@@ -1306,7 +1306,7 @@
 //    painter.drawLine(QPointF(0, axesIntersec.y), QPointF(graphWidth, axesIntersec.y));
 
 
-//    if(graphRange.Ymin > -20/uniteY)
+//    if(graphRange.Ymin > -20/pxPerUnit.y)
 //    {
 //        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-6), QPointF(axesIntersec.x+3, axesIntersec.y-4));
 //        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y-9), QPointF(axesIntersec.x+3, axesIntersec.y-7));
@@ -1316,7 +1316,7 @@
 
 //        painter.drawLine(QPointF(axesIntersec.x, axesIntersec.y-6), QPointF(axesIntersec.x, axesIntersec.y-7));
 //    }
-//    else if(graphRange.Ymax < 20/uniteY)
+//    else if(graphRange.Ymax < 20/pxPerUnit.y)
 //    {
 //        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+6), QPointF(axesIntersec.x+3, axesIntersec.y+4));
 //        painter.drawLine(QPointF(axesIntersec.x-3, axesIntersec.y+9), QPointF(axesIntersec.x+3, axesIntersec.y+7));

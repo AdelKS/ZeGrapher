@@ -340,6 +340,7 @@ struct FuncMap
 
 struct Range
 {
+    Range() : start(0), end(0), step(1) {}
     double start, end, step;
 };
 
@@ -352,6 +353,8 @@ struct Point
         return x < b.x;
     }
 };
+
+bool ptCompY(const Point &pt1, const Point &pt2);
 
 struct TangentPoints
 {
@@ -383,15 +386,27 @@ struct ParEqValues
     QList<double> tValues, xValues, yValues;
 };
 
-
-enum struct PointStyle { Rhombus, Disc, Square, Triangle, Cross };
+// N.B: enum values are used as indexes in a vector!
+enum struct PointStyle : unsigned int { Rhombus = 0, Disc, Square, Triangle, Cross };
 
 struct DataStyle
 {
+    DataStyle(): draw(true), drawLines(false), drawPoints(true),
+        color(Qt::black), pointStyle(PointStyle::Square), lineStyle(Qt::SolidLine) {};
+
     bool draw, drawLines, drawPoints;
     QColor color;
     PointStyle pointStyle;
     Qt::PenStyle lineStyle;
+};
+
+struct UserData
+{
+    UserData() : cartesian(true), style() {};
+
+    std::vector<Point> dataPoints;
+    bool cartesian;
+    DataStyle style;
 };
 
 struct SelectorPos
@@ -400,14 +415,8 @@ struct SelectorPos
     int index;
 };
 
-QPointF operator*(QPointF &pt, const QPointF &scalar)
-{
-    QPointF res(pt);
-    res.setX(res.x() * scalar.x());
-    res.setY(res.y() * scalar.y());
-    return res;
-}
+QPointF toQPointF(const Point &pt);
 
-
+Point operator*(Point &pt1, const Point &pt2);
 
 #endif // STRUCTURES_H

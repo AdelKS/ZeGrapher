@@ -39,6 +39,7 @@ MainView::MainView(Information *info): BaseGraphDraw(info)
     connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onZoomSettingsChange()));
     connect(information, SIGNAL(axesSettingsChanged()), this, SLOT(update()));
     connect(information, SIGNAL(gridSettingsChanged()), this, SLOT(update()));
+    connect(information, SIGNAL(dataUpdated()), this, SLOT(update()));
 }
 
 void MainView::updateWidgetSize()

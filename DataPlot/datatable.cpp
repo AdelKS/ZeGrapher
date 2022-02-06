@@ -20,11 +20,10 @@
 
 #include "DataPlot/datatable.h"
 
-int refCol;
-
-DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHeight, int columnWidth)
+DataTable::DataTable(Information *info, int rowCount, int columnCount,
+                     int rowHeight, int columnWidth):
+    selectedCol(0), information(info)
 {
-    information = info;
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->setMargin(0);
     setMinimumSize(0,0);
@@ -50,12 +49,13 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount, int rowHe
 
     for(int col = 0 ; col < columnCount ; col++)
     {
-        values << QList<double>();
+        auto &column = this->values.emplace_back();
+        column.reserve(rowCount);
         for(int row = 0 ; row < rowCount ; row++)
         {
             QTableWidgetItem *item = new QTableWidgetItem(" ");
             tableWidget->setItem(row, col, item);
-            values[col] << nan("") ;
+            column.push_back(nan("")) ;
         }
     }
 
@@ -141,7 +141,7 @@ int doubleCompareDescend(double a, double b)
     else return a>b;
 }
 
-QList<QStringList> DataTable::getData()
+QList<QStringList> DataTable::getStringData()
 {
     QList<QStringList> data;
 
@@ -208,6 +208,30 @@ void DataTable::removeUnnecessaryRows()
     }
 }
 
+auto DataTable::column_it(uint index)
+{
+    auto it = values.begin();
+    std::advance(it, index);
+    return it;
+}
+
+std::list<std::vector<double>>::const_iterator DataTable::get_column_const_it(uint index) const
+{
+    auto it = values.cbegin();
+    std::advance(it, index);
+    return it;
+}
+
+const std::vector<double> &DataTable::getColumnConst(uint index) const
+{
+    return *get_column_const_it(index);
+}
+
+std::vector<double> &DataTable::getColumn(uint index)
+{
+    return *column_it(index);
+}
+
 void DataTable::addData(QList<QStringList> data)
 {
     //the first line of the CSV file must contain column names, matching the validator, or left blank
@@ -257,89 +281,120 @@ void DataTable::sortColumnSwapCells(int col, bool ascending)
     col = tableWidget->horizontalHeader()->logicalIndex(col);
 
     if(ascending)
-        std::sort(values[col].begin(), values[col].end(), doubleCompareAscend);
-    else std::sort(values[col].begin(), values[col].end(), doubleCompareDescend);
+        std::sort(column_it(col)->begin(), column_it(col)->end(), doubleCompareAscend);
+    else std::sort(column_it(col)->begin(), column_it(col)->end(), doubleCompareDescend);
 
-    disableChecking = true;
-
-    for(int row = 0 ; row < tableWidget->rowCount(); row++)
-    {
-        if(std::isnan(values[col][row]))
-        {
-            tableWidget->item(row,col)->setText("");
-            tableWidget->item(row,col)->setBackgroundColor(backgroundColor);
-            tableWidget->item(row,col)->setTextColor(textColor);
-        }
-        else
-        {
-            tableWidget->item(row,col)->setText(QString::number(values[col][row], 'g', MAX_DOUBLE_PREC));
-            tableWidget->item(row,col)->setBackgroundColor(VALID_COLOR);
-            tableWidget->item(row,col)->setTextColor(Qt::black);
-        }
-    }
-
-    disableChecking = false;
+    updateTableFromData(false, true, 0, col);
 
     emit valEdited(0, col);
 }
 
-int listCompareAscend(QList<double> a, QList<double>b)
+void DataTable::updateTableFromData(bool refresh_all_columns,
+                         bool refresh_all_rows, uint row, uint col)
 {
-    if(std::isnan(b[refCol]))
-        return -1;
-    else return a[refCol] < b[refCol];
-}
-
-int listCompareDescend(QList<double> a, QList<double>b)
-{
-    if(std::isnan(b[refCol]))
-        return 1;
-    else return a[refCol] > b[refCol];
-}
-
-void DataTable::sortColumnSwapRows(int column, bool ascending)
-{
-    column = tableWidget->horizontalHeader()->logicalIndex(column);
-
-    QList<QList<double> > vals; //this time it will be vals[row][column] just to apply qSort on it, since QSorting values can be made only on columns...
-
-    for(int row = 0 ; row < tableWidget->rowCount(); row++)
-    {
-        vals << QList<double>();
-        for(int col = 0 ; col < tableWidget->columnCount(); col++)
-            vals[row] << values[col][row];
-    }
-
-    refCol = column;
-    if(ascending)
-        qSort(vals.begin(), vals.end(), listCompareAscend);
-    else qSort(vals.begin(), vals.end(), listCompareDescend);
-
     disableChecking = true;
 
-    for(int row = 0 ; row < tableWidget->rowCount(); row++)
+    uint row_max = row+1;
+    if(refresh_all_rows)
     {
-        for(int col = 0 ; col < tableWidget->columnCount(); col++)
+        row_max = tableWidget->rowCount();
+        row = 0;
+    }
+
+    uint col_max = col+1;
+    if(refresh_all_columns)
+    {
+        col_max = tableWidget->columnCount();
+        col = 0;
+    }
+
+    for(uint row_index = row ; row_index < row_max; row_index++)
+    {
+        for(uint col_index = col ; col_index < col_max; col_index++)
         {
-            values[col][row] = vals[row][col];
-            if(std::isnan(values[col][row]))
+            if(std::isnan(getColumnConst(col_index)[row_index]))
             {
                 tableWidget->item(row,col)->setText("");
-                tableWidget->item(row,col)->setBackgroundColor(backgroundColor);
-                tableWidget->item(row,col)->setTextColor(textColor);
+                tableWidget->item(row,col)->setBackground(QBrush(backgroundColor));
+                tableWidget->item(row,col)->setForeground(QBrush(textColor));
             }
             else
             {
-                tableWidget->item(row,col)->setText(QString::number(values[col][row], 'g', MAX_DOUBLE_PREC));
-                tableWidget->item(row,col)->setBackgroundColor(VALID_COLOR);
-                tableWidget->item(row,col)->setTextColor(Qt::black);
+                tableWidget->item(row,col)->setText(QString::number(getColumnConst(col_index)[row_index], 'g', MAX_DOUBLE_PREC));
+                tableWidget->item(row,col)->setBackground(QBrush(VALID_COLOR));
+                tableWidget->item(row,col)->setForeground(QBrush(Qt::black));
             }
         }
     }
 
     disableChecking = false;
+}
+
+const std::vector<double> &DataTable::getSelectedColumn() const
+{
+    return getColumnConst(selectedCol);
+}
+
+void DataTable::sortColumnSwapRows(int column, bool ascending)
+{
+    selectedCol = tableWidget->horizontalHeader()->logicalIndex(column);
+
+    std::vector<uint> index_swap_map(tableWidget->rowCount());
+    std::iota(index_swap_map.begin(), index_swap_map.end(), 0);
+
+    if(ascending)
+    {
+        struct CompAscend
+        {
+          CompAscend(const DataTable& a): a(a){}
+          bool operator()(uint row_a, uint row_b) const
+          {
+              const std::vector<double> &selected_col = a.getSelectedColumn();
+              if(std::isnan(selected_col[row_b]) || std::isnan(selected_col[row_a]))
+                  return -1;
+              else return selected_col[row_a] < selected_col[row_b];
+          }
+
+         const DataTable& a;
+        };
+
+        std::sort(index_swap_map.begin(), index_swap_map.end(), CompAscend(*this));
+    }
+    else
+    {
+        struct CompDescend
+        {
+          CompDescend(const DataTable& a): a(a){}
+          bool operator()(uint row_a, uint row_b) const
+          {
+              const std::vector<double> &selected_col = a.getSelectedColumn();
+              if(std::isnan(selected_col[row_b]) || std::isnan(selected_col[row_a]))
+                  return 1;
+              else return selected_col[row_a] > selected_col[row_b];
+          }
+
+         const DataTable& a;
+        };
+
+        std::sort(index_swap_map.begin(), index_swap_map.end(), CompDescend(*this));
+    }
+
+    for(uint i = 0 ; i < index_swap_map.size() ; i++)
+        if(index_swap_map[i] != i)
+            swapDataRows(i, index_swap_map[i]);
+
+    updateTableFromData();
 
     emit valEdited(0,column);
+}
+
+void DataTable::swapDataRows(uint row1, uint row2)
+{
+    /* swaps these two rows in all columns */
+    for(auto col = values.begin() ; col != values.end() ; col++)
+    {
+        std::swap((*col)[row1], (*col)[row2]);
+    }
 }
 
 void DataTable::fillColumnFromRange(int col, Range range)
@@ -362,12 +417,12 @@ void DataTable::fillColumnFromRange(int col, Range range)
 
     for(int i = 0 ; i < end ; i++)
     {
-        values[col][row] = val;
+        getColumn(col)[row] = val;
 
         item = tableWidget->item(row, col);
         item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
-        item->setBackgroundColor(VALID_COLOR);
-        item->setTextColor(Qt::black);
+        item->setBackground(QBrush(VALID_COLOR));
+        item->setForeground(QBrush(Qt::black));
 
         if(tableWidget->rowCount() == row+1)
             addRow();
@@ -395,37 +450,18 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
 
     int row = 0;
 
-    disableChecking = true;
-
     double val;
-    QList<double> rowVals;
+    std::vector<double> rowVals(columnNames.size());
 
     for(row = 0 ; row < tableWidget->rowCount() ; row++)
     {
-        rowVals.clear();
-        for(int column = 0 ; column < tableWidget->columnCount() ; column++) { rowVals << values[column][row];}
+        for(int column = 0 ; column < tableWidget->columnCount() ; column++) { rowVals[column] = getColumnConst(column)[row];}
 
         calculator->setAdditionnalVarsValues(rowVals);
-        val = calculator->calculateFromTree(tree, values[col][row]);
-        values[col][row] = val;
-        QTableWidgetItem *item = tableWidget->item(row, col);
-
-        if(std::isnan(val))
-        {
-            item->setText("");
-            item->setBackgroundColor(backgroundColor);
-            item->setTextColor(textColor);
-        }
-        else
-        {
-            item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
-            item->setBackgroundColor(VALID_COLOR);
-            item->setTextColor(Qt::black);
-        }
-
+        val = calculator->calculateFromTree(tree, getColumnConst(col)[row]);
+        getColumn(col)[row] = val;
     }
 
-    disableChecking = false;
     treeCreator->deleteFastTree(tree);
 
     emit valEdited(row, col);
@@ -443,11 +479,6 @@ void DataTable::addColumn()
     insertColumn(tableWidget->columnCount());
 }
 
-QList<QList<double> > &DataTable::getValues()
-{
-    return values;
-}
-
 void DataTable::checkCell(QTableWidgetItem *item)
 {
     if(disableChecking)
@@ -461,9 +492,9 @@ void DataTable::checkCell(QTableWidgetItem *item)
     QString expr = item->text();
     if(expr.isEmpty())
     {
-        item->setBackgroundColor(backgroundColor);
-        item->setTextColor(textColor);
-        values[item->column()][item->row()] = nan("");
+        item->setBackground(QBrush(backgroundColor));
+        item->setForeground(QBrush(textColor));
+        getColumn(item->column())[item->row()] = nan("");
     }
     else
     {
@@ -472,20 +503,20 @@ void DataTable::checkCell(QTableWidgetItem *item)
 
         if(ok)
         {
-            item->setBackgroundColor(VALID_COLOR);
-            item->setTextColor(Qt::black);
+            item->setBackground(QBrush(VALID_COLOR));
+            item->setForeground(QBrush(Qt::black));
 
-            values[item->column()][item->row()] = val;
+            getColumn(item->column())[item->row()] = val;
             disableChecking = true;
             item->setText(QString::number(val, 'g', MAX_DOUBLE_PREC));
             disableChecking = false;
         }
         else
         {
-            item->setBackgroundColor(INVALID_COLOR);
-            item->setTextColor(Qt::black);
+            item->setBackground(QBrush(INVALID_COLOR));
+            item->setForeground(QBrush(Qt::black));
 
-            values[item->column()][item->row()] = nan("");
+            getColumn(item->column())[item->row()] = nan("");
         }
     }
 
@@ -499,11 +530,13 @@ void DataTable::insertRow(int index)
 
     disableChecking = true;
 
-    for(int col = 0 ; col < values.size() ; col++)
+    for(uint col = 0 ; col < values.size() ; col++)
     {
         QTableWidgetItem *item = new QTableWidgetItem(" ");
         tableWidget->setItem(index, col, item);
-        values[col].insert(index, nan(""));
+
+        auto &column = getColumn(col);
+        column.insert(column.begin()+index, nan(""));
     }
 
     disableChecking = false;
@@ -529,8 +562,9 @@ void DataTable::insertColumn(int index)
     tableWidget->setHorizontalHeaderLabels(columnNames);
 
     tableWidget->setColumnWidth(index, cellWidth);
-    int rowCount = values[0].size();
-    values.insert(index, QList<double>());
+    int rowCount = values.front().size();
+
+    values.emplace(column_it(index), std::vector<double>(rowCount, nan("")));
 
     disableChecking = true;
 
@@ -538,7 +572,6 @@ void DataTable::insertColumn(int index)
     {
         QTableWidgetItem *item = new QTableWidgetItem(" ");
         tableWidget->setItem(row, index, item);
-        values[index] << nan("") ;
     }
 
     disableChecking = false;
@@ -552,7 +585,7 @@ void DataTable::removeRow(int index)
 {
     tableWidget->removeRow(index);
 
-    for(int col = 0 ; col < values.size() ; col++) { values[col].removeAt(index); }
+    for(std::vector<double> &column: values) { column.erase(column.begin() + index); }
 
     emit newRowCount(tableWidget->rowCount());
 
@@ -572,7 +605,7 @@ void DataTable::removeColumn(int index)
     tableWidget->removeColumn(index);
     columnNames.removeAt(index);
 
-    values.removeAt(index);
+    values.erase(column_it(index));
 
     tableWidget->setFixedWidth(tableWidget->columnCount() * cellWidth + tableWidget->verticalHeader()->width() + 10);
 

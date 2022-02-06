@@ -20,30 +20,25 @@
 
 #include "Calculus/treecreator.h"
 
-TreeCreator::TreeCreator(ObjectType type)
+const QStringList TreeCreator::refFunctions = {"acos", "asin", "atan", "cos", "sin", "tan", "sqrt"
+                                                               , "log", "ln", "abs", "exp", "floor", "ceil", "cosh"
+                                                               , "sinh", "tanh", "E", "e", "acosh", "asinh", "atanh"
+                                                               , "erf", "erfc", "gamma", "Γ", "ch", "sh", "th", "ach"
+                                                               , "ash", "ath"};
+
+TreeCreator::TreeCreator(ObjectType type): funcType(type),
+    functions({"f", "g", "h", "p", "r", "m"}),
+    sequences({"u", "v", "l", "w", "q", "z"}),
+    antiderivatives({"F", "G", "H", "P", "R", "M"}),
+    derivatives({"f'", "g'", "h'", "p'", "r'", "m'"}),
+    constants({"π", "pi", "Pi", "PI"}),
+    vars({"x", "t", "n", "k"}),
+    constantsVals({M_PI, M_PI, M_PI, M_PI}),
+    operators({'^', '*', '/', '+', '-'}),
+    operatorsPriority({POW, OP_HIGH, OP_HIGH, OP_LOW, OP_LOW}),
+    operatorsTypes({POW, MULTIPLY, DIVIDE, PLUS, MINUS}),
+    authorizedVars({false, false, false, false})
 {
-    funcType = type;
-
-    refFunctions << "acos" << "asin" << "atan" << "cos" << "sin" << "tan" << "sqrt"
-                 << "log" << "ln" << "abs" << "exp" << "floor" << "ceil" << "cosh"
-                 << "sinh" << "tanh" << "E" << "e" << "acosh" << "asinh" << "atanh"
-                 << "erf" << "erfc" << "gamma" << "Γ" << "ch" << "sh" << "th" << "ach"
-                 << "ash" << "ath";
-    functions << "f" << "g" << "h" << "p" << "r" << "m";
-    antiderivatives << "F" << "G" << "H" << "P" << "R" << "M";
-    derivatives << "f'" << "g'" << "h'" << "p'" << "r'" << "m'";
-    sequences << "u" << "v" << "l" << "w" << "q" << "z";
-
-    constants << "π" << "pi" << "Pi" << "PI";
-    constantsVals << M_PI << M_PI << M_PI << M_PI ;
-
-    vars << "x" << "t" << "n" << "k";
-    authorizedVars << false << false << false << false;
-
-    operators << '^' << '*' << '/' << '+' << '-';
-    operatorsPriority << POW << OP_HIGH << OP_HIGH << OP_LOW << OP_LOW;
-    operatorsTypes << POW << MULTIPLY << DIVIDE << PLUS << MINUS;
-
     refreshAuthorizedVars();
 }
 
@@ -128,7 +123,7 @@ QList<int> TreeCreator::getCalledFuncs(QString expr)
             while(expr[i].isLetter() && i < expr.size())
                 i++;
 
-            calledObjects << expr.mid(letterStart, i - letterStart);
+            calledObjects.push_back(expr.mid(letterStart, i - letterStart));
         }
         i++;
     }
@@ -137,7 +132,7 @@ QList<int> TreeCreator::getCalledFuncs(QString expr)
     {
         if((calledObjects.contains(antiderivatives[i]) || calledObjects.contains(functions[i]) || calledObjects.contains(derivatives[i]))
                 && !calledFuncs.contains(i))
-            calledFuncs << i;
+            calledFuncs.push_back(i);
     }
 
     return calledFuncs;
@@ -163,7 +158,7 @@ QList<int> TreeCreator::getCalledSeqs(QString expr)
             while(expr[i].isLetter() && i < expr.size())
                 i++;
 
-            calledObjects << expr.mid(letterStart, i - letterStart);
+            calledObjects.push_back(expr.mid(letterStart, i - letterStart));
         }
         i++;
     }
@@ -171,7 +166,7 @@ QList<int> TreeCreator::getCalledSeqs(QString expr)
     for(i = 0 ; i < sequences.size() ; i++)
     {
         if(calledObjects.contains(sequences[i]) && !calledSeqs.contains(i))
-            calledSeqs << i;
+            calledSeqs.push_back(i);
     }
 
     return calledSeqs;
@@ -217,9 +212,9 @@ bool TreeCreator::check(QString formula)
             i--;
 
             QString number = formula.mid(numStart, numDigits);
-            decompPriorites << NUMBER;
-            decompTypes << NUMBER;
-            decompValues << number.toDouble(&ok);
+            decompPriorites.push_back(NUMBER);
+            decompTypes.push_back(NUMBER);
+            decompValues.push_back(number.toDouble(&ok));
             if(!ok)
                 return false;
 
@@ -245,30 +240,30 @@ bool TreeCreator::check(QString formula)
                 if(i+1 >= formula.size() || (formula[i+1] != '(' && formula[i] != 'e' && formula[i] != 'E'))
                     return false;
 
-                decompPriorites << FUNC;
-                decompValues << 0.0;
+                decompPriorites.push_back(FUNC);
+                decompValues.push_back(0.0);
                 openingParenthesis = true;
                 digit = ope = canEnd = closingParenthesis = varOrFunc = numberSign = false;
 
                 if(refFunctions.contains(name))
                 {
-                    decompTypes << refFunctions.indexOf(name) + REF_FUNC_START + 1;
+                    decompTypes.push_back(refFunctions.indexOf(name) + REF_FUNC_START + 1);
 
                     if(name == "E" || name == "e")
                         digit = numberSign = openingParenthesis = true;
                 }
 
                 else if(antiderivatives.contains(name) && funcType == FUNCTION)
-                    decompTypes << antiderivatives.indexOf(name) + INTEGRATION_FUNC_START + 1;
+                    decompTypes.push_back(antiderivatives.indexOf(name) + INTEGRATION_FUNC_START + 1);
 
                 else if(functions.contains(name))
-                    decompTypes << functions.indexOf(name) + FUNC_START + 1;
+                    decompTypes.push_back(functions.indexOf(name) + FUNC_START + 1);
 
                 else if(derivatives.contains(name))
-                    decompTypes << derivatives.indexOf(name) + DERIV_START + 1;
+                    decompTypes.push_back(derivatives.indexOf(name) + DERIV_START + 1);
 
                 else if(sequences.contains(name) && funcType == SEQUENCE)
-                    decompTypes << sequences.indexOf(name) + SEQUENCES_START + 1;
+                    decompTypes.push_back(sequences.indexOf(name) + SEQUENCES_START + 1);
 
                 else return false;
             }
@@ -281,21 +276,21 @@ bool TreeCreator::check(QString formula)
                 if(customVars.contains(name)) /* customVars comes at first because of overriding policy, customvars come from dataplot, and user can redefine
                                                 n t or x or k */
                 {
-                    decompTypes << ADDITIONNAL_VARS_START + customVars.indexOf(name);
-                    decompPriorites << VAR;
-                    decompValues << customVars.indexOf(name);
+                    decompTypes.push_back(ADDITIONNAL_VARS_START + customVars.indexOf(name));
+                    decompPriorites.push_back(VAR);
+                    decompValues.push_back(customVars.indexOf(name));
                 }
                 else if(constants.contains(name))
                 {
-                    decompPriorites << NUMBER;
-                    decompTypes << NUMBER;
-                    decompValues << constantsVals[constants.indexOf(name)];
+                    decompPriorites.push_back(NUMBER);
+                    decompTypes.push_back(NUMBER);
+                    decompValues.push_back(constantsVals[constants.indexOf(name)]);
                 }
                 else if(vars.contains(name) && authorizedVars[vars.indexOf(name)])
                 {
-                    decompTypes << vars.indexOf(name) + VARS_START + 1;
-                    decompPriorites << VAR;
-                    decompValues << 0.0;
+                    decompTypes.push_back(vars.indexOf(name) + VARS_START + 1);
+                    decompPriorites.push_back(VAR);
+                    decompValues.push_back(0.0);
                 }                           
 
                 else return false;
@@ -308,9 +303,9 @@ bool TreeCreator::check(QString formula)
         {
             short pos = operators.indexOf(formula[i]);
 
-            decompTypes << operatorsTypes[pos];
-            decompPriorites << operatorsPriority[pos];
-            decompValues << 0.0 ;
+            decompTypes.push_back(operatorsTypes[pos]);
+            decompPriorites.push_back(operatorsPriority[pos]);
+            decompValues.push_back(0.0);
 
             openingParenthesis = digit = varOrFunc = true;
             ope = numberSign = closingParenthesis = canEnd = false;
@@ -319,9 +314,9 @@ bool TreeCreator::check(QString formula)
         {           
             pth++;
 
-            decompTypes << PTHO ;
-            decompPriorites << PTHO;
-            decompValues << 0.0 ;
+            decompTypes.push_back(PTHO);
+            decompPriorites.push_back(PTHO);
+            decompValues.push_back(0.0);
 
             numberSign = digit = varOrFunc = openingParenthesis = true;
             ope = closingParenthesis = canEnd = false;
@@ -330,9 +325,9 @@ bool TreeCreator::check(QString formula)
         {            
             pth--;
 
-            decompTypes << PTHF ;
-            decompPriorites << PTHF ;
-            decompValues << 0.0 ;
+            decompTypes.push_back(PTHF);
+            decompPriorites.push_back(PTHF);
+            decompValues.push_back(0.0);
 
             ope = closingParenthesis = canEnd = true;
             digit = numberSign = openingParenthesis = varOrFunc = false;

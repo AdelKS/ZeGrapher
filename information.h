@@ -47,14 +47,11 @@ public:
     const GraphRange& getGraphRange();
     const ZeAppSettings& getAppSettings();
 
-    void addDataList();
-    void removeDataList(int index);
-    void setData(int index, QList<QPointF> list);
-    void setDataStyle(int index, DataStyle style);
+    void addDataList(const std::shared_ptr<const UserData> &userData);
+    void removeDataList(const std::shared_ptr<const UserData> &userData);
 
     int getDataListsCount();
-    QList<QPointF> getDataList(int index);
-    DataStyle getDataStyle(int index);
+    std::shared_ptr<const UserData> getDataPoints(int index);
 
     void addDataRegression(Regression *reg);
     void removeDataRegression(Regression *reg);
@@ -116,8 +113,7 @@ public slots:
 
 protected:
 
-    QList<QList<QPointF> > data;
-    QList<DataStyle> dataStyle;
+    std::list<std::shared_ptr<UserData const>> userDataSets;
 
     QList<Regression*> regressions;
 
