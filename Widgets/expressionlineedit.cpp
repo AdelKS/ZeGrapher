@@ -20,7 +20,7 @@
 
 #include "expressionlineedit.h"
 
-ExpressionLineEdit::ExpressionLineEdit()
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent) : QLineEdit(parent)
 {
     validCSS = "padding-left: 5px; border-radius: 5px; background-color: " + QString(VALID_COLOR) + ";";
     invalidCSS = "padding-left: 5px; border-radius: 5px; background-color: " + QString(INVALID_COLOR) + ";";

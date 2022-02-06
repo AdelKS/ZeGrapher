@@ -23,7 +23,11 @@
 
 #include "Widgets/parconfwidget.h"
 
-ParConfWidget::ParConfWidget(QChar parName, bool withAnimateButton, bool withKeepTracksButton) : QGroupBox(), treeCreator(ObjectType::NORMAL_EXPR)
+ParConfWidget::ParConfWidget(QChar parName,
+                             bool withAnimateButton,
+                             bool withKeepTracksButton,
+                             QWidget *parent) :
+    QGroupBox(parent), treeCreator(ObjectType::NORMAL_EXPR)
 {
     setTitle(tr("Adjustments for ") + parName + " :");
     keepTracksButtonAvailable = withKeepTracksButton;

@@ -7,7 +7,7 @@
 class ExpressionLineEdit : public QLineEdit
 {
 public:
-    ExpressionLineEdit();
+    ExpressionLineEdit(QWidget *parent = nullptr);
 
 public slots:
     void clear();

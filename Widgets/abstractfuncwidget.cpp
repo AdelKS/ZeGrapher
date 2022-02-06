@@ -20,31 +20,35 @@
 
 #include "Widgets/abstractfuncwidget.h"
 
-AbstractFuncWidget::AbstractFuncWidget() : treeCreator(ObjectType::FUNCTION)
+AbstractFuncWidget::AbstractFuncWidget() :
+    drawCheckBox(new QCheckBox()),
+    secondContainerLayout(new QHBoxLayout()),
+    nameLabel(new QLabel()),
+    errorMessageLabel(new QLabel()),
+    errorMessageWidget(new QWidget()),
+    expressionLineEdit(new ExpressionLineEdit()),
+    colorButton(new QColorButton()),
+    secondColorButton(new QColorButton()),
+    kConfWidget(new ParConfWidget('k')),
+    treeCreator(ObjectType::FUNCTION),
+    isParametric(false),
+    isValid(false)
 {
-    isParametric = isValid = false;
     addMainWidgets();
 }
 
 void AbstractFuncWidget::addMainWidgets()
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout();
 
-    QHBoxLayout *firstContainerLayout = new QHBoxLayout;
+    QHBoxLayout *firstContainerLayout = new QHBoxLayout();
     firstContainerLayout->setMargin(0);
 
-    drawCheckBox = new QCheckBox();
     drawCheckBox->setChecked(true);
 
-    nameLabel = new QLabel;
-
-    expressionLineEdit = new ExpressionLineEdit();
     expressionLineEdit->setMaximumHeight(25);
 
     connect(expressionLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));   
-
-    colorButton = new QColorButton;
-    secondColorButton = new QColorButton;
 
     firstContainerLayout->addWidget(drawCheckBox);
     firstContainerLayout->addWidget(nameLabel);
@@ -56,19 +60,16 @@ void AbstractFuncWidget::addMainWidgets()
 
     mainLayout->addLayout(firstContainerLayout);
 
-    secondContainerLayout = new QHBoxLayout;
     secondContainerLayout->setMargin(0);
     secondContainerLayout->setSpacing(4);   
 
     mainLayout->addLayout(secondContainerLayout);
 
-    kConfWidget = new ParConfWidget('k');
     kConfWidget->hide();
 
     connect(kConfWidget, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
     mainLayout->addWidget(kConfWidget);
 
-    errorMessageWidget = new QWidget();
     QHBoxLayout *hlayout = new QHBoxLayout(errorMessageWidget);
     hlayout->setMargin(0);
     hlayout->setSpacing(3);
@@ -79,7 +80,6 @@ void AbstractFuncWidget::addMainWidgets()
     errorIcon->setMaximumSize(25,25);
     hlayout->addWidget(errorIcon);
 
-    errorMessageLabel = new QLabel();
     errorMessageLabel->setWordWrap(true);
     hlayout->addWidget(errorMessageLabel);
 

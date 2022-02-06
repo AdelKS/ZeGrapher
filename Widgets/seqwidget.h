@@ -64,7 +64,7 @@ protected:
 
     QList<FuncWidget*> funcWidgets;
     QList<SeqWidget*> seqWidgets;
-    SeqCalculator *calculator;
+    SeqCalculator calculator;
     ExpressionLineEdit *firstValsLine;
     ColorSaver colorSaver;
     QChar seqName;

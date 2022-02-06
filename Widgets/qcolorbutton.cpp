@@ -21,7 +21,7 @@
 
 #include "Widgets/qcolorbutton.h"
 
-QColorButton::QColorButton(QColor color)
+QColorButton::QColorButton(QColor color, QWidget *parent) : QPushButton(parent)
 {
     buttonSize = 20;
     setFixedSize(buttonSize, buttonSize);

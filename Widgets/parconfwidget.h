@@ -31,7 +31,10 @@ class ParConfWidget : public QGroupBox
 {
     Q_OBJECT
 public:
-    explicit ParConfWidget(QChar parName, bool withAnimateButton = false, bool withKeepTracksButton = false);
+    explicit ParConfWidget(QChar parName,
+                           bool withAnimateButton = false,
+                           bool withKeepTracksButton = false,
+                           QWidget *parent = nullptr);
     ~ParConfWidget();
 
 

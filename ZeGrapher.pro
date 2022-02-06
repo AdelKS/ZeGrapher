@@ -7,6 +7,10 @@
 
 QT += widgets network svg
 
+debug {
+    CONFIG += sanitizer sanitize_address
+}
+
 TARGET = ZeGrapher
 TEMPLATE = app
 TRANSLATIONS = ZeGrapher_fr.ts \
@@ -90,7 +94,8 @@ SOURCES += \
     Windows/updatecheck.cpp \
     Windows/mainwindow.cpp \
     Widgets/expressionlineedit.cpp \
-    Widgets/axissettingswidget.cpp
+    Widgets/axissettingswidget.cpp \
+    structures.cpp
 
 HEADERS  += \
     GraphDraw/basegraphdraw.h \

@@ -3,11 +3,10 @@
 
 EstheticSettings::EstheticSettings(Information *information, QWidget *parent) :
     QWidget(parent),
+    information(information),
     ui(new Ui::EstheticSettings)
 {
     ui->setupUi(this);
-
-    this->information = information;
 
     backgroundColorButton = new QColorButton(Qt::white);
     ui->formLayout->addRow(tr("Background color:"), backgroundColorButton);

@@ -16,8 +16,8 @@ class EstheticSettings : public QWidget
 
 public:
     explicit EstheticSettings(Information *information, QWidget *parent = nullptr);
-    const ZeEstheticSettings &getSettings();
     ~EstheticSettings();
+    const ZeEstheticSettings &getSettings();
 
 public slots:
     void resetToDefaults();

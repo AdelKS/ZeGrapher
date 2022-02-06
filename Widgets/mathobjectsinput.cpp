@@ -22,9 +22,12 @@
 #include "ui_mathobjectsinput.h"
 
 
-MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent): QWidget(parent)
-{   
-    ui = new Ui::MathObjectsInput;
+MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent):
+    QWidget(parent),
+    ui(new Ui::MathObjectsInput),
+    parEqWidgets(),
+    parEqController(&parEqWidgets)
+{
     ui->setupUi(this);   
 
     setWindowFlags(Qt::Window);
@@ -33,12 +36,10 @@ MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent): QWidget(
     helpWindow.setParent(this);
     helpWindow.setWindowFlags(Qt::Window);
 
-    parEqController = new ParEqController(&parEqWidgets);
+    connect(ui->periodSpinBox, SIGNAL(valueChanged(int)), &parEqController, SLOT(setIncrPeriod(int)));
+    connect(ui->freqSpinBox, SIGNAL(valueChanged(int)), &parEqController, SLOT(setUpdateFreq(int)));
 
-    connect(ui->periodSpinBox, SIGNAL(valueChanged(int)), parEqController, SLOT(setIncrPeriod(int)));
-    connect(ui->freqSpinBox, SIGNAL(valueChanged(int)), parEqController, SLOT(setUpdateFreq(int)));
-
-    connect(parEqController, SIGNAL(animationUpdate()), info, SLOT(emitAnimationUpdate()));
+    connect(&parEqController, SIGNAL(animationUpdate()), info, SLOT(emitAnimationUpdate()));
 
     setWindowTitle(tr("Plot"));
     setWindowIcon(QIcon(":/icons/functions.png"));
@@ -321,7 +322,7 @@ void MathObjectsInput::addParEq()
     parEqWidgets << widget;
     ui->parEqLayout->addWidget(widget);
 
-    parEqController->newParEqAdded();
+    parEqController.newParEqAdded();
 }
 
 void MathObjectsInput::removeParEq(ParEqWidget *widget)
@@ -335,11 +336,11 @@ void MathObjectsInput::removeParEq(ParEqWidget *widget)
 
 void MathObjectsInput::addDataWidget()
 {
-    information->addDataList();
-
-    DataWidget *widget = new DataWidget(dataWidgets.size(), information, this);
+    DataWidget *widget = new DataWidget(information, this);
     connect(widget, SIGNAL(removeMe(DataWidget*)), this, SLOT(removeDataWidget(DataWidget*)));
     connect(widget->getDataWindow(), SIGNAL(showHelpWindow()), this, SLOT(showDataHelpWindow()));
+
+    information->addDataList(widget->getUserData());
 
     dataWidgets << widget;
     ui->dataWidgetsContainerLayout->addWidget(widget);
@@ -347,10 +348,7 @@ void MathObjectsInput::addDataWidget()
 
 void MathObjectsInput::removeDataWidget(DataWidget *widget)
 {
-    information->removeDataList(dataWidgets.indexOf(widget));
-
-    for(int i = dataWidgets.indexOf(widget)+1; i < dataWidgets.size(); i++)
-        dataWidgets[i]->setWidgetNum(i-1);
+    information->removeDataList(widget->getUserData());
 
     dataWidgets.removeOne(widget);
     widget->close();
@@ -394,4 +392,5 @@ void MathObjectsInput::closeAllOpenedWindows()
 
 MathObjectsInput::~MathObjectsInput()
 {
+   delete ui;
 }

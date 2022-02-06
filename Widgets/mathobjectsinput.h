@@ -37,8 +37,9 @@ class MathObjectsInput : public QWidget
 
 public:
     explicit MathObjectsInput(Information *info, QWidget *parent = 0);
+    ~MathObjectsInput();
+
     void closeAllOpenedWindows();
-     ~MathObjectsInput();
 
 public slots:
     void validateFunctions();
@@ -90,13 +91,14 @@ private:
     QList<FuncWidget*> funcWidgets;
     QList<SeqWidget*> seqWidgets;
 
-    QList<QChar> antiderivatives;   
-    ParEqController *parEqController;
+    QList<QChar> antiderivatives;
 
     QList<TangentWidget*> tangentWidgets;
     QList<StraightLineWidget*> straightlineWidgets;
     QList<ParEqWidget*> parEqWidgets;
-    QList<DataWidget*> dataWidgets;
+    QList<DataWidget*> dataWidgets;    
+
+    ParEqController parEqController;
 };
 
 #endif // MATHOBJECTSINPUT_H

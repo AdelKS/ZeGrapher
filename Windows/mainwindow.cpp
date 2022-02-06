@@ -174,6 +174,7 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 MainWindow::~MainWindow()
 {
     delete keyboard;
+    delete information;
 }
 
 
