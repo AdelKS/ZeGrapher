@@ -34,7 +34,6 @@ class DataTable : public QWidget
     Q_OBJECT
 public:
     explicit DataTable(Information *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
-    ~DataTable();
 
     std::list<std::vector<double>>::const_iterator get_column_const_it(uint index) const;
 
@@ -108,8 +107,8 @@ protected:
     uint selectedCol;
 
     bool disableChecking;
-    ExprCalculator *calculator;
-    TreeCreator *treeCreator;
+    ExprCalculator calculator;
+    TreeCreator treeCreator;
     int cellHeight, cellWidth, verticalHeaderWidth;
     Information *information;
     QTableWidget *tableWidget;

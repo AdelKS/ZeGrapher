@@ -40,6 +40,7 @@ class ColumnActionsWidget : public QWidget
     Q_OBJECT
 public:
     explicit ColumnActionsWidget(DataTable *table, Information *info, int columnnum);
+    ~ColumnActionsWidget();
 
 public slots:
     void setSelectorPos(bool betweenColumns, int index);
@@ -63,7 +64,7 @@ protected slots:
 protected:
 
     Information *information;
-    ExprCalculator *calculator;
+    ExprCalculator calculator;
     int columnCount;
     QSignalMapper *signalMapper, *lineEditsMapper;
     QWidget *startingActions, *fillOptions, *sortOptions, *confirmDelete, *insertColumn;

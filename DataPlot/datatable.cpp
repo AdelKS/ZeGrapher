@@ -22,15 +22,15 @@
 
 DataTable::DataTable(Information *info, int rowCount, int columnCount,
                      int rowHeight, int columnWidth):
-    selectedCol(0), information(info)
+    selectedCol(0),
+    calculator(false, info->getFuncsList()),
+    treeCreator(ObjectType::DATA_TABLE_EXPR),
+    information(info),
+    tableWidget(new QTableWidget(rowCount,columnCount))
 {
     QHBoxLayout *mainLayout = new QHBoxLayout;
     mainLayout->setMargin(0);
     setMinimumSize(0,0);
-    calculator = new ExprCalculator(false, information->getFuncsList());
-    treeCreator = new TreeCreator(ObjectType::DATA_TABLE_EXPR);
-
-    tableWidget = new QTableWidget(rowCount,columnCount);
 
     tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -438,7 +438,7 @@ void DataTable::fillColumnFromRange(int col, Range range)
 bool DataTable::fillColumnFromExpr(int col, QString expr)
 {
     bool ok = false;
-    FastTree *tree = treeCreator->getTreeFromExpr(expr, ok, columnNames);
+    FastTree *tree = treeCreator.getTreeFromExpr(expr, ok, columnNames);
 
     if(!ok)
         return false;
@@ -457,12 +457,12 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
     {
         for(int column = 0 ; column < tableWidget->columnCount() ; column++) { rowVals[column] = getColumnConst(column)[row];}
 
-        calculator->setAdditionnalVarsValues(rowVals);
-        val = calculator->calculateFromTree(tree, getColumnConst(col)[row]);
+        calculator.setAdditionnalVarsValues(rowVals);
+        val = calculator.calculateFromTree(tree, getColumnConst(col)[row]);
         getColumn(col)[row] = val;
     }
 
-    treeCreator->deleteFastTree(tree);
+    treeCreator.deleteFastTree(tree);
 
     emit valEdited(row, col);
     return true;
@@ -499,7 +499,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
     else
     {
         bool ok = false;
-        double val = calculator->calculateExpression(expr, ok);
+        double val = calculator.calculateExpression(expr, ok);
 
         if(ok)
         {
@@ -682,10 +682,4 @@ int DataTable::getColumnCount()
 int DataTable::getRowCount()
 {
     return tableWidget->rowCount();
-}
-
-DataTable::~DataTable()
-{
-    delete calculator;
-    delete treeCreator;
 }

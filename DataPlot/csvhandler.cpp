@@ -22,11 +22,12 @@
 
 #include "csvhandler.h"
 
-CSVhandler::CSVhandler(QWidget *parent): QDialog(parent), ui(new Ui::CSVconfig)
+CSVhandler::CSVhandler(QWidget *parent):
+    QDialog(parent), ui(new Ui::CSVconfig), fileDialog(new QFileDialog(this))
 {
     ui->setupUi(this);
 
-    fileDialog = new QFileDialog(this);
+
     fileDialog->setNameFilter(tr("Data (*.csv)"));    
 
     job = CSV_NO_FILE;
@@ -167,4 +168,9 @@ void CSVhandler::apply()
     }
 
     close();
+}
+
+CSVhandler::~CSVhandler()
+{
+    delete ui;
 }

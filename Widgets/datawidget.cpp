@@ -24,14 +24,14 @@
 #include "ui_datawidget.h"
 
 DataWidget::DataWidget(Information *info, QWidget *parent) :
-    QWidget(parent), ui(new Ui::DataWidget), userData(std::make_shared<UserData>())
+    QWidget(parent), information(info), ui(new Ui::DataWidget),
+    colorButton(new QColorButton(info->getGraphSettings().estheticSettings.defaultColor)),
+    userData(std::make_shared<UserData>()),
+    dataWindow(new DataWindow(userData, info, this))
 {
     ui->setupUi(this);
     ui->styleWidget->hide();
 
-    information = info;
-
-    colorButton = new QColorButton(info->getGraphSettings().estheticSettings.defaultColor);
     ui->mainLayout->addWidget(colorButton);
 
     connect(ui->styleButton, SIGNAL(toggled(bool)), ui->styleWidget, SLOT(setVisible(bool)));
@@ -64,8 +64,6 @@ DataWidget::DataWidget(Information *info, QWidget *parent) :
     ui->mainLayout->addWidget(removeButton);
 
     QSettings settings;
-    dataWindow = new DataWindow(userData, info, this);
-
     if(settings.contains("data_window/geometry"))
         dataWindow->setGeometry(settings.value("data_window/geometry").value<QRect>());
 
@@ -149,4 +147,9 @@ void DataWidget::closeDataWindow()
 void DataWidget::emitRemoveSignal()
 {
     emit removeMe(this);
+}
+
+DataWidget::~DataWidget()
+{
+    delete ui;
 }

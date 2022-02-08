@@ -26,15 +26,23 @@
 #include "ui_filloptions.h"
 #include "ui_startingactions.h"
 
-ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, int columnnum)
+ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, int columnnum):
+    information(info),
+    calculator(false, info->getFuncsList()),
+    signalMapper(new QSignalMapper(this)),
+    lineEditsMapper(new QSignalMapper(this)),
+    startingActions(new QWidget()),
+    fillOptions(new QWidget()),
+    sortOptions(new QWidget()),
+    confirmDelete(new QWidget()),
+    insertColumn(new QWidget()),
+    dataTable(table),
+    selectorPos({false, 2}),
+    confirmDeleteUi(new Ui::ConfirmDelete),
+    fillOptionsUi(new Ui::FillOptions),
+    sortOptionsUi(new Ui::SortOptions),
+    startingActionsUi(new Ui::StartingActions)
 {
-    information = info;
-    calculator = new ExprCalculator(false, info->getFuncsList());
-    dataTable = table;
-    columnCount = columnnum;
-
-    selectorPos.index = 2;
-    selectorPos.inbetween = false;
 
     QColor color;
     color.setNamedColor(VALID_COLOR);
@@ -46,22 +54,17 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     invalidPalette.setColor(QPalette::Base, color);
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
-    signalMapper = new QSignalMapper(this);
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));   
 
-    startingActions = new QWidget();
-    startingActionsUi = new Ui::StartingActions;
     startingActionsUi->setupUi(startingActions);
     startingActionsUi->remove->hide();
 
     shownWidgets << startingActions;
 
-    fillOptions = new QWidget();
-    fillOptionsUi = new Ui::FillOptions;
+
     fillOptionsUi->setupUi(fillOptions);
 
     connect(fillOptionsUi->previous, SIGNAL(released()), this, SLOT(showPreviousWidget()));
-
 
     connect(fillOptionsUi->start, SIGNAL(returnPressed()), this, SLOT(applyFill()));
     connect(fillOptionsUi->step, SIGNAL(returnPressed()), this, SLOT(applyFill()));
@@ -69,7 +72,6 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     connect(fillOptionsUi->expression, SIGNAL(returnPressed()), this, SLOT(applyFill()));
     connect(fillOptionsUi->apply, SIGNAL(released()), this, SLOT(applyFill()));
 
-    lineEditsMapper = new QSignalMapper(this);
     connect(lineEditsMapper, SIGNAL(mapped(QWidget*)), this, SLOT(resetPalette(QWidget*)));
 
     connect(fillOptionsUi->start, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
@@ -84,20 +86,17 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     connect(fillOptionsUi->expression, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
     lineEditsMapper->setMapping(fillOptionsUi->expression, fillOptionsUi->expression);
 
-    sortOptions = new QWidget();
-    sortOptionsUi = new Ui::SortOptions;
     sortOptionsUi->setupUi(sortOptions);
     connect(sortOptionsUi->previous, SIGNAL(released()), this, SLOT(showPreviousWidget()));
     connect(sortOptionsUi->apply, SIGNAL(released()), this, SLOT(applySort()));
 
-    confirmDelete = new QWidget();
-    confirmDeleteUi = new Ui::ConfirmDelete;
+
     confirmDeleteUi->setupUi(confirmDelete);
     confirmDeleteUi->textPromptLabel->setText(tr("Confirm column deletion?"));
     connect(confirmDeleteUi->no, SIGNAL(released()), this, SLOT(showPreviousWidget()));
     connect(confirmDeleteUi->yes, SIGNAL(released()), this, SLOT(emitRemoveColumnSignal()));
 
-    insertColumn = new QWidget();
+
     QHBoxLayout *insertColumnLayout = new QHBoxLayout();
     QPushButton *insertButton = new QPushButton(tr("Insert column"));
 
@@ -130,6 +129,8 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     sortOptions->hide();
     confirmDelete->hide();
     insertColumn->hide();
+
+    setColumnCount(columnnum);
 }
 
 void ColumnActionsWidget::resetPalette(QWidget *widget)
@@ -196,19 +197,19 @@ void ColumnActionsWidget::applyFill()
         Range range;
         bool goodEntry = true, ok = false;
 
-        range.start = calculator->calculateExpression(fillOptionsUi->start->text(), ok);
+        range.start = calculator.calculateExpression(fillOptionsUi->start->text(), ok);
         if(ok)
             fillOptionsUi->start->setPalette(validPalette);
         else fillOptionsUi->start->setPalette(invalidPalette);
         goodEntry &= ok;
 
-        range.end = calculator->calculateExpression(fillOptionsUi->end->text(), ok);
+        range.end = calculator.calculateExpression(fillOptionsUi->end->text(), ok);
         if(ok)
             fillOptionsUi->end->setPalette(validPalette);
         else fillOptionsUi->end->setPalette(invalidPalette);
         goodEntry &= ok;
 
-        range.step = calculator->calculateExpression(fillOptionsUi->step->text(), ok);
+        range.step = calculator.calculateExpression(fillOptionsUi->step->text(), ok);
         if(ok)
             fillOptionsUi->step->setPalette(validPalette);
         else fillOptionsUi->step->setPalette(invalidPalette);
@@ -274,4 +275,12 @@ void ColumnActionsWidget::emitRemoveColumnSignal()
 {
     emit removeColumnClicked(selectorPos.index);
     showPreviousWidget();
+}
+
+ColumnActionsWidget::~ColumnActionsWidget()
+{
+    delete confirmDeleteUi;
+    delete fillOptionsUi;
+    delete sortOptionsUi;
+    delete startingActionsUi;
 }

@@ -25,21 +25,37 @@
 
 DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
                        Information *info, QWidget *parent):
-    QWidget(parent), modelData(userData)
+    QWidget(parent),
+    xindex(STARTING_XPIN_INDEX),
+    yindex(STARTING_YPIN_INDEX),
+    ui(new Ui::DataWindow),
+    columnSelectorSpacer(new QWidget()),
+    rowSelectorSpacer(new QWidget()),
+    dataTable(new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH)),
+    columnSelector(new ColumnSelectorWidget(STARTING_COLUMN_COUNT, STARTING_XPIN_INDEX, STARTING_YPIN_INDEX, STARTING_SELECTOR_INDEX)),
+    columnActionsWidget(new ColumnActionsWidget(dataTable, info, STARTING_COLUMN_COUNT)),
+    rowSelector(new RowSelectorWidget(STARTING_ROW_COUNT)),
+    rowActionsWidget(new RowActionsWidget(STARTING_ROW_COUNT)),
+    csvHandler(new CSVhandler(this)),
+    widgetState(WIDGET_OPENED),
+    widgetSplitter(new QSplitter()),
+    windowCloseAnimation(new QPropertyAnimation(this, "geometry", this)),
+    windowOpenAnimation(new QPropertyAnimation(this, "geometry", this)),
+    openAnimation(new QParallelAnimationGroup(this)),
+    closeAnimation(new QParallelAnimationGroup(this)),
+    modelData(userData)
 {
+    ui->setupUi(this);
+    // must come after ui->setupUi so the members are instanciated,
+    widgetCloseAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
+    widgetOpenAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
+
 
     setWindowFlags(Qt::Window);
-
-    xindex = STARTING_XPIN_INDEX;
-    yindex = STARTING_YPIN_INDEX;
-
-    ui = new Ui::DataWindow;
-    ui->setupUi(this);
 
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->addWidget(ui->retractionButton);
 
-    widgetSplitter = new QSplitter();
     widgetSplitter->addWidget(ui->actionsContainerWidget);
     widgetSplitter->addWidget(ui->tableContainerWidget);
 
@@ -47,31 +63,23 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
 
     ui->modelsScrollArea->setWidget(ui->containerWidget);
 
-    widgetState = WIDGET_OPENED;
-
-    widgetOpenAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
     widgetOpenAnimation->setDuration(WIDGET_ANIMATION_TIME);
     widgetOpenAnimation->setEasingCurve(QEasingCurve::OutCubic);
 
-    widgetCloseAnimation = new QPropertyAnimation(ui->actionsContainerWidget, "maximumWidth", this);
     widgetCloseAnimation->setDuration(WIDGET_ANIMATION_TIME);
     widgetCloseAnimation->setEasingCurve(QEasingCurve::OutCubic);
 
-    windowOpenAnimation = new QPropertyAnimation(this, "geometry", this);
     windowOpenAnimation->setDuration(WIDGET_ANIMATION_TIME);
     windowOpenAnimation->setEasingCurve(QEasingCurve::OutCubic);
 
-    windowCloseAnimation = new QPropertyAnimation(this, "geometry", this);
     windowCloseAnimation->setDuration(WIDGET_ANIMATION_TIME);
     windowCloseAnimation->setEasingCurve(QEasingCurve::OutCubic);
 
-    openAnimation = new QParallelAnimationGroup(this);
     openAnimation->addAnimation(widgetOpenAnimation);
     openAnimation->addAnimation(windowOpenAnimation);
 
     connect(openAnimation, SIGNAL(finished()), this, SLOT(animationFinished()));
 
-    closeAnimation = new QParallelAnimationGroup(this);
     closeAnimation->addAnimation(widgetCloseAnimation);
     closeAnimation->addAnimation(windowCloseAnimation);
 
@@ -84,18 +92,10 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
     information = info;
     selectorSide = COLUMN_SELECTION;
 
-    dataTable = new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH);
-    columnSelector = new ColumnSelectorWidget(STARTING_COLUMN_COUNT, STARTING_XPIN_INDEX, STARTING_YPIN_INDEX, STARTING_SELECTOR_INDEX);
-    columnActionsWidget = new ColumnActionsWidget(dataTable, info, STARTING_COLUMN_COUNT);
-    rowSelector = new RowSelectorWidget(STARTING_ROW_COUNT);
-    rowActionsWidget = new RowActionsWidget(STARTING_ROW_COUNT);
-
-
     QHBoxLayout *columnSelectorLayout = new QHBoxLayout();
     columnSelectorLayout->setMargin(0);
     columnSelectorLayout->setSpacing(0);
 
-    columnSelectorSpacer = new QWidget();
     columnSelector->setFixedHeight(COLUMN_SELECTOR_HEIGHT);
 
     columnSelectorLayout->addWidget(columnSelectorSpacer);
@@ -108,7 +108,6 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
     rowSelectorLayout->setMargin(0);
     rowSelectorLayout->setSpacing(0);
 
-    rowSelectorSpacer = new QWidget();
     rowSelector->setFixedWidth(ROW_SELECTOR_WIDTH);
 
     rowSelectorLayout->addWidget(rowSelectorSpacer);
@@ -141,7 +140,6 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
 
     rowActionsWidget->hide();
 
-    csvHandler = new CSVhandler(this);
     connect(csvHandler, SIGNAL(dataFromCSV(QList<QStringList>)), dataTable, SLOT(addData(QList<QStringList>)));
 
     connect(ui->open, SIGNAL(released()), this, SLOT(openData()));
@@ -407,4 +405,9 @@ DataWindow::~DataWindow()
 
     delete dataTable;
     delete csvHandler;
+    delete ui;
+    delete columnSelector;
+    delete columnActionsWidget;
+    delete rowSelector;
+    delete rowActionsWidget;
 }

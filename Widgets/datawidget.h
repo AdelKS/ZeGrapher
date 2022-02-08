@@ -37,6 +37,7 @@ class DataWidget : public QWidget
     
 public:
     explicit DataWidget(Information *info, QWidget *parent = 0);
+    ~DataWidget();
     void setWidgetNum(int num);
     void closeDataWindow();
     std::shared_ptr<const UserData> getUserData();
@@ -60,8 +61,8 @@ private:
     Information *information;
     Ui::DataWidget *ui;
     QColorButton *colorButton;
-    DataWindow *dataWindow;
     std::shared_ptr<UserData> userData;
+    DataWindow *dataWindow;
 };
 
 #endif // DATAWIDGET_H

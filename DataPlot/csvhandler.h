@@ -37,6 +37,7 @@ class CSVhandler : public QDialog
 
 public:
     CSVhandler(QWidget *parent);
+    ~CSVhandler();
 
     void getDataFromCSV();
     void saveCSV(QList<QStringList> data);
