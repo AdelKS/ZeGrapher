@@ -20,6 +20,9 @@
 
 
 #include "Calculus/funccalculator.h"
+#include "structures.cpp"
+
+#include <array>
 
 static double tenPower(double x)
 {
@@ -99,71 +102,40 @@ void FuncCalculator::setFuncsPointers(QList<FuncCalculator*> otherFuncs)
 
 }
 
-int int_pow(int a, int b)
-{
-    if(b==0)
-        return 1;
-
-    while(b != 1)
-    {
-        a *= a;
-        b--;
-    }
-
-    return a;
-}
-
 double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
 {
-    double a = A.x, fa, fb, hn, result, powResult, diff, condition;
+    double condition = int_pow(10.0, -NUM_PREC);
 
-    condition = tenPower(-NUM_PREC);
+    // Adapted from Wikipedia's implementation
+    // https://en.wikipedia.org/wiki/Romberg%27s_method
 
-    fa = getFuncValue(a, k_val);
-    fb = getFuncValue(b, k_val);
+    std::array<double, ROMBERG_MAX_STEPS>  R1, R2; // buffers
+    R1.fill(0); R2.fill(0);
+    double h = (b-A.x); //step size
+    R1[0] = (getFuncValue(b, k_val) + getFuncValue(b, k_val)) * h * .5; // first trapezoidal step
 
-    if(std::isnan(fa) || std::isinf(fa) || std::isnan(fb) || std::isinf(fb))
-        return nan("");
+    for (std::size_t i = 1; i < ROMBERG_MAX_STEPS; ++i) {
+       h /= 2.;
+       double c = 0;
+       std::size_t ep = 1 << (i-1); //2^(n-1)
+       for (std::size_t j = 1; j <= ep; ++j) {
+          c += getFuncValue(A.x + (2*j-1)*h, k_val);
+       }
+       R2[0] = h*c + .5*R1[0]; //R(i,0)
 
-    QList< QList<double> > R;
-    QList<double> L1;
+       for (std::size_t j = 1; j <= i; ++j) {
+          double n_k = int_pow(4, j);
+          R2[j] = (n_k * R2[j-1] - R1[j-1])/(n_k-1); // compute R(i,j)
+       }
 
-    L1 << 0.5*(b-a)*(fa+fb);
+       if (i > 1 && fabs(R1[i-1]-R2[i]) < condition) {
+          return R2[i-1];
+       }
 
-    R << L1;
-
-    int i = 0, end = 0;
-
-    do
-    {
-        i++;
-        end = int_pow(2, i-1);
-        hn = (b-a)/(double(2*end));
-        result = 0;
-
-        for(int j = 1 ; j <= end ; j++)
-            result += getFuncValue(a + ((double(2*j)) - 1)*hn, k_val);
-
-        QList<double> L;
-        L.reserve(i);
-        L << 0.5*R[i-1][0] + hn*result;
-
-        for(int j = 1; j <= i ; j++)
-        {
-            powResult = int_pow(4, j);
-            L << (powResult*L[j-1] - R[i-1][j-1])/(powResult-1);
-        }
-
-        R << L;
-
-        diff = fabs(R[i][i] - R[i-1][i-1]);
-
-
-    }while(diff > condition);
-
-    return R[i][i] + A.y;
-
-
+       // swap Rn and Rc as we only need the last row
+       R1.swap(R2);
+    }
+    return R1[ROMBERG_MAX_STEPS-1]; // return our best guess
 }
 
 double FuncCalculator::getFuncValue(double x, double kValue)

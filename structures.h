@@ -62,6 +62,8 @@
 
 #define CM_PER_INCH 2.54
 
+#define ROMBERG_MAX_STEPS 500
+
 // Maximum and minimum relative size between the abscissa text and the horizontal tick spacing
 #define MAX_REL_TICK_SPACING 0.8
 #define MIN_REL_TICK_SPACING 0.2
@@ -418,5 +420,8 @@ struct SelectorPos
 QPointF toQPointF(const Point &pt);
 
 Point operator*(Point &pt1, const Point &pt2);
+
+template<class Number>
+Number int_pow(Number a, int b);
 
 #endif // STRUCTURES_H
