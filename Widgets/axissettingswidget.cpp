@@ -274,6 +274,9 @@ void AxisSettingsWidget::makeConnects()
     connect(ui->tickRelSpacing, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->axisLineWidth, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 
+    connect(ui->maxDigits, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+    connect(constantMultiplierLineEdit, SIGNAL(returnPressed()), this, SLOT(apply()));
+
     connect(ui->linearScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
     connect(ui->logScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
 

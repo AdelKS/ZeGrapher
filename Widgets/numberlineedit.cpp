@@ -60,14 +60,13 @@ void NumberLineEdit::checkVal()
     }
 
     bool ok = true;
-    double num = calculator.calculateExpression(text(), ok);
+    value = calculator.calculateExpression(text(), ok);
 
     if(ok)
     {
-        setValue(num);
-        value = num;
+        setValid();
         valid = true;
-        emit newVal(num);
+        emit newVal(value);
     }
     else setInvalid();
 }

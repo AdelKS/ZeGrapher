@@ -57,9 +57,10 @@ public:
                                    ZeAxisName axisName,
                                    const QFontMetrics &metrics);
 
-signals:
-
 protected:
+    int getMaxStrPxSize(ZeAxisName axisname, const ZeAxisRange &range, double realStep, const QFontMetrics &metrics);
+    QString get_coordinate_string(ZeAxisName axisname, double multiplier);
+
     Information *information;
     double targetTicksNum;
 

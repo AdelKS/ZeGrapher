@@ -48,6 +48,9 @@
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
+#define NUM_PREC_DEC 1E-7
+#define MAX_NUM_PREC_DEC 1E-8
+
 #define INIT_FREQ 30 //animation update frequency
 #define INIT_INCR_PERIOD 100 //animation incremental period
 #define PAR_DRAW_LIMIT 500
@@ -79,6 +82,18 @@ struct ZeAxisRange
     double amplitude() const
     {
         return fabs(max - min);
+    }
+
+    void operator *=(double scale)
+    {
+        max *= scale;
+        min *= scale;
+    }
+
+    void operator /=(double scale)
+    {
+        max /= scale;
+        min /= scale;
     }
 };
 

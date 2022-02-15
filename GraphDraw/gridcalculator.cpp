@@ -53,26 +53,49 @@ void base10Dec(int &targetPower, double &baseMultiplier)
 
 }
 
-int getMaxStrPxSize(ZeAxisName axisname, const ZeAxisRange &range, const QString cstMulStr, double realStep, int maxDigitsNum, const QFontMetrics &metrics)
+int GridCalculator::getMaxStrPxSize(ZeAxisName axisname, const ZeAxisRange &scaled_range, double realStep, const QFontMetrics &metrics)
 {
-    double pos = ceil(range.min / realStep) * realStep;
+    double multiplier = floor(scaled_range.min / realStep) * realStep;
     int maxStrPxSize = 0, currentStrPxSize = 0;
     QString posStr;
 
-    while(pos < range.max)
+    while(multiplier < scaled_range.max)
     {
-        posStr.setNum(pos, 'g', maxDigitsNum);
-        posStr += cstMulStr;
+        posStr = get_coordinate_string(axisname, multiplier);
 
         currentStrPxSize = axisname == ZeAxisName::X ? metrics.horizontalAdvance(posStr) : metrics.height() ;
 
         if(currentStrPxSize > maxStrPxSize)
             maxStrPxSize = currentStrPxSize;
 
-        pos += realStep;
+        multiplier += realStep;
     }
 
     return maxStrPxSize;
+}
+
+QString GridCalculator::get_coordinate_string(ZeAxisName axisname, double multiplier)
+{
+    const ZeLinAxisSettings &axisSettings = axisname == ZeAxisName::X ? information->getAxesSettings().x.linSettings : information->getAxesSettings().y.linSettings;
+
+    QString posStr;
+
+    if(! axisSettings.constantMultiplierStr.isEmpty())
+    {
+        if(fabs(multiplier + 1.0) <= MAX_NUM_PREC_DEC)
+            posStr = "-" + axisSettings.constantMultiplierStr;
+        else if (fabs(multiplier - 1.0) <= MAX_NUM_PREC_DEC)
+            posStr = axisSettings.constantMultiplierStr;
+        else
+        {
+            posStr.setNum(multiplier, 'g', axisSettings.maxDigitsNum);
+            if(axisSettings.constantMultiplierStr[0].isDigit()) posStr += "×";
+            posStr += axisSettings.constantMultiplierStr;
+        }
+    }
+    else posStr.setNum(multiplier, 'g', axisSettings.maxDigitsNum);
+
+    return posStr;
 }
 
 ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
@@ -90,10 +113,14 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     ZeLinAxisTicks axisTicks;
 
     const double &constantMultiplier = axisSettings.constantMultiplier;
-    double amplitude = range.amplitude();
 
-    double amplitudeLog10 = floor(log10(amplitude));
-    double minLog10 = floor(log10(fabs(range.min) / constantMultiplier));
+    ZeAxisRange scaledRange(range);
+    scaledRange /= constantMultiplier;
+
+    double scaled_amplitude = scaledRange.amplitude();
+
+    double amplitudeLog10 = floor(log10(scaled_amplitude));
+    double minLog10 = floor(log10(fabs(scaledRange.min)));
 
     if(amplitudeLog10 < minLog10 - axisSettings.maxDigitsNum)
     {
@@ -103,36 +130,32 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
         axisTicks.offset.sumOffset = trunc(range.min * tenPower) / tenPower;
     }
 
-    int targetPower = lround(log10(amplitude / constantMultiplier / targetTicksNum));
+    int targetPower = lround(log10(scaled_amplitude / targetTicksNum));
 
     double baseStep;
     double realStep;
     double baseMultiplier = 1;
-    double pos;
-
-    int maxStrPxSize = 0;
-    int currentStrPxSize = 0;
 
     bool goodSpacing = false;
 
-    int previousLoopChange = 0;
+    bool previously_increased = false;
 
     while(not goodSpacing)
     {
-        baseStep = pow(10, targetPower);
-        realStep = baseStep * baseMultiplier * constantMultiplier;
+        baseStep = int_pow(10.0, targetPower);
+        realStep = baseStep * baseMultiplier;
 
-        int maxStrPxSize = getMaxStrPxSize(axisName, range, axisSettings.constantMultiplierStr, realStep, axisSettings.maxDigitsNum, metrics);
+        int maxStrPxSize = getMaxStrPxSize(axisName, scaledRange, realStep, metrics);
 
-        if(double(maxStrPxSize) - realStep * pxPerUnit > 0)
+        if(double(maxStrPxSize) - constantMultiplier * realStep * pxPerUnit > 0)
         {
             base10Inc(targetPower, baseMultiplier);
-            previousLoopChange = 1;
+            previously_increased = true;
         }
-        else if(realStep * pxPerUnit / previousMultiplier(baseMultiplier) - double(maxStrPxSize) > 0 and previousLoopChange != 1)
+        else if(realStep * pxPerUnit * constantMultiplier / previousMultiplier(baseMultiplier) - double(maxStrPxSize) > 0 && ! previously_increased)
         {
             base10Dec(targetPower, baseMultiplier);
-            previousLoopChange = -1;
+            previously_increased = false;
         }
         else goodSpacing = true;
     }
@@ -144,11 +167,11 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
         for(int i=0; i < relTickSpacing; i++)
             base10Inc(targetPower, baseMultiplier);
         baseStep = pow(10, targetPower);
-        realStep = baseStep * baseMultiplier * constantMultiplier;
+        realStep = baseStep * baseMultiplier;
     }
 
     fesetround(FE_DOWNWARD);
-    int maxRangePower = max(lrint(log10(fabs(range.max))), lrint(log10(fabs(range.min))));
+    int maxRangePower = max(lrint(log10(fabs(scaledRange.max))), lrint(log10(fabs(scaledRange.min))));
 
     QString axisNameStr = axisName == ZeAxisName::X ? "x axis" : "y axis";
     qDebug() << axisNameStr << " Max range power " << maxRangePower;
@@ -160,22 +183,21 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     if(abs(targetPower) > axisSettings.maxDigitsNum or
             maxRangePower - targetPower > axisSettings.maxDigitsNum)
     {
-//        axisTicks.offset.basePowerOffset = targetPower - axisSettings;
+        axisTicks.offset.basePowerOffset = targetPower - axisSettings.maxDigitsNum;
     }
 
-    ZeLinAxisTick tick;
-    tick.pos = (floor(range.min / realStep) - 1) * realStep;
-    tick.posStr.setNum(tick.pos, 'g', axisSettings.maxDigitsNum);
+    double multiplier = (floor(scaledRange.min / realStep) - 1) * realStep ;
 
     do
     {
-        tick.pos += realStep;
-        tick.posStr.setNum(tick.pos, 'g', axisSettings.maxDigitsNum);
-        tick.posStr += axisSettings.constantMultiplierStr;
+        ZeLinAxisTick tick;
+        multiplier += realStep;
+        tick.pos = multiplier * constantMultiplier;
+        tick.posStr = get_coordinate_string(axisName, multiplier);
 
         axisTicks.ticks << tick;
 
-    }while(tick.pos < range.max);
+    }while(multiplier < scaledRange.max);
 
     return axisTicks;
 }

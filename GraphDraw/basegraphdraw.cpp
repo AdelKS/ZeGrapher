@@ -199,8 +199,6 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
     double space, pos;
     double Xpos;
 
-    QString num;
-
     ZeLinAxisTicks xAxisTicks = gridCalculator.getLinearAxisTicks(graphRectScaled.width(),
                                                              viewMapper.getGraphRange().x,
                                                              ZeAxisName::X,
@@ -216,7 +214,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
     painter.setFont(information->getEstheticSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
 
-    for(ZeLinAxisTick &axisTick: xAxisTicks.ticks)
+    for(const ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
         Xpos = axisTick.pos * pxPerUnit.x;
 
@@ -242,12 +240,11 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                 painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
                 painter.drawLine(QPointF(pos, graphRectScaled.height()-4), QPointF(pos, graphRectScaled.height()));
 
-                num = QString::number(axisTick.pos, 'g', numPrec);
-                if(num.startsWith('-'))
-                    space = fontMetrics.boundingRect(num.mid(1)).width()/2 + fontMetrics.horizontalAdvance('-');
-                else space = fontMetrics.boundingRect(num).width()/2;
+                if(axisTick.posStr.startsWith('-'))
+                    space = fontMetrics.boundingRect(axisTick.posStr.mid(1)).width()/2 + fontMetrics.horizontalAdvance('-');
+                else space = fontMetrics.boundingRect(axisTick.posStr).width()/2;
                 painter.setRenderHint(QPainter::Antialiasing, true);
-                painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), num);
+                painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), axisTick.posStr);
             }
             else
             {
@@ -294,8 +291,6 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
     int space, largestWidth = 0;
     double Ypos;
 
-    QString num;
-
     ZeLinAxisTicks yAxisTicks = gridCalculator.getLinearAxisTicks(graphRectScaled.height(),
                                                              viewMapper.getGraphRange().y,
                                                              ZeAxisName::Y,
@@ -311,7 +306,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
     painter.setFont(information->getEstheticSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
 
-    for(ZeLinAxisTick &axisTick: yAxisTicks.ticks)
+    for(const ZeLinAxisTick &axisTick: yAxisTicks.ticks)
     {
         Ypos = axisTick.pos * pxPerUnit.y;
 
@@ -338,15 +333,13 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                 painter.drawLine(QPointF(4, pos), QPointF(0, pos));
                 painter.drawLine(QPointF(graphRectScaled.width() - 4, pos), QPointF(graphRectScaled.width(), pos));
 
-
-                num = QString::number(Ypos/pxPerUnit.y, 'g', numPrec);
-                space = fontMetrics.boundingRect(num).width() + 5;
+                space = fontMetrics.boundingRect(axisTick.posStr).width() + 5;
 
                 if(space > largestWidth)
                     largestWidth = space;
 
                 painter.setRenderHint(QPainter::Antialiasing, true);
-                painter.drawText(QPointF(-space, pos + text_height/2), num);
+                painter.drawText(QPointF(-space, pos + text_height/2), axisTick.posStr);
             }
             else
             {
