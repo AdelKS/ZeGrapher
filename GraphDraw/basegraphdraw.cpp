@@ -410,11 +410,46 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
         first_tick = false;
     }
 
+    int old_topMargin = topMargin;
+    int powerOffset_size = 0;
+    int offset_margin = 0;
+    if(yAxisTicks.offset.basePowerOffset != 0)
+    {
+        QString power_offset = "×10^" + QString::number(yAxisTicks.offset.basePowerOffset);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.drawText(QPointF(0, -4), power_offset);
+
+        offset_margin = fontMetrics.boundingRect(power_offset).height();
+
+        powerOffset_size = fontMetrics.boundingRect(power_offset).width() + 5;
+    }
+    if(yAxisTicks.offset.sumOffset != 0)
+    {
+        QString sum_offset;
+        if(yAxisTicks.offset.sumPowerOffset == 0)
+            sum_offset = " + " + QString::number(yAxisTicks.offset.sumOffset, 'g', 11);
+        else sum_offset = " + " + QString::number(yAxisTicks.offset.sumOffset * int_pow(10.0, -yAxisTicks.offset.sumPowerOffset), 'g', 11) +
+                "×10^" + QString::number(yAxisTicks.offset.sumPowerOffset);
+
+        int new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
+        if(new_offsetmargin > offset_margin)
+            offset_margin = new_offsetmargin;
+
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
+    }
+
+    if(yAxisTicks.offset.basePowerOffset == 0 && yAxisTicks.offset.sumOffset == 0)
+        topMargin = 20;
+    else topMargin = 5 + offset_margin;
+
     if(leftMargin - additionalMargin - largestWidth > 8 || leftMargin - additionalMargin - largestWidth < 4)
     {
         leftMargin = largestWidth + additionalMargin + 6;
         update();
     }
+    else if(topMargin != old_topMargin)
+        update();
 }
 
 void BaseGraphDraw::drawBaseGraph()
