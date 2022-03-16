@@ -95,6 +95,18 @@ struct ZeAxisRange
         max /= scale;
         min /= scale;
     }
+
+    void operator -=(double offset)
+    {
+        max -= offset;
+        min -= offset;
+    }
+
+    void operator +=(double offset)
+    {
+        max += offset;
+        min += offset;
+    }
 };
 
 struct GraphRange
@@ -409,7 +421,7 @@ enum struct PointStyle : unsigned int { Rhombus = 0, Disc, Square, Triangle, Cro
 struct DataStyle
 {
     DataStyle(): draw(true), drawLines(false), drawPoints(true),
-        color(Qt::black), pointStyle(PointStyle::Square), lineStyle(Qt::SolidLine) {};
+        color(Qt::black), pointStyle(PointStyle::Square), lineStyle(Qt::SolidLine) {}
 
     bool draw, drawLines, drawPoints;
     QColor color;
@@ -419,7 +431,7 @@ struct DataStyle
 
 struct UserData
 {
-    UserData() : cartesian(true), style() {};
+    UserData() : cartesian(true), style() {}
 
     std::vector<Point> dataPoints;
     bool cartesian;

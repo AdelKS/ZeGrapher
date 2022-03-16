@@ -232,7 +232,7 @@ void AxisSettingsWidget::loadDefaults()
 
     axisDefaultSettings.linSettings.constantMultiplier = 1;
     axisDefaultSettings.logSettings.constantMultiplierStr = "1";
-    axisDefaultSettings.linSettings.maxDigitsNum = 5;
+    axisDefaultSettings.linSettings.maxDigitsNum = 4;
     axisDefaultSettings.tickRelSpacing = 0;
 
     axesSettings.x = axisDefaultSettings;

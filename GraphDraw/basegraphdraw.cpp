@@ -280,6 +280,39 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
         previous_pos = axisTick.pos;
         first_tick = false;
     }
+
+    int old_rightMargin = rightMargin;
+    if(xAxisTicks.offset.sumOffset != 0)
+    {
+        QString sum_offset;
+        if(xAxisTicks.offset.sumPowerOffset == 0)
+            sum_offset = " + " + QString::number(xAxisTicks.offset.sumOffset, 'g', 11);
+        else sum_offset = " + " + QString::number(xAxisTicks.offset.sumOffset * int_pow(10.0, -xAxisTicks.offset.sumPowerOffset), 'g', 11) +
+                "×10^" + QString::number(xAxisTicks.offset.sumPowerOffset);
+
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height() - text_height - 10), sum_offset);
+
+        int margin = fontMetrics.boundingRect(sum_offset).width() + 5;
+        if(rightMargin < margin)
+            rightMargin = 10 + margin;
+    }
+    if(xAxisTicks.offset.basePowerOffset != 0)
+    {
+        QString power_offset = "×10^" + QString::number(xAxisTicks.offset.basePowerOffset);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
+
+        int margin = fontMetrics.boundingRect(power_offset).width() + 5;
+        if(rightMargin < margin)
+            rightMargin = 10 + margin;
+    }
+
+    if(xAxisTicks.offset.basePowerOffset == 0 && xAxisTicks.offset.sumOffset == 0)
+        rightMargin = 10;
+
+    if(rightMargin != old_rightMargin)
+        update();
 }
 
 void BaseGraphDraw::drawLinAxisGridTicksY()
