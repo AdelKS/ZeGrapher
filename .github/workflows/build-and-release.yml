@@ -1,0 +1,55 @@
+name: Build and Release
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+      - name: Compile
+        run: |
+          qmake CONFIG+=release PREFIX=/usr
+          make -j$(nproc)
+          make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+          wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+          chmod a+x linuxdeploy-x86_64.AppImage
+
+          wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
+          chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
+
+          unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+          ./linuxdeploy-x86_64.AppImage --list-plugins
+          ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt --output appimage
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-artifact
+          path: ZeGrapher*AppImage
+
+  build-macos:
+    runs-on: macos-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+      - name: Compile
+        run: |
+          qmake -config release
+          make -j$(nproc)
+          macdeployqt ZeGrapher.app -dmg
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-artifact
+          path: ZeGrapher*dmg
