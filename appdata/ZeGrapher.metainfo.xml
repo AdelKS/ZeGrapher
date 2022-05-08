@@ -17,7 +17,7 @@
         <ul>
             <li>Visualize up to six functions simultaneously. </li>
             <ul>
-              <li>All the usual functions can be called: they are written on a virtual keyboard.</li>              
+              <li>All the usual functions can be called: they are written on a virtual keyboard.</li>
               <li>On a given function, others can be called, so it is possible to associate or compose functions.</li>
             </ul>
             <li>Numerical sequence plotting, they can be defined by a recurrent relation or explicitly.</li>
@@ -54,22 +54,41 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://zegrapher.com/screenshots/2g.png</image>
+      <image>https://zegrapher.com/screenshots/1.png</image>
     </screenshot>
     <screenshot>
-      <image>https://zegrapher.com/screenshots/3g.png</image>
+      <image>https://zegrapher.com/screenshots/2.png</image>
     </screenshot>
     <screenshot>
-      <image>https://zegrapher.com/screenshots/4g.png</image>
+      <image>https://zegrapher.com/screenshots/3.png</image>
     </screenshot>
     <screenshot>
-      <image>https://zegrapher.com/screenshots/7g.png</image>
+      <image>https://zegrapher.com/screenshots/4.png</image>
     </screenshot>
     <screenshot>
-      <image>https://zegrapher.com/screenshots/12g.png</image>
+      <image>https://zegrapher.com/screenshots/5.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/6.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/7.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/8.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/9.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/10.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://zegrapher.com/screenshots/11.png</image>
     </screenshot>
   </screenshots>
+  <launchable type="desktop-id">ZeGrapher.desktop</launchable>
   <url type="homepage">https://zegrapher.com/</url>
   <url type="bugtracker">https://github.com/AdelKS/ZeGrapher/issues</url>
-  <update_contact>eclipseo_at_fedoraproject.org</update_contact>
+  <update_contact>adel.ks@zegrapher.com</update_contact>
 </component>

@@ -6,3 +6,4 @@ qrc_*.cpp
 Makefile
 release/*
 debug/*
+deploy/*
