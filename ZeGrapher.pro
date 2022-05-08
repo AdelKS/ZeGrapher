@@ -187,30 +187,3 @@ FORMS += \
 
 RESOURCES += \
     ressources.qrc
-
-RC_ICONS = ZeGrapher.ico
-ICON = ZeGrapher.icns
-
-OTHER_FILES +=
-
-isEmpty(APPDATADIR):APPDATADIR=$${PREFIX}/share/metainfo
-isEmpty(APPDIR):APPDIR=$${PREFIX}/share/applications
-isEmpty(DSRDIR):DSRDIR=$${PREFIX}/share/$${TARGET}
-isEmpty(ICONDIR):ICONDIR=$${PREFIX}/share/icons/hicolor/128x128/apps
-isEmpty(BINDIR):BINDIR=$${PREFIX}/bin
-
-appdata.path = $$INSTROOT$$APPDATADIR
-desktop.path = $$INSTROOT$$APPDIR
-icon.path = $$INSTROOT$$ICONDIR
-target.path = $$INSTROOT$$BINDIR
-translations.path = $$INSTROOT$$DSRDIR/locale
-
-desktop.files = ZeGrapher.desktop
-appdata.files = appdata/ZeGrapher.metainfo.xml
-icon.files = icons/ZeGrapher_256.png icons/ZeGrapher_128.png icons/ZeGrapher_64.png icons/ZeGrapher_32.png icons/ZeGrapher_16.png icons/ZeGrapher.svg
-translations.files = Translations/ZeGrapher_fr.qm Translations/ZeGrapher_de.qm Translations/ZeGrapher_zh.qm
-
-INSTALLS += appdata desktop icon target translations
-
-DISTFILES += \
-    appdata/ZeGrapher.appdata.xml

@@ -11,18 +11,16 @@ if host_machine.system() == 'linux'
         'ZeGrapher.svg'
     ]
     zg_dest_icons = [
-        '16x16/app/ZeGrapher.png',
-        '32x32/app/ZeGrapher.png',
-        '64x64/app/ZeGrapher.png',
-        '128x128/app/ZeGrapher.png',
-        '256x256/app/ZeGrapher.png',
-        'scalable/app/ZeGrapher.svg'
+        '16x16/apps/ZeGrapher.png',
+        '32x32/apps/ZeGrapher.png',
+        '64x64/apps/ZeGrapher.png',
+        '128x128/apps/ZeGrapher.png',
+        '256x256/apps/ZeGrapher.png',
+        'scalable/apps/ZeGrapher.svg'
     ]
     install_data(sources : zg_source_icons, install_dir : get_option('datadir') / 'icons/hicolor', rename : zg_dest_icons)
     # https://specifications.freedesktop.org/icon-theme-spec/latest/ar01s07.html
 
     install_data('ZeGrapher.desktop', install_dir : get_option('datadir') / 'applications')
     # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s02.html
-elif
-
 endif
