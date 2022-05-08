@@ -36,28 +36,28 @@
         <file>icons/backspace.png</file>
         <file>icons/clear.png</file>
         <file>icons/settings.png</file>
-        <file>Help/data_help_fr.html</file>
-        <file>Help/basePin.png</file>
-        <file>Help/columnActions_fr.png</file>
-        <file>Help/columnFill_fr.png</file>
-        <file>Help/lineActions_fr.png</file>
-        <file>Help/pins.png</file>
-        <file>Help/polynomialCoefVals_fr.png</file>
-        <file>Help/Rpin.png</file>
-        <file>Help/selector.png</file>
-        <file>Help/Tetapin.png</file>
-        <file>Help/Xpin.png</file>
-        <file>Help/Ypin.png</file>
-        <file>Help/english-icon.png</file>
-        <file>Help/french-icon.png</file>
+        <file>doc/data_help_fr.html</file>
+        <file>doc/basePin.png</file>
+        <file>doc/columnActions_fr.png</file>
+        <file>doc/columnFill_fr.png</file>
+        <file>doc/lineActions_fr.png</file>
+        <file>doc/pins.png</file>
+        <file>doc/polynomialCoefVals_fr.png</file>
+        <file>doc/Rpin.png</file>
+        <file>doc/selector.png</file>
+        <file>doc/Tetapin.png</file>
+        <file>doc/Xpin.png</file>
+        <file>doc/Ypin.png</file>
+        <file>doc/english-icon.png</file>
+        <file>doc/french-icon.png</file>
         <file>icons/error.png</file>
-        <file>Help/columnActions_en.png</file>
-        <file>Help/columnFill_en.png</file>
-        <file>Help/data_help_en.html</file>
-        <file>Help/lineActions_en.png</file>
-        <file>Help/pins_en.png</file>
-        <file>Help/polynomialCoefVals_en.png</file>
-        <file>Translations/ZeGrapher_fr.qm</file>
+        <file>doc/columnActions_en.png</file>
+        <file>doc/columnFill_en.png</file>
+        <file>doc/data_help_en.html</file>
+        <file>doc/lineActions_en.png</file>
+        <file>doc/pins_en.png</file>
+        <file>doc/polynomialCoefVals_en.png</file>
+        <file>translations/ZeGrapher_fr.qm</file>
         <file>icons/orthonormalView.svg</file>
         <file>icons/viewRange.svg</file>
         <file>icons/valuesTable.svg</file>
@@ -66,19 +66,19 @@
         <file>icons/grid.png</file>
         <file>icons/grid_subgrid.png</file>
         <file>icons/no_grid.png</file>
-        <file>Translations/ZeGrapher_de.qm</file>
-        <file>Help/data_help_de.html</file>
-        <file>Help/german-icon.png</file>
-        <file>Help/columnActions_de.png</file>
-        <file>Help/columnFill_de.png</file>
-        <file>Help/lineActions_de.png</file>
-        <file>Help/pins_de.png</file>
+        <file>translations/ZeGrapher_de.qm</file>
+        <file>doc/data_help_de.html</file>
+        <file>doc/german-icon.png</file>
+        <file>doc/columnActions_de.png</file>
+        <file>doc/columnFill_de.png</file>
+        <file>doc/lineActions_de.png</file>
+        <file>doc/pins_de.png</file>
         <file>icons/ZeGrapher.png</file>
         <file>icons/fit-sheet.svg</file>
         <file>icons/zoom-in-icon.svg</file>
         <file>icons/zoom-out-icon.svg</file>
-        <file>Translations/ZeGrapher_zh.qm</file>
-        <file>Help/data_help_zh.html</file>
-        <file>Help/taiwan-icon.png</file>
+        <file>translations/ZeGrapher_zh.qm</file>
+        <file>doc/data_help_zh.html</file>
+        <file>doc/taiwan-icon.png</file>
     </qresource>
 </RCC>

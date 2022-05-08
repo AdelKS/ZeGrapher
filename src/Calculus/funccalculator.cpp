@@ -20,7 +20,6 @@
 
 
 #include "Calculus/funccalculator.h"
-#include "structures.cpp"
 
 #include <array>
 
