@@ -7,10 +7,6 @@
 
 QT += widgets network svg
 
-debug {
-    CONFIG += sanitizer sanitize_address
-}
-
 TARGET = ZeGrapher
 TEMPLATE = app
 TRANSLATIONS = ZeGrapher_fr.ts \
