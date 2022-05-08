@@ -449,6 +449,21 @@ QPointF toQPointF(const Point &pt);
 Point operator*(Point &pt1, const Point &pt2);
 
 template<class Number>
-Number int_pow(Number a, int b);
+Number int_pow(Number a, int b)
+{
+    Number res = 1;
+    if(b < 0)
+    {
+        for(int i = 0 ; i > b ; i--)
+            res /= a;
+    }
+    else
+    {
+        for(int i = 0 ; i < b ; i++)
+            res *= a;
+    }
+
+    return res;
+}
 
 #endif // STRUCTURES_H
