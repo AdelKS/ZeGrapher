@@ -16,7 +16,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt install libboost-all-dev python3-pip
-          pip3 install --user meson
+          pip3 install --user meson ninja
       - name: Compile
         run: ./deploy/linux-bundle-appimage.sh
       - name: Upload binary artifact
