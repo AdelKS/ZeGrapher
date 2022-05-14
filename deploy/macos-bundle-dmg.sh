@@ -1,6 +1,6 @@
 #!/bin/bash
 
-deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
+deploy_dir=$(greadlink -f $(dirname "$BASH_SOURCE"))
 [[ -f "${deploy_dir}/build-macos" ]] && rm -r "${deploy_dir}/build-macos"
 
 meson setup "${deploy_dir}/build-macos" "${deploy_dir}/.." -Dprefix="${deploy_dir}/appdir-macos/usr"
