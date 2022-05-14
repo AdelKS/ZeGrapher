@@ -14,7 +14,9 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
       - name: Install Dependencies
-        run: sudo apt install libboost-all-dev meson
+        run: |
+          sudo apt install libboost-all-dev python3-pip
+          pip3 install --user meson
       - name: Compile
         run: ./deploy/linux-bundle-appimage.sh
       - name: Upload binary artifact
