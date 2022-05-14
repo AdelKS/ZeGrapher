@@ -23,4 +23,7 @@ if host_machine.system() == 'linux'
 
     install_data('ZeGrapher.desktop', install_dir : get_option('datadir') / 'applications')
     # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s02.html
+elif host_machine.system() == 'darwin' # macos
+    install_data('ZeGrapher.icns', install_dir : 'Contents/Resources')
+    install_data('Info.plist', install_dir : 'Contents')
 endif
