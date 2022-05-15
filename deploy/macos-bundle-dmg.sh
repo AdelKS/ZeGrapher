@@ -9,4 +9,4 @@ meson compile
 meson install
 cd ..
 
-macdeployqt ZeGrapher.app -dmg
+macdeployqt "${deploy_dir}/ZeGrapher.app" -dmg -verbose=2
