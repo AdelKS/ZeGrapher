@@ -3,6 +3,7 @@ project('ZeGrapher', 'cpp',
     default_options : [
         'cpp_std=c++17',
         'buildtype=release',
+        'optimization=3',
         'default_library=shared',
         'c_args=-pipe',
         'cpp_args=-pipe'
