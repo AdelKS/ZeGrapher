@@ -7,12 +7,12 @@
 
 ZeGrapher is a free, open source and easy to use software for plotting mathematical objects. It can plot functions, sequences, parametric equations and data on the plane.
 
-#### Official website: [https://zegrapher.com/](https://zegrapher.com/)
+**Official website:** [https://zegrapher.com/](https://zegrapher.com/)
 
 ------------------------------------
 ### Features
-- Visualize up to six functions simultaneously, they currently have fixed names: `f` `g` `h` `p` `r` `m`. It is planned to implement plotting of an arbitrary number of user named function. 
-    - All the standard mathematical functions (`cos` `cosh` `exp` ...etc) can be called: they're all written on a virtual keyboard that can be displayed with a button. 
+- Visualize up to six functions simultaneously, they currently have fixed names: `f` `g` `h` `p` `r` `m`. It is planned to implement plotting of an arbitrary number of user named function.
+    - All the standard mathematical functions (`cos` `cosh` `exp` ...etc) can be called: they're all written on a virtual keyboard that can be displayed with a button.
     - On a given function, other functions be called, so it is possible to associate or compose functions.
     - Using the uppercase letter of a user-defined function, _e.g_ `F` makes ZeGrapher compute its antiderivative.
     - Using the primed version of a user-defined function, _e.g_ `f'` makes ZeGrapher compute its derivative.
@@ -41,23 +41,46 @@ ZeGrapher is a free, open source and easy to use software for plotting mathemati
     -   Activate/deactivate curves\' smoothing.
     -   Plot the graph on an orthonormal basis.
 ------------------------------------------
-### Install
-
-#### Ready to use binaries
+### Download
 ZeGrapher is available in the official repositories of Debian, Fedora, Ubuntu, FreeBSD. In the Archlinux (AUR). An [AppImage](https://appimage.org/) is otherwise available, along with Windows and Mac versions in Zegrapher's [Github releases page](https://github.com/AdelKS/ZeGrapher/releases) or at [zegrapher.com](https://zegrapher.com/).
 
-#### Compile from sources
-To compile from sources, ZeGrapher needs a C++ compiler and the following libraries:
+### Compile from sources
+To compile from sources, ZeGrapher needs the following tools and libraries:
+- C++ compiler: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
 - [boost](https://www.boost.org/)
 - [Qt](https://www.qt.io)
+- [meson](mesonbuild.com)
 
-For Windows, one also needs to edit the following line in `ZeGrapher.pro` to where the boost folder has been extracted:
+Two build systems are supported:
+- `meson`: the official one
+- `qmake`: for `Qt Creator` IDE to remain usable, until it fully supports meson.
+
+#### meson
+For packagers and anyone who doesn't use `Qt Creator` as an IDE. `ZeGrapher` moved to [meson](https://mesonbuild.com) as an official build system.
+
+To build `ZeGrapher`
+```shell
+$ meson setup build
+$ cd build
+$ meson compile
+$ cd ..
 ```
-win32 {
-# Modify this line in Windows to boost's folder to be able to compile
-    INCLUDEPATH += C:/boost_1_72_0
-}
-```
+This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can directly run.
+
+###### Packaging
+
+
+- Linux
+  - `meson install` should now be fully XDG compliant. Issues and/PRs welcome if something is missing.
+  - Use [deploy/linux-bundle-appimage.sh](./deploy/linux-bundle-appimage.sh) to create an [AppImage](https://appimage.org/), too.
+- macOS
+  - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
+- Windows
+  - _TODO_
+
+#### qmake
+The `qmake` is being kept afloat until `Qt Creator` (the IDE I use) fully supports `meson`.
+
 To compile from the command line:
 ```shell
 $ git clone https://github.com/AdelKS/ZeGrapher.git
@@ -66,3 +89,12 @@ $ qmake ZeGrapher.pro
 $ make
 ```
 It is also possible to use `Qt Creator` as a GUI software to compile ZeGrapher by opening with it the `ZeGrapher.pro` file then pressing the "play" button, after configuring the project.
+
+**Note:** On Windows, one also needs to edit the following line in [ZeGrapher.pro](./ZeGrapher.pro) to where the boost folder has been extracted:
+
+```
+win32 {
+# Modify this line in Windows to boost's folder to be able to compile
+    INCLUDEPATH += C:/boost_1_72_0
+}
+```
