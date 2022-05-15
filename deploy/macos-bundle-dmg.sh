@@ -10,3 +10,4 @@ meson install
 cd ..
 
 macdeployqt ZeGrapher.app -dmg -verbose=2 -executable=ZeGrapher.app/Contents/MacOS/ZeGrapher
+# the "-executable=" bit rewrites library search paths with 'install_name_tool'
