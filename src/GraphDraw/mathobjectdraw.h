@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 #include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/pareqwidget.h"

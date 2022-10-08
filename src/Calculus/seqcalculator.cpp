@@ -31,12 +31,12 @@ static double tenPower(double x)
 
 SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) :
     treeCreator(ObjectType::SEQUENCE), firstValsTreeCreator(ObjectType::NORMAL_EXPR)
-{   
+{
     seqNum = id;
     isExprValidated = isValid = isKRangeValid = blockCalculatingFromTree = false;
     errorMessageLabel = errorLabel;
 
-    areFirstValsValidated = true;    
+    areFirstValsValidated = true;
     nMin = kPos = 0;
     drawsNum = 1;
     custom_k = 0;
@@ -59,7 +59,7 @@ SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) :
 }
 
 bool SeqCalculator::validateFirstValsExpr(QString expr)
-{  
+{
     firstValsExpr = expr;
     areFirstValsValidated = validateSeqFirstValsTrees();
     seqValues.clear();
@@ -76,9 +76,6 @@ bool SeqCalculator::validateSeqExpr(QString expr)
     expression = expr;
     drawsNum = 1;
     seqValues.clear();
-
-    if(seqTree != nullptr)
-        treeCreator.deleteFastTree(seqTree);
 
     seqTree = treeCreator.getTreeFromExpr(expr, isExprValidated);
 
@@ -258,7 +255,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 }
 
 double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
-{   
+{
     if(n < nMin || seqValues[0].size() > MAX_SAVED_SEQ_VALS)
         return nan("");
 
@@ -357,13 +354,13 @@ bool SeqCalculator::calculateAndSaveFirstValuesTrees()
     return true;
 }
 
-double SeqCalculator::calculateFromTree(FastTree *tree, double x, bool &ok)
+double SeqCalculator::calculateFromTree(const std::unique_ptr<FastTree>& tree, double x, bool &ok)
 {
     if(!ok)
         return nan("");
     if(tree->type == NUMBER )
     {
-        return *tree->value;
+        return tree->value;
     }
     else if(tree->type == VAR_N)
     {
@@ -434,7 +431,7 @@ bool SeqCalculator::verifyAskedTerm(double n)
     {
         errorMessageLabel->setText(tr("Invalid recursion."));
 
-        return false;       
+        return false;
     }
     else if(n < nMin)
     {
@@ -546,7 +543,7 @@ bool SeqCalculator::validateSeqFirstValsTrees()
 
     firstValsExpr.remove(" ");
     QString str;
-    FastTree *tree;
+    std::unique_ptr<FastTree> tree;
 
     bool ok = true;
 
@@ -560,7 +557,7 @@ bool SeqCalculator::validateSeqFirstValsTrees()
         if(!ok)
             return false;
 
-        firstValsTrees << tree;
+        firstValsTrees.push_back(std::move(tree));
     }
 
     return true;
@@ -568,10 +565,5 @@ bool SeqCalculator::validateSeqFirstValsTrees()
 
 void SeqCalculator::deleteFirstValsTrees()
 {
-    for(int i = 0; i < firstValsTrees.size() ; i++)
-    {
-        firstValsTreeCreator.deleteFastTree(firstValsTrees[i]);
-    }
-
     firstValsTrees.clear();
 }

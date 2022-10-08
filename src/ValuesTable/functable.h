@@ -26,7 +26,7 @@
 
 #include "abstracttable.h"
 #include "information.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 
 class FuncTable : public AbstractTable
@@ -54,7 +54,7 @@ protected:
     FuncCalculator *func;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;
-    ExprCalculator *exprCalc;
+    Expression *exprCalc;
     bool disableCellEdit;
     QPalette validPalette, invalidPalette;
     

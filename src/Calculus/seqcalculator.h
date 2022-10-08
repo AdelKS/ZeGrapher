@@ -27,7 +27,7 @@
 #define SEQCALCULATOR_H
 
 #include "treecreator.h"
-#include "funccalculator.h"
+#include "function.h"
 #include "colorsaver.h"
 
 class SeqCalculator : public QObject
@@ -42,13 +42,13 @@ public:
     bool check_called_funcs_and_seqs_validity();
     bool checkByCalculatingFirstValuesTrees();
     bool checkByCalculatingValues();
-    bool canBeCalled();  
+    bool canBeCalled();
     bool isSeqValid();
     bool isSeqParametric();
     bool getDrawState();
 
     void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
-    void setSeqsPointers(QList<SeqCalculator*> otherSeqs);   
+    void setSeqsPointers(QList<SeqCalculator*> otherSeqs);
     void setParametricInfo(bool parametric, Range parRange);
     void setInvalid();
 
@@ -56,7 +56,7 @@ public:
     ColorSaver* getColorSaver();
 
     int getDrawsNum();
-    int get_nMin();    
+    int get_nMin();
 
     Range getKRange();
     double getSeqValue(double n, bool &ok, int index_k = 0);
@@ -71,14 +71,14 @@ signals:
 
 protected:
 
-    void addRefFuncsPointers(); 
+    void addRefFuncsPointers();
     void deleteFirstValsTrees();
     bool checkCalledFuncsValidity(QString str);
     bool checkCalledSeqsValidity(QString str);
     bool calculateAndSaveFirstValuesTrees();
     void updateSeqValuesSize();
 
-    double calculateFromTree(FastTree *tree, double n, bool &ok);
+    double calculateFromTree(const std::unique_ptr<FastTree>& tree, double n, bool &ok);
 
     bool validateSeqFirstValsTrees();
     bool saveSeqValues(double nMax);
@@ -94,15 +94,15 @@ protected:
     ColorSaver *colorSaver;
     Range kRange;
     TreeCreator treeCreator, firstValsTreeCreator;
-    FastTree *seqTree;
+    std::unique_ptr<FastTree> seqTree;
     QString expression, firstValsExpr, seqName;
     QStringList seqsNames;
     QList<FuncCalculator*> funcCalculatorsList;
     QList<SeqCalculator*> seqCalculatorsList;
     QList<double (*)(double)> refFuncs;
 
-    QList<FastTree*> firstValsTrees;
-    QList< QList<double> > seqValues;    
+    std::vector<std::unique_ptr<FastTree>> firstValsTrees;
+    QList< QList<double> > seqValues;
 };
 
 #endif // SEQCALCULATOR_H

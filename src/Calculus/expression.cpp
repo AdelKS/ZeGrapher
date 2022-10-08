@@ -18,52 +18,59 @@
 **
 ****************************************************************************/
 
-#include "Calculus/exprcalculator.h"
+#include "expression.h"
+#include "mathworld.h"
+
+#include <cmath>
+#include <cstdlib>
+
+using namespace std;
 
 static double tenPower(double x)
 {
      return pow(10, x);
 }
 
-ExprCalculator::ExprCalculator(bool allowK, QList<FuncCalculator *> otherFuncs) : treeCreator(ObjectType::NORMAL_EXPR)
+Expression::Expression(const MathWorld *world)
+    : world(world), sub_world(new MathWorld), treeCreator(world, sub_world)
 {
-    treeCreator.allow_k(allowK);
-    k = 0;
-    funcCalculatorsList = otherFuncs;
-    addRefFuncsPointers();
 }
 
-double ExprCalculator::calculateExpression(QString expr, bool &ok, double k_val)
+Expression::~Expression()
+{
+    delete sub_world;
+}
+
+double Expression::calculateExpression(QString expr, bool &ok, double k_val)
 {
     ok = true;
     k = k_val;
 
     ok = checkCalledFuncsValidity(expr);
     if(!ok)
-        return nan("");
+        return std::nan("");
 
-    FastTree *tree = treeCreator.getTreeFromExpr(expr, ok);
+    std::unique_ptr<FastTree> tree = treeCreator.getTreeFromExpr(expr, ok);
 
     if(!ok)
         return nan("");
 
     double result = calculateFromTree(tree);
-    treeCreator.deleteFastTree(tree);
 
     return result;
 }
 
-void ExprCalculator::setAdditionnalVarsValues(const std::vector<double> &values)
+void Expression::setAdditionnalVarsValues(const std::vector<double> &values)
 {
     additionnalVarsValues = values;
 }
 
-void ExprCalculator::setK(double val)
+void Expression::setK(double val)
 {
     k = val;
 }
 
-bool ExprCalculator::checkCalledFuncsValidity(QString expr)
+bool Expression::checkCalledFuncsValidity(QString expr)
 {
     QList<int> calledFuncs = treeCreator.getCalledFuncs(expr);
 
@@ -82,7 +89,7 @@ bool ExprCalculator::checkCalledFuncsValidity(QString expr)
     }
 }
 
-void ExprCalculator::addRefFuncsPointers()
+void Expression::addRefFuncsPointers()
 {
     refFuncs << acos << asin << atan << cos << sin << tan << sqrt
              << log10 << log << fabs << exp << floor << ceil << cosh
@@ -91,11 +98,11 @@ void ExprCalculator::addRefFuncsPointers()
              << sinh << tanh << acosh << asinh << atanh;
 }
 
-double ExprCalculator::calculateFromTree(FastTree *tree, double x)
+double Expression::calculateFromTree(const std::unique_ptr<FastTree>& tree, double x)
 {
     if(tree->type == NUMBER )
     {
-        return *tree->value;
+        return tree->value;
     }
     else if(tree->type == PAR_K)
     {
@@ -144,5 +151,5 @@ double ExprCalculator::calculateFromTree(FastTree *tree, double x)
         return additionnalVarsValues.at(tree->type - ADDITIONNAL_VARS_START);
     }
 
-    else return nan("");
+    else exit(EXIT_FAILURE);
 }

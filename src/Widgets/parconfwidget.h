@@ -25,7 +25,7 @@
 #define PARCONFWIDGET_H
 
 #include "Calculus/treecreator.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 class ParConfWidget : public QGroupBox
 {
@@ -63,20 +63,23 @@ protected slots:
 
 protected:
     void addConfWidgets(QHBoxLayout *layout);
-    void updateTreeWithExpr(QString &lastExpr, QLineEdit *line, FastTree **treePointerAdress, bool &isExprGood);
+    void updateTreeWithExpr(QString &lastExpr,
+                            QLineEdit *line,
+                            std::unique_ptr<FastTree> &treePointerAdress,
+                            bool &isExprGood);
 
     QLineEdit *start, *step, *end;
     QCheckBox *animate, *keepTracks;
     TreeCreator treeCreator;
-    ExprCalculator *calculator;
-    FastTree *startTree, *stepTree, *endTree;
+    Expression *calculator;
+    std::unique_ptr<FastTree> startTree, stepTree, endTree;
     QString lastStartExpr, lastStepExpr, lastEndExpr;
     QPalette validPalette, invalidPalette, neutralPalette;
     Range defaultRange;
 
     bool kState, valid, keepTracksButtonAvailable, isStepGood, isEndGood, isStartGood;
 
-    
+
 };
 
 #endif // PARCONFWIDGET_H

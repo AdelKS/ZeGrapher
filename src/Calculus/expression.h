@@ -18,33 +18,31 @@
 **
 ****************************************************************************/
 
-#ifndef EXPRCALCULATOR_H
-#define EXPRCALCULATOR_H
+#ifndef EXPRESSION_H
+#define EXPRESSION_H
 
 #include "treecreator.h"
-#include "funccalculator.h"
 
-class ExprCalculator
+class MathWorld;
+
+class Expression
 {
 public:
 
-    explicit ExprCalculator(bool allowK = false, QList<FuncCalculator*> otherFuncs = QList<FuncCalculator*>());
+    explicit Expression(const MathWorld *world);
+    ~Expression();
+
+    void setExpression(std::string expr);
 
     double calculateExpression(QString expr, bool &ok, double k_val = 0);
-    void setAdditionnalVarsValues(const std::vector<double> &values);
-    void setK(double val);
 
-    double calculateFromTree(FastTree *tree, double x = 0);
+    double calculateFromTree(const std::unique_ptr<FastTree>& tree, double x = 0);
     bool checkCalledFuncsValidity(QString expr);
 
 protected:
-    void addRefFuncsPointers();
-
-    double k;
+    const MathWorld *world;
+    MathWorld *sub_world;
     TreeCreator treeCreator;
-    QList<FuncCalculator*> funcCalculatorsList;
-    QList<double (*)(double)> refFuncs;
-    std::vector<double> additionnalVarsValues;
 };
 
-#endif // EXPRCALCULATOR_H
+#endif // EXPRESSION_H

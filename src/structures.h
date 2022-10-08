@@ -81,7 +81,7 @@ struct ZeAxisRange
 
     double amplitude() const
     {
-        return fabs(max - min);
+        return std::fabs(max - min);
     }
 
     void operator *=(double scale)
@@ -125,8 +125,8 @@ struct GraphRange
 
     bool operator==(const GraphRange &other)
     {
-        return fabs(x.min - other.x.min) < MIN_AMPLITUDE && fabs(x.max - other.x.max) < MIN_AMPLITUDE &&
-                fabs(y.min - other.y.min) < MIN_AMPLITUDE && fabs(y.max - other.y.max) < MIN_AMPLITUDE;
+        return std::fabs(x.min - other.x.min) < MIN_AMPLITUDE && std::fabs(x.max - other.x.max) < MIN_AMPLITUDE &&
+                std::fabs(y.min - other.y.min) < MIN_AMPLITUDE && std::fabs(y.max - other.y.max) < MIN_AMPLITUDE;
     }
     bool operator!=(const GraphRange &other)
     {
@@ -135,14 +135,6 @@ struct GraphRange
 };
 
 enum struct ZeAxisName {X, Y};
-
-struct FastTree
-{
-    short type;
-    double *value;
-    FastTree *left;
-    FastTree *right;
-};
 
 enum struct ZeAxisType
 {

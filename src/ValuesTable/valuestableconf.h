@@ -25,7 +25,7 @@
 #define VALUESTABLECONF_H
 
 #include "information.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 class ValuesTableConf : public QWidget
 {
@@ -53,7 +53,7 @@ protected:
      QSpinBox *emptyCellsNum, *cellsNum;
      QLineEdit *startValue, *stepValue;
 
-     ExprCalculator *exprCalc;
+     Expression *exprCalc;
 
      QList<ParEqWidget*> *parEqs;
      QList<FuncCalculator*> funcs;

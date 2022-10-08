@@ -20,19 +20,19 @@
 
 
 
-#ifndef FUNCCALCULATOR_H
-#define FUNCCALCULATOR_H
+#ifndef FUNCTION_H
+#define FUNCTION_H
 
 #include "treecreator.h"
 #include "colorsaver.h"
+#include "expression.h"
 
-class FuncCalculator : public QObject
+class FuncCalculator : public Expression
 {
     Q_OBJECT
 
 public:
     FuncCalculator(int id, QString funcName, QLabel *errorLabel);
-    ~FuncCalculator();
 
     void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
     void setIntegrationPointsList(QList<Point> list);
@@ -64,14 +64,14 @@ public slots:
     void setDrawState(bool draw);
 
 protected:
-    double calculateFromTree(FastTree *tree, double x);
+    double calculateFromTree(const std::unique_ptr<FastTree> &tree, double x);
     void addRefFuncsPointers();
 
     int funcNum;
     double k;
     bool isExprValidated, isParametric, areCalledFuncsGood, areIntegrationPointsGood, drawState, callLock;
     TreeCreator treeCreator;
-    FastTree *funcTree;
+    std::unique_ptr<FastTree> funcTree;
     QString expression, name;
     QList<FuncCalculator*> funcCalculatorsList;
     Range kRange;
@@ -82,4 +82,4 @@ protected:
     QList<double (*)(double)> refFuncs;
 };
 
-#endif // FUNCCALCULATOR_H
+#endif // FUNCTION_H

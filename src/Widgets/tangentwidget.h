@@ -25,8 +25,8 @@
 #define TANGENTWIDGET_H
 
 #include "Widgets/qcolorbutton.h"
-#include "Calculus/funccalculator.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/function.h"
+#include "Calculus/expression.h"
 #include "Widgets/funcwidget.h"
 
 class TangentWidget : public QWidget
@@ -61,7 +61,7 @@ protected:
 
     QList<FuncCalculator*> funcCalculators;
     QList<FuncWidget*> funcWidgets;
-    ExprCalculator *exprCalculator;
+    Expression *exprCalculator;
 
     QPalette validPalette, neutralPalette, invalidPalette;
     QCheckBox *drawCheckBox;

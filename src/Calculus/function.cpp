@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 
 #include <array>
 
@@ -83,9 +83,6 @@ bool FuncCalculator::validateExpression(QString expr)
 {
     if(expression != expr)
     {
-        if(funcTree != nullptr)
-            treeCreator.deleteFastTree(funcTree);
-
         funcTree = treeCreator.getTreeFromExpr(expr, isExprValidated);
         expression = expr;
 
@@ -234,11 +231,11 @@ bool FuncCalculator::canBeCalled()
     return isExprValidated && areIntegrationPointsGood && areCalledFuncsGood && !callLock;
 }
 
-double FuncCalculator::calculateFromTree(FastTree *tree, double x)
+double FuncCalculator::calculateFromTree(const std::unique_ptr<FastTree>& tree, double x)
 {
     if(tree->type == NUMBER )
     {
-        return *tree->value;
+        return tree->value;
     }
     else if(tree->type == VAR_X || tree->type == VAR_T)
     {
@@ -289,10 +286,4 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
     }
 
     else return nan("");
-}
-
-FuncCalculator::~FuncCalculator()
-{
-    if(funcTree != nullptr)
-        treeCreator.deleteFastTree(funcTree);
 }

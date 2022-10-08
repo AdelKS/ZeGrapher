@@ -24,7 +24,7 @@
 #include <algorithm>
 
 #include "information.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 #define MIN_ROW_COUNT 10
 #define MIN_COLUMN_COUNT 3
@@ -107,7 +107,7 @@ protected:
     uint selectedCol;
 
     bool disableChecking;
-    ExprCalculator calculator;
+    Expression calculator;
     TreeCreator treeCreator;
     int cellHeight, cellWidth, verticalHeaderWidth;
     Information *information;

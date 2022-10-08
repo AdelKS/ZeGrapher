@@ -27,7 +27,7 @@
 #include "ValuesTable/abstracttable.h"
 #include "information.h"
 #include "Calculus/seqcalculator.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 class SeqTable : public AbstractTable
 {
@@ -51,7 +51,7 @@ protected:
     void addYValues();
     void add_parSeq_y_values();
 
-    ExprCalculator exprCalculator;
+    Expression exprCalculator;
     Information *information;
     SeqCalculator *seq;
     ValuesTableParameters parameters;

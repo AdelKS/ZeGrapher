@@ -21,7 +21,12 @@
 #ifndef TREECREATOR_H
 #define TREECREATOR_H
 
+#include <string>
+#include <vector>
+#include <string_view>
+
 #include "structures.h"
+#include "mathworld.h"
 #include "calculusdefines.h"
 
 /* TODO: update approach as the following:
@@ -33,37 +38,61 @@
     - Performance improvement: flatten trees
 */
 
-enum ObjectType {FUNCTION, SEQUENCE, PARAMETRIC_EQ, NORMAL_EXPR, DATA_TABLE_EXPR};
+enum struct NodeType
+{
+    UNDEFINED,
+
+    NUMBER,
+    VAR,
+
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
+
+    POWER,
+    FUNC,
+
+    OPEN_PTH,
+    CLOSED_PTH
+};
+
+struct ExpressionNode
+{
+    union NodeValue
+    {
+        double value;
+        unsigned long index;
+    };
+
+    NodeType type = NodeType::UNDEFINED;
+    NodeValue desc = NodeValue {.index = 0};
+};
+
+struct FastTree
+{
+    ExpressionNode root;
+    std::unique_ptr<ExpressionNode> left;
+    std::unique_ptr<ExpressionNode> right;
+};
 
 class TreeCreator
 {
 public:
-    TreeCreator(ObjectType type);
+    TreeCreator(MathWorld *world, MathWorld *sub_world = nullptr);
 
-    FastTree* getTreeFromExpr(QString expr, bool &ok, QStringList additionnalVars = QStringList());
-
-    QList<int> getCalledFuncs(QString expr);
-    QList<int> getCalledSeqs(QString expr);
-
-    void allow_k(bool state);
-    void deleteFastTree(FastTree *tree);
+    std::unique_ptr<FastTree> getTreeFromExpr(std::string_view expr);
 
 protected:
-    bool check(QString formula);
-    void insertMultiplySigns(QString &formula);
-    void refreshAuthorizedVars();
-    FastTree* createFastTree(int debut, int fin);
+    std::vector<std::string_view> split(std::string_view expr);
 
-    ObjectType funcType;
-    static const QStringList refFunctions;
-    QStringList functions, sequences, antiderivatives, derivatives, constants, vars, customVars;
-    QList<double> constantsVals;
+    std::vector<ExpressionNode> check_decompose(std::string_view formula);
+    std::unique_ptr<FastTree> createFastTree(
+        std::vector<ExpressionNode>::const_iterator begin,
+        std::vector<ExpressionNode>::const_iterator end
+    );
 
-    QList<QChar> operators;
-    std::vector<ushort> decompPriorites, decompTypes, operatorsPriority, operatorsTypes;
-    std::vector<double> decompValues;
-    std::vector<bool> authorizedVars;
-    QString pi;
+    std::vector<ExpressionNode> decomposition;
 
 };
 

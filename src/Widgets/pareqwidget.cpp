@@ -26,7 +26,6 @@ ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : tre
     index = num;
     funcCalcs = list;
     createWidgets(col);
-    xTree = yTree = nullptr;   
     isParametric = valid = is_t_range_parametric = false;
     playState = false;
     blockAnimation = false;
@@ -79,7 +78,7 @@ void ParEqWidget::recalculatePointsList()
 }
 
 void ParEqWidget::setRatio(double r)
-{    
+{
     ratio = r;
 
     if(tWidget->isAnimateChecked() && valid)
@@ -99,7 +98,7 @@ void ParEqWidget::setRatio(double r)
         }
     }
     else if(kWidget->isAnimateChecked() && valid)
-    {         
+    {
         if(2*trunc(kRange.step * ratio) > trunc(kRange.end - kRange.start))
         {
             blockAnimation = true;
@@ -125,7 +124,7 @@ void ParEqWidget::changeID(int newID)
 
 void ParEqWidget::addExprWidgets(QColor col)
 {
-    QHBoxLayout *layout1 = new QHBoxLayout();    
+    QHBoxLayout *layout1 = new QHBoxLayout();
 
     QVBoxLayout *vLayout = new QVBoxLayout;
 
@@ -214,7 +213,7 @@ void ParEqWidget::addExprWidgets(QColor col)
 void ParEqWidget::addTConfWidgets()
 {
     tWidget = new ParConfWidget('t', true, true);
-    tWidget->setFuncsList(funcCalcs); 
+    tWidget->setFuncsList(funcCalcs);
 
     connect(tWidget, SIGNAL(k_typed(bool)), this, SLOT(set_tRange_parametric(bool)));
     connect(tWidget, SIGNAL(animateToggled(bool)), this, SLOT(animateTtoggled(bool)));
@@ -305,28 +304,28 @@ void ParEqWidget::addAnimationControllWidgets()
     connect(play, SIGNAL(released()), this, SLOT(playButtonClicked()));
 
     loopFromStart = new QPushButton;
-    loopFromStart->setCheckable(true);    
+    loopFromStart->setCheckable(true);
     loopFromStart->setFixedSize(25,25);
     loopFromStart->setIconSize(QSize(18,18));
     loopFromStart->setIcon(QIcon(":/icons/loop.png"));
 
     loopRound = new QPushButton;
-    loopRound->setCheckable(true);        
+    loopRound->setCheckable(true);
     loopRound->setFixedSize(25,25);
     loopRound->setIconSize(QSize(18,18));
     loopRound->setIcon(QIcon(":/icons/go&return.png"));
 
     connect(loopFromStart, SIGNAL(toggled(bool)), this, SLOT(loopFromStartToggled()));
-    connect(loopRound, SIGNAL(toggled(bool)), this, SLOT(loopRoundToggled()));       
+    connect(loopRound, SIGNAL(toggled(bool)), this, SLOT(loopRoundToggled()));
 
     parSlider = new QSlider(Qt::Horizontal);
-    connect(parSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));    
+    connect(parSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));
 
     parCharLabel = new QLabel();
     parCurrentValLineEdit = new QLineEdit();
     parCurrentValLineEdit->setFrame(false);
     parCurrentValLineEdit->setReadOnly(true);
-    parCurrentValLineEdit->setMaximumHeight(25);    
+    parCurrentValLineEdit->setMaximumHeight(25);
 
     animCtrLayout->addWidget(play, 0, 0, 1, 1);
     animCtrLayout->addWidget(loopFromStart, 0, 1, 1, 1);
@@ -368,7 +367,7 @@ void ParEqWidget::sliderMoved(int pos)
 }
 
 void ParEqWidget::animateKtoggled(bool checked)
-{    
+{
     tWidget->setAnimationEnabled(!checked);
     animationControlWidget->setHidden(!checked);
     playState = false;
@@ -391,7 +390,7 @@ void ParEqWidget::animateKtoggled(bool checked)
 }
 
 void ParEqWidget::animateTtoggled(bool checked)
-{   
+{
     kWidget->setAnimationEnabled(!checked);
     animationControlWidget->setHidden(!checked);
     playState = false;
@@ -465,9 +464,6 @@ void ParEqWidget::checkXline()
 {
     if(xExpr != xLine->text())
     {
-        if(xTree != nullptr)
-            treeCreator.deleteFastTree(xTree);
-
         xTree = treeCreator.getTreeFromExpr(xLine->text(), isXExprGood);
 
         if(isXExprGood)
@@ -483,9 +479,6 @@ void ParEqWidget::checkYline()
 {
     if(yExpr != yLine->text())
     {
-        if(yTree != nullptr)
-            treeCreator.deleteFastTree(yTree);
-
         yTree = treeCreator.getTreeFromExpr(yLine->text(), isYExprGood);
 
         if(isYExprGood)
@@ -498,7 +491,7 @@ void ParEqWidget::checkYline()
 }
 
 void ParEqWidget::updateTRange(double k)
-{    
+{
     if(!areIdentical(tRange, tWidget->getRange(k)))
         hasSomethingChanged = true;
 
@@ -624,7 +617,7 @@ bool ParEqWidget::getDrawState()
 }
 
 void ParEqWidget::nextFrame()
-{    
+{
     if(tWidget->isAnimateChecked())
         nextFrameTchecked();
     else if(kWidget->isAnimateChecked())
@@ -759,22 +752,13 @@ void ParEqWidget::emitRemoveSignal()
 void ParEqWidget::playButtonClicked()
 {
     if(playState)
-    {       
-        play->setIcon(QIcon(":/icons/play.png"));       
+    {
+        play->setIcon(QIcon(":/icons/play.png"));
     }
     else
-    {       
-        play->setIcon(QIcon(":/icons/pause.png"));       
+    {
+        play->setIcon(QIcon(":/icons/pause.png"));
     }
 
     playState = !playState;
 }
-
-ParEqWidget::~ParEqWidget()
-{
-    if(xTree != nullptr)
-        treeCreator.deleteFastTree(xTree);
-    if(yTree != nullptr)
-        treeCreator.deleteFastTree(yTree);
-}
-

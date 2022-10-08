@@ -52,7 +52,7 @@ protected:
     ParEqWidget *parEq;
     ValuesTableParameters parameters;
     ParEqValues parEqValues;
-    ExprCalculator *exprCalc;
+    Expression *exprCalc;
     bool disableCellEdit;
     QPalette validPalette, invalidPalette;
     

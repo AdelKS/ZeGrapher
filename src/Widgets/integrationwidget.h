@@ -24,7 +24,7 @@
 #ifndef INTEGRATIONWIDGET_H
 #define INTEGRATIONWIDGET_H
 
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 class IntegrationWidget : public QGroupBox
 {
@@ -50,7 +50,7 @@ protected:
     QList<int> funcIds;
     QList<QLineEdit*> xList, yList;
     QList<QString> antiderivatives;
-    ExprCalculator exprCalc;
+    Expression exprCalc;
     QPalette invalidPalette, validPalette, neutralPalette;
     QSignalMapper *signalMapper;
     QVBoxLayout *centralLayout;

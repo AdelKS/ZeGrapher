@@ -7,6 +7,9 @@
 
 QT += widgets network svg
 
+QMAKE_CFLAGS += -std=c++20 -march=native -Wpedantic -Wall -Wextra #-Wconversion
+QMAKE_CXXFLAGS += -std=c++20 -march=native -Wpedantic -Wall -Wextra #-Wconversion
+
 TARGET = ZeGrapher
 TEMPLATE = app
 TRANSLATIONS = ZeGrapher_fr.ts \
@@ -30,6 +33,9 @@ win32 {
 INCLUDEPATH += src/
 
 SOURCES += \
+    src/Calculus/expression.cpp \
+    src/Calculus/function.cpp \
+    src/Calculus/mathworld.cpp \
     src/GraphDraw/basegraphdraw.cpp \
     src/GraphDraw/gridcalculator.cpp \
     src/GraphDraw/mainview.cpp \
@@ -72,8 +78,6 @@ SOURCES += \
     src/Calculus/treecreator.cpp \
     src/Calculus/seqcalculator.cpp \
     src/Calculus/funcvaluessaver.cpp \
-    src/Calculus/funccalculator.cpp \
-    src/Calculus/exprcalculator.cpp \
     src/Calculus/colorsaver.cpp \
     src/Widgets/datawidget.cpp \
     src/DataPlot/csvhandler.cpp \
@@ -96,6 +100,9 @@ SOURCES += \
     src/structures.cpp
 
 HEADERS  += \
+    src/Calculus/expression.h \
+    src/Calculus/function.h \
+    src/Calculus/mathworld.h \
     src/GraphDraw/basegraphdraw.h \
     src/GraphDraw/gridcalculator.h \
     src/GraphDraw/mainview.h \
@@ -138,8 +145,6 @@ HEADERS  += \
     src/Calculus/seqcolorssaver.h \
     src/Calculus/seqcalculator.h \
     src/Calculus/funcvaluessaver.h \
-    src/Calculus/funccalculator.h \
-    src/Calculus/exprcalculator.h \
     src/Calculus/colorsaver.h \
     src/Calculus/calculusdefines.h \
     src/Widgets/datawidget.h \

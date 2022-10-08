@@ -41,7 +41,6 @@ ParConfWidget::ParConfWidget(QChar parName,
     widgetsLayout->setSpacing(3);
     addConfWidgets(widgetsLayout);
 
-    startTree = endTree = stepTree = nullptr;
     kState = valid = isStepGood = isEndGood = isStartGood = false;
 
     QColor color;
@@ -78,7 +77,7 @@ ParConfWidget::ParConfWidget(QChar parName,
         animateLayout->addStretch();
         mainLayout->addLayout(animateLayout);
         setLayout(mainLayout);
-    }   
+    }
     else setLayout(widgetsLayout);
 }
 
@@ -135,7 +134,10 @@ void ParConfWidget::checkExprForK(QString expr)
     kState = is_k_present;
 }
 
-void ParConfWidget::updateTreeWithExpr(QString &lastExpr, QLineEdit *line, FastTree **treePointerAdress, bool &isExprGood)
+void ParConfWidget::updateTreeWithExpr(QString &lastExpr,
+                                       QLineEdit *line,
+                                       std::unique_ptr<FastTree>& treePointerAdress,
+                                       bool &isExprGood)
 {
     if(lastExpr != line->text())
     {
@@ -143,12 +145,7 @@ void ParConfWidget::updateTreeWithExpr(QString &lastExpr, QLineEdit *line, FastT
         isExprGood = calculator->checkCalledFuncsValidity(lastExpr);
 
         if(isExprGood)
-        {
-            if(*treePointerAdress != nullptr)
-                treeCreator.deleteFastTree(*treePointerAdress);
-
-            *treePointerAdress = treeCreator.getTreeFromExpr(lastExpr, isExprGood);
-        }
+            treePointerAdress = treeCreator.getTreeFromExpr(lastExpr, isExprGood);
 
         if(isExprGood)
             line->setPalette(validPalette);
@@ -173,9 +170,9 @@ void ParConfWidget::resetPaletteForEndLineEdit()
 
 void ParConfWidget::validate()
 {
-    updateTreeWithExpr(lastStartExpr, start, &startTree, isStartGood);
-    updateTreeWithExpr(lastEndExpr, end, &endTree, isEndGood);
-    updateTreeWithExpr(lastStepExpr, step, &stepTree, isStepGood);
+    updateTreeWithExpr(lastStartExpr, start, startTree, isStartGood);
+    updateTreeWithExpr(lastEndExpr, end, endTree, isEndGood);
+    updateTreeWithExpr(lastStepExpr, step, stepTree, isStepGood);
 
     valid = isStartGood && isStepGood && isEndGood;
 }
@@ -219,12 +216,5 @@ Range ParConfWidget::getRange(double k)
 
 ParConfWidget::~ParConfWidget()
 {
-    if(stepTree != nullptr)
-        treeCreator.deleteFastTree(stepTree);
-    if(endTree != nullptr)
-        treeCreator.deleteFastTree(endTree);
-    if(startTree != nullptr)
-        treeCreator.deleteFastTree(startTree);
-
     delete calculator;
 }

@@ -24,9 +24,9 @@
 #ifndef STRAIGHTLINEWIDGET_H
 #define STRAIGHTLINEWIDGET_H
 
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 #include "Widgets/qcolorbutton.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 class StraightLineWidget : public QWidget
 {
@@ -60,7 +60,7 @@ protected:
     void addWidgets(QColor col);
 
     QList<FuncCalculator*> funcCalculators;
-    ExprCalculator *exprCalculator;
+    Expression *exprCalculator;
 
     QCheckBox *drawCheckBox;
     QLabel *nameLabel;

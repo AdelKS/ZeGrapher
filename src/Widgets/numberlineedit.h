@@ -23,8 +23,8 @@
 #define NUMBERLINEEDIT_H
 
 
-#include "Calculus/exprcalculator.h"
-#include "Calculus/funccalculator.h"
+#include "Calculus/expression.h"
+#include "Calculus/function.h"
 #include "Widgets/expressionlineedit.h"
 
 
@@ -46,7 +46,7 @@ signals:
     void newVal(double val);
 
 protected:
-    ExprCalculator calculator;
+    Expression calculator;
     int significantDigitPrecision;
     bool valid;
     double value;

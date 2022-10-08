@@ -23,10 +23,10 @@
 #ifndef COLUMNACTIONSWIDGET_H
 #define COLUMNACTIONSWIDGET_H
 
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 #include "DataPlot/datatable.h"
 #include "information.h"
-#include "Calculus/exprcalculator.h"
+#include "Calculus/expression.h"
 
 namespace Ui {
 class FillOptions;
@@ -64,7 +64,7 @@ protected slots:
 protected:
 
     Information *information;
-    ExprCalculator calculator;
+    Expression calculator;
     int columnCount;
     QSignalMapper *signalMapper, *lineEditsMapper;
     QWidget *startingActions, *fillOptions, *sortOptions, *confirmDelete, *insertColumn;

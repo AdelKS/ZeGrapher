@@ -438,7 +438,7 @@ void DataTable::fillColumnFromRange(int col, Range range)
 bool DataTable::fillColumnFromExpr(int col, QString expr)
 {
     bool ok = false;
-    FastTree *tree = treeCreator.getTreeFromExpr(expr, ok, columnNames);
+    std::unique_ptr<FastTree> tree = treeCreator.getTreeFromExpr(expr, ok, columnNames);
 
     if(!ok)
         return false;
@@ -461,8 +461,6 @@ bool DataTable::fillColumnFromExpr(int col, QString expr)
         val = calculator.calculateFromTree(tree, getColumnConst(col)[row]);
         getColumn(col)[row] = val;
     }
-
-    treeCreator.deleteFastTree(tree);
 
     emit valEdited(row, col);
     return true;
