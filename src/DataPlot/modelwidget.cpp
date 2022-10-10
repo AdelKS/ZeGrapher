@@ -27,7 +27,7 @@ ModelWidget::ModelWidget(const std::weak_ptr<UserData> &userData, Information *i
     QFrame(parent), currentState(ChoiceWidget), information(info), abscissa(xname), ordinate(yname), userData(userData)
 {
     layout = new QVBoxLayout(this);
-    layout->setMargin(0);    
+    layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 
     setFrameStyle(QFrame::Raised);

@@ -124,14 +124,14 @@ void StraightLineWidget::addWidgets(QColor col)
     layout2->addWidget(colorButton);
     layout2->addWidget(removeButton);
     layout2->setSpacing(3);
-    layout2->setMargin(1);
+    layout2->setContentsMargins(1, 1, 1, 1);
 
     QFrame *frame = new QFrame;
     frame->setFrameShape(QFrame::HLine);
     frame->setFrameShadow(QFrame::Sunken);
 
     layout1->setSpacing(3);
-    layout1->setMargin(1);
+    layout1->setContentsMargins(1, 1, 1, 1);
     layout1->addLayout(layout2);
     layout1->addWidget(frame);
 

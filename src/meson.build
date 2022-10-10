@@ -149,17 +149,17 @@ moc_header_files = [
     './information.h',
 ]
 
-qt5 = import('qt5')
+qt6 = import('qt6')
 
-compiled_ressources = qt5.compile_resources(sources: '../ressources.qrc')
-compiled_ui = qt5.compile_ui(sources: ui_files)
-moc_files = qt5.compile_moc(
+compiled_ressources = qt6.compile_resources(sources: '../ressources.qrc')
+compiled_ui = qt6.compile_ui(sources: ui_files)
+moc_files = qt6.compile_moc(
     headers : moc_header_files,
     include_directories: inc,
-    dependencies: qt5_dep
+    dependencies: qt6_dep
 )
 
 executable('ZeGrapher', source_files, compiled_ressources, compiled_ui, moc_files,
     include_directories: inc,
-    dependencies: [qt5_dep, boost_dep],
+    dependencies: [qt6_dep, boost_dep],
     install: true)

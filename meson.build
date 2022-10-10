@@ -6,11 +6,12 @@ project('ZeGrapher', 'cpp',
         'optimization=3',
         'default_library=shared',
         'c_args=-pipe',
-        'cpp_args=-pipe'
+        'cpp_args=-pipe',
+        'warning_level=3',
     ]
 )
 
-qt5_dep = dependency('qt5', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg'])
+qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg'])
 boost_dep = dependency('boost')
 
 subdir('src')

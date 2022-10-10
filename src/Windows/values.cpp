@@ -50,7 +50,7 @@ Values::Values(Information *info, QWidget *parent): QWidget(parent)
     widget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     QHBoxLayout *widgetLayout = new QHBoxLayout;
-    widgetLayout->setMargin(0);
+    widgetLayout->setContentsMargins(0, 0, 0, 0);
 
     tablesLayout = new QHBoxLayout();
     tablesLayout->setSpacing(25);

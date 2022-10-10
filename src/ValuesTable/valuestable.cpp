@@ -25,7 +25,7 @@
 
 ValuesTable::ValuesTable(Information *info, QWidget *parent) :
     QWidget(parent)
-{    
+{
     infoClass = info;
 
     seqTable = nullptr;
@@ -33,10 +33,10 @@ ValuesTable::ValuesTable(Information *info, QWidget *parent) :
     funcTable = nullptr;
 
     QHBoxLayout *layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     containerLayout = new QVBoxLayout;
-    containerLayout->setMargin(3);
+    containerLayout->setContentsMargins(3, 3, 3, 3);
 
     setFixedWidth(300);
 
@@ -54,7 +54,7 @@ ValuesTable::ValuesTable(Information *info, QWidget *parent) :
     removeButtonLayout->addWidget(removeButton);
 
     confWidget = new ValuesTableConf(infoClass);
-    connect(confWidget, SIGNAL(next(ValuesTableParameters)), this, SLOT(apply(ValuesTableParameters)));    
+    connect(confWidget, SIGNAL(next(ValuesTableParameters)), this, SLOT(apply(ValuesTableParameters)));
 
     containerLayout->addLayout(removeButtonLayout);
     containerLayout->addWidget(confWidget);

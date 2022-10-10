@@ -42,13 +42,13 @@ void AbstractFuncWidget::addMainWidgets()
     QVBoxLayout *mainLayout = new QVBoxLayout();
 
     QHBoxLayout *firstContainerLayout = new QHBoxLayout();
-    firstContainerLayout->setMargin(0);
+    firstContainerLayout->setContentsMargins(0, 0, 0, 0);
 
     drawCheckBox->setChecked(true);
 
     expressionLineEdit->setMaximumHeight(25);
 
-    connect(expressionLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));   
+    connect(expressionLineEdit, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
     firstContainerLayout->addWidget(drawCheckBox);
     firstContainerLayout->addWidget(nameLabel);
@@ -60,8 +60,8 @@ void AbstractFuncWidget::addMainWidgets()
 
     mainLayout->addLayout(firstContainerLayout);
 
-    secondContainerLayout->setMargin(0);
-    secondContainerLayout->setSpacing(4);   
+    secondContainerLayout->setContentsMargins(0, 0, 0, 0);
+    secondContainerLayout->setSpacing(4);
 
     mainLayout->addLayout(secondContainerLayout);
 
@@ -71,7 +71,7 @@ void AbstractFuncWidget::addMainWidgets()
     mainLayout->addWidget(kConfWidget);
 
     QHBoxLayout *hlayout = new QHBoxLayout(errorMessageWidget);
-    hlayout->setMargin(0);
+    hlayout->setContentsMargins(0, 0, 0, 0);
     hlayout->setSpacing(3);
 
     QLabel *errorIcon = new QLabel();

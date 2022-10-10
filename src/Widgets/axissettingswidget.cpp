@@ -38,7 +38,7 @@ AxisSettingsWidget::AxisSettingsWidget(Information *information, QWidget *parent
     constantMultiplierLineEdit = new NumberLineEdit();
 
     QHBoxLayout *multiplierLayout = new QHBoxLayout();
-    multiplierLayout->setMargin(0);
+    multiplierLayout->setContentsMargins(0, 0, 0, 0);
     multiplierLayout->addWidget(new QLabel("α ="));
     multiplierLayout->addWidget(constantMultiplierLineEdit);
     ui->tickSettingsForm->addRow(tr("Multiplier"), multiplierLayout);

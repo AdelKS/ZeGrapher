@@ -105,7 +105,7 @@ void TangentWidget::addWidgets()
     removeButton->setFlat(true);
     removeButton->setIcon(QIcon(":/icons/remove.png"));
 
-    connect(removeButton, SIGNAL(released()), this, SLOT(emitRemoveMeSignal()));  
+    connect(removeButton, SIGNAL(released()), this, SLOT(emitRemoveMeSignal()));
 
     QVBoxLayout *layout1 = new QVBoxLayout;
     QHBoxLayout *layout2 = new QHBoxLayout;
@@ -121,7 +121,7 @@ void TangentWidget::addWidgets()
     layout2->addWidget(colorButton);
     layout2->addWidget(removeButton);
     layout2->setSpacing(3);
-    layout2->setMargin(1);
+    layout2->setContentsMargins(1, 1, 1, 1);
 
     QLabel *yLabel = new QLabel("y = ");
     yLabel->setMaximumHeight(25);
@@ -166,7 +166,7 @@ void TangentWidget::addWidgets()
     frame->setFrameShadow(QFrame::Sunken);
 
     layout1->setSpacing(3);
-    layout1->setMargin(1);
+    layout1->setContentsMargins(1, 1, 1, 1);
     layout1->addLayout(layout2);
     layout1->addLayout(layout3);
     layout1->addLayout(layout4);

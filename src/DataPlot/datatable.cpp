@@ -29,7 +29,7 @@ DataTable::DataTable(Information *info, int rowCount, int columnCount,
     tableWidget(new QTableWidget(rowCount,columnCount))
 {
     QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     setMinimumSize(0,0);
 
     tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -248,7 +248,7 @@ void DataTable::addData(QList<QStringList> data)
                 indexOfLastInsertedColumn++;
             }
 
-            if(nameValidator.exactMatch(data[0][column]))
+            if(nameValidator.match(data[0][column]).hasMatch())
                 columnNames[column] = data[0][column];
         }
     }
@@ -619,7 +619,7 @@ void DataTable::renameColumn(int index)
 
     if(!ok)
         return;
-    if(!nameValidator.exactMatch(name))
+    if(!nameValidator.match(name).hasMatch())
     {
         QMessageBox::information(this, tr("Error"), tr("Column names can only have letters and \"_\""));
         return;

@@ -115,7 +115,7 @@ protected:
     std::list<std::vector<double>> values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
                                     row insertion will be implemented */
     QStringList columnNames;
-    QRegExp nameValidator;
+    QRegularExpression nameValidator;
     QColor backgroundColor, textColor;
 
     

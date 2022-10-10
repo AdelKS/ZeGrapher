@@ -78,7 +78,7 @@ ValuesTableConf::ValuesTableConf(Information *info, QWidget *parent) :
     manualEntry = new QRadioButton(tr("Manul entry."));
 
     QHBoxLayout *emptyCellsNumLayout = new QHBoxLayout();
-    emptyCellsNumLayout->setMargin(0);
+    emptyCellsNumLayout->setContentsMargins(0, 0, 0, 0);
     emptyCellsNumLayout->setSpacing(6);
 
     QLabel *emptyCellsNumText = new QLabel(tr("Empty cells :"));

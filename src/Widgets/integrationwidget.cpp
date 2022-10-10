@@ -29,11 +29,11 @@ IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsL
 
     Func = funcNum;
 
-    antiderivatives << "F(" << "G(" << "H(" << "P(" << "R(" << "M(";  
+    antiderivatives << "F(" << "G(" << "H(" << "P(" << "R(" << "M(";
 
     centralLayout = new QVBoxLayout();
     centralLayout->setSpacing(2);
-    centralLayout->setMargin(0);
+    centralLayout->setContentsMargins(0, 0, 0, 0);
 
     centralLayout->addSpacing(5);
 
@@ -60,7 +60,7 @@ void IntegrationWidget::addWidgetToList(QString name, int funcId)
     QWidget *widget = new QWidget;
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(2);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     QLineEdit *xLineEdit = new QLineEdit();
     xLineEdit->setFrame(false);

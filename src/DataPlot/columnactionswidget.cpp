@@ -116,7 +116,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     signalMapper->setMapping(startingActionsUi->remove, confirmDelete);
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setMargin(3);
+    mainLayout->setContentsMargins(3, 3, 3, 3);
     mainLayout->addWidget(startingActions);
     mainLayout->addWidget(fillOptions);
     mainLayout->addWidget(sortOptions);

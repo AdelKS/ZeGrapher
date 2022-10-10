@@ -27,7 +27,7 @@ AbstractTable::AbstractTable(QWidget *parent) :
     QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->setMargin(2);
+    mainLayout->setContentsMargins(2, 2, 2, 2);
 
     QHBoxLayout *previousButtonLayout = new QHBoxLayout;
     QPushButton *previousButton = new QPushButton(tr("Back"));
@@ -45,7 +45,7 @@ AbstractTable::AbstractTable(QWidget *parent) :
     //-----------------------------------------------------------------------
 
     QHBoxLayout *kWidgetLayout = new QHBoxLayout;
-    kWidgetLayout->setMargin(0);
+    kWidgetLayout->setContentsMargins(0, 0, 0, 0);
 
     QLabel *kText = new QLabel("k =");
     k_value = new QLineEdit;

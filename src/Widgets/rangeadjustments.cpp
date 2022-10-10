@@ -28,7 +28,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
 
     Xmin = new NumberLineEdit(false, funcsList);
     Xmin->setMaximumHeight(27);
-    Xmin->setValue(graphRange.x.min);    
+    Xmin->setValue(graphRange.x.min);
     Xmin->setAlignment(Qt::AlignHCenter);
 
     Xmax = new NumberLineEdit(false, funcsList);
@@ -38,7 +38,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
 
     Ymin = new NumberLineEdit(false, funcsList);
     Ymin->setMaximumHeight(27);
-    Ymin->setValue(graphRange.y.min);    
+    Ymin->setValue(graphRange.y.min);
     Ymin->setAlignment(Qt::AlignHCenter);
 
     Ymax = new NumberLineEdit(false, funcsList);
@@ -69,7 +69,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     gridLayout->addLayout(ymaxLayout, 0, 1);
 
     QHBoxLayout *buttonsBox = new QHBoxLayout();
-    buttonsBox->setMargin(0);
+    buttonsBox->setContentsMargins(0, 0, 0, 0);
 
     orthonormalButton = new QPushButton();
     orthonormalButton->setFixedSize(30, 30);

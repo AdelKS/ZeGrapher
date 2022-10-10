@@ -92,7 +92,7 @@ void PolynomialModelWidget::updatePolynomialCoefs(QList<double> coefs)
         coefWidget.line->setAlignment(Qt::AlignLeft);
 
         QHBoxLayout *layout = new QHBoxLayout();
-        layout->setMargin(3);
+        layout->setContentsMargins(3, 3, 3, 3);
 
         layout->addWidget(coefWidget.name);
         layout->addWidget(coefWidget.line);
@@ -172,7 +172,7 @@ void PolynomialModelWidget::updateRangeOption()
 void PolynomialModelWidget::addWidgetsToUI()
 {
     QHBoxLayout *layout = new QHBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     startVal = new NumberLineEdit(false, information->getFuncsList());
     startVal->setEnabled(false);

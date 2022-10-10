@@ -93,7 +93,7 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
     selectorSide = COLUMN_SELECTION;
 
     QHBoxLayout *columnSelectorLayout = new QHBoxLayout();
-    columnSelectorLayout->setMargin(0);
+    columnSelectorLayout->setContentsMargins(0, 0, 0, 0);
     columnSelectorLayout->setSpacing(0);
 
     columnSelector->setFixedHeight(COLUMN_SELECTOR_HEIGHT);
@@ -105,7 +105,7 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
     ui->tableLayout->addLayout(columnSelectorLayout);
 
     QVBoxLayout *rowSelectorLayout = new QVBoxLayout();
-    rowSelectorLayout->setMargin(0);
+    rowSelectorLayout->setContentsMargins(0, 0, 0, 0);
     rowSelectorLayout->setSpacing(0);
 
     rowSelector->setFixedWidth(ROW_SELECTOR_WIDTH);
@@ -116,7 +116,7 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
 
 
     QHBoxLayout *secondLayout = new QHBoxLayout();
-    secondLayout->setMargin(0);
+    secondLayout->setContentsMargins(0, 0, 0, 0);
     secondLayout->setSpacing(0);
 
     secondLayout->addLayout(rowSelectorLayout);
