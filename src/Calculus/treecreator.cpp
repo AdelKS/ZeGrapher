@@ -120,7 +120,7 @@ QList<int> TreeCreator::getCalledFuncs(QString expr)
         {
             letterStart = i;
 
-            while(expr[i].isLetter() && i < expr.size())
+            while(i < expr.size() and expr[i].isLetter())
                 i++;
 
             calledObjects.push_back(expr.mid(letterStart, i - letterStart));
@@ -155,7 +155,7 @@ QList<int> TreeCreator::getCalledSeqs(QString expr)
         {
             letterStart = i;
 
-            while(expr[i].isLetter() && i < expr.size())
+            while(i < expr.size() && expr[i].isLetter())
                 i++;
 
             calledObjects.push_back(expr.mid(letterStart, i - letterStart));
@@ -227,7 +227,7 @@ bool TreeCreator::check(QString formula)
 
             while(i+1 < formula.size() && (formula[i+1].isLetter() || formula[i+1] == '_')) { i++ ; }
 
-            if(i != formula.size() && formula[i+1] == '\'')
+            if(i+1 < formula.size() && formula[i+1] == '\'')
                 i++;
 
             int numLetters = i - letterPosStart + 1;           
