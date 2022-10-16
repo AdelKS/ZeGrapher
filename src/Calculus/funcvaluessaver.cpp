@@ -76,7 +76,7 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
 
             for(x = xStart ; x <= xEnd; x += unitStep)
             {                
-                y = evalFunc(i, view.viewToUnitX(x), k);
+                y = evalFunc(i, view.toUnitX(x), k);
 
                 if(std::isnan(y) || std::isinf(y))
                 {
@@ -88,7 +88,7 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
                 }
                 else
                 {
-                    curvePart <<  QPointF( x * xUnit ,  - view.unitToViewY(y)*yUnit);
+                    curvePart <<  QPointF( x * xUnit ,  view.toViewY(y)*yUnit);
 
                     n = curvePart.size();
                     if(n > 1)
@@ -163,7 +163,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
 
                 while(x >= xStart)
                 {
-                    y = evalFunc(i, view.unitToViewX(x), k);
+                    y = evalFunc(i, view.toViewX(x), k);
 
                     if(std::isnan(y) || std::isinf(y))
                     {
@@ -175,7 +175,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
                     }
                     else
                     {
-                        curvePart.prepend(QPointF(x ,  view.unitToViewY(y)));
+                        curvePart.prepend(QPointF(x ,  view.toViewY(y)));
 
                         n = curvePart.size();
 
@@ -235,7 +235,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
 
                 while(x <= xEnd)
                 {
-                    y = evalFunc(i, view.unitToViewX(x), k);
+                    y = evalFunc(i, view.toViewX(x), k);
 
                     if(std::isnan(y) || std::isinf(y))
                     {
@@ -247,7 +247,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
                     }
                     else
                     {
-                        curvePart << QPointF(x ,  view.unitToViewY(y) );
+                        curvePart << QPointF(x ,  view.toViewY(y) );
                         n = curvePart.size();
 
                         if(n > 1)

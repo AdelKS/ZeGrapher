@@ -402,7 +402,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
                 if(information->getGraphRange().y.min < cur_pos && cur_pos < information->getGraphRange().y.max)
-                    painter.drawLine(QPointF(0, -cur_pos * pxPerUnit.y + centre.y), QPointF(graphRectScaled.width(), -cur_pos * pxPerUnit.y + centre.y));
+                    painter.drawLine(QPointF(0, cur_pos * pxPerUnit.y + centre.y), QPointF(graphRectScaled.width(), cur_pos * pxPerUnit.y + centre.y));
             }
         }
 
@@ -500,10 +500,8 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 {
     // TODO: update this method not working here
 
-    pxPerUnit.y = double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
+    pxPerUnit.y = -double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
     pxPerUnit.x = double(graphRectScaled.width()) / fabs(viewMapper.getViewRect().width());
-
-    double rapport = pxPerUnit.y / pxPerUnit.x;
 
     if(information->getAxesSettings().orthonormal)
     {
@@ -511,7 +509,7 @@ void BaseGraphDraw::updateCenterPosAndScaling()
     }
 
     centre.x = - viewMapper.getViewRect().left() * pxPerUnit.x;
-    centre.y =  viewMapper.getViewRect().top() * pxPerUnit.y;
+    centre.y = - viewMapper.getViewRect().top() * pxPerUnit.y;
 }
 
 QImage* BaseGraphDraw::drawImage()

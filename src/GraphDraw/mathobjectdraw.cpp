@@ -143,10 +143,8 @@ void MathObjectDraw::drawDataSet(int id, int width)
     for(const Point &pt: dataPoints)
     {
         QPointF qpt = userData.cartesian ?
-            QPointF(pt.x * pxPerUnit.x,
-                    -pt.y * pxPerUnit.y) :
-            QPointF(pt.x * cos(pt.y) * pxPerUnit.x,
-                    -pt.x * sin(pt.y) * pxPerUnit.y);
+            pt * pxPerUnit :
+            Point {.x = pt.x * cos(pt.y), .y = pt.x * sin(pt.y)} * pxPerUnit;
 
         double &&sq_dist = QPointF::dotProduct(qpt - prev_qpt, qpt - prev_qpt);
 
@@ -248,18 +246,16 @@ void MathObjectDraw::drawOneSequence(int i, int width)
      painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
      pen.setWidth(width);
 
-     QPointF point;
      double posX;
 
      double viewXmin = viewMapper.getViewRect().left();
      double viewXmax = viewMapper.getViewRect().right();
 
      double Xmin = viewMapper.getXmin();
-     double Xmax = viewMapper.getXmax();
 
      if(Xmin >  seqs[0]->get_nMin())
          posX = viewXmin;
-     else posX = viewMapper.unitToViewX(seqs[0]->get_nMin());
+     else posX = viewMapper.toViewX(seqs[0]->get_nMin());
 
      double step = 1;
 
@@ -281,15 +277,12 @@ void MathObjectDraw::drawOneSequence(int i, int width)
 
          for(double pos = posX; pos < viewXmax; pos += step)
          {
-             result = seqs[i]->getSeqValue(trunc(viewMapper.unitToViewX(pos)), ok, k);
+             result = seqs[i]->getSeqValue(trunc(viewMapper.toViewX(pos)), ok, k);
 
              if(!ok  || !std::isfinite(result))
                  return;
 
-             point.setX(pos * pxPerUnit.x);
-             // the view is inverted
-             point.setY(- result * pxPerUnit.y);
-             painter.drawPoint(point);
+             painter.drawPoint(Point {pos, result} * pxPerUnit);
          }
      }
 }
@@ -307,25 +300,22 @@ void MathObjectDraw::drawOneTangent(int i)
 
     painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
 
-    tangents->at(i)->calculateTangentPoints(pxPerUnit.x, pxPerUnit.y);
-
-    TangentPoints tangentPoints;
+    tangents->at(i)->calculateTangentPoints();
 
     pen.setColor(tangents->at(i)->getColor());
 
     pen.setWidth(viewSettings.graph.estheticSettings.curvesThickness);
     painter.setPen(pen);
 
-    tangentPoints = tangents->at(i)->getCaracteristicPoints();
-    painter.drawLine(QPointF(viewMapper.unitToViewX(tangentPoints.left.x), viewMapper.unitToViewY(tangentPoints.left.y)),
-                     QPointF(viewMapper.unitToViewX(tangentPoints.right.x), viewMapper.unitToViewY(tangentPoints.right.y)));
+    TangentPoints tangentPoints = tangents->at(i)->getCaracteristicPoints().toView(viewMapper) * pxPerUnit;
+    painter.drawLine(tangentPoints.left, tangentPoints.right);
 
     pen.setWidth(viewSettings.graph.estheticSettings.curvesThickness + 3);
     painter.setPen(pen);
 
-    painter.drawPoint(QPointF(viewMapper.unitToViewX(tangentPoints.left.x), viewMapper.unitToViewY(tangentPoints.left.y)));
-    painter.drawPoint(QPointF(viewMapper.unitToViewX(tangentPoints.center.x), viewMapper.unitToViewY(tangentPoints.center.y)));
-    painter.drawPoint(QPointF(viewMapper.unitToViewX(tangentPoints.right.x), viewMapper.unitToViewY(tangentPoints.right.y)));
+    painter.drawPoint(tangentPoints.left);
+    painter.drawPoint(tangentPoints.center);
+    painter.drawPoint(tangentPoints.right);
 }
 
 void MathObjectDraw::drawTangents()
@@ -354,19 +344,19 @@ void MathObjectDraw::drawStraightLines()
 
         if(straightLines->at(i)->isVertical())
         {
-            pt1.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()) * pxPerUnit.x);
+            pt1.setX(viewMapper.toViewX(straightLines->at(i)->getVerticalPos()) * pxPerUnit.x);
             pt1.setY(viewMapper.getViewRect().top());
 
-            pt2.setX(viewMapper.unitToViewX(straightLines->at(i)->getVerticalPos()) * pxPerUnit.x);
+            pt2.setX(viewMapper.toViewX(straightLines->at(i)->getVerticalPos()) * pxPerUnit.x);
             pt2.setY(viewMapper.getViewRect().bottom());
         }
         else
         {
             pt1.setX(viewMapper.getViewRect().left() * pxPerUnit.x);
-            pt1.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmin())) * pxPerUnit.y);
+            pt1.setY(viewMapper.toViewY(straightLines->at(i)->getY(viewMapper.getXmin())) * pxPerUnit.y);
 
             pt2.setX(viewMapper.getViewRect().right() * pxPerUnit.x);
-            pt2.setY(viewMapper.unitToViewY(straightLines->at(i)->getY(viewMapper.getXmax())) * pxPerUnit.y);
+            pt2.setY(viewMapper.toViewY(straightLines->at(i)->getY(viewMapper.getXmax())) * pxPerUnit.y);
         }
 
         painter.drawLine(pt1, pt2);
@@ -402,7 +392,7 @@ void MathObjectDraw::drawStaticParEq()
             for(int pos = 0 ; pos < list->at(curve).size(); pos ++)
             {
                 point = list->at(curve).at(pos);
-                polygon << QPointF(viewMapper.unitToViewX(point.x) * pxPerUnit.x, viewMapper.unitToViewY(point.y) * pxPerUnit.y);
+                polygon << viewMapper.toView(point) * pxPerUnit;
             }
 
             painter.drawPolyline(polygon);
