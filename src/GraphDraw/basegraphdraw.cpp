@@ -268,7 +268,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
             for(uint mul = 1 ; mul <= gridSettings.subgridSubDivs ; mul++)
             {
-                double &&cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1) +
+                const double cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1) +
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
                 if(information->getGraphRange().x.min < cur_pos && cur_pos < information->getGraphRange().x.max)
@@ -353,14 +353,14 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                     pen.setWidthF(gridSettings.gridLineWidth);
                     painter.setPen(pen);
                     painter.setRenderHint(QPainter::Antialiasing, false);
-                    painter.drawLine(QPointF(0, -Ypos + centre.y), QPointF(graphRectScaled.width(), -Ypos + centre.y));
+                    painter.drawLine(QPointF(0, Ypos + centre.y), QPointF(graphRectScaled.width(), Ypos + centre.y));
                 }
 
                 pen.setColor(axisSettings.color);
                 pen.setWidth(axisSettings.lineWidth);
                 painter.setPen(pen);
 
-                pos = -Ypos + centre.y;
+                pos = Ypos + centre.y;
 
                 painter.setRenderHint(QPainter::Antialiasing, false);
                 painter.drawLine(QPointF(4, pos), QPointF(0, pos));
@@ -398,7 +398,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
             for(uint mul = 1 ; mul <= gridSettings.subgridSubDivs ; mul++)
             {
-                double &&cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1) +
+                const double cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1) +
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
                 if(information->getGraphRange().y.min < cur_pos && cur_pos < information->getGraphRange().y.max)
