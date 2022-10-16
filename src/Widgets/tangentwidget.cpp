@@ -227,30 +227,26 @@ void TangentWidget::validate()
     else k = 0;
 }
 
-void TangentWidget::calculateTangentPoints(double xUnit, double yUnit)
+void TangentWidget::calculateTangentPoints()
 {
     if(!isValid)
         return;
 
-    raty = (yUnit/xUnit+1)/2;
-    ratx = (xUnit/yUnit+1)/2;
+    // value of the function on the tangent point
+    const double fval = funcCalculators[funcID]->getFuncValue(pos, k);
 
+    // write the tangent as y = a*x + b
     a = funcCalculators[funcID]->getDerivativeValue(pos, k);
-    double b = -pos*a + funcCalculators[funcID]->getFuncValue(pos, k);
+    const double b = -pos*a + fval;
 
     slopeLineEdit->setText(QString::number(a, 'g', NUM_PREC));
     ordinateAtOriginLineEdit->setText(QString::number(b, 'g', NUM_PREC));
 
-    double d = 0.5 * lenght * sqrt(1/(a*a*raty*raty + ratx*ratx));
+    const double d = 0.5 * lenght * sqrt(1/(a*a + 1));
 
-    tangentPoints.center.x = pos;
-    tangentPoints.center.y = funcCalculators[funcID]->getFuncValue(pos, k);
-
-    tangentPoints.right.x = pos + d;
-    tangentPoints.right.y = a*tangentPoints.right.x + b;
-
-    tangentPoints.left.x = pos - d;
-    tangentPoints.left.y = a*tangentPoints.left.x + b;
+    tangentPoints.center = Point {.x = pos,     .y = fval};
+    tangentPoints.right  = Point {.x = pos + d, .y = a*(pos + d) + b};
+    tangentPoints.left   = Point {.x = pos - d, .y = a*(pos - d) + b};
 }
 
 bool TangentWidget::isTangentValid()

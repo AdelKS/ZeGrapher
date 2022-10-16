@@ -28,13 +28,39 @@
 #include "Calculus/funccalculator.h"
 #include "Calculus/exprcalculator.h"
 #include "Widgets/funcwidget.h"
+#include "GraphDraw/viewmapper.h"
+
+struct TangentPoints
+{
+    Point left, center, right;
+    //center is the point where the tangent touches the curve, left and right are the edges of the segment
+
+    TangentPoints toView(const ZeViewMapper &mapper) const
+    {
+        return TangentPoints
+        {
+            .left   = mapper.toView(left),
+            .center = mapper.toView(center),
+            .right  = mapper.toView(right)
+        };
+    }
+
+    TangentPoints operator * (const Point &scaleWith) const
+    {
+        return TangentPoints {
+            .left   = left   * scaleWith,
+            .center = center * scaleWith,
+            .right  = right  * scaleWith
+        };
+    }
+};
 
 class TangentWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list, QColor col);
-    void calculateTangentPoints(double xUnit, double yUnit);
+    void calculateTangentPoints();
     void resizeTangent(double dx, double side);
     void changeID(int id);
     void move(double newPos);
