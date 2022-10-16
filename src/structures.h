@@ -381,15 +381,14 @@ struct Point
     {
         return x < b.x;
     }
+
+    operator QPointF() const
+    {
+        return QPointF(x, y);
+    }
 };
 
 bool ptCompY(const Point &pt1, const Point &pt2);
-
-struct TangentPoints
-{
-    Point left, center, right;
-    //center is the point where the tangent touches the curve, left and right are the edges of the segment
-};
 
 struct ParametricInfo
 {
@@ -465,5 +464,7 @@ Number int_pow(Number a, int b)
 
     return res;
 }
+
+Point operator * (const Point &pt1, const Point &pt2);
 
 #endif // STRUCTURES_H

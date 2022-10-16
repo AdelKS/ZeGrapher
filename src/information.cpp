@@ -188,7 +188,7 @@ const ZeAppSettings& Information::getAppSettings()
 
 void Information::setOrthonormal(bool state)
 {
-
+    // TODO
     emit updateOccured();
 }
 
