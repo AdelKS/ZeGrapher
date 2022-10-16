@@ -211,7 +211,27 @@ void ZeViewMapper::translateView(QPointF vec)
     }
 }
 
-double ZeViewMapper::viewToUnitY(double viewY) const // viewY =
+QPointF ZeViewMapper::toView(const QPointF& unitPt) const
+{
+  return QPointF(toViewX(unitPt.x()), toViewY(unitPt.y()));
+}
+
+QPointF ZeViewMapper::toUnit(const QPointF &viewPt) const
+{
+  return QPointF(toUnitX(viewPt.x()), toUnitY(viewPt.y()));
+}
+
+Point ZeViewMapper::toView(const Point& unitPt) const
+{
+  return Point {.x = toViewX(unitPt.x), .y = toViewY(unitPt.y)};
+}
+
+Point ZeViewMapper::toUnit(const Point &viewPt) const
+{
+  return Point {.x = toUnitX(viewPt.x), .y = toUnitY(viewPt.y)};
+}
+
+double ZeViewMapper::toUnitY(double viewY) const // viewY =
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -223,7 +243,7 @@ double ZeViewMapper::viewToUnitY(double viewY) const // viewY =
     }
 }
 
-double ZeViewMapper::unitToViewY(double unitY) const
+double ZeViewMapper::toViewY(double unitY) const
 {
     if(axesSettings.y.axisType == ZeAxisType::LOG)
     {
@@ -255,7 +275,7 @@ double ZeViewMapper::getYmax()
     return Ymax;
 }
 
-double ZeViewMapper::viewToUnitX(double viewX) const
+double ZeViewMapper::toUnitX(double viewX) const
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {
@@ -267,7 +287,7 @@ double ZeViewMapper::viewToUnitX(double viewX) const
     }
 }
 
-double ZeViewMapper::unitToViewX(double unitX) const
+double ZeViewMapper::toViewX(double unitX) const
 {
     if(axesSettings.x.axisType == ZeAxisType::LOG)
     {

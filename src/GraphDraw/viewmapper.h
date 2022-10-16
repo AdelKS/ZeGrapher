@@ -69,11 +69,17 @@ public:
     double getYmin();
     double getYmax();
 
-    double viewToUnitY(double viewY) const;
-    double unitToViewY(double unitY) const ;
+    QPointF toView(const QPointF &unitPt) const;
+    QPointF toUnit(const QPointF &viewPt) const;
 
-    double viewToUnitX(double viewX) const ;
-    double unitToViewX(double unitX) const ;
+    Point toView(const Point &unitPt) const;
+    Point toUnit(const Point &viewPt) const;
+
+    double toUnitY(double viewY) const;
+    double toViewY(double unitY) const ;
+
+    double toUnitX(double viewX) const ;
+    double toViewX(double unitX) const ;
 
 
 
