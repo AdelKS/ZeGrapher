@@ -33,9 +33,9 @@ class FuncTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit FuncTable(Information *info);
-    void setTableParameters(ValuesTableParameters par);    
-    
+    explicit FuncTable();
+    void setTableParameters(ValuesTableParameters par);
+
 protected slots:
     void cellEdited(QStandardItem *item);
     void kValueEdited();
@@ -48,16 +48,15 @@ protected:
     void emptyCellsFill();
 
     void addXValues();
-    void addYValues();    
+    void addYValues();
 
-    Information *information;
     FuncCalculator *func;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;
     ExprCalculator *exprCalc;
     bool disableCellEdit;
     QPalette validPalette, invalidPalette;
-    
+
 };
 
 #endif // FUNCTABLE_H

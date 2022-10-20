@@ -22,9 +22,9 @@
 #include "modelwidget.h"
 
 
-ModelWidget::ModelWidget(const std::weak_ptr<UserData> &userData, Information *info,
+ModelWidget::ModelWidget(const std::weak_ptr<UserData> &userData,
               QString xname, QString yname, QWidget *parent):
-    QFrame(parent), currentState(ChoiceWidget), information(info), abscissa(xname), ordinate(yname), userData(userData)
+    QFrame(parent), currentState(ChoiceWidget), abscissa(xname), ordinate(yname), userData(userData)
 {
     layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -75,8 +75,8 @@ void ModelWidget::displaySelectedModel(ModelType model)
 
   if(model == PolynomialModel)
   {
-        polynomialModel = new PolynomialModelWidget(userData, information, abscissa, ordinate);
-        layout->addWidget(polynomialModel);        
+        polynomialModel = new PolynomialModelWidget(userData, abscissa, ordinate);
+        layout->addWidget(polynomialModel);
         currentState = PolynomialWidget;
 
         connect(polynomialModel, SIGNAL(removeMe()), this, SLOT(emitRemoveMeSignal()));

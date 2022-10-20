@@ -15,7 +15,7 @@ class AppSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AppSettings(Information *information, QWidget *parent = nullptr);
+    explicit AppSettings(QWidget *parent = nullptr);
     ~AppSettings();
 
 public slots:
@@ -34,7 +34,6 @@ private:
     QFont currentAppFont;
     double currentAppFontSize;
     QString currentLanguage;
-    Information *information;
     ZeAppSettings appSettings;
 
     Ui::AppSettings *ui;

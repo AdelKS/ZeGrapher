@@ -21,9 +21,9 @@
 //#include "GraphDraw/subgraph.h"
 
 
-//SubGraph::SubGraph(Information *info) : BaseGraphDraw(info)
+//SubGraph::SubGraph() : BaseGraphDraw()
 //{
-    
+
 //    setMinimumSize(QSize(200, 200));
 //    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
@@ -34,7 +34,7 @@
 //    connect(info, SIGNAL(gridStateChange()), this, SLOT(updateGraph()));
 //    connect(info, SIGNAL(drawStateUpdateOccured()), this, SLOT(reactivateSmoothing()));
 
-//    exprCalculator = new ExprCalculator(false, info->getFuncsList());
+//    exprCalculator = new ExprCalculator(false, information.getFuncsList());
 
 //    selectedCurve.isSomethingSelected = false;
 //    cancelUpdateSignal = false;
@@ -380,7 +380,7 @@
 
 //    painter.begin(this);
 
-//    painter.setFont(information->getGraphSettings().graphFont);
+//    painter.setFont(information.getGraphSettings().graphFont);
 
 //    painter.drawImage(QPoint(0,0), *savedGraph);
 //    painter.translate(QPointF(centre.x, centre.y));
@@ -416,7 +416,7 @@
 
 //void SubGraph::paintGraph(bool bufferPaint)
 //{
-//    const ZeGraphSettings &graphSettings = information->getGraphSettings();
+//    const ZeGraphSettings &graphSettings = information.getGraphSettings();
 //    painter.setFont(graphSettings.graphFont);
 
 //    updateCenterPosAndScaling();
@@ -468,7 +468,7 @@
 
 //void SubGraph::drawHoveringConsequence()
 //{
-//    const ZeGraphSettings &graphSettings = information->getGraphSettings();
+//    const ZeGraphSettings &graphSettings = information.getGraphSettings();
 
 //    if(mouseState.pointedObjectType == FUNCTION)
 //    {
@@ -517,7 +517,7 @@
 //    tangentDrawException = -1;
 
 //    cancelUpdateSignal = true;
-//    information->emitUpdateSignal();
+//    information.emitUpdateSignal();
 
 //    painter.end();
 //}
@@ -574,7 +574,7 @@
 
 //void SubGraph::drawAnimatedParEq()
 //{
-//    painter.setRenderHint(QPainter::Antialiasing, information->getGraphSettings().smoothing && !moving);
+//    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
 //    QList< QList<Point> > *list;
 //    QPolygonF polygon;
@@ -582,7 +582,7 @@
 //    ColorSaver *colorSaver;
 //    Point point;
 
-//    pen.setWidth(information->getGraphSettings().curvesThickness);
+//    pen.setWidth(information.getGraphSettings().curvesThickness);
 //    painter.setPen(pen);
 
 //    int listEnd;
@@ -623,12 +623,12 @@
 
 //                if(parWidget->is_t_Animated())
 //                {
-//                    pen.setWidth(information->getGraphSettings().curvesThickness + 4);
+//                    pen.setWidth(information.getGraphSettings().curvesThickness + 4);
 //                    painter.setPen(pen);
 
 //                    painter.drawPoint(polygon.last());
 
-//                    pen.setWidth(information->getGraphSettings().curvesThickness);
+//                    pen.setWidth(information.getGraphSettings().curvesThickness);
 //                    painter.setPen(pen);
 //                }
 //            }
@@ -649,8 +649,8 @@
 //        yTextLabel->setText(customSequences[selectedCurve.id]);
 //    }
 
-//    xTextLabel->setStyleSheet("color: " + information->getViewSettings().axes.x.color.name());
-//    yTextLabel->setStyleSheet("color: " + information->getViewSettings().axes.y.color.name());
+//    xTextLabel->setStyleSheet("color: " + information.getViewSettings().axes.x.color.name());
+//    yTextLabel->setStyleSheet("color: " + information.getViewSettings().axes.y.color.name());
 
 //    if(selectedCurve.funcType == FUNC_HOVER)
 //        pen.setColor(funcs[selectedCurve.id]->getColorSaver()->getColor(selectedCurve.kPos));
@@ -660,7 +660,7 @@
 //    if(selectedCurve.selectedObject == SEQUENCE)
 //        extraWidth += 2;
 
-//    pen.setWidth(information->getGraphSettings().curvesThickness + extraWidth);
+//    pen.setWidth(information.getGraphSettings().curvesThickness + extraWidth);
 //    painter.setPen(pen);
 //    painter.setRenderHint(QPainter::Antialiasing);
 
@@ -785,7 +785,7 @@
 //                    (win.Xmax - win.Xmin < MAX_AMPLITUDE and win.Ymax - win.Ymin < MAX_AMPLITUDE))
 //            {
 //                resaveGraph = true;
-//                information->setRange(win);
+//                information.setRange(win);
 //            }
 
 //            cursorType = NORMAL;
@@ -972,7 +972,7 @@
 //            {
 //                if(!(selectedCurve.isSomethingSelected && selectedCurve.selectedObject == FUNCTION && draw == selectedCurve.kPos && i == selectedCurve.id))
 //                {
-//                    if((fabs(calcY - y) * pxPerUnit.y) < information->getGraphSettings().curvesThickness + 1)
+//                    if((fabs(calcY - y) * pxPerUnit.y) < information.getGraphSettings().curvesThickness + 1)
 //                    {
 //                        mouseState.tangentHovering = false;
 //                        mouseState.pointedObjectType = FUNCTION;
@@ -1010,7 +1010,7 @@
 //        if(pxPerUnit.x < 1)
 //             step = 5*trunc(1/pxPerUnit.x);
 
-//        if(fabs((trunc((x-start)/step) - (x-start)/step) * pxPerUnit.x) < double(information->getGraphSettings().curvesThickness) + 2)
+//        if(fabs((trunc((x-start)/step) - (x-start)/step) * pxPerUnit.x) < double(information.getGraphSettings().curvesThickness) + 2)
 
 //            intAbscissa = trunc((x-start)/step) * step + start;
 
@@ -1034,7 +1034,7 @@
 
 //                if(!(selectedCurve.isSomethingSelected && selectedCurve.selectedObject == SEQUENCE && draw == selectedCurve.kPos && i == selectedCurve.id))
 //                {
-//                    if((fabs(calcY - y) * pxPerUnit.y) < information->getGraphSettings().curvesThickness + 3)
+//                    if((fabs(calcY - y) * pxPerUnit.y) < information.getGraphSettings().curvesThickness + 3)
 //                    {
 //                        mouseState.tangentHovering = false;
 //                        mouseState.pointedObjectType = SEQUENCE;
@@ -1148,7 +1148,7 @@
 //    {
 //        if(start <= Xpos && fabs(Xpos - centre.x) > 1)
 //        {
-//            if(start <= Xpos && information->getGridState() && Xpos <= end)
+//            if(start <= Xpos && information.getGridState() && Xpos <= end)
 //            {
 //                pen.setColor(parameters.gridColor);
 //                pen.setWidthF(0.5);
@@ -1217,7 +1217,7 @@
 //    {
 //        if(start <= Ypos && fabs(Ypos - centre.y) > 1)
 //        {
-//            if(information->getGridState())
+//            if(information.getGridState())
 //            {
 //                pen.setColor(parameters.gridColor);
 //                pen.setWidthF(0.5);
@@ -1339,7 +1339,7 @@
 //    */
 //    viewMapper.zoomXview(ratio);
 //    moving = true;
-//    information->setRange(viewMapper);
+//    information.setRange(viewMapper);
 
 //    if(graphSettings.smoothing)
 //        repaintTimer.start();
@@ -1357,7 +1357,7 @@
 
 //    double valeur = (viewMapper.getViewRect().top() - viewMapper.getViewRect().bottom()) * (double)(vSlider->value()) * 0.0016;
 
-//    if(!information->isOrthonormal())
+//    if(!information.isOrthonormal())
 //    {
 //        viewMapper.zoomYview(valeur);
 //        recalculate = false;
@@ -1372,7 +1372,7 @@
 //    if(graphSettings.smoothing)
 //        repaintTimer.start();
 
-//    information->setRange(viewMapper);
+//    information.setRange(viewMapper);
 //}
 
 //void SubGraph::stop_Y_Zoom()

@@ -51,7 +51,6 @@ protected:
     void loadWindowSavedGeomtries();
     void saveWindowsGeometry();
 
-    Information *information;
     MainViewContainer *mainGraphContainer;
     Settings *settingsWin;
     Values *valuesWin;

@@ -23,9 +23,9 @@
 #include "ui_polynomialmodelwidget.h"
 
 PolynomialModelWidget::PolynomialModelWidget(const std::weak_ptr<const UserData> &userData,
-                                             Information *info, QString xname, QString yname,
+                                             QString xname, QString yname,
                                              QWidget *parent):
-    QWidget(parent), ui(new Ui::PolynomialModelWidget), abscissa(xname), ordinate(yname), information(info), userData(userData)
+    QWidget(parent), ui(new Ui::PolynomialModelWidget), abscissa(xname), ordinate(yname), userData(userData)
 {
     ui->setupUi(this);
 
@@ -36,11 +36,11 @@ PolynomialModelWidget::PolynomialModelWidget(const std::weak_ptr<const UserData>
 
     connect(regression, SIGNAL(rangeUpdated()), this, SLOT(updateManualRangeFields()));
     connect(regression, SIGNAL(coefsUpdated(QList<double>)), this, SLOT(updatePolynomialCoefs(QList<double>)));
-    connect(regression, SIGNAL(regressionModified()), information, SIGNAL(dataUpdated()));   
+    connect(regression, SIGNAL(regressionModified()), &information, SIGNAL(dataUpdated()));
 
-    information->addDataRegression(regression);
+    information.addDataRegression(regression);
 
-    regression->setColor(information->getGraphSettings().estheticSettings.defaultColor);
+    regression->setColor(information.getGraphSettings().estheticSettings.defaultColor);
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));
     connect(colorButton, SIGNAL(colorChanged(QColor)), regression, SLOT(setColor(QColor)));
@@ -174,14 +174,14 @@ void PolynomialModelWidget::addWidgetsToUI()
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
 
-    startVal = new NumberLineEdit(false, information->getFuncsList());
+    startVal = new NumberLineEdit(false, information.getFuncsList());
     startVal->setEnabled(false);
     startVal->setMaximumHeight(22);
     startVal->setMaximumWidth(150);
 
     connect(startVal, SIGNAL(newVal(double)), this, SLOT(manualRangeEdited()));
 
-    endVal = new NumberLineEdit(false, information->getFuncsList());
+    endVal = new NumberLineEdit(false, information.getFuncsList());
     endVal->setEnabled(false);
     endVal->setMaximumHeight(22);
     endVal->setMaximumWidth(150);
@@ -209,7 +209,7 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), startVal, SLOT(setEnabled(bool)));
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
-    colorButton = new QColorButton(information->getGraphSettings().estheticSettings.defaultColor);
+    colorButton = new QColorButton(information.getGraphSettings().estheticSettings.defaultColor);
     QLabel *colorLabel = new QLabel(tr("color:"));
     ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);
@@ -229,23 +229,23 @@ void PolynomialModelWidget::addWidgetsToUI()
 void PolynomialModelWidget::setAbscissaName(QString name)
 {
     abscissa = name;
-    regression->setAbscissaName(name);  
+    regression->setAbscissaName(name);
 }
 
 void PolynomialModelWidget::setOrdinateName(QString name)
 {
     ordinate = name;
-    regression->setOrdinateName(name);   
+    regression->setOrdinateName(name);
 }
 
 void PolynomialModelWidget::refreshModel()
-{    
+{
     regression->refresh();
 }
 
 PolynomialModelWidget::~PolynomialModelWidget()
 {
-    information->removeDataRegression(regression);
+    information.removeDataRegression(regression);
 
     delete regression;
 }

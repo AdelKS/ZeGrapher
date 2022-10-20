@@ -58,7 +58,7 @@ class DataWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataWindow(const std::shared_ptr<UserData> &userData, Information *info, QWidget *parent = 0);
+    explicit DataWindow(const std::shared_ptr<UserData> &userData, QWidget *parent = 0);
     RetractableWidgetState getRetractableWidgetState();
 
     ~DataWindow();
@@ -85,11 +85,10 @@ protected slots:
     void startAnimation();
     void displayHelp();
 
-protected:    
+protected:
 
     int xindex, yindex;
     Ui::DataWindow *ui;
-    Information *information;
     QGroupBox *actionsGroupBox;
     QWidget *columnSelectorSpacer, *rowSelectorSpacer;
     DataTable *dataTable;

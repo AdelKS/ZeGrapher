@@ -22,13 +22,13 @@
 #include "ui_mathobjectsinput.h"
 
 
-MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent):
+MathObjectsInput::MathObjectsInput(QWidget *parent):
     QWidget(parent),
     ui(new Ui::MathObjectsInput),
     parEqWidgets(),
     parEqController(&parEqWidgets)
 {
-    ui->setupUi(this);   
+    ui->setupUi(this);
 
     setWindowFlags(Qt::Window);
 
@@ -39,7 +39,7 @@ MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent):
     connect(ui->periodSpinBox, SIGNAL(valueChanged(int)), &parEqController, SLOT(setIncrPeriod(int)));
     connect(ui->freqSpinBox, SIGNAL(valueChanged(int)), &parEqController, SLOT(setUpdateFreq(int)));
 
-    connect(&parEqController, SIGNAL(animationUpdate()), info, SLOT(emitAnimationUpdate()));
+    connect(&parEqController, SIGNAL(animationUpdate()), &information, SLOT(emitAnimationUpdate()));
 
     setWindowTitle(tr("Plot"));
     setWindowIcon(QIcon(":/icons/functions.png"));
@@ -47,7 +47,7 @@ MathObjectsInput::MathObjectsInput(Information *info, QWidget *parent):
     funcNames << 'f' << 'g' << 'h'<< 'p' << 'r'<< 'm';
     seqNames << 'u' << 'v' << 'l' << 'w' << 'q' << 't';
 
-    setInfoClass(info);//must be before addFunctions and addSequences, because they use information class
+    setInfoClass();//must be before addFunctions and addSequences, because they use information class
     addFunctions();
     addSequences();
 
@@ -104,7 +104,7 @@ void MathObjectsInput::showDataHelpWindow()
 }
 
 void MathObjectsInput::addFunctions()
-{   
+{
     QSettings settings;
     QList<QColor> funcColors;
 
@@ -112,14 +112,14 @@ void MathObjectsInput::addFunctions()
         funcColors = toColorsList(settings.value("functions/colors").toList());
 
     for(int i = 0 ; i < funcNames.size() ; i++)
-    {        
+    {
         FuncWidget *widget;
         if(i < funcColors.size())
             widget = new FuncWidget(funcNames[i], i, funcColors.at(i));
-        else widget = new FuncWidget(funcNames[i], i, information->getGraphSettings().estheticSettings.defaultColor);
+        else widget = new FuncWidget(funcNames[i], i, information.getGraphSettings().estheticSettings.defaultColor);
 
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
-        connect(widget, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
+        connect(widget, SIGNAL(drawStateChanged()), &information, SLOT(emitDrawStateUpdate()));
         connect(widget, SIGNAL(newParametricState(int)), this, SLOT(newFuncParametricState()));
 
         ui->funcWidgetsLayout->addWidget(widget);
@@ -134,7 +134,7 @@ void MathObjectsInput::addFunctions()
         ui->funcWidgetsLayout->addWidget(frame);
     }
 
-    information->setFunctionsList(funcCalcs);
+    information.setFunctionsList(funcCalcs);
 
     for(int i = 0 ; i < funcCalcs.size() ; i++)
     {
@@ -158,10 +158,10 @@ void MathObjectsInput::addSequences()
 
         if(i < seqColors.size())
             widget = new SeqWidget(seqNames[i], i, seqColors.at(i));
-        else widget = new SeqWidget(seqNames[i], i, information->getGraphSettings().estheticSettings.defaultColor);
+        else widget = new SeqWidget(seqNames[i], i, information.getGraphSettings().estheticSettings.defaultColor);
 
         connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
-        connect(widget, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
+        connect(widget, SIGNAL(drawStateChanged()), &information, SLOT(emitDrawStateUpdate()));
         connect(widget, SIGNAL(newParametricState()), this, SLOT(newSeqParametricState()));
 
         ui->seqWidgetsLayout->addWidget(widget);
@@ -176,7 +176,7 @@ void MathObjectsInput::addSequences()
         ui->seqWidgetsLayout->addWidget(frame);
     }
 
-    information->setSequencesList(seqCalcs);
+    information.setSequencesList(seqCalcs);
 
     for(int i = 0 ; i < seqCalcs.size() ; i++)
     {
@@ -204,21 +204,21 @@ void MathObjectsInput::newSeqParametricState()
         seqWidgets[i]->checkCalledFuncsSeqsParametric();
 }
 
-void MathObjectsInput::setInfoClass(Information *info)
+void MathObjectsInput::setInfoClass()
 {
-    information = info;   
-    information->setParEqsListPointer(&parEqWidgets);
-    information->setTangentsListPointer(&tangentWidgets);
-    information->setStraightLinesListPointer(&straightlineWidgets);
+
+    information.setParEqsListPointer(&parEqWidgets);
+    information.setTangentsListPointer(&tangentWidgets);
+    information.setStraightLinesListPointer(&straightlineWidgets);
 }
 
 void MathObjectsInput::draw()
-{    
+{
     validateFunctions();
     validateSequences();
     validateLines();
     validateParametricEquations();
-    information->emitUpdateSignal();
+    information.emitUpdateSignal();
 }
 
 void MathObjectsInput::validateFunctions()
@@ -266,18 +266,18 @@ void MathObjectsInput::keyboardButtonClicked()
 
 void MathObjectsInput::addTangent()
 {
-    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets, information->getGraphSettings().estheticSettings.defaultColor);
+    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets, information.getGraphSettings().estheticSettings.defaultColor);
     tangentWidgets << tangent;
 
     connect(tangent, SIGNAL(removeMe(TangentWidget*)), this, SLOT(removeTangent(TangentWidget*)));
     connect(tangent, SIGNAL(returnPressed()), this, SLOT(draw()));
-    connect(tangent, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
+    connect(tangent, SIGNAL(drawStateChanged()), &information, SLOT(emitDrawStateUpdate()));
 
     ui->linesLayout->addWidget(tangent);
 }
 
 void MathObjectsInput::removeTangent(TangentWidget *widget)
-{    
+{
     for(int i = tangentWidgets.indexOf(widget) + 1 ; i < tangentWidgets.size() ; i++)
         tangentWidgets[i]->changeID(i-1);
 
@@ -285,17 +285,17 @@ void MathObjectsInput::removeTangent(TangentWidget *widget)
     widget->close();
     delete widget;
 
-    information->emitUpdateSignal();
+    information.emitUpdateSignal();
 }
 
 void MathObjectsInput::addStraightline()
 {
-    StraightLineWidget *line = new StraightLineWidget(straightlineWidgets.size(), funcCalcs, information->getGraphSettings().estheticSettings.defaultColor);
+    StraightLineWidget *line = new StraightLineWidget(straightlineWidgets.size(), funcCalcs, information.getGraphSettings().estheticSettings.defaultColor);
     straightlineWidgets << line;
 
     connect(line, SIGNAL(removeMe(StraightLineWidget*)), this, SLOT(removeStraightline(StraightLineWidget*)));
     connect(line, SIGNAL(returnPressed()), this, SLOT(draw()));
-    connect(line, SIGNAL(drawStateChanged()), information, SLOT(emitDrawStateUpdate()));
+    connect(line, SIGNAL(drawStateChanged()), &information, SLOT(emitDrawStateUpdate()));
 
     ui->linesLayout->addWidget(line);
 }
@@ -313,10 +313,10 @@ void MathObjectsInput::removeStraightline(StraightLineWidget *widget)
 
 void MathObjectsInput::addParEq()
 {
-    ParEqWidget *widget = new ParEqWidget(parEqWidgets.size(), funcCalcs, information->getGraphSettings().estheticSettings.defaultColor);
+    ParEqWidget *widget = new ParEqWidget(parEqWidgets.size(), funcCalcs, information.getGraphSettings().estheticSettings.defaultColor);
     connect(widget, SIGNAL(removeClicked(ParEqWidget*)), this, SLOT(removeParEq(ParEqWidget*)));
-    connect(widget, SIGNAL(updateRequest()), information, SLOT(emitDrawStateUpdate()));
-    connect(widget, SIGNAL(animationUpdateRequest()), information, SLOT(emitAnimationUpdate()));
+    connect(widget, SIGNAL(updateRequest()), &information, SLOT(emitDrawStateUpdate()));
+    connect(widget, SIGNAL(animationUpdateRequest()), &information, SLOT(emitAnimationUpdate()));
     connect(widget, SIGNAL(returnPressed()), this, SLOT(draw()));
 
     parEqWidgets << widget;
@@ -331,16 +331,16 @@ void MathObjectsInput::removeParEq(ParEqWidget *widget)
     parEqWidgets.removeOne(widget);
     delete widget;
 
-    information->emitAnimationUpdate();
+    information.emitAnimationUpdate();
 }
 
 void MathObjectsInput::addDataWidget()
 {
-    DataWidget *widget = new DataWidget(information, this);
+    DataWidget *widget = new DataWidget(this);
     connect(widget, SIGNAL(removeMe(DataWidget*)), this, SLOT(removeDataWidget(DataWidget*)));
     connect(widget->getDataWindow(), SIGNAL(showHelpWindow()), this, SLOT(showDataHelpWindow()));
 
-    information->addDataList(widget->getUserData());
+    information.addDataList(widget->getUserData());
 
     dataWidgets << widget;
     ui->dataWidgetsContainerLayout->addWidget(widget);
@@ -348,7 +348,7 @@ void MathObjectsInput::addDataWidget()
 
 void MathObjectsInput::removeDataWidget(DataWidget *widget)
 {
-    information->removeDataList(widget->getUserData());
+    information.removeDataList(widget->getUserData());
 
     dataWidgets.removeOne(widget);
     widget->close();

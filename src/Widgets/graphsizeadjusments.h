@@ -14,7 +14,7 @@ class GraphSizeAdjusments : public QWidget
     Q_OBJECT
 
 public:
-    explicit GraphSizeAdjusments(Information *information, QWidget *parent = nullptr);
+    explicit GraphSizeAdjusments(QWidget *parent = nullptr);
     const ZeSizeSettings &getSettings();
     ~GraphSizeAdjusments();
 
@@ -46,7 +46,6 @@ private:
 
     double screenDPI;
     ZeSizeSettings sizeSettings;
-    Information *information;
     Ui::graphSizeAdjusments *ui;
 };
 

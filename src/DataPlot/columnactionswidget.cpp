@@ -26,9 +26,8 @@
 #include "ui_filloptions.h"
 #include "ui_startingactions.h"
 
-ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, int columnnum):
-    information(info),
-    calculator(false, info->getFuncsList()),
+ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum):
+    calculator(false, information.getFuncsList()),
     signalMapper(new QSignalMapper(this)),
     lineEditsMapper(new QSignalMapper(this)),
     startingActions(new QWidget()),
@@ -54,7 +53,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, Information *info, in
     invalidPalette.setColor(QPalette::Base, color);
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
-    connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));   
+    connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));
 
     startingActionsUi->setupUi(startingActions);
     startingActionsUi->remove->hide();
@@ -150,7 +149,7 @@ void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
         shownWidgets.clear();
 
         if(selectorPos.inbetween)
-        {            
+        {
             insertColumn->show();
             shownWidgets << insertColumn;
         }

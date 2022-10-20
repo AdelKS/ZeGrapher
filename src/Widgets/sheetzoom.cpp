@@ -1,12 +1,12 @@
 #include "sheetzoom.h"
 #include "ui_sheetzoom.h"
 
-SheetZoom::SheetZoom(Information *information, QWidget *parent) :
+SheetZoom::SheetZoom(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SheetZoom)
 {
     ui->setupUi(this);
-    this->information = information;
+
 
     ui->fitSheet->setIcon(QIcon(":/icons/fit-sheet.svg"));
 
@@ -15,7 +15,7 @@ SheetZoom::SheetZoom(Information *information, QWidget *parent) :
     connect(ui->zoomPercentage, SIGNAL(valueChanged(double)), this, SLOT(onZoomValueChange()));
     connect(ui->fitSheet, SIGNAL(toggled(bool)), this, SLOT(updateZoomSettings()));
 
-    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onExternalZoomSettingsChange()));
+    connect(&information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onExternalZoomSettingsChange()));
 
     updateZoomSettings();
 }
@@ -30,7 +30,7 @@ void SheetZoom::updateZoomSettings()
     zoomSettings.zoom = ui->zoomPercentage->value() / 100;
     zoomSettings.zoomingType = ui->fitSheet->isChecked() ? ZeZoomSettings::FITSHEET : ZeZoomSettings::CUSTOM;
 
-    information->setGraphZoomSettings(zoomSettings);
+    information.setGraphZoomSettings(zoomSettings);
 }
 
 void SheetZoom::activateRealSizePreview()
@@ -54,7 +54,7 @@ void SheetZoom::zoomOut()
 
 void SheetZoom::onExternalZoomSettingsChange()
 {
-    zoomSettings = information->getGraphZoomSettings();
+    zoomSettings = information.getGraphZoomSettings();
 
     const QSignalBlocker blocker(ui->fitSheet);
     const QSignalBlocker blocker2(ui->zoomPercentage);

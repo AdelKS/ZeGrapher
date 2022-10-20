@@ -20,12 +20,11 @@
 
 #include "DataPlot/datatable.h"
 
-DataTable::DataTable(Information *info, int rowCount, int columnCount,
+DataTable::DataTable(int rowCount, int columnCount,
                      int rowHeight, int columnWidth):
     selectedCol(0),
-    calculator(false, info->getFuncsList()),
+    calculator(false, information.getFuncsList()),
     treeCreator(ObjectType::DATA_TABLE_EXPR),
-    information(info),
     tableWidget(new QTableWidget(rowCount,columnCount))
 {
     QHBoxLayout *mainLayout = new QHBoxLayout;

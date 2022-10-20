@@ -22,9 +22,9 @@
 
 /* TODO: Take care of the orthonormal setting */
 
-RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information *info, QWidget *parent): QWidget(parent)
+RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, QWidget *parent): QWidget(parent)
 {
-    information = info;
+
 
     Xmin = new NumberLineEdit(false, funcsList);
     Xmin->setMaximumHeight(27);
@@ -92,7 +92,7 @@ RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, Information
     messageBox->setIcon(QMessageBox::Warning);
 
     loadDefaults();
-    information->setGraphRange(graphRange);
+    information.setGraphRange(graphRange);
 
     connect(Xmax, SIGNAL(returnPressed()), this, SLOT(apply()));
     connect(Xmin, SIGNAL(returnPressed()), this, SLOT(apply()));
@@ -152,12 +152,12 @@ void RangeAdjustments::apply()
 {
     processUserInput();
 
-    information->setGraphRange(graphRange);
+    information.setGraphRange(graphRange);
 }
 
 void RangeAdjustments::processUserInput()
 {
-    ZeViewSettings viewSettings = information->getViewSettings();
+    ZeViewSettings viewSettings = information.getViewSettings();
 
     Xmin->checkVal();
     Ymin->checkVal();

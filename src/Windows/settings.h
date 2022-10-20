@@ -49,7 +49,7 @@ class Settings : public QWidget
     Q_OBJECT
 
 public:
-    explicit Settings(Information *info, QWidget *parent = nullptr);
+    explicit Settings(QWidget *parent = nullptr);
     ~Settings();
 
 public slots:
@@ -57,7 +57,6 @@ public slots:
     void showExportSettings();
 
 private:
-    Information *information;
     Ui::Settings *ui;
 
     QTimer timer;

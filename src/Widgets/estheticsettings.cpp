@@ -1,9 +1,8 @@
 #include "estheticsettings.h"
 #include "ui_estheticsettings.h"
 
-EstheticSettings::EstheticSettings(Information *information, QWidget *parent) :
+EstheticSettings::EstheticSettings(QWidget *parent) :
     QWidget(parent),
-    information(information),
     ui(new Ui::EstheticSettings)
 {
     ui->setupUi(this);
@@ -50,7 +49,7 @@ void EstheticSettings::resetToDefaults()
 void EstheticSettings::apply()
 {
     processUserInput();
-    information->setEstheticSettings(estheticSettings);
+    information.setEstheticSettings(estheticSettings);
 }
 
 const ZeEstheticSettings &EstheticSettings::getSettings()

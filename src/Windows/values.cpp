@@ -23,9 +23,9 @@
 
 #include "Windows/values.h"
 
-Values::Values(Information *info, QWidget *parent): QWidget(parent)
+Values::Values(QWidget *parent): QWidget(parent)
 {
-    information = info;
+
 
     setWindowFlags(Qt::Window);
 
@@ -67,7 +67,7 @@ Values::Values(Information *info, QWidget *parent): QWidget(parent)
 
 void Values::addValuesTable()
 {
-    ValuesTable *table = new ValuesTable(information);
+    ValuesTable *table = new ValuesTable();
     valuesTableList << table;
 
     connect(table, SIGNAL(remove(ValuesTable*)), this, SLOT(removeTable(ValuesTable*)));

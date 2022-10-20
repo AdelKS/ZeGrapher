@@ -23,18 +23,16 @@
 
 #include "ValuesTable/valuestableconf.h"
 
-ValuesTableConf::ValuesTableConf(Information *info, QWidget *parent) :
+ValuesTableConf::ValuesTableConf(QWidget *parent) :
     QWidget(parent)
 {
-    infoClass = info;
-
-    funcs = info->getFuncsList();
-    seqs = info->getSeqsList();
-    parEqs = info->getParEqsList();
+    funcs = information.getFuncsList();
+    seqs = information.getSeqsList();
+    parEqs = information.getParEqsList();
 
     exprCalc = new ExprCalculator(false, funcs);
 
-    connect(infoClass, SIGNAL(updateOccured()), this, SLOT(updateNameCombo()));
+    connect(&information, SIGNAL(updateOccured()), this, SLOT(updateNameCombo()));
 
     functions << "f" << "g" << "h" << "p" << "r" << "m";
     sequences << "u" << "v" << "l" << "w" << "q" << "z";
@@ -219,7 +217,7 @@ void ValuesTableConf::updateNameCombo()
     }
     else if(index == SEQUENCE)// SEQUENCE in the combo is 2, and also the case in the defines in "structures.h"
     {
-         nameCombo->setEnabled(true);       
+         nameCombo->setEnabled(true);
 
          for(short i = 0; i < seqs.size(); i++)
          {
@@ -233,7 +231,7 @@ void ValuesTableConf::updateNameCombo()
     }
     else if(index == PARAMETRIC_EQ)
     {
-         nameCombo->setEnabled(true);        
+         nameCombo->setEnabled(true);
 
          for(short i = 0; i < parEqs->size(); i++)
          {
@@ -242,7 +240,7 @@ void ValuesTableConf::updateNameCombo()
                  typesNameMap << i;
                  nameCombo->addItem("(P" + QString::number(i+1) + ")");
              }
-         }        
+         }
     }
     else nameCombo->setEnabled(false);
 

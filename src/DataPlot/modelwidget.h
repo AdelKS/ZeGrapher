@@ -34,7 +34,7 @@ class ModelWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit ModelWidget(const std::weak_ptr<UserData> &userData, Information *info,
+    explicit ModelWidget(const std::weak_ptr<UserData> &userData,
                          QString xname, QString yname, QWidget *parent = nullptr);
 
 public slots:
@@ -54,7 +54,6 @@ private:
     enum State {ChoiceWidget, PolynomialWidget};
 
     State currentState;
-    Information *information;
     QString abscissa, ordinate;
 
     std::weak_ptr<const UserData> userData;

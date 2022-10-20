@@ -31,12 +31,12 @@ class RangeAdjustments : public QWidget
     Q_OBJECT
 
 public:
-    explicit RangeAdjustments(QList<FuncCalculator *> funcsList, Information *info, QWidget *parent = nullptr);
+    explicit RangeAdjustments(QList<FuncCalculator *> funcsList, QWidget *parent = nullptr);
     GraphRange getRange();
     ~RangeAdjustments();
 
 public slots:
-    void resetToStandardView();   
+    void resetToStandardView();
     void setGraphRange(const GraphRange &range);
     void disableUserInput(bool disable);
     void setOrthonormal(bool state);
@@ -52,7 +52,6 @@ protected:
     void loadDefaults();
 
     GraphRange graphRange;
-    Information *information;    
 
     QPushButton *orthonormalButton, *resetButton;
     NumberLineEdit *Xmin, *Xmax, *Ymin, *Ymax;

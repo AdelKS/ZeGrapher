@@ -20,6 +20,8 @@
 
 #include "information.h"
 
+Information information = Information();
+
 Information::Information()
 {
 

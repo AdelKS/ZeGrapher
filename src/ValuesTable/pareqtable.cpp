@@ -23,10 +23,10 @@
 
 #include "ValuesTable/pareqtable.h"
 
-ParEqTable::ParEqTable(Information *info) : AbstractTable()
+ParEqTable::ParEqTable() : AbstractTable()
 {
-    information = info;
-    exprCalc = new ExprCalculator(false, info->getFuncsList());
+
+    exprCalc = new ExprCalculator(false, information.getFuncsList());
 
     k = 0;
 
@@ -42,7 +42,7 @@ ParEqTable::ParEqTable(Information *info) : AbstractTable()
     invalidPalette.setColor(QPalette::Base, color);
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
-    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(&information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -74,7 +74,7 @@ void ParEqTable::exportToCSV()
 void ParEqTable::setTableParameters(ValuesTableParameters par)
 {
     parameters = par;
-    parEq = information->getParEqsList()->at(parameters.id);
+    parEq = information.getParEqsList()->at(parameters.id);
     connect(parEq, SIGNAL(destroyed()), this, SIGNAL(previous()));
 
     title->setText(tr("Parametric equation: ") + parameters.name);

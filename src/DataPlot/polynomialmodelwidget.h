@@ -47,7 +47,7 @@ class PolynomialModelWidget : public QWidget
 
 public:
     explicit PolynomialModelWidget(const std::weak_ptr<const UserData> &userData,
-                                   Information *info, QString xname, QString yname,
+                                   QString xname, QString yname,
                                    QWidget *parent = nullptr);
     void setAbscissaName(QString name);
     void setOrdinateName(QString name);
@@ -63,22 +63,21 @@ protected slots:
     void updateRangeOption();
     void updatePolynomialCoefs(QList<double> coefs);
     void updateManualRangeFields();
-    void manualRangeEdited();   
+    void manualRangeEdited();
 
 protected:
-    void addWidgetsToUI();    
+    void addWidgetsToUI();
     void refreshDataPoints();
 
     Ui::PolynomialModelWidget *ui;
     QString abscissa, ordinate;
-    Information *information;
     std::weak_ptr<const UserData> userData;
     NumberLineEdit *startVal, *endVal;
     QColorButton *colorButton;
 
     QList<CoefWidgetStruct> coefWidgets;
 
-    PolynomialRegression *regression;    
+    PolynomialRegression *regression;
 };
 
 #endif // POLYNOMIALMODELWIDGET_H

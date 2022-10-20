@@ -2,12 +2,13 @@
 #include <algorithm>
 
 #include "gridcalculator.h"
+#include "information.h"
 
 using namespace std;
 
-GridCalculator::GridCalculator(Information *info, QObject *parent) : QObject(parent)
+GridCalculator::GridCalculator(QObject *parent) : QObject(parent)
 {
-    information = info;
+
 
     targetTicksNum = TARGET_TICKS_NUM;
 }
@@ -76,7 +77,7 @@ int GridCalculator::getMaxStrPxSize(ZeAxisName axisname, const ZeAxisRange &scal
 
 QString GridCalculator::get_coordinate_string(ZeAxisName axisname, double multiplier)
 {
-    const ZeLinAxisSettings &axisSettings = axisname == ZeAxisName::X ? information->getAxesSettings().x.linSettings : information->getAxesSettings().y.linSettings;
+    const ZeLinAxisSettings &axisSettings = axisname == ZeAxisName::X ? information.getAxesSettings().x.linSettings : information.getAxesSettings().y.linSettings;
 
     QString posStr;
 
@@ -106,7 +107,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
 
     qDebug() << "New tick spacing calculation";
 
-    const ZeLinAxisSettings &axisSettings = axisName == ZeAxisName::X ? information->getAxesSettings().x.linSettings : information->getAxesSettings().y.linSettings;
+    const ZeLinAxisSettings &axisSettings = axisName == ZeAxisName::X ? information.getAxesSettings().x.linSettings : information.getAxesSettings().y.linSettings;
 
     double pxPerUnit = windowWidth / range.amplitude();
 
@@ -184,7 +185,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
         else goodSpacing = true;
     }
 
-    int relTickSpacing = axisName == ZeAxisName::X ? information->getAxesSettings().x.tickRelSpacing : information->getAxesSettings().y.tickRelSpacing;
+    int relTickSpacing = axisName == ZeAxisName::X ? information.getAxesSettings().x.tickRelSpacing : information.getAxesSettings().y.tickRelSpacing;
 
     if(relTickSpacing > 0)
     {

@@ -35,25 +35,24 @@ class ValuesTable : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ValuesTable(Information *info, QWidget *parent = 0);
+    explicit ValuesTable(QWidget *parent = 0);
     ~ValuesTable();
-    
+
 signals:
     void remove(ValuesTable *table);
 
-protected slots:   
+protected slots:
     void apply(ValuesTableParameters parameters);
     void emitRemoveSignal();
     void previous();
 
 protected:
     ValuesTableConf *confWidget;
-    Information *infoClass;   
     SeqTable *seqTable;
     FuncTable *funcTable;
     ParEqTable *parEqTable;
     QVBoxLayout *containerLayout;
-    
+
 };
 
 #endif // VALUESTABLE_H

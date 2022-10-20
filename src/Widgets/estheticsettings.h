@@ -15,7 +15,7 @@ class EstheticSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit EstheticSettings(Information *information, QWidget *parent = nullptr);
+    explicit EstheticSettings(QWidget *parent = nullptr);
     ~EstheticSettings();
     const ZeEstheticSettings &getSettings();
 
@@ -25,11 +25,10 @@ public slots:
     void processUserInput();
     void saveSettingsToDisk();
 
-private:    
+private:
     void loadSettingsFromDisk();
     void makeConnects();
 
-    Information *information;
     QColorButton *backgroundColorButton, *defaultColorButton;
     ZeEstheticSettings estheticSettings;
     Ui::EstheticSettings *ui;

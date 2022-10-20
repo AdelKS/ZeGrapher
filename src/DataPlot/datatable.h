@@ -33,7 +33,7 @@ class DataTable : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataTable(Information *info, int rowCount, int columnCount, int rowHeight, int columnWidth);
+    explicit DataTable(int rowCount, int columnCount, int rowHeight, int columnWidth);
 
     std::list<std::vector<double>>::const_iterator get_column_const_it(uint index) const;
 
@@ -69,7 +69,7 @@ public slots:
     void addData(QList<QStringList> data);
 
 signals:
-    void newPosCorrections();   
+    void newPosCorrections();
     void newColumnCount(int count);
     void newRowCount(int count);
     void newColumnName(int visualIndex);
@@ -110,7 +110,6 @@ protected:
     ExprCalculator calculator;
     TreeCreator treeCreator;
     int cellHeight, cellWidth, verticalHeaderWidth;
-    Information *information;
     QTableWidget *tableWidget;
     std::list<std::vector<double>> values; /* values[column][row] since there will be more rows than columns, column insertion is an implemented function in QList
                                     row insertion will be implemented */
@@ -118,7 +117,7 @@ protected:
     QRegularExpression nameValidator;
     QColor backgroundColor, textColor;
 
-    
+
 };
 
 #endif // DATATABLE_H

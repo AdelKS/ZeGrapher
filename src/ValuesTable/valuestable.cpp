@@ -23,11 +23,9 @@
 
 #include "ValuesTable/valuestable.h"
 
-ValuesTable::ValuesTable(Information *info, QWidget *parent) :
+ValuesTable::ValuesTable(QWidget *parent) :
     QWidget(parent)
 {
-    infoClass = info;
-
     seqTable = nullptr;
     parEqTable = nullptr;
     funcTable = nullptr;
@@ -53,7 +51,7 @@ ValuesTable::ValuesTable(Information *info, QWidget *parent) :
     removeButtonLayout->addStretch();
     removeButtonLayout->addWidget(removeButton);
 
-    confWidget = new ValuesTableConf(infoClass);
+    confWidget = new ValuesTableConf();
     connect(confWidget, SIGNAL(next(ValuesTableParameters)), this, SLOT(apply(ValuesTableParameters)));
 
     containerLayout->addLayout(removeButtonLayout);
@@ -100,7 +98,7 @@ void ValuesTable::apply(ValuesTableParameters parameters)
     {
         if(funcTable == nullptr)
         {
-            funcTable = new FuncTable(infoClass);
+            funcTable = new FuncTable();
             containerLayout->addWidget(funcTable);
 
             connect(funcTable, SIGNAL(previous()), this, SLOT(previous()));
@@ -125,7 +123,7 @@ void ValuesTable::apply(ValuesTableParameters parameters)
     {
         if(seqTable == nullptr)
         {
-            seqTable = new SeqTable(infoClass);
+            seqTable = new SeqTable();
             containerLayout->addWidget(seqTable);
 
             connect(seqTable, SIGNAL(previous()), this, SLOT(previous()));
@@ -151,7 +149,7 @@ void ValuesTable::apply(ValuesTableParameters parameters)
     {
         if(parEqTable == nullptr)
         {
-            parEqTable = new ParEqTable(infoClass);
+            parEqTable = new ParEqTable();
             containerLayout->addWidget(parEqTable);
 
             connect(parEqTable, SIGNAL(previous()), this, SLOT(previous()));

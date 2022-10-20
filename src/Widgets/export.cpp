@@ -1,13 +1,11 @@
 #include "export.h"
 #include "ui_export.h"
 
-Export::Export(Information *information, QWidget *parent) :
+Export::Export(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Export)
 {
     ui->setupUi(this);
-
-    this->information = information;
 
     timer.setSingleShot(true);
     timer.setInterval(2000);
@@ -59,7 +57,7 @@ void Export::exportGraph()
         return;
     }
 
-    information->setExportFileName(fileName + extension);
+    information.setExportFileName(fileName + extension);
 
     ui->exportButton->setEnabled(false);
     timer.start();

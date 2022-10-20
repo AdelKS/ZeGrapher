@@ -19,8 +19,9 @@
 ****************************************************************************/
 
 #include "GraphDraw/mainview.h"
+#include "information.h"
 
-MainView::MainView(Information *info): BaseGraphDraw(info)
+MainView::MainView(): BaseGraphDraw()
 {
     orientation = QPageLayout::Landscape;
     moveType = NOTHING;
@@ -35,11 +36,11 @@ MainView::MainView(Information *info): BaseGraphDraw(info)
     relFigRect.setWidth(1);
     relFigRect.moveTopLeft(QPointF(0, 0));
 
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-    connect(information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onZoomSettingsChange()));
-    connect(information, SIGNAL(axesSettingsChanged()), this, SLOT(update()));
-    connect(information, SIGNAL(gridSettingsChanged()), this, SLOT(update()));
-    connect(information, SIGNAL(dataUpdated()), this, SLOT(update()));
+    connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    connect(&information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onZoomSettingsChange()));
+    connect(&information, SIGNAL(axesSettingsChanged()), this, SLOT(update()));
+    connect(&information, SIGNAL(gridSettingsChanged()), this, SLOT(update()));
+    connect(&information, SIGNAL(dataUpdated()), this, SLOT(update()));
 }
 
 void MainView::updateWidgetSize()
@@ -70,7 +71,7 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
 
     int targetResolution = int(screenDPI / sizeSettings.scalingFactor);
 
-    pdfWriter->setResolution(targetResolution);   
+    pdfWriter->setResolution(targetResolution);
 
     QPageLayout layout;
     layout.setUnits(QPageLayout::Millimeter);
@@ -86,9 +87,9 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
 
     painter.begin(pdfWriter);
 
-    if(information->getGraphSettings().estheticSettings.backgroundColor != QColor(Qt::white))
+    if(information.getGraphSettings().estheticSettings.backgroundColor != QColor(Qt::white))
     {
-        painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
+        painter.setBrush(QBrush(information.getGraphSettings().estheticSettings.backgroundColor));
         painter.drawRect(painter.viewport());
     }
 
@@ -122,9 +123,9 @@ void MainView::exportSVG(QString fileName)
 
     painter.begin(&svgGenerator);
 
-    if(information->getGraphSettings().estheticSettings.backgroundColor != QColor(Qt::white))
+    if(information.getGraphSettings().estheticSettings.backgroundColor != QColor(Qt::white))
     {
-        painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
+        painter.setBrush(QBrush(information.getGraphSettings().estheticSettings.backgroundColor));
         painter.drawRect(painter.viewport());
     }
 
@@ -138,9 +139,9 @@ void MainView::exportSVG(QString fileName)
 }
 
 void MainView::updateSizeValues()
-{    
-    zoomSettings = information->getGraphZoomSettings();
-    sizeSettings = information->getGraphSizeSettings();
+{
+    zoomSettings = information.getGraphZoomSettings();
+    sizeSettings = information.getGraphSizeSettings();
 
     if(sizeSettings.figureFillsSheet)
     {
@@ -159,9 +160,9 @@ void MainView::updateSizeValues()
         sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * screenDPI / CM_PER_INCH).toSize();
     }
 
-    disconnect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-    information->setGraphSizeSettings(sizeSettings);
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    disconnect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    information.setGraphSizeSettings(sizeSettings);
+    connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 
@@ -178,7 +179,7 @@ void MainView::paintEvent(QPaintEvent *event)
         onSizeSettingsChange();
     }
 
-    painter.begin(this);    
+    painter.begin(this);
 
     drawSupport();
 
@@ -230,11 +231,11 @@ void MainView::assignMouseRects()
 
 QRect MainView::getDrawableRect(const QRect &refSupportRect)
 {   // gives the drawable rect in the given support, in the support's coordinates
-    // the drawable rect is the support's rect minus the margins    
+    // the drawable rect is the support's rect minus the margins
 
     int pxMargins = 0;
 
-    if(information->getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
+    if(information.getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
     {
         pxMargins = int(sizeSettings.cmMargins / CM_PER_INCH * screenDPI);
     }
@@ -318,7 +319,7 @@ QRect MainView::supportRectFromViewRect(QRect viewRect)
 
 void MainView::drawSupport()
 { // draws the sheet on an untransformed view
-    painter.setBrush(QBrush(information->getGraphSettings().estheticSettings.backgroundColor));
+    painter.setBrush(QBrush(information.getGraphSettings().estheticSettings.backgroundColor));
 
     supportRect = supportRectFromViewRect(painter.viewport());
 
@@ -332,7 +333,7 @@ void MainView::drawFigureRect()
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(information->getAxesSettings().x.color);
+    pen.setColor(information.getAxesSettings().x.color);
     painter.setPen(pen);
     painter.drawRect(figureRect);
 
@@ -355,7 +356,7 @@ void MainView::scaleView(const QRect &refSheetRect)
         {
             zoomSettings.zoom = newZoom;
 
-            information->setGraphZoomSettings(zoomSettings);
+            information.setGraphZoomSettings(zoomSettings);
         }
     }
 
@@ -497,7 +498,7 @@ void MainView::onSizeSettingsChange()
 
     qDebug() << "OnSizeSettingsChange";
 
-    sizeSettings = information->getGraphSizeSettings();
+    sizeSettings = information.getGraphSizeSettings();
 
     if(sizeSettings.figureFillsSheet)
     {
@@ -539,9 +540,9 @@ void MainView::updateFigureSize()
     sizeSettings.pxFigureSize.setWidth(int(relFigRect.width() * double(sizeSettings.pxSheetSize.width())));
     sizeSettings.pxFigureSize.setHeight(int(relFigRect.height() * double(sizeSettings.pxSheetSize.height())));
 
-    disconnect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-    information->setGraphSizeSettings(sizeSettings);
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    disconnect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    information.setGraphSizeSettings(sizeSettings);
+    connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 void MainView::constrainFigureRectRel()

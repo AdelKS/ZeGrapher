@@ -37,7 +37,7 @@ class Values : public QWidget
     Q_OBJECT
 
 public:
-    explicit Values(Information *info, QWidget *parent = 0);
+    explicit Values(QWidget *parent = 0);
 
 protected slots:
     void addValuesTable();
@@ -46,7 +46,6 @@ protected slots:
 protected:
     QHBoxLayout *tablesLayout;
     QList<ValuesTable*> valuesTableList;
-    Information *information;   
     QWidget *widget;
 
 };

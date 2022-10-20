@@ -13,8 +13,11 @@ TRANSLATIONS = ZeGrapher_fr.ts \
                ZeGrapher_de.ts \
                ZeGrapher_zh.ts
 
-CONFIG += c++17
+CONFIG += c++2a
 QMAKE_LFLAGS_RELEASE = -s
+
+QMAKE_CFLAGS += -Wall -Wextra
+QMAKE_CXXFLAGS += -Wall -Wextra
 
 DEFINES *= QT_USE_QSTRINGBUILDER
 

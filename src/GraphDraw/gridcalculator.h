@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "information.h"
+#include "structures.h"
 
 #define TARGET_TICKS_NUM 20
 
@@ -51,7 +51,7 @@ class GridCalculator : public QObject
 {
     Q_OBJECT
 public:
-    explicit GridCalculator(Information *info, QObject *parent = nullptr);
+    explicit GridCalculator(QObject *parent = nullptr);
 
     ZeLinAxisTicks getLinearAxisTicks(double pxWidth,
                                    const ZeAxisRange &range,
@@ -62,7 +62,6 @@ protected:
     int getMaxStrPxSize(ZeAxisName axisname, const ZeAxisRange &range, double realStep, const QFontMetrics &metrics);
     QString get_coordinate_string(ZeAxisName axisname, double multiplier);
 
-    Information *information;
     double targetTicksNum;
 
 };

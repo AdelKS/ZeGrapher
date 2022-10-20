@@ -14,7 +14,7 @@ class SheetZoom : public QWidget
     Q_OBJECT
 
 public:
-    explicit SheetZoom(Information *information, QWidget *parent = nullptr);
+    explicit SheetZoom(QWidget *parent = nullptr);
     void resetZoom();
     ~SheetZoom();
 
@@ -30,7 +30,6 @@ protected slots:
 private:
     Ui::SheetZoom *ui;
     ZeZoomSettings zoomSettings;
-    Information *information;
 
     friend class MainViewContainer;
 };

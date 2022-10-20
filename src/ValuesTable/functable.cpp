@@ -23,15 +23,15 @@
 
 #include "ValuesTable/functable.h"
 
-FuncTable::FuncTable(Information *info) : AbstractTable()
+FuncTable::FuncTable() : AbstractTable()
 {
-    information = info;   
-    exprCalc = new ExprCalculator(false, info->getFuncsList());
+
+    exprCalc = new ExprCalculator(false, information.getFuncsList());
 
     updateTimer->setInterval(1000);
     updateTimer->setSingleShot(true);
 
-    disableCellEdit = false;    
+    disableCellEdit = false;
 
     QColor color;
     color.setNamedColor(VALID_COLOR);
@@ -42,7 +42,7 @@ FuncTable::FuncTable(Information *info) : AbstractTable()
     invalidPalette.setColor(QPalette::Base, color);
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
-    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(&information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -52,7 +52,7 @@ FuncTable::FuncTable(Information *info) : AbstractTable()
 void FuncTable::setTableParameters(ValuesTableParameters par)
 {
     parameters = par;
-    func = information->getFuncsList()[parameters.id];
+    func = information.getFuncsList()[parameters.id];
     title->setText(tr("Function: ") + parameters.name);
 
     if(func->isFuncParametric())
@@ -213,7 +213,7 @@ void FuncTable::addXValues()
 
 void FuncTable::addYValues()
 {
-    QList<QStandardItem*> liste;   
+    QList<QStandardItem*> liste;
 
     double x = parameters.range.start, y;
 

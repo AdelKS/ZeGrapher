@@ -18,42 +18,44 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/mathobjectdraw.h"
 #include <iostream>
+
+#include "GraphDraw/mathobjectdraw.h"
+#include "information.h"
 
 using namespace std;
 
-MathObjectDraw::MathObjectDraw(Information *info)
+MathObjectDraw::MathObjectDraw()
 {
-    information = info;
+
 
     coef = sqrt(3)/2;
 
     setMinimumSize(QSize(200, 200));
-    viewSettings = info->getViewSettings();
+    viewSettings = information.getViewSettings();
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
 
-    straightLines = info->getStraightLinesList();
-    tangents = info->getTangentsList();
-    parEqs = info->getParEqsList();
-    funcs = info->getFuncsList();
-    seqs = info->getSeqsList();
+    straightLines = information.getStraightLinesList();
+    tangents = information.getTangentsList();
+    parEqs = information.getParEqsList();
+    funcs = information.getFuncsList();
+    seqs = information.getSeqsList();
 
     moving = false;
     tangentDrawException = -1;
 
-    funcValuesSaver = new FuncValuesSaver(info->getFuncsList(), viewSettings.graph.estheticSettings.distanceBetweenPoints);
+    funcValuesSaver = new FuncValuesSaver(information.getFuncsList(), viewSettings.graph.estheticSettings.distanceBetweenPoints);
 
-    connect(information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
-    connect(information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
-    connect(information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
+    connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
+    connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
+    connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
 }
 
 void MathObjectDraw::updateSettingsVals()
 {
-    viewSettings = information->getViewSettings();
+    viewSettings = information.getViewSettings();
     funcValuesSaver->setPixelStep(viewSettings.graph.estheticSettings.distanceBetweenPoints);
 }
 
@@ -120,29 +122,29 @@ void MathObjectDraw::drawCross(const QPointF &pt, double w)
 
 void MathObjectDraw::drawDataSet(int id, int width)
 {
-    const UserData &userData = *information->getDataPoints(id);
+    auto userData = information.getDataPoints(id);
 
-    pen.setColor(userData.style.color);
+    pen.setColor(userData->style.color);
     painter.setPen(pen);
 
     static std::vector<std::function<void(MathObjectDraw*, QPointF, double)>> draw_functions = {&MathObjectDraw::drawRhombus,
             &MathObjectDraw::drawDisc, &MathObjectDraw::drawSquare, &MathObjectDraw::drawTriangle, &MathObjectDraw::drawCross };
 
 
-    const std::vector<Point> &dataPoints = userData.dataPoints;
+    const std::vector<Point> &dataPoints = userData->dataPoints;
     QPolygonF polygon;
     QPointF prev_qpt;
     bool first_pt = true;
 
-    double &&target_dist = information->getEstheticSettings().distanceBetweenPoints *
-            information->getEstheticSettings().distanceBetweenPoints;
+    double &&target_dist = information.getEstheticSettings().distanceBetweenPoints *
+            information.getEstheticSettings().distanceBetweenPoints;
 
-    brush.setColor(userData.style.color);
+    brush.setColor(userData->style.color);
     painter.setBrush(brush);
 
     for(const Point &pt: dataPoints)
     {
-        QPointF qpt = userData.cartesian ?
+        QPointF qpt = userData->cartesian ?
             pt * pxPerUnit :
             Point {.x = pt.x * cos(pt.y), .y = pt.x * sin(pt.y)} * pxPerUnit;
 
@@ -151,19 +153,19 @@ void MathObjectDraw::drawDataSet(int id, int width)
         if(!first_pt && sq_dist <= target_dist)
             continue;
 
-        if(userData.style.drawLines)
+        if(userData->style.drawLines)
             polygon.push_back(qpt);
 
-        if(userData.style.drawPoints)
-            draw_functions[uint(userData.style.pointStyle)](this, qpt, width);
+        if(userData->style.drawPoints)
+            draw_functions[uint(userData->style.pointStyle)](this, qpt, width);
 
         prev_qpt = std::move(qpt);
         first_pt = false;
     }
 
-    if(userData.style.drawLines)
+    if(userData->style.drawLines)
     {
-        pen.setStyle(userData.style.lineStyle);
+        pen.setStyle(userData->style.lineStyle);
         painter.setPen(pen);
         painter.drawPolyline(polygon);
         pen.setStyle(Qt::SolidLine);
@@ -173,9 +175,9 @@ void MathObjectDraw::drawDataSet(int id, int width)
 
 void MathObjectDraw::drawData()
 {
-    for(int i = 0 ; i < information->getDataListsCount(); i++)
+    for(int i = 0 ; i < information.getDataListsCount(); i++)
     {
-        if(information->getDataPoints(i)->style.draw)
+        if(information.getDataPoints(i)->style.draw)
             drawDataSet(i, viewSettings.graph.estheticSettings.curvesThickness + 2);
     }
 }
@@ -202,11 +204,11 @@ void MathObjectDraw::drawRegressions()
 
     for(int reg = 0 ; reg < regValuesSavers.size() ; reg++)
     {
-        if(information->getRegression(reg)->getDrawState())
+        if(information.getRegression(reg)->getDrawState())
         {
             for(int curve = 0 ; curve < regValuesSavers[reg].getCurves().size() ; curve++)
             {
-                drawCurve(viewSettings.graph.estheticSettings.curvesThickness, information->getRegression(reg)->getColor(),
+                drawCurve(viewSettings.graph.estheticSettings.curvesThickness, information.getRegression(reg)->getColor(),
                           regValuesSavers[reg].getCurves().at(curve));
             }
         }

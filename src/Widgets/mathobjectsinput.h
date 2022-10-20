@@ -36,7 +36,7 @@ class MathObjectsInput : public QWidget
     Q_OBJECT
 
 public:
-    explicit MathObjectsInput(Information *info, QWidget *parent = 0);
+    explicit MathObjectsInput(QWidget *parent = 0);
     ~MathObjectsInput();
 
     void closeAllOpenedWindows();
@@ -52,13 +52,13 @@ signals:
     void showHelpWindow();
 
 protected slots:
-    void setInfoClass(Information *info);  
+    void setInfoClass();
     void keyboardButtonClicked();
     void newFuncParametricState();
     void newSeqParametricState();
     void draw();
 
-    void addTangent();   
+    void addTangent();
     void removeTangent(TangentWidget *widget);
 
     void addStraightline();
@@ -74,11 +74,10 @@ protected slots:
 
 protected:
     void addFunctions();
-    void addSequences();    
+    void addSequences();
     void saveColors();
 
 private:
-    Information *information;
     Ui::MathObjectsInput *ui;
 
     QList <QChar> funcNames;
@@ -96,7 +95,7 @@ private:
     QList<TangentWidget*> tangentWidgets;
     QList<StraightLineWidget*> straightlineWidgets;
     QList<ParEqWidget*> parEqWidgets;
-    QList<DataWidget*> dataWidgets;    
+    QList<DataWidget*> dataWidgets;
 
     ParEqController parEqController;
 };

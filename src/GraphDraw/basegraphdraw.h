@@ -29,7 +29,7 @@ class BaseGraphDraw : public MathObjectDraw
 {
     Q_OBJECT
 public:
-    explicit BaseGraphDraw(Information *info);
+    explicit BaseGraphDraw();
     QImage* drawImage();
 
 public slots:

@@ -23,11 +23,11 @@
 #include "Widgets/datawidget.h"
 #include "ui_datawidget.h"
 
-DataWidget::DataWidget(Information *info, QWidget *parent) :
-    QWidget(parent), information(info), ui(new Ui::DataWidget),
-    colorButton(new QColorButton(info->getGraphSettings().estheticSettings.defaultColor)),
+DataWidget::DataWidget(QWidget *parent) :
+    QWidget(parent), ui(new Ui::DataWidget),
+    colorButton(new QColorButton(information.getGraphSettings().estheticSettings.defaultColor)),
     userData(std::make_shared<UserData>()),
-    dataWindow(new DataWindow(userData, info, this))
+    dataWindow(new DataWindow(userData, this))
 {
     ui->setupUi(this);
     ui->styleWidget->hide();
@@ -92,7 +92,7 @@ void DataWidget::drawSegments(bool draw)
     if(userData->style.drawLines != draw)
     {
         userData->style.drawLines = draw;
-        information->emitDataUpdate();
+        information.emitDataUpdate();
     }
 }
 
@@ -101,7 +101,7 @@ void DataWidget::drawPoints(bool draw)
     if(userData->style.drawPoints != draw)
     {
         userData->style.drawPoints = draw;
-        information->emitDataUpdate();
+        information.emitDataUpdate();
     }
 }
 
@@ -110,7 +110,7 @@ void DataWidget::setColor(QColor color)
     if(userData->style.color != color)
     {
         userData->style.color = color;
-        information->emitDataUpdate();
+        information.emitDataUpdate();
     }
 }
 
@@ -119,7 +119,7 @@ void DataWidget::newLineStyle(int index)
     if(userData->style.lineStyle != lineStyleMap[index])
     {
         userData->style.lineStyle = lineStyleMap[index];
-        information->emitDataUpdate();
+        information.emitDataUpdate();
     }
 }
 
@@ -128,7 +128,7 @@ void DataWidget::newPointStyle(int index)
     if(userData->style.pointStyle != pointStyleMap[index])
     {
         userData->style.pointStyle = pointStyleMap[index];
-        information->emitDataUpdate();
+        information.emitDataUpdate();
     }
 
 }
@@ -136,7 +136,7 @@ void DataWidget::newPointStyle(int index)
 void DataWidget::changeDrawState(bool draw)
 {
     userData->style.draw = draw;
-    information->emitDataUpdate();
+    information.emitDataUpdate();
 }
 
 void DataWidget::closeDataWindow()

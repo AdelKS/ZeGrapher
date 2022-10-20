@@ -27,18 +27,16 @@
 
 MainWindow::MainWindow()
 {
-    information = new Information();    
-
     aboutWin = new About(this);
     updateCheckWin = new UpdateCheck(this);
-    valuesWin = new Values(information, this);
-    keyboard = new Keyboard();    
-    settingsWin = new Settings(information, this);
+    valuesWin = new Values(this);
+    keyboard = new Keyboard();
+    settingsWin = new Settings(this);
 
     setIconSize(QSize(30, 30));
 
     // MainView has to be the last class to be instanced
-    mainGraphContainer = new MainViewContainer(information);
+    mainGraphContainer = new MainViewContainer();
     setCentralWidget(mainGraphContainer);
 
     setWindowIcon(QIcon(":/icons/ZeGrapher.png"));
@@ -55,7 +53,7 @@ MainWindow::MainWindow()
 
     loadWindowSavedGeomtries();
 
-    if(information->getAppSettings().startupUpdateCheck)
+    if(information.getAppSettings().startupUpdateCheck)
         updateCheckWin->silentCheckForUpdate();
 }
 
@@ -68,8 +66,8 @@ void MainWindow::createMenus()
 
     QAction *setOrthonormalAction = menuTools->addAction(QIcon(":/icons/orthonormalView.svg"), tr("Toggle orthonormal view"));
     setOrthonormalAction->setCheckable(true);
-    connect(setOrthonormalAction, SIGNAL(triggered(bool)), information, SLOT(setOrthonormal(bool)));
-    connect(information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool))); 
+    connect(setOrthonormalAction, SIGNAL(triggered(bool)), &information, SLOT(setOrthonormal(bool)));
+    connect(&information, SIGNAL(newOrthonormalityState(bool)), setOrthonormalAction, SLOT(setChecked(bool)));
 
     QAction *showAboutWinAction = menuHelp->addAction(tr("About..."));
     connect(showAboutWinAction, SIGNAL(triggered()), aboutWin, SLOT(exec()));
@@ -174,7 +172,4 @@ void MainWindow::closeEvent(QCloseEvent *evenement)
 MainWindow::~MainWindow()
 {
     delete keyboard;
-    delete information;
 }
-
-

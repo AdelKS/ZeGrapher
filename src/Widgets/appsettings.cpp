@@ -1,13 +1,11 @@
 #include "appsettings.h"
 #include "ui_appsettings.h"
 
-AppSettings::AppSettings(Information *information, QWidget *parent) :
+AppSettings::AppSettings(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AppSettings)
 {
     ui->setupUi(this);
-
-    this->information = information;
 
     fillSupportedLanguages();
 
@@ -54,7 +52,7 @@ void AppSettings::processUserInput()
 void AppSettings::apply()
 {
     processUserInput();
-    information->setAppSettings(appSettings);
+    information.setAppSettings(appSettings);
 }
 
 void AppSettings::resetToDefaults()
@@ -114,7 +112,7 @@ void AppSettings::saveSettingsToDisk()
 
     settings.beginGroup("app");
 
-    settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());    
+    settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
     settings.setValue("language", ui->languageComboBox->currentData().toLocale());
     settings.setValue("version", SOFTWARE_VERSION_STR);
 

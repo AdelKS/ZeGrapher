@@ -15,7 +15,7 @@ class Export : public QWidget
     Q_OBJECT
 
 public:
-    explicit Export(Information *information, QWidget *parent = nullptr);
+    explicit Export(QWidget *parent = nullptr);
     ~Export();
 
 signals:
@@ -33,7 +33,6 @@ private:
     void makeConnects();
 
     QString fileName, extension;
-    Information *information;
     Ui::Export *ui;
     QTimer timer;
 };

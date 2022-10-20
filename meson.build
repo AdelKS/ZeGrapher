@@ -1,7 +1,7 @@
 project('ZeGrapher', 'cpp',
-    version : '3.0.1',
+    version : '4.0.0',
     default_options : [
-        'cpp_std=c++17',
+        'cpp_std=c++20',
         'buildtype=release',
         'optimization=3',
         'default_library=shared',

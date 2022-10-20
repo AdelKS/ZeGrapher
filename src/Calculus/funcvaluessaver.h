@@ -25,7 +25,9 @@
 #ifndef FUNCVALUESSAVER_H
 #define FUNCVALUESSAVER_H
 
-#include "information.h"
+#include "GraphDraw/viewmapper.h"
+#include "funccalculator.h"
+
 
 class FuncValuesSaver
 {
@@ -48,7 +50,6 @@ protected:
     void calculateAllFuncColors();
     double evalFunc(int funId, double x, double k);
 
-    Information *information;
     QList<FuncCalculator*> funcs;
 
     double xUnit, yUnit, pixelStep, unitStep;

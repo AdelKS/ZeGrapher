@@ -24,16 +24,16 @@
 
 
 DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
-                       Information *info, QWidget *parent):
+                       QWidget *parent):
     QWidget(parent),
     xindex(STARTING_XPIN_INDEX),
     yindex(STARTING_YPIN_INDEX),
     ui(new Ui::DataWindow),
     columnSelectorSpacer(new QWidget()),
     rowSelectorSpacer(new QWidget()),
-    dataTable(new DataTable(info, STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH)),
+    dataTable(new DataTable(STARTING_ROW_COUNT, STARTING_COLUMN_COUNT, ROW_HEIGHT, COLUMN_WIDTH)),
     columnSelector(new ColumnSelectorWidget(STARTING_COLUMN_COUNT, STARTING_XPIN_INDEX, STARTING_YPIN_INDEX, STARTING_SELECTOR_INDEX)),
-    columnActionsWidget(new ColumnActionsWidget(dataTable, info, STARTING_COLUMN_COUNT)),
+    columnActionsWidget(new ColumnActionsWidget(dataTable, STARTING_COLUMN_COUNT)),
     rowSelector(new RowSelectorWidget(STARTING_ROW_COUNT)),
     rowActionsWidget(new RowActionsWidget(STARTING_ROW_COUNT)),
     csvHandler(new CSVhandler(this)),
@@ -89,7 +89,7 @@ DataWindow::DataWindow(const std::shared_ptr<UserData> &userData,
 
     setWindowTitle(tr("Data fill window"));
 
-    information = info;
+
     selectorSide = COLUMN_SELECTION;
 
     QHBoxLayout *columnSelectorLayout = new QHBoxLayout();
@@ -260,13 +260,13 @@ void DataWindow::addModel()
     QString xname = dataTable->getColumnName(xindex);
     QString yname = dataTable->getColumnName(yindex);
 
-    ModelWidget *modelWidget = new ModelWidget(modelData, information, xname, yname);
+    ModelWidget *modelWidget = new ModelWidget(modelData, xname, yname);
     modelWidgets << modelWidget;
 
     ui->modelsLayout->addWidget(modelWidget);
 
     connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), this, SLOT(removeModelWidget(ModelWidget*)));
-    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), information, SIGNAL(updateOccured()));
+    connect(modelWidget, SIGNAL(removeMe(ModelWidget*)), &information, SIGNAL(updateOccured()));
 }
 
 void DataWindow::columnNameChanged(int index)
@@ -288,7 +288,7 @@ void DataWindow::coordinateSystemChanged(bool polar)
 {
     modelData.lock()->cartesian = !polar;
 
-    information->emitDataUpdate();
+    information.emitDataUpdate();
 }
 
 void DataWindow::removeModelWidget(ModelWidget *w)
@@ -297,7 +297,7 @@ void DataWindow::removeModelWidget(ModelWidget *w)
     modelWidgets.removeOne(w);
     delete w;
 
-    information->emitDataUpdate();
+    information.emitDataUpdate();
 }
 
 void DataWindow::dataChanged()
@@ -336,7 +336,7 @@ void DataWindow::remakeDataList()
         dataPoints.emplace_back(Point({x_data[i], y_data[i]}));
     }
 
-    information->emitDataUpdate();
+    information.emitDataUpdate();
 }
 
 void DataWindow::openData()

@@ -31,9 +31,9 @@ class ValuesTableConf : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ValuesTableConf(Information *info, QWidget *parent = 0);
+    explicit ValuesTableConf(QWidget *parent = 0);
     ~ValuesTableConf();
-    
+
 signals:
     void next(ValuesTableParameters parameters);
 
@@ -43,8 +43,6 @@ protected slots:
 
 protected:
      bool verifySeqInfo(double start, double step);
-
-     Information *infoClass;   
 
      QStringList functions, sequences;
 

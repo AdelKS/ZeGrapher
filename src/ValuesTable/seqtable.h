@@ -33,7 +33,7 @@ class SeqTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit SeqTable(Information *info);
+    explicit SeqTable();
     void setTableParameters(ValuesTableParameters par);
 
 protected slots:
@@ -52,7 +52,6 @@ protected:
     void add_parSeq_y_values();
 
     ExprCalculator exprCalculator;
-    Information *information;
     SeqCalculator *seq;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;

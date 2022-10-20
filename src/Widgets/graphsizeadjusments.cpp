@@ -1,13 +1,11 @@
 #include "graphsizeadjusments.h"
 #include "ui_graphsizeadjusments.h"
 
-GraphSizeAdjusments::GraphSizeAdjusments(Information *information, QWidget *parent) :
+GraphSizeAdjusments::GraphSizeAdjusments(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::graphSizeAdjusments)
 {
-    ui->setupUi(this);    
-
-    this->information = information;
+    ui->setupUi(this);
 
     // ui->sheetSizeSubWidget->setEnabled(false);
     screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
@@ -42,9 +40,9 @@ void GraphSizeAdjusments::apply()
 {
     processUserInput();
 
-    information->disconnect(this);
-    information->setGraphSizeSettings(sizeSettings);
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
+    information.disconnect(this);
+    information.setGraphSizeSettings(sizeSettings);
+    connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 }
 
 const ZeSizeSettings &GraphSizeAdjusments::getSettings()
@@ -122,7 +120,7 @@ void GraphSizeAdjusments::updateWidgetVisibility()
 
 void GraphSizeAdjusments::onExternalSizeSettingsChange()
 {
-    sizeSettings = information->getGraphSizeSettings();
+    sizeSettings = information.getGraphSizeSettings();
 
     if(sizeSettings.sizeUnit == ZeSizeSettings::PIXEL)
         ui->pixelUnit->setChecked(true);
@@ -182,7 +180,7 @@ void GraphSizeAdjusments::makeConnects()
     connect(ui->figureHeightPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->figureWidthPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
 
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
+    connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 
     connect(ui->sheetHeightCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
     connect(ui->sheetWidthCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
@@ -263,7 +261,7 @@ void GraphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
 void GraphSizeAdjusments::onStandardSheetSizeChange()
 {
     if(not ui->userDefinedSize->isChecked())
-    {        
+    {
         ui->sheetSizeSubWidget->hide();
         ui->orientationSelector->show();
 

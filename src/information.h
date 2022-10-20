@@ -21,13 +21,16 @@
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
+#include "Calculus/regression.h"
 #include "Widgets/pareqwidget.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/funccalculator.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/tangentwidget.h"
-#include "Calculus/colorsaver.h"
-#include "Calculus/regressionvaluessaver.h"
+
+class Information;
+
+extern Information information;
 
 class Information: public QObject
 {

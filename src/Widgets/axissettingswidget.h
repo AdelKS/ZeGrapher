@@ -36,7 +36,7 @@ class AxisSettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit AxisSettingsWidget(Information *information, QWidget *parent = nullptr);
+    explicit AxisSettingsWidget(QWidget *parent = nullptr);
     ZeAxisSettings getAxisSettings(ZeAxisName name);
     ZeAxesSettings getAxesSettings();
     ZeGridSettings getGridSettings();
@@ -63,7 +63,6 @@ protected:
     Ui::AxisSettingsWidget *ui;
     NumberLineEdit *baseLineEdit, *constantMultiplierLineEdit;
     QColorButton *axisColorButton;
-    Information *information;
     QColorButton *gridColorButton, *subgridColorButton;
 
     ZeAxisName currentAxis;

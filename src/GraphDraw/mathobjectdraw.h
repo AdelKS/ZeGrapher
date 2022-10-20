@@ -24,10 +24,10 @@
 #include <QWidget>
 
 #include "Calculus/funccalculator.h"
+#include "Calculus/seqcalculator.h"
 #include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/pareqwidget.h"
-#include "information.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
 #include "GraphDraw/viewmapper.h"
@@ -37,7 +37,7 @@ class MathObjectDraw : public QWidget // Base class from math objects drawing
 {
     Q_OBJECT
 public:
-    explicit MathObjectDraw(Information *info);
+    explicit MathObjectDraw();
     ~MathObjectDraw();
 
 protected slots:
@@ -69,8 +69,7 @@ protected:
 
     void recalculateRegVals();
 
-    Information *information;
-    FuncValuesSaver *funcValuesSaver;    
+    FuncValuesSaver *funcValuesSaver;
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
     ZeViewSettings viewSettings;

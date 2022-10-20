@@ -19,11 +19,11 @@
 ****************************************************************************/
 
 #include "GraphDraw/basegraphdraw.h"
+#include "information.h"
 
-
-BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info), gridCalculator(info, this)
+BaseGraphDraw::BaseGraphDraw() : MathObjectDraw(), gridCalculator(this)
 {
-    information = info;
+
     leftMargin = 30;
     rightMargin = 30;
     topMargin = 20;
@@ -35,12 +35,12 @@ BaseGraphDraw::BaseGraphDraw(Information *info) : MathObjectDraw(info), gridCalc
     additionalMargin = 0;
     bold = italic = underline = false;
     numPrec = NUM_PREC;
-    viewMapper.setGraphRange(information->getGraphRange());
+    viewMapper.setGraphRange(information.getGraphRange());
 
-    connect(information, SIGNAL(graphRangeChanged(GraphRange)), &viewMapper, SLOT(setGraphRange(GraphRange)));
-    connect(information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(update()));
-    connect(information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
-    connect(information, SIGNAL(updateOccured()), this, SLOT(update()));
+    connect(&information, SIGNAL(graphRangeChanged(GraphRange)), &viewMapper, SLOT(setGraphRange(GraphRange)));
+    connect(&information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(update()));
+    connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
+    connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
 }
 
 void BaseGraphDraw::setNumPrec(int prec)
@@ -157,7 +157,7 @@ void BaseGraphDraw::paint()
 
 void BaseGraphDraw::writeLegends()
 {
-    font = information->getGraphSettings().estheticSettings.graphFont;
+    font = information.getGraphSettings().estheticSettings.graphFont;
     font.setPixelSize(legendFontSize);
     font.setItalic(italic);
     font.setBold(bold);
@@ -193,7 +193,7 @@ void BaseGraphDraw::writeLegends()
 
 void BaseGraphDraw::drawLinAxisGridTicksX()
 {
-    painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
+    painter.setFont(information.getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double space, pos;
@@ -204,21 +204,21 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                                                              ZeAxisName::X,
                                                              fontMetrics);
 
-    const ZeAxisSettings &axisSettings = information->getAxesSettings().x;
-    const Ze1DGridSettings &gridSettings = information->getGridSettings().x;
+    const ZeAxisSettings &axisSettings = information.getAxesSettings().x;
+    const Ze1DGridSettings &gridSettings = information.getGridSettings().x;
 
     pen.setCapStyle(Qt::FlatCap);
     bool first_tick = true;
     double previous_pos;
 
-    painter.setFont(information->getEstheticSettings().graphFont);
+    painter.setFont(information.getEstheticSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
 
     for(const ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
         Xpos = axisTick.pos * pxPerUnit.x;
 
-        if(information->getGraphRange().x.min < axisTick.pos && axisTick.pos < information->getGraphRange().x.max)
+        if(information.getGraphRange().x.min < axisTick.pos && axisTick.pos < information.getGraphRange().x.max)
         {
             if(fabs(Xpos) > 1)
             {
@@ -271,7 +271,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                 const double cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1) +
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
-                if(information->getGraphRange().x.min < cur_pos && cur_pos < information->getGraphRange().x.max)
+                if(information.getGraphRange().x.min < cur_pos && cur_pos < information.getGraphRange().x.max)
                     painter.drawLine(QPointF(cur_pos * pxPerUnit.x + centre.x, 0), QPointF(cur_pos * pxPerUnit.x + centre.x, graphRectScaled.height()));
 
             }
@@ -317,7 +317,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
 void BaseGraphDraw::drawLinAxisGridTicksY()
 {
-    painter.setFont(information->getGraphSettings().estheticSettings.graphFont);
+    painter.setFont(information.getGraphSettings().estheticSettings.graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double pos;
@@ -329,21 +329,21 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                                                              ZeAxisName::Y,
                                                              fontMetrics);
 
-    const auto &axisSettings = information->getAxesSettings().y;
-    const auto &gridSettings = information->getGridSettings().y;
+    const auto &axisSettings = information.getAxesSettings().y;
+    const auto &gridSettings = information.getGridSettings().y;
 
     pen.setCapStyle(Qt::FlatCap);
     bool first_tick = true;
     double previous_pos;
 
-    painter.setFont(information->getEstheticSettings().graphFont);
+    painter.setFont(information.getEstheticSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
 
     for(const ZeLinAxisTick &axisTick: yAxisTicks.ticks)
     {
         Ypos = axisTick.pos * pxPerUnit.y;
 
-        if(information->getGraphRange().y.min < axisTick.pos && axisTick.pos < information->getGraphRange().y.max)
+        if(information.getGraphRange().y.min < axisTick.pos && axisTick.pos < information.getGraphRange().y.max)
         {
             if(fabs(Ypos) > 1)
             {
@@ -401,7 +401,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                 const double cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1) +
                         double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos / double(gridSettings.subgridSubDivs + 1);
 
-                if(information->getGraphRange().y.min < cur_pos && cur_pos < information->getGraphRange().y.max)
+                if(information.getGraphRange().y.min < cur_pos && cur_pos < information.getGraphRange().y.max)
                     painter.drawLine(QPointF(0, cur_pos * pxPerUnit.y + centre.y), QPointF(graphRectScaled.width(), cur_pos * pxPerUnit.y + centre.y));
             }
         }
@@ -454,10 +454,10 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
 void BaseGraphDraw::drawBaseGraph()
 {
-    if(information->getAxesSettings().x.axisType == ZeAxisType::LINEAR)
+    if(information.getAxesSettings().x.axisType == ZeAxisType::LINEAR)
         drawLinAxisGridTicksX();
 
-    if(information->getAxesSettings().y.axisType == ZeAxisType::LINEAR)
+    if(information.getAxesSettings().y.axisType == ZeAxisType::LINEAR)
         drawLinAxisGridTicksY();
 
     drawAxes();
@@ -465,7 +465,7 @@ void BaseGraphDraw::drawBaseGraph()
 
 void BaseGraphDraw::drawAxes()
 {
-    const auto &axesSettings = information->getAxesSettings();
+    const auto &axesSettings = information.getAxesSettings();
 
     const auto &viewRect = viewMapper.getViewRect();
 
@@ -503,7 +503,7 @@ void BaseGraphDraw::updateCenterPosAndScaling()
     pxPerUnit.y = -double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
     pxPerUnit.x = double(graphRectScaled.width()) / fabs(viewMapper.getViewRect().width());
 
-    if(information->getAxesSettings().orthonormal)
+    if(information.getAxesSettings().orthonormal)
     {
         // TODO
     }
@@ -516,7 +516,7 @@ QImage* BaseGraphDraw::drawImage()
 {
     //TODO: update this method
 
-    viewSettings = information->getViewSettings();
+    viewSettings = information.getViewSettings();
 
     QImage *image = new QImage(size(), QImage::Format_RGB32);
     image->fill(viewSettings.graph.estheticSettings.backgroundColor.rgb());

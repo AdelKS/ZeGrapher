@@ -32,7 +32,7 @@
 //{
 //    Q_OBJECT
 //public:
-//    explicit SubGraph(Information *info);
+//    explicit SubGraph();
 //    ~SubGraph();
 
 //    void afficherPtX(double x);

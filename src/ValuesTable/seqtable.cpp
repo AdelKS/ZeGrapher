@@ -23,10 +23,8 @@
 
 #include "ValuesTable/seqtable.h"
 
-SeqTable::SeqTable(Information *info) : AbstractTable(), exprCalculator(false, info->getFuncsList())
+SeqTable::SeqTable() : AbstractTable(), exprCalculator(false, information.getFuncsList())
 {
-    information = info;    
-
     updateTimer->setInterval(1000);
     updateTimer->setSingleShot(true);
 
@@ -39,7 +37,7 @@ SeqTable::SeqTable(Information *info) : AbstractTable(), exprCalculator(false, i
     invalidPalette.setColor(QPalette::Base, color);
     invalidPalette.setColor(QPalette::Text, Qt::black);
 
-    connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+    connect(&information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
     connect(precision, SIGNAL(valueChanged(int)), this, SLOT(precisionEdited()));
     connect(model, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(cellEdited(QStandardItem*)));
@@ -50,10 +48,10 @@ void SeqTable::setTableParameters(ValuesTableParameters par)
     parameters = par;
     title->setText(tr("Sequence: ") + "(" + parameters.name + "<sub>n</sub>)");
 
-    seq = information->getSeqsList()[parameters.id];
+    seq = information.getSeqsList()[parameters.id];
 
     if(parameters.entryType == FROM_CURRENT_GRAPHIC)
-        connect(information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
+        connect(&information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
 
     if(seq->isSeqParametric())
     {
@@ -195,14 +193,14 @@ void SeqTable::cellEdited(QStandardItem *item)
     }
 
     if(seq->isSeqParametric())
-    {        
+    {
         y = seq->getCustomSeqValue(x, ok, k);
         if(!ok)
         {
                QMessageBox::critical(this, tr("Error"), tr("Error while calculating this sequence's terms, changing \"k\" value might solve the error."));
                model->item(item->row(), 1)->setText("");
                return;
-        }     
+        }
     }
     else y = seq->getSeqValue(x, ok);
 

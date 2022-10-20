@@ -15,7 +15,7 @@ class MainViewContainer : public QScrollArea
     Q_OBJECT
 
 public:
-    MainViewContainer(Information *information, QWidget *parent = nullptr);
+    MainViewContainer(QWidget *parent = nullptr);
     ~MainViewContainer();
 
 protected slots:
@@ -26,7 +26,6 @@ protected:
     void showEvent(QShowEvent *event);
 
     double screenDPI;
-    Information *information;
     MainView *mainView;
     SheetZoom *sheetZoom;
     PopupWidget *zoomPopup;

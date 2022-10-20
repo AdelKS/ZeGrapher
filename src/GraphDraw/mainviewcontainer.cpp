@@ -1,18 +1,17 @@
 #include "mainviewcontainer.h"
 
-MainViewContainer::MainViewContainer(Information *information, QWidget *parent) : QScrollArea(parent)
+MainViewContainer::MainViewContainer(QWidget *parent) : QScrollArea(parent)
 {
-    this->information = information;
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    mainView = new MainView(information);
+    mainView = new MainView();
 
     setWidget(mainView);
     setWidgetResizable(false);
 
     mainView->onSizeSettingsChange();
 
-    sheetZoom = new SheetZoom(information);
+    sheetZoom = new SheetZoom();
 
     QWidget *zoomContainer = new QWidget();
     zoomContainer->setObjectName("zoomContainer");
@@ -31,12 +30,12 @@ MainViewContainer::MainViewContainer(Information *information, QWidget *parent) 
 
     onSizeSettingsChange();
 
-    connect(information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
+    connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 void MainViewContainer::onSizeSettingsChange()
 {
-    if(information->getGraphSizeSettings().sheetFillsWindow)
+    if(information.getGraphSizeSettings().sheetFillsWindow)
         zoomPopup->hideWidget();
     else zoomPopup->showWidget();
 }

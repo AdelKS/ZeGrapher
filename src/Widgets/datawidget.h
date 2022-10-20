@@ -34,9 +34,9 @@ class DataWidget;
 class DataWidget : public QWidget
 {
     Q_OBJECT
-    
+
 public:
-    explicit DataWidget(Information *info, QWidget *parent = 0);
+    explicit DataWidget(QWidget *parent = 0);
     ~DataWidget();
     void setWidgetNum(int num);
     void closeDataWindow();
@@ -54,11 +54,10 @@ protected slots:
 
 signals:
     void removeMe(DataWidget *widget);
-    
+
 private:
     QList<PointStyle> pointStyleMap;
     QList<Qt::PenStyle> lineStyleMap;
-    Information *information;
     Ui::DataWidget *ui;
     QColorButton *colorButton;
     std::shared_ptr<UserData> userData;

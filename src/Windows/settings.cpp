@@ -21,9 +21,9 @@
 #include "Windows/settings.h"
 #include "ui_settings.h"
 
-Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
+Settings::Settings(QWidget *parent): QWidget(parent)
 {
-    information = info;
+
 
     ui = new Ui::Settings;
     ui->setupUi(this);
@@ -32,26 +32,26 @@ Settings::Settings(Information *info, QWidget *parent): QWidget(parent)
     setWindowTitle(tr("Settings"));
     setWindowIcon(QIcon(":/icons/settings.png"));
 
-    // to be instanced first so information->funcsList gets populated
-    inputWidget = new MathObjectsInput(information, this);
+    // to be instanced first so information.funcsList gets populated
+    inputWidget = new MathObjectsInput(this);
     ui->objectsInputLayout->addWidget(inputWidget);
 
-    rangeAdjustmentsWidget = new RangeAdjustments(information->getFuncsList(), information);
+    rangeAdjustmentsWidget = new RangeAdjustments(information.getFuncsList());
     ui->rangeAdjustmentsLayout->addWidget(rangeAdjustmentsWidget);
 
-    axisSettingsWidget = new AxisSettingsWidget(information);
+    axisSettingsWidget = new AxisSettingsWidget();
     ui->axesLayout->addWidget(axisSettingsWidget);
 
-    sizeAdjusmentsWidget = new GraphSizeAdjusments(information);
+    sizeAdjusmentsWidget = new GraphSizeAdjusments();
     ui->sizeAdjustmentsLayout->addWidget(sizeAdjusmentsWidget);
 
-    exportWidget = new Export(information);
+    exportWidget = new Export();
     ui->exportLayout->addWidget(exportWidget);
 
-    estheticSettingsWidget = new EstheticSettings(information);
+    estheticSettingsWidget = new EstheticSettings();
     ui->graphGeneralSettingsLayout->addWidget(estheticSettingsWidget);
 
-    appSettingsWidget = new AppSettings(information);
+    appSettingsWidget = new AppSettings();
     ui->appSettingsLayout->addWidget(appSettingsWidget);
 
 }

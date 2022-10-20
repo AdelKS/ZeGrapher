@@ -32,14 +32,14 @@ class ParEqTable : public AbstractTable
 {
     Q_OBJECT
 public:
-    explicit ParEqTable(Information *info);
+    explicit ParEqTable();
     void setTableParameters(ValuesTableParameters par);
 
 protected slots:
     void cellEdited(QStandardItem *item);
     void kValueEdited();
     void updateTable();
-    void precisionEdited();   
+    void precisionEdited();
     void exportToCSV();
 
 protected:
@@ -48,14 +48,13 @@ protected:
 
     void fillWithValues();
 
-    Information *information;
     ParEqWidget *parEq;
     ValuesTableParameters parameters;
     ParEqValues parEqValues;
     ExprCalculator *exprCalc;
     bool disableCellEdit;
     QPalette validPalette, invalidPalette;
-    
+
 };
 
 #endif // PAREQTALE_H
