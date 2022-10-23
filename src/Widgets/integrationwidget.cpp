@@ -22,6 +22,7 @@
 
 
 #include "Widgets/integrationwidget.h"
+#include "information.h"
 
 IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsList) : exprCalc(true, funcsList)
 {
@@ -44,15 +45,6 @@ IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsL
         addWidgetToList(antiderivatives[i], i);
 
     setLayout(centralLayout);
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
 }
 
 void IntegrationWidget::addWidgetToList(QString name, int funcId)
@@ -101,7 +93,7 @@ void IntegrationWidget::addWidgetToList(QString name, int funcId)
 
 void IntegrationWidget::assignNeutralPalette(QWidget *lineEdit)
 {
-    lineEdit->setPalette(neutralPalette);
+    lineEdit->setPalette(QPalette());
 }
 
 void IntegrationWidget::updateWidgetsShownState(QString expr)
@@ -149,14 +141,14 @@ QList<Point> IntegrationWidget::getIntegrationPoints(bool &ok)
         point.x = exprCalc.calculateExpression(xList[i]->text(), ok);
 
         if(ok)
-            xList[i]->setPalette(validPalette);
-        else xList[i]->setPalette(invalidPalette);
+            xList[i]->setPalette(information.getValidSyntaxPalette());
+        else xList[i]->setPalette(information.getInvalidSyntaxPalette());
 
         point.y = exprCalc.calculateExpression(yList[i]->text(), ok);
 
         if(ok)
-            yList[i]->setPalette(validPalette);
-        else yList[i]->setPalette(invalidPalette);
+            yList[i]->setPalette(information.getValidSyntaxPalette());
+        else yList[i]->setPalette(information.getInvalidSyntaxPalette());
 
         if(ok)
             list[funcIds[i]] = point;

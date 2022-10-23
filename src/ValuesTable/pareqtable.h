@@ -53,7 +53,6 @@ protected:
     ParEqValues parEqValues;
     ExprCalculator *exprCalc;
     bool disableCellEdit;
-    QPalette validPalette, invalidPalette;
 
 };
 

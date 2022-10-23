@@ -23,7 +23,6 @@
 
 #include <algorithm>
 
-#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 #define MIN_ROW_COUNT 10
@@ -115,8 +114,6 @@ protected:
                                     row insertion will be implemented */
     QStringList columnNames;
     QRegularExpression nameValidator;
-    QColor backgroundColor, textColor;
-
 
 };
 

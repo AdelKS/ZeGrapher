@@ -56,7 +56,6 @@ protected:
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;
     bool disableCellEdit;
-    QPalette validPalette, invalidPalette;
 };
 
 #endif // SEQTABLE_H

@@ -21,15 +21,20 @@
 
 #include "Widgets/qcolorbutton.h"
 
-QColorButton::QColorButton(QColor color, QWidget *parent) : QPushButton(parent)
+QColorButton::QColorButton(QWidget *parent) : QPushButton(parent)
 {
     buttonSize = 20;
     setFixedSize(buttonSize, buttonSize);
 
-    setColor(color);
+    setColor(Qt::black);
     setFocusPolicy(Qt::NoFocus);
 
     connect(this, SIGNAL(released()), this, SLOT(openColorDialog()));
+}
+
+QColorButton::QColorButton(QColor color, QWidget *parent) : QColorButton(parent)
+{
+    setColor(color);
 }
 
 void QColorButton::openColorDialog()

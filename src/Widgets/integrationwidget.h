@@ -43,7 +43,7 @@ protected slots:
 signals:
     void returnPressed();
 
-protected:  
+protected:
     void addWidgetToList(QString name, int funcId);
 
     QList<QWidget*> containerWidgetsList;
@@ -51,7 +51,6 @@ protected:
     QList<QLineEdit*> xList, yList;
     QList<QString> antiderivatives;
     ExprCalculator exprCalc;
-    QPalette invalidPalette, validPalette, neutralPalette;
     QSignalMapper *signalMapper;
     QVBoxLayout *centralLayout;
 

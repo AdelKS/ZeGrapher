@@ -20,6 +20,8 @@
 
 #include "DataPlot/datatable.h"
 
+#include "information.h"
+
 DataTable::DataTable(int rowCount, int columnCount,
                      int rowHeight, int columnWidth):
     selectedCol(0),
@@ -57,9 +59,6 @@ DataTable::DataTable(int rowCount, int columnCount,
             column.push_back(nan("")) ;
         }
     }
-
-    backgroundColor = palette().base().color();
-    textColor = palette().text().color();
 
     disableChecking = false;
 
@@ -314,13 +313,13 @@ void DataTable::updateTableFromData(bool refresh_all_columns,
             if(std::isnan(getColumnConst(col_index)[row_index]))
             {
                 tableWidget->item(row,col)->setText("");
-                tableWidget->item(row,col)->setBackground(QBrush(backgroundColor));
-                tableWidget->item(row,col)->setForeground(QBrush(textColor));
+                tableWidget->item(row,col)->setBackground(QBrush());
+                tableWidget->item(row,col)->setForeground(QBrush());
             }
             else
             {
                 tableWidget->item(row,col)->setText(QString::number(getColumnConst(col_index)[row_index], 'g', MAX_DOUBLE_PREC));
-                tableWidget->item(row,col)->setBackground(QBrush(VALID_COLOR));
+                tableWidget->item(row,col)->setBackground(QBrush(information.getAppSettings().validSyntax));
                 tableWidget->item(row,col)->setForeground(QBrush(Qt::black));
             }
         }
@@ -491,8 +490,8 @@ void DataTable::checkCell(QTableWidgetItem *item)
     QString expr = item->text();
     if(expr.isEmpty())
     {
-        item->setBackground(QBrush(backgroundColor));
-        item->setForeground(QBrush(textColor));
+        item->setBackground(QBrush());
+        item->setForeground(QBrush());
         getColumn(item->column())[item->row()] = nan("");
     }
     else
@@ -502,7 +501,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
 
         if(ok)
         {
-            item->setBackground(QBrush(VALID_COLOR));
+            item->setBackground(QBrush(information.getAppSettings().validSyntax));
             item->setForeground(QBrush(Qt::black));
 
             getColumn(item->column())[item->row()] = val;
@@ -512,7 +511,7 @@ void DataTable::checkCell(QTableWidgetItem *item)
         }
         else
         {
-            item->setBackground(QBrush(INVALID_COLOR));
+            item->setBackground(QBrush(information.getAppSettings().invalidSyntax));
             item->setForeground(QBrush(Qt::black));
 
             getColumn(item->column())[item->row()] = nan("");

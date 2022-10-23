@@ -359,6 +359,7 @@ struct ZeAppSettings
     bool startupUpdateCheck;
     QLocale::Language language;
     QFont font;
+    QColor validSyntax, invalidSyntax;
 };
 
 struct FuncMap

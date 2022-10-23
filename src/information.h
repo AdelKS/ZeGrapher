@@ -48,13 +48,16 @@ public:
     const ZeAxesSettings& getAxesSettings();
     const ZeEstheticSettings &getEstheticSettings();
     const GraphRange& getGraphRange();
-    const ZeAppSettings& getAppSettings();
+    const ZeAppSettings& getAppSettings() const;
 
     void addDataList(const std::shared_ptr<const UserData> &userData);
     void removeDataList(const std::shared_ptr<const UserData> &userData);
 
     int getDataListsCount();
     std::shared_ptr<const UserData> getDataPoints(int index);
+
+    QPalette getValidSyntaxPalette() const;
+    QPalette getInvalidSyntaxPalette() const;
 
     void addDataRegression(Regression *reg);
     void removeDataRegression(Regression *reg);
@@ -98,6 +101,7 @@ signals:
     void graphSizeSettingsChanged();
     void graphZoomSettingsChanged();
     void estheticSettingsChanged();
+    void appSettingsChanged();
 
 public slots:
     void emitUpdateSignal();

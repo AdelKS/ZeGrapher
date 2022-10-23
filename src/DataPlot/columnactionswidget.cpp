@@ -42,17 +42,6 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum):
     sortOptionsUi(new Ui::SortOptions),
     startingActionsUi(new Ui::StartingActions)
 {
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
-
     connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));
 
     startingActionsUi->setupUi(startingActions);
@@ -135,7 +124,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum):
 void ColumnActionsWidget::resetPalette(QWidget *widget)
 {
     QLineEdit *lineEdit = (QLineEdit*)widget;
-    lineEdit->setPalette(neutralPalette);
+    lineEdit->setPalette(QPalette());
 }
 
 void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
@@ -194,25 +183,21 @@ void ColumnActionsWidget::applyFill()
     if(fillOptionsUi->predefined->isChecked())
     {
         Range range;
-        bool goodEntry = true, ok = false;
+        bool goodEntry = true;
 
-        range.start = calculator.calculateExpression(fillOptionsUi->start->text(), ok);
-        if(ok)
-            fillOptionsUi->start->setPalette(validPalette);
-        else fillOptionsUi->start->setPalette(invalidPalette);
-        goodEntry &= ok;
+        auto compute_check = [this](auto &val, auto* widget)
+        {
+            bool ok = false;
+            val = calculator.calculateExpression(widget->text(), ok);
+            if(ok)
+                widget->setPalette(information.getValidSyntaxPalette());
+            else widget->setPalette(information.getInvalidSyntaxPalette());
+            return ok;
+        };
 
-        range.end = calculator.calculateExpression(fillOptionsUi->end->text(), ok);
-        if(ok)
-            fillOptionsUi->end->setPalette(validPalette);
-        else fillOptionsUi->end->setPalette(invalidPalette);
-        goodEntry &= ok;
-
-        range.step = calculator.calculateExpression(fillOptionsUi->step->text(), ok);
-        if(ok)
-            fillOptionsUi->step->setPalette(validPalette);
-        else fillOptionsUi->step->setPalette(invalidPalette);
-        goodEntry &= ok;
+        goodEntry &= compute_check(range.start, fillOptionsUi->start);
+        goodEntry &= compute_check(range.end, fillOptionsUi->end);
+        goodEntry &= compute_check(range.step, fillOptionsUi->step);
 
         if(goodEntry)
         {
@@ -236,7 +221,7 @@ void ColumnActionsWidget::applyFill()
 
             resetFillForms();
         }
-        else fillOptionsUi->expression->setPalette(invalidPalette);
+        else fillOptionsUi->expression->setPalette(information.getInvalidSyntaxPalette());
     }
 }
 
@@ -247,10 +232,10 @@ void ColumnActionsWidget::resetFillForms()
     fillOptionsUi->end->clear();
     fillOptionsUi->expression->clear();
 
-    fillOptionsUi->start->setPalette(neutralPalette);
-    fillOptionsUi->step->setPalette(neutralPalette);
-    fillOptionsUi->end->setPalette(neutralPalette);
-    fillOptionsUi->expression->setPalette(neutralPalette);
+    fillOptionsUi->start->setPalette(QPalette());
+    fillOptionsUi->step->setPalette(QPalette());
+    fillOptionsUi->end->setPalette(QPalette());
+    fillOptionsUi->expression->setPalette(QPalette());
 }
 
 void ColumnActionsWidget::applySort()

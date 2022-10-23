@@ -22,6 +22,7 @@
 
 
 #include "Widgets/parconfwidget.h"
+#include "information.h"
 
 ParConfWidget::ParConfWidget(QChar parName,
                              bool withAnimateButton,
@@ -43,15 +44,6 @@ ParConfWidget::ParConfWidget(QChar parName,
 
     startTree = endTree = stepTree = nullptr;
     kState = valid = isStepGood = isEndGood = isStartGood = false;
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     if(withAnimateButton)
     {
@@ -78,7 +70,7 @@ ParConfWidget::ParConfWidget(QChar parName,
         animateLayout->addStretch();
         mainLayout->addLayout(animateLayout);
         setLayout(mainLayout);
-    }   
+    }
     else setLayout(widgetsLayout);
 }
 
@@ -151,24 +143,24 @@ void ParConfWidget::updateTreeWithExpr(QString &lastExpr, QLineEdit *line, FastT
         }
 
         if(isExprGood)
-            line->setPalette(validPalette);
-        else line->setPalette(invalidPalette);
+            line->setPalette(information.getValidSyntaxPalette());
+        else line->setPalette(information.getInvalidSyntaxPalette());
     }
 }
 
 void ParConfWidget::resetPaletteForStartLineEdit()
 {
-    start->setPalette(neutralPalette);
+    start->setPalette(QPalette());
 }
 
 void ParConfWidget::resetPaletteForStepLineEdit()
 {
-    step->setPalette(neutralPalette);
+    step->setPalette(QPalette());
 }
 
 void ParConfWidget::resetPaletteForEndLineEdit()
 {
-    end->setPalette(neutralPalette);
+    end->setPalette(QPalette());
 }
 
 void ParConfWidget::validate()

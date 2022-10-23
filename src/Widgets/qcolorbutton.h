@@ -31,7 +31,8 @@ class QColorButton : public QPushButton
 {
     Q_OBJECT
 public:
-    explicit QColorButton(QColor color = Qt::black, QWidget *parent = nullptr);
+    explicit QColorButton(QWidget *parent = nullptr);
+    explicit QColorButton(QColor color, QWidget *parent = nullptr);
     
     void setColor(QColor color);
     QColor getCurrentColor();

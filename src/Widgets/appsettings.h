@@ -3,8 +3,7 @@
 
 #include <QWidget>
 
-#include "information.h"
-#include "Widgets/qcolorbutton.h"
+#include "structures.h"
 
 namespace Ui {
 class AppSettings;

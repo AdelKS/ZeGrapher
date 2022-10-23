@@ -81,7 +81,7 @@ protected slots:
     void newFuncChoosen(int funcNum);
     void newFuncParState(int funcNum);
     void kValueLineEdited();
-    
+
 protected:
     void addWidgets();
 
@@ -89,7 +89,6 @@ protected:
     QList<FuncWidget*> funcWidgets;
     ExprCalculator *exprCalculator;
 
-    QPalette validPalette, neutralPalette, invalidPalette;
     QCheckBox *drawCheckBox;
     QLabel *nameLabel, *kTextLabel;
     QComboBox *functionsComboBox;
@@ -100,7 +99,7 @@ protected:
     double lenght, pos, a, k, raty, ratx;
     int tangentID, funcID;
     bool isValid;
-    
+
 };
 
 #endif // TANGENTWIDGET_H

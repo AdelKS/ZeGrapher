@@ -1,3 +1,4 @@
+#include "information.h"
 #include "appsettings.h"
 #include "ui_appsettings.h"
 
@@ -9,6 +10,9 @@ AppSettings::AppSettings(QWidget *parent) :
 
     fillSupportedLanguages();
 
+    ui->validColor->setColor(VALID_COLOR);
+    ui->invalidColor->setColor(INVALID_COLOR);
+
     makeConnects();
 
     loadSettingsFromDisk();
@@ -18,7 +22,7 @@ void AppSettings::fillSupportedLanguages()
 {
     ui->languageComboBox->clear();
 
-    for(auto language: supportedLangs)
+    for(const auto& language: supportedLangs)
         ui->languageComboBox->addItem(QLocale(language).nativeLanguageName(), QVariant(QLocale(language)));
 }
 
@@ -29,6 +33,8 @@ void AppSettings::makeConnects()
     connect(ui->appFontSize, SIGNAL(valueChanged(double)), this, SLOT(apply()));
     connect(ui->updateCheckAtStart, SIGNAL(toggled(bool)), this, SLOT(apply()));
     connect(ui->languageComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(apply()));
+    connect(ui->validColor, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
+    connect(ui->invalidColor, SIGNAL(colorChanged(QColor)), this, SLOT(apply()));
 }
 
 void AppSettings::processUserInput()
@@ -47,6 +53,9 @@ void AppSettings::processUserInput()
     appSettings.font.setPointSize(ui->appFontSize->value());
     appSettings.startupUpdateCheck = ui->updateCheckAtStart->isChecked();
     appSettings.language = ui->languageComboBox->currentData().toLocale().language();
+
+    appSettings.invalidSyntax = ui->invalidColor->getCurrentColor();
+    appSettings.validSyntax = ui->validColor->getCurrentColor();
 }
 
 void AppSettings::apply()
@@ -103,6 +112,18 @@ void AppSettings::loadSettingsFromDisk()
     else ui->appFontFamily->setFont(fontInfo.family());
     currentAppFont = ui->appFontFamily->currentFont();
 
+    settings.endGroup();
+
+    settings.beginGroup("color");
+
+    if(settings.contains("valid_syntax"))
+        ui->validColor->setColor(QColor(settings.value("valid_syntax").toString()));
+    else ui->validColor->setColor(QColor(VALID_COLOR));
+
+    if(settings.contains("invalid_syntax"))
+        ui->validColor->setColor(QColor(settings.value("invalid_syntax").toString()));
+    else ui->validColor->setColor(QColor(INVALID_COLOR));
+
     apply();
 }
 
@@ -120,6 +141,13 @@ void AppSettings::saveSettingsToDisk()
 
     settings.setValue("size", ui->appFontSize->value());
     settings.setValue("family", ui->appFontFamily->currentFont().family());
+
+    settings.endGroup();
+
+    settings.beginGroup("color");
+
+    settings.setValue("valid_syntax", ui->validColor->getCurrentColor().name());
+    settings.setValue("invalid_syntax", ui->invalidColor->getCurrentColor().name());
 }
 
 AppSettings::~AppSettings()

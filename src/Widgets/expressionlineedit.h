@@ -2,11 +2,13 @@
 #define EXPRESSIONLINEEDIT_H
 
 #include <QLineEdit>
-#include "structures.h"
 
 class ExpressionLineEdit : public QLineEdit
 {
+    Q_OBJECT
+
 public:
+    enum struct State {NEUTRAL, VALID, INVALID};
     ExpressionLineEdit(QWidget *parent = nullptr);
 
 public slots:
@@ -15,7 +17,11 @@ public slots:
     void setInvalid();
     void setNeutral();
 
+protected slots:
+    void updateBackground();
+
 protected:
+    State state = State::NEUTRAL;
     QString validCSS, invalidCSS, neutralCSS;
 };
 

@@ -46,7 +46,7 @@ public:
     bool is_t_Animated();
     bool isAnimated();
     bool getDrawState();
-    bool keepTracks();   
+    bool keepTracks();
     bool isPlaying();
     bool isValid();
     bool isParEqParametric();
@@ -65,10 +65,10 @@ public:
     Point getPoint(double t, double k = 0);
 
     QList< QList<Point> >* getPointsList();
-    QList< QList<Point> >* getCurrentPolygon();    
+    QList< QList<Point> >* getCurrentPolygon();
 
 signals:
-    void removeClicked(ParEqWidget *widget);  
+    void removeClicked(ParEqWidget *widget);
     void updateRequest();
     void animationUpdateRequest();
     void returnPressed();
@@ -83,7 +83,7 @@ protected slots:
     void sliderMoved(int pos);
     void recalculatePointsList();
     void loopFromStartToggled();
-    void loopRoundToggled();    
+    void loopRoundToggled();
 
 protected:
     void createWidgets(QColor col);
@@ -91,9 +91,9 @@ protected:
     void addTConfWidgets();
     void addKConfWidgets();
     void addAnimationControllWidgets();
-    bool areIdentical(Range a, Range b);   
+    bool areIdentical(Range a, Range b);
     void updateAnimationSlider();
-    void calculatePointsList();   
+    void calculatePointsList();
     void nextFrameTchecked();
     void nextFrameKchecked();
 
@@ -110,7 +110,7 @@ protected:
     QSlider *parSlider;
     QCheckBox *drawCheckBox;
     QLabel *parCharLabel,*parEqNameLabel;
-    QLineEdit *parCurrentValLineEdit;   
+    QLineEdit *parCurrentValLineEdit;
     QVBoxLayout *mainLayout;
     QWidget *animationControlWidget;
     ParConfWidget *tWidget, *kWidget;
@@ -118,7 +118,6 @@ protected:
     ExprCalculator *calculator;
     ColorSaver colorSaver;
     QColorButton *lastColorButton;
-    QPalette validPalette, invalidPalette;
 
     int index, curvesNum_original, curvesNum_current, current_tPos, current_pos, current_kPos, tPos_end;
 
@@ -127,7 +126,7 @@ protected:
          hasSomethingChanged, blockAnimation;
 
     double current_t, current_k, ratio;
-    short increment;    
+    short increment;
     QList< QList<Point> > currentPolygon;
     QList< QList<Point> > pointsList;
     QList<FuncCalculator*> funcCalcs;

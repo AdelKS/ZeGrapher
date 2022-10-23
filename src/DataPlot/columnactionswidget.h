@@ -76,9 +76,6 @@ protected:
     Ui::FillOptions *fillOptionsUi;
     Ui::SortOptions *sortOptionsUi;
     Ui::StartingActions *startingActionsUi;
-
-    QPalette invalidPalette, validPalette, neutralPalette;
-
 };
 
 #endif // COLUMNACTIONSWIDGET_H

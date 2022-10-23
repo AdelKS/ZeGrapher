@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "Widgets/pareqwidget.h"
+#include "information.h"
 
 ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : treeCreator(ObjectType::PARAMETRIC_EQ), colorSaver(col)
 {
@@ -33,15 +34,6 @@ ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : tre
     increment = 1;
     current_pos = 1;
     current_t = current_k = 0;
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-     validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     connect(xLine, SIGNAL(textChanged(QString)), this, SLOT(checkExpr()));
     connect(yLine, SIGNAL(textChanged(QString)), this, SLOT(checkExpr()));
@@ -471,8 +463,8 @@ void ParEqWidget::checkXline()
         xTree = treeCreator.getTreeFromExpr(xLine->text(), isXExprGood);
 
         if(isXExprGood)
-            xLine->setPalette(validPalette);
-        else xLine->setPalette(invalidPalette);
+            xLine->setPalette(information.getValidSyntaxPalette());
+        else xLine->setPalette(information.getInvalidSyntaxPalette());
 
         xExpr = xLine->text();
         hasSomethingChanged = true;
@@ -489,8 +481,8 @@ void ParEqWidget::checkYline()
         yTree = treeCreator.getTreeFromExpr(yLine->text(), isYExprGood);
 
         if(isYExprGood)
-            yLine->setPalette(validPalette);
-        else yLine->setPalette(invalidPalette);
+            yLine->setPalette(information.getValidSyntaxPalette());
+        else yLine->setPalette(information.getInvalidSyntaxPalette());
 
         yExpr = yLine->text();
         hasSomethingChanged = true;

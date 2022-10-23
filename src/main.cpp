@@ -22,7 +22,7 @@
 
 const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
 
- QString langToShortString(QLocale::Language lang)
+QString langToShortString(QLocale::Language lang)
 {
     if(lang == QLocale::French)
         return "fr";

@@ -22,25 +22,16 @@
 
 
 #include "ValuesTable/functable.h"
+#include "information.h"
 
 FuncTable::FuncTable() : AbstractTable()
 {
-
     exprCalc = new ExprCalculator(false, information.getFuncsList());
 
     updateTimer->setInterval(1000);
     updateTimer->setSingleShot(true);
 
     disableCellEdit = false;
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-     validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     connect(&information, SIGNAL(updateOccured()), updateTimer, SLOT(start()));
     connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTable()));
@@ -110,8 +101,8 @@ void FuncTable::kValueEdited()
     double temp = exprCalc->calculateExpression(k_value->text(), ok);
 
     if(!ok)
-        k_value->setPalette(invalidPalette);
-    else k_value->setPalette(validPalette);
+        k_value->setPalette(information.getInvalidSyntaxPalette());
+    else k_value->setPalette(information.getValidSyntaxPalette());
 
     k = temp;
     updateTable();

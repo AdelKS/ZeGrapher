@@ -55,7 +55,7 @@ protected slots:
     void resetPaletteForLineEditC();
 
     void emitRemoveMeSignal();
-    
+
 protected:
     void addWidgets(QColor col);
 
@@ -66,12 +66,11 @@ protected:
     QLabel *nameLabel;
     QLineEdit *a, *b, *c;
     QColorButton *colorButton;
-    QPalette validPalette, invalidPalette, neutralPalette;
 
     int lineID;
     bool valid;
     double val_a, val_b, val_c;
-    
+
 };
 
 #endif // STRAIGHTLINEWIDGET_H

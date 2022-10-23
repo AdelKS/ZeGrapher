@@ -147,6 +147,22 @@ void Information::setGraphRange(const GraphRange &range)
     }
 }
 
+QPalette Information::getValidSyntaxPalette() const
+{
+    QPalette validPalette;
+    validPalette.setColor(QPalette::Base, appSettings.validSyntax);
+    validPalette.setColor(QPalette::Text, Qt::black);
+    return validPalette;
+}
+
+QPalette Information::getInvalidSyntaxPalette() const
+{
+    QPalette validPalette;
+    validPalette.setColor(QPalette::Base, appSettings.validSyntax);
+    validPalette.setColor(QPalette::Text, Qt::black);
+    return validPalette;
+}
+
 const ZeSizeSettings& Information::getGraphSizeSettings()
 {
     return viewSettings.graph.sizeSettings;
@@ -183,7 +199,7 @@ const GraphRange& Information::getGraphRange()
 }
 
 
-const ZeAppSettings& Information::getAppSettings()
+const ZeAppSettings& Information::getAppSettings() const
 {
     return appSettings;
 }
@@ -240,6 +256,7 @@ void Information::setEstheticSettings(const ZeEstheticSettings &estheticSettings
 void Information::setAppSettings(const ZeAppSettings& appSettings)
 {
     this->appSettings = appSettings;
+    emit appSettingsChanged();
 }
 
 void Information::setAxesSettings(const ZeAxesSettings &axesSettings)

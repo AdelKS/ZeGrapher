@@ -55,7 +55,6 @@ protected:
     QList<double> xValues, yValues;
     ExprCalculator *exprCalc;
     bool disableCellEdit;
-    QPalette validPalette, invalidPalette;
 
 };
 

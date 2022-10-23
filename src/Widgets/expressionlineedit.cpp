@@ -19,35 +19,57 @@
 ****************************************************************************/
 
 #include "expressionlineedit.h"
+#include "information.h"
 
 ExpressionLineEdit::ExpressionLineEdit(QWidget *parent) : QLineEdit(parent)
 {
-    validCSS = "padding-left: 5px; border-radius: 5px; background-color: " + QString(VALID_COLOR) + ";";
-    invalidCSS = "padding-left: 5px; border-radius: 5px; background-color: " + QString(INVALID_COLOR) + ";";
-    neutralCSS = "padding-left: 5px; border-radius: 5px;" ;
+    updateBackground();
+    connect(&information, SIGNAL(appSettingsChanged()), this, SLOT(updateBackground()));
+}
 
-    setStyleSheet(neutralCSS);
+void ExpressionLineEdit::updateBackground()
+{
+    validCSS = "padding-left: 5px; border-radius: 5px; background-color: " + information.getAppSettings().validSyntax.name() + ";";
+    invalidCSS = "padding-left: 5px; border-radius: 5px; background-color: " + information.getAppSettings().invalidSyntax.name() + ";";
+    neutralCSS = "padding-left: 5px; border-radius: 5px;";
+
+    switch(state)
+    {
+    case State::INVALID:
+        setStyleSheet(invalidCSS);
+        break;
+    case State::VALID:
+        setStyleSheet(validCSS);
+        break;
+    case State::NEUTRAL:
+        setStyleSheet(neutralCSS);
+        break;
+    }
 }
 
 void ExpressionLineEdit::clear()
 {
-    setStyleSheet(neutralCSS);
+    state = State::NEUTRAL;
     QLineEdit::clear();
+    updateBackground();
 }
 
 void ExpressionLineEdit::setValid()
 {
-    setStyleSheet(validCSS);
+    state = State::VALID;
+    updateBackground();
 }
 
 void ExpressionLineEdit::setInvalid()
 {
-    setStyleSheet(invalidCSS);
+    state = State::INVALID;
+    updateBackground();
 }
 
 void ExpressionLineEdit::setNeutral()
 {
-    setStyleSheet(neutralCSS);
+    state = State::NEUTRAL;
+    updateBackground();
 }
 
 

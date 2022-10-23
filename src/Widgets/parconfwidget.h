@@ -71,12 +71,11 @@ protected:
     ExprCalculator *calculator;
     FastTree *startTree, *stepTree, *endTree;
     QString lastStartExpr, lastStepExpr, lastEndExpr;
-    QPalette validPalette, invalidPalette, neutralPalette;
     Range defaultRange;
 
     bool kState, valid, keepTracksButtonAvailable, isStepGood, isEndGood, isStartGood;
 
-    
+
 };
 
 #endif // PARCONFWIDGET_H

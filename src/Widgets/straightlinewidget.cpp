@@ -22,6 +22,7 @@
 
 
 #include "Widgets/straightlinewidget.h"
+#include "information.h"
 
 StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList, QColor col)
 {
@@ -29,15 +30,6 @@ StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList
     funcCalculators = calcsList;
     exprCalculator = new ExprCalculator(false, funcCalculators);
     valid = false;
-
-    QColor color;
-    color.setNamedColor(VALID_COLOR);
-    validPalette.setColor(QPalette::Base, color);
-    validPalette.setColor(QPalette::Text, Qt::black);
-
-    color.setNamedColor(INVALID_COLOR);
-    invalidPalette.setColor(QPalette::Base, color);
-    invalidPalette.setColor(QPalette::Text, Qt::black);
 
     addWidgets(col);
 }
@@ -55,17 +47,17 @@ QColor StraightLineWidget::getColor()
 
 void StraightLineWidget::resetPaletteForLineEditA()
 {
-    a->setPalette(neutralPalette);
+    a->setPalette(QPalette());
 }
 
 void StraightLineWidget::resetPaletteForLineEditB()
 {
-    b->setPalette(neutralPalette);
+    b->setPalette(QPalette());
 }
 
 void StraightLineWidget::resetPaletteForLineEditC()
 {
-    c->setPalette(neutralPalette);
+    c->setPalette(QPalette());
 }
 
 void StraightLineWidget::addWidgets(QColor col)
@@ -80,14 +72,14 @@ void StraightLineWidget::addWidgets(QColor col)
 
     a = new QLineEdit;
     a->setMaximumHeight(25);
-    a->setFrame(false); 
+    a->setFrame(false);
     connect(a, SIGNAL(textChanged(QString)), this, SLOT(resetPaletteForLineEditA()));
     connect(a, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
     QLabel *x = new QLabel("x +");
     b = new QLineEdit;
     b->setMaximumHeight(25);
-    b->setFrame(false);  
+    b->setFrame(false);
     connect(b, SIGNAL(textChanged(QString)), this, SLOT(resetPaletteForLineEditB()));
     connect(b, SIGNAL(returnPressed()), this, SIGNAL(returnPressed()));
 
@@ -144,30 +136,30 @@ void StraightLineWidget::emitRemoveMeSignal()
 }
 
 void StraightLineWidget::validate()
-{    
+{
     val_a = exprCalculator->calculateExpression(a->text(), valid);
     if(!valid)
     {
-        a->setPalette(invalidPalette);
+        a->setPalette(information.getInvalidSyntaxPalette());
         return;
     }
-    else a->setPalette(validPalette);
+    else a->setPalette(information.getValidSyntaxPalette());
 
     val_b = exprCalculator->calculateExpression(b->text(), valid);
     if(!valid)
     {
-        b->setPalette(invalidPalette);
+        b->setPalette(information.getInvalidSyntaxPalette());
         return;
     }
-    else b->setPalette(validPalette);
+    else b->setPalette(information.getValidSyntaxPalette());
 
     val_c = exprCalculator->calculateExpression(c->text(), valid);
     if(!valid)
     {
-        c->setPalette(invalidPalette);
+        c->setPalette(information.getInvalidSyntaxPalette());
         return;
     }
-    else c->setPalette(validPalette);
+    else c->setPalette(information.getValidSyntaxPalette());
 
     valid = !(val_a == 0 && val_b == 0);
     if(!valid)

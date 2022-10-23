@@ -21,6 +21,7 @@
 
 
 #include "Widgets/tangentwidget.h"
+#include "information.h"
 
 TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list, QColor col)
 {
@@ -35,15 +36,6 @@ TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<Fu
 
    exprCalculator = new ExprCalculator(false, funcCalculators);
    lenght = 3;
-
-   QColor color;
-   color.setNamedColor(VALID_COLOR);
-   validPalette.setColor(QPalette::Base, color);
-   validPalette.setColor(QPalette::Text, Qt::black);
-
-   color.setNamedColor(INVALID_COLOR);
-   invalidPalette.setColor(QPalette::Base, color);
-   invalidPalette.setColor(QPalette::Text, Qt::black);
 
    addWidgets();
    colorButton->setColor(col);
@@ -177,7 +169,7 @@ void TangentWidget::addWidgets()
 
 void TangentWidget::kValueLineEdited()
 {
-    kValueLineEdit->setPalette(neutralPalette);
+    kValueLineEdit->setPalette(QPalette());
 }
 
 void TangentWidget::emitRemoveMeSignal()
@@ -187,7 +179,7 @@ void TangentWidget::emitRemoveMeSignal()
 
 void TangentWidget::resetPalette()
 {
-    tangentPos->setPalette(neutralPalette);
+    tangentPos->setPalette(QPalette());
 }
 
 void TangentWidget::validate()
@@ -205,24 +197,24 @@ void TangentWidget::validate()
     pos = exprCalculator->calculateExpression(tangentPos->text(), isValid);
     if(!isValid)
     {
-       tangentPos->setPalette(invalidPalette);
+       tangentPos->setPalette(information.getInvalidSyntaxPalette());
        ordinateAtOriginLineEdit->clear();
        slopeLineEdit->clear();
        return;
     }
-    else tangentPos->setPalette(validPalette);
+    else tangentPos->setPalette(information.getValidSyntaxPalette());
 
     if(kValueLineEdit->isVisible())
     {
         k = exprCalculator->calculateExpression(kValueLineEdit->text(), isValid);
         if(!isValid)
         {
-           kValueLineEdit->setPalette(invalidPalette);
+           kValueLineEdit->setPalette(information.getInvalidSyntaxPalette());
            ordinateAtOriginLineEdit->clear();
            slopeLineEdit->clear();
            return;
         }
-        else kValueLineEdit->setPalette(validPalette);
+        else kValueLineEdit->setPalette(information.getValidSyntaxPalette());
     }
     else k = 0;
 }
