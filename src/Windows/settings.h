@@ -23,12 +23,10 @@
 
 #include <QWidget>
 
-#include "information.h"
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
 #include "Widgets/graphsizeadjusments.h"
 #include "Widgets/export.h"
-#include "GraphDraw/mainview.h"
 #include "Widgets/mathobjectsinput.h"
 #include "Widgets/estheticsettings.h"
 #include "Widgets/appsettings.h"
@@ -53,7 +51,6 @@ public:
     ~Settings();
 
 public slots:
-    void saveSettingsToDisk();
     void showExportSettings();
 
 private:

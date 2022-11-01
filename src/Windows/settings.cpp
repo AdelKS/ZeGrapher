@@ -23,8 +23,6 @@
 
 Settings::Settings(QWidget *parent): QWidget(parent)
 {
-
-
     ui = new Ui::Settings;
     ui->setupUi(this);
 
@@ -59,12 +57,6 @@ Settings::Settings(QWidget *parent): QWidget(parent)
 void Settings::showExportSettings()
 {
     // TODO
-}
-
-void Settings::saveSettingsToDisk()
-{
-    appSettingsWidget->saveSettingsToDisk();
-    estheticSettingsWidget->saveSettingsToDisk();
 }
 
 Settings::~Settings()

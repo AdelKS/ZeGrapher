@@ -131,5 +131,6 @@ void EstheticSettings::saveSettingsToDisk()
 
 EstheticSettings::~EstheticSettings()
 {
+    saveSettingsToDisk();
     delete ui;
 }

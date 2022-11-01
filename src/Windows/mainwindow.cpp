@@ -163,13 +163,12 @@ void MainWindow::showAboutQtWin()
 void MainWindow::closeEvent(QCloseEvent *evenement)
 {
     /* Save windows geometry */
-    saveWindowsGeometry();
-    settingsWin->saveSettingsToDisk();
-    keyboard->close();
+
     evenement->accept();
 }
 
 MainWindow::~MainWindow()
 {
+    saveWindowsGeometry();
     delete keyboard;
 }

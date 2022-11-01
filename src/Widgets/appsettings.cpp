@@ -9,13 +9,11 @@ AppSettings::AppSettings(QWidget *parent) :
     ui->setupUi(this);
 
     fillSupportedLanguages();
-
-    ui->validColor->setColor(VALID_COLOR);
-    ui->invalidColor->setColor(INVALID_COLOR);
+    loadSettingsFromDisk();
 
     makeConnects();
 
-    loadSettingsFromDisk();
+    apply();
 }
 
 void AppSettings::fillSupportedLanguages()
@@ -121,8 +119,8 @@ void AppSettings::loadSettingsFromDisk()
     else ui->validColor->setColor(QColor(VALID_COLOR));
 
     if(settings.contains("invalid_syntax"))
-        ui->validColor->setColor(QColor(settings.value("invalid_syntax").toString()));
-    else ui->validColor->setColor(QColor(INVALID_COLOR));
+        ui->invalidColor->setColor(QColor(settings.value("invalid_syntax").toString()));
+    else ui->invalidColor->setColor(QColor(INVALID_COLOR));
 
     apply();
 }
@@ -152,5 +150,6 @@ void AppSettings::saveSettingsToDisk()
 
 AppSettings::~AppSettings()
 {
+    saveSettingsToDisk();
     delete ui;
 }
