@@ -56,14 +56,11 @@ protected slots:
 protected:
     void axisTypeChanged();
     void swapAxisData();
-    void loadSettingsInUi(ZeAxisName axisName);
+    void loadAxisSettingsInUI();
 
     void makeConnects();
 
     Ui::AxisSettingsWidget *ui;
-    NumberLineEdit *baseLineEdit, *constantMultiplierLineEdit;
-    QColorButton *axisColorButton;
-    QColorButton *gridColorButton, *subgridColorButton;
 
     ZeAxisName currentAxis;
     ZeAxisSettings axisDefaultSettings;

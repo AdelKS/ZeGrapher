@@ -204,7 +204,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                                                              ZeAxisName::X,
                                                              fontMetrics);
 
-    const ZeAxisSettings &axisSettings = information.getAxesSettings().x;
+    const ZeAxesSettings &axesSettings = information.getAxesSettings();
     const Ze1DGridSettings &gridSettings = information.getGridSettings().x;
 
     pen.setCapStyle(Qt::FlatCap);
@@ -230,8 +230,8 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
                     painter.setRenderHint(QPainter::Antialiasing, false);
                     painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRectScaled.height()));
                 }
-                pen.setColor(axisSettings.color);
-                pen.setWidthF(axisSettings.lineWidth);
+                pen.setColor(axesSettings.color);
+                pen.setWidthF(axesSettings.lineWidth);
                 painter.setPen(pen);
 
                 pos = Xpos + centre.x;
@@ -248,8 +248,8 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
             }
             else
             {
-                pen.setColor(axisSettings.color);
-                pen.setWidth(axisSettings.lineWidth);
+                pen.setColor(axesSettings.color);
+                pen.setWidth(axesSettings.lineWidth);
                 painter.setPen(pen);
 
                 pos = Xpos + centre.x;
@@ -329,7 +329,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                                                              ZeAxisName::Y,
                                                              fontMetrics);
 
-    const auto &axisSettings = information.getAxesSettings().y;
+    const auto &axesSettings = information.getAxesSettings();
     const auto &gridSettings = information.getGridSettings().y;
 
     pen.setCapStyle(Qt::FlatCap);
@@ -356,8 +356,8 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                     painter.drawLine(QPointF(0, Ypos + centre.y), QPointF(graphRectScaled.width(), Ypos + centre.y));
                 }
 
-                pen.setColor(axisSettings.color);
-                pen.setWidth(axisSettings.lineWidth);
+                pen.setColor(axesSettings.color);
+                pen.setWidth(axesSettings.lineWidth);
                 painter.setPen(pen);
 
                 pos = Ypos + centre.y;
@@ -376,8 +376,8 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
             }
             else
             {
-                pen.setColor(axisSettings.color);
-                pen.setWidth(axisSettings.lineWidth);
+                pen.setColor(axesSettings.color);
+                pen.setWidth(axesSettings.lineWidth);
                 painter.setPen(pen);
 
                 pos = -Ypos + centre.y;
@@ -472,24 +472,24 @@ void BaseGraphDraw::drawAxes()
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setBrush(QBrush(Qt::NoBrush));
 
-    pen.setWidth(axesSettings.x.lineWidth);
-    pen.setColor(axesSettings.x.color);
+    pen.setWidth(axesSettings.lineWidth);
+    pen.setColor(axesSettings.color);
     painter.setPen(pen);
 
     painter.drawRect(graphRectScaled);
 
     if(viewRect.left() < 0 && viewRect.right() > 0)
     {
-        pen.setWidth(axesSettings.x.lineWidth);
-        pen.setColor(axesSettings.x.color);
+        pen.setWidth(axesSettings.lineWidth);
+        pen.setColor(axesSettings.color);
         painter.setPen(pen);
 
         painter.drawLine(QPointF(0, centre.y), QPointF(graphRectScaled.width(), centre.y));
     }
     if(viewRect.bottom() < 0 && viewRect.top() > 0)
     {
-        pen.setWidth(axesSettings.y.lineWidth);
-        pen.setColor(axesSettings.y.color);
+        pen.setWidth(axesSettings.lineWidth);
+        pen.setColor(axesSettings.color);
         painter.setPen(pen);
 
         painter.drawLine(QPointF(centre.x, 0), QPointF(centre.x, graphRectScaled.height()));
@@ -524,7 +524,7 @@ QImage* BaseGraphDraw::drawImage()
     painter.begin(image);
     //trace du background
 
-    pen.setColor(viewSettings.axes.x.color);
+    pen.setColor(viewSettings.axes.color);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 

@@ -162,61 +162,39 @@ struct ZeCoordinateDisplayFormat
 
 struct ZeLogAxisSettings
 {
-    ZeLogAxisSettings(): constantMultiplier(1), base(10), constantMultiplierStr(), baseStr("10") {};
+    ZeLogAxisSettings() = default;
 
-    double constantMultiplier, base;
-    QString constantMultiplierStr, baseStr;
+    double constantMultiplier = 1, base = 10;
+    QString constantMultiplierStr, baseStr = "10";
 
-    bool operator !=(const ZeLogAxisSettings &other)
-    {
-        return constantMultiplier != other.constantMultiplier or
-                base != other.base or
-                constantMultiplierStr != other.constantMultiplierStr or
-                baseStr != other.baseStr;
-    }
+    bool operator == (const ZeLogAxisSettings &other) const = default;
+    bool operator != (const ZeLogAxisSettings &other) const = default;
 };
 
 struct ZeLinAxisSettings
 {
-    ZeLinAxisSettings(): constantMultiplier(1), constantMultiplierStr(), maxDigitsNum(3) {};
+    ZeLinAxisSettings() = default;
 
-    double constantMultiplier;
+    bool operator == (const ZeLinAxisSettings &other) const = default;
+    bool operator != (const ZeLinAxisSettings &other) const = default;
+
+    double constantMultiplier = 1;
     QString constantMultiplierStr;
-    int maxDigitsNum;
-
-    bool operator !=(const ZeLinAxisSettings &other)
-    {
-        return constantMultiplier != other.constantMultiplier or
-                constantMultiplierStr != other.constantMultiplierStr or
-                maxDigitsNum != other.maxDigitsNum;
-    }
+    int maxDigitsNum = 3;
 };
 
 class ZeAxisSettings
 {
 public:
-    ZeAxisSettings() : color(Qt::black), lineWidth(1),
-        tickRelSpacing(0), linSettings(), logSettings(),
-        axisType(ZeAxisType::LINEAR)
-    {
-    }
+    ZeAxisSettings() = default;
 
-    bool operator !=(const ZeAxisSettings &other)
-    {
-        return color != other.color or
-                lineWidth != other.lineWidth or
-                tickRelSpacing != other.tickRelSpacing or
-                linSettings != other.linSettings or
-                logSettings != other.logSettings or
-                axisType != other.axisType;
-    }
+    bool operator == (const ZeAxisSettings &other) const = default;
+    bool operator != (const ZeAxisSettings &other) const = default;
 
-    QColor color;
-    double lineWidth;
-    int tickRelSpacing;
+    int tickRelSpacing = 0;
     ZeLinAxisSettings linSettings;
     ZeLogAxisSettings logSettings;
-    ZeAxisType axisType;
+    ZeAxisType axisType = ZeAxisType::LINEAR;
 };
 
 struct ZeSizeSettings
@@ -298,52 +276,33 @@ struct ZeGraphSettings
 
 struct Ze1DGridSettings
 {
-    Ze1DGridSettings(): showGrid(true), showSubGrid(false),
-                        gridLineWidth(0.6), subgridLineWidth(0.4),
-                        gridColor(Qt::gray), subgridColor(Qt::gray),
-                        subgridSubDivs(2), showSubgridRelativeCoordinates(false)
-                        {};
+    bool showGrid = true, showSubGrid = false;
+    double gridLineWidth = 0.6, subgridLineWidth = 0.4;
+    QColor gridColor = Qt::gray, subgridColor = Qt::gray;
+    unsigned int subgridSubDivs = 2;
+    bool showSubgridRelativeCoordinates = false;
 
-    bool showGrid, showSubGrid;
-    double gridLineWidth, subgridLineWidth;
-    QColor gridColor, subgridColor;
-    unsigned int subgridSubDivs;
-    bool showSubgridRelativeCoordinates;
-
-    bool operator !=(const Ze1DGridSettings &other)
-    {
-        return showGrid != other.showGrid or
-                showSubGrid != other.showSubGrid or
-                gridLineWidth != other.gridLineWidth or
-                subgridLineWidth != other.subgridLineWidth or
-                gridColor != other.gridColor or
-                subgridColor != other.subgridColor or
-                subgridSubDivs != other.subgridSubDivs or
-                showSubgridRelativeCoordinates != other.showSubgridRelativeCoordinates;
-    }
+    bool operator ==(const Ze1DGridSettings &other) const = default;
+    bool operator !=(const Ze1DGridSettings &other) const = default;
 };
 
 struct ZeGridSettings
 {
     Ze1DGridSettings x, y;
 
-    bool operator !=(const ZeGridSettings &other)
-    {
-        return x != other.x or y != other.y;
-    }
+    bool operator == (const ZeGridSettings &other) const = default;
+    bool operator != (const ZeGridSettings &other) const = default;
 };
 
 struct ZeAxesSettings
 {
-    ZeAxesSettings(): x(), y(), orthonormal(false) {};
-
     ZeAxisSettings x, y;
-    bool orthonormal;
+    bool orthonormal = false;
+    QColor color = Qt::black;
+    double lineWidth = 2;
 
-    bool operator !=(const ZeAxesSettings &other)
-    {
-        return orthonormal != other.orthonormal or x != other.x or y != other.y;
-    }
+    bool operator == (const ZeAxesSettings &other) const = default;
+    bool operator != (const ZeAxesSettings &other) const = default;
 };
 
 struct ZeViewSettings

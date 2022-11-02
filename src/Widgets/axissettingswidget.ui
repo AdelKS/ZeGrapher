@@ -32,12 +32,12 @@
    <string>Axis Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../ressources.qrc">
+   <iconset resource="../../ressources.qrc">
     <normaloff>:/icons/viewRange.svg</normaloff>:/icons/viewRange.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
-    <number>0</number>
+    <number>9</number>
    </property>
    <property name="topMargin">
     <number>9</number>
@@ -49,6 +49,87 @@
     <number>0</number>
    </property>
    <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Axes &amp;&amp; Bounding rectangle</string>
+     </property>
+     <layout class="QFormLayout" name="axisSettingsForm">
+      <property name="labelAlignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Show axes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="showAxis">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Line-width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="axisLineWidth">
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QColorButton" name="axisColor">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="widget_4" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -58,7 +139,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="leftMargin">
-       <number>0</number>
+       <number>6</number>
       </property>
       <property name="topMargin">
        <number>0</number>
@@ -69,19 +150,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <spacer name="horizontalSpacer_7">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -165,8 +233,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>255</width>
-        <height>684</height>
+        <width>246</width>
+        <height>668</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -302,61 +370,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_4">
-         <property name="title">
-          <string>Axis</string>
-         </property>
-         <layout class="QFormLayout" name="axisSettingsForm">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Show</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="showAxis">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_14">
-            <property name="text">
-             <string>Line-width</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QDoubleSpinBox" name="axisLineWidth">
-            <property name="decimals">
-             <number>1</number>
-            </property>
-            <property name="minimum">
-             <double>0.100000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>5.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.100000000000000</double>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
           <string>Ticks</string>
@@ -384,11 +397,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="baseWidget" native="true">
-            <layout class="QFormLayout" name="baseFormLayout"/>
-           </widget>
-          </item>
-          <item>
            <widget class="QWidget" name="basePowerWidget" native="true">
             <layout class="QVBoxLayout" name="verticalLayout">
              <property name="spacing">
@@ -412,6 +420,9 @@
           <item>
            <widget class="QWidget" name="tickSettingsWidget" native="true">
             <layout class="QFormLayout" name="tickSettingsForm">
+             <property name="labelAlignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -424,14 +435,14 @@
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item row="1" column="0">
+             <item row="2" column="0">
               <widget class="QLabel" name="label_3">
                <property name="text">
                 <string>Digits number</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="2" column="1">
               <widget class="QSpinBox" name="maxDigits">
                <property name="minimum">
                 <number>2</number>
@@ -444,14 +455,14 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
+             <item row="1" column="0">
               <widget class="QLabel" name="label">
                <property name="text">
                 <string>Relative spacing</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item row="1" column="1">
               <widget class="QSpinBox" name="tickRelSpacing">
                <property name="toolTip">
                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -465,6 +476,26 @@ p, li { white-space: pre-wrap; }
                 <number>5</number>
                </property>
               </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="baseLabel">
+               <property name="text">
+                <string>base b=</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="NumberLineEdit" name="base"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string>Multiplier α=</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="NumberLineEdit" name="constantMultiplier"/>
              </item>
             </layout>
            </widget>
@@ -516,6 +547,20 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="singleStep">
              <double>0.100000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QColorButton" name="gridColor">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -600,6 +645,20 @@ p, li { white-space: pre-wrap; }
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Sub-divisions</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QColorButton" name="subgridColor">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -806,8 +865,20 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Widgets/qcolorbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>NumberLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Widgets/numberlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="../ressources.qrc"/>
+  <include location="../../ressources.qrc"/>
  </resources>
  <connections/>
 </ui>

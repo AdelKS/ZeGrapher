@@ -333,7 +333,7 @@ void MainView::drawFigureRect()
     painter.setBrush(Qt::NoBrush);
     pen.setStyle(Qt::DashLine);
     pen.setWidth(1);
-    pen.setColor(information.getAxesSettings().x.color);
+    pen.setColor(information.getAxesSettings().color);
     painter.setPen(pen);
     painter.drawRect(figureRect);
 
