@@ -65,12 +65,17 @@ void AxisSettingsWidget::axisTypeChanged()
     }
 }
 
+AxisSettingsWidget::SelectedAxis AxisSettingsWidget::getSelectedAxis() const
+{
+    return ui->xAxis->isChecked() ? SelectedAxis::X : (ui->yAxis->isChecked() ? SelectedAxis::Y : SelectedAxis::BOTH);
+}
+
 void AxisSettingsWidget::swapAxisData()
 {
     // process user input before switching to the the other axis
     processUserInput();
 
-    ZeAxisName newChosenAxis = ui->xAxis->isChecked() ? ZeAxisName::X : ZeAxisName::Y;
+    SelectedAxis newChosenAxis = getSelectedAxis();
 
     if(newChosenAxis != currentAxis)
         loadAxisSettingsInUI();
@@ -80,6 +85,10 @@ void AxisSettingsWidget::loadAxisSettingsInUI()
 {
     ui->axisColor->setColor(axesSettings.color);
     ui->axisLineWidth->setValue(axesSettings.lineWidth);
+
+    currentAxis = getSelectedAxis();
+    if (currentAxis == SelectedAxis::BOTH)
+        return;
 
     const ZeAxisSettings &axisSettings = ui->xAxis->isChecked() ? axesSettings.x : axesSettings.y;
     const Ze1DGridSettings &axisGridSettings = ui->xAxis->isChecked() ? gridSettings.x : gridSettings.y;
@@ -117,8 +126,6 @@ void AxisSettingsWidget::loadAxisSettingsInUI()
         ui->gridLineWidth->setValue(axisGridSettings.gridLineWidth);
         ui->subGridLineWidth->setValue(axisGridSettings.subgridLineWidth);
     }
-
-    currentAxis = ui->xAxis->isChecked() ? ZeAxisName::X : ZeAxisName::Y;
 }
 
 ZeAxisSettings AxisSettingsWidget::getAxisSettings(ZeAxisName name)
@@ -143,7 +150,7 @@ void AxisSettingsWidget::processUserInput()
     axesSettings.color = ui->axisColor->getCurrentColor();
     axesSettings.lineWidth = ui->axisLineWidth->value();
 
-    ZeAxisSettings &axisSettings = (currentAxis == ZeAxisName::X) ? axesSettings.x : axesSettings.y;
+    ZeAxisSettings axisSettings;
 
     axisSettings.axisType = ui->linearScale->isChecked() ? ZeAxisType::LINEAR :  ZeAxisType::LOG;
     axisSettings.tickRelSpacing = ui->tickRelSpacing->value();
@@ -190,16 +197,28 @@ void AxisSettingsWidget::processUserInput()
         }
     }
 
-    Ze1DGridSettings &settingsToUpdate = currentAxis == ZeAxisName::X ? gridSettings.x : gridSettings.y;
+    Ze1DGridSettings axisGridSettings;
 
-    settingsToUpdate.showGrid = ui->gridGroup->isChecked();
-    settingsToUpdate.showSubGrid = ui->subGridGroup->isChecked();
-    settingsToUpdate.showSubgridRelativeCoordinates = ui->showSubGridRelativePos->isChecked();
-    settingsToUpdate.subgridSubDivs = ui->subgridDivs->value();
-    settingsToUpdate.gridColor = ui->gridColor->getCurrentColor();
-    settingsToUpdate.subgridColor = ui->subgridColor->getCurrentColor();
-    settingsToUpdate.gridLineWidth = ui->gridLineWidth->value();
-    settingsToUpdate.subgridLineWidth = ui->subGridLineWidth->value();
+    axisGridSettings.showGrid = ui->gridGroup->isChecked();
+    axisGridSettings.showSubGrid = ui->subGridGroup->isChecked();
+    axisGridSettings.showSubgridRelativeCoordinates = ui->showSubGridRelativePos->isChecked();
+    axisGridSettings.subgridSubDivs = ui->subgridDivs->value();
+    axisGridSettings.gridColor = ui->gridColor->getCurrentColor();
+    axisGridSettings.subgridColor = ui->subgridColor->getCurrentColor();
+    axisGridSettings.gridLineWidth = ui->gridLineWidth->value();
+    axisGridSettings.subgridLineWidth = ui->subGridLineWidth->value();
+
+    SelectedAxis currentAxis = getSelectedAxis();
+    if (currentAxis == SelectedAxis::BOTH or currentAxis == SelectedAxis::X)
+    {
+        axesSettings.x = axisSettings;
+        gridSettings.x = axisGridSettings;
+    }
+    if (currentAxis == SelectedAxis::BOTH or currentAxis == SelectedAxis::Y)
+    {
+        axesSettings.y = axisSettings;
+        gridSettings.y = axisGridSettings;
+    }
 }
 
 void AxisSettingsWidget::loadDefaults()
@@ -267,12 +286,12 @@ void AxisSettingsWidget::makeConnects()
     connect(ui->logScale, &QRadioButton::toggled, this, &AxisSettingsWidget::axisTypeChanged);
 
     connect(ui->xAxis, &QPushButton::toggled, this, &AxisSettingsWidget::swapAxisData);
-    connect(ui->xAxis, &QRadioButton::toggled, this, &AxisSettingsWidget::swapGridData);
+    connect(ui->yAxis, &QRadioButton::toggled, this, &AxisSettingsWidget::swapGridData);
 }
 
 void AxisSettingsWidget::swapGridData()
 {
-    ZeAxisName newChosenAxis = ui->xAxis->isChecked() ? ZeAxisName::X : ZeAxisName::Y;
+    SelectedAxis newChosenAxis = getSelectedAxis();
 
     processUserInput();
     if (newChosenAxis != currentAxis)

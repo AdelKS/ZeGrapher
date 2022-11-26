@@ -54,15 +54,19 @@ protected slots:
     void swapGridData();
 
 protected:
+    enum struct SelectedAxis {X, Y, BOTH};
+
     void axisTypeChanged();
     void swapAxisData();
     void loadAxisSettingsInUI();
+    SelectedAxis getSelectedAxis() const;
 
     void makeConnects();
 
     Ui::AxisSettingsWidget *ui;
 
-    ZeAxisName currentAxis;
+
+    SelectedAxis currentAxis;
     ZeAxisSettings axisDefaultSettings;
     ZeAxesSettings axesSettings;
 
