@@ -22,6 +22,7 @@
 
 
 #include "Widgets/funcwidget.h"
+#include "information.h"
 
 
 FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(), colorSaver(color)
@@ -44,6 +45,7 @@ FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(),
     connect(colorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setFristColor(QColor)));
     connect(secondColorButton, SIGNAL(colorChanged(QColor)), &colorSaver, SLOT(setLastColor(QColor)));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(resetToNeutralState()));
+    connect(&colorSaver, SIGNAL(colorsChanged()), &information, SLOT(emitUpdateSignal()));
     connect(drawCheckBox, SIGNAL(toggled(bool)), calculator, SLOT(setDrawState(bool)));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(checkExprLineEdit()));
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), this, SLOT(checkCalledFuncsParametric()));
