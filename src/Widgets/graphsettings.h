@@ -1,5 +1,5 @@
-#ifndef ESTHETICSETTINGS_H
-#define ESTHETICSETTINGS_H
+#ifndef GRAPHSETTINGS_H
+#define GRAPHSETTINGS_H
 
 #include <QWidget>
 
@@ -34,4 +34,4 @@ private:
     Ui::EstheticSettings *ui;
 };
 
-#endif // ESTHETICSETTINGS_H
+#endif // GRAPHSETTINGS_H

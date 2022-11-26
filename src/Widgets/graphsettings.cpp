@@ -1,5 +1,5 @@
-#include "estheticsettings.h"
-#include "ui_estheticsettings.h"
+#include "graphsettings.h"
+#include "ui_graphsettings.h"
 
 EstheticSettings::EstheticSettings(QWidget *parent) :
     QWidget(parent),

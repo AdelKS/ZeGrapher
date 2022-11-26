@@ -28,7 +28,7 @@
 #include "Widgets/graphsizeadjusments.h"
 #include "Widgets/export.h"
 #include "Widgets/mathobjectsinput.h"
-#include "Widgets/estheticsettings.h"
+#include "Widgets/graphsettings.h"
 #include "Widgets/appsettings.h"
 /* TODO:
  * - Give out axis settings to the rest of the program through information

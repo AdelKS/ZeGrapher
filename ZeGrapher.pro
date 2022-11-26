@@ -41,8 +41,8 @@ SOURCES += \
     src/GraphDraw/viewmapper.cpp \
     src/GraphDraw/mainviewcontainer.cpp \
     src/Widgets/appsettings.cpp \
-    src/Widgets/estheticsettings.cpp \
     src/Widgets/export.cpp \
+    src/Widgets/graphsettings.cpp \
     src/Widgets/graphsizeadjusments.cpp \
     src/Widgets/popupwidget.cpp \
     src/Widgets/sheetzoom.cpp \
@@ -107,8 +107,8 @@ HEADERS  += \
     src/GraphDraw/viewmapper.h \
     src/GraphDraw/mainviewcontainer.h \
     src/Widgets/appsettings.h \
-    src/Widgets/estheticsettings.h \
     src/Widgets/export.h \
+    src/Widgets/graphsettings.h \
     src/Widgets/graphsizeadjusments.h \
     src/Widgets/popupwidget.h \
     src/Widgets/sheetzoom.h \
@@ -168,8 +168,8 @@ HEADERS  += \
 
 FORMS += \
     src/Widgets/appsettings.ui \
-    src/Widgets/estheticsettings.ui \
     src/Widgets/export.ui \
+    src/Widgets/graphsettings.ui \
     src/Widgets/graphsizeadjusments.ui \
     src/Widgets/sheetzoom.ui \
     src/Windows/about.ui \
