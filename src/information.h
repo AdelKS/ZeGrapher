@@ -39,15 +39,13 @@ class Information: public QObject
 public:
     Information();
 
-    const ZeViewSettings& getViewSettings();
-
-    const ZeZoomSettings& getGraphZoomSettings();
-    const ZeSizeSettings& getGraphSizeSettings();
-    const ZeGraphSettings& getGraphSettings();
-    const ZeGridSettings& getGridSettings();
-    const ZeAxesSettings& getAxesSettings();
-    const ZeEstheticSettings &getEstheticSettings();
-    const GraphRange& getGraphRange();
+    const ZeZoomSettings& getGraphZoomSettings() const;
+    const ZeSizeSettings& getGraphSizeSettings() const;
+    const ZeGraphSettings& getGraphSettings() const;
+    const ZeGridSettings& getGridSettings() const;
+    const ZeAxesSettings& getAxesSettings() const;
+    const ZeGraphSettings &getEstheticSettings() const;
+    const GraphRange& getGraphRange() const;
     const ZeAppSettings& getAppSettings() const;
 
     void addDataList(const std::shared_ptr<const UserData> &userData);
@@ -115,7 +113,7 @@ public slots:
     void setGraphZoomSettings(const ZeZoomSettings &zoomSettings);
     void setAxesSettings(const ZeAxesSettings &axesSettings);
     void setGridSettings(const ZeGridSettings &gridSettings);
-    void setEstheticSettings(const ZeEstheticSettings &estheticSettings);
+    void setGraphSettings(const ZeGraphSettings &graphSettings);
     void setAppSettings(const ZeAppSettings& appSettings);
 
 protected:
@@ -130,7 +128,12 @@ protected:
     QList<FuncCalculator*> functions;
     QList<SeqCalculator*> sequences;
 
-    ZeViewSettings viewSettings;
+    GraphRange range;
+    ZeZoomSettings zoomSettings;
+    ZeSizeSettings sizeSettings;
+    ZeAxesSettings axesSettings;
+    ZeGridSettings gridSettings;
+    ZeGraphSettings graphSettings;
     ZeAppSettings appSettings;
     QString exportFileName;
 

@@ -25,7 +25,7 @@
 
 DataWidget::DataWidget(QWidget *parent) :
     QWidget(parent), ui(new Ui::DataWidget),
-    colorButton(new QColorButton(information.getGraphSettings().estheticSettings.defaultColor)),
+    colorButton(new QColorButton(information.getGraphSettings().defaultColor)),
     userData(std::make_shared<UserData>()),
     dataWindow(new DataWindow(userData, this))
 {

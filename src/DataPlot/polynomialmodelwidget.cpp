@@ -40,7 +40,7 @@ PolynomialModelWidget::PolynomialModelWidget(const std::weak_ptr<const UserData>
 
     information.addDataRegression(regression);
 
-    regression->setColor(information.getGraphSettings().estheticSettings.defaultColor);
+    regression->setColor(information.getGraphSettings().defaultColor);
 
     connect(ui->drawModel, SIGNAL(toggled(bool)), regression, SLOT(setDrawState(bool)));
     connect(colorButton, SIGNAL(colorChanged(QColor)), regression, SLOT(setColor(QColor)));
@@ -209,7 +209,7 @@ void PolynomialModelWidget::addWidgetsToUI()
     connect(ui->manualInterval, SIGNAL(toggled(bool)), startVal, SLOT(setEnabled(bool)));
     connect(ui->manualInterval, SIGNAL(toggled(bool)), endVal, SLOT(setEnabled(bool)));
 
-    colorButton = new QColorButton(information.getGraphSettings().estheticSettings.defaultColor);
+    colorButton = new QColorButton(information.getGraphSettings().defaultColor);
     QLabel *colorLabel = new QLabel(tr("color:"));
     ui->drawOptionsLayout->addWidget(colorLabel);
     ui->drawOptionsLayout->addWidget(colorButton);

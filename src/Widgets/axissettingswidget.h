@@ -60,6 +60,7 @@ protected:
     void swapAxisData();
     void loadAxisSettingsInUI();
     SelectedAxis getSelectedAxis() const;
+    void saveSettingsToDisk();
 
     void makeConnects();
 

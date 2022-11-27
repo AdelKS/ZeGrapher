@@ -30,12 +30,12 @@ Settings::Settings(QWidget *parent): QWidget(parent)
     setWindowTitle(tr("Settings"));
     setWindowIcon(QIcon(":/icons/settings.png"));
 
+    rangeAdjustmentsWidget = new RangeAdjustments(information.getFuncsList());
+    ui->mathInputLayout->addWidget(rangeAdjustmentsWidget);
+
     // to be instanced first so information.funcsList gets populated
     inputWidget = new MathObjectsInput(this);
-    ui->objectsInputLayout->addWidget(inputWidget);
-
-    rangeAdjustmentsWidget = new RangeAdjustments(information.getFuncsList());
-    ui->rangeAdjustmentsLayout->addWidget(rangeAdjustmentsWidget);
+    ui->mathInputLayout->addWidget(inputWidget);
 
     axisSettingsWidget = new AxisSettingsWidget();
     ui->axesLayout->addWidget(axisSettingsWidget);
@@ -46,17 +46,38 @@ Settings::Settings(QWidget *parent): QWidget(parent)
     exportWidget = new Export();
     ui->exportLayout->addWidget(exportWidget);
 
-    estheticSettingsWidget = new EstheticSettings();
-    ui->graphGeneralSettingsLayout->addWidget(estheticSettingsWidget);
+    graphSettingsWidget = new GraphSettings();
+    ui->graphGeneralSettingsLayout->addWidget(graphSettingsWidget);
 
     appSettingsWidget = new AppSettings();
     ui->appSettingsLayout->addWidget(appSettingsWidget);
+
+    updateVisibleWidgets();
+
+    connect(ui->mathInputButton, SIGNAL(toggled(bool)), this, SLOT(updateVisibleWidgets()));
+    connect(ui->exportButton, SIGNAL(toggled(bool)), this, SLOT(updateVisibleWidgets()));
+}
+
+void Settings::updateVisibleWidgets()
+{
+    if (ui->mathInputButton->isChecked())
+    {
+        ui->mathInputWidget->show();
+
+        ui->settingsWidget->hide();
+    }
+    else
+    {
+        ui->mathInputWidget->hide();
+
+        ui->settingsWidget->show();
+    }
 
 }
 
 void Settings::showExportSettings()
 {
-    // TODO
+
 }
 
 Settings::~Settings()

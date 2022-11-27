@@ -80,5 +80,7 @@
         <file>translations/ZeGrapher_zh.qm</file>
         <file>doc/data_help_zh.html</file>
         <file>doc/taiwan-icon.png</file>
+        <file>icons/settings.svg</file>
+        <file>icons/math.svg</file>
     </qresource>
 </RCC>

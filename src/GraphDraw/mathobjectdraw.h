@@ -72,7 +72,6 @@ protected:
     FuncValuesSaver *funcValuesSaver;
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
-    ZeViewSettings viewSettings;
 
     QPolygonF polygon;
     QPen pen;

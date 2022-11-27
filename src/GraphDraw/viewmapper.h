@@ -45,7 +45,7 @@ public:
     void zoomView(QPointF center, double ratio);
     void translateView(QPointF vec);
 
-    void setViewSettings(const ZeViewSettings &viewSettings);
+    void setAxesSettings(const ZeAxesSettings &axesSettings);
 
     void setViewXmin(double val);
     void setViewXmax(double val);

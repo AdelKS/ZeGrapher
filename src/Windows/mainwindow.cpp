@@ -45,8 +45,12 @@ MainWindow::MainWindow()
 
     // Create dock widget
 
-    inputDock = new QDockWidget(tr("User settings"), this);
+    inputDock = new QDockWidget(this);
     inputDock->setWidget(settingsWin);
+    inputDock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    inputDock->setFeatures(QDockWidget::NoDockWidgetFeatures | QDockWidget::DockWidgetMovable);
+    // make the title non-existant
+    inputDock->setTitleBarWidget(new QWidget());
     addDockWidget(Qt::LeftDockWidgetArea, inputDock);
 
     createMenus();
@@ -84,8 +88,7 @@ void MainWindow::createMenus()
 
     QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
     showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
-    connect(showSettingsWinAction, SIGNAL(triggered()), inputDock, SLOT(show()));
-    connect(showSettingsWinAction, SIGNAL(triggered()), inputDock, SLOT(raise()));
+    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(showSettings()));
     // TODO: add slot in settingsWin so it displays the settings tab
 
     menuFile->addSeparator();
@@ -95,6 +98,7 @@ void MainWindow::createMenus()
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
     QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
+    connect(showInputWinAction, SIGNAL(triggered()), settingsWin, SLOT(showMathInput()));
     showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
     // TODO: add slot in settingsWin so it displays the input tab
 
@@ -107,17 +111,6 @@ void MainWindow::createMenus()
     showKeyboardAction->setShortcut(QKeySequence("Ctrl+K"));
     connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));
     connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(raise()));
-
-    QToolBar *toolBar = new QToolBar(tr("Windows and actions"));
-    addToolBar(Qt::LeftToolBarArea, toolBar);
-
-    toolBar->addAction(setOrthonormalAction);
-    toolBar->addSeparator();
-    toolBar->addAction(showInputWinAction);
-    toolBar->addAction(showValuesWinAction);
-    toolBar->addAction(showExportWinAction);
-    toolBar->addAction(showSettingsWinAction);
-    toolBar->addAction(showKeyboardAction);
 
     statusBar();
 

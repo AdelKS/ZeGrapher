@@ -1,9 +1,10 @@
 #include "graphsettings.h"
 #include "ui_graphsettings.h"
+#include "information.h"
 
-EstheticSettings::EstheticSettings(QWidget *parent) :
+GraphSettings::GraphSettings(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::EstheticSettings)
+    ui(new Ui::GraphSettings)
 {
     ui->setupUi(this);
 
@@ -13,15 +14,15 @@ EstheticSettings::EstheticSettings(QWidget *parent) :
     defaultColorButton = new QColorButton(Qt::black);
     ui->formLayout->addRow(tr("Curve default color:"), defaultColorButton);
 
-    estheticSettings.backgroundColor = backgroundColorButton->getCurrentColor();
-    estheticSettings.defaultColor = defaultColorButton->getCurrentColor();
+    graphSettings.backgroundColor = backgroundColorButton->getCurrentColor();
+    graphSettings.defaultColor = defaultColorButton->getCurrentColor();
 
     loadSettingsFromDisk();
 
     makeConnects();
 }
 
-void EstheticSettings::makeConnects()
+void GraphSettings::makeConnects()
 {
     connect(ui->distanceWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
     connect(ui->thicknessWidget, SIGNAL(valueChanged(int)), this, SLOT(apply()));
@@ -34,7 +35,7 @@ void EstheticSettings::makeConnects()
 }
 
 
-void EstheticSettings::resetToDefaults()
+void GraphSettings::resetToDefaults()
 {
     backgroundColorButton->setColor(Qt::white);
     defaultColorButton->setColor(Qt::black);
@@ -46,36 +47,36 @@ void EstheticSettings::resetToDefaults()
     apply();
 }
 
-void EstheticSettings::apply()
+void GraphSettings::apply()
 {
     processUserInput();
-    information.setEstheticSettings(estheticSettings);
+    information.setGraphSettings(graphSettings);
 }
 
-const ZeEstheticSettings &EstheticSettings::getSettings()
+const ZeGraphSettings& GraphSettings::getSettings() const
 {
-    return estheticSettings;
+    return graphSettings;
 }
 
-void EstheticSettings::processUserInput()
+void GraphSettings::processUserInput()
 {
-    estheticSettings.backgroundColor = backgroundColorButton->getCurrentColor();
+    graphSettings.backgroundColor = backgroundColorButton->getCurrentColor();
 
     double dist = ui->distanceWidget->value();
 
-    estheticSettings.smoothing = ui->smoothing->isChecked();
-    estheticSettings.distanceBetweenPoints = pow(2, 2 - dist/2);
-    estheticSettings.curvesThickness = ui->thicknessWidget->value();
+    graphSettings.smoothing = ui->smoothing->isChecked();
+    graphSettings.distanceBetweenPoints = pow(2, 2 - dist/2);
+    graphSettings.curvesThickness = ui->thicknessWidget->value();
 
-    estheticSettings.defaultColor = defaultColorButton->getCurrentColor();
+    graphSettings.defaultColor = defaultColorButton->getCurrentColor();
 
     QFont font(ui->graphFont->currentFont());
     font.setPixelSize(ui->graphFontSize->value());
 
-    estheticSettings.graphFont = font;
+    graphSettings.graphFont = font;
 }
 
-void EstheticSettings::loadSettingsFromDisk()
+void GraphSettings::loadSettingsFromDisk()
 {
     QSettings settings;
 
@@ -107,7 +108,7 @@ void EstheticSettings::loadSettingsFromDisk()
     apply();
 }
 
-void EstheticSettings::saveSettingsToDisk()
+void GraphSettings::saveSettingsToDisk()
 {
     QSettings settings;
     settings.beginGroup("graph");
@@ -129,7 +130,7 @@ void EstheticSettings::saveSettingsToDisk()
     settings.setValue("thickness", ui->thicknessWidget->value());
 }
 
-EstheticSettings::~EstheticSettings()
+GraphSettings::~GraphSettings()
 {
     saveSettingsToDisk();
     delete ui;

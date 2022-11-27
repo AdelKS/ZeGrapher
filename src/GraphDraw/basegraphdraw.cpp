@@ -157,7 +157,7 @@ void BaseGraphDraw::paint()
 
 void BaseGraphDraw::writeLegends()
 {
-    font = information.getGraphSettings().estheticSettings.graphFont;
+    font = information.getGraphSettings().graphFont;
     font.setPixelSize(legendFontSize);
     font.setItalic(italic);
     font.setBold(bold);
@@ -193,7 +193,7 @@ void BaseGraphDraw::writeLegends()
 
 void BaseGraphDraw::drawLinAxisGridTicksX()
 {
-    painter.setFont(information.getGraphSettings().estheticSettings.graphFont);
+    painter.setFont(information.getGraphSettings().graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double space, pos;
@@ -211,7 +211,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
     bool first_tick = true;
     double previous_pos;
 
-    painter.setFont(information.getEstheticSettings().graphFont);
+    painter.setFont(information.getGraphSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
 
     for(const ZeLinAxisTick &axisTick: xAxisTicks.ticks)
@@ -317,7 +317,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
 void BaseGraphDraw::drawLinAxisGridTicksY()
 {
-    painter.setFont(information.getGraphSettings().estheticSettings.graphFont);
+    painter.setFont(information.getGraphSettings().graphFont);
     QFontMetrics fontMetrics = painter.fontMetrics();
 
     double pos;
@@ -336,7 +336,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
     bool first_tick = true;
     double previous_pos;
 
-    painter.setFont(information.getEstheticSettings().graphFont);
+    painter.setFont(information.getGraphSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
 
     for(const ZeLinAxisTick &axisTick: yAxisTicks.ticks)
@@ -516,15 +516,13 @@ QImage* BaseGraphDraw::drawImage()
 {
     //TODO: update this method
 
-    viewSettings = information.getViewSettings();
-
     QImage *image = new QImage(size(), QImage::Format_RGB32);
-    image->fill(viewSettings.graph.estheticSettings.backgroundColor.rgb());
+    image->fill(information.getGraphSettings().backgroundColor.rgb());
 
     painter.begin(image);
     //trace du background
 
-    pen.setColor(viewSettings.axes.color);
+    pen.setColor(information.getAxesSettings().color);
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing, false);
 

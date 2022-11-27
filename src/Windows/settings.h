@@ -51,6 +51,7 @@ public:
     ~Settings();
 
 public slots:
+    void updateVisibleWidgets();
     void showExportSettings();
 
 private:
@@ -58,12 +59,11 @@ private:
 
     QTimer timer;
     MathObjectsInput *inputWidget;
-    ZeViewSettings viewSettings;
     ZeAxisName currentEditedGrid;
     AxisSettingsWidget *axisSettingsWidget;
     RangeAdjustments *rangeAdjustmentsWidget;
     GraphSizeAdjusments *sizeAdjusmentsWidget;
-    EstheticSettings *estheticSettingsWidget;
+    GraphSettings *graphSettingsWidget;
     Export *exportWidget;
     AppSettings *appSettingsWidget;
 

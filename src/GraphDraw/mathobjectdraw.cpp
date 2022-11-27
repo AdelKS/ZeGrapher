@@ -27,12 +27,9 @@ using namespace std;
 
 MathObjectDraw::MathObjectDraw()
 {
-
-
     coef = sqrt(3)/2;
 
     setMinimumSize(QSize(200, 200));
-    viewSettings = information.getViewSettings();
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
@@ -46,7 +43,7 @@ MathObjectDraw::MathObjectDraw()
     moving = false;
     tangentDrawException = -1;
 
-    funcValuesSaver = new FuncValuesSaver(information.getFuncsList(), viewSettings.graph.estheticSettings.distanceBetweenPoints);
+    funcValuesSaver = new FuncValuesSaver(information.getFuncsList(), information.getGraphSettings().distanceBetweenPoints);
 
     connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
     connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
@@ -55,13 +52,12 @@ MathObjectDraw::MathObjectDraw()
 
 void MathObjectDraw::updateSettingsVals()
 {
-    viewSettings = information.getViewSettings();
-    funcValuesSaver->setPixelStep(viewSettings.graph.estheticSettings.distanceBetweenPoints);
+    funcValuesSaver->setPixelStep(information.getGraphSettings().distanceBetweenPoints);
 }
 
 void MathObjectDraw::addRegSaver(Regression *reg)
 {
-    regValuesSavers << RegressionValuesSaver(viewSettings.graph.estheticSettings.distanceBetweenPoints, reg);
+    regValuesSavers << RegressionValuesSaver(information.getGraphSettings().distanceBetweenPoints, reg);
     recalculate = true;
     repaint();
 }
@@ -136,8 +132,8 @@ void MathObjectDraw::drawDataSet(int id, int width)
     QPointF prev_qpt;
     bool first_pt = true;
 
-    double &&target_dist = information.getEstheticSettings().distanceBetweenPoints *
-            information.getEstheticSettings().distanceBetweenPoints;
+    const double target_sq_dist = information.getGraphSettings().distanceBetweenPoints *
+            information.getGraphSettings().distanceBetweenPoints;
 
     brush.setColor(userData->style.color);
     painter.setBrush(brush);
@@ -150,7 +146,7 @@ void MathObjectDraw::drawDataSet(int id, int width)
 
         double &&sq_dist = QPointF::dotProduct(qpt - prev_qpt, qpt - prev_qpt);
 
-        if(!first_pt && sq_dist <= target_dist)
+        if(!first_pt && sq_dist <= target_sq_dist)
             continue;
 
         if(userData->style.drawLines)
@@ -178,7 +174,7 @@ void MathObjectDraw::drawData()
     for(int i = 0 ; i < information.getDataListsCount(); i++)
     {
         if(information.getDataPoints(i)->style.draw)
-            drawDataSet(i, viewSettings.graph.estheticSettings.curvesThickness + 2);
+            drawDataSet(i, information.getGraphSettings().curvesThickness + 2);
     }
 }
 
@@ -200,7 +196,7 @@ void MathObjectDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &
 
 void MathObjectDraw::drawRegressions()
 {
-    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
     for(int reg = 0 ; reg < regValuesSavers.size() ; reg++)
     {
@@ -208,7 +204,7 @@ void MathObjectDraw::drawRegressions()
         {
             for(int curve = 0 ; curve < regValuesSavers[reg].getCurves().size() ; curve++)
             {
-                drawCurve(viewSettings.graph.estheticSettings.curvesThickness, information.getRegression(reg)->getColor(),
+                drawCurve(information.getGraphSettings().curvesThickness, information.getRegression(reg)->getColor(),
                           regValuesSavers[reg].getCurves().at(curve));
             }
         }
@@ -226,7 +222,7 @@ void MathObjectDraw::recalculateRegVals()
 
 void MathObjectDraw::drawFunctions()
 {
-    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
     for(int func = 0 ; func < funcs.size(); func++)
     {
@@ -234,7 +230,7 @@ void MathObjectDraw::drawFunctions()
             continue;
 
         for(int curve = 0 ; curve < funcValuesSaver->getFuncDrawsNum(func) ;  curve++)
-            drawCurve(viewSettings.graph.estheticSettings.curvesThickness, funcs[func]->getColorSaver()->getColor(curve), funcValuesSaver->getCurve(func, curve));
+            drawCurve(information.getGraphSettings().curvesThickness, funcs[func]->getColorSaver()->getColor(curve), funcValuesSaver->getCurve(func, curve));
     }
 }
 
@@ -245,7 +241,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
             !seqs[i]->getDrawState())
         return;
 
-     painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
+     painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
      pen.setWidth(width);
 
      double posX;
@@ -292,7 +288,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
 void MathObjectDraw::drawSequences()
 {
     for(int i = 0 ; i < seqs.size() ; i++)
-        drawOneSequence(i, viewSettings.graph.estheticSettings.curvesThickness + 3);
+        drawOneSequence(i, information.getGraphSettings().curvesThickness + 3);
 }
 
 void MathObjectDraw::drawOneTangent(int i)
@@ -300,19 +296,19 @@ void MathObjectDraw::drawOneTangent(int i)
     if(!tangents->at(i)->isTangentValid())
         return;
 
-    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
     tangents->at(i)->calculateTangentPoints();
 
     pen.setColor(tangents->at(i)->getColor());
 
-    pen.setWidth(viewSettings.graph.estheticSettings.curvesThickness);
+    pen.setWidth(information.getGraphSettings().curvesThickness);
     painter.setPen(pen);
 
     TangentPoints tangentPoints = tangents->at(i)->getCaracteristicPoints().toView(viewMapper) * pxPerUnit;
     painter.drawLine(tangentPoints.left, tangentPoints.right);
 
-    pen.setWidth(viewSettings.graph.estheticSettings.curvesThickness + 3);
+    pen.setWidth(information.getGraphSettings().curvesThickness + 3);
     painter.setPen(pen);
 
     painter.drawPoint(tangentPoints.left);
@@ -331,10 +327,10 @@ void MathObjectDraw::drawTangents()
 
 void MathObjectDraw::drawStraightLines()
 {
-    pen.setWidth(viewSettings.graph.estheticSettings.curvesThickness);
+    pen.setWidth(information.getGraphSettings().curvesThickness);
     QPointF pt1, pt2;
 
-    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
+    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
     for(int i = 0 ; i < straightLines->size(); i++)
     {
@@ -372,8 +368,8 @@ void MathObjectDraw::drawStaticParEq()
     Point point;
     ColorSaver *colorSaver;
 
-    pen.setWidth(viewSettings.graph.estheticSettings.curvesThickness);
-    painter.setRenderHint(QPainter::Antialiasing, viewSettings.graph.estheticSettings.smoothing && !moving);
+    pen.setWidth(information.getGraphSettings().curvesThickness);
+    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
     painter.setPen(pen);
 
     for(int i = 0; i < parEqs->size(); i++)

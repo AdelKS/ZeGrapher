@@ -123,15 +123,12 @@ struct GraphRange
         return graphWin;
     }
 
-    bool operator==(const GraphRange &other)
+    bool operator == (const GraphRange &other) const
     {
         return fabs(x.min - other.x.min) < MIN_AMPLITUDE && fabs(x.max - other.x.max) < MIN_AMPLITUDE &&
                 fabs(y.min - other.y.min) < MIN_AMPLITUDE && fabs(y.max - other.y.max) < MIN_AMPLITUDE;
     }
-    bool operator!=(const GraphRange &other)
-    {
-        return !((*this) == other);
-    }
+
 };
 
 enum struct ZeAxisName {X, Y};
@@ -168,7 +165,6 @@ struct ZeLogAxisSettings
     QString constantMultiplierStr, baseStr = "10";
 
     bool operator == (const ZeLogAxisSettings &other) const = default;
-    bool operator != (const ZeLogAxisSettings &other) const = default;
 };
 
 struct ZeLinAxisSettings
@@ -176,7 +172,6 @@ struct ZeLinAxisSettings
     ZeLinAxisSettings() = default;
 
     bool operator == (const ZeLinAxisSettings &other) const = default;
-    bool operator != (const ZeLinAxisSettings &other) const = default;
 
     double constantMultiplier = 1;
     QString constantMultiplierStr;
@@ -189,7 +184,6 @@ public:
     ZeAxisSettings() = default;
 
     bool operator == (const ZeAxisSettings &other) const = default;
-    bool operator != (const ZeAxisSettings &other) const = default;
 
     int tickRelSpacing = 0;
     ZeLinAxisSettings linSettings;
@@ -212,18 +206,7 @@ struct ZeSizeSettings
     QSizeF cmFigureSize, cmSheetSize;
     double cmMargins;
 
-    bool operator !=(const ZeSizeSettings &other)
-    {
-        return sizeUnit != other.sizeUnit or
-                sheetFillsWindow != other.sheetFillsWindow or
-                scalingFactor != other.scalingFactor or
-                pxFigureSize != other.pxFigureSize or
-                pxSheetSize != other.pxSheetSize or
-                pxMargins != other.pxMargins or
-                cmFigureSize != other.cmFigureSize or
-                cmSheetSize != other.cmSheetSize or
-                cmMargins != other.cmMargins;
-    }
+    bool operator == (const ZeSizeSettings &other) const = default;
 };
 
 struct ZeZoomSettings
@@ -233,45 +216,7 @@ struct ZeZoomSettings
     ZoomingType zoomingType;
     double zoom;
 
-    bool operator !=(const ZeZoomSettings &other)
-    {
-        return zoomingType != other.zoomingType or
-                zoom != other.zoom;
-    }
-};
-
-struct ZeEstheticSettings
-{
-    QColor backgroundColor;
-    QColor defaultColor;
-    int curvesThickness;
-    double distanceBetweenPoints;
-    bool smoothing;
-    QFont graphFont;
-
-    bool operator !=(const ZeEstheticSettings &other)
-    {
-        return  backgroundColor != other.backgroundColor or
-                defaultColor != other.defaultColor or
-                curvesThickness != other.curvesThickness or
-                distanceBetweenPoints != other.distanceBetweenPoints or
-                smoothing != other.smoothing or
-                graphFont != other.graphFont;
-    }
-};
-
-struct ZeGraphSettings
-{
-    ZeZoomSettings zoomSettings;
-    ZeSizeSettings sizeSettings;
-    ZeEstheticSettings estheticSettings;
-
-    bool operator !=(const ZeGraphSettings &other)
-    {
-        return  zoomSettings != other.zoomSettings or
-                sizeSettings != other.sizeSettings or
-                estheticSettings != other.estheticSettings;
-    }
+    bool operator == (const ZeZoomSettings &other) const = default;
 };
 
 struct Ze1DGridSettings
@@ -283,7 +228,6 @@ struct Ze1DGridSettings
     bool showSubgridRelativeCoordinates = false;
 
     bool operator ==(const Ze1DGridSettings &other) const = default;
-    bool operator !=(const Ze1DGridSettings &other) const = default;
 };
 
 struct ZeGridSettings
@@ -291,7 +235,6 @@ struct ZeGridSettings
     Ze1DGridSettings x, y;
 
     bool operator == (const ZeGridSettings &other) const = default;
-    bool operator != (const ZeGridSettings &other) const = default;
 };
 
 struct ZeAxesSettings
@@ -302,15 +245,18 @@ struct ZeAxesSettings
     double lineWidth = 2;
 
     bool operator == (const ZeAxesSettings &other) const = default;
-    bool operator != (const ZeAxesSettings &other) const = default;
 };
 
-struct ZeViewSettings
+struct ZeGraphSettings
 {
-    GraphRange range;
-    ZeAxesSettings axes;
-    ZeGridSettings grid;
-    ZeGraphSettings graph;
+    bool operator == (const ZeGraphSettings &other) const = default;
+
+    QColor backgroundColor;
+    QColor defaultColor;
+    int curvesThickness;
+    double distanceBetweenPoints;
+    bool smoothing;
+    QFont graphFont;
 };
 
 struct ZeAppSettings

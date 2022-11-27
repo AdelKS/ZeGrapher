@@ -298,7 +298,32 @@ void AxisSettingsWidget::swapGridData()
         loadAxisSettingsInUI();
 }
 
+void AxisSettingsWidget::saveSettingsToDisk()
+{
+    QSettings settings;
+
+//    settings.beginGroup("graph");
+
+//    settings.setValue("update_check_at_start", ui->updateCheckAtStart->isChecked());
+//    settings.setValue("language", ui->languageComboBox->currentData().toLocale());
+//    settings.setValue("version", SOFTWARE_VERSION_STR);
+
+//    settings.beginGroup("font");
+
+//    settings.setValue("size", ui->appFontSize->value());
+//    settings.setValue("family", ui->appFontFamily->currentFont().family());
+
+//    settings.endGroup();
+
+//    settings.beginGroup("color");
+
+//    settings.setValue("valid_syntax", ui->validColor->getCurrentColor().name());
+//    settings.setValue("invalid_syntax", ui->invalidColor->getCurrentColor().name());
+
+}
+
 AxisSettingsWidget::~AxisSettingsWidget()
 {
+    saveSettingsToDisk();
     delete ui;
 }

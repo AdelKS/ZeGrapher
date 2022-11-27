@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "Widgets/rangeadjustments.h"
+#include "information.h"
 
 /* TODO: Take care of the orthonormal setting */
 
@@ -157,7 +158,7 @@ void RangeAdjustments::apply()
 
 void RangeAdjustments::processUserInput()
 {
-    ZeViewSettings viewSettings = information.getViewSettings();
+    const ZeAxesSettings& axesSettings = information.getAxesSettings();
 
     Xmin->checkVal();
     Ymin->checkVal();
@@ -183,7 +184,7 @@ void RangeAdjustments::processUserInput()
         return;
     }
 
-    if(newGraphRange.x.min <= 0 && viewSettings.axes.x.axisType == ZeAxisType::LOG)
+    if(newGraphRange.x.min <= 0 && axesSettings.x.axisType == ZeAxisType::LOG)
     {
         messageBox->setText(tr("x<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();
@@ -197,7 +198,7 @@ void RangeAdjustments::processUserInput()
         return;
     }
 
-    if(newGraphRange.y.min <= 0 && viewSettings.axes.y.axisType == ZeAxisType::LOG)
+    if(newGraphRange.y.min <= 0 && axesSettings.y.axisType == ZeAxisType::LOG)
     {
         messageBox->setText(tr("y<sub>min</sub> must strictly positive when on a log representation"));
         messageBox->exec();

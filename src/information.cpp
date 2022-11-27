@@ -55,6 +55,11 @@ std::shared_ptr<const UserData> Information::getDataPoints(int index)
     return *it;
 }
 
+void Information::setGraphSettings(const ZeGraphSettings &graphSettings)
+{
+    this->graphSettings = graphSettings;
+}
+
 void Information::addDataRegression(Regression *reg)
 {
     regressions << reg;
@@ -139,9 +144,9 @@ QList<FuncCalculator*> Information::getFuncsList()
 
 void Information::setGraphRange(const GraphRange &range)
 {
-    if(viewSettings.range != range)
+    if(this->range != range)
     {
-        viewSettings.range = range;
+        this->range = range;
 
         emit graphRangeChanged(range);
     }
@@ -163,39 +168,34 @@ QPalette Information::getInvalidSyntaxPalette() const
     return validPalette;
 }
 
-const ZeSizeSettings& Information::getGraphSizeSettings()
+const ZeSizeSettings& Information::getGraphSizeSettings() const
 {
-    return viewSettings.graph.sizeSettings;
+    return sizeSettings;
 }
 
-const ZeZoomSettings& Information::getGraphZoomSettings()
+const ZeZoomSettings& Information::getGraphZoomSettings() const
 {
-    return viewSettings.graph.zoomSettings;
+    return zoomSettings;
 }
 
-const ZeGraphSettings& Information::getGraphSettings()
+const ZeGraphSettings& Information::getGraphSettings() const
 {
-    return viewSettings.graph;
+    return graphSettings;
 }
 
-const ZeGridSettings& Information::getGridSettings()
+const ZeGridSettings& Information::getGridSettings() const
 {
-    return viewSettings.grid;
+    return gridSettings;
 }
 
-const ZeAxesSettings& Information::getAxesSettings()
+const ZeAxesSettings& Information::getAxesSettings() const
 {
-    return viewSettings.axes;
+    return axesSettings;
 }
 
-const ZeEstheticSettings& Information::getEstheticSettings()
+const GraphRange& Information::getGraphRange() const
 {
-    return viewSettings.graph.estheticSettings;
-}
-
-const GraphRange& Information::getGraphRange()
-{
-    return viewSettings.range;
+    return range;
 }
 
 
@@ -212,9 +212,9 @@ void Information::setOrthonormal(bool state)
 
 void Information::setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings)
 {
-    if(viewSettings.graph.sizeSettings != graphSizeSettings)
+    if(sizeSettings != graphSizeSettings)
     {
-        viewSettings.graph.sizeSettings = graphSizeSettings;
+        sizeSettings = graphSizeSettings;
 
         emit graphSizeSettingsChanged();
     }
@@ -223,9 +223,9 @@ void Information::setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings)
 
 void Information::setGraphZoomSettings(const ZeZoomSettings &zoomSettings)
 {
-    if(viewSettings.graph.zoomSettings != zoomSettings)
+    if(this->zoomSettings != zoomSettings)
     {
-        viewSettings.graph.zoomSettings = zoomSettings;
+        this->zoomSettings = zoomSettings;
 
         emit graphZoomSettingsChanged();
     }
@@ -234,23 +234,12 @@ void Information::setGraphZoomSettings(const ZeZoomSettings &zoomSettings)
 
 void Information::setGridSettings(const ZeGridSettings &gridSettings)
 {
-    if(viewSettings.grid != gridSettings)
+    if(this->gridSettings != gridSettings)
     {
-        viewSettings.grid = gridSettings;
+        this->gridSettings = gridSettings;
 
         emit gridSettingsChanged();
     }
-}
-
-void Information::setEstheticSettings(const ZeEstheticSettings &estheticSettings)
-{
-    if(viewSettings.graph.estheticSettings != estheticSettings)
-    {
-        viewSettings.graph.estheticSettings = estheticSettings;
-
-         emit estheticSettingsChanged();
-    }
-
 }
 
 void Information::setAppSettings(const ZeAppSettings& appSettings)
@@ -261,9 +250,9 @@ void Information::setAppSettings(const ZeAppSettings& appSettings)
 
 void Information::setAxesSettings(const ZeAxesSettings &axesSettings)
 {
-    if(viewSettings.axes != axesSettings)
+    if(this->axesSettings != axesSettings)
     {
-        viewSettings.axes = axesSettings;
+        this->axesSettings = axesSettings;
 
         emit axesSettingsChanged();
     }
@@ -277,11 +266,6 @@ void Information::emitUpdateSignal()
 void Information::emitDrawStateUpdate()
 {
     emit drawStateUpdateOccured();
-}
-
-const ZeViewSettings& Information::getViewSettings()
-{
-    return viewSettings;
 }
 
 void Information::setExportFileName(QString fileName)

@@ -24,7 +24,6 @@
 #include <QMessageBox>
 
 #include "numberlineedit.h"
-#include "information.h"
 
 class RangeAdjustments : public QWidget
 {

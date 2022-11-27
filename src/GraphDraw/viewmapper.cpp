@@ -4,12 +4,9 @@ ZeViewMapper::ZeViewMapper(QObject *parent) : QObject(parent)
 {
 }
 
-void ZeViewMapper::setViewSettings(const ZeViewSettings &viewSettings)
+void ZeViewMapper::setAxesSettings(const ZeAxesSettings &axesSettings)
 {
-    axesSettings = viewSettings.axes;
-    gridSettings = viewSettings.grid;
-
-    setGraphRange(viewSettings.range);
+    this->axesSettings = axesSettings;
 }
 
 void ZeViewMapper::setGraphRange(const GraphRange &range)

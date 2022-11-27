@@ -3,21 +3,21 @@
 
 #include <QWidget>
 
-#include "information.h"
 #include "Widgets/qcolorbutton.h"
+#include "structures.h"
 
 namespace Ui {
-class EstheticSettings;
+class GraphSettings;
 }
 
-class EstheticSettings : public QWidget
+class GraphSettings : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit EstheticSettings(QWidget *parent = nullptr);
-    ~EstheticSettings();
-    const ZeEstheticSettings &getSettings();
+    explicit GraphSettings(QWidget *parent = nullptr);
+    ~GraphSettings();
+    const ZeGraphSettings &getSettings() const;
 
 public slots:
     void resetToDefaults();
@@ -30,8 +30,8 @@ private:
     void makeConnects();
 
     QColorButton *backgroundColorButton, *defaultColorButton;
-    ZeEstheticSettings estheticSettings;
-    Ui::EstheticSettings *ui;
+    ZeGraphSettings graphSettings;
+    Ui::GraphSettings *ui;
 };
 
 #endif // GRAPHSETTINGS_H
