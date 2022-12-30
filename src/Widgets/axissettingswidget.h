@@ -21,11 +21,8 @@
 #ifndef AXISSETTINGS_H
 #define AXISSETTINGS_H
 
+#include "structures.h"
 #include <QWidget>
-
-#include "numberlineedit.h"
-#include "qcolorbutton.h"
-#include "information.h"
 
 namespace Ui {
 class AxisSettingsWidget;
@@ -34,6 +31,8 @@ class AxisSettingsWidget;
 class AxisSettingsWidget : public QWidget
 {
     Q_OBJECT
+
+    Q_ENUM(ZeAxisType);
 
 public:
     explicit AxisSettingsWidget(QWidget *parent = nullptr);
@@ -45,7 +44,6 @@ public:
 public slots:
     void apply();
     void processUserInput();
-    void loadDefaults();
 
 signals:
     void settingsUpdated();
@@ -54,6 +52,10 @@ protected slots:
     void swapGridData();
 
 protected:
+
+    enum LoadDirection {TO_DISK, FROM_DISK};
+    void loadSettings(const AxisSettingsWidget::LoadDirection direction);
+
     enum struct SelectedAxis {X, Y, BOTH};
 
     void axisTypeChanged();
