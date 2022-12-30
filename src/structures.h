@@ -25,6 +25,8 @@
 #include <cfloat>
 #include <QtWidgets>
 
+#include <QMetaType>
+
 #define SOFTWARE_VERSION 3.5
 #define SOFTWARE_VERSION_STR "v3.5"
 
@@ -145,6 +147,8 @@ enum struct ZeAxisType
 {
     LINEAR, LOG
 };
+
+Q_DECLARE_METATYPE(ZeAxisType);
 
 struct ZeCoordinateDisplayFormat
 {
