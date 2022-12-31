@@ -106,6 +106,7 @@ HEADERS  += \
     src/GraphDraw/subgraph.h \
     src/GraphDraw/viewmapper.h \
     src/GraphDraw/mainviewcontainer.h \
+    src/Utils/loader.hpp \
     src/Widgets/appsettings.h \
     src/Widgets/export.h \
     src/Widgets/graphsettings.h \
