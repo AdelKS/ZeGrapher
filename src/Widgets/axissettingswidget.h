@@ -22,7 +22,10 @@
 #define AXISSETTINGS_H
 
 #include "structures.h"
+#include "Utils/loader.hpp"
+
 #include <QWidget>
+
 
 namespace Ui {
 class AxisSettingsWidget;
@@ -53,8 +56,7 @@ protected slots:
 
 protected:
 
-    enum LoadDirection {TO_DISK, FROM_DISK};
-    void loadSettings(const AxisSettingsWidget::LoadDirection direction);
+    void loadSettings(const Loader::Direction direction);
 
     enum struct SelectedAxis {X, Y, BOTH};
 

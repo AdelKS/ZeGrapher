@@ -33,7 +33,7 @@ AxisSettingsWidget::AxisSettingsWidget(QWidget *parent): QWidget(parent), ui(new
 {
     ui->setupUi(this);
 
-    loadSettings(LoadDirection::FROM_DISK);
+    loadSettings(Loader::Direction::FROM_DISK);
     loadAxisSettingsInUI();
     makeConnects();
 
@@ -224,63 +224,57 @@ void AxisSettingsWidget::processUserInput()
     }
 }
 
-void AxisSettingsWidget::loadSettings(const LoadDirection direction)
+void AxisSettingsWidget::loadSettings(const Loader::Direction direction)
 {
-    QSettings settings;
+    Loader loader(direction, "graph/axes");
 
-    auto load = [&](auto &internal, const QString name, const auto& default_val)
+    loader(axesSettings.color, "color", QColor(Qt::black));
+    loader(axesSettings.lineWidth, "line_width", 1.1);
+
+    auto loadAxisSettings = [&](ZeAxisSettings& axis, QString axisName)
     {
-        using InternalType = std::remove_cvref_t<decltype(internal)>;
-        if (direction == LoadDirection::FROM_DISK)
-            internal = settings.value(name, QVariant::fromValue(default_val)).template value<InternalType>();
-        else settings.setValue(name, QVariant::fromValue(internal));
+        loader.set_prefix("graph/axes/" + axisName);
+        loader(axis.axisType, "axis_type", ZeAxisType::LINEAR);
+        loader(axis.tickRelSpacing, "tick_relative_spacing", 0);
+
+        loader(axis.logSettings.base, "log/base", 10);
+        loader(axis.logSettings.baseStr, "log/base_str", QString("10"));
+        loader(axis.logSettings.constantMultiplier, "log/constant_multiplier", 1);
+        loader(axis.logSettings.constantMultiplierStr, "log/constant_multiplier_str", QString(""));
+
+        loader(axis.linSettings.maxDigitsNum, "linear/max_digits_num", 4);
+        loader(axis.linSettings.constantMultiplier, "linear/constant_multiplier" , 1);
+        loader(axis.linSettings.constantMultiplierStr, "linear/constant_multiplier_str" , QString(""));
     };
 
-    load(axesSettings.color, "graph/axes/color", QColor(Qt::black));
-    load(axesSettings.lineWidth, "graph/axes/line_width", 1.1);
+    loadAxisSettings(axesSettings.x, "x");
+    loadAxisSettings(axesSettings.y, "y");
 
-    auto loadAxisSettings = [&](ZeAxisSettings& axis, QChar axisName)
+    auto loadGridSettings = [&](Ze1DGridSettings& grid, QString axisName)
     {
-        load(axis.axisType, "graph/axes/" + axisName + "/axis_type", ZeAxisType::LINEAR);
-        load(axis.tickRelSpacing, "graph/axes/x/tick_relative_spacing", 0);
-
-        load(axis.logSettings.base, "graph/axes" + axisName + "log/base", 10);
-        load(axis.logSettings.baseStr, "graph/axes" + axisName + "log/base_str", QString("10"));
-        load(axis.logSettings.constantMultiplier, "graph/axes" + axisName + "log/constant_multiplier", 1);
-        load(axis.logSettings.constantMultiplierStr, "graph/axes" + axisName + "log/constant_multiplier_str", QString(""));
-
-        load(axis.linSettings.maxDigitsNum, "graph/axes" + axisName + "linear/max_digits_num", 4);
-        load(axis.linSettings.constantMultiplier, "graph/axes" + axisName + "linear/constant_multiplier" , 1);
-        load(axis.linSettings.constantMultiplierStr, "graph/axes" + axisName + "linear/constant_multiplier_str" , QString(""));
-    };
-
-    loadAxisSettings(axesSettings.x, 'x');
-    loadAxisSettings(axesSettings.y, 'y');
-
-    auto loadGridSettings = [&](Ze1DGridSettings& grid, QChar axisName)
-    {
-        load(grid.showGrid, "graph/grid/" + axisName + "/show_grid", true);
-        load(grid.showSubGrid, "graph/grid/" + axisName + "/show_subgrid", false);
-        load(grid.showSubgridRelativeCoordinates, "graph/grid/" + axisName + "/show_subgrid_rel_coord", false);
-        load(grid.subgridSubDivs, "graph/grid/" + axisName + "/subgrid_subdivs", 1);
+        loader.set_prefix("graph/grid/" + axisName);
+        loader(grid.showGrid, "show_grid", true);
+        loader(grid.showSubGrid, "show_subgrid", false);
+        loader(grid.showSubgridRelativeCoordinates, "show_subgrid_rel_coord", false);
+        loader(grid.subgridSubDivs, "subgrid_subdivs", 1);
 
         // TODO: update grid default colors
-        load(grid.gridColor, "graph/grid/" + axisName + "/grid_color", QColor(Qt::gray));
-        load(grid.subgridColor, "graph/grid/" + axisName + "/subgrid_color", QColor(Qt::gray));
+        loader(grid.gridColor, "grid_color", QColor(Qt::gray));
+        loader(grid.subgridColor, "subgrid_color", QColor(Qt::gray));
 
         // TODO: fine tune grid and subgrid widths, check what antialiasing does.
-        load(grid.gridLineWidth, "graph/grid/" + axisName + "/grid_linewidth", 0.6);
-        load(grid.subgridLineWidth, "graph/grid/" + axisName + "/subgrid_linewidth", 0.3);
+        loader(grid.gridLineWidth, "grid_linewidth", 0.6);
+        loader(grid.subgridLineWidth, "subgrid_linewidth", 0.3);
     };
 
     // Grid settings
 
     ui->gridGroup->setChecked(true);
 
-    loadGridSettings(gridSettings.x, 'x');
-    loadGridSettings(gridSettings.y, 'y');
+    loadGridSettings(gridSettings.x, "x");
+    loadGridSettings(gridSettings.y, "y");
 
-    if (direction == LoadDirection::FROM_DISK)
+    if (direction == Loader::Direction::FROM_DISK)
     {
         information.setAxesSettings(axesSettings);
         information.setGridSettings(gridSettings);
@@ -324,7 +318,7 @@ void AxisSettingsWidget::swapGridData()
 
 void AxisSettingsWidget::saveSettingsToDisk()
 {
-    loadSettings(LoadDirection::TO_DISK);
+    loadSettings(Loader::Direction::TO_DISK);
 }
 
 AxisSettingsWidget::~AxisSettingsWidget()
