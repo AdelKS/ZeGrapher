@@ -7,8 +7,8 @@ GraphSizeSettings::GraphSizeSettings(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // ui->sheetSizeSubWidget->setEnabled(false);
     screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
+    ui->scalingFactor->setValue(screenDPI / 96);
 
     makeConnects();
 
