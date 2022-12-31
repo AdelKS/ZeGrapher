@@ -1,22 +1,22 @@
-#ifndef GRAPHSIZEADJUSMENTS_H
-#define GRAPHSIZEADJUSMENTS_H
+#ifndef GRAPHSIZESETTINGS_H
+#define GRAPHSIZESETTINGS_H
 
 #include <QWidget>
 
 #include "information.h"
 
 namespace Ui {
-class graphSizeAdjusments;
+class GraphSizeSettings;
 }
 
-class GraphSizeAdjusments : public QWidget
+class GraphSizeSettings : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GraphSizeAdjusments(QWidget *parent = nullptr);
+    explicit GraphSizeSettings(QWidget *parent = nullptr);
     const ZeSizeSettings &getSettings();
-    ~GraphSizeAdjusments();
+    ~GraphSizeSettings();
 
 signals:
     void centimeterUnitEnabled();
@@ -46,7 +46,7 @@ private:
 
     double screenDPI;
     ZeSizeSettings sizeSettings;
-    Ui::graphSizeAdjusments *ui;
+    Ui::GraphSizeSettings *ui;
 };
 
-#endif // GRAPHSIZEADJUSMENTS_H
+#endif // GRAPHSIZESETTINGS_H

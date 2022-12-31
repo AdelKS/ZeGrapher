@@ -25,7 +25,7 @@
 
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
-#include "Widgets/graphsizeadjusments.h"
+#include "Widgets/graphsizesettings.h"
 #include "Widgets/export.h"
 #include "Widgets/mathobjectsinput.h"
 #include "Widgets/graphsettings.h"
@@ -62,7 +62,7 @@ private:
     ZeAxisName currentEditedGrid;
     AxisSettingsWidget *axisSettingsWidget;
     RangeAdjustments *rangeAdjustmentsWidget;
-    GraphSizeAdjusments *sizeAdjusmentsWidget;
+    GraphSizeSettings *sizeAdjusmentsWidget;
     GraphSettings *graphSettingsWidget;
     Export *exportWidget;
     AppSettings *appSettingsWidget;

@@ -1,9 +1,9 @@
-#include "graphsizeadjusments.h"
-#include "ui_graphsizeadjusments.h"
+#include "graphsizesettings.h"
+#include "ui_graphsizesettings.h"
 
-GraphSizeAdjusments::GraphSizeAdjusments(QWidget *parent) :
+GraphSizeSettings::GraphSizeSettings(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::graphSizeAdjusments)
+    ui(new Ui::GraphSizeSettings)
 {
     ui->setupUi(this);
 
@@ -16,7 +16,7 @@ GraphSizeAdjusments::GraphSizeAdjusments(QWidget *parent) :
     onStandardSheetSizeChange();
 }
 
-void GraphSizeAdjusments::processUserInput()
+void GraphSizeSettings::processUserInput()
 {
     constrainFigureSizeWidgets();
 
@@ -36,7 +36,7 @@ void GraphSizeAdjusments::processUserInput()
     sizeSettings.pxSheetSize = QSize(ui->sheetWidthPx->value(), ui->sheetHeightPx->value());
 }
 
-void GraphSizeAdjusments::apply()
+void GraphSizeSettings::apply()
 {
     processUserInput();
 
@@ -45,12 +45,12 @@ void GraphSizeAdjusments::apply()
     connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onExternalSizeSettingsChange()));
 }
 
-const ZeSizeSettings &GraphSizeAdjusments::getSettings()
+const ZeSizeSettings &GraphSizeSettings::getSettings()
 {
     return sizeSettings;
 }
 
-void GraphSizeAdjusments::updateWidgetVisibility()
+void GraphSizeSettings::updateWidgetVisibility()
 {
     if(ui->customSheetSize->isChecked())
     {
@@ -118,7 +118,7 @@ void GraphSizeAdjusments::updateWidgetVisibility()
     }
 }
 
-void GraphSizeAdjusments::onExternalSizeSettingsChange()
+void GraphSizeSettings::onExternalSizeSettingsChange()
 {
     sizeSettings = information.getGraphSizeSettings();
 
@@ -167,7 +167,7 @@ void GraphSizeAdjusments::onExternalSizeSettingsChange()
     constrainFigureSizeWidgets();
 }
 
-void GraphSizeAdjusments::makeConnects()
+void GraphSizeSettings::makeConnects()
 {
     connect(ui->sheetMarginCm, SIGNAL(valueChanged(double)), this, SLOT(apply()));
     connect(ui->sheetMarginPx, SIGNAL(valueChanged(int)), this, SLOT(apply()));
@@ -211,7 +211,7 @@ void GraphSizeAdjusments::makeConnects()
     connect(ui->figFillsBackground, SIGNAL(toggled(bool)), this, SLOT(updateWidgetVisibility()));
 }
 
-void GraphSizeAdjusments::constrainFigureSizeWidgets()
+void GraphSizeSettings::constrainFigureSizeWidgets()
 {
     double smallest = ui->sheetHeightCm->value() < ui->sheetWidthCm->value() ? ui->sheetHeightCm->value() : ui->sheetWidthCm->value();
     double minRelSize = RELATIVE_MIN_SIZE;
@@ -234,7 +234,7 @@ void GraphSizeAdjusments::constrainFigureSizeWidgets()
 }
 
 
-void GraphSizeAdjusments::setSheetFigureSizeCm(QSizeF sizeCm)
+void GraphSizeSettings::setSheetFigureSizeCm(QSizeF sizeCm)
 {
     ui->figureHeightCm->blockSignals(true);
     ui->figureWidthCm->blockSignals(true);
@@ -246,7 +246,7 @@ void GraphSizeAdjusments::setSheetFigureSizeCm(QSizeF sizeCm)
     ui->figureWidthCm->blockSignals(false);
 }
 
-void GraphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
+void GraphSizeSettings::setImageFigureSizePx(QSize sizePx)
 {
     ui->figureHeightPx->blockSignals(true);
     ui->figureWidthPx->blockSignals(true);
@@ -258,7 +258,7 @@ void GraphSizeAdjusments::setImageFigureSizePx(QSize sizePx)
     ui->figureWidthPx->blockSignals(false);
 }
 
-void GraphSizeAdjusments::onStandardSheetSizeChange()
+void GraphSizeSettings::onStandardSheetSizeChange()
 {
     if(not ui->userDefinedSize->isChecked())
     {
@@ -315,7 +315,7 @@ void GraphSizeAdjusments::onStandardSheetSizeChange()
     apply();
 }
 
-void GraphSizeAdjusments::swapSheetHeightAndWidth()
+void GraphSizeSettings::swapSheetHeightAndWidth()
 {
     const QSignalBlocker blocker(ui->sheetHeightCm);
     const QSignalBlocker blocker2(ui->sheetWidthCm);
@@ -329,7 +329,7 @@ void GraphSizeAdjusments::swapSheetHeightAndWidth()
     apply();
 }
 
-void GraphSizeAdjusments::swapImageHeightAndWidth()
+void GraphSizeSettings::swapImageHeightAndWidth()
 {
     const QSignalBlocker blocker(ui->sheetHeightPx);
     const QSignalBlocker blocker2(ui->sheetWidthPx);
@@ -341,7 +341,7 @@ void GraphSizeAdjusments::swapImageHeightAndWidth()
     processUserInput();
 }
 
-GraphSizeAdjusments::~GraphSizeAdjusments()
+GraphSizeSettings::~GraphSizeSettings()
 {
     delete ui;
 }

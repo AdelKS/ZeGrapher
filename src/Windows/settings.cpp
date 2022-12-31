@@ -40,7 +40,7 @@ Settings::Settings(QWidget *parent): QWidget(parent)
     axisSettingsWidget = new AxisSettingsWidget();
     ui->axesLayout->addWidget(axisSettingsWidget);
 
-    sizeAdjusmentsWidget = new GraphSizeAdjusments();
+    sizeAdjusmentsWidget = new GraphSizeSettings();
     ui->sizeAdjustmentsLayout->addWidget(sizeAdjusmentsWidget);
 
     exportWidget = new Export();

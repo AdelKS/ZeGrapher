@@ -43,7 +43,7 @@ SOURCES += \
     src/Widgets/appsettings.cpp \
     src/Widgets/export.cpp \
     src/Widgets/graphsettings.cpp \
-    src/Widgets/graphsizeadjusments.cpp \
+    src/Widgets/graphsizesettings.cpp \
     src/Widgets/popupwidget.cpp \
     src/Widgets/sheetzoom.cpp \
     src/main.cpp \
@@ -110,7 +110,7 @@ HEADERS  += \
     src/Widgets/appsettings.h \
     src/Widgets/export.h \
     src/Widgets/graphsettings.h \
-    src/Widgets/graphsizeadjusments.h \
+    src/Widgets/graphsizesettings.h \
     src/Widgets/popupwidget.h \
     src/Widgets/sheetzoom.h \
     src/information.h \
@@ -171,7 +171,7 @@ FORMS += \
     src/Widgets/appsettings.ui \
     src/Widgets/export.ui \
     src/Widgets/graphsettings.ui \
-    src/Widgets/graphsizeadjusments.ui \
+    src/Widgets/graphsizesettings.ui \
     src/Widgets/sheetzoom.ui \
     src/Windows/about.ui \
     src/Widgets/datawidget.ui \
