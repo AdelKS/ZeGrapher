@@ -34,7 +34,7 @@ FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(),
 
     isExprParametric = areCalledFuncsParametric = false;
 
-    calculator = new FuncCalculator(id, QString(name), errorMessageLabel);
+    calculator = new FuncCalculator(id, QString(name));
     calculator->setColorSaver(&colorSaver);
 
     connect(&colorSaver, SIGNAL(colorsChanged()), this, SIGNAL(drawStateChanged()));
@@ -165,13 +165,15 @@ void FuncWidget::secondValidation()
     if(!isValid)
         return;
 
-    errorMessageLabel->clear();//must be placed before the next instruction casue it may modify it
+    errorMessageLabel->hide();
 
-    calculator->checkFuncCallingInclusions();
+    std::optional<QString> errorMessage = calculator->checkFuncCallingInclusions();
 
-    if(!errorMessageLabel->text().isEmpty())
-        errorMessageWidget->show();
-    else errorMessageWidget->hide();
+    if (errorMessage)
+    {
+        errorMessageLabel->setText(errorMessage.value());
+        errorMessageLabel->show();
+    }
 }
 
 FuncWidget::~FuncWidget()

@@ -28,14 +28,9 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-FuncCalculator::FuncCalculator(int id, QString funcName, QLabel *errorLabel) : treeCreator(ObjectType::FUNCTION)
+FuncCalculator::FuncCalculator(int id, QString funcName)
+    : funcNum(id), treeCreator(ObjectType::FUNCTION), func_name(funcName)
 {
-    errorMessageLabel = errorLabel;
-    funcTree = nullptr;
-    funcNum = id;
-    isExprValidated = areCalledFuncsGood = areIntegrationPointsGood = isParametric = false;
-    name = funcName;
-
     addRefFuncsPointers();
 
     drawState = true;
@@ -167,35 +162,33 @@ void FuncCalculator::setIntegrationPointsValidity(bool state)
     areIntegrationPointsGood = state;
 }
 
-bool FuncCalculator::checkFuncCallingInclusions()
+std::optional<QString> FuncCalculator::checkFuncCallingInclusions()
 {
-    if(!isExprValidated || !areIntegrationPointsGood)
-        return false;
+    if (not isExprValidated)
+        return tr("In ") + func_name + ": " + tr("Invalid expression") + "\n";
+
+    if (not areIntegrationPointsGood)
+        return tr("Invalid integration points");
 
     QList<int> calledFuncs = treeCreator.getCalledFuncs(expression);
 
-    areCalledFuncsGood = !calledFuncs.contains(funcNum);
-
-    if(!areCalledFuncsGood)
+    if(!calledFuncs.contains(funcNum))
     {
-        errorMessageLabel->setText(tr("This function calls itself in its expression."));
-        return false;
+        return tr("This function calls itself in its expression.");
     }
 
+    areCalledFuncsGood = true;
     callLock = true;
-    for(int i = 0; i < calledFuncs.size() && areCalledFuncsGood; i++)
+    std::optional<QString> result;
+    for(int i = 0; i < calledFuncs.size() && not result; i++)
     {
-        areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->canBeCalled();
-        if(areCalledFuncsGood)
-            areCalledFuncsGood = funcCalculatorsList[calledFuncs[i]]->checkFuncCallingInclusions();
+        if (not funcCalculatorsList[calledFuncs[i]]->canBeCalled())
+            result = tr("Function ") + funcCalculatorsList[calledFuncs[i]]->func_name + tr(" cannot be called.");
+        else result = funcCalculatorsList[calledFuncs[i]]->checkFuncCallingInclusions();
     }
     callLock = false;
 
-    if(!areCalledFuncsGood)
-        errorMessageLabel->setText(tr("This function calls another function that is either undefined or makes an inifite calling loop."));
-
-
-    return areCalledFuncsGood;
+    return result;
 
 }
 

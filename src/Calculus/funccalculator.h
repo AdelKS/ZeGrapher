@@ -31,7 +31,7 @@ class FuncCalculator : public QObject
     Q_OBJECT
 
 public:
-    FuncCalculator(int id, QString funcName, QLabel *errorLabel);
+    FuncCalculator(int id, QString funcName);
     ~FuncCalculator();
 
     void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
@@ -45,7 +45,9 @@ public:
 
     ColorSaver* getColorSaver();
 
-    bool checkFuncCallingInclusions();
+    /// \brief checks for errors in other function calls
+    /// \returns an error message if ever there's one
+    std::optional<QString> checkFuncCallingInclusions();
 
     double getAntiderivativeValue(double b, Point A, double k_val = 0);
     double getFuncValue(double x, double kValue = 0);
@@ -67,16 +69,20 @@ protected:
     double calculateFromTree(FastTree *tree, double x);
     void addRefFuncsPointers();
 
-    int funcNum;
-    double k;
-    bool isExprValidated, isParametric, areCalledFuncsGood, areIntegrationPointsGood, drawState, callLock;
+    int funcNum = 0;
+    double k = 0;
+    bool isExprValidated = false;
+    bool isParametric = false;
+    bool areCalledFuncsGood = false;
+    bool areIntegrationPointsGood= false;
+    bool drawState = false;
+    bool callLock = false;
     TreeCreator treeCreator;
-    FastTree *funcTree;
-    QString expression, name;
+    FastTree *funcTree = nullptr;
+    QString expression, func_name;
     QList<FuncCalculator*> funcCalculatorsList;
     Range kRange;
-    ColorSaver *colorSaver;
-    QLabel *errorMessageLabel;
+    ColorSaver *colorSaver = nullptr;
 
     QList<Point> integrationPoints;
     QList<double (*)(double)> refFuncs;
