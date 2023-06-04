@@ -1,0 +1,7 @@
+[wrap-git]
+url = https://github.com/AdelKS/ZeCalculator.git
+revision = v0.3.1
+depth = 1
+
+[provide]
+dependency_names = zecalculator

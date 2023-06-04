@@ -22,6 +22,8 @@
 
 Information information = Information();
 
+zc::MathWorld mathWorld;
+
 Information::Information()
 {
 

@@ -162,5 +162,5 @@ moc_files = qt6.compile_moc(
 
 executable('ZeGrapher', source_files, compiled_ressources, compiled_ui, moc_files,
     include_directories: inc,
-    dependencies: [qt6_dep, boost_dep],
+    dependencies: [qt6_dep, boost_dep, zecalculator_dep],
     install: true)

@@ -28,9 +28,12 @@
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/tangentwidget.h"
 
+#include <zecalculator/zecalculator.h>
+
 class Information;
 
 extern Information information;
+extern zc::MathWorld mathWorld;
 
 class Information: public QObject
 {

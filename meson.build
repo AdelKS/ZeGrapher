@@ -13,6 +13,7 @@ project('ZeGrapher', 'cpp',
 
 qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg'])
 boost_dep = dependency('boost')
+zecalculator_dep = dependency('zecalculator')
 
 subdir('src')
 subdir('appdata')
