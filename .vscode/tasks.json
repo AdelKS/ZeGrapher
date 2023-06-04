@@ -1,0 +1,58 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "setup",
+            "type": "shell",
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true",
+        },
+        {
+            "label": "resetup",
+            "type": "shell",
+            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true",
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug"
+            },
+            "dependsOn": "setup",
+            "problemMatcher": ["$meson-gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "rebuild",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug"
+            },
+            "dependsOn": "resetup",
+            "problemMatcher": ["$meson-gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "meson test --verbose",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug"
+            },
+            "dependsOn": "build",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}
