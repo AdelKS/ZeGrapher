@@ -15,7 +15,7 @@ echo "]"
 echo
 
 echo "moc_header_files = ["
-for f in $(egrep -lir --include=*.h "Q_OBJECT" .); do
+for f in $(grep -E -lir --include=*.h "Q_OBJECT" .); do
     echo "    '$f',"
 done
 echo "]"
