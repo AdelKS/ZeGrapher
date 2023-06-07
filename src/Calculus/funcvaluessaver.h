@@ -26,7 +26,7 @@
 #define FUNCVALUESSAVER_H
 
 #include "GraphDraw/viewmapper.h"
-#include "funccalculator.h"
+#include "function.h"
 
 
 class FuncValuesSaver

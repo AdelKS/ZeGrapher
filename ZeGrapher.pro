@@ -142,7 +142,7 @@ HEADERS  += \
     src/Calculus/seqcolorssaver.h \
     src/Calculus/seqcalculator.h \
     src/Calculus/funcvaluessaver.h \
-    src/Calculus/funccalculator.h \
+    src/Calculus/function.h \
     src/Calculus/exprcalculator.h \
     src/Calculus/colorsaver.h \
     src/Calculus/calculusdefines.h \

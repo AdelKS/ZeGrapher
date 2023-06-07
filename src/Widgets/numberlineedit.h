@@ -24,7 +24,7 @@
 
 
 #include "Calculus/exprcalculator.h"
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 #include "Widgets/expressionlineedit.h"
 
 

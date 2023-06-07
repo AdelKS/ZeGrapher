@@ -27,7 +27,7 @@
 #include <QWidget>
 
 #include "Widgets/parconfwidget.h"
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 #include "Calculus/treecreator.h"
 #include "Calculus/exprcalculator.h"
 #include "Widgets/qcolorbutton.h"

@@ -27,7 +27,7 @@
 #define SEQCALCULATOR_H
 
 #include "treecreator.h"
-#include "funccalculator.h"
+#include "function.h"
 #include "colorsaver.h"
 
 class SeqCalculator : public QObject

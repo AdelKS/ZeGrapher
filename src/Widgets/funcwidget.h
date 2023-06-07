@@ -24,7 +24,7 @@
 #ifndef FUNCWIDGET_H
 #define FUNCWIDGET_H
 
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 #include "Widgets/abstractfuncwidget.h"
 #include "Widgets/integrationwidget.h"
 #include "Calculus/colorsaver.h"

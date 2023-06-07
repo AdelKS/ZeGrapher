@@ -24,7 +24,7 @@
 #include "Calculus/regression.h"
 #include "Widgets/pareqwidget.h"
 #include "Calculus/seqcalculator.h"
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/tangentwidget.h"
 

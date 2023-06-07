@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 
-#include "Calculus/funccalculator.h"
+#include "Calculus/function.h"
 
 #include <array>
 
