@@ -21,7 +21,7 @@
 #include "Widgets/pareqwidget.h"
 #include "information.h"
 
-ParEqWidget::ParEqWidget(int num, QList<FuncCalculator*> list, QColor col) : treeCreator(ObjectType::PARAMETRIC_EQ), colorSaver(col)
+ParEqWidget::ParEqWidget(int num, QList<Function*> list, QColor col) : treeCreator(ObjectType::PARAMETRIC_EQ), colorSaver(col)
 {
     calculator = new ExprCalculator(true, list);
     index = num;

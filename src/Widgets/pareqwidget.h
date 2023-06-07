@@ -37,7 +37,7 @@ class ParEqWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ParEqWidget(int num, QList<FuncCalculator*> list, QColor col);
+    explicit ParEqWidget(int num, QList<Function*> list, QColor col);
     ~ParEqWidget();
 
     int getCurrentKPos();
@@ -129,7 +129,7 @@ protected:
     short increment;
     QList< QList<Point> > currentPolygon;
     QList< QList<Point> > pointsList;
-    QList<FuncCalculator*> funcCalcs;
+    QList<Function*> funcCalcs;
     QString xExpr, yExpr;
     Range tRange, kRange;
     FastTree *xTree, *yTree;

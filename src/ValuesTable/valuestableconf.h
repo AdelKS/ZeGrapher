@@ -54,7 +54,7 @@ protected:
      ExprCalculator *exprCalc;
 
      QList<ParEqWidget*> *parEqs;
-     QList<FuncCalculator*> funcs;
+     QList<Function*> funcs;
      QList<SeqCalculator*> seqs;
 
      QList<short> typesNameMap;

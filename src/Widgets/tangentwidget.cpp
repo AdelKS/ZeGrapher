@@ -23,7 +23,7 @@
 #include "Widgets/tangentwidget.h"
 #include "information.h"
 
-TangentWidget::TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list, QColor col)
+TangentWidget::TangentWidget(int id, QList<Function *> calcsList, QList<FuncWidget*> list, QColor col)
 {
    tangentID = id;
    funcNames << "f" << "g" << "h" << "p" << "r" << "m";

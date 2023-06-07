@@ -21,7 +21,7 @@
 
 #include "numberlineedit.h"
 
-NumberLineEdit::NumberLineEdit(bool allowK, QList<FuncCalculator*> otherFuncs) : ExpressionLineEdit(), calculator(allowK, otherFuncs)
+NumberLineEdit::NumberLineEdit(bool allowK, QList<Function*> otherFuncs) : ExpressionLineEdit(), calculator(allowK, otherFuncs)
 {
     valid = false;
     value = nan("");

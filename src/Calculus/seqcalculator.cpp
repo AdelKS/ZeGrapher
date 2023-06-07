@@ -31,12 +31,12 @@ static double tenPower(double x)
 
 SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) :
     treeCreator(ObjectType::SEQUENCE), firstValsTreeCreator(ObjectType::NORMAL_EXPR)
-{   
+{
     seqNum = id;
     isExprValidated = isValid = isKRangeValid = blockCalculatingFromTree = false;
     errorMessageLabel = errorLabel;
 
-    areFirstValsValidated = true;    
+    areFirstValsValidated = true;
     nMin = kPos = 0;
     drawsNum = 1;
     custom_k = 0;
@@ -59,7 +59,7 @@ SeqCalculator::SeqCalculator(int id, QString name, QLabel *errorLabel) :
 }
 
 bool SeqCalculator::validateFirstValsExpr(QString expr)
-{  
+{
     firstValsExpr = expr;
     areFirstValsValidated = validateSeqFirstValsTrees();
     seqValues.clear();
@@ -154,7 +154,7 @@ void SeqCalculator::setInvalid()
     isExprValidated = false;
 }
 
-void SeqCalculator::setFuncsPointers(QList<FuncCalculator*> otherFuncs)
+void SeqCalculator::setFuncsPointers(QList<Function*> otherFuncs)
 {
     funcCalculatorsList = otherFuncs;
 }
@@ -258,7 +258,7 @@ bool SeqCalculator::saveCustomSeqValues(double nMax)
 }
 
 double SeqCalculator::getSeqValue(double n, bool &ok, int index_k)
-{   
+{
     if(n < nMin || seqValues[0].size() > MAX_SAVED_SEQ_VALS)
         return nan("");
 
@@ -434,7 +434,7 @@ bool SeqCalculator::verifyAskedTerm(double n)
     {
         errorMessageLabel->setText(tr("Invalid recursion."));
 
-        return false;       
+        return false;
     }
     else if(n < nMin)
     {

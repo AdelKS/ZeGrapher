@@ -22,8 +22,8 @@
 #include "Calculus/funcvaluessaver.h"
 
 
-FuncValuesSaver::FuncValuesSaver(QList<FuncCalculator*> funcsList, double pxStep)
-{    
+FuncValuesSaver::FuncValuesSaver(QList<Function*> funcsList, double pxStep)
+{
     funcs = funcsList;
     setPixelStep(pxStep);
 
@@ -70,12 +70,12 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
         k = range.start;
 
         for(k_pos = 0 ; k_pos < end && k_pos < PAR_DRAW_LIMIT ; k_pos++)
-        {            
+        {
             funcCurves[i] << QList<QPolygonF>();
             curvePart.clear();
 
             for(x = xStart ; x <= xEnd; x += unitStep)
-            {                
+            {
                 y = evalFunc(i, view.toUnitX(x), k);
 
                 if(std::isnan(y) || std::isinf(y))
@@ -117,7 +117,7 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
                 funcCurves[i][k_pos] << curvePart;
             curvePart.clear();
 
-            k += range.step;           
+            k += range.step;
         }
     }
 }
@@ -208,7 +208,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
                         curvePart = funcCurves[i][k_pos].takeFirst();
                     curvePart.removeFirst();
                     x += unitStep;
-                }                                
+                }
             }
 
             if(!curvePart.isEmpty())

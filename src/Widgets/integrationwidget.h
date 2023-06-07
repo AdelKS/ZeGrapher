@@ -30,7 +30,7 @@ class IntegrationWidget : public QGroupBox
 {
     Q_OBJECT
 public:
-    explicit IntegrationWidget(int funcNum, QList<FuncCalculator*> funcsList);
+    explicit IntegrationWidget(int funcNum, QList<Function*> funcsList);
 
     QList<Point> getIntegrationPoints(bool &ok);
 

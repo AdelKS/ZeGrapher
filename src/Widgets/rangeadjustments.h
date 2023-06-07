@@ -30,7 +30,7 @@ class RangeAdjustments : public QWidget
     Q_OBJECT
 
 public:
-    explicit RangeAdjustments(QList<FuncCalculator *> funcsList, QWidget *parent = nullptr);
+    explicit RangeAdjustments(QList<Function *> funcsList, QWidget *parent = nullptr);
     GraphRange getRange();
     ~RangeAdjustments();
 

@@ -26,15 +26,15 @@
 #include "treecreator.h"
 #include "colorsaver.h"
 
-class FuncCalculator : public QObject
+class Function : public QObject
 {
     Q_OBJECT
 
 public:
-    FuncCalculator(int id, QString funcName);
-    ~FuncCalculator();
+    Function(int id, QString funcName);
+    ~Function();
 
-    void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
+    void setFuncsPointers(QList<Function*> otherFuncs);
     void setIntegrationPointsList(QList<Point> list);
     void setParametric(bool state);
     void setParametricRange(Range range);
@@ -80,7 +80,7 @@ protected:
     TreeCreator treeCreator;
     FastTree *funcTree = nullptr;
     QString expression, func_name;
-    QList<FuncCalculator*> funcCalculatorsList;
+    QList<Function*> funcCalculatorsList;
     Range kRange;
     ColorSaver *colorSaver = nullptr;
 

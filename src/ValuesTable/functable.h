@@ -50,7 +50,7 @@ protected:
     void addXValues();
     void addYValues();
 
-    FuncCalculator *func;
+    Function *func;
     ValuesTableParameters parameters;
     QList<double> xValues, yValues;
     ExprCalculator *exprCalc;

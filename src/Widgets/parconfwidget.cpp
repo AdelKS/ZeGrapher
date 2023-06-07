@@ -74,7 +74,7 @@ ParConfWidget::ParConfWidget(QChar parName,
     else setLayout(widgetsLayout);
 }
 
-void ParConfWidget::setFuncsList(QList<FuncCalculator *> list)
+void ParConfWidget::setFuncsList(QList<Function *> list)
 {
      calculator = new ExprCalculator(keepTracksButtonAvailable, list);
 }

@@ -28,7 +28,7 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-FuncCalculator::FuncCalculator(int id, QString funcName)
+Function::Function(int id, QString funcName)
     : funcNum(id), treeCreator(ObjectType::FUNCTION), func_name(funcName)
 {
     addRefFuncsPointers();
@@ -45,22 +45,22 @@ FuncCalculator::FuncCalculator(int id, QString funcName)
     }
 }
 
-void FuncCalculator::setColorSaver(ColorSaver *colsaver)
+void Function::setColorSaver(ColorSaver *colsaver)
 {
     colorSaver = colsaver;
 }
 
-void FuncCalculator::setIntegrationPointsList(QList<Point> list)
+void Function::setIntegrationPointsList(QList<Point> list)
 {
     integrationPoints = list;
 }
 
-ColorSaver* FuncCalculator::getColorSaver()
+ColorSaver* Function::getColorSaver()
 {
     return colorSaver;
 }
 
-void FuncCalculator::addRefFuncsPointers()
+void Function::addRefFuncsPointers()
 {
     refFuncs << acos << asin << atan << cos << sin << tan << sqrt
              << log10 << log << fabs << exp << floor << ceil << cosh
@@ -69,12 +69,12 @@ void FuncCalculator::addRefFuncsPointers()
              << sinh << tanh << acosh << asinh << atanh; //tenPower must figure two times for e and E
 }
 
-bool FuncCalculator::getDrawState()
+bool Function::getDrawState()
 {
     return drawState && isFuncValid();
 }
 
-bool FuncCalculator::validateExpression(QString expr)
+bool Function::validateExpression(QString expr)
 {
     if(expression != expr)
     {
@@ -90,13 +90,13 @@ bool FuncCalculator::validateExpression(QString expr)
     return isExprValidated;
 }
 
-void FuncCalculator::setFuncsPointers(QList<FuncCalculator*> otherFuncs)
+void Function::setFuncsPointers(QList<Function*> otherFuncs)
 {
     funcCalculatorsList = otherFuncs;
 
 }
 
-double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
+double Function::getAntiderivativeValue(double b, Point A, double k_val)
 {
     double condition = int_pow(10.0, -NUM_PREC);
 
@@ -132,18 +132,18 @@ double FuncCalculator::getAntiderivativeValue(double b, Point A, double k_val)
     return R1[ROMBERG_MAX_STEPS-1]; // return our best guess
 }
 
-double FuncCalculator::getFuncValue(double x, double kValue)
+double Function::getFuncValue(double x, double kValue)
 {
     k = kValue;
     return calculateFromTree(funcTree, x);
 }
 
-void FuncCalculator::setDrawState(bool draw)
+void Function::setDrawState(bool draw)
 {
     drawState = draw;
 }
 
-double FuncCalculator::getDerivativeValue(double x, double k_val)
+double Function::getDerivativeValue(double x, double k_val)
 {
     k = k_val;
     double y1, y2, y3, y4, a;
@@ -157,12 +157,12 @@ double FuncCalculator::getDerivativeValue(double x, double k_val)
     return a;
 }
 
-void FuncCalculator::setIntegrationPointsValidity(bool state)
+void Function::setIntegrationPointsValidity(bool state)
 {
     areIntegrationPointsGood = state;
 }
 
-std::optional<QString> FuncCalculator::checkFuncCallingInclusions()
+std::optional<QString> Function::checkFuncCallingInclusions()
 {
     if (not isExprValidated)
         return tr("In ") + func_name + ": " + tr("Invalid expression") + "\n";
@@ -192,42 +192,42 @@ std::optional<QString> FuncCalculator::checkFuncCallingInclusions()
 
 }
 
-void FuncCalculator::setParametric(bool state)
+void Function::setParametric(bool state)
 {
     isParametric = state;
 }
 
-bool FuncCalculator::isFuncParametric()
+bool Function::isFuncParametric()
 {
     return isParametric;
 }
 
-bool FuncCalculator::isFuncValid()
+bool Function::isFuncValid()
 {
     return isExprValidated && areCalledFuncsGood && areIntegrationPointsGood;
 }
 
-void FuncCalculator::setInvalid()
+void Function::setInvalid()
 {
     isExprValidated = false;
 }
 
-Range FuncCalculator::getParametricRange()
+Range Function::getParametricRange()
 {
     return kRange;
 }
 
-void FuncCalculator::setParametricRange(Range range)
+void Function::setParametricRange(Range range)
 {
     kRange = range;
 }
 
-bool FuncCalculator::canBeCalled()
+bool Function::canBeCalled()
 {
     return isExprValidated && areIntegrationPointsGood && areCalledFuncsGood && !callLock;
 }
 
-double FuncCalculator::calculateFromTree(FastTree *tree, double x)
+double Function::calculateFromTree(FastTree *tree, double x)
 {
     if(tree->type == NUMBER )
     {
@@ -284,7 +284,7 @@ double FuncCalculator::calculateFromTree(FastTree *tree, double x)
     else return nan("");
 }
 
-FuncCalculator::~FuncCalculator()
+Function::~Function()
 {
     if(funcTree != nullptr)
         treeCreator.deleteFastTree(funcTree);

@@ -34,7 +34,7 @@ FuncWidget::FuncWidget(QChar name, int id, QColor color) : AbstractFuncWidget(),
 
     isExprParametric = areCalledFuncsParametric = false;
 
-    calculator = new FuncCalculator(id, QString(name));
+    calculator = new Function(id, QString(name));
     calculator->setColorSaver(&colorSaver);
 
     connect(&colorSaver, SIGNAL(colorsChanged()), this, SIGNAL(drawStateChanged()));
@@ -70,7 +70,7 @@ void FuncWidget::resetToNeutralState()
          updateParametricState();
  }
 
-void FuncWidget::setFuncsCalcsList(QList<FuncCalculator *> list)
+void FuncWidget::setFuncsCalcsList(QList<Function *> list)
 {
     integrationWidget = new IntegrationWidget(funcNum, list);
     connect(expressionLineEdit, SIGNAL(textChanged(QString)), integrationWidget, SLOT(updateWidgetsShownState(QString)));
@@ -117,7 +117,7 @@ bool FuncWidget::isFuncParametric()
     return isParametric;
 }
 
-FuncCalculator* FuncWidget::getCalculator()
+Function* FuncWidget::getCalculator()
 {
     return calculator;
 }

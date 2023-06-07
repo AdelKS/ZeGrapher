@@ -32,7 +32,7 @@
 class FuncValuesSaver
 {
 public:
-    FuncValuesSaver(QList<FuncCalculator *> funcsList, double pxStep);
+    FuncValuesSaver(QList<Function *> funcsList, double pxStep);
 
     void setPixelStep(double pxStep);
     void calculateAll(const Point &pxPerUnit, const ZeViewMapper &view);
@@ -50,7 +50,7 @@ protected:
     void calculateAllFuncColors();
     double evalFunc(int funId, double x, double k);
 
-    QList<FuncCalculator*> funcs;
+    QList<Function*> funcs;
 
     double xUnit, yUnit, pixelStep, unitStep;
 

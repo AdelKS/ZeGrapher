@@ -80,8 +80,8 @@ public:
     void setSequencesList(QList<SeqCalculator*> list);
     QList<SeqCalculator*> getSeqsList();
 
-    void setFunctionsList(QList<FuncCalculator*> list);
-    QList<FuncCalculator*> getFuncsList();
+    void setFunctionsList(QList<Function*> list);
+    QList<Function*> getFuncsList();
 
     void setExportFileName(QString fileName);
     QString getExportFileName();
@@ -128,7 +128,7 @@ protected:
     QList<TangentWidget*> *tangents;
     QList<StraightLineWidget*> *lines;
 
-    QList<FuncCalculator*> functions;
+    QList<Function*> functions;
     QList<SeqCalculator*> sequences;
 
     GraphRange range;

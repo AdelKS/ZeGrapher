@@ -25,7 +25,7 @@ static double tenPower(double x)
      return pow(10, x);
 }
 
-ExprCalculator::ExprCalculator(bool allowK, QList<FuncCalculator *> otherFuncs) : treeCreator(ObjectType::NORMAL_EXPR)
+ExprCalculator::ExprCalculator(bool allowK, QList<Function *> otherFuncs) : treeCreator(ObjectType::NORMAL_EXPR)
 {
     treeCreator.allow_k(allowK);
     k = 0;

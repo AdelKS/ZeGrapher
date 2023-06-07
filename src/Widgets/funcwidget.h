@@ -38,13 +38,13 @@ public:
 
     void firstValidation();
     void secondValidation();
-    void setFuncsCalcsList(QList<FuncCalculator*> list);
+    void setFuncsCalcsList(QList<Function*> list);
     void setFuncWidgets(QList<FuncWidget*> widgets);
 
     bool isFuncParametric();
     bool validateIntegrationPoints();
 
-    FuncCalculator* getCalculator();
+    Function* getCalculator();
 
 public slots:
     void checkCalledFuncsParametric();
@@ -61,7 +61,7 @@ protected:
     void updateParametricState();
 
     QList<FuncWidget*> funcWidgets;
-    FuncCalculator *calculator;
+    Function *calculator;
     IntegrationWidget *integrationWidget;
     ColorSaver colorSaver;
     QChar funcName;

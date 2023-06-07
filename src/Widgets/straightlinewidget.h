@@ -32,7 +32,7 @@ class StraightLineWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit StraightLineWidget(int id, QList<FuncCalculator *> calcsList, QColor col);
+    explicit StraightLineWidget(int id, QList<Function *> calcsList, QColor col);
     void validate();
     void changeID(int id);
 
@@ -59,7 +59,7 @@ protected slots:
 protected:
     void addWidgets(QColor col);
 
-    QList<FuncCalculator*> funcCalculators;
+    QList<Function*> funcCalculators;
     ExprCalculator *exprCalculator;
 
     QCheckBox *drawCheckBox;

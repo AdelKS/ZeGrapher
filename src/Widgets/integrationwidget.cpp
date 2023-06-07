@@ -24,7 +24,7 @@
 #include "Widgets/integrationwidget.h"
 #include "information.h"
 
-IntegrationWidget::IntegrationWidget(int funcNum, QList<FuncCalculator *> funcsList) : exprCalc(true, funcsList)
+IntegrationWidget::IntegrationWidget(int funcNum, QList<Function *> funcsList) : exprCalc(true, funcsList)
 {
     setTitle(tr("Initial conditions:"));
 

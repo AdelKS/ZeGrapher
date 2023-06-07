@@ -28,7 +28,7 @@ class ExprCalculator
 {
 public:
 
-    explicit ExprCalculator(bool allowK = false, QList<FuncCalculator*> otherFuncs = QList<FuncCalculator*>());
+    explicit ExprCalculator(bool allowK = false, QList<Function*> otherFuncs = QList<Function*>());
 
     double calculateExpression(QString expr, bool &ok, double k_val = 0);
     void setAdditionnalVarsValues(const std::vector<double> &values);
@@ -42,7 +42,7 @@ protected:
 
     double k;
     TreeCreator treeCreator;
-    QList<FuncCalculator*> funcCalculatorsList;
+    QList<Function*> funcCalculatorsList;
     QList<double (*)(double)> refFuncs;
     std::vector<double> additionnalVarsValues;
 };

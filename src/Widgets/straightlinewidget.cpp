@@ -24,7 +24,7 @@
 #include "Widgets/straightlinewidget.h"
 #include "information.h"
 
-StraightLineWidget::StraightLineWidget(int id, QList<FuncCalculator *> calcsList, QColor col)
+StraightLineWidget::StraightLineWidget(int id, QList<Function *> calcsList, QColor col)
 {
     lineID = id;
     funcCalculators = calcsList;

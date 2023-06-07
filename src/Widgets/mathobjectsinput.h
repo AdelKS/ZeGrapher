@@ -84,7 +84,7 @@ private:
     QList <QChar> seqNames;
     QTextBrowser helpWindow;
 
-    QList<FuncCalculator*> funcCalcs;
+    QList<Function*> funcCalcs;
     QList<SeqCalculator*> seqCalcs;
 
     QList<FuncWidget*> funcWidgets;

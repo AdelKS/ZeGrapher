@@ -59,7 +59,7 @@ class TangentWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TangentWidget(int id, QList<FuncCalculator *> calcsList, QList<FuncWidget*> list, QColor col);
+    explicit TangentWidget(int id, QList<Function *> calcsList, QList<FuncWidget*> list, QColor col);
     void calculateTangentPoints();
     void resizeTangent(double dx, double side);
     void changeID(int id);
@@ -85,7 +85,7 @@ protected slots:
 protected:
     void addWidgets();
 
-    QList<FuncCalculator*> funcCalculators;
+    QList<Function*> funcCalculators;
     QList<FuncWidget*> funcWidgets;
     ExprCalculator *exprCalculator;
 

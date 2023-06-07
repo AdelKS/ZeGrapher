@@ -33,7 +33,7 @@ class NumberLineEdit : public ExpressionLineEdit
     Q_OBJECT
 
 public:
-    NumberLineEdit(bool allowK = false, QList<FuncCalculator*> otherFuncs = QList<FuncCalculator*>());
+    NumberLineEdit(bool allowK = false, QList<Function*> otherFuncs = QList<Function*>());
 
     void setValue(double value);
     bool isValid();

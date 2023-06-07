@@ -39,7 +39,7 @@ public:
     void firstValidation();
     void secondValidation();
     void thirdValidation();
-    void setFuncsList(QList<FuncCalculator*> list);
+    void setFuncsList(QList<Function*> list);
     void setFuncWidgets(QList<FuncWidget*> widgets);
     void setSeqWidgets(QList<SeqWidget*> widgets);
 
@@ -57,7 +57,7 @@ protected slots:
 signals:
     void drawStateChanged();
     void newParametricState();
-    
+
 protected:
     void addSeqWidgets();
     void updateParametricState();
@@ -72,7 +72,7 @@ protected:
     bool areFirstValsParametric, isExprParametric, areCalledFuncsSeqsParametric;
     int seqNum;
 
-    
+
 };
 
 #endif // SEQWIDGET_H

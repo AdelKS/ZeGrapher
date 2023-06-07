@@ -28,7 +28,7 @@ SeqWidget::SeqWidget(QChar name, int id, QColor color) :
     calculator(id,  "(" + QString(name) + "<sub>n</sub>)", errorMessageLabel),
     firstValsLine(new ExpressionLineEdit(this)),
     colorSaver(color)
-{    
+{
     seqName = name;
     seqNum = id;
     colorButton->setColor(color);
@@ -157,7 +157,7 @@ void SeqWidget::firstValidation()
         errorMessageWidget->hide();
         calculator.setInvalid();
         return;
-    }   
+    }
 
     kConfWidget->validate();
 
@@ -167,7 +167,7 @@ void SeqWidget::firstValidation()
     colorSaver.setCurvesNum(trunc((range.end - range.start)/range.step) + 1);
 
     bool firstValsValidated = calculator.validateFirstValsExpr(firstValsLine->text());
-    if(firstValsValidated)    
+    if(firstValsValidated)
         firstValsLine->setValid();
     else firstValsLine->setInvalid();
 
@@ -184,7 +184,7 @@ void SeqWidget::firstValidation()
     isValid = firstValsValidated && seqExprValidated && (!isParametric || kConfWidget->isValid());
 }
 
-void SeqWidget::setFuncsList(QList<FuncCalculator*> list)
+void SeqWidget::setFuncsList(QList<Function*> list)
 {
     kConfWidget->setFuncsList(list);
 }

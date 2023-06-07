@@ -23,7 +23,7 @@
 
 /* TODO: Take care of the orthonormal setting */
 
-RangeAdjustments::RangeAdjustments(QList<FuncCalculator*> funcsList, QWidget *parent): QWidget(parent)
+RangeAdjustments::RangeAdjustments(QList<Function*> funcsList, QWidget *parent): QWidget(parent)
 {
 
 

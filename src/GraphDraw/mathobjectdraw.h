@@ -85,7 +85,7 @@ protected:
     bool moving, recalculate, recalculateRegs;
     int tangentDrawException;
 
-    QList<FuncCalculator*> funcs;
+    QList<Function*> funcs;
     QList<SeqCalculator*> seqs;
     QList<StraightLineWidget*> *straightLines;
     QList<TangentWidget*> *tangents;

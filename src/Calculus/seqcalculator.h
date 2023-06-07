@@ -42,13 +42,13 @@ public:
     bool check_called_funcs_and_seqs_validity();
     bool checkByCalculatingFirstValuesTrees();
     bool checkByCalculatingValues();
-    bool canBeCalled();  
+    bool canBeCalled();
     bool isSeqValid();
     bool isSeqParametric();
     bool getDrawState();
 
-    void setFuncsPointers(QList<FuncCalculator*> otherFuncs);
-    void setSeqsPointers(QList<SeqCalculator*> otherSeqs);   
+    void setFuncsPointers(QList<Function*> otherFuncs);
+    void setSeqsPointers(QList<SeqCalculator*> otherSeqs);
     void setParametricInfo(bool parametric, Range parRange);
     void setInvalid();
 
@@ -56,7 +56,7 @@ public:
     ColorSaver* getColorSaver();
 
     int getDrawsNum();
-    int get_nMin();    
+    int get_nMin();
 
     Range getKRange();
     double getSeqValue(double n, bool &ok, int index_k = 0);
@@ -71,7 +71,7 @@ signals:
 
 protected:
 
-    void addRefFuncsPointers(); 
+    void addRefFuncsPointers();
     void deleteFirstValsTrees();
     bool checkCalledFuncsValidity(QString str);
     bool checkCalledSeqsValidity(QString str);
@@ -97,12 +97,12 @@ protected:
     FastTree *seqTree;
     QString expression, firstValsExpr, seqName;
     QStringList seqsNames;
-    QList<FuncCalculator*> funcCalculatorsList;
+    QList<Function*> funcCalculatorsList;
     QList<SeqCalculator*> seqCalculatorsList;
     QList<double (*)(double)> refFuncs;
 
     QList<FastTree*> firstValsTrees;
-    QList< QList<double> > seqValues;    
+    QList< QList<double> > seqValues;
 };
 
 #endif // SEQCALCULATOR_H

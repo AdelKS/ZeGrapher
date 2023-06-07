@@ -41,7 +41,7 @@ public:
     void validate();
     void setAnimationEnabled(bool enabled);
     void setAnimationChecked(bool checked);
-    void setFuncsList(QList<FuncCalculator *> list);
+    void setFuncsList(QList<Function *> list);
 
     bool isValid();
     bool doesKeepTracks();

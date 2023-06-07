@@ -134,12 +134,12 @@ QList<SeqCalculator*> Information::getSeqsList()
     return sequences;
 }
 
-void Information::setFunctionsList(QList<FuncCalculator*> list)
+void Information::setFunctionsList(QList<Function*> list)
 {
     functions = list;
 }
 
-QList<FuncCalculator*> Information::getFuncsList()
+QList<Function*> Information::getFuncsList()
 {
     return functions;
 }
