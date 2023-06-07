@@ -37,8 +37,7 @@
             "dependsOn": "resetup",
             "problemMatcher": ["$meson-gcc"],
             "group": {
-                "kind": "build",
-                "isDefault": true
+                "kind": "build"
             }
         },
         {
