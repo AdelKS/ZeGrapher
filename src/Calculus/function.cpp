@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2023, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -45,19 +45,9 @@ Function::Function(int id, QString funcName)
     }
 }
 
-void Function::setColorSaver(ColorSaver *colsaver)
-{
-    colorSaver = colsaver;
-}
-
 void Function::setIntegrationPointsList(QList<Point> list)
 {
     integrationPoints = list;
-}
-
-ColorSaver* Function::getColorSaver()
-{
-    return colorSaver;
 }
 
 void Function::addRefFuncsPointers()

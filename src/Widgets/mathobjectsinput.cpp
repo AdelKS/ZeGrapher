@@ -372,7 +372,7 @@ void MathObjectsInput::saveColors()
     for(int i = 0 ; i < seqWidgets.size() ; i++)
         seqColors << seqWidgets.at(i)->getCalculator()->getColorSaver()->getColor(0);
     for(int i = 0 ; i < funcWidgets.size() ; i++)
-        funcColors << funcWidgets.at(i)->getCalculator()->getColorSaver()->getColor(0);
+        funcColors << funcWidgets.at(i)->getCalculator()->colorSaver.getColor(0);
 
     settings.setValue("functions/colors", toVariantList(funcColors));
     settings.setValue("sequences/colors", toVariantList(seqColors));

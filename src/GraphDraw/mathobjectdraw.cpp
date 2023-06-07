@@ -230,7 +230,7 @@ void MathObjectDraw::drawFunctions()
             continue;
 
         for(int curve = 0 ; curve < funcValuesSaver->getFuncDrawsNum(func) ;  curve++)
-            drawCurve(information.getGraphSettings().curvesThickness, funcs[func]->getColorSaver()->getColor(curve), funcValuesSaver->getCurve(func, curve));
+            drawCurve(information.getGraphSettings().curvesThickness, funcs[func]->colorSaver.getColor(curve), funcValuesSaver->getCurve(func, curve));
     }
 }
 

@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2023, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -31,6 +31,8 @@ class Function : public QObject
     Q_OBJECT
 
 public:
+    ColorSaver colorSaver;
+
     Function(int id, QString funcName);
     ~Function();
 
@@ -41,10 +43,6 @@ public:
     void setIntegrationPointsValidity(bool state);
     void setInvalid();
 
-    void setColorSaver(ColorSaver *colsaver);
-
-    ColorSaver* getColorSaver();
-
     /// \brief checks for errors in other function calls
     /// \returns an error message if ever there's one
     std::optional<QString> checkFuncCallingInclusions();
@@ -52,7 +50,6 @@ public:
     double getAntiderivativeValue(double b, Point A, double k_val = 0);
     double getFuncValue(double x, double kValue = 0);
     double getDerivativeValue(double x, double k_val = 0);
-
 
     bool canBeCalled();
     bool validateExpression(QString expr);
@@ -82,7 +79,6 @@ protected:
     QString expression, func_name;
     QList<Function*> funcCalculatorsList;
     Range kRange;
-    ColorSaver *colorSaver = nullptr;
 
     QList<Point> integrationPoints;
     QList<double (*)(double)> refFuncs;

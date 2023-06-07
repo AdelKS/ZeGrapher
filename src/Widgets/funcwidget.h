@@ -63,7 +63,6 @@ protected:
     QList<FuncWidget*> funcWidgets;
     Function *calculator;
     IntegrationWidget *integrationWidget;
-    ColorSaver colorSaver;
     QChar funcName;
     int funcNum;
     bool areCalledFuncsParametric, isExprParametric;
