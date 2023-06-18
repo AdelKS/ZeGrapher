@@ -185,14 +185,20 @@ void ColumnActionsWidget::applyFill()
         Range range;
         bool goodEntry = true;
 
-        auto compute_check = [this](auto &val, auto* widget)
+        auto compute_check = [](double &val, QLineEdit* widget)
         {
-            bool ok = false;
-            val = calculator.calculateExpression(widget->text(), ok);
-            if(ok)
+            auto res = zc::Expression(widget->text().toStdString()).evaluate(mathWorld);
+            if(res)
+            {
+                val = *res;
                 widget->setPalette(information.getValidSyntaxPalette());
-            else widget->setPalette(information.getInvalidSyntaxPalette());
-            return ok;
+                return true;
+            }
+            else
+            {
+                widget->setPalette(information.getInvalidSyntaxPalette());
+                return false;
+            }
         };
 
         goodEntry &= compute_check(range.start, fillOptionsUi->start);
