@@ -14,7 +14,7 @@
    <string>Data fill window</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../ressources.qrc">
+   <iconset resource="../../ressources.qrc">
     <normaloff>:/icons/data.png</normaloff>:/icons/data.png</iconset>
   </property>
   <widget class="QPushButton" name="retractionButton">
@@ -45,7 +45,7 @@
     <string/>
    </property>
    <property name="icon">
-    <iconset resource="../ressources.qrc">
+    <iconset resource="../../ressources.qrc">
      <normaloff>:/icons/arrow_right.png</normaloff>:/icons/arrow_right.png</iconset>
    </property>
    <property name="iconSize">
@@ -272,8 +272,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>403</width>
-            <height>367</height>
+            <width>401</width>
+            <height>337</height>
            </rect>
           </property>
          </widget>
@@ -415,7 +415,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../ressources.qrc">
+         <iconset resource="../../ressources.qrc">
           <normaloff>:/icons/help.png</normaloff>:/icons/help.png</iconset>
         </property>
         <property name="iconSize">
@@ -453,8 +453,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>459</width>
-         <height>251</height>
+         <width>457</width>
+         <height>249</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -636,7 +636,7 @@
   </widget>
  </widget>
  <resources>
-  <include location="../ressources.qrc"/>
+  <include location="../../ressources.qrc"/>
  </resources>
  <connections/>
 </ui>
