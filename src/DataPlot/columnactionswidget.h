@@ -56,9 +56,9 @@ protected slots:
     void applySort();
     void emitRemoveColumnSignal();
     void emitInsertColumnSignal();
-    void showNextWidget(QWidget*);
+    void showNextWidget(QObject*);
     void showPreviousWidget();
-    void resetPalette(QWidget *widget);
+    void resetPalette(QObject*);
     void resetFillForms();
 
 protected:

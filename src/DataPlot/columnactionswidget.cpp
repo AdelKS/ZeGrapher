@@ -42,7 +42,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum):
     sortOptionsUi(new Ui::SortOptions),
     startingActionsUi(new Ui::StartingActions)
 {
-    connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(showNextWidget(QWidget*)));
+    connect(signalMapper, SIGNAL(mappedObject(QObject*)), this, SLOT(showNextWidget(QObject*)));
 
     startingActionsUi->setupUi(startingActions);
     startingActionsUi->remove->hide();
@@ -60,7 +60,7 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum):
     connect(fillOptionsUi->expression, SIGNAL(returnPressed()), this, SLOT(applyFill()));
     connect(fillOptionsUi->apply, SIGNAL(released()), this, SLOT(applyFill()));
 
-    connect(lineEditsMapper, SIGNAL(mapped(QWidget*)), this, SLOT(resetPalette(QWidget*)));
+    connect(lineEditsMapper, SIGNAL(mappedObject(QObject*)), this, SLOT(resetPalette(QObject*)));
 
     connect(fillOptionsUi->start, SIGNAL(textChanged(QString)), lineEditsMapper, SLOT(map()));
     lineEditsMapper->setMapping(fillOptionsUi->start, fillOptionsUi->start);
@@ -121,10 +121,12 @@ ColumnActionsWidget::ColumnActionsWidget(DataTable *table, int columnnum):
     setColumnCount(columnnum);
 }
 
-void ColumnActionsWidget::resetPalette(QWidget *widget)
+void ColumnActionsWidget::resetPalette(QObject *obj)
 {
-    QLineEdit *lineEdit = (QLineEdit*)widget;
-    lineEdit->setPalette(QPalette());
+    QWidget* lineEdit = qobject_cast<QLineEdit*>(obj);
+    if (lineEdit)
+        lineEdit->setPalette(QPalette());
+    else qWarning() << "problem in ColumnActionsWidget::resetPalette(QObject *obj) \n";
 }
 
 void ColumnActionsWidget::setSelectorPos(bool betweenColumns, int index)
@@ -164,11 +166,17 @@ void ColumnActionsWidget::setColumnCount(int count)
     setSelectorPos(selectorPos.inbetween, selectorPos.index);
 }
 
-void ColumnActionsWidget::showNextWidget(QWidget *widget)
+void ColumnActionsWidget::showNextWidget(QObject *obj)
 {
     shownWidgets.last()->hide();
-    widget->show();
-    shownWidgets << widget;
+    QWidget* widget = qobject_cast<QWidget*>(obj);
+    if (widget)
+    {
+        widget->show();
+        shownWidgets << widget;
+    }
+    else qWarning() << "problem in ColumnActionsWidget::showNextWidget(QObject *obj) \n";
+
 }
 
 void ColumnActionsWidget::showPreviousWidget()
