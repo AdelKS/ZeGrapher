@@ -30,9 +30,6 @@
 
 #include <zecalculator/zecalculator.h>
 
-class Information;
-
-extern Information information;
 extern zc::MathWorld mathWorld;
 
 class Information: public QObject
@@ -142,5 +139,7 @@ protected:
 
     QList<ParEqWidget*> *parEqWidgets;
 };
+
+inline Information information;
 
 #endif // INFORMATION_H
