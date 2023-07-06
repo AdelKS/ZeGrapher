@@ -162,10 +162,10 @@ QPalette Information::getValidSyntaxPalette() const
 
 QPalette Information::getInvalidSyntaxPalette() const
 {
-    QPalette validPalette;
-    validPalette.setColor(QPalette::Base, appSettings.validSyntax);
-    validPalette.setColor(QPalette::Text, Qt::black);
-    return validPalette;
+    QPalette invalidPalette;
+    invalidPalette.setColor(QPalette::Base, appSettings.invalidSyntax);
+    invalidPalette.setColor(QPalette::Text, Qt::black);
+    return invalidPalette;
 }
 
 const ZeSizeSettings& Information::getGraphSizeSettings() const
