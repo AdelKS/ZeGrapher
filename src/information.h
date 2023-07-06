@@ -30,8 +30,6 @@
 
 #include <zecalculator/zecalculator.h>
 
-extern zc::MathWorld mathWorld;
-
 class Information: public QObject
 {
     Q_OBJECT
@@ -82,6 +80,8 @@ public:
 
     void setExportFileName(QString fileName);
     QString getExportFileName();
+
+    const zc::MathWorld& getMathWorld() const { return mathWorld; }
 
 signals:
     void newOrthonormalityState(bool orth);
@@ -136,6 +136,7 @@ protected:
     ZeGraphSettings graphSettings;
     ZeAppSettings appSettings;
     QString exportFileName;
+    zc::MathWorld mathWorld;
 
     QList<ParEqWidget*> *parEqWidgets;
 };

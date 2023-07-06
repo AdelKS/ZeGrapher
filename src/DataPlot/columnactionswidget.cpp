@@ -195,7 +195,7 @@ void ColumnActionsWidget::applyFill()
 
         auto compute_check = [](double &val, QLineEdit* widget)
         {
-            auto res = zc::Expression(widget->text().toStdString()).evaluate(mathWorld);
+            auto res = zc::Expression(widget->text().toStdString()).evaluate(information.getMathWorld());
             if(res)
             {
                 val = *res;
