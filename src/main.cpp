@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     QString langString = langToShortString(language);
     if(supportedLangs.contains(language))
-        translator.load(":/Translations/ZeGrapher_" + langToShortString(language) + ".qm");
+        [[maybe_unused]] bool loaded = translator.load(":/Translations/ZeGrapher_" + langToShortString(language) + ".qm");
 
     settings.beginGroup("font");
 
