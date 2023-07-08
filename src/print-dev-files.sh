@@ -1,21 +1,21 @@
 #!/bin/bash
 
-echo "ui_files = ["
+echo "ui_files = files("
 for f in $(find . -type f -name "*.ui"); do
-    echo "    '$f',"
+    echo "  '$f',"
 done
-echo "]"
+echo ")"
 echo
 
-echo "source_files = ["
+echo "source_files = files("
 for f in $(find . -type f -name "*.cpp"); do
-    echo "    '$f',"
+    echo "  '$f',"
 done
-echo "]"
+echo ")"
 echo
 
-echo "moc_header_files = ["
+echo "moc_header_files = files("
 for f in $(grep -E -lir --include=*.h "Q_OBJECT" .); do
-    echo "    '$f',"
+    echo "  '$f',"
 done
-echo "]"
+echo ")"

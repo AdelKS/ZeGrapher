@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "Windows/mainwindow.h"
+#include "Calculus/expreditbackend.h"
 
 const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
 
@@ -36,6 +37,8 @@ QString langToShortString(QLocale::Language lang)
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    qmlRegisterType<ExprEditBackend>("zegrapher.expreditbackend", 1,0, "ExprEditBackend");
 
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
