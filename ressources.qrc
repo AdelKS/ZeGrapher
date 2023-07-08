@@ -89,5 +89,6 @@
         <file>icons/basePin.png</file>
         <file>icons/add.png</file>
         <file>icons/axes.svg</file>
+        <file>src/Widgets/LineEdit.qml</file>
     </qresource>
 </RCC>
