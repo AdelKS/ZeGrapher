@@ -38,7 +38,7 @@ public slots:
     void updateWidgetsShownState(QString expr);
 
 protected slots:
-    void assignNeutralPalette(QWidget *lineEdit);
+    void assignNeutralPalette(QObject *lineEdit);
 
 signals:
     void returnPressed();

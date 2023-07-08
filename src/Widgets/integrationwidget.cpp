@@ -39,7 +39,7 @@ IntegrationWidget::IntegrationWidget(int funcNum, QList<Function *> funcsList) :
     centralLayout->addSpacing(5);
 
     signalMapper = new QSignalMapper(this);
-    connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(assignNeutralPalette(QWidget*)));
+    connect(signalMapper, &QSignalMapper::mappedObject, this, &IntegrationWidget::assignNeutralPalette);
 
     for(short i = 0; i < 6 ; i++)
         addWidgetToList(antiderivatives[i], i);
@@ -91,9 +91,9 @@ void IntegrationWidget::addWidgetToList(QString name, int funcId)
 
 }
 
-void IntegrationWidget::assignNeutralPalette(QWidget *lineEdit)
+void IntegrationWidget::assignNeutralPalette(QObject *lineEdit)
 {
-    lineEdit->setPalette(QPalette());
+    qobject_cast<QLineEdit*>(lineEdit)->setPalette(QPalette());
 }
 
 void IntegrationWidget::updateWidgetsShownState(QString expr)
