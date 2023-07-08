@@ -6,12 +6,12 @@
         {
             "label": "setup",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true",
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true"
         },
         {
             "label": "resetup",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true",
+            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true"
         },
         {
             "label": "build",
@@ -21,7 +21,9 @@
                 "cwd": "${cwd}/build-zg-debug"
             },
             "dependsOn": "setup",
-            "problemMatcher": ["$meson-gcc"],
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -35,23 +37,22 @@
                 "cwd": "${cwd}/build-zg-debug"
             },
             "dependsOn": "resetup",
-            "problemMatcher": ["$meson-gcc"],
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
             "group": {
                 "kind": "build"
             }
         },
         {
-            "label": "test",
+            "label": "run",
             "type": "shell",
-            "command": "meson test --verbose",
+            "command": "./src/ZeGrapher",
             "options": {
                 "cwd": "${cwd}/build-zg-debug"
             },
             "dependsOn": "build",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
+            "problemMatcher": []
         }
     ]
 }
