@@ -268,10 +268,10 @@ QRect MainView::getFigureRect(const QRect &refSupportRect)
 
     figRect.moveTopLeft(topLeft);
 
-    qDebug() << "Figure reconstruction call";
-    qDebug() << "Figure is " << figRect;
-    qDebug() << "marginless support is " << refSupportRectMarginless;
-    qDebug() << "relative figure rect is " << relFigRect;
+    // qDebug() << "Figure reconstruction call";
+    // qDebug() << "Figure is " << figRect;
+    // qDebug() << "marginless support is " << refSupportRectMarginless;
+    // qDebug() << "relative figure rect is " << relFigRect;
 
     return figRect;
 }
@@ -496,7 +496,7 @@ void MainView::onSizeSettingsChange()
 {
     // Add function here that calcualtes the needed widget size
 
-    qDebug() << "OnSizeSettingsChange";
+    // qDebug() << "OnSizeSettingsChange";
 
     sizeSettings = information.getGraphSizeSettings();
 

@@ -105,7 +105,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
                                             const QFontMetrics &metrics)
 {
 
-    qDebug() << "New tick spacing calculation";
+    // qDebug() << "New tick spacing calculation";
 
     const ZeLinAxisSettings &axisSettings = axisName == ZeAxisName::X ? information.getAxesSettings().x.linSettings : information.getAxesSettings().y.linSettings;
 
@@ -199,8 +199,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     int maxRangePower = max(lrint(log10(fabs(scaledOffsetRange.max))), lrint(log10(fabs(scaledOffsetRange.min))));
 
     QString axisNameStr = axisName == ZeAxisName::X ? "x axis" : "y axis";
-    qDebug() << axisNameStr << " Max range power " << maxRangePower;
-    qDebug() << axisNameStr << " step power " << targetPower;
+    // qDebug() << axisNameStr << " Max range power " << maxRangePower;
+    // qDebug() << axisNameStr << " step power " << targetPower;
 
 
     double multiplier = (floor(scaledOffsetRange.min / realStep) - 1) * realStep ;
