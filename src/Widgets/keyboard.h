@@ -40,8 +40,8 @@ public:
      void makeKeyboardConnects();
 
 public slots:
-     void keyboardPressed(QWidget *widget);
-     void funcButtonPressed(QWidget *widget);
+     void keyboardPressed(QObject *widget);
+     void funcButtonPressed(QObject *widget);
      void changeFuncButtonsText();
      void removeChar();
      void clearLine();

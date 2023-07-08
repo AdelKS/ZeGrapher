@@ -60,8 +60,8 @@ void Keyboard::makeKeyboardConnects()
         funcsMapper->setMapping(funcButtons[i], funcButtons[i]);
     }
 
-    connect(keyboardButtons, SIGNAL(mapped(QWidget*)), this, SLOT(keyboardPressed(QWidget*)));
-    connect(funcsMapper, SIGNAL(mapped(QWidget*)), this, SLOT(funcButtonPressed(QWidget*)));
+    connect(keyboardButtons, &QSignalMapper::mappedObject, this, &Keyboard::keyboardPressed);
+    connect(funcsMapper, &QSignalMapper::mappedObject, this, &Keyboard::funcButtonPressed);
 
     connect(ui->derivative, SIGNAL(toggled(bool)), this, SLOT(changeFuncButtonsText()));
     connect(ui->function, SIGNAL(toggled(bool)), this, SLOT(changeFuncButtonsText()));
@@ -123,7 +123,7 @@ void Keyboard::clearLine()
     }
 }
 
-void Keyboard::keyboardPressed(QWidget *widget)
+void Keyboard::keyboardPressed(QObject *widget)
 {
     QPushButton *button = qobject_cast<QPushButton*>(widget);
     QWidget *w = qApp->focusWidget();
@@ -131,7 +131,7 @@ void Keyboard::keyboardPressed(QWidget *widget)
         qobject_cast<QLineEdit*>(w)->insert(button->text());
 }
 
-void Keyboard::funcButtonPressed(QWidget *widget)
+void Keyboard::funcButtonPressed(QObject *widget)
 {
     QPushButton *button = qobject_cast<QPushButton*>(widget);
     QWidget *w = qApp->focusWidget();
