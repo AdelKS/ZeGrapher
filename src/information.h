@@ -28,11 +28,17 @@
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/tangentwidget.h"
 
+#include <QtQml/qqmlregistration.h>
+
 #include <zecalculator/zecalculator.h>
 
 class Information: public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+    Q_PROPERTY(ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
 
 public:
     Information();

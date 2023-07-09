@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     qmlRegisterType<ExprEditBackend>("zegrapher.expreditbackend", 1,0, "ExprEditBackend");
+    qmlRegisterSingletonInstance("zegrapher.information", 1,0, "Information", &information);
 
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
