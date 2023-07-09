@@ -150,6 +150,7 @@ moc_header_files = files(
   './Windows/updatecheck.h',
   './Windows/values.h',
   './information.h',
+  './structures.h',
 )
 
 qt6 = import('qt6')

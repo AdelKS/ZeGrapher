@@ -15,7 +15,7 @@ echo ")"
 echo
 
 echo "moc_header_files = files("
-for f in $(grep -E -lir --include=*.h "Q_OBJECT" .); do
+for f in $(grep -E -lir --include=*.h "(Q_OBJECT|Q_GADGET)" .); do
     echo "  '$f',"
 done
 echo ")"

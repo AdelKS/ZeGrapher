@@ -26,6 +26,7 @@
 #include <QtWidgets>
 
 #include <QMetaType>
+#include <QtQml/qqmlregistration.h>
 
 #define SOFTWARE_VERSION 3.5
 #define SOFTWARE_VERSION_STR "v3.5"
@@ -265,10 +266,20 @@ struct ZeGraphSettings
 
 struct ZeAppSettings
 {
-    bool startupUpdateCheck;
-    QLocale::Language language;
-    QFont font;
-    QColor validSyntax, invalidSyntax;
+  Q_GADGET
+  Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
+  Q_PROPERTY(QLocale::Language language MEMBER language)
+  Q_PROPERTY(QFont font MEMBER font)
+  Q_PROPERTY(QColor validSyntax MEMBER validSyntax)
+  Q_PROPERTY(QColor invalidSyntax MEMBER invalidSyntax)
+  QML_VALUE_TYPE(zeappsettings)
+
+public:
+
+  bool startupUpdateCheck;
+  QLocale::Language language;
+  QFont font;
+  QColor validSyntax, invalidSyntax;
 };
 
 struct FuncMap
