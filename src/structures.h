@@ -80,36 +80,45 @@ extern QString langToShortString(QLocale::Language lang);
 
 struct ZeAxisRange
 {
-    double min, max;
+  Q_GADGET
+  Q_PROPERTY(double min MEMBER min)
+  Q_PROPERTY(double max MEMBER max)
+  QML_VALUE_TYPE(zeaxisrange)
 
-    double amplitude() const
-    {
-        return fabs(max - min);
-    }
+public:
 
-    void operator *=(double scale)
-    {
-        max *= scale;
-        min *= scale;
-    }
+  double min, max;
 
-    void operator /=(double scale)
-    {
-        max /= scale;
-        min /= scale;
-    }
+  bool operator == (const ZeAxisRange&) const = default;
 
-    void operator -=(double offset)
-    {
-        max -= offset;
-        min -= offset;
-    }
+  double amplitude() const
+  {
+    return fabs(max - min);
+  }
 
-    void operator +=(double offset)
-    {
-        max += offset;
-        min += offset;
-    }
+  void operator *=(double scale)
+  {
+    max *= scale;
+    min *= scale;
+  }
+
+  void operator /=(double scale)
+  {
+    max /= scale;
+    min /= scale;
+  }
+
+  void operator -=(double offset)
+  {
+    max -= offset;
+    min -= offset;
+  }
+
+  void operator +=(double offset)
+  {
+    max += offset;
+    min += offset;
+  }
 };
 
 struct GraphRange
