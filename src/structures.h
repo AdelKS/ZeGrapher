@@ -123,24 +123,26 @@ public:
 
 struct GraphRange
 {
-    ZeAxisRange x, y;
+  Q_GADGET
+  Q_PROPERTY(ZeAxisRange x MEMBER x)
+  Q_PROPERTY(ZeAxisRange y MEMBER y)
+  QML_VALUE_TYPE(graphrange)
 
-    QRectF getRect() const
-    {
-        QRectF graphWin;
-        graphWin.setBottom(y.min);
-        graphWin.setTop(y.max);
-        graphWin.setLeft(x.min);
-        graphWin.setRight(x.max);
-        return graphWin;
-    }
+public:
 
-    bool operator == (const GraphRange &other) const
-    {
-        return fabs(x.min - other.x.min) < MIN_AMPLITUDE && fabs(x.max - other.x.max) < MIN_AMPLITUDE &&
-                fabs(y.min - other.y.min) < MIN_AMPLITUDE && fabs(y.max - other.y.max) < MIN_AMPLITUDE;
-    }
+  ZeAxisRange x, y;
 
+  QRectF getRect() const
+  {
+    QRectF graphWin;
+    graphWin.setBottom(y.min);
+    graphWin.setTop(y.max);
+    graphWin.setLeft(x.min);
+    graphWin.setRight(x.max);
+    return graphWin;
+  }
+
+  bool operator == (const GraphRange &other) const = default;
 };
 
 enum struct ZeAxisName {X, Y};
