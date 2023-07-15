@@ -39,6 +39,7 @@ class Information: public QObject
     QML_SINGLETON
 
     Q_PROPERTY(ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
+    Q_PROPERTY(GraphRange range READ getGraphRange WRITE setGraphRange NOTIFY graphRangeChanged)
 
 public:
     Information();
