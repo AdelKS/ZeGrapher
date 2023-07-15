@@ -25,7 +25,6 @@
 #include <QtQuickWidgets/QQuickWidget>
 
 #include "Widgets/axissettingswidget.h"
-#include "Widgets/rangeadjustments.h"
 #include "Widgets/graphsizesettings.h"
 #include "Widgets/export.h"
 #include "Widgets/mathobjectsinput.h"

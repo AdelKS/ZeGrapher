@@ -88,8 +88,6 @@ SOURCES += \
     src/DataPlot/modelwidget.cpp \
     src/DataPlot/polynomialmodelwidget.cpp \
     src/Widgets/numberlineedit.cpp \
-    src/Widgets/rangeadjustments.cpp \
-    src/Widgets/mathobjectsinput.cpp \
     src/Windows/settings.cpp \
     src/Windows/values.cpp \
     src/Windows/updatecheck.cpp \
@@ -156,7 +154,6 @@ HEADERS  += \
     src/DataPlot/modelwidget.h \
     src/DataPlot/polynomialmodelwidget.h \
     src/Widgets/numberlineedit.h \
-    src/Widgets/rangeadjustments.h \
     src/Widgets/mathobjectsinput.h \
     src/Windows/settings.h \
     src/Windows/values.h \
