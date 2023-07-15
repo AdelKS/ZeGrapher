@@ -22,6 +22,7 @@
 #define SETTINGS_H
 
 #include <QWidget>
+#include <QtQuickWidgets/QQuickWidget>
 
 #include "Widgets/axissettingswidget.h"
 #include "Widgets/rangeadjustments.h"
@@ -61,7 +62,7 @@ private:
     MathObjectsInput *inputWidget;
     ZeAxisName currentEditedGrid;
     AxisSettingsWidget *axisSettingsWidget;
-    RangeAdjustments *rangeAdjustmentsWidget;
+    QQuickWidget *rangeAdjustmentsQMLWidget;
     GraphSizeSettings *sizeAdjusmentsWidget;
     GraphSettings *graphSettingsWidget;
     Export *exportWidget;
