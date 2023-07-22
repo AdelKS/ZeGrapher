@@ -11,16 +11,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
           version: '6.5.*'
+
       - name: Install Dependencies
         run: |
-          sudo apt install libboost-all-dev python3-pip
+          sudo apt install libboost-all-dev python3-pip libfuse2 libxcb-cursor0
           pip3 install --user meson ninja
+
       - name: Build & Bundle
         run: ./deploy/linux-bundle-appimage.sh
+
       - name: Upload binary artifact
         uses: actions/upload-artifact@v3
         with:
