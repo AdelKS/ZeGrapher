@@ -4,7 +4,7 @@ on:
 
 jobs:
   build-bundle:
-    runs-on: macos-10.15
+    runs-on: macos-latest
     defaults:
       run:
         shell: bash
@@ -12,7 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.*'
       - name: Install Dependencies
         run: brew install boost coreutils meson
       - name: Build & Bundle
