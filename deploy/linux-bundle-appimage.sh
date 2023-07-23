@@ -15,5 +15,9 @@ chmod a+x linuxdeploy-x86_64.AppImage
 wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
 chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
 
+export QMAKE=`which qmake6`
+export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
+export QML_SOURCES_PATHS="${deploy_dir}/../src/"
+
 # ./linuxdeploy-x86_64.AppImage --list-plugins
 ./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage
