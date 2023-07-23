@@ -51,14 +51,7 @@ To compile from sources, ZeGrapher needs the following tools and libraries:
 - [Qt](https://www.qt.io)
 - [meson](mesonbuild.com)
 
-Two build systems are supported:
-- `meson`: the official one
-- `qmake`: for `Qt Creator` IDE to remain usable, until it fully supports meson.
-
-#### meson
-For packagers and anyone who doesn't use `Qt Creator` as an IDE. `ZeGrapher` moved to [meson](https://mesonbuild.com) as an official build system.
-
-To build `ZeGrapher`
+To build
 ```shell
 $ meson setup build
 $ cd build
@@ -69,7 +62,6 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 
 ###### Packaging
 
-
 - Linux
   - `meson install` should now be fully XDG compliant. Issues and/PRs welcome if something is missing.
   - Use [deploy/linux-bundle-appimage.sh](./deploy/linux-bundle-appimage.sh) to create an [AppImage](https://appimage.org/), too.
@@ -77,24 +69,3 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
   - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
 - Windows
   - _TODO_
-
-#### qmake
-The `qmake` is being kept afloat until `Qt Creator` (the IDE I use) fully supports `meson`.
-
-To compile from the command line:
-```shell
-$ git clone https://github.com/AdelKS/ZeGrapher.git
-$ cd ZeGrapher
-$ qmake ZeGrapher.pro
-$ make
-```
-It is also possible to use `Qt Creator` as a GUI software to compile ZeGrapher by opening with it the `ZeGrapher.pro` file then pressing the "play" button, after configuring the project.
-
-**Note:** On Windows, one also needs to edit the following line in [ZeGrapher.pro](./ZeGrapher.pro) to where the boost folder has been extracted:
-
-```
-win32 {
-# Modify this line in Windows to boost's folder to be able to compile
-    INCLUDEPATH += C:/boost_1_72_0
-}
-```
