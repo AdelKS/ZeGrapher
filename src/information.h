@@ -88,7 +88,7 @@ public:
     void setExportFileName(QString fileName);
     QString getExportFileName();
 
-    const zc::MathWorld& getMathWorld() const { return mathWorld; }
+    const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
 
 signals:
     void newOrthonormalityState(bool orth);
@@ -143,7 +143,7 @@ protected:
     ZeGraphSettings graphSettings;
     ZeAppSettings appSettings;
     QString exportFileName;
-    zc::MathWorld mathWorld;
+    zc::rpn::MathWorld mathWorld;
 
     QList<ParEqWidget*> *parEqWidgets;
 };

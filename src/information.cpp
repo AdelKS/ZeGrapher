@@ -20,8 +20,6 @@
 
 #include "information.h"
 
-zc::MathWorld mathWorld;
-
 Information::Information()
 {
 

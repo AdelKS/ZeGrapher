@@ -3,53 +3,26 @@
 
 #include <zecalculator/zecalculator.h>
 
-const QString& zcErrorToStr(const zc::EvaluationError& err)
+const QString& zcErrorToStr(const zc::Error& err)
 {
-  const static std::map<zc::EvaluationError::Type, QString> errMap =
+  const static std::map<zc::Error::Type, QString> errMap =
   {
-    {zc::EvaluationError::Type::UNDEFINED, QObject::tr("Undefined evaluation error")},
-    {zc::EvaluationError::Type::UNDEFINED_VARIABLE, QObject::tr("Undefined variable")},
-    {zc::EvaluationError::Type::UNDEFINED_FUNCTION, QObject::tr("Undefined function")},
-    {zc::EvaluationError::Type::CALLING_FUN_ARG_COUNT_MISMATCH, QObject::tr("Calling function with wrong number of arguments")},
-    {zc::EvaluationError::Type::CALLED_FUN_ARG_COUNT_MISMATCH, QObject::tr("This function has been called with wrong number of arguments")},
-    {zc::EvaluationError::Type::NOT_IMPLEMENTED, QObject::tr("Feature not implemented")},
-    {zc::EvaluationError::Type::EMPTY_EXPRESSION, QObject::tr("Empty expression")},
-    {zc::EvaluationError::Type::INVALID_FUNCTION, QObject::tr("Invalid function")},
-    {zc::EvaluationError::Type::CALLING_INVALID_FUNCTION, QObject::tr("Calling invalid function")},
-    {zc::EvaluationError::Type::RECURSION_DEPTH_OVERFLOW, QObject::tr("Maximum recursion depth has been attained")},
+    {zc::Error::UNKNOWN, QObject::tr("Unkown error")},
+    {zc::Error::WRONG_FORMAT, QObject::tr("Wrong format")},
+    {zc::Error::UNEXPECTED, QObject::tr("Unexpected")},
+    {zc::Error::MISSING, QObject::tr("Missing")},
+    {zc::Error::UNDEFINED_VARIABLE, QObject::tr("Undefined variable")},
+    {zc::Error::UNDEFINED_FUNCTION, QObject::tr("Undefined function")},
+    {zc::Error::CALLING_FUN_ARG_COUNT_MISMATCH, QObject::tr("Calling function with wrong number of arguments")},
+    {zc::Error::NOT_IMPLEMENTED, QObject::tr("Feature not implemented")},
+    {zc::Error::EMPTY_EXPRESSION, QObject::tr("Empty expression")},
+    {zc::Error::INVALID_FUNCTION, QObject::tr("Invalid function")},
+    {zc::Error::CALLING_INVALID_FUNCTION, QObject::tr("Calling invalid function")},
+    {zc::Error::RECURSION_DEPTH_OVERFLOW, QObject::tr("Maximum recursion depth has been attained")},
+    {zc::Error::WRONG_OBJECT_TYPE, QObject::tr("Objet has the wrong type")},
   };
 
   return errMap.at(err.error_type);
-}
-
-QString zcErrorToStr(const zc::ParsingError& err)
-{
-  auto tokenTypeToName = [](const zc::Token& token)
-  {
-    return std::visit(overloaded{[&](const zc::tokens::Unkown&) { return  QObject::tr("unkown"); },
-                                 [&](const zc::tokens::Number&) { return QObject::tr("number"); },
-                                 [&](const zc::tokens::Variable&) { return QObject::tr("variable"); },
-                                 [&](const zc::tokens::Function&) { return QObject::tr("function"); },
-                                 [&](const zc::tokens::Operator&) { return QObject::tr("operator"); },
-                                 [&](const zc::tokens::OpeningParenthesis&) { return QString("\"(\""); },
-                                 [&](const zc::tokens::ClosingParenthesis&) { return QString("\")\""); },
-                                 [&](const zc::tokens::FunctionCallStart&) { return QObject::tr("function opening bracket"); },
-                                 [&](const zc::tokens::FunctionCallEnd&) { return QObject::tr("function closing bracket"); },
-                                 [&](const zc::tokens::FunctionArgumentSeparator&) { return QObject::tr("function argument separator"); },
-                                 [&](const zc::tokens::EndOfExpression&) { return QObject::tr("end of expression"); },
-                                 },
-                      token);
-  };
-
-  const static std::map<zc::ParsingError::Type, QString> errMap =
-  {
-    {zc::ParsingError::Type::UNDEFINED, QObject::tr("Undefined parsing error on")},
-    {zc::ParsingError::Type::WRONG_FORMAT, QObject::tr("Wrong format on")},
-    {zc::ParsingError::Type::UNEXPECTED, QObject::tr("Unexpected")},
-    {zc::ParsingError::Type::MISSING, QObject::tr("Missing")},
-  };
-
-  return errMap.at(err.error_type) + " " + tokenTypeToName(err.token) + ".";
 }
 
 void ExprEditBackend::highlightBlock(const QString &text)
@@ -60,9 +33,9 @@ void ExprEditBackend::highlightBlock(const QString &text)
   invalidFormat.setUnderlineColor(information.getAppSettings().invalidSyntax);
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
-  auto setErrorState = [&](const auto& err, const zc::SubstrInfo substrInfo)
+  auto setErrorState = [&](const zc::Error& err)
   {
-    setFormat(substrInfo.begin, substrInfo.size, invalidFormat);
+    setFormat(err.token.substr_info.begin, err.token.substr_info.size, invalidFormat);
 
     if (errorMsg != zcErrorToStr(err))
     {
@@ -70,7 +43,7 @@ void ExprEditBackend::highlightBlock(const QString &text)
       emit errorMsgChanged(errorMsg);
     }
 
-    qDebug() << errorMsg << ", " << substrInfo.begin << ", " << substrInfo.size;
+    qDebug() << errorMsg << ", " << err.token.substr_info.begin << ", " << err.token.substr_info.size;
 
     if (state != State::INVALID)
     {
@@ -80,32 +53,8 @@ void ExprEditBackend::highlightBlock(const QString &text)
   };
 
   qDebug() << "Evaluating: " << text;
-  const zc::Expression exprEvaluator(text.toStdString());
-  const auto expr_state = exprEvaluator.parsing_status();
+  const auto eval = information.getMathWorld().evaluate(text.toStdString());
 
-  if (std::holds_alternative<zc::Function::Empty>(expr_state))
-  {
-    if (not errorMsg.isEmpty())
-    {
-      errorMsg.clear();
-      emit errorMsgChanged(errorMsg);
-    }
-
-    if (state != State::NEUTRAL)
-    {
-      state = State::NEUTRAL;
-      emit stateChanged(state);
-    }
-    return;
-  }
-  else if (std::holds_alternative<zc::ParsingError>(expr_state))
-  {
-    const zc::ParsingError& parsingErr = std::get<zc::ParsingError>(expr_state);
-    setErrorState(parsingErr, zc::substr_info(parsingErr.token));
-    return;
-  }
-
-  auto eval = exprEvaluator.evaluate(information.getMathWorld());
   if (eval)
   {
     if (state != State::VALID)
@@ -126,12 +75,21 @@ void ExprEditBackend::highlightBlock(const QString &text)
       emit errorMsgChanged(errorMsg);
     }
   }
-  else
+  else if (eval.error().error_type == zc::Error::EMPTY)
   {
-    const zc::EvaluationError& evalErr = eval.error();
-    setErrorState(evalErr, zc::substr_info(evalErr.node));
-  };
+    if (not errorMsg.isEmpty())
+    {
+      errorMsg.clear();
+      emit errorMsgChanged(errorMsg);
+    }
 
+    if (state != State::NEUTRAL)
+    {
+      state = State::NEUTRAL;
+      emit stateChanged(state);
+    }
+  }
+  else setErrorState(eval.error());
 }
 
 void ExprEditBackend::setDocument(QQuickTextDocument* doc)
