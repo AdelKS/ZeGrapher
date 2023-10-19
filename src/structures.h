@@ -75,8 +75,17 @@
 #define MIN_REL_TICK_SPACING 0.2
 
 // extern definitions for the supported languages
-extern const QList<QLocale::Language> supportedLangs;
-extern QString langToShortString(QLocale::Language lang);
+inline const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
+inline QString langToShortString(QLocale::Language lang)
+{
+    if(lang == QLocale::French)
+        return "fr";
+    else if(lang == QLocale::German)
+        return "de";
+    else if(lang == QLocale::Chinese)
+        return "zh";
+    else return "en";
+}
 
 struct ZeAxisRange
 {

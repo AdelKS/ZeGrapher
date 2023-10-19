@@ -20,19 +20,7 @@
 
 #include "Windows/mainwindow.h"
 #include "Calculus/expreditbackend.h"
-
-const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
-
-QString langToShortString(QLocale::Language lang)
-{
-    if(lang == QLocale::French)
-        return "fr";
-    else if(lang == QLocale::German)
-        return "de";
-    else if(lang == QLocale::Chinese)
-        return "zh";
-    else return "en";
-}
+#include "structures.h"
 
 int main(int argc, char *argv[])
 {
