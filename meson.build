@@ -18,3 +18,4 @@ zecalculator_dep = dependency('zecalculator', default_options: ['default_library
 
 subdir('src')
 subdir('appdata')
+subdir('test')

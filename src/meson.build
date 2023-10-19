@@ -85,7 +85,6 @@ source_files = files(
   './Windows/updatecheck.cpp',
   './Windows/values.cpp',
   './information.cpp',
-  './main.cpp',
   './structures.cpp',
 )
 
@@ -161,7 +160,7 @@ moc_files = qt6.compile_moc(
     dependencies: qt6_dep
 )
 
-executable('ZeGrapher', source_files, compiled_ressources, compiled_ui, moc_files,
+executable('ZeGrapher', 'main.cpp', source_files, compiled_ressources, compiled_ui, moc_files,
     include_directories: inc,
     dependencies: [qt6_dep, boost_dep, zecalculator_dep],
     install: true)
