@@ -4,23 +4,23 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "setup",
+            "label": "setup-debug",
             "type": "shell",
             "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true"
         },
         {
-            "label": "resetup",
+            "label": "resetup-debug",
             "type": "shell",
             "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true"
         },
         {
-            "label": "build",
+            "label": "build-debug",
             "type": "shell",
             "command": "meson compile",
             "options": {
                 "cwd": "${cwd}/build-zg-debug"
             },
-            "dependsOn": "setup",
+            "dependsOn": "setup-debug",
             "problemMatcher": [
                 "$meson-gcc"
             ],
@@ -30,13 +30,13 @@
             }
         },
         {
-            "label": "rebuild",
+            "label": "rebuild-debug",
             "type": "shell",
             "command": "meson compile",
             "options": {
                 "cwd": "${cwd}/build-zg-debug"
             },
-            "dependsOn": "resetup",
+            "dependsOn": "resetup-debug",
             "problemMatcher": [
                 "$meson-gcc"
             ],
@@ -45,11 +45,65 @@
             }
         },
         {
-            "label": "run",
+            "label": "run-debug",
             "type": "shell",
             "command": "./src/ZeGrapher",
             "options": {
                 "cwd": "${cwd}/build-zg-debug"
+            },
+            "dependsOn": "build",
+            "problemMatcher": []
+        }
+
+        // release
+
+        {
+            "label": "setup-release",
+            "type": "shell",
+            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false"
+        },
+        {
+            "label": "resetup-release",
+            "type": "shell",
+            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false"
+        },
+        {
+            "label": "build-release",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-release"
+            },
+            "dependsOn": "setup-release",
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "rebuild-release",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-release"
+            },
+            "dependsOn": "resetup-release",
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "label": "run-release",
+            "type": "shell",
+            "command": "./src/ZeGrapher",
+            "options": {
+                "cwd": "${cwd}/build-zg-release"
             },
             "dependsOn": "build",
             "problemMatcher": []
