@@ -3,26 +3,64 @@
 
 #include <zecalculator/zecalculator.h>
 
-const QString& zcErrorToStr(const zc::Error& err)
+QString zcErrorToStr(const zc::Error& err)
 {
-  const static std::map<zc::Error::Type, QString> errMap =
+  switch (err.type)
   {
-    {zc::Error::UNKNOWN, QObject::tr("Unkown error")},
-    {zc::Error::WRONG_FORMAT, QObject::tr("Wrong format")},
-    {zc::Error::UNEXPECTED, QObject::tr("Unexpected")},
-    {zc::Error::MISSING, QObject::tr("Missing")},
-    {zc::Error::UNDEFINED_VARIABLE, QObject::tr("Undefined variable")},
-    {zc::Error::UNDEFINED_FUNCTION, QObject::tr("Undefined function")},
-    {zc::Error::CALLING_FUN_ARG_COUNT_MISMATCH, QObject::tr("Calling function with wrong number of arguments")},
-    {zc::Error::NOT_IMPLEMENTED, QObject::tr("Feature not implemented")},
-    {zc::Error::EMPTY_EXPRESSION, QObject::tr("Empty expression")},
-    {zc::Error::INVALID_FUNCTION, QObject::tr("Invalid function")},
-    {zc::Error::CALLING_INVALID_FUNCTION, QObject::tr("Calling invalid function")},
-    {zc::Error::RECURSION_DEPTH_OVERFLOW, QObject::tr("Maximum recursion depth has been attained")},
-    {zc::Error::WRONG_OBJECT_TYPE, QObject::tr("Objet has the wrong type")},
-  };
+    case zc::Error::CPP_INCORRECT_ARGNUM:
+      return QObject::tr("Programmatically calling C++ math function with wrong number of arguments");
 
-  return errMap.at(err.error_type);
+    case zc::Error::NOT_MATH_OBJECT_DEFINITION:
+      return QObject::tr("Not a correct math object definition");
+
+    case zc::Error::OBJECT_NOT_IN_WORLD:
+      return QObject::tr("Object not registered in current math world");
+
+    case zc::Error::NAME_ALREADY_TAKEN:
+      return QObject::tr("Name already taken");
+
+    case zc::Error::EMPTY:
+      return QObject::tr("Empty");
+
+    case zc::Error::UNKNOWN:
+      return QObject::tr("Unkown error");
+
+    case zc::Error::WRONG_FORMAT:
+      return QObject::tr("Wrong format");
+
+    case zc::Error::UNEXPECTED:
+      return QObject::tr("Unexpected");
+
+    case zc::Error::MISSING:
+      return QObject::tr("Missing");
+
+    case zc::Error::UNDEFINED_VARIABLE:
+      return QObject::tr("Undefined variable");
+
+    case zc::Error::UNDEFINED_FUNCTION:
+      return QObject::tr("Undefined function");
+
+    case zc::Error::CALLING_FUN_ARG_COUNT_MISMATCH:
+      return QObject::tr("Calling function with wrong number of arguments");
+
+    case zc::Error::NOT_IMPLEMENTED:
+      return QObject::tr("Feature not implemented");
+
+    case zc::Error::EMPTY_EXPRESSION:
+      return QObject::tr("Empty expression");
+
+    case zc::Error::RECURSION_DEPTH_OVERFLOW:
+      return QObject::tr("Maximum recursion depth has been attained");
+
+    case zc::Error::WRONG_OBJECT_TYPE:
+      return QObject::tr("Objet has the wrong type");
+
+    case zc::Error::OBJECT_INVALID_STATE:
+      return QObject::tr("Objet in invalid state");
+
+    default:
+      return QObject::tr("Unsupported error code");
+  }
 }
 
 void ExprEditBackend::highlightBlock(const QString &text)
@@ -35,7 +73,7 @@ void ExprEditBackend::highlightBlock(const QString &text)
 
   auto setErrorState = [&](const zc::Error& err)
   {
-    setFormat(err.token.substr_info.begin, err.token.substr_info.size, invalidFormat);
+    setFormat(err.token.begin, err.token.substr.size(), invalidFormat);
 
     if (errorMsg != zcErrorToStr(err))
     {
@@ -43,7 +81,8 @@ void ExprEditBackend::highlightBlock(const QString &text)
       emit errorMsgChanged(errorMsg);
     }
 
-    qDebug() << errorMsg << ", " << err.token.substr_info.begin << ", " << err.token.substr_info.size;
+    qDebug() << errorMsg + ", token: '" + QString::fromStdString(err.token.substr) + "' at "
+                  + QString::number(err.token.begin);
 
     if (state != State::INVALID)
     {
@@ -75,7 +114,7 @@ void ExprEditBackend::highlightBlock(const QString &text)
       emit errorMsgChanged(errorMsg);
     }
   }
-  else if (eval.error().error_type == zc::Error::EMPTY)
+  else if (eval.error().type == zc::Error::EMPTY)
   {
     if (not errorMsg.isEmpty())
     {
