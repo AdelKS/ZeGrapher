@@ -19,7 +19,7 @@ Item {
   onErrorMsgChanged: {
     errorLbl.textEdit.text = errorMsg
 
-    if (errorMsg == "") {
+    if (errorMsg === "") {
       errorLbl.height = 0
     } else {
       errorLbl.height = errorLbl.textEdit.contentHeight + 4
@@ -27,9 +27,9 @@ Item {
   }
 
   onStateChanged: {
-    if (state == ExprEditBackend.NEUTRAL) {
+    if (state === ExprEditBackend.NEUTRAL) {
       lineEdit.border.color = "grey"
-    } else if (state == ExprEditBackend.VALID) {
+    } else if (state === ExprEditBackend.VALID) {
       lineEdit.border.color = Information.appSettings.validSyntax
     } else {
       lineEdit.border.color = Information.appSettings.invalidSyntax
