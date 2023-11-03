@@ -32,6 +32,9 @@
 
 #include <zecalculator/zecalculator.h>
 
+/// @brief type of math objects to use in ZeCalculator
+inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
+
 class Information: public QObject
 {
     Q_OBJECT
@@ -143,7 +146,7 @@ protected:
     ZeGraphSettings graphSettings;
     ZeAppSettings appSettings;
     QString exportFileName;
-    zc::rpn::MathWorld mathWorld;
+    zc::MathWorld<zc_t> mathWorld;
 
     QList<ParEqWidget*> *parEqWidgets;
 };
