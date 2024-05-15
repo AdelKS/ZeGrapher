@@ -65,6 +65,7 @@ QString zcErrorToStr(const zc::Error& err)
 
 void ExprEditBackend::highlightBlock(const QString &text)
 {
+  qDebug() << "Parsing expression: " << text;
   QTextCharFormat invalidFormat;
   invalidFormat.setForeground(information.getAppSettings().invalidSyntax);
   invalidFormat.setFontUnderline(true);
@@ -92,9 +93,65 @@ void ExprEditBackend::highlightBlock(const QString &text)
   };
 
   qDebug() << "Evaluating: " << text;
-  const auto eval = information.getMathWorld().evaluate(text.toStdString());
+  std::optional<zc::Error> opt_err;
+  if (type == Type::VALUE)
+  {
+    const auto eval = information.getMathWorld().evaluate(text.toStdString());
+    if (eval)
+    {
+      if (value != eval.value())
+      {
+        value = eval.value();
+        emit valueChanged(value);
+      }
+    }
+    else opt_err = std::move(eval.error());
+  }
+  else
+  {
+    Q_ASSERT(math_obj);
+    switch (type)
+    {
+    case Type::OBJECT_AUTO:
+      *math_obj = text.toStdString();
+      break;
+    case Type::OBJECT_FUNCTION:
+      *math_obj = zc::As<zc::Function<zc_t>>{text.toStdString()};
+      break;
+    case Type::OBJECT_GLOBAL_CONSTANT:
+      *math_obj = zc::As<zc::GlobalConstant>{text.toStdString()};
+      break;
+    case Type::OBJECT_SEQUENCE:
+      *math_obj = zc::As<zc::Sequence<zc_t>>{text.toStdString()};
+      break;
+    default:
+      qDebug() << "Case not handled";
+      break;
+    }
 
-  if (eval)
+    if (not math_obj->has_value())
+      opt_err = math_obj->error();
+  }
+
+  if (opt_err)
+  {
+    if (opt_err->type == zc::Error::EMPTY)
+    {
+      if (not errorMsg.isEmpty())
+      {
+        errorMsg.clear();
+        emit errorMsgChanged(errorMsg);
+      }
+
+      if (state != State::NEUTRAL)
+      {
+        state = State::NEUTRAL;
+        emit stateChanged(state);
+      }
+    }
+    else setErrorState(*opt_err);
+  }
+  else
   {
     if (state != State::VALID)
     {
@@ -102,37 +159,41 @@ void ExprEditBackend::highlightBlock(const QString &text)
       emit stateChanged(state);
     }
 
-    if (value != eval.value())
-    {
-      value = eval.value();
-      emit valueChanged(value);
-    }
-
     if (not errorMsg.isEmpty())
     {
       errorMsg.clear();
       emit errorMsgChanged(errorMsg);
     }
   }
-  else if (eval.error().type == zc::Error::EMPTY)
-  {
-    if (not errorMsg.isEmpty())
-    {
-      errorMsg.clear();
-      emit errorMsgChanged(errorMsg);
-    }
-
-    if (state != State::NEUTRAL)
-    {
-      state = State::NEUTRAL;
-      emit stateChanged(state);
-    }
-  }
-  else setErrorState(eval.error());
 }
 
 void ExprEditBackend::setDocument(QQuickTextDocument* doc)
 {
   textDocument = doc;
   QSyntaxHighlighter::setDocument(doc->textDocument());
+}
+
+void ExprEditBackend::setType(Type t)
+{
+  [[maybe_unused]] QMetaEnum metaEnum = QMetaEnum::fromType<Type>();
+  qDebug() << "Setting type: " << metaEnum.valueToKey(int(t));
+
+  switch (t)
+  {
+  case Type::VALUE:
+    if (math_obj)
+    {
+      information.getMathWorld().erase(*math_obj);
+      math_obj = nullptr;
+    }
+    break;
+  case Type::OBJECT_AUTO:
+  case Type::OBJECT_FUNCTION:
+  case Type::OBJECT_GLOBAL_CONSTANT:
+  case Type::OBJECT_SEQUENCE:
+    if (not math_obj)
+      math_obj = &information.getMathWorld().new_object();
+  }
+  type = t;
+  rehighlight();
 }

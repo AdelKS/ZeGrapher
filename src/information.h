@@ -92,6 +92,7 @@ public:
     QString getExportFileName();
 
     const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
+    zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
 
 signals:
     void newOrthonormalityState(bool orth);
