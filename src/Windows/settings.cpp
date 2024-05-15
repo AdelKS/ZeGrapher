@@ -31,7 +31,7 @@ Settings::Settings(QWidget *parent): QWidget(parent)
     setWindowIcon(QIcon(":/icons/settings.png"));
 
     rangeAdjustmentsQMLWidget = new QQuickWidget;
-    rangeAdjustmentsQMLWidget->setSource(QUrl::fromLocalFile(":/src/Widgets/RangeAdjust.qml"));
+    rangeAdjustmentsQMLWidget->setSource(QUrl::fromLocalFile(":/src/QML/RangeAdjust.qml"));
     rangeAdjustmentsQMLWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
     ui->mathInputLayout->addWidget(rangeAdjustmentsQMLWidget);
     rangeAdjustmentsQMLWidget->setMinimumHeight(200);
