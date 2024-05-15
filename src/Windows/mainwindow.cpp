@@ -82,13 +82,6 @@ void MainWindow::createMenus()
     QAction *showUpdateCheckWinAction = menuHelp->addAction(tr("Check for updates"));
     connect(showUpdateCheckWinAction, SIGNAL(triggered()), updateCheckWin, SLOT(checkForUpdate()));
 
-    QAction *showExportWinAction = menuFile->addAction(QIcon(":/icons/export.svg"), tr("Export graph..."));
-    showExportWinAction->setShortcut(QKeySequence("Ctrl+S"));
-    connect(showExportWinAction, &QAction::triggered, settingsWin, &Settings::showExportSettings);
-
-    QAction *showSettingsWinAction = menuFile->addAction(QIcon(":/icons/settings.png"), tr("Settings"));
-    showSettingsWinAction->setShortcut(QKeySequence("Ctrl+O"));
-    connect(showSettingsWinAction, SIGNAL(triggered()), settingsWin, SLOT(showSettings()));
     // TODO: add slot in settingsWin so it displays the settings tab
 
     menuFile->addSeparator();
@@ -97,10 +90,6 @@ void MainWindow::createMenus()
     exitAction->setShortcut(QKeySequence("Ctrl+Q"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
-    QAction *showInputWinAction = menuWindows->addAction(QIcon(":/icons/functions.png"), tr("Functions"));
-    connect(showInputWinAction, SIGNAL(triggered()), settingsWin, SLOT(showMathInput()));
-    showInputWinAction->setShortcut(QKeySequence("Ctrl+F"));
-    // TODO: add slot in settingsWin so it displays the input tab
 
     QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.svg"), tr("Values table"));
     showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
@@ -114,13 +103,10 @@ void MainWindow::createMenus()
 
     statusBar();
 
-    showInputWinAction->setStatusTip(tr("Enter functions, sequences, parametric equations, data..."));
     exitAction->setStatusTip(tr("Exit ZeGrapher."));
-    showSettingsWinAction->setStatusTip(tr("Edit axes' color, background color, curve's quality..."));
     showValuesWinAction->setStatusTip(tr("Display the values taken by functions, sequences and parametric equations on tables."));
 
     showKeyboardAction->setStatusTip(tr("Virtual keyboard."));
-    showExportWinAction->setStatusTip(tr("Export graph or print."));
 }
 
 void MainWindow::loadWindowSavedGeomtries()
