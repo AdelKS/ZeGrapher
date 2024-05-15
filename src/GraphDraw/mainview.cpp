@@ -341,7 +341,7 @@ void MainView::drawFigureRect()
     painter.setPen(pen);
 }
 
-void MainView::setGraphRange(GraphRange range)
+void MainView::setGraphRange([[maybe_unused]] GraphRange range)
 {
 
 }

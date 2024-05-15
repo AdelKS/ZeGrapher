@@ -209,7 +209,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
     pen.setCapStyle(Qt::FlatCap);
     bool first_tick = true;
-    double previous_pos;
+    double previous_pos = 0;
 
     painter.setFont(information.getGraphSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();
@@ -334,7 +334,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
     pen.setCapStyle(Qt::FlatCap);
     bool first_tick = true;
-    double previous_pos;
+    double previous_pos = 0;
 
     painter.setFont(information.getGraphSettings().graphFont);
     double text_height = fontMetrics.boundingRect('0').height();

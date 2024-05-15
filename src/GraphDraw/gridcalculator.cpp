@@ -196,7 +196,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
     }
 
     fesetround(FE_DOWNWARD);
-    int maxRangePower = max(lrint(log10(fabs(scaledOffsetRange.max))), lrint(log10(fabs(scaledOffsetRange.min))));
+    // int maxRangePower = max(lrint(log10(fabs(scaledOffsetRange.max))), lrint(log10(fabs(scaledOffsetRange.min))));
 
     QString axisNameStr = axisName == ZeAxisName::X ? "x axis" : "y axis";
     // qDebug() << axisNameStr << " Max range power " << maxRangePower;

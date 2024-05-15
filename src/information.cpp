@@ -202,7 +202,7 @@ const ZeAppSettings& Information::getAppSettings() const
     return appSettings;
 }
 
-void Information::setOrthonormal(bool state)
+void Information::setOrthonormal([[maybe_unused]] bool state)
 {
     // TODO
     emit updateOccured();

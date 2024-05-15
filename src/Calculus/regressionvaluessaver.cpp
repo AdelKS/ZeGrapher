@@ -26,9 +26,9 @@
 using namespace std;
 
 RegressionValuesSaver::RegressionValuesSaver(double pixStep, Regression *reg)
-{    
+{
     regression = reg;
-    pixelStep = pixStep;   
+    pixelStep = pixStep;
 }
 
 RegressionValuesSaver::RegressionValuesSaver(const RegressionValuesSaver &other) : QObject()
@@ -60,7 +60,8 @@ void RegressionValuesSaver::recalculate()
     recalculate(Point{xUnit, yUnit}, viewMapper);
 }
 
-void RegressionValuesSaver::recalculate(const Point &graphUnits, const ZeViewMapper &graphView)
+void RegressionValuesSaver::recalculate(const Point &graphUnits,
+                                        [[maybe_unused]] const ZeViewMapper &graphView)
 {
     // TODO: use graph view to recalculate
     xUnit = graphUnits.x;
@@ -104,7 +105,7 @@ double RegressionValuesSaver::arg(QPointF pt)
         else return -M_PI;
     }
 
-    double res = 2*atan(pt.y() / (pt.x() + length(pt)));    
+    double res = 2*atan(pt.y() / (pt.x() + length(pt)));
 
     return res;
 }
@@ -175,7 +176,7 @@ void RegressionValuesSaver::polarMove()
 }
 
 void RegressionValuesSaver::cartesianMove()
-{    
+{
     drawRange.start = std::max(viewMapper.getXmin(), regression->getDrawRange().start);
     drawRange.end = std::min(viewMapper.getXmax(), regression->getDrawRange().end);
 
@@ -219,7 +220,7 @@ void RegressionValuesSaver::cartesianMove()
 }
 
 void RegressionValuesSaver::calculateCartesianRegressionCurve()
-{    
+{
     drawRange.start = std::max(viewMapper.getXmin(), regression->getDrawRange().start);
     drawRange.end = std::min(viewMapper.getXmax(), regression->getDrawRange().end);
 
@@ -347,4 +348,3 @@ RegressionValuesSaver::~RegressionValuesSaver()
 {
 
 }
-

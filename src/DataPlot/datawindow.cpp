@@ -193,7 +193,9 @@ RetractableWidgetState DataWindow::getRetractableWidgetState()
     return widgetState;
 }
 
-void DataWindow::columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+void DataWindow::columnMoved([[maybe_unused]] int logicalIndex,
+                             int oldVisualIndex,
+                             int newVisualIndex)
 {
     if(oldVisualIndex == xindex || oldVisualIndex == yindex || newVisualIndex == xindex || newVisualIndex == yindex)
         remakeDataList();

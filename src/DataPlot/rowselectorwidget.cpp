@@ -73,17 +73,17 @@ void RowSelectorWidget::paintEvent(QPaintEvent *event)
 
 void RowSelectorWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    if(event->y() >= height() - selector.image.height()/2)
+    if(event->pos().y() >= height() - selector.image.height()/2)
     {
         selector.pos.setY(height() - selector.image.height());
     }
-    else if(event->y() <= selector.image.height()/2)
+    else if(event->pos().y() <= selector.image.height()/2)
     {
         selector.pos.setY(0);
     }
     else
     {
-        selector.pos.setY(event->y() - selector.image.height()/2);
+        selector.pos.setY(event->pos().y() - selector.image.height()/2);
     }
 
      repaint();
@@ -97,17 +97,17 @@ void RowSelectorWidget::mousePressEvent(QMouseEvent *event)
         emit askForSelector();
     }
 
-    if(event->y() >= height() - selector.image.height()/2)
+    if(event->pos().y() >= height() - selector.image.height()/2)
     {
         selector.pos.setY(height() - selector.image.height()/2);
     }
-    else if(event->y() <= selector.image.height()/2)
+    else if(event->pos().y() <= selector.image.height()/2)
     {
         selector.pos.setY(selector.image.height()/2);
     }
     else
     {
-        selector.pos.setY(event->y() - selector.image.height()/2);
+        selector.pos.setY(event->pos().y() - selector.image.height()/2);
     }
 
     repaint();
@@ -153,6 +153,6 @@ void RowSelectorWidget::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void RowSelectorWidget::setRowCount(int count)
-{    
+{
     rowCount = count;
 }
