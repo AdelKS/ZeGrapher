@@ -11,7 +11,7 @@ Item {
   property double value: 0
   property int exprHeight: lineEdit.height
 
-  height: lineEdit.height + errorLbl.height
+  implicitHeight: lineEdit.height + errorLbl.height
 
   function setCustomErrorMsg(customErrMsg) {
     errorMsg = customErrMsg

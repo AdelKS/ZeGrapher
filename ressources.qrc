@@ -92,5 +92,6 @@
         <file>src/QML/RangeAdjust.qml</file>
         <file>src/QML/ExpressionEdit.qml</file>
         <file>src/QML/LineEdit.qml</file>
+        <file>src/QML/UserInputPanel.qml</file>
     </qresource>
 </RCC>

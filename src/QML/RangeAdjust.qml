@@ -7,6 +7,7 @@ Rectangle {
   id: root
 
   property int spacing: 5
+  implicitHeight: yminEdit.y + yminEdit.height
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
