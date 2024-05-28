@@ -9,6 +9,9 @@ Item {
   property string errorMsg
   property int state
   property double value: 0
+  property int exprHeight: lineEdit.height
+
+  height: lineEdit.height + errorLbl.height
 
   function setCustomErrorMsg(customErrMsg) {
     errorMsg = customErrMsg
@@ -38,10 +41,7 @@ Item {
 
   LineEdit {
     id: lineEdit
-    implicitHeight: textEdit.contentHeight + 4
     border.color: "grey"
-    border.width: 1.5
-    radius: 4
 
     anchors.left: parent.left
     anchors.right: parent.right
@@ -50,7 +50,6 @@ Item {
   Connections {
     target: Information
     function onAppSettingsChanged() {
-      backend.onStateChanged(backend.state);
       backend.rehighlight();
     }
   }
@@ -73,6 +72,7 @@ Item {
     Behavior on height { SmoothedAnimation { duration: 200 } }
 
     radius: 4
+    border.width: 0
     textEdit.textFormat: TextEdit.RichText
     textEdit.wrapMode: TextEdit.WordWrap
     textEdit.font.pointSize: 8

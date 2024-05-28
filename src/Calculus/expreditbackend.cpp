@@ -92,7 +92,6 @@ void ExprEditBackend::highlightBlock(const QString &text)
     }
   };
 
-  qDebug() << "Evaluating: " << text;
   std::optional<zc::Error> opt_err;
   if (type == Type::VALUE)
   {

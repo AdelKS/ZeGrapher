@@ -12,20 +12,28 @@ Rectangle {
 
   color: myPalette.window
 
-  Item {
-    id: centerItem
-    anchors.centerIn: root
-    height: 75
-    width: root.width / 3 - 2*root.spacing
+  TextEdit {
+    id: ymaxLbl
+    text: "<b>y</b><sub>max</sub>"
+    readOnly: true
+    selectByMouse: false
+    activeFocusOnPress: false
+    textFormat: TextEdit.RichText
+    horizontalAlignment: TextEdit.AlignHCenter
+    verticalAlignment: TextEdit.AlignBottom
+    color: myPalette.text
+    anchors.top: root.top
+    anchors.horizontalCenter: root.horizontalCenter
+    width: parent.width/3
   }
 
   ExpressionEdit {
     id: ymaxEdit
     expression: "10"
-    anchors.margins: root.spacing
-    anchors.bottom: centerItem.top
-    anchors.left: centerItem.left
-    anchors.right: centerItem.right
+    anchors.top: ymaxLbl.bottom
+    anchors.horizontalCenter: root.horizontalCenter
+    anchors.margins: spacing
+    width: parent.width/3 - 2*anchors.margins
 
     onValueChanged: {
       if (value > yminEdit.value) {
@@ -36,25 +44,28 @@ Rectangle {
     }
   }
 
+
   TextEdit {
-    text: "<b>y</b><sub>max</sub>"
+    text: "<b>x</b><sub>min</sub>"
     readOnly: true
     selectByMouse: false
     activeFocusOnPress: false
     textFormat: TextEdit.RichText
     color: myPalette.text
-    anchors.horizontalCenter: ymaxEdit.horizontalCenter
-    anchors.bottom: ymaxEdit.top
-    anchors.margins: 3
+    horizontalAlignment: TextEdit.AlignHCenter
+    verticalAlignment: TextEdit.AlignBottom
+    anchors.horizontalCenter: xminEdit.horizontalCenter
+    anchors.bottomMargin: 5
+    anchors.bottom: xminEdit.top
   }
 
   ExpressionEdit {
     id: xminEdit
     expression: "-10"
-    anchors.margins: root.spacing
-    anchors.verticalCenter: centerItem.verticalCenter
     anchors.left: root.left
-    anchors.right: centerItem.left
+    anchors.top: ymaxEdit.bottom
+    anchors.margins: spacing
+    width: parent.width/3 - 2*anchors.margins
 
     onValueChanged: {
       if (value < xmaxEdit.value) {
@@ -65,25 +76,28 @@ Rectangle {
     }
   }
 
+
   TextEdit {
-    text: "<b>x</b><sub>min</sub>"
+    text: "<b>x</b><sub>max</sub>"
     readOnly: true
     selectByMouse: false
     activeFocusOnPress: false
     textFormat: TextEdit.RichText
     color: myPalette.text
-    anchors.horizontalCenter: xminEdit.horizontalCenter
-    anchors.bottom: xminEdit.top
-    anchors.margins: 3
+    horizontalAlignment: TextEdit.AlignHCenter
+    verticalAlignment: TextEdit.AlignBottom
+    anchors.horizontalCenter: xmaxEdit.horizontalCenter
+    anchors.bottomMargin: 5
+    anchors.bottom: xmaxEdit.top
   }
 
   ExpressionEdit {
     id: xmaxEdit
     expression: "10"
-    anchors.margins: root.spacing
-    anchors.verticalCenter: centerItem.verticalCenter
-    anchors.left: centerItem.right
     anchors.right: root.right
+    anchors.top: ymaxEdit.bottom
+    anchors.margins: spacing
+    width: parent.width/3 - 2*anchors.margins
 
     onValueChanged: {
       if (value > xminEdit.value) {
@@ -95,25 +109,27 @@ Rectangle {
   }
 
   TextEdit {
-    text: "<b>x</b><sub>max</sub>"
+    text: "<b>y</b><sub>min</sub>"
     readOnly: true
     selectByMouse: false
     activeFocusOnPress: false
     textFormat: TextEdit.RichText
     color: myPalette.text
-    anchors.horizontalCenter: xmaxEdit.horizontalCenter
-    anchors.bottom: xmaxEdit.top
-    anchors.margins: 3
+    horizontalAlignment: TextEdit.AlignHCenter
+    verticalAlignment: TextEdit.AlignBottom
+    anchors.bottom: yminEdit.top
+    anchors.bottomMargin: 5
+    anchors.horizontalCenter: root.horizontalCenter
+
   }
 
   ExpressionEdit {
     id: yminEdit
     expression: "-10"
-    anchors.margins: root.spacing
-    anchors.top: centerItem.bottom
-    anchors.bottom: root.bottom
-    anchors.left: centerItem.left
-    anchors.right: centerItem.right
+    y: xminEdit.y + xminEdit.exprHeight + spacing
+    anchors.horizontalCenter: root.horizontalCenter
+    anchors.margins: spacing
+    width: parent.width/3 - 2*anchors.margins
 
     onValueChanged: {
       if (value < ymaxEdit.value) {
@@ -124,16 +140,7 @@ Rectangle {
     }
   }
 
-  TextEdit {
-    text: "<b>y</b><sub>min</sub>"
-    readOnly: true
-    selectByMouse: false
-    activeFocusOnPress: false
-    textFormat: TextEdit.RichText
-    color: myPalette.text
-    anchors.horizontalCenter: yminEdit.horizontalCenter
-    anchors.bottom: yminEdit.top
-    anchors.margins: 3
-  }
+
+
 
 }
