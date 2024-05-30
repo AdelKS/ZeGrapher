@@ -19,9 +19,6 @@ QString zcErrorToStr(const zc::Error& err)
     case zc::Error::NAME_ALREADY_TAKEN:
       return QObject::tr("Name already taken");
 
-    case zc::Error::EMPTY:
-      return QObject::tr("Empty");
-
     case zc::Error::UNKNOWN:
       return QObject::tr("Unkown error");
 
@@ -30,6 +27,9 @@ QString zcErrorToStr(const zc::Error& err)
 
     case zc::Error::UNEXPECTED:
       return QObject::tr("Unexpected");
+
+    case zc::Error::UNEXPECTED_END_OF_EXPRESSION:
+      return QObject::tr("Unexpected end of expression");
 
     case zc::Error::MISSING:
       return QObject::tr("Missing");
@@ -134,7 +134,7 @@ void ExprEditBackend::highlightBlock(const QString &text)
 
   if (opt_err)
   {
-    if (opt_err->type == zc::Error::EMPTY)
+    if (opt_err->type == zc::Error::EMPTY_EXPRESSION)
     {
       if (not errorMsg.isEmpty())
       {
