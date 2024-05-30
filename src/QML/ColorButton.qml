@@ -20,9 +20,26 @@ Shape {
     property real s: 0
     property real v: 0
 
+    Behavior on h {
+      NumberAnimation { duration: 500 }
+    }
+
+    Behavior on s {
+      NumberAnimation { duration: 500 }
+    }
+
+    Behavior on v {
+      NumberAnimation { duration: 500 }
+    }
+
     property bool hovered: false
 
-    readonly property real deltaV: hovered ? 0.6 : 0.5
+    property real deltaV: hovered ? 0.7 : 0.5
+
+    Behavior on deltaV {
+      NumberAnimation { duration: 100 }
+    }
+
     readonly property real stop0_v: Math.min(v + deltaV, 1.0)
     readonly property real stop1_v: stop0_v - deltaV
 
