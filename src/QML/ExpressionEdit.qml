@@ -10,6 +10,7 @@ Item {
   property int state
   property double value: 0
   property int exprHeight: lineEdit.height
+  property alias type: backend.type
 
   implicitHeight: lineEdit.height + errorLbl.height
 
@@ -68,6 +69,7 @@ Item {
 
   LineEdit {
     id: errorLbl
+    height: 0
 
     Behavior on height { SmoothedAnimation { duration: 200 } }
 

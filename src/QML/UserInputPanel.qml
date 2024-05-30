@@ -15,8 +15,10 @@ Rectangle {
 
     RangeAdjust {
       Layout.fillWidth: true
-      Layout.minimumHeight: minHeight
+    }
+
+    MathObjectInput {
+      Layout.fillWidth: true
     }
   }
-
 }

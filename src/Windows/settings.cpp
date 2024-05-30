@@ -38,7 +38,7 @@ Settings::Settings(QWidget *parent): QWidget(parent)
 
     // to be instanced first so information.funcsList gets populated
     inputWidget = new MathObjectsInput(this);
-    ui->mathInputLayout->addWidget(inputWidget);
+    // ui->mathInputLayout->addWidget(inputWidget);
 
     axisSettingsWidget = new AxisSettingsWidget();
     ui->axesLayout->addWidget(axisSettingsWidget);

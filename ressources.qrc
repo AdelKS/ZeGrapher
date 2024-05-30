@@ -93,6 +93,7 @@
         <file>src/QML/ExpressionEdit.qml</file>
         <file>src/QML/LineEdit.qml</file>
         <file>src/QML/UserInputPanel.qml</file>
+        <file>src/QML/MathObjectInput.qml</file>
         <file>src/QML/ColorButton.qml</file>
     </qresource>
 </RCC>
