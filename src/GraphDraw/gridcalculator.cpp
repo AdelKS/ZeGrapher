@@ -215,7 +215,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(double windowWidth,
         tick.pos = multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset;
         tick.posStr = get_coordinate_string(axisName, multiplier);
 
-        axisTicks.ticks << tick;
+        axisTicks.ticks.push_back(tick);
 
     }while(multiplier < scaledOffsetRange.max);
 

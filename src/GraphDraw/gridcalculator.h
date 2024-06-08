@@ -43,8 +43,8 @@ struct ZeLogAxisTicks
 struct ZeLinAxisTicks
 {
     ZeOffset offset;
-    QList<ZeLinAxisTick> ticks;
-    QList<ZeAxisSubTick> axisSubticks;
+    std::vector<ZeLinAxisTick> ticks;
+    std::vector<ZeAxisSubTick> axisSubticks;
 };
 
 class GridCalculator : public QObject
