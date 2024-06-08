@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -36,10 +36,15 @@ BaseGraphDraw::BaseGraphDraw() : MathObjectDraw(), gridCalculator(this)
     numPrec = NUM_PREC;
     viewMapper.setGraphRange(information.getGraphRange());
 
-    connect(&information, SIGNAL(graphRangeChanged(GraphRange)), &viewMapper, SLOT(setGraphRange(GraphRange)));
-    connect(&information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(update()));
+    connect(&information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(graphRangeChanged(const GraphRange&)));
     connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
     connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
+}
+
+void BaseGraphDraw::graphRangeChanged(const GraphRange& range)
+{
+    viewMapper.setGraphRange(range);
+    update();
 }
 
 void BaseGraphDraw::setNumPrec(int prec)
@@ -124,6 +129,7 @@ void BaseGraphDraw::updateGraphRect()
     graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
     graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
     graphRectScaled.moveTopLeft(QPoint(0, 0)); // because painter is translated to its top-left corner
+    viewMapper.setGraphRect(graphRectScaled);
 }
 
 void BaseGraphDraw::paint()
@@ -196,10 +202,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
     double space, pos;
     double Xpos;
 
-    ZeLinAxisTicks xAxisTicks = gridCalculator.getLinearAxisTicks(graphRectScaled.width(),
-                                                             viewMapper.getGraphRange().x,
-                                                             ZeAxisName::X,
-                                                             fontMetrics);
+    ZeLinAxisTicks xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
 
     const ZeAxesSettings &axesSettings = information.getAxesSettings();
     const Ze1DGridSettings &gridSettings = information.getGridSettings().x;
@@ -213,48 +216,49 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
     for(const ZeLinAxisTick &axisTick: xAxisTicks.ticks)
     {
+        if(not (information.getGraphRange().x.min < axisTick.pos && axisTick.pos < information.getGraphRange().x.max))
+            continue;
+
         Xpos = axisTick.pos * pxPerUnit.x;
+        pos = Xpos + centre.x;
 
-        if(information.getGraphRange().x.min < axisTick.pos && axisTick.pos < information.getGraphRange().x.max)
+        if (fabs(Xpos) > 1)
         {
-            if(fabs(Xpos) > 1)
+            if(gridSettings.showGrid)
             {
-                if(gridSettings.showGrid)
-                {
-                    pen.setColor(gridSettings.gridColor);
-                    pen.setWidthF(gridSettings.gridLineWidth);
-                    painter.setPen(pen);
-                    painter.setRenderHint(QPainter::Antialiasing, false);
-                    painter.drawLine(QPointF(Xpos + centre.x, 0), QPointF(Xpos + centre.x, graphRectScaled.height()));
-                }
-                pen.setColor(axesSettings.color);
-                pen.setWidthF(axesSettings.lineWidth);
+                pen.setColor(gridSettings.gridColor);
+                pen.setWidthF(gridSettings.gridLineWidth);
                 painter.setPen(pen);
-
-                pos = Xpos + centre.x;
-
                 painter.setRenderHint(QPainter::Antialiasing, false);
-                painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
-                painter.drawLine(QPointF(pos, graphRectScaled.height()-4), QPointF(pos, graphRectScaled.height()));
-
-                if(axisTick.posStr.startsWith('-'))
-                    space = fontMetrics.boundingRect(axisTick.posStr.mid(1)).width()/2 + fontMetrics.horizontalAdvance('-');
-                else space = fontMetrics.boundingRect(axisTick.posStr).width()/2;
-                painter.setRenderHint(QPainter::Antialiasing, true);
-                painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), axisTick.posStr);
+                painter.drawLine(QPointF(pos, 0), QPointF(pos, graphRectScaled.height()));
             }
-            else
-            {
-                pen.setColor(axesSettings.color);
-                pen.setWidth(axesSettings.lineWidth);
-                painter.setPen(pen);
+            pen.setColor(axesSettings.color);
+            pen.setWidthF(axesSettings.lineWidth);
+            painter.setPen(pen);
 
-                pos = Xpos + centre.x;
-                space = fontMetrics.boundingRect("0").width()/2;
-                painter.setRenderHint(QPainter::Antialiasing, true);
-                painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), "0");
-            }
+            pos = Xpos + centre.x;
+
+            painter.setRenderHint(QPainter::Antialiasing, false);
+            painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
+            painter.drawLine(QPointF(pos, graphRectScaled.height()-4), QPointF(pos, graphRectScaled.height()));
+
+            if(axisTick.posStr.startsWith('-'))
+                space = fontMetrics.boundingRect(axisTick.posStr.mid(1)).width()/2 + fontMetrics.horizontalAdvance('-');
+            else space = fontMetrics.boundingRect(axisTick.posStr).width()/2;
+            painter.setRenderHint(QPainter::Antialiasing, true);
+            painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), axisTick.posStr);
         }
+        else
+        {
+            pen.setColor(axesSettings.color);
+            pen.setWidth(axesSettings.lineWidth);
+            painter.setPen(pen);
+
+            space = fontMetrics.boundingRect("0").width()/2;
+            painter.setRenderHint(QPainter::Antialiasing, true);
+            painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), "0");
+        }
+
 
         if(gridSettings.showSubGrid && !first_tick)
         {
@@ -312,6 +316,7 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
         update();
 }
 
+
 void BaseGraphDraw::drawLinAxisGridTicksY()
 {
     painter.setFont(information.getGraphSettings().graphFont);
@@ -321,10 +326,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
     int space, largestWidth = 0;
     double Ypos;
 
-    ZeLinAxisTicks yAxisTicks = gridCalculator.getLinearAxisTicks(graphRectScaled.height(),
-                                                             viewMapper.getGraphRange().y,
-                                                             ZeAxisName::Y,
-                                                             fontMetrics);
+    ZeLinAxisTicks yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, fontMetrics);
 
     const auto &axesSettings = information.getAxesSettings();
     const auto &gridSettings = information.getGridSettings().y;
@@ -342,6 +344,7 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
         if(information.getGraphRange().y.min < axisTick.pos && axisTick.pos < information.getGraphRange().y.max)
         {
+            pos = graphRectScaled.height() - (Ypos + centre.y);
             if(fabs(Ypos) > 1)
             {
                 if(gridSettings.showGrid)
@@ -350,14 +353,12 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                     pen.setWidthF(gridSettings.gridLineWidth);
                     painter.setPen(pen);
                     painter.setRenderHint(QPainter::Antialiasing, false);
-                    painter.drawLine(QPointF(0, Ypos + centre.y), QPointF(graphRectScaled.width(), Ypos + centre.y));
+                    painter.drawLine(QPointF(0, pos), QPointF(graphRectScaled.width(), pos));
                 }
 
                 pen.setColor(axesSettings.color);
                 pen.setWidth(axesSettings.lineWidth);
                 painter.setPen(pen);
-
-                pos = Ypos + centre.y;
 
                 painter.setRenderHint(QPainter::Antialiasing, false);
                 painter.drawLine(QPointF(4, pos), QPointF(0, pos));
@@ -377,7 +378,6 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                 pen.setWidth(axesSettings.lineWidth);
                 painter.setPen(pen);
 
-                pos = -Ypos + centre.y;
                 space = fontMetrics.boundingRect("0").width() + 5;
                 painter.drawText(QPointF(-space, pos + text_height/2), "0");
             }
@@ -451,10 +451,10 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
 
 void BaseGraphDraw::drawBaseGraph()
 {
-    if(information.getAxesSettings().x.axisType == ZeAxisType::LINEAR)
+    if(information.getAxesSettings().x.axisType == ZeViewType::LINEAR)
         drawLinAxisGridTicksX();
 
-    if(information.getAxesSettings().y.axisType == ZeAxisType::LINEAR)
+    if(information.getAxesSettings().y.axisType == ZeViewType::LINEAR)
         drawLinAxisGridTicksY();
 
     drawAxes();
@@ -464,7 +464,7 @@ void BaseGraphDraw::drawAxes()
 {
     const auto &axesSettings = information.getAxesSettings();
 
-    const auto &viewRect = viewMapper.getViewRect();
+    const auto &viewRect = viewMapper.getRange<zg::plane::view>();
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setBrush(QBrush(Qt::NoBrush));
@@ -475,15 +475,16 @@ void BaseGraphDraw::drawAxes()
 
     painter.drawRect(graphRectScaled);
 
-    if(viewRect.left() < 0 && viewRect.right() > 0)
+    if(viewRect.x.min.v < 0 && viewRect.x.max.v > 0)
     {
         pen.setWidth(axesSettings.lineWidth);
         pen.setColor(axesSettings.color);
         painter.setPen(pen);
 
-        painter.drawLine(QPointF(0, centre.y), QPointF(graphRectScaled.width(), centre.y));
+        painter.drawLine(QPointF(0, graphRectScaled.height() - centre.y),
+                         QPointF(graphRectScaled.width(), graphRectScaled.height() - centre.y));
     }
-    if(viewRect.bottom() < 0 && viewRect.top() > 0)
+    if(viewRect.y.min.v < 0 && viewRect.y.max.v > 0)
     {
         pen.setWidth(axesSettings.lineWidth);
         pen.setColor(axesSettings.color);
@@ -497,16 +498,16 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 {
     // TODO: update this method not working here
 
-    pxPerUnit.y = -double(graphRectScaled.height()) / fabs(viewMapper.getViewRect().height());
-    pxPerUnit.x = double(graphRectScaled.width()) / fabs(viewMapper.getViewRect().width());
+    pxPerUnit.y = double(graphRectScaled.height()) / fabs(std::as_const(viewMapper).y.getRange<zg::plane::view>().amplitude().v);
+    pxPerUnit.x = double(graphRectScaled.width()) / fabs(std::as_const(viewMapper).x.getRange<zg::plane::view>().amplitude().v);
 
     if(information.getAxesSettings().orthonormal)
     {
         // TODO
     }
 
-    centre.x = - viewMapper.getViewRect().left() * pxPerUnit.x;
-    centre.y = - viewMapper.getViewRect().top() * pxPerUnit.y;
+    centre.x = - viewMapper.x.getMin<zg::plane::view>().v * pxPerUnit.x;
+    centre.y = -  viewMapper.y.getMin<zg::plane::view>().v * pxPerUnit.y;
 }
 
 QImage* BaseGraphDraw::drawImage()

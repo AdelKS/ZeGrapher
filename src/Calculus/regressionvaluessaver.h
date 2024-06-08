@@ -42,15 +42,17 @@ public:
 
     Regression* getRegression();
     void setRegression(Regression *reg);
-    void move(ZeViewMapper newRange);
+    void move(zg::ZeViewMapper newRange);
 
     QList<QPolygonF> &getCurves();
 
 public slots:
      void recalculate();
-     void recalculate(const Point &graphUnits, const ZeViewMapper &graphView);
+     void recalculate(const Point &graphUnits, const zg::ZeViewMapper &graphView);
 
 protected:
+    using zg::plane::view, zg::plane::pixel, zg::plane::real;
+
     void calculatePolarRegressionCurve();
     void calculateCartesianRegressionCurve();
     inline double squareLength(QPointF pt);
@@ -65,7 +67,7 @@ protected:
     double pixelMove;
     Regression *regression;
     double xUnit, yUnit, pixelStep, xUnitStep;
-    ZeViewMapper viewMapper;
+    zg::ZeViewMapper viewMapper;
     Range drawRange, graphAngleRange;
 
     QList<QPolygonF> curves;

@@ -104,12 +104,12 @@ void AxisSettingsWidget::loadAxisSettingsInUI()
                 b11(ui->gridColor), b12(ui->subgridColor),
                 b13(ui->gridLineWidth), b14(ui->subGridLineWidth);
 
-        ui->linearScale->setChecked(axisSettings.axisType == ZeAxisType::LINEAR);
-        ui->logScale->setChecked(axisSettings.axisType == ZeAxisType::LOG);
+        ui->linearScale->setChecked(axisSettings.axisType == ZeViewType::LINEAR);
+        ui->logScale->setChecked(axisSettings.axisType == ZeViewType::LOG);
 
         ui->tickRelSpacing->setValue(axisSettings.tickRelSpacing);
 
-        if(axisSettings.axisType == ZeAxisType::LINEAR)
+        if(axisSettings.axisType == ZeViewType::LINEAR)
         {
             ui->constantMultiplier->setText(axisSettings.linSettings.constantMultiplierStr);
         }
@@ -155,10 +155,10 @@ void AxisSettingsWidget::processUserInput()
 
     ZeAxisSettings axisSettings;
 
-    axisSettings.axisType = ui->linearScale->isChecked() ? ZeAxisType::LINEAR :  ZeAxisType::LOG;
+    axisSettings.axisType = ui->linearScale->isChecked() ? ZeViewType::LINEAR :  ZeViewType::LOG;
     axisSettings.tickRelSpacing = ui->tickRelSpacing->value();
 
-    if(axisSettings.axisType == ZeAxisType::LINEAR)
+    if(axisSettings.axisType == ZeViewType::LINEAR)
     {
         ui->constantMultiplier->checkVal();
         if(ui->constantMultiplier->isValid())
@@ -234,7 +234,7 @@ void AxisSettingsWidget::loadSettings(const Loader::Direction direction)
     auto loadAxisSettings = [&](ZeAxisSettings& axis, QString axisName)
     {
         loader.set_prefix("graph/axes/" + axisName);
-        loader(axis.axisType, "axis_type", ZeAxisType::LINEAR);
+        loader(axis.axisType, "axis_type", ZeViewType::LINEAR);
         loader(axis.tickRelSpacing, "tick_relative_spacing", 0);
 
         loader(axis.logSettings.base, "log/base", 10);

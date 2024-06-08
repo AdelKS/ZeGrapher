@@ -21,6 +21,7 @@
 
 #include "Calculus/funcvaluessaver.h"
 
+using namespace zg;
 
 FuncValuesSaver::FuncValuesSaver(QList<Function*> funcsList, double pxStep)
 {
@@ -33,7 +34,7 @@ FuncValuesSaver::FuncValuesSaver(QList<Function*> funcsList, double pxStep)
 
 void FuncValuesSaver::setPixelStep(double pxStep)
 {
-    pixelStep = pxStep;
+    pixelStep = zg::pixel_unit{pxStep};
 }
 
 double FuncValuesSaver::evalFunc(int funId, double x, double k)
@@ -42,21 +43,21 @@ double FuncValuesSaver::evalFunc(int funId, double x, double k)
 }
 
 
-void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &view)
+void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const zg::ZeViewMapper &mapper)
 {
     xUnit = pxPerUnit.x;
     yUnit = pxPerUnit.y;
-    unitStep = pixelStep / xUnit;
+    unitStep = zg::view_unit{pixelStep.v / xUnit};
 
-    double x = 0, k = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
+    double k = 0, delta1 = 0, delta2 = 0, delta3 = 0;
     int k_pos = 0, end=0, n=0;
 
     Range range;
     QPolygonF curvePart;
     QPointF pt1, pt2;
 
-    double xStart = view.getViewRect().left() - unitStep;
-    double xEnd = view.getViewRect().right() + unitStep;
+    zg::view_unit xStart = mapper.x.getMin<zg::plane::view>() - unitStep;
+    zg::view_unit xEnd = mapper.x.getMax<zg::plane::view>() + unitStep;
 
     for(short i = 0; i < funcs.size(); i++)
     {
@@ -74,11 +75,11 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
             funcCurves[i] << QList<QPolygonF>();
             curvePart.clear();
 
-            for(x = xStart ; x <= xEnd; x += unitStep)
+            for(zg::view_unit x = xStart ; x <= xEnd; x += unitStep)
             {
-                y = evalFunc(i, view.toUnitX(x), k);
+                zg::real_unit y = zg::real_unit{evalFunc(i, mapper.x.to<real>(x).v, k)};
 
-                if(std::isnan(y) || std::isinf(y))
+                if(std::isnan(y.v) || std::isinf(y.v))
                 {
                     if(!curvePart.isEmpty())
                     {
@@ -88,7 +89,7 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
                 }
                 else
                 {
-                    curvePart <<  QPointF( x * xUnit ,  view.toViewY(y)*yUnit);
+                    curvePart <<  QPointF( mapper.x.to<pixel>(x).v ,  mapper.y.to<view>(y).v);
 
                     n = curvePart.size();
                     if(n > 1)
@@ -122,18 +123,19 @@ void FuncValuesSaver::calculateAll(const Point &pxPerUnit, const ZeViewMapper &v
     }
 }
 
-void FuncValuesSaver::move(const ZeViewMapper &view)
+void FuncValuesSaver::move(const ZeViewMapper &mapper)
 {
-    double x = 0, k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0, y=0;
+    double k = 0, k_step = 0, delta1 = 0, delta2 = 0, delta3 = 0;
     int k_pos = 0;
-
 
     QPolygonF curvePart;
     QPointF pt1, pt2;
     int n = 0;
 
-    double xStart = view.getViewRect().left() - unitStep;
-    double xEnd = view.getViewRect().right() + unitStep;
+    zg::view_unit x;
+
+    zg::view_unit xStart = mapper.x.getMin<zg::plane::view>() - unitStep;
+    zg::view_unit xEnd = mapper.x.getMax<zg::plane::view>() + unitStep;
 
     for(short i = 0 ; i < funcs.size(); i++)
     {
@@ -146,7 +148,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
         for(k_pos = 0; k_pos < funcCurves[i].size() ; k_pos++)
         {
             curvePart = funcCurves[i][k_pos].takeFirst();
-            x = curvePart.first().x() - unitStep;
+            x = zg::view_unit{curvePart.first().x()} - unitStep;
 
             if(x >= xStart)
             {
@@ -163,9 +165,9 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
 
                 while(x >= xStart)
                 {
-                    y = evalFunc(i, view.toViewX(x), k);
+                    zg::real_unit y = zg::real_unit{evalFunc(i, mapper.x.to<real>(x).v, k)};
 
-                    if(std::isnan(y) || std::isinf(y))
+                    if(std::isnan(y.v) || std::isinf(y.v))
                     {
                         if(!curvePart.isEmpty())
                         {
@@ -175,7 +177,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
                     }
                     else
                     {
-                        curvePart.prepend(QPointF(x ,  view.toViewY(y)));
+                        curvePart.prepend(QPointF( mapper.x.to<pixel>(x).v ,  mapper.y.to<view>(y).v));
 
                         n = curvePart.size();
 
@@ -218,7 +220,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
 
             curvePart = funcCurves[i][k_pos].takeLast();
 
-            x = curvePart.last().x() + unitStep;
+            x = mapper.x.to<view>(zg::pixel_unit{curvePart.last().x()}) + unitStep;
 
             if(x <= xEnd)
             {
@@ -235,9 +237,9 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
 
                 while(x <= xEnd)
                 {
-                    y = evalFunc(i, view.toViewX(x), k);
+                    zg::real_unit y = zg::real_unit{evalFunc(i, mapper.x.to<real>(x).v, k)};
 
-                    if(std::isnan(y) || std::isinf(y))
+                    if(std::isnan(y.v) || std::isinf(y.v))
                     {
                         if(!curvePart.isEmpty())
                         {
@@ -247,7 +249,7 @@ void FuncValuesSaver::move(const ZeViewMapper &view)
                     }
                     else
                     {
-                        curvePart << QPointF(x ,  view.toViewY(y) );
+                        curvePart << QPointF( mapper.x.to<pixel>(x).v ,  mapper.y.to<view>(y).v);
                         n = curvePart.size();
 
                         if(n > 1)

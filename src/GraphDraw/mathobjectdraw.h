@@ -72,7 +72,7 @@ protected:
     QPen pen;
     QBrush brush;
     Point centre;
-    ZeViewMapper viewMapper;
+    zg::ZeViewMapper viewMapper;
 
     double coef;
 

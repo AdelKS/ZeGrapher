@@ -164,12 +164,12 @@ struct FastTree
     FastTree *right;
 };
 
-enum struct ZeAxisType
+enum struct ZeViewType
 {
     LINEAR, LOG
 };
 
-Q_DECLARE_METATYPE(ZeAxisType);
+Q_DECLARE_METATYPE(ZeViewType);
 
 struct ZeCoordinateDisplayFormat
 {
@@ -213,7 +213,7 @@ public:
     int tickRelSpacing = 0;
     ZeLinAxisSettings linSettings;
     ZeLogAxisSettings logSettings;
-    ZeAxisType axisType = ZeAxisType::LINEAR;
+    ZeViewType axisType = ZeViewType::LINEAR;
 };
 
 struct ZeSizeSettings

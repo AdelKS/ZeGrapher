@@ -233,53 +233,61 @@ void MathObjectDraw::drawFunctions()
 
 void MathObjectDraw::drawOneSequence(int i, int width)
 {
-    if(viewMapper.getXmax() <= seqs[0]->get_nMin() ||
-            trunc(viewMapper.getXmax()) <= viewMapper.getXmin() ||
-            !seqs[i]->getDrawState())
-        return;
+    {
+        double real_max = viewMapper.x.getMax<zg::plane::real>().v;
+        double real_min = viewMapper.x.getMin<zg::plane::real>().v;
+        if (real_max <= seqs[0]->get_nMin()
+            or trunc(real_max) <= real_min
+            or not seqs[i]->getDrawState())
+          return;
+    }
 
-     painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
-     pen.setWidth(width);
+    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
+    pen.setWidth(width);
 
-     double posX;
+    zg::view_unit posX;
 
-     double viewXmin = viewMapper.getViewRect().left();
-     double viewXmax = viewMapper.getViewRect().right();
+    zg::view_unit viewXmin = viewMapper.x.getMin<zg::plane::view>();
+    zg::view_unit viewXmax = viewMapper.x.getMax<zg::plane::view>();
 
-     double Xmin = viewMapper.getXmin();
+    zg::real_unit Xmin = viewMapper.x.getMin<zg::plane::real>();
 
-     if(Xmin >  seqs[0]->get_nMin())
-         posX = viewXmin;
-     else posX = viewMapper.toViewX(seqs[0]->get_nMin());
+    zg::real_unit n_min = {double(seqs[0]->get_nMin())};
+    if(Xmin > n_min)
+        posX = viewXmin;
+    else
+        posX = viewMapper.x.to<zg::plane::view>(n_min);
 
-     double step = 1;
+    zg::view_unit step = {1.};
 
-     if(pxPerUnit.x < 1)
-         step = 5 * trunc(1/pxPerUnit.x);
+    if(pxPerUnit.x < 1.)
+        step = zg::view_unit{5 * trunc(1./pxPerUnit.x)};
 
+    bool ok = true;
+    int end = seqs[i]->getDrawsNum();
 
-     double result;
-     bool ok = true;
-     int end = seqs[i]->getDrawsNum();
-
-     ColorSaver *colorSaver = seqs[i]->getColorSaver();
+    ColorSaver *colorSaver = seqs[i]->getColorSaver();
 
 
-     for(int k = 0; k < end; k++)
-     {
-         pen.setColor(colorSaver->getColor(k));
-         painter.setPen(pen);
+    for(int k = 0; k < end; k++)
+    {
+        pen.setColor(colorSaver->getColor(k));
+        painter.setPen(pen);
 
-         for(double pos = posX; pos < viewXmax; pos += step)
-         {
-             result = seqs[i]->getSeqValue(trunc(viewMapper.toViewX(pos)), ok, k);
+        for(zg::view_unit view_x = posX; view_x < viewXmax; view_x += step)
+        {
+            zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
+            real_x.v = trunc(real_x.v);
 
-             if(!ok  || !std::isfinite(result))
-                 return;
+            zg::real_unit y = {seqs[i]->getSeqValue(real_x.v, ok, k)};
 
-             painter.drawPoint(Point {pos, result} * pxPerUnit);
-         }
-     }
+            if(!ok  || !std::isfinite(y.v))
+                return;
+
+            painter.drawPoint(
+              QPointF(viewMapper.to<zg::plane::pixel>(zg::point{.x = real_x, .y = y})));
+        }
+    }
 }
 
 void MathObjectDraw::drawSequences()
@@ -317,7 +325,7 @@ void MathObjectDraw::drawStaticParEq()
             for(int pos = 0 ; pos < list->at(curve).size(); pos ++)
             {
                 point = list->at(curve).at(pos);
-                polygon << viewMapper.toView(point) * pxPerUnit;
+                polygon << QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt::from(point)));
             }
 
             painter.drawPolyline(polygon);

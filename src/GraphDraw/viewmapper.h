@@ -18,92 +18,72 @@
 **
 ****************************************************************************/
 
-#ifndef GRAPHVIEW_H
-#define GRAPHVIEW_H
+#pragma once
 
 #include <QObject>
-#include <QWidget>
-#include <QRectF>
 #include <QPair>
+#include <QRectF>
+#include <QWidget>
 
+#include "axismapper.h"
 #include "structures.h"
 
-class ZeViewMapper : public QObject
+namespace zg {
+class ZeViewMapper
 {
-    Q_OBJECT
-
 public:
-    explicit ZeViewMapper(QObject *parent = nullptr);
+  ZeAxisMapper<ZeAxisName::X> x;
+  ZeAxisMapper<ZeAxisName::Y> y;
 
-    ZeViewMapper(const ZeViewMapper &other,
-                QObject *parent = nullptr);
+  explicit ZeViewMapper() = default;
 
-    ZeViewMapper& operator=(const ZeViewMapper &other);
+  void zoomView(point<u<plane::pixel>> center, double ratio);
+  void translateView(point<u<plane::pixel>> vec);
 
-    void zoomYview(double ratio);
-    void zoomXview(double ratio);
-    void zoomView(QPointF center, double ratio);
-    void translateView(QPointF vec);
+  template <plane p>
+  Range2D<u<p>> getRange() const;
 
-    void setAxesSettings(const ZeAxesSettings &axesSettings);
+  template <plane p>
+  ZeViewMapper& setRange(const Range2D<u<p>>& range);
 
-    void setViewXmin(double val);
-    void setViewXmax(double val);
-    void setViewYmin(double val);
-    void setViewYmax(double val);
+  /// @note converts it to the range returned by getRange<plane::pixel>()
+  ZeViewMapper& setGraphRect(const QRectF& rect);
 
-    void setlgXmin(double val);
-    void setlgXmax(double val);
-    void setlgYmin(double val);
-    void setlgYmax(double val);
+  /// @note converts it to the range returned by getRange<plane::pixel>()
+  QRectF getGraphRect() const;
 
-    void setXmin(double val);
-    void setXmax(double val);
-    void setYmin(double val);
-    void setYmax(double val);
+  template <plane q, plane p>
+  point<u<q>> to(point<u<p>> pt) const;
 
-    GraphRange getGraphRange();
-
-    double getXmin();
-    double getXmax();
-    double getYmin();
-    double getYmax();
-
-    QPointF toView(const QPointF &unitPt) const;
-    QPointF toUnit(const QPointF &viewPt) const;
-
-    Point toView(const Point &unitPt) const;
-    Point toUnit(const Point &viewPt) const;
-
-    double toUnitY(double viewY) const;
-    double toViewY(double unitY) const ;
-
-    double toUnitX(double viewX) const ;
-    double toViewX(double unitX) const ;
-
-
-
-    QRectF getRect() const ;
-    QRectF getLogRect() const ;
-    QRectF getViewRect() const ;
-    void setViewRect(QRectF getRect);
-
-signals:
-
-public slots:
-    void setGraphRange(const GraphRange &range);
+  void setGraphRange(const GraphRange& range);
+  void setAxesSettings(const ZeAxesSettings& axesSettings);
 
 protected:
+  void enforceOrthonormality();
 
-    void verifyOrthonormality();
-
-    double Xmin, Xmax, Ymin, Ymax;
-    double lgXmin, lgXmax, lgYmin, lgYmax;
-
-    QSizeF viewPxSize;
-
-    ZeAxesSettings axesSettings;
-    ZeGridSettings gridSettings;
+  bool orthonormal = false;
 };
 
-#endif // GRAPHVIEW_H
+
+
+template <plane p>
+Range2D<u<p>> ZeViewMapper::getRange() const
+{
+  return Range2D<u<p>>{x.getRange<p>(), y.getRange<p>()};
+}
+
+template <plane p>
+ZeViewMapper& ZeViewMapper::setRange(const Range2D<u<p>>& range)
+{
+  x.setRange(range.x);
+  y.setRange(range.y);
+  return *this;
+}
+
+template <plane q, plane p>
+point<u<q>> ZeViewMapper::to(point<u<p>> pt) const
+{
+  return point<u<q>>{x.to<q>(pt.x), y.to<q>(pt.y)};
+}
+
+} // namespace zg

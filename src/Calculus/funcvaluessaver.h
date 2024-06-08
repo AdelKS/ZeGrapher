@@ -35,8 +35,8 @@ public:
     FuncValuesSaver(QList<Function *> funcsList, double pxStep);
 
     void setPixelStep(double pxStep);
-    void calculateAll(const Point &pxPerUnit, const ZeViewMapper &view);
-    void move(const ZeViewMapper &view);
+    void calculateAll(const Point &pxPerUnit, const zg::ZeViewMapper &view);
+    void move(const zg::ZeViewMapper &view);
     int getFuncDrawsNum(int func);
 
     QList<QPolygonF> getCurve(int func, int curve);
@@ -47,12 +47,16 @@ protected slots:
     void recalculateFuncColors(int id);
 
 protected:
+    using zg::plane::view, zg::plane::pixel, zg::plane::real;
+
     void calculateAllFuncColors();
     double evalFunc(int funId, double x, double k);
 
     QList<Function*> funcs;
 
-    double xUnit, yUnit, pixelStep, unitStep;
+    double xUnit, yUnit;
+    zg::pixel_unit pixelStep;
+    zg::view_unit unitStep;
 
     QList< QList< QList<QPolygonF> > > funcCurves;
     QList< QList<QColor> > funcColors;

@@ -44,6 +44,8 @@ public slots:
     void setItalic(bool state);
     void setNumPrec(int prec);
 
+    void graphRangeChanged(const GraphRange& range);
+
 protected:
 
     void updateCenterPosAndScaling();

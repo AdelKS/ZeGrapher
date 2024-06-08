@@ -24,6 +24,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace zg;
 
 RegressionValuesSaver::RegressionValuesSaver(double pixStep, Regression *reg)
 {
@@ -112,7 +113,7 @@ double RegressionValuesSaver::arg(QPointF pt)
 
 Range RegressionValuesSaver::getGraphAngleRange()
 {
-    QRectF graphWin = viewMapper.getRect();
+    QRectF graphWin = viewMapper.getGraphRect();
     Range angleRange;
 
     if(graphWin.contains(0,0))
@@ -177,8 +178,8 @@ void RegressionValuesSaver::polarMove()
 
 void RegressionValuesSaver::cartesianMove()
 {
-    drawRange.start = std::max(viewMapper.getXmin(), regression->getDrawRange().start);
-    drawRange.end = std::min(viewMapper.getXmax(), regression->getDrawRange().end);
+    drawRange.start = std::max(viewMapper.x.getMin<view>().v, regression->getDrawRange().start);
+    drawRange.end = std::min(viewMapper.x.getMax<view>().v, regression->getDrawRange().end);
 
     double x = curves.first().first().x() - xUnitStep;
 
@@ -221,8 +222,8 @@ void RegressionValuesSaver::cartesianMove()
 
 void RegressionValuesSaver::calculateCartesianRegressionCurve()
 {
-    drawRange.start = std::max(viewMapper.getXmin(), regression->getDrawRange().start);
-    drawRange.end = std::min(viewMapper.getXmax(), regression->getDrawRange().end);
+    drawRange.start = std::max(viewMapper.x.getMin<view>().v, regression->getDrawRange().start);
+    drawRange.end = std::min(viewMapper.x.getMax<view>().v, regression->getDrawRange().end);
 
     double x = drawRange.start - xUnitStep;
 
@@ -267,7 +268,7 @@ void RegressionValuesSaver::calculatePolarRegressionCurve()
 
     QPolygonF curve;
     QPointF pt;
-    QRectF graphRect = viewMapper.getRect();
+    QRectF graphRect = viewMapper.getGraphRect();
 
     while(angle < regRange.end)
     {

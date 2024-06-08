@@ -35,7 +35,7 @@ class AxisSettingsWidget : public QWidget
 {
     Q_OBJECT
 
-    Q_ENUM(ZeAxisType);
+    Q_ENUM(ZeViewType);
 
 public:
     explicit AxisSettingsWidget(QWidget *parent = nullptr);
