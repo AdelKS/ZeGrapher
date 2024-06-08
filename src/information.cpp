@@ -100,16 +100,6 @@ void Information::emitAnimationUpdate()
     emit animationUpdate();
 }
 
-void Information::setStraightLinesListPointer(QList<StraightLineWidget*> *list)
-{
-    lines = list;
-}
-
-QList<StraightLineWidget*>* Information::getStraightLinesList()
-{
-    return lines;
-}
-
 void Information::setSequencesList(QList<SeqCalculator*> list)
 {
     sequences = list;

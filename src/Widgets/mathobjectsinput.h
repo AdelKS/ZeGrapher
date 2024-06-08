@@ -44,7 +44,6 @@ public:
 public slots:
     void validateFunctions();
     void validateSequences();
-    void validateLines();
     void validateParametricEquations();
 
 signals:
@@ -57,9 +56,6 @@ protected slots:
     void newFuncParametricState();
     void newSeqParametricState();
     void draw();
-
-    void addStraightline();
-    void removeStraightline(StraightLineWidget *widget);
 
     void addParEq();
     void removeParEq(ParEqWidget *widget);
@@ -89,7 +85,6 @@ private:
 
     QList<QChar> antiderivatives;
 
-    QList<StraightLineWidget*> straightlineWidgets;
     QList<ParEqWidget*> parEqWidgets;
     QList<DataWidget*> dataWidgets;
 

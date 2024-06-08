@@ -147,7 +147,6 @@ void BaseGraphDraw::paint()
 
     drawFunctions();
     drawSequences();
-    drawStraightLines();
     drawStaticParEq();
     drawRegressions();
     drawData();
@@ -546,7 +545,6 @@ QImage* BaseGraphDraw::drawImage()
 
     drawFunctions();
     drawSequences();
-    drawStraightLines();
     drawStaticParEq();
     drawRegressions();
     drawData();

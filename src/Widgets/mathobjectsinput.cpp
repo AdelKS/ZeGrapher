@@ -55,7 +55,6 @@ MathObjectsInput::MathObjectsInput(QWidget *parent):
     ui->freqSpinBox->setValue(INIT_FREQ);
 
     connect(ui->buttonPlot, SIGNAL(released()), this, SLOT(draw()));
-    connect(ui->addLine, SIGNAL(released()), this, SLOT(addStraightline()));
     connect(ui->addParEq, SIGNAL(released()), this, SLOT(addParEq()));
     connect(ui->addDataWidget, SIGNAL(released()), this, SLOT(addDataWidget()));
 
@@ -205,16 +204,13 @@ void MathObjectsInput::newSeqParametricState()
 
 void MathObjectsInput::setInfoClass()
 {
-
     information.setParEqsListPointer(&parEqWidgets);
-    information.setStraightLinesListPointer(&straightlineWidgets);
 }
 
 void MathObjectsInput::draw()
 {
     validateFunctions();
     validateSequences();
-    validateLines();
     validateParametricEquations();
     information.emitUpdateSignal();
 }
@@ -241,12 +237,6 @@ void MathObjectsInput::validateSequences()
         seqWidgets[i]->thirdValidation();
 }
 
-void MathObjectsInput::validateLines()
-{
-    for(int i = 0 ; i < straightlineWidgets.size(); i++)
-        straightlineWidgets[i]->validate();
-}
-
 void MathObjectsInput::validateParametricEquations()
 {
     for(int i = 0 ; i < parEqWidgets.size(); i++)
@@ -256,29 +246,6 @@ void MathObjectsInput::validateParametricEquations()
 void MathObjectsInput::keyboardButtonClicked()
 {
     emit displayKeyboard();
-}
-
-void MathObjectsInput::addStraightline()
-{
-    StraightLineWidget *line = new StraightLineWidget(straightlineWidgets.size(), funcCalcs, information.getGraphSettings().defaultColor);
-    straightlineWidgets << line;
-
-    connect(line, SIGNAL(removeMe(StraightLineWidget*)), this, SLOT(removeStraightline(StraightLineWidget*)));
-    connect(line, SIGNAL(returnPressed()), this, SLOT(draw()));
-    connect(line, SIGNAL(drawStateChanged()), &information, SLOT(emitDrawStateUpdate()));
-
-    ui->linesLayout->addWidget(line);
-}
-
-void MathObjectsInput::removeStraightline(StraightLineWidget *widget)
-{
-    for(int i = straightlineWidgets.indexOf(widget) + 1; i < straightlineWidgets.size(); i++)
-        straightlineWidgets[i]->changeID(i-1);
-
-    straightlineWidgets.removeOne(widget);
-    widget->close();
-    delete widget;
-
 }
 
 void MathObjectsInput::addParEq()

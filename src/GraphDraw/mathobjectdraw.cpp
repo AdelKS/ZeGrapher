@@ -34,7 +34,6 @@ MathObjectDraw::MathObjectDraw()
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
 
-    straightLines = information.getStraightLinesList();
     parEqs = information.getParEqsList();
     funcs = information.getFuncsList();
     seqs = information.getSeqsList();
@@ -287,42 +286,6 @@ void MathObjectDraw::drawSequences()
 {
     for(int i = 0 ; i < seqs.size() ; i++)
         drawOneSequence(i, information.getGraphSettings().curvesThickness + 3);
-}
-
-void MathObjectDraw::drawStraightLines()
-{
-    pen.setWidth(information.getGraphSettings().curvesThickness);
-    QPointF pt1, pt2;
-
-    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
-
-    for(int i = 0 ; i < straightLines->size(); i++)
-    {
-        if(!straightLines->at(i)->isValid())
-            continue;
-
-        pen.setColor(straightLines->at(i)->getColor());
-        painter.setPen(pen);
-
-        if(straightLines->at(i)->isVertical())
-        {
-            pt1.setX(viewMapper.toViewX(straightLines->at(i)->getVerticalPos()) * pxPerUnit.x);
-            pt1.setY(viewMapper.getViewRect().top());
-
-            pt2.setX(viewMapper.toViewX(straightLines->at(i)->getVerticalPos()) * pxPerUnit.x);
-            pt2.setY(viewMapper.getViewRect().bottom());
-        }
-        else
-        {
-            pt1.setX(viewMapper.getViewRect().left() * pxPerUnit.x);
-            pt1.setY(viewMapper.toViewY(straightLines->at(i)->getY(viewMapper.getXmin())) * pxPerUnit.y);
-
-            pt2.setX(viewMapper.getViewRect().right() * pxPerUnit.x);
-            pt2.setY(viewMapper.toViewY(straightLines->at(i)->getY(viewMapper.getXmax())) * pxPerUnit.y);
-        }
-
-        painter.drawLine(pt1, pt2);
-    }
 }
 
 void MathObjectDraw::drawStaticParEq()

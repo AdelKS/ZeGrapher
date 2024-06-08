@@ -25,7 +25,6 @@
 
 #include "Calculus/function.h"
 #include "Calculus/seqcalculator.h"
-#include "Widgets/straightlinewidget.h"
 #include "Widgets/pareqwidget.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
@@ -61,7 +60,6 @@ protected:
     void drawRegressions();
     void drawData();
     void drawSequences();
-    void drawStraightLines();
     void drawStaticParEq();
 
     void recalculateRegVals();
@@ -83,7 +81,6 @@ protected:
 
     QList<Function*> funcs;
     QList<SeqCalculator*> seqs;
-    QList<StraightLineWidget*> *straightLines;
     QList<ParEqWidget*> *parEqs;
     QList< QList<double> > *regVals;
 

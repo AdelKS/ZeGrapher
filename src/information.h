@@ -25,7 +25,6 @@
 #include "Widgets/pareqwidget.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/function.h"
-#include "Widgets/straightlinewidget.h"
 
 #include <QtQml/qqmlregistration.h>
 
@@ -72,9 +71,6 @@ public:
 
     void setParEqsListPointer(QList<ParEqWidget*> *list);
     QList<ParEqWidget*>* getParEqsList();
-
-    void setStraightLinesListPointer(QList<StraightLineWidget*> *list);
-    QList<StraightLineWidget*>* getStraightLinesList();
 
     void checkParametricEquations();
 
@@ -128,8 +124,6 @@ protected:
     std::list<std::shared_ptr<UserData const>> userDataSets;
 
     QList<Regression*> regressions;
-
-    QList<StraightLineWidget*> *lines;
 
     QList<Function*> functions;
     QList<SeqCalculator*> sequences;
