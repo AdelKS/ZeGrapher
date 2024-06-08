@@ -22,7 +22,6 @@ ZeGrapher is a free, open source and easy to use software for plotting mathemati
 - Parametric equation plotting. The curves can be animated, with adjustable framerate and speed.
 - Experimental data plot and polynomial fit (regression). Data can be imported/exported from a CSV file.
 - Parametric plot for functions, sequences and parametric equations: the parameter name to use is fixed to `k`. This will be overheauled in the upcoming version.
-- Plot tangents: they can be moved and resized simply with the mouse.
 - Plot derivatives and antiderviatives.
 - Print the graph, with these options :
     -   Choose the size and the position of the graph on the sheet.

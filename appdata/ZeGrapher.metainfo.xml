@@ -24,7 +24,6 @@
             <li>Parametric equation plotting. The curves can be animated, with adjustable smoothness (frame rate) and speed (ms per step).</li>
             <li>Experimental data plot and polynomial fit (regression). Data can be imported/exported from a CSV file. </li>
             <li>Parametric plot for functions, sequences and parametric equations: the parameter symbol to use is "k".</li>
-            <li>Plot tangents: they can be moved and resized simply with the mouse.</li>
             <li>Plot derivatives and antiderviatives.</li>
             <li>Print the graph, with the following options :</li>
             <ul>

@@ -56,7 +56,6 @@ MathObjectsInput::MathObjectsInput(QWidget *parent):
 
     connect(ui->buttonPlot, SIGNAL(released()), this, SLOT(draw()));
     connect(ui->addLine, SIGNAL(released()), this, SLOT(addStraightline()));
-    connect(ui->addTangent, SIGNAL(released()), this, SLOT(addTangent()));
     connect(ui->addParEq, SIGNAL(released()), this, SLOT(addParEq()));
     connect(ui->addDataWidget, SIGNAL(released()), this, SLOT(addDataWidget()));
 
@@ -208,7 +207,6 @@ void MathObjectsInput::setInfoClass()
 {
 
     information.setParEqsListPointer(&parEqWidgets);
-    information.setTangentsListPointer(&tangentWidgets);
     information.setStraightLinesListPointer(&straightlineWidgets);
 }
 
@@ -247,10 +245,6 @@ void MathObjectsInput::validateLines()
 {
     for(int i = 0 ; i < straightlineWidgets.size(); i++)
         straightlineWidgets[i]->validate();
-
-    for(int i = 0 ; i < tangentWidgets.size(); i++)
-        tangentWidgets[i]->validate();
-
 }
 
 void MathObjectsInput::validateParametricEquations()
@@ -262,30 +256,6 @@ void MathObjectsInput::validateParametricEquations()
 void MathObjectsInput::keyboardButtonClicked()
 {
     emit displayKeyboard();
-}
-
-void MathObjectsInput::addTangent()
-{
-    TangentWidget *tangent = new TangentWidget(tangentWidgets.size(), funcCalcs, funcWidgets, information.getGraphSettings().defaultColor);
-    tangentWidgets << tangent;
-
-    connect(tangent, SIGNAL(removeMe(TangentWidget*)), this, SLOT(removeTangent(TangentWidget*)));
-    connect(tangent, SIGNAL(returnPressed()), this, SLOT(draw()));
-    connect(tangent, SIGNAL(drawStateChanged()), &information, SLOT(emitDrawStateUpdate()));
-
-    ui->linesLayout->addWidget(tangent);
-}
-
-void MathObjectsInput::removeTangent(TangentWidget *widget)
-{
-    for(int i = tangentWidgets.indexOf(widget) + 1 ; i < tangentWidgets.size() ; i++)
-        tangentWidgets[i]->changeID(i-1);
-
-    tangentWidgets.removeOne(widget);
-    widget->close();
-    delete widget;
-
-    information.emitUpdateSignal();
 }
 
 void MathObjectsInput::addStraightline()

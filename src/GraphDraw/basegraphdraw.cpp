@@ -29,7 +29,6 @@ BaseGraphDraw::BaseGraphDraw() : MathObjectDraw(), gridCalculator(this)
     topMargin = 20;
     bottomMargin = 30;
 
-    tangentDrawException = -1;
     legendFontSize = 12;
     legendState = false;
     additionalMargin = 0;
@@ -149,7 +148,6 @@ void BaseGraphDraw::paint()
     drawFunctions();
     drawSequences();
     drawStraightLines();
-    drawTangents();
     drawStaticParEq();
     drawRegressions();
     drawData();

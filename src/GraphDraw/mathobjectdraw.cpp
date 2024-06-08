@@ -35,13 +35,11 @@ MathObjectDraw::MathObjectDraw()
     brush.setStyle(Qt::SolidPattern);
 
     straightLines = information.getStraightLinesList();
-    tangents = information.getTangentsList();
     parEqs = information.getParEqsList();
     funcs = information.getFuncsList();
     seqs = information.getSeqsList();
 
     moving = false;
-    tangentDrawException = -1;
 
     funcValuesSaver = new FuncValuesSaver(information.getFuncsList(), information.getGraphSettings().distanceBetweenPoints);
 
@@ -289,40 +287,6 @@ void MathObjectDraw::drawSequences()
 {
     for(int i = 0 ; i < seqs.size() ; i++)
         drawOneSequence(i, information.getGraphSettings().curvesThickness + 3);
-}
-
-void MathObjectDraw::drawOneTangent(int i)
-{
-    if(!tangents->at(i)->isTangentValid())
-        return;
-
-    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
-
-    tangents->at(i)->calculateTangentPoints();
-
-    pen.setColor(tangents->at(i)->getColor());
-
-    pen.setWidth(information.getGraphSettings().curvesThickness);
-    painter.setPen(pen);
-
-    TangentPoints tangentPoints = tangents->at(i)->getCaracteristicPoints().toView(viewMapper) * pxPerUnit;
-    painter.drawLine(tangentPoints.left, tangentPoints.right);
-
-    pen.setWidth(information.getGraphSettings().curvesThickness + 3);
-    painter.setPen(pen);
-
-    painter.drawPoint(tangentPoints.left);
-    painter.drawPoint(tangentPoints.center);
-    painter.drawPoint(tangentPoints.right);
-}
-
-void MathObjectDraw::drawTangents()
-{
-    for(int i = 0 ; i < tangents->size(); i++)
-    {
-        if(i != tangentDrawException)
-            drawOneTangent(i);
-    }
 }
 
 void MathObjectDraw::drawStraightLines()

@@ -26,7 +26,6 @@
 #include "Calculus/seqcalculator.h"
 #include "Calculus/function.h"
 #include "Widgets/straightlinewidget.h"
-#include "Widgets/tangentwidget.h"
 
 #include <QtQml/qqmlregistration.h>
 
@@ -73,9 +72,6 @@ public:
 
     void setParEqsListPointer(QList<ParEqWidget*> *list);
     QList<ParEqWidget*>* getParEqsList();
-
-    void setTangentsListPointer(QList<TangentWidget*> *list);
-    QList<TangentWidget*>* getTangentsList();
 
     void setStraightLinesListPointer(QList<StraightLineWidget*> *list);
     QList<StraightLineWidget*>* getStraightLinesList();
@@ -133,7 +129,6 @@ protected:
 
     QList<Regression*> regressions;
 
-    QList<TangentWidget*> *tangents;
     QList<StraightLineWidget*> *lines;
 
     QList<Function*> functions;

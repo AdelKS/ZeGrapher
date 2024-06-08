@@ -58,9 +58,6 @@ protected slots:
     void newSeqParametricState();
     void draw();
 
-    void addTangent();
-    void removeTangent(TangentWidget *widget);
-
     void addStraightline();
     void removeStraightline(StraightLineWidget *widget);
 
@@ -92,7 +89,6 @@ private:
 
     QList<QChar> antiderivatives;
 
-    QList<TangentWidget*> tangentWidgets;
     QList<StraightLineWidget*> straightlineWidgets;
     QList<ParEqWidget*> parEqWidgets;
     QList<DataWidget*> dataWidgets;

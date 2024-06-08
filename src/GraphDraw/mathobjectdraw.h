@@ -25,7 +25,6 @@
 
 #include "Calculus/function.h"
 #include "Calculus/seqcalculator.h"
-#include "Widgets/tangentwidget.h"
 #include "Widgets/straightlinewidget.h"
 #include "Widgets/pareqwidget.h"
 #include "Calculus/funcvaluessaver.h"
@@ -57,13 +56,11 @@ protected:
     void drawDataSet(int id, int width);
     void drawCurve(int width, QColor color, const QPolygonF &curve);
     void drawCurve(int width, QColor color, const QList<QPolygonF> &curves);
-    void drawOneTangent(int id);
 
     void drawFunctions();
     void drawRegressions();
     void drawData();
     void drawSequences();
-    void drawTangents(); //except the one pointed by tangentDrawException
     void drawStraightLines();
     void drawStaticParEq();
 
@@ -83,12 +80,10 @@ protected:
 
     Point pxPerUnit;
     bool moving, recalculate, recalculateRegs;
-    int tangentDrawException;
 
     QList<Function*> funcs;
     QList<SeqCalculator*> seqs;
     QList<StraightLineWidget*> *straightLines;
-    QList<TangentWidget*> *tangents;
     QList<ParEqWidget*> *parEqs;
     QList< QList<double> > *regVals;
 

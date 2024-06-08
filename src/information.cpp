@@ -100,16 +100,6 @@ void Information::emitAnimationUpdate()
     emit animationUpdate();
 }
 
-void Information::setTangentsListPointer(QList<TangentWidget*> *list)
-{
-    tangents = list;
-}
-
-QList<TangentWidget*>* Information::getTangentsList()
-{
-    return tangents;
-}
-
 void Information::setStraightLinesListPointer(QList<StraightLineWidget*> *list)
 {
     lines = list;
