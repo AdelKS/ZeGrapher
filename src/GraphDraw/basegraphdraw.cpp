@@ -134,6 +134,11 @@ void BaseGraphDraw::updateGraphRect()
 
 void BaseGraphDraw::paint()
 {
+    drawEverything();
+}
+
+void BaseGraphDraw::drawEverything()
+{
     updateGraphRect(); // must happen before the next instruction
     updateCenterPosAndScaling();
 
@@ -499,46 +504,16 @@ void BaseGraphDraw::updateCenterPosAndScaling()
 
 QImage* BaseGraphDraw::drawImage()
 {
-    //TODO: update this method
+  QImage *image = new QImage(size(), QImage::Format_RGB32);
+  image->fill(information.getGraphSettings().backgroundColor.rgb());
 
-    QImage *image = new QImage(size(), QImage::Format_RGB32);
-    image->fill(information.getGraphSettings().backgroundColor.rgb());
+  painter.begin(image);
+  //trace du background
 
-    painter.begin(image);
-    //trace du background
+  drawEverything();
 
-    pen.setColor(information.getAxesSettings().color);
-    painter.setPen(pen);
-    painter.setRenderHint(QPainter::Antialiasing, false);
+  painter.end();
 
-    painter.drawRect(leftMargin, topMargin, graphRectScaled.width(), graphRectScaled.height());
-
-    painter.translate(leftMargin, topMargin);
-
-    updateCenterPosAndScaling();
-    drawBaseGraph();
-
-    if(legendState)
-        writeLegends();
-
-    painter.setClipRect(0,0,graphRectScaled.width(),graphRectScaled.height());
-
-    painter.translate(QPointF(centre.x, centre.y));
-
-    if(recalculate)
-    {
-        funcValuesSaver->calculateAll(pxPerUnit, viewMapper);
-        recalculateRegVals();
-    }
-
-    drawFunctions();
-    drawSequences();
-    drawStaticParEq();
-    drawRegressions();
-    drawData();
-
-    painter.end();
-
-    //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
-    return image;
+  //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
+  return image;
 }

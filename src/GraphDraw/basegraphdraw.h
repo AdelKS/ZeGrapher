@@ -52,6 +52,7 @@ protected:
     void drawBaseGraph();
     void drawGraphRect();
     void paint();
+    void drawEverything();
     void updateGraphRect();
     void writeLegends();
 
