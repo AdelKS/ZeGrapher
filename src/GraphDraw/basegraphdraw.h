@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -21,51 +21,48 @@
 #ifndef IMAGEPREVIEW_H
 #define IMAGEPREVIEW_H
 
-#include "mathobjectdraw.h"
 #include "gridcalculator.h"
-
+#include "mathobjectdraw.h"
 
 class BaseGraphDraw : public MathObjectDraw
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    explicit BaseGraphDraw();
-    QImage* drawImage();
+  explicit BaseGraphDraw();
+  QImage* drawImage();
 
 public slots:
-    void setlegendFontSize(int size);
-    void setLegendState(bool show);
+  void setlegendFontSize(int size);
+  void setLegendState(bool show);
 
-    void setXaxisLegend(QString legend);
-    void setYaxisLegend(QString legend);
+  void setXaxisLegend(QString legend);
+  void setYaxisLegend(QString legend);
 
-    void setBold(bool state);
-    void setUnderline(bool state);
-    void setItalic(bool state);
-    void setNumPrec(int prec);
+  void setBold(bool state);
+  void setUnderline(bool state);
+  void setItalic(bool state);
+  void setNumPrec(int prec);
 
-    void graphRangeChanged(const GraphRange& range);
+  void graphRangeChanged(const GraphRange& range);
 
 protected:
+  void updateCenterPosAndScaling();
+  void drawBaseGraph();
+  void drawGraphRect();
+  void paint();
+  void drawEverything();
+  void updateGraphRect();
+  void writeLegends();
 
-    void updateCenterPosAndScaling();
-    void drawBaseGraph();
-    void drawGraphRect();
-    void paint();
-    void drawEverything();
-    void updateGraphRect();
-    void writeLegends();
+  void drawLinAxisGridTicksX();
+  void drawLinAxisGridTicksY();
 
-    void drawLinAxisGridTicksX();
-    void drawLinAxisGridTicksY();
-
-    GridCalculator gridCalculator;
-    int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
-    int  legendFontSize, numPrec;
-    QRect figureRectScaled, graphRectScaled;
-    QString xLegend, yLegend;
-    bool legendState, bold, italic, underline;
-
+  GridCalculator gridCalculator;
+  int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
+  int legendFontSize, numPrec;
+  QRect figureRectScaled, graphRectScaled;
+  QString xLegend, yLegend;
+  bool legendState, bold, italic, underline;
 };
 
 #endif // ImagePreview_H
