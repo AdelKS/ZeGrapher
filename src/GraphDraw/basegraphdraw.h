@@ -50,7 +50,7 @@ protected:
 
     void updateCenterPosAndScaling();
     void drawBaseGraph();
-    void drawAxes();
+    void drawGraphRect();
     void paint();
     void updateGraphRect();
     void writeLegends();

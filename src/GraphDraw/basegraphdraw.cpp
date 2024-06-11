@@ -254,6 +254,9 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
             pen.setWidth(axesSettings.lineWidth);
             painter.setPen(pen);
 
+            painter.setRenderHint(QPainter::Antialiasing, false);
+            painter.drawLine(QPointF(pos, 0), QPointF(pos, graphRectScaled.height()));
+
             space = fontMetrics.boundingRect("0").width()/2;
             painter.setRenderHint(QPainter::Antialiasing, true);
             painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), "0");
@@ -378,7 +381,11 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
                 pen.setWidth(axesSettings.lineWidth);
                 painter.setPen(pen);
 
+                painter.setRenderHint(QPainter::Antialiasing, false);
+                painter.drawLine(QPointF(0, pos), QPointF(graphRectScaled.width(), pos));
+
                 space = fontMetrics.boundingRect("0").width() + 5;
+                painter.setRenderHint(QPainter::Antialiasing, true);
                 painter.drawText(QPointF(-space, pos + text_height/2), "0");
             }
 
@@ -457,14 +464,12 @@ void BaseGraphDraw::drawBaseGraph()
     if(information.getAxesSettings().y.axisType == ZeViewType::LINEAR)
         drawLinAxisGridTicksY();
 
-    drawAxes();
+    drawGraphRect();
 }
 
-void BaseGraphDraw::drawAxes()
+void BaseGraphDraw::drawGraphRect()
 {
     const auto &axesSettings = information.getAxesSettings();
-
-    const auto &viewRect = viewMapper.getRange<zg::plane::view>();
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setBrush(QBrush(Qt::NoBrush));
@@ -474,24 +479,6 @@ void BaseGraphDraw::drawAxes()
     painter.setPen(pen);
 
     painter.drawRect(graphRectScaled);
-
-    if(viewRect.x.min.v < 0 && viewRect.x.max.v > 0)
-    {
-        pen.setWidth(axesSettings.lineWidth);
-        pen.setColor(axesSettings.color);
-        painter.setPen(pen);
-
-        painter.drawLine(QPointF(0, graphRectScaled.height() - centre.y),
-                         QPointF(graphRectScaled.width(), graphRectScaled.height() - centre.y));
-    }
-    if(viewRect.y.min.v < 0 && viewRect.y.max.v > 0)
-    {
-        pen.setWidth(axesSettings.lineWidth);
-        pen.setColor(axesSettings.color);
-        painter.setPen(pen);
-
-        painter.drawLine(QPointF(centre.x, 0), QPointF(centre.x, graphRectScaled.height()));
-    }
 }
 
 void BaseGraphDraw::updateCenterPosAndScaling()

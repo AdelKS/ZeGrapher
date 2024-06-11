@@ -55,6 +55,9 @@ public:
   template <plane q, plane p>
   point<u<q>> to(point<u<p>> pt) const;
 
+  template <plane q, plane p, plane r>
+  point<u<q>> to(unit<u<p>> x_val, unit<u<r>> y_val) const;
+
   void setGraphRange(const GraphRange& range);
   void setAxesSettings(const ZeAxesSettings& axesSettings);
 
@@ -84,6 +87,12 @@ template <plane q, plane p>
 point<u<q>> ZeViewMapper::to(point<u<p>> pt) const
 {
   return point<u<q>>{x.to<q>(pt.x), y.to<q>(pt.y)};
+}
+
+template <plane q, plane p, plane r>
+point<u<q>> ZeViewMapper::to(unit<u<p>> x_val, unit<u<r>> y_val) const
+{
+  return point<u<q>>{x.to<q>(x_val), y.to<q>(y_val)};
 }
 
 } // namespace zg
