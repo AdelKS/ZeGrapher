@@ -203,13 +203,13 @@ void BaseGraphDraw::drawEverything()
   if(information.getAxesSettings().x.axisType == ZeViewType::LINEAR)
   {
     writeAxisOffsetX();
-    drawLinAxisGridTicksX();
+    drawLinAxisGridTicks<ZeAxisName::X>();
   }
 
   if(information.getAxesSettings().y.axisType == ZeViewType::LINEAR)
   {
     writeAxisOffsetY();
-    drawLinAxisGridTicksY();
+    drawLinAxisGridTicks<ZeAxisName::Y>();
   }
 
   if(legendState)
@@ -298,102 +298,6 @@ void BaseGraphDraw::writeAxisOffsetX()
   }
 }
 
-void BaseGraphDraw::drawLinAxisGridTicksX()
-{
-  painter.setFont(information.getGraphSettings().graphFont);
-  QFontMetrics fontMetrics = painter.fontMetrics();
-
-  double space, pos;
-  double Xpos;
-
-  const ZeAxesSettings &axesSettings = information.getAxesSettings();
-  const Ze1DGridSettings &gridSettings = information.getGridSettings().x;
-
-  pen.setCapStyle(Qt::FlatCap);
-  bool first_tick = true;
-  double previous_pos = 0;
-
-  painter.setFont(information.getGraphSettings().graphFont);
-  double text_height = fontMetrics.boundingRect('0').height();
-
-  for (const ZeLinAxisTick &axisTick : xAxisTicks.ticks)
-  {
-    if (not(information.getGraphRange().x.min < axisTick.pos
-            && axisTick.pos < information.getGraphRange().x.max))
-      continue;
-
-    Xpos = axisTick.pos * pxPerUnit.x;
-    pos = Xpos + centre.x;
-
-    if (fabs(Xpos) > 1)
-    {
-      if (gridSettings.showGrid)
-      {
-        pen.setColor(gridSettings.gridColor);
-        pen.setWidthF(gridSettings.gridLineWidth);
-        painter.setPen(pen);
-        painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.drawLine(QPointF(pos, 0), QPointF(pos, graphRectScaled.height()));
-      }
-      pen.setColor(axesSettings.color);
-      pen.setWidthF(axesSettings.lineWidth);
-      painter.setPen(pen);
-
-      pos = Xpos + centre.x;
-
-      painter.setRenderHint(QPainter::Antialiasing, false);
-      painter.drawLine(QPointF(pos, 4), QPointF(pos, 0));
-      painter.drawLine(QPointF(pos, graphRectScaled.height() - 4),
-                       QPointF(pos, graphRectScaled.height()));
-
-      if (axisTick.posStr.startsWith('-'))
-        space = fontMetrics.boundingRect(axisTick.posStr.mid(1)).width() / 2
-                + fontMetrics.horizontalAdvance('-');
-      else
-        space = fontMetrics.boundingRect(axisTick.posStr).width() / 2;
-      painter.setRenderHint(QPainter::Antialiasing, true);
-      painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5),
-                       axisTick.posStr);
-    }
-    else
-    {
-      pen.setColor(axesSettings.color);
-      pen.setWidth(axesSettings.lineWidth);
-      painter.setPen(pen);
-
-      painter.setRenderHint(QPainter::Antialiasing, false);
-      painter.drawLine(QPointF(pos, 0), QPointF(pos, graphRectScaled.height()));
-
-      space = fontMetrics.boundingRect("0").width() / 2;
-      painter.setRenderHint(QPainter::Antialiasing, true);
-      painter.drawText(QPointF(pos - space, graphRectScaled.height() + text_height + 5), "0");
-    }
-
-    if (gridSettings.showSubGrid && !first_tick)
-    {
-      pen.setColor(gridSettings.subgridColor);
-      pen.setWidthF(gridSettings.subgridLineWidth);
-      painter.setPen(pen);
-      painter.setRenderHint(QPainter::Antialiasing, false);
-
-      for (uint mul = 1; mul <= gridSettings.subgridSubDivs; mul++)
-      {
-        const double cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1)
-                               + double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos
-                                   / double(gridSettings.subgridSubDivs + 1);
-
-        if (information.getGraphRange().x.min < cur_pos
-            && cur_pos < information.getGraphRange().x.max)
-          painter.drawLine(QPointF(cur_pos * pxPerUnit.x + centre.x, 0),
-                           QPointF(cur_pos * pxPerUnit.x + centre.x, graphRectScaled.height()));
-      }
-    }
-
-    previous_pos = axisTick.pos;
-    first_tick = false;
-  }
-}
-
 void BaseGraphDraw::writeAxisOffsetY()
 {
   int powerOffset_size = 0;
@@ -416,104 +320,6 @@ void BaseGraphDraw::writeAxisOffsetY()
 
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
-  }
-}
-
-void BaseGraphDraw::drawLinAxisGridTicksY()
-{
-  painter.setFont(information.getGraphSettings().graphFont);
-  QFontMetrics fontMetrics = painter.fontMetrics();
-
-  double pos;
-  int space, largestWidth = 0;
-  double Ypos;
-
-  const auto &axesSettings = information.getAxesSettings();
-  const auto &gridSettings = information.getGridSettings().y;
-
-  pen.setCapStyle(Qt::FlatCap);
-  bool first_tick = true;
-  double previous_pos = 0;
-
-  painter.setFont(information.getGraphSettings().graphFont);
-  double text_height = fontMetrics.boundingRect('0').height();
-
-  for (const ZeLinAxisTick &axisTick : yAxisTicks.ticks)
-  {
-    Ypos = axisTick.pos * pxPerUnit.y;
-
-    if (information.getGraphRange().y.min < axisTick.pos
-        && axisTick.pos < information.getGraphRange().y.max)
-    {
-      pos = graphRectScaled.height() - (Ypos + centre.y);
-      if (fabs(Ypos) > 1)
-      {
-        if (gridSettings.showGrid)
-        {
-          pen.setColor(gridSettings.gridColor);
-          pen.setWidthF(gridSettings.gridLineWidth);
-          painter.setPen(pen);
-          painter.setRenderHint(QPainter::Antialiasing, false);
-          painter.drawLine(QPointF(0, pos), QPointF(graphRectScaled.width(), pos));
-        }
-
-        pen.setColor(axesSettings.color);
-        pen.setWidth(axesSettings.lineWidth);
-        painter.setPen(pen);
-
-        painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.drawLine(QPointF(4, pos), QPointF(0, pos));
-        painter.drawLine(QPointF(graphRectScaled.width() - 4, pos),
-                         QPointF(graphRectScaled.width(), pos));
-
-        space = fontMetrics.boundingRect(axisTick.posStr).width() + 5;
-
-        if (space > largestWidth)
-          largestWidth = space;
-
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.drawText(QPointF(-space, pos + text_height / 2), axisTick.posStr);
-      }
-      else
-      {
-        pen.setColor(axesSettings.color);
-        pen.setWidth(axesSettings.lineWidth);
-        painter.setPen(pen);
-
-        painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.drawLine(QPointF(0, pos), QPointF(graphRectScaled.width(), pos));
-
-        space = fontMetrics.boundingRect("0").width() + 5;
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.drawText(QPointF(-space, pos + text_height / 2), "0");
-      }
-
-      if (space > largestWidth)
-        largestWidth = space;
-    }
-
-    if (gridSettings.showSubGrid && !first_tick)
-    {
-      pen.setColor(gridSettings.subgridColor);
-      pen.setWidthF(gridSettings.subgridLineWidth);
-      painter.setPen(pen);
-      painter.setRenderHint(QPainter::Antialiasing, false);
-
-      for (uint mul = 1; mul <= gridSettings.subgridSubDivs; mul++)
-      {
-        const double cur_pos = double(mul) * previous_pos / double(gridSettings.subgridSubDivs + 1)
-                               + double(gridSettings.subgridSubDivs + 1 - mul) * axisTick.pos
-                                   / double(gridSettings.subgridSubDivs + 1);
-
-        if (information.getGraphRange().y.min < cur_pos
-            && cur_pos < information.getGraphRange().y.max)
-          painter.drawLine(QPointF(0, cur_pos * pxPerUnit.y + centre.y),
-                           QPointF(graphRectScaled.width(), cur_pos * pxPerUnit.y + centre.y));
-      }
-    }
-
-    previous_pos = axisTick.pos;
-    first_tick = false;
   }
 }
 

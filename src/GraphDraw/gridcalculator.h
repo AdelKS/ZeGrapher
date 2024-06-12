@@ -38,7 +38,7 @@ struct ZeLogAxisTick
 
 struct ZeLinAxisTick
 {
-  double pos;
+  zg::real_unit pos;
   QString posStr;
 };
 
@@ -295,7 +295,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   {
     ZeLinAxisTick tick;
     multiplier += realStep;
-    tick.pos = multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset;
+    tick.pos = {multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset};
     tick.posStr = get_coordinate_string(axisSettings, multiplier);
 
     auto rect = metrics.boundingRect(tick.posStr);
