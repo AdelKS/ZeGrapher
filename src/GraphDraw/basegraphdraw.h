@@ -54,12 +54,22 @@ protected:
   void updateGraphRect();
   void writeLegends();
 
+  void writeAxisOffsetX();
+
   void drawLinAxisGridTicksX();
+
+  void updateMarginsForAxisOffsetY();
+  void writeAxisOffsetY();
+
   void drawLinAxisGridTicksY();
 
+  void calculateTicksAndMargins();
+
   GridCalculator gridCalculator;
+  QFontMetrics fontMetrics;
+  ZeLinAxisTicks xAxisTicks, yAxisTicks;
   int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
-  int legendFontSize, numPrec;
+  int  legendFontSize, numPrec;
   QRect figureRectScaled, graphRectScaled;
   QString xLegend, yLegend;
   bool legendState, bold, italic, underline;

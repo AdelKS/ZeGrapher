@@ -21,7 +21,8 @@
 #include "GraphDraw/basegraphdraw.h"
 #include "information.h"
 
-BaseGraphDraw::BaseGraphDraw() : MathObjectDraw(), gridCalculator(this)
+BaseGraphDraw::BaseGraphDraw()
+  : MathObjectDraw(), gridCalculator(this), fontMetrics(information.getGraphSettings().graphFont)
 {
   leftMargin = 30;
   rightMargin = 30;
@@ -138,17 +139,81 @@ void BaseGraphDraw::paint()
   drawEverything();
 }
 
+void BaseGraphDraw::calculateTicksAndMargins()
+{
+  updateGraphRect();
+
+  xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
+  yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, fontMetrics);
+
+  if(xAxisTicks.offset.sumOffset != 0)
+  {
+    int margin = fontMetrics.boundingRect(xAxisTicks.offset.sumOffsetStr()).width() + 5;
+    if(rightMargin < margin)
+      rightMargin = 10 + margin;
+  }
+
+  if(xAxisTicks.offset.basePowerOffset != 0)
+  {
+    int margin = fontMetrics.boundingRect(xAxisTicks.offset.basePowerOffsetStr()).width() + 5;
+    rightMargin = 10 + margin;
+  }
+
+  if(xAxisTicks.offset.basePowerOffset == 0 && xAxisTicks.offset.sumOffset == 0)
+    rightMargin = 10;
+
+  leftMargin = yAxisTicks.maxPxWidth + additionalMargin + 10;
+
+  int offset_margin = 0;
+  if (yAxisTicks.offset.basePowerOffset != 0)
+  {
+    QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
+
+    offset_margin = fontMetrics.boundingRect(power_offset).height();
+  }
+  if (yAxisTicks.offset.sumOffset != 0)
+  {
+    QString sum_offset = yAxisTicks.offset.sumOffsetStr();
+
+    int new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
+    if (new_offsetmargin > offset_margin)
+      offset_margin = new_offsetmargin;
+  }
+
+  topMargin = std::max(20, 5 + offset_margin);
+
+  updateGraphRect();
+}
+
 void BaseGraphDraw::drawEverything()
 {
-  updateGraphRect(); // must happen before the next instruction
+  painter.setFont(information.getGraphSettings().graphFont);
+  fontMetrics = painter.fontMetrics();
+
+  calculateTicksAndMargins();
+  calculateTicksAndMargins();
+  calculateTicksAndMargins();
+
   updateCenterPosAndScaling();
 
   painter.translate(leftMargin, topMargin);
 
-  drawBaseGraph();
+  drawGraphRect();
 
-  if (legendState)
-    writeLegends();
+  if(information.getAxesSettings().x.axisType == ZeViewType::LINEAR)
+  {
+    writeAxisOffsetX();
+    drawLinAxisGridTicksX();
+  }
+
+  if(information.getAxesSettings().y.axisType == ZeViewType::LINEAR)
+  {
+    writeAxisOffsetY();
+    drawLinAxisGridTicksY();
+  }
+
+  if(legendState)
+      writeLegends();
 
   painter.setClipRect(graphRectScaled);
 
@@ -200,6 +265,39 @@ void BaseGraphDraw::writeLegends()
   }
 }
 
+void BaseGraphDraw::writeAxisOffsetX()
+{
+  pen.setColor(information.getAxesSettings().color);
+  pen.setWidthF(information.getAxesSettings().lineWidth);
+  painter.setPen(pen);
+  painter.setRenderHint(QPainter::Antialiasing, true);
+
+  const auto& offset = xAxisTicks.offset;
+
+  if(offset.sumOffset != 0)
+  {
+    QString sum_offset = offset.sumOffsetStr();
+
+    painter.drawText(QPointF(graphRectScaled.width() + 5,
+                             graphRectScaled.height()
+                               - fontMetrics.boundingRect(sum_offset).height() - 10),
+                     sum_offset);
+
+    int margin = fontMetrics.boundingRect(sum_offset).width() + 5;
+    Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
+  }
+
+  if(offset.basePowerOffset != 0)
+  {
+    QString power_offset = offset.basePowerOffsetStr();
+
+    painter.drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
+
+    int margin = fontMetrics.boundingRect(power_offset).width() + 5;
+    Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
+  }
+}
+
 void BaseGraphDraw::drawLinAxisGridTicksX()
 {
   painter.setFont(information.getGraphSettings().graphFont);
@@ -207,8 +305,6 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
 
   double space, pos;
   double Xpos;
-
-  ZeLinAxisTicks xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
 
   const ZeAxesSettings &axesSettings = information.getAxesSettings();
   const Ze1DGridSettings &gridSettings = information.getGridSettings().x;
@@ -296,46 +392,31 @@ void BaseGraphDraw::drawLinAxisGridTicksX()
     previous_pos = axisTick.pos;
     first_tick = false;
   }
+}
 
-  int old_rightMargin = rightMargin;
-  if (xAxisTicks.offset.sumOffset != 0)
+void BaseGraphDraw::writeAxisOffsetY()
+{
+  int powerOffset_size = 0;
+  int offset_margin = 0;
+  if (yAxisTicks.offset.basePowerOffset != 0)
   {
-    QString sum_offset;
-    if (xAxisTicks.offset.sumPowerOffset == 0)
-      sum_offset = " + " + QString::number(xAxisTicks.offset.sumOffset, 'g', 11);
-    else
-      sum_offset = " + "
-                   + QString::number(xAxisTicks.offset.sumOffset
-                                       * int_pow(10.0, -xAxisTicks.offset.sumPowerOffset),
-                                     'g',
-                                     11)
-                   + "×10^" + QString::number(xAxisTicks.offset.sumPowerOffset);
+    QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.drawText(QPointF(0, -4), power_offset);
+
+    powerOffset_size = fontMetrics.boundingRect(power_offset).width() + 5;
+  }
+  if (yAxisTicks.offset.sumOffset != 0)
+  {
+    QString sum_offset = yAxisTicks.offset.sumOffsetStr();
+
+    int new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
+    if (new_offsetmargin > offset_margin)
+      offset_margin = new_offsetmargin;
 
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(graphRectScaled.width() + 5,
-                             graphRectScaled.height() - text_height - 10),
-                     sum_offset);
-
-    int margin = fontMetrics.boundingRect(sum_offset).width() + 5;
-    if (rightMargin < margin)
-      rightMargin = 10 + margin;
+    painter.drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
   }
-  if (xAxisTicks.offset.basePowerOffset != 0)
-  {
-    QString power_offset = "×10^" + QString::number(xAxisTicks.offset.basePowerOffset);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
-
-    int margin = fontMetrics.boundingRect(power_offset).width() + 5;
-    if (rightMargin < margin)
-      rightMargin = 10 + margin;
-  }
-
-  if (xAxisTicks.offset.basePowerOffset == 0 && xAxisTicks.offset.sumOffset == 0)
-    rightMargin = 10;
-
-  if (rightMargin != old_rightMargin)
-    update();
 }
 
 void BaseGraphDraw::drawLinAxisGridTicksY()
@@ -346,8 +427,6 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
   double pos;
   int space, largestWidth = 0;
   double Ypos;
-
-  ZeLinAxisTicks yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, fontMetrics);
 
   const auto &axesSettings = information.getAxesSettings();
   const auto &gridSettings = information.getGridSettings().y;
@@ -436,65 +515,6 @@ void BaseGraphDraw::drawLinAxisGridTicksY()
     previous_pos = axisTick.pos;
     first_tick = false;
   }
-
-  int old_topMargin = topMargin;
-  int powerOffset_size = 0;
-  int offset_margin = 0;
-  if (yAxisTicks.offset.basePowerOffset != 0)
-  {
-    QString power_offset = "×10^" + QString::number(yAxisTicks.offset.basePowerOffset);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(0, -4), power_offset);
-
-    offset_margin = fontMetrics.boundingRect(power_offset).height();
-
-    powerOffset_size = fontMetrics.boundingRect(power_offset).width() + 5;
-  }
-  if (yAxisTicks.offset.sumOffset != 0)
-  {
-    QString sum_offset;
-    if (yAxisTicks.offset.sumPowerOffset == 0)
-      sum_offset = " + " + QString::number(yAxisTicks.offset.sumOffset, 'g', 11);
-    else
-      sum_offset = " + "
-                   + QString::number(yAxisTicks.offset.sumOffset
-                                       * int_pow(10.0, -yAxisTicks.offset.sumPowerOffset),
-                                     'g',
-                                     11)
-                   + "×10^" + QString::number(yAxisTicks.offset.sumPowerOffset);
-
-    int new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
-    if (new_offsetmargin > offset_margin)
-      offset_margin = new_offsetmargin;
-
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
-  }
-
-  if (yAxisTicks.offset.basePowerOffset == 0 && yAxisTicks.offset.sumOffset == 0)
-    topMargin = 20;
-  else
-    topMargin = 5 + offset_margin;
-
-  if (leftMargin - additionalMargin - largestWidth > 8
-      || leftMargin - additionalMargin - largestWidth < 4)
-  {
-    leftMargin = largestWidth + additionalMargin + 6;
-    update();
-  }
-  else if (topMargin != old_topMargin)
-    update();
-}
-
-void BaseGraphDraw::drawBaseGraph()
-{
-  if (information.getAxesSettings().x.axisType == ZeViewType::LINEAR)
-    drawLinAxisGridTicksX();
-
-  if (information.getAxesSettings().y.axisType == ZeViewType::LINEAR)
-    drawLinAxisGridTicksY();
-
-  drawGraphRect();
 }
 
 void BaseGraphDraw::drawGraphRect()

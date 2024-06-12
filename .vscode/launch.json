@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/build-zg-debug/src/ZeGrapher",
-            "preLaunchTask": "${defaultBuildTask}",
+            "preLaunchTask": "build-debug",
             "setupCommands": [
                 {
                   "description": "Enable pretty-printing for gdb",

@@ -50,9 +50,28 @@ struct ZeAxisSubTick
 
 struct ZeOffset
 {
-  ZeOffset() : sumOffset(0), sumPowerOffset(0), basePowerOffset(0) {}
-  double sumOffset;
-  int sumPowerOffset, basePowerOffset;
+  QString sumOffsetStr() const
+  {
+    if (sumOffset == 0)
+      return QString();
+
+    if(sumPowerOffset == 0)
+      return  " + " + QString::number(sumOffset, 'g', 11);
+    else
+      return " + " + QString::number(sumOffset * int_pow(10.0, -sumPowerOffset), 'g', 11) + "×10^"
+             + QString::number(sumPowerOffset);
+  }
+
+  QString basePowerOffsetStr() const
+  {
+    if (basePowerOffset == 0)
+      return QString();
+
+    return "×10^" + QString::number(basePowerOffset);
+  }
+
+  double sumOffset = 0;
+  int sumPowerOffset = 0, basePowerOffset = 0;
 };
 
 struct ZeLogAxisTicks
@@ -64,6 +83,8 @@ struct ZeLogAxisTicks
 struct ZeLinAxisTicks
 {
   ZeOffset offset;
+  int maxPxWidth = 0;
+  int maxPxHeight = 0;
   std::vector<ZeLinAxisTick> ticks;
   std::vector<ZeAxisSubTick> axisSubticks;
 };
@@ -277,9 +298,15 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     tick.pos = multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset;
     tick.posStr = get_coordinate_string(axisSettings, multiplier);
 
-    axisTicks.ticks.push_back(tick);
+    auto rect = metrics.boundingRect(tick.posStr);
+    if (axisTicks.maxPxHeight < rect.height())
+      axisTicks.maxPxHeight = rect.height();
+    if (axisTicks.maxPxWidth < rect.width())
+      axisTicks.maxPxWidth = rect.width();
 
-  } while (multiplier < scaledOffsetRange.max);
+    axisTicks.ticks.push_back(tick);
+  }
+  while (multiplier < scaledOffsetRange.max);
 
   return axisTicks;
 }
