@@ -95,6 +95,18 @@ struct point
 };
 
 template <UnitType U>
+point<U> operator - (const point<U>& a, const point<U>& b)
+{
+  return point<U>{.x = a.x - b.x, .y = a.y - b.y};
+}
+
+template <UnitType U>
+point<U> operator + (const point<U>& a, const point<U>& b)
+{
+  return point<U>{.x = a.x + b.x, .y = a.y + b.y};
+}
+
+template <UnitType U>
 struct Range2D
 {
   Range1D<U> x = {}, y = {};
