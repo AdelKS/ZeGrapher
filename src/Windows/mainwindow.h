@@ -22,7 +22,6 @@
 #define ZEGRAPHER_H
 
 #include "Windows/settings.h"
-#include "Windows/values.h"
 #include "Windows/about.h"
 #include "GraphDraw/mainviewcontainer.h"
 #include "Widgets/keyboard.h"
@@ -53,7 +52,6 @@ protected:
 
     MainViewContainer *mainGraphContainer;
     Settings *settingsWin;
-    Values *valuesWin;
     Keyboard *keyboard;
     About *aboutWin;
     UpdateCheck *updateCheckWin;

@@ -29,7 +29,6 @@ MainWindow::MainWindow()
 {
     aboutWin = new About(this);
     updateCheckWin = new UpdateCheck(this);
-    valuesWin = new Values(this);
     keyboard = new Keyboard();
     settingsWin = new Settings(this);
 
@@ -90,12 +89,6 @@ void MainWindow::createMenus()
     exitAction->setShortcut(QKeySequence("Ctrl+Q"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
-
-    QAction *showValuesWinAction = menuWindows->addAction(QIcon(":/icons/valuesTable.svg"), tr("Values table"));
-    showValuesWinAction->setShortcut(QKeySequence("Ctrl+Tab"));
-    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(show()));
-    connect(showValuesWinAction, SIGNAL(triggered()), valuesWin, SLOT(raise()));
-
     QAction *showKeyboardAction = menuWindows->addAction(QIcon(":/icons/keyboard.png"), tr("numeric keyboard"));
     showKeyboardAction->setShortcut(QKeySequence("Ctrl+K"));
     connect(showKeyboardAction, SIGNAL(triggered()), keyboard, SLOT(show()));
@@ -104,7 +97,6 @@ void MainWindow::createMenus()
     statusBar();
 
     exitAction->setStatusTip(tr("Exit ZeGrapher."));
-    showValuesWinAction->setStatusTip(tr("Display the values taken by functions, sequences and parametric equations on tables."));
 
     showKeyboardAction->setStatusTip(tr("Virtual keyboard."));
 }
@@ -116,8 +108,6 @@ void MainWindow::loadWindowSavedGeomtries()
         setGeometry(settings.value("main_window/geometry").value<QRect>());
     if(settings.contains("settings_window/geometry"))
         settingsWin->setGeometry(settings.value("settings_window/geometry").value<QRect>());
-    if(settings.contains("values_window/geometry"))
-        valuesWin->setGeometry(settings.value("values_window/geometry").value<QRect>());
     if(settings.contains("virtual_keyboard_window/geometry"))
         keyboard->setGeometry(settings.value("virtual_keyboard_window/geometry").value<QRect>());
 }
@@ -128,8 +118,6 @@ void MainWindow::saveWindowsGeometry()
 
     if(! settingsWin->geometry().isNull())
         settings.setValue("settings_window/geometry", settingsWin->geometry());
-    if(! valuesWin->geometry().isNull())
-        settings.setValue("values_window/geometry", valuesWin->geometry());
     if(! keyboard->geometry().isNull())
         settings.setValue("virtual_keyboard_window/geometry", keyboard->geometry());
 }
