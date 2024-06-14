@@ -52,6 +52,9 @@ public:
   /// @note converts it to the range returned by getRange<plane::pixel>()
   QRectF getGraphRect() const;
 
+  template <plane p>
+  bool isInView(point<u<p>> pt) const;
+
   template <plane q, plane p>
   point<u<q>> to(point<u<p>> pt) const;
 
@@ -67,7 +70,11 @@ protected:
   bool orthonormal = false;
 };
 
-
+template <plane p>
+bool ZeViewMapper::isInView(point<u<p>> pt) const
+{
+  return x.isInView(pt.x) and y.isInView(pt.y);
+}
 
 template <plane p>
 Range2D<u<p>> ZeViewMapper::getRange() const

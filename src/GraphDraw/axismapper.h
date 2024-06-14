@@ -81,6 +81,9 @@ public:
   template <plane p>
   unit<u<p>> getMax() const;
 
+  template <plane p>
+  bool isInView(unit<u<p>> x) const;
+
   template <plane q, plane p>
   unit<u<q>> to(unit<u<p>> x) const;
 
@@ -128,6 +131,13 @@ template <plane p>
 unit<u<p>> ZeAxisMapper<axis>::getMax() const
 {
   return getRange<p>().max;
+}
+
+template <ZeAxisName axis>
+template <plane p>
+bool ZeAxisMapper<axis>::isInView(unit<u<p>> x) const
+{
+  return getRange<p>().min <= x and x <= getRange<p>().max;
 }
 
 template <ZeAxisName axis>
