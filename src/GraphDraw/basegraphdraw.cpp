@@ -217,12 +217,12 @@ void BaseGraphDraw::drawEverything()
 
   painter.setClipRect(graphRectScaled);
 
+  funcValuesSaver.calculateAll();
+  drawFunctions();
+
   painter.translate(QPointF(centre.x, centre.y));
 
-  funcValuesSaver->calculateAll(pxPerUnit, viewMapper);
   recalculateRegVals();
-
-  drawFunctions();
   drawSequences();
   drawStaticParEq();
   drawRegressions();

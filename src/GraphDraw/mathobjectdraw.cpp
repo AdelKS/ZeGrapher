@@ -25,7 +25,9 @@
 
 using namespace std;
 
-MathObjectDraw::MathObjectDraw()
+MathObjectDraw::MathObjectDraw(QWidget *parent)
+  : QWidget(parent),
+    funcValuesSaver(viewMapper, information.getGraphSettings().distanceBetweenPoints)
 {
     coef = sqrt(3)/2;
 
@@ -40,8 +42,6 @@ MathObjectDraw::MathObjectDraw()
 
     moving = false;
 
-    funcValuesSaver = new FuncValuesSaver(information.getFuncsList(), information.getGraphSettings().distanceBetweenPoints);
-
     connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
     connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
     connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
@@ -49,7 +49,7 @@ MathObjectDraw::MathObjectDraw()
 
 void MathObjectDraw::updateSettingsVals()
 {
-    funcValuesSaver->setPixelStep(information.getGraphSettings().distanceBetweenPoints);
+    funcValuesSaver.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
 }
 
 void MathObjectDraw::addRegSaver(Regression *reg)
@@ -221,13 +221,24 @@ void MathObjectDraw::drawFunctions()
 {
     painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
-    for(int func = 0 ; func < funcs.size(); func++)
-    {
-        if(!funcs[func]->getDrawState())
-            continue;
+    pen.setColor(Qt::red);
+    painter.setPen(pen);
 
-        for(int curve = 0 ; curve < funcValuesSaver->getFuncDrawsNum(func) ;  curve++)
-            drawCurve(information.getGraphSettings().curvesThickness, funcs[func]->colorSaver.getColor(curve), funcValuesSaver->getCurve(func, curve));
+    std::vector<QPointF> mapped_curve;
+    for(const FuncCurve& curve: funcValuesSaver.getFunCurves())
+    {
+        for(const auto& slice: curve.slices)
+        {
+            mapped_curve.clear();
+            mapped_curve.reserve(slice.size());
+            for (const auto& pt: slice)
+            {
+                auto px_pt = viewMapper.to<zg::pixel>(pt);
+                mapped_curve.push_back(QPointF(px_pt.x.v, px_pt.y.v));
+            }
+
+            painter.drawPolyline(mapped_curve.data(), slice.size());
+        }
     }
 }
 
@@ -331,10 +342,4 @@ void MathObjectDraw::drawStaticParEq()
             painter.drawPolyline(polygon);
         }
     }
-}
-
-
-MathObjectDraw::~MathObjectDraw()
-{
-    delete funcValuesSaver;
 }

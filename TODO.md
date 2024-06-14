@@ -1,4 +1,7 @@
-- continue work on the range adjustments widget
+Potentially useful QML classes
+- Frame
+- SwipeView
+
 - Make GraphDraw and mainGraph use the new settings:
     - update graphview to handle new approach and definitions
     - display tick coordinates properly following the settings (decimal global multiplier or not ...etc)

@@ -35,8 +35,7 @@ class MathObjectDraw : public QWidget // Base class from math objects drawing
 {
     Q_OBJECT
 public:
-    explicit MathObjectDraw();
-    ~MathObjectDraw();
+    explicit MathObjectDraw(QWidget* parent = nullptr);
 
 protected slots:
     void addRegSaver(Regression *reg);
@@ -64,7 +63,6 @@ protected:
 
     void recalculateRegVals();
 
-    FuncValuesSaver *funcValuesSaver;
     QList<RegressionValuesSaver> regValuesSavers;
     QPainter painter;
 
@@ -73,6 +71,7 @@ protected:
     QBrush brush;
     Point centre;
     zg::ZeViewMapper viewMapper;
+    FuncValuesSaver funcValuesSaver;
 
     double coef;
 

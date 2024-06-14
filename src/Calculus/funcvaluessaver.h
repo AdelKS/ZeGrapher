@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,48 +18,34 @@
 **
 ****************************************************************************/
 
-
-
-
-
-#ifndef FUNCVALUESSAVER_H
-#define FUNCVALUESSAVER_H
+#pragma once
 
 #include "GraphDraw/viewmapper.h"
-#include "function.h"
+#include "information.h"
 
+struct FuncCurve
+{
+  const zc::Function<zc_t>& func;
+  std::vector<std::vector<zg::real_pt>> slices = {};
+
+};
 
 class FuncValuesSaver
 {
 public:
-    FuncValuesSaver(QList<Function *> funcsList, double pxStep);
+  FuncValuesSaver(const zg::ZeViewMapper& mapper, double pxStep);
 
-    void setPixelStep(double pxStep);
-    void calculateAll(const Point &pxPerUnit, const zg::ZeViewMapper &view);
-    void move(const zg::ZeViewMapper &view);
-    int getFuncDrawsNum(int func);
+  void setPixelStep(double pxStep);
+  void calculateAll();
+  void move();
 
-    QList<QPolygonF> getCurve(int func, int curve);
-
-
-
-protected slots:
-    void recalculateFuncColors(int id);
+  const std::vector<FuncCurve>& getFunCurves() const { return funCurves; }
 
 protected:
-    using zg::plane::view, zg::plane::pixel, zg::plane::real;
+  void calculateAllFuncColors();
 
-    void calculateAllFuncColors();
-    double evalFunc(int funId, double x, double k);
+  const zg::ZeViewMapper& mapper;
 
-    QList<Function*> funcs;
-
-    double xUnit, yUnit;
-    zg::pixel_unit pixelStep;
-    zg::view_unit unitStep;
-
-    QList< QList< QList<QPolygonF> > > funcCurves;
-    QList< QList<QColor> > funcColors;
+  std::vector<FuncCurve> funCurves;
+  zg::pixel_unit pixelStep;
 };
-
-#endif // FUNCVALUESSAVER_H
