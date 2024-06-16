@@ -53,6 +53,8 @@ struct unit
 
   unit& operator *= (double mul) { v *= mul; return *this; }
 
+  unit operator - () const { return unit{-v};}
+
   auto operator <=> (unit other) const { return v <=> other.v; }
 };
 
