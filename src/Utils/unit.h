@@ -70,6 +70,13 @@ struct Range1D
   Range1D& translate(unit<U> vec) { min += vec; max += vec; return *this; }
   Range1D translated(unit<U> vec) const { return Range1D{.min = min + vec, .max = max + vec}; }
   bool contains(unit<U> x) const { return min <= x and x <= max; }
+  std::optional<Range1D> intersection(const Range1D& other)
+  {
+    if (other.max <= min or max <= other.min)
+      return {};
+    else
+      return Range1D{.min = std::max(min, other.min), .max = std::min(max, other.max)};
+  }
 };
 
 template <UnitType U>
