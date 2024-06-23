@@ -55,6 +55,60 @@
             "problemMatcher": []
         }
 
+        // clang
+
+        {
+            "label": "setup-debug-clang",
+            "type": "shell",
+            "command": "[ -d \"${cwd}/build-zg-debug-clang\" ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
+        },
+        {
+            "label": "resetup-debug-clang",
+            "type": "shell",
+            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
+        },
+        {
+            "label": "build-debug-clang",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug-clang"
+            },
+            "dependsOn": "setup-debug-clang",
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "rebuild-debugc-clang",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug-clang"
+            },
+            "dependsOn": "resetup-debug-clang",
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "label": "run-debug-clang",
+            "type": "shell",
+            "command": "./src/ZeGrapher",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug-clang"
+            },
+            "dependsOn": "build-debug-clang",
+            "problemMatcher": []
+        }
+
         // release
 
         {
