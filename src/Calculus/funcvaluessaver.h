@@ -23,11 +23,14 @@
 #include "GraphDraw/viewmapper.h"
 #include "information.h"
 
+#include <unordered_set>
+
 struct FuncCurve
 {
   const zc::Function<zc_t>& func;
-  std::vector<std::vector<zg::real_pt>> slices = {};
-
+  const size_t slot;
+  std::vector<zg::real_pt> curve = {};
+  std::unordered_set<size_t> discontinuities = {};
 };
 
 class FuncValuesSaver
@@ -36,16 +39,33 @@ public:
   FuncValuesSaver(const zg::ZeViewMapper& mapper, double pxStep);
 
   void setPixelStep(double pxStep);
-  void calculateAll();
-  void move();
+  void update();
 
-  const std::vector<FuncCurve>& getFunCurves() const { return funCurves; }
+  const zc::SlottedDeque<FuncCurve>& getFunCurves() const { return funCurves; }
 
 protected:
-  void calculateAllFuncColors();
+
+  enum Side {LEFT, RIGHT};
+
+  /// @brief refreshes 'funcCurves' for the currently valid functions
+  void refresh_valid_functions();
+
+  /// @brief removes points that are not within the view, i.e. invisible
+  void clear_hidden_pts();
+
+  /// @brief computes points on uniformly distributed view abscissas
+  void compute_uniform_visible_pts(size_t slot);
+
+  /// @brief computes more points where the function variation is too steep
+  void refine_visible_pts(size_t slot);
+
+  /// @brief computes more points where the function variation is too steep
+  void find_discontinuities(size_t slot);
 
   const zg::ZeViewMapper& mapper;
 
-  std::vector<FuncCurve> funCurves;
+  zc::SlottedDeque<FuncCurve> funCurves;
   zg::pixel_unit pixelStep;
+  size_t pxStepMaxDivider = 32;
+  zg::Range1D<zg::u<zg::view>> viewRange;
 };

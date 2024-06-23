@@ -225,20 +225,27 @@ void MathObjectDraw::drawFunctions()
     painter.setPen(pen);
 
     std::vector<QPointF> mapped_curve;
-    for(const FuncCurve& curve: funcValuesSaver.getFunCurves())
-    {
-        for(const auto& slice: curve.slices)
+    auto draw_mapped_curve = [&]{
+        if (not mapped_curve.empty())
         {
+            painter.drawPolyline(mapped_curve.data(), mapped_curve.size());
             mapped_curve.clear();
-            mapped_curve.reserve(slice.size());
-            for (const auto& pt: slice)
-            {
-                auto px_pt = viewMapper.to<zg::pixel>(pt);
-                mapped_curve.push_back(QPointF(px_pt.x.v, px_pt.y.v));
-            }
-
-            painter.drawPolyline(mapped_curve.data(), slice.size());
         }
+    };
+
+    for(const FuncCurve& f_curve: funcValuesSaver.getFunCurves())
+    {
+        for (size_t i = 0 ; i != f_curve.curve.size() ; i++)
+        {
+            const auto& pt = f_curve.curve[i];
+            if (std::isnan(pt.y.v) or f_curve.discontinuities.contains(i))
+                draw_mapped_curve();
+
+            if (not std::isnan(pt.y.v))
+                mapped_curve.push_back(QPointF(viewMapper.to<zg::pixel>(pt)));
+        }
+
+        draw_mapped_curve();
     }
 }
 

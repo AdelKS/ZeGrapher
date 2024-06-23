@@ -217,7 +217,7 @@ void BaseGraphDraw::drawEverything()
 
   painter.setClipRect(graphRectScaled);
 
-  funcValuesSaver.calculateAll();
+  funcValuesSaver.update();
   drawFunctions();
 
   painter.translate(QPointF(centre.x, centre.y));
