@@ -29,6 +29,7 @@ struct FuncCurve
 {
   const zc::Function<zc_t>& func;
   const size_t slot;
+  std::string equation;
   std::vector<zg::real_pt> curve = {};
   std::unordered_set<size_t> discontinuities = {};
 };
@@ -49,6 +50,9 @@ protected:
 
   /// @brief refreshes 'funcCurves' for the currently valid functions
   void refresh_valid_functions();
+
+  /// @brief check if equation of functions changed
+  void check_for_equation_changes();
 
   /// @brief removes points that are not within the view, i.e. invisible
   void clear_hidden_pts();

@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://github.com/AdelKS/ZeCalculator.git
-revision = v0.8.5
+revision = v0.8.6
 depth = 1
 
 [provide]

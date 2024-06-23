@@ -90,6 +90,7 @@ void FuncValuesSaver::refresh_valid_functions()
       FuncCurve{
         .func = math_obj.value_as<zc::Function<zc_t>>(),
         .slot = math_obj.get_slot(),
+        .equation = math_obj.value_as<zc::Function<zc_t>>().get_equation(),
       },
       math_obj.get_slot());
   }
@@ -290,9 +291,24 @@ void FuncValuesSaver::find_discontinuities(size_t slot)
   }
 }
 
+void FuncValuesSaver::check_for_equation_changes()
+{
+  // should come after refresh_valid_functions()
+  for (FuncCurve& f_curve: funCurves)
+  {
+    if (f_curve.equation != f_curve.func.get_equation())
+    {
+      f_curve.curve.clear();
+      f_curve.discontinuities.clear();
+      f_curve.equation = f_curve.func.get_equation();
+    }
+  }
+}
+
 void FuncValuesSaver::update()
 {
   refresh_valid_functions();
+  check_for_equation_changes();
   clear_hidden_pts();
 
   // TODO: this can be multi-threaded
