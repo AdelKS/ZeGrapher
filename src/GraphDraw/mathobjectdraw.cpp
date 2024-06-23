@@ -303,7 +303,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
                 return;
 
             painter.drawPoint(
-              QPointF(viewMapper.to<zg::plane::pixel>(zg::point{.x = real_x, .y = y})));
+              QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt{.x = real_x, .y = y})));
         }
     }
 }
