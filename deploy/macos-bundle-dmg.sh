@@ -1,9 +1,17 @@
 #!/bin/bash
 
 deploy_dir=$(greadlink -f $(dirname "$BASH_SOURCE"))
-[[ -f "${deploy_dir}/build-macos" ]] && rm -r "${deploy_dir}/build-macos"
 
-meson setup "${deploy_dir}/build-macos" "${deploy_dir}/.." --prefix="${deploy_dir}/ZeGrapher.app" --bindir="Contents/MacOS"
+meson setup \
+  -D optimization=3 \
+  -D debug=false \
+  -D b_ndebug=true \
+  -D debug_logs=false \
+  --prefix="${deploy_dir}/ZeGrapher.app" \
+  --bindir="Contents/MacOS" \
+  "${deploy_dir}/build-macos" \
+  "${deploy_dir}/.."
+
 cd "${deploy_dir}/build-macos"
 meson compile
 meson install
