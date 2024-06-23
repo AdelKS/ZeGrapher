@@ -10,12 +10,12 @@ jobs:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
-          version: '6.5.*'
+          version: '6.7.*'
 
       - name: Install Dependencies
         run: |
@@ -29,7 +29,7 @@ jobs:
         run: ./deploy/macos-bundle-dmg.sh
 
       - name: Upload binary artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macos-artifact
           path: deploy/ZeGrapher*dmg
