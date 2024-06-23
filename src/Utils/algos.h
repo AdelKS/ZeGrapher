@@ -50,5 +50,19 @@ void move_elements_right(std::vector<T>& vec, const int distance)
       vec[i] = std::move(vec[i - distance]);
   }
 }
+
+/// @brief erase elements from a set according the predicate
+template <typename T, typename Pred>
+void erase(std::unordered_set<T>& s, Pred&& pred)
+{
+  for (auto it = s.begin(); it != s.end();)
+  {
+    if (pred(*it))
+      it = s.erase(it);
+    else
+      ++it;
+  }
+}
+
 }
 }

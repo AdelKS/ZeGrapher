@@ -3,6 +3,7 @@ inc = include_directories('../src')
 test_sources = files(
   'function_bench.cpp',
   'algo_move_elements_right.cpp',
+  'algo_erase.cpp'
 )
 
 fs = import('fs')
