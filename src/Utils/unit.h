@@ -55,6 +55,8 @@ struct unit
 
   unit operator - () const { return unit{-v};}
 
+  unit length() const { return unit{std::fabs(v)}; }
+
   auto operator <=> (unit other) const { return v <=> other.v; }
 };
 
