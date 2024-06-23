@@ -1,9 +1,16 @@
 #!/bin/bash
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
-[[ -f "${deploy_dir}/build-linux" ]] && rm -r "${deploy_dir}/build-linux"
 
-meson setup "${deploy_dir}/build-linux" "${deploy_dir}/.." -Dprefix="${deploy_dir}/appdir-linux/usr"
+meson setup \
+  -D optimization=3 \
+  -D debug=false \
+  -D b_ndebug=true \
+  -D debug_logs=false \
+  -D prefix="${deploy_dir}/appdir-linux/usr" \
+  "${deploy_dir}/build-linux" \
+  "${deploy_dir}/.."
+
 cd "${deploy_dir}/build-linux"
 meson compile
 meson install
@@ -18,6 +25,7 @@ chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
 export QMAKE=`which qmake6`
 export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
 export QML_SOURCES_PATHS="${deploy_dir}/../src/"
+export NO_STRIP=1
 
 # ./linuxdeploy-x86_64.AppImage --list-plugins
 ./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage
