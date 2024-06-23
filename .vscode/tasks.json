@@ -6,12 +6,12 @@
         {
             "label": "setup-debug",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3"
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false"
         },
         {
             "label": "resetup-debug",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3"
+            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false"
         },
         {
             "label": "build-debug",
@@ -60,12 +60,12 @@
         {
             "label": "setup-release",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false"
+            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D debug_logs=false"
         },
         {
             "label": "resetup-release",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false"
+            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D debug_logs=false"
         },
         {
             "label": "build-release",
