@@ -10,35 +10,52 @@ ZeGrapher is a free, open source and easy to use software for plotting mathemati
 **Official website:** [https://zegrapher.com/](https://zegrapher.com/)
 
 ------------------------------------
+
 ### Features
-- Visualize up to six functions simultaneously, they currently have fixed names: `f` `g` `h` `p` `r` `m`. It is planned to implement plotting of an arbitrary number of user named function.
-    - All the standard mathematical functions (`cos` `cosh` `exp` ...etc) can be called: they're all written on a virtual keyboard that can be displayed with a button.
-    - On a given function, other functions be called, so it is possible to associate or compose functions.
-    - Using the uppercase letter of a user-defined function, _e.g_ `F` makes ZeGrapher compute its antiderivative.
-    - Using the primed version of a user-defined function, _e.g_ `f'` makes ZeGrapher compute its derivative.
-- Visualize up to six numerical sequence simultaneously, they currently have fixed names: `u` `v` `l` `w` `q` `t`.
-    - Sequences can be defined by a recurrent relation, _e.g_ `u(n) = u(n-1) + u(n-2)` in which case initial values should be given in the corresponding input widget, separated by `;`, _e.g._ `1;1`
-    - Sequences can be defined explicitly, _e.g_ `u(n) = 2*n + 1`.
-- Parametric equation plotting. The curves can be animated, with adjustable framerate and speed.
-- Experimental data plot and polynomial fit (regression). Data can be imported/exported from a CSV file.
-- Parametric plot for functions, sequences and parametric equations: the parameter name to use is fixed to `k`. This will be overheauled in the upcoming version.
-- Plot derivatives and antiderviatives.
-- Print the graph, with these options :
-    -   Choose the size and the position of the graph on the sheet.
-    -   Print in color or gray-scale.
-    -   Export on a PDF file.
-- Export to all common image formats (png, jpeg, tiff, gif...).
-- Display a table of values with different options.
+
+ZeGrapher is in a deep rework stage, the features described here may still not be implemented.
+
+- Visualize functions by giving their "natural" equations (e.g. `f(x) = 2+cos(x)`)
+  - All the standard mathematical functions (`cos` `cosh` `exp` ...etc) can be used.
+  - Any user defined function can be used.
+  - Planned: compute derivatives and integrals.
+- Visualize numerical sequences through specific equations
+  - Defined by giving a list of expressions separated with `,` or `;`
+  - The last expression is the "generic" expression that is used for any other index that the first values.
+  - If more than one expression is provided, the first expressions are considered as the first values of the sequence
+  - Example: Fibonacci sequence `u(n) = 0 ; 1 ; u(n-2) + u(n-2)`
+    - First values: `0`, `1`
+    - Generic expression: `u(n-2) + u(n-1)`
+- Can define "global constants", i.e. a variable that has an explicit numeric value without depending on any other object
+  - Example `pi = 3.14`
+  - Can be used for parametric plots of functions, sequences and parametric equations.
+- Can define "global variables", i.e. a function without input variables that can arbitrarily depend on other objects.
+- Plotting of 2D data
+  - Polynomial fitting (regression).
+  - Data can be imported from/exported to a CSV file.
+- Extensive tools for precise exporting
+  - Image (`png`, `jpeg`, `tiff`, `gif`...) and scalable (`svg`, `pdf`) formats
+  - Preview the graph exactly how it will look once exported
+    - Set sizes in centimeter or in pixels
+    - A global scaling factor is offered to change the DPI
+    - Move the graph within the page
 - Navigate on the graph :
-    -   Select a curve to display the coordinates of its points.
-    -   Zoom/unzoom on each axis separately, around the mouse (with the scroll wheel), or fit on a mouse drawn rectangle.
-    -   Move the graph.
-- Customize the presentation :
-    -   Change colors: axes, background, functions...
-    -   Adjust the plotting precision. Note that it will also affect rendering speed.
-    -   Show/hide a grid.
-    -   Activate/deactivate curves\' smoothing.
-    -   Plot the graph on an orthonormal basis.
+  - Select a curve to display the coordinates of its points.
+  - Zoom/unzoom on each axis separately, around the mouse (with the scroll wheel), or fit on a mouse drawn rectangle.
+  - Move the graph.
+- Customization/visualization
+  - Linear and logarithmic scales
+    - Can be set independently for `x` and `y` axes.
+  - Can change the grid ticks to be multiples of a given variable/value
+    - e.g. multiples of `π`
+  - Change colors: axes, background, functions...
+  - Adjust the plotting precision.
+    - Note that it will also affect rendering speed.
+  - Show/hide the grid
+  - Show/hide the subgrid.
+    - user set number of subdivisions
+  - Activate/deactivate curves\' smoothing.
+  - Plot the graph on an orthonormal basis.
 ------------------------------------------
 ### Download
 ZeGrapher is available in the official repositories of Debian, Fedora, Ubuntu, FreeBSD. In the Archlinux (AUR). An [AppImage](https://appimage.org/) is otherwise available, along with Windows and Mac versions in Zegrapher's [Github releases page](https://github.com/AdelKS/ZeGrapher/releases) or at [zegrapher.com](https://zegrapher.com/).
@@ -63,7 +80,7 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 
 - Linux
   - `meson install` should now be fully XDG compliant. Issues and/PRs welcome if something is missing.
-  - Use [deploy/linux-bundle-appimage.sh](./deploy/linux-bundle-appimage.sh) to create an [AppImage](https://appimage.org/), too.
+  - Use [deploy/linux-bundle-appimage.sh](./deploy/linux-bundle-appimage.sh) to create an [AppImage](https://appimage.org/).
 - macOS
   - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
 - Windows
