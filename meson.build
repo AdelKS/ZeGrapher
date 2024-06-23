@@ -13,6 +13,10 @@ project('ZeGrapher', 'cpp',
     ]
 )
 
+if not get_option('debug_logs')
+    add_project_arguments('-D QT_NO_DEBUG_OUTPUT', language : 'cpp')
+endif
+
 if (get_option('b_ndebug') == 'if-release' and get_option('buildtype') == 'release') or get_option('b_ndebug') == 'true'
     add_project_arguments('-D QT_NO_DEBUG', language : 'cpp')
 endif

@@ -6,12 +6,12 @@
         {
             "label": "setup-debug",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false"
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
         },
         {
             "label": "resetup-debug",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false"
+            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
         },
         {
             "label": "build-debug",
