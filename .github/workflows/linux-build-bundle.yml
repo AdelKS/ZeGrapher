@@ -4,18 +4,18 @@ on:
 
 jobs:
   build-bundle:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
-          version: '6.5.*'
+          version: '6.6.*'
 
       - name: Install Dependencies
         run: |
@@ -26,7 +26,7 @@ jobs:
         run: ./deploy/linux-bundle-appimage.sh
 
       - name: Upload binary artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-artifact
           path: deploy/ZeGrapher*AppImage

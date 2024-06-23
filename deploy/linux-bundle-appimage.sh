@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
 meson setup \
