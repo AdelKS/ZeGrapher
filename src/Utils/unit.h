@@ -89,6 +89,8 @@ struct point
   point& translate(point vec) { x += vec.x; y *= vec.y; return *this; }
   point translated(point vec) const { return point{.x = x + vec, .y = x + vec}; }
 
+  double square_length() const { return x.v*x.v + y.v*y.v; };
+
   static point from(const QPointF& pt)
   {
     return point{unit<U>{pt.x()}, unit<U>{pt.y()}};
