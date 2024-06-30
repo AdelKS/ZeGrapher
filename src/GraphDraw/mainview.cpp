@@ -341,11 +341,6 @@ void MainView::drawFigureRect()
     painter.setPen(pen);
 }
 
-void MainView::setGraphRange([[maybe_unused]] GraphRange range)
-{
-
-}
-
 void MainView::scaleView(const QRect &refSheetRect)
 {
     if(zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)

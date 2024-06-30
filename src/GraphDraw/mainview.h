@@ -53,7 +53,6 @@ public slots:
     void wheelEvent(QWheelEvent *event);
 
     void onSizeSettingsChange();
-    void setGraphRange(GraphRange range);
     void updateWidgetSize();
 
     void exportPDF(QString fileName, SheetSizeType sizeType);
