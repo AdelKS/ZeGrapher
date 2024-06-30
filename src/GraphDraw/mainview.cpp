@@ -380,29 +380,31 @@ void MainView::drawGraph()
 
 void MainView::mousePressEvent(QMouseEvent *event)
 {
-  if (sizeSettings.figureFillsSheet)
-    return;
-
-  if (topLeft.contains(event->pos()))
-    moveType = RESIZE_GRAPH_TOPLEFT_CORNER;
-  else if (topRight.contains(event->pos()))
-    moveType = RESIZE_GRAPH_TOPRIGHT_CORNER;
-  else if (top.contains(event->pos()))
-    moveType = RESIZE_GRAPH_TOP_SIDE;
-  else if (bottomLeft.contains(event->pos()))
-    moveType = RESIZE_GRAPH_BOTTOMLEFT_CORNER;
-  else if (bottomRight.contains(event->pos()))
-    moveType = RESIZE_GRAPH_BOTTOMRIGHT_CORNER;
-  else if (bottom.contains(event->pos()))
-    moveType = RESIZE_GRAPH_BOTTOM_SIDE;
-  else if (left.contains(event->pos()))
-    moveType = RESIZE_GRAPH_LEFT_SIDE;
-  else if (right.contains(event->pos()))
-    moveType = RESIZE_GRAPH_RIGHT_SIDE;
-  else if (figureRect.contains(event->pos()))
-    moveType = MOVE_GRAPH;
-  else
-    moveType = NOTHING;
+  if (event->buttons() == Qt::LeftButton and rect().contains(event->pos()))
+    moveType = MOVE_VIEW;
+  else if (not sizeSettings.figureFillsSheet)
+  {
+    if (topLeft.contains(event->pos()))
+      moveType = RESIZE_GRAPH_TOPLEFT_CORNER;
+    else if (topRight.contains(event->pos()))
+      moveType = RESIZE_GRAPH_TOPRIGHT_CORNER;
+    else if (top.contains(event->pos()))
+      moveType = RESIZE_GRAPH_TOP_SIDE;
+    else if (bottomLeft.contains(event->pos()))
+      moveType = RESIZE_GRAPH_BOTTOMLEFT_CORNER;
+    else if (bottomRight.contains(event->pos()))
+      moveType = RESIZE_GRAPH_BOTTOMRIGHT_CORNER;
+    else if (bottom.contains(event->pos()))
+      moveType = RESIZE_GRAPH_BOTTOM_SIDE;
+    else if (left.contains(event->pos()))
+      moveType = RESIZE_GRAPH_LEFT_SIDE;
+    else if (right.contains(event->pos()))
+      moveType = RESIZE_GRAPH_RIGHT_SIDE;
+    else if (figureRect.contains(event->pos()))
+      moveType = MOVE_GRAPH;
+    else
+      moveType = NOTHING;
+  }
 
   if (moveType != NOTHING)
     lastMousePos = event->pos();
@@ -410,7 +412,7 @@ void MainView::mousePressEvent(QMouseEvent *event)
 
 void MainView::mouseMoveEvent(QMouseEvent *event)
 {
-  if (moveType == NOTHING)
+  if (moveType == NOTHING and not sizeSettings.figureFillsSheet)
   {
     if (topLeft.contains(event->pos()) || bottomRight.contains(event->pos()))
       setCursor(Qt::SizeFDiagCursor);
@@ -434,62 +436,81 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
     qDebug() << "Mouse move event";
     qDebug() << "figure Rect before change: " << figureRect;
 
+    auto update_relfigrect = [this]{
+      qDebug() << "figure Rect after change: " << figureRect;
+
+      int marginVal = sizeSettings.pxMargins;
+      QMargins margins(marginVal, marginVal, marginVal, marginVal);
+      QRect marginlessSupport = supportRect.marginsRemoved(margins);
+
+      QPointF topLeft = figureRect.topLeft() - marginlessSupport.topLeft();
+      topLeft.setX(topLeft.x() / double(marginlessSupport.width()));
+      topLeft.setY(topLeft.y() / double(marginlessSupport.height()));
+
+      relFigRect.setWidth(double(figureRect.width()) / double(marginlessSupport.width()));
+      relFigRect.setHeight(double(figureRect.height()) / double(marginlessSupport.height()));
+      relFigRect.moveTopLeft(topLeft);
+
+      qDebug() << "marginless support is " << marginlessSupport;
+      qDebug() << "relative figure rect is " << relFigRect;
+
+      constrainFigureRectRel();
+      updateFigureSize();
+      update();
+    };
+
     QPoint dr = event->pos() - lastMousePos;
     lastMousePos = event->pos();
 
     switch (moveType)
     {
+    case MOVE_VIEW:
+      // the view goes in the opposite direction
+      viewMapper.translateView({
+        .x = zg::pixel_unit{double(-dr.x())},
+        .y = zg::pixel_unit{double(-dr.y())},
+      });
+      information.setGraphRange(viewMapper.getRange<zg::real>().toGraphRange());
+      break;
     case RESIZE_GRAPH_TOPLEFT_CORNER:
       figureRect.setTopLeft(figureRect.topLeft() + dr);
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_TOPRIGHT_CORNER:
       figureRect.setTopRight(figureRect.topRight() + dr);
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_BOTTOMLEFT_CORNER:
       figureRect.setBottomLeft(figureRect.bottomLeft() + dr);
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_BOTTOMRIGHT_CORNER:
       figureRect.setBottomRight(figureRect.bottomRight() + dr);
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_LEFT_SIDE:
       figureRect.setLeft(figureRect.left() + dr.x());
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_TOP_SIDE:
       figureRect.setTop(figureRect.top() + dr.y());
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_RIGHT_SIDE:
       figureRect.setRight(figureRect.right() + dr.x());
+      update_relfigrect();
       break;
     case RESIZE_GRAPH_BOTTOM_SIDE:
       figureRect.setBottom(figureRect.bottom() + dr.y());
+      update_relfigrect();
       break;
     case MOVE_GRAPH:
       figureRect.translate(dr);
+      update_relfigrect();
       break;
     case NOTHING:
       break;
     }
-
-    qDebug() << "figure Rect after change: " << figureRect;
-
-    int marginVal = sizeSettings.pxMargins;
-    QMargins margins(marginVal, marginVal, marginVal, marginVal);
-    QRect marginlessSupport = supportRect.marginsRemoved(margins);
-
-    QPointF topLeft = figureRect.topLeft() - marginlessSupport.topLeft();
-    topLeft.setX(topLeft.x() / double(marginlessSupport.width()));
-    topLeft.setY(topLeft.y() / double(marginlessSupport.height()));
-
-    relFigRect.setWidth(double(figureRect.width()) / double(marginlessSupport.width()));
-    relFigRect.setHeight(double(figureRect.height()) / double(marginlessSupport.height()));
-    relFigRect.moveTopLeft(topLeft);
-
-    qDebug() << "marginless support is " << marginlessSupport;
-    qDebug() << "relative figure rect is " << relFigRect;
-
-    constrainFigureRectRel();
-    updateFigureSize();
-    update();
   }
 }
 
