@@ -384,23 +384,23 @@ void MainView::mousePressEvent(QMouseEvent *event)
     return;
 
   if (topLeft.contains(event->pos()))
-    moveType = TOPLEFT_CORNER;
+    moveType = RESIZE_GRAPH_TOPLEFT_CORNER;
   else if (topRight.contains(event->pos()))
-    moveType = TOPRIGHT_CORNER;
+    moveType = RESIZE_GRAPH_TOPRIGHT_CORNER;
   else if (top.contains(event->pos()))
-    moveType = TOP_SIDE;
+    moveType = RESIZE_GRAPH_TOP_SIDE;
   else if (bottomLeft.contains(event->pos()))
-    moveType = BOTTOMLEFT_CORNER;
+    moveType = RESIZE_GRAPH_BOTTOMLEFT_CORNER;
   else if (bottomRight.contains(event->pos()))
-    moveType = BOTTOMRIGHT_CORNER;
+    moveType = RESIZE_GRAPH_BOTTOMRIGHT_CORNER;
   else if (bottom.contains(event->pos()))
-    moveType = BOTTOM_SIDE;
+    moveType = RESIZE_GRAPH_BOTTOM_SIDE;
   else if (left.contains(event->pos()))
-    moveType = LEFT_SIDE;
+    moveType = RESIZE_GRAPH_LEFT_SIDE;
   else if (right.contains(event->pos()))
-    moveType = RIGHT_SIDE;
+    moveType = RESIZE_GRAPH_RIGHT_SIDE;
   else if (figureRect.contains(event->pos()))
-    moveType = ALL;
+    moveType = MOVE_GRAPH;
   else
     moveType = NOTHING;
 
@@ -439,31 +439,31 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
 
     switch (moveType)
     {
-    case TOPLEFT_CORNER:
+    case RESIZE_GRAPH_TOPLEFT_CORNER:
       figureRect.setTopLeft(figureRect.topLeft() + dr);
       break;
-    case TOPRIGHT_CORNER:
+    case RESIZE_GRAPH_TOPRIGHT_CORNER:
       figureRect.setTopRight(figureRect.topRight() + dr);
       break;
-    case BOTTOMLEFT_CORNER:
+    case RESIZE_GRAPH_BOTTOMLEFT_CORNER:
       figureRect.setBottomLeft(figureRect.bottomLeft() + dr);
       break;
-    case BOTTOMRIGHT_CORNER:
+    case RESIZE_GRAPH_BOTTOMRIGHT_CORNER:
       figureRect.setBottomRight(figureRect.bottomRight() + dr);
       break;
-    case LEFT_SIDE:
+    case RESIZE_GRAPH_LEFT_SIDE:
       figureRect.setLeft(figureRect.left() + dr.x());
       break;
-    case TOP_SIDE:
+    case RESIZE_GRAPH_TOP_SIDE:
       figureRect.setTop(figureRect.top() + dr.y());
       break;
-    case RIGHT_SIDE:
+    case RESIZE_GRAPH_RIGHT_SIDE:
       figureRect.setRight(figureRect.right() + dr.x());
       break;
-    case BOTTOM_SIDE:
+    case RESIZE_GRAPH_BOTTOM_SIDE:
       figureRect.setBottom(figureRect.bottom() + dr.y());
       break;
-    case ALL:
+    case MOVE_GRAPH:
       figureRect.translate(dr);
       break;
     case NOTHING:
