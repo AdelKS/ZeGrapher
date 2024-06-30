@@ -256,6 +256,9 @@ void ZeAxisMapper<axis>::zoomView(double ratio)
 template <ZeAxisName axis>
 void ZeAxisMapper<axis>::translateView(unit<u<plane::pixel>> vec)
 {
+  if constexpr (axis == ZeAxisName::Y)
+    vec = -vec;
+
   setRange(view_range.translated(vec / pixel_range.amplitude() * view_range.amplitude()));
   pixel_range.translate(vec);
 }
