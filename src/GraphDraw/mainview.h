@@ -22,80 +22,91 @@
 #define MAINVIEW_H
 
 #include "basegraphdraw.h"
-#include <QPdfWriter>
 #include <QPageLayout>
+#include <QPdfWriter>
 #include <QSvgGenerator>
 
-enum MouseActionType {NOTHING, TOPLEFT_CORNER, TOPRIGHT_CORNER,
-                      BOTTOMLEFT_CORNER, BOTTOMRIGHT_CORNER, LEFT_SIDE,
-                     TOP_SIDE, RIGHT_SIDE, BOTTOM_SIDE, ALL};
+enum MouseActionType
+{
+  NOTHING,
+  TOPLEFT_CORNER,
+  TOPRIGHT_CORNER,
+  BOTTOMLEFT_CORNER,
+  BOTTOMRIGHT_CORNER,
+  LEFT_SIDE,
+  TOP_SIDE,
+  RIGHT_SIDE,
+  BOTTOM_SIDE,
+  ALL
+};
 
-enum SheetSizeType {NORMALISED, CUSTOM};
+enum SheetSizeType
+{
+  NORMALISED,
+  CUSTOM
+};
 
 class MainView : public BaseGraphDraw
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit MainView();
+  explicit MainView();
 
-    void onSizeUnitChange();
-    double getMinFigureRelativeSize();
+  void onSizeUnitChange();
+  double getMinFigureRelativeSize();
 
 signals:
-    void newZoomValue(double value);
-    void widgetResized();
+  void newZoomValue(double value);
+  void widgetResized();
 
 public slots:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
 
-    void onSizeSettingsChange();
-    void updateWidgetSize();
+  void onSizeSettingsChange();
+  void updateWidgetSize();
 
-    void exportPDF(QString fileName, SheetSizeType sizeType);
-    void exportSVG(QString fileName);
-    void onZoomSettingsChange();
-
+  void exportPDF(QString fileName, SheetSizeType sizeType);
+  void exportSVG(QString fileName);
+  void onZoomSettingsChange();
 
 protected:
-    void paintEvent(QPaintEvent *event);
-    void updateSizeValues();
+  void paintEvent(QPaintEvent *event);
+  void updateSizeValues();
 
+  void drawSupport();
+  void drawGraph();
+  QRect supportRectFromViewRect(QRect viewRect);
+  void drawFigureRect();
+  void assignMouseRects();
+  void printCurves();
+  void constrainFigureRectRel();
+  QRect getFigureRect(const QRect &refSupportRect);
+  QRect getDrawableRect(const QRect &refSupportRect);
+  void scaleView(const QRect &refSheetRect);
+  void setMaximalCanvas();
+  void updateFigureSize();
 
-    void drawSupport();
-    void drawGraph();
-    QRect supportRectFromViewRect(QRect viewRect);
-    void drawFigureRect();
-    void assignMouseRects();
-    void printCurves();
-    void constrainFigureRectRel();
-    QRect getFigureRect(const QRect &refSupportRect);
-    QRect getDrawableRect(const QRect &refSupportRect);
-    void scaleView(const QRect &refSheetRect);
-    void setMaximalCanvas();
-    void updateFigureSize();
+  QPageLayout::Orientation orientation;
+  double minRelSize;
+  QSize currentSize;
+  // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
+  // the other margin is scaled accordingly
+  double screenDPI;
+  QRect figureRect, supportRect, sheetRectScaled;
 
-    QPageLayout::Orientation orientation;
-    double minRelSize;
-    QSize currentSize;
-    // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
-    // the other margin is scaled accordingly
-    double screenDPI;
-    QRect figureRect, supportRect, sheetRectScaled;
+  ZeSizeSettings sizeSettings;
+  ZeZoomSettings zoomSettings;
 
-    ZeSizeSettings sizeSettings;
-    ZeZoomSettings zoomSettings;
+  QRectF relFigRect;
+  QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 
-    QRectF relFigRect;
-    QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
-
-    QPoint lastMousePos ;
-    MouseActionType moveType;
-    QString fileName;
-
+  QPoint lastMousePos;
+  MouseActionType moveType;
+  QString fileName;
 };
 
 #endif // MAINVIEW_H
