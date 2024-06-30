@@ -129,6 +129,11 @@ struct Range2D
   Range2D translated(point<U> vec) const { return Range1D{.x = x.translated(vec.x), .y = y.translated(vec.y)}; }
   bool contains(point<U> pt) const { return x.contains(pt.x) and y.contains(pt.y); }
 
+  GraphRange toGraphRange() const
+  {
+    return GraphRange{.x = ZeAxisRange{.min = x.min.v, .max = x.max.v},
+                      .y = ZeAxisRange{.min = y.min.v, .max = y.max.v}};
+  }
 };
 
 }
