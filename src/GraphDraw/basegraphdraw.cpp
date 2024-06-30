@@ -136,6 +136,7 @@ void BaseGraphDraw::updateGraphRect()
 
 void BaseGraphDraw::paint()
 {
+  funcValuesSaver.update();
   drawEverything();
 }
 

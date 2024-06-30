@@ -164,6 +164,7 @@ void ExprEditBackend::highlightBlock(const QString &text)
       emit errorMsgChanged(errorMsg);
     }
   }
+  information.emitUpdateSignal();
 }
 
 void ExprEditBackend::setDocument(QQuickTextDocument* doc)
