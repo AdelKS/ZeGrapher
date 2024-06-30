@@ -78,13 +78,18 @@ void FuncValuesSaver::refresh_valid_functions()
   {
     const size_t slot = f_curve.slot;
     if (not information.getMathWorld().get<zc::Function<zc_t>>(slot))
+    {
+      qInfo() << "clearing slot " << slot << "from cached functions";
       funCurves.free(slot);
+    }
   }
 
   for (const zc::DynMathObject<zc_t> &math_obj : information.getMathWorld())
   {
     if (not math_obj.holds<zc::Function<zc_t>>() or funCurves.is_assigned(math_obj.get_slot()))
       continue;
+
+    qInfo() << "caching new function " << math_obj.get_name() << " slot " << math_obj.get_slot();
 
     funCurves.push(
       FuncCurve{
@@ -148,11 +153,13 @@ void FuncValuesSaver::compute_uniform_visible_pts(size_t slot)
     {
       if constexpr (side == LEFT)
       {
+        qInfo() << "function slot " << slot << " - added " << extra_pts.size() << " uniform pts LEFT";
         zg::utils::move_elements_right(f_curve.curve, extra_pts.size());
         std::ranges::copy(extra_pts, f_curve.curve.begin());
       }
       else
       {
+        qInfo() << "function slot " << slot << " - added " << extra_pts.size() << " uniform pts RIGHT";
         f_curve.curve.reserve(f_curve.curve.size() + extra_pts.size());
         std::ranges::copy(extra_pts, std::back_inserter(f_curve.curve));
       }
@@ -191,7 +198,10 @@ void FuncValuesSaver::refine_visible_pts(size_t slot)
   std::vector<ExtraPt> extra_pts;
   do {
     curve.reserve(curve.size() + extra_pts.size());
+    if (not extra_pts.empty())
     {
+      qInfo() << "function slot " << slot << " added " << extra_pts.size()
+              << " extra points in refining stage.";
       size_t inserted_num = 0;
       for (const ExtraPt& xpt: extra_pts)
       {
@@ -289,6 +299,7 @@ void FuncValuesSaver::find_discontinuities(size_t slot)
         f_curve.discontinuities.insert(i+slice_size/2+1);
     }
   }
+  qInfo() << "function slot " << slot << " found : " << f_curve.discontinuities.size() << " discontinuities";
 }
 
 void FuncValuesSaver::check_for_equation_changes()
