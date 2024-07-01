@@ -7,11 +7,26 @@ Rectangle {
   id: root
 
   property int spacing: 5
+  property bool disableSignals: false
   implicitHeight: yminEdit.y + yminEdit.height
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   color: myPalette.window
+
+  Connections {
+    target: Information
+    function onGraphRangeChanged() {
+      disableSignals = true;
+      ymaxEdit.expression = Number(Information.range.y.max).toLocaleString();
+      yminEdit.expression = Number(Information.range.y.min).toLocaleString();
+      xmaxEdit.expression = Number(Information.range.x.max).toLocaleString();
+      xminEdit.expression = Number(Information.range.x.min).toLocaleString();
+      disableSignals = false;
+    }
+    enabled: !disableSignals
+  }
+
 
   TextEdit {
     id: ymaxLbl
@@ -36,12 +51,18 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
 
-    onValueChanged: {
-      if (value > yminEdit.value) {
-        Information.range.y.max = value
-      } else {
-        setCustomErrorMsg("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>")
+    Connections {
+      function onValueChanged() {
+        if (ymaxEdit.value > yminEdit.value) {
+          var oldVal = disableSignals;
+          disableSignals = true;
+          Information.range.y.max = ymaxEdit.value;
+          disableSignals = oldVal;
+        } else {
+          setCustomErrorMsg("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>")
+        }
       }
+      enabled: !disableSignals
     }
   }
 
@@ -68,12 +89,18 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
 
-    onValueChanged: {
-      if (value < xmaxEdit.value) {
-        Information.range.x.min = value
-      } else {
-        setCustomErrorMsg("<b>x</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>x</b><sub>max</sub>")
+    Connections {
+      function onValueChanged() {
+        if (xminEdit.value < xmaxEdit.value) {
+          var oldVal = disableSignals;
+          disableSignals = true;
+          Information.range.x.min = xminEdit.value
+          disableSignals = oldVal;
+        } else {
+          setCustomErrorMsg("<b>x</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>x</b><sub>max</sub>")
+        }
       }
+      enabled: !disableSignals
     }
   }
 
@@ -100,12 +127,18 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
 
-    onValueChanged: {
-      if (value > xminEdit.value) {
-        Information.range.x.max = value
-      } else {
-        setCustomErrorMsg("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>")
+    Connections {
+      function onValueChanged() {
+        if (xmaxEdit.value > xminEdit.value) {
+          var oldVal = disableSignals;
+          disableSignals = true;
+          Information.range.x.max = xmaxEdit.value
+          disableSignals = oldVal;
+        } else {
+          setCustomErrorMsg("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>")
+        }
       }
+      enabled: !disableSignals
     }
   }
 
@@ -132,16 +165,18 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
 
-    onValueChanged: {
-      if (value < ymaxEdit.value) {
-        Information.range.y.min = value
-      } else {
-        setCustomErrorMsg("<b>y</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>y</b><sub>max</sub>")
+    Connections {
+      function onValueChanged() {
+        if (yminEdit.value < ymaxEdit.value) {
+          var oldVal = disableSignals;
+          disableSignals = true;
+          Information.range.y.min = yminEdit.value
+          disableSignals = oldVal;
+        } else {
+          setCustomErrorMsg("<b>y</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>y</b><sub>max</sub>")
+        }
       }
+      enabled: !disableSignals
     }
   }
-
-
-
-
 }
