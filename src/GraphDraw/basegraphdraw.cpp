@@ -134,12 +134,6 @@ void BaseGraphDraw::updateGraphRect()
   viewMapper.setGraphRect(graphRectScaled);
 }
 
-void BaseGraphDraw::paint()
-{
-  funcValuesSaver.update();
-  drawEverything();
-}
-
 void BaseGraphDraw::calculateTicksAndMargins()
 {
   updateGraphRect();
@@ -186,8 +180,9 @@ void BaseGraphDraw::calculateTicksAndMargins()
   updateGraphRect();
 }
 
-void BaseGraphDraw::drawEverything()
+void BaseGraphDraw::drawAll()
 {
+  funcValuesSaver.update();
   painter.setFont(information.getGraphSettings().graphFont);
   fontMetrics = painter.fontMetrics();
 
@@ -364,7 +359,7 @@ QImage *BaseGraphDraw::drawImage()
   painter.begin(image);
   //trace du background
 
-  drawEverything();
+  drawAll();
 
   painter.end();
 

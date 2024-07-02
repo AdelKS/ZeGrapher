@@ -48,8 +48,7 @@ protected:
   void updateCenterPosAndScaling();
   void drawBaseGraph();
   void drawGraphRect();
-  void paint();
-  void drawEverything();
+  void drawAll();
   void updateGraphRect();
   void writeLegends();
 

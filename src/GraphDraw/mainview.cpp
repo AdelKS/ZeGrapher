@@ -99,7 +99,7 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
 
   painter.translate(figureRectScaled.topLeft());
 
-  paint();
+  drawAll();
 
   painter.end();
 
@@ -136,7 +136,7 @@ void MainView::exportSVG(QString fileName)
 
   painter.translate(figureRectScaled.topLeft());
 
-  paint();
+  drawAll();
 
   painter.end();
 }
@@ -375,7 +375,7 @@ void MainView::drawGraph()
 
   painter.translate(figureRectScaled.topLeft());
 
-  paint();
+  drawAll();
 }
 
 void MainView::mousePressEvent(QMouseEvent *event)
