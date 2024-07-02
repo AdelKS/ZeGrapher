@@ -64,7 +64,7 @@ protected:
     void recalculateRegVals();
 
     QList<RegressionValuesSaver> regValuesSavers;
-    QPainter painter;
+    QPainter* painter = nullptr;
 
     QPolygonF polygon;
     QPen pen;

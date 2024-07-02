@@ -98,13 +98,13 @@ void BaseGraphDraw::drawLine(zg::pixel_unit pos, const QColor& col, double lineW
 {
   pen.setColor(col);
   pen.setWidthF(lineWidth);
-  painter.setPen(pen);
-  painter.setRenderHint(QPainter::Antialiasing, false);
+  painter->setPen(pen);
+  painter->setRenderHint(QPainter::Antialiasing, false);
 
   if constexpr (axis == ZeAxisName::X)
-    painter.drawLine(QPointF(pos.v, 0.), QPointF(pos.v, graphRectScaled.height()));
+    painter->drawLine(QPointF(pos.v, 0.), QPointF(pos.v, graphRectScaled.height()));
   else
-    painter.drawLine(QPointF(0., pos.v), QPointF(graphRectScaled.width(), pos.v));
+    painter->drawLine(QPointF(0., pos.v), QPointF(graphRectScaled.width(), pos.v));
 }
 
 template <ZeAxisName axis>
@@ -112,21 +112,21 @@ void BaseGraphDraw::drawTick(zg::pixel_unit pos, const QColor& col, double lineW
 {
   pen.setColor(col);
   pen.setWidthF(lineWidth);
-  painter.setPen(pen);
-  painter.setRenderHint(QPainter::Antialiasing, false);
+  painter->setPen(pen);
+  painter->setRenderHint(QPainter::Antialiasing, false);
 
   if constexpr (axis == ZeAxisName::X)
-    painter.drawLine(QPointF(pos.v, 4), QPointF(pos.v, 0));
+    painter->drawLine(QPointF(pos.v, 4), QPointF(pos.v, 0));
   else
-    painter.drawLine(QPointF(4, pos.v), QPointF(0, pos.v));
+    painter->drawLine(QPointF(4, pos.v), QPointF(0, pos.v));
 };
 
 template <ZeAxisName axis>
 void BaseGraphDraw::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
-  painter.setFont(information.getGraphSettings().graphFont);
+  painter->setFont(information.getGraphSettings().graphFont);
   pen.setColor(information.getAxesSettings().color);
-  painter.setPen(pen);
+  painter->setPen(pen);
 
   auto boundingRect = fontMetrics.boundingRect(txt);
   if constexpr (axis == ZeAxisName::X)
@@ -138,20 +138,20 @@ void BaseGraphDraw::writeCoordinate(zg::pixel_unit pos, const QString& txt)
     else
       space = double(boundingRect.width()) / 2.;
 
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(pos.v - space, graphRectScaled.height() + boundingRect.height() + 5), txt);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + boundingRect.height() + 5), txt);
   }
   else
   {
-    painter.drawText(QPointF(- boundingRect.width() - 5, pos.v + boundingRect.height()/2.), txt);
+    painter->drawText(QPointF(- boundingRect.width() - 5, pos.v + boundingRect.height()/2.), txt);
   }
 };
 
 template <ZeAxisName axis>
 void BaseGraphDraw::drawLinAxisGridTicks()
 {
-  painter.setFont(information.getGraphSettings().graphFont);
-  QFontMetrics fontMetrics = painter.fontMetrics();
+  painter->setFont(information.getGraphSettings().graphFont);
+  QFontMetrics fontMetrics = painter->fontMetrics();
 
   const ZeAxesSettings &axesSettings = information.getAxesSettings();
 

@@ -183,8 +183,8 @@ void BaseGraphDraw::calculateTicksAndMargins()
 void BaseGraphDraw::drawAll()
 {
   funcValuesSaver.update();
-  painter.setFont(information.getGraphSettings().graphFont);
-  fontMetrics = painter.fontMetrics();
+  painter->setFont(information.getGraphSettings().graphFont);
+  fontMetrics = painter->fontMetrics();
 
   calculateTicksAndMargins();
   calculateTicksAndMargins();
@@ -192,7 +192,7 @@ void BaseGraphDraw::drawAll()
 
   updateCenterPosAndScaling();
 
-  painter.translate(leftMargin, topMargin);
+  painter->translate(leftMargin, topMargin);
 
   drawGraphRect();
 
@@ -211,12 +211,12 @@ void BaseGraphDraw::drawAll()
   if(legendState)
       writeLegends();
 
-  painter.setClipRect(graphRectScaled);
+  painter->setClipRect(graphRectScaled);
 
   funcValuesSaver.update();
   drawFunctions();
 
-  painter.translate(QPointF(centre.x, centre.y));
+  painter->translate(QPointF(centre.x, centre.y));
 
   recalculateRegVals();
   drawSequences();
@@ -233,31 +233,31 @@ void BaseGraphDraw::writeLegends()
   font.setBold(bold);
   font.setUnderline(underline);
 
-  painter.setFont(font);
+  painter->setFont(font);
 
   if (!xLegend.isEmpty())
   {
-    int xLegendWidth = painter.fontMetrics().boundingRect(xLegend).width();
+    int xLegendWidth = painter->fontMetrics().boundingRect(xLegend).width();
 
     QPoint startDrawPoint;
     startDrawPoint.setX((graphRectScaled.width() - xLegendWidth) / 2);
     startDrawPoint.setY(graphRectScaled.height() + bottomMargin - 10);
 
-    painter.drawText(startDrawPoint, xLegend);
+    painter->drawText(startDrawPoint, xLegend);
   }
   if (!yLegend.isEmpty())
   {
-    painter.rotate(-90);
-    int yLegendWidth = painter.fontMetrics().boundingRect(yLegend).width();
+    painter->rotate(-90);
+    int yLegendWidth = painter->fontMetrics().boundingRect(yLegend).width();
     int yLegendHeight = legendFontSize + 6;
 
     QPoint startDrawPoint;
     startDrawPoint.setX(-(graphRectScaled.height() - (graphRectScaled.height() - yLegendWidth) / 2));
     startDrawPoint.setY(-leftMargin + yLegendHeight);
 
-    painter.drawText(startDrawPoint, yLegend);
+    painter->drawText(startDrawPoint, yLegend);
 
-    painter.rotate(90);
+    painter->rotate(90);
   }
 }
 
@@ -265,8 +265,8 @@ void BaseGraphDraw::writeAxisOffsetX()
 {
   pen.setColor(information.getAxesSettings().color);
   pen.setWidthF(information.getAxesSettings().lineWidth);
-  painter.setPen(pen);
-  painter.setRenderHint(QPainter::Antialiasing, true);
+  painter->setPen(pen);
+  painter->setRenderHint(QPainter::Antialiasing, true);
 
   const auto& offset = xAxisTicks.offset;
 
@@ -274,7 +274,7 @@ void BaseGraphDraw::writeAxisOffsetX()
   {
     QString sum_offset = offset.sumOffsetStr();
 
-    painter.drawText(QPointF(graphRectScaled.width() + 5,
+    painter->drawText(QPointF(graphRectScaled.width() + 5,
                              graphRectScaled.height()
                                - fontMetrics.boundingRect(sum_offset).height() - 10),
                      sum_offset);
@@ -287,7 +287,7 @@ void BaseGraphDraw::writeAxisOffsetX()
   {
     QString power_offset = offset.basePowerOffsetStr();
 
-    painter.drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
+    painter->drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
 
     int margin = fontMetrics.boundingRect(power_offset).width() + 5;
     Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
@@ -301,8 +301,8 @@ void BaseGraphDraw::writeAxisOffsetY()
   if (yAxisTicks.offset.basePowerOffset != 0)
   {
     QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(0, -4), power_offset);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->drawText(QPointF(0, -4), power_offset);
 
     powerOffset_size = fontMetrics.boundingRect(power_offset).width() + 5;
   }
@@ -314,8 +314,8 @@ void BaseGraphDraw::writeAxisOffsetY()
     if (new_offsetmargin > offset_margin)
       offset_margin = new_offsetmargin;
 
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
   }
 }
 
@@ -323,14 +323,14 @@ void BaseGraphDraw::drawGraphRect()
 {
   const auto &axesSettings = information.getAxesSettings();
 
-  painter.setRenderHint(QPainter::Antialiasing, false);
-  painter.setBrush(QBrush(Qt::NoBrush));
+  painter->setRenderHint(QPainter::Antialiasing, false);
+  painter->setBrush(QBrush(Qt::NoBrush));
 
   pen.setWidth(axesSettings.lineWidth);
   pen.setColor(axesSettings.color);
-  painter.setPen(pen);
+  painter->setPen(pen);
 
-  painter.drawRect(graphRectScaled);
+  painter->drawRect(graphRectScaled);
 }
 
 void BaseGraphDraw::updateCenterPosAndScaling()
@@ -356,12 +356,12 @@ QImage *BaseGraphDraw::drawImage()
   QImage *image = new QImage(size(), QImage::Format_RGB32);
   image->fill(information.getGraphSettings().backgroundColor.rgb());
 
-  painter.begin(image);
+  painter->begin(image);
   //trace du background
 
   drawAll();
 
-  painter.end();
+  painter->end();
 
   //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
   return image;

@@ -18,8 +18,6 @@
 **
 ****************************************************************************/
 
-#include <iostream>
-
 #include "GraphDraw/mathobjectdraw.h"
 #include "information.h"
 
@@ -56,7 +54,7 @@ void MathObjectDraw::addRegSaver(Regression *reg)
 {
     regValuesSavers << RegressionValuesSaver(information.getGraphSettings().distanceBetweenPoints, reg);
     recalculate = true;
-    repaint();
+    update();
 }
 
 void MathObjectDraw::delRegSaver(Regression *reg)
@@ -65,30 +63,30 @@ void MathObjectDraw::delRegSaver(Regression *reg)
         if(regValuesSavers[i].getRegression() == reg)
             regValuesSavers.removeAt(i);
     recalculate = false;
-    repaint();
+    update();
 }
 
 void MathObjectDraw::drawRhombus(const QPointF &pt, double w)
 {
     QPolygonF polygon({pt + QPointF(-w,0), pt + QPointF(0,w), pt + QPointF(w,0), pt + QPointF(0,-w)});
 
-    painter.drawPolygon(polygon);
+    painter->drawPolygon(polygon);
 }
 
 void MathObjectDraw::drawDisc(const QPointF &pt, double w)
 {
-    painter.drawEllipse(pt, w, w);
+    painter->drawEllipse(pt, w, w);
 }
 
 void MathObjectDraw::drawSquare(const QPointF &pt, double w)
 {
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter->setRenderHint(QPainter::Antialiasing, false);
 
     QRectF rect;
     rect.setTopLeft(pt + QPointF(-w,-w));
     rect.setBottomRight(pt + QPointF(w,w));
 
-    painter.drawRect(rect);
+    painter->drawRect(rect);
 }
 
 void MathObjectDraw::drawTriangle(const QPointF &pt, double w)
@@ -100,17 +98,17 @@ void MathObjectDraw::drawTriangle(const QPointF &pt, double w)
 
     polygon << pt + QPointF(0, -w) << pt + QPointF(d, b) << pt + QPointF(-d,b);
 
-    painter.drawPolygon(polygon);
+    painter->drawPolygon(polygon);
 }
 
 void MathObjectDraw::drawCross(const QPointF &pt, double w)
 {
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter->setRenderHint(QPainter::Antialiasing, false);
 
     pen.setWidth(w);
 
-    painter.drawLine(pt+QPointF(0,2*w), pt+QPointF(0, -2*w));
-    painter.drawLine(pt+QPointF(-2*w, 0), pt+QPointF(2*w, 0));
+    painter->drawLine(pt+QPointF(0,2*w), pt+QPointF(0, -2*w));
+    painter->drawLine(pt+QPointF(-2*w, 0), pt+QPointF(2*w, 0));
 }
 
 void MathObjectDraw::drawDataSet(int id, int width)
@@ -118,7 +116,7 @@ void MathObjectDraw::drawDataSet(int id, int width)
     auto userData = information.getDataPoints(id);
 
     pen.setColor(userData->style.color);
-    painter.setPen(pen);
+    painter->setPen(pen);
 
     static std::vector<std::function<void(MathObjectDraw*, QPointF, double)>> draw_functions = {&MathObjectDraw::drawRhombus,
             &MathObjectDraw::drawDisc, &MathObjectDraw::drawSquare, &MathObjectDraw::drawTriangle, &MathObjectDraw::drawCross };
@@ -133,7 +131,7 @@ void MathObjectDraw::drawDataSet(int id, int width)
             information.getGraphSettings().distanceBetweenPoints;
 
     brush.setColor(userData->style.color);
-    painter.setBrush(brush);
+    painter->setBrush(brush);
 
     for(const Point &pt: dataPoints)
     {
@@ -159,10 +157,10 @@ void MathObjectDraw::drawDataSet(int id, int width)
     if(userData->style.drawLines)
     {
         pen.setStyle(userData->style.lineStyle);
-        painter.setPen(pen);
-        painter.drawPolyline(polygon);
+        painter->setPen(pen);
+        painter->drawPolyline(polygon);
         pen.setStyle(Qt::SolidLine);
-        painter.setPen(pen);
+        painter->setPen(pen);
     }
 }
 
@@ -179,9 +177,9 @@ void MathObjectDraw::drawCurve(int width, QColor color, const QPolygonF &curve)
 {
     pen.setWidth(width);
     pen.setColor(color);
-    painter.setPen(pen);
+    painter->setPen(pen);
 
-    painter.drawPolyline(curve);
+    painter->drawPolyline(curve);
 
 }
 
@@ -193,7 +191,7 @@ void MathObjectDraw::drawCurve(int width, QColor color, const QList<QPolygonF> &
 
 void MathObjectDraw::drawRegressions()
 {
-    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
+    painter->setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
     for(int reg = 0 ; reg < regValuesSavers.size() ; reg++)
     {
@@ -219,16 +217,16 @@ void MathObjectDraw::recalculateRegVals()
 
 void MathObjectDraw::drawFunctions()
 {
-    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
+    painter->setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
 
     pen.setColor(Qt::red);
-    painter.setPen(pen);
+    painter->setPen(pen);
 
     std::vector<QPointF> mapped_curve;
     auto draw_mapped_curve = [&]{
         if (not mapped_curve.empty())
         {
-            painter.drawPolyline(mapped_curve.data(), mapped_curve.size());
+            painter->drawPolyline(mapped_curve.data(), mapped_curve.size());
             mapped_curve.clear();
         }
     };
@@ -260,7 +258,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
           return;
     }
 
-    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
+    painter->setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
     pen.setWidth(width);
 
     zg::view_unit posX;
@@ -290,7 +288,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
     for(int k = 0; k < end; k++)
     {
         pen.setColor(colorSaver->getColor(k));
-        painter.setPen(pen);
+        painter->setPen(pen);
 
         for(zg::view_unit view_x = posX; view_x < viewXmax; view_x += step)
         {
@@ -302,7 +300,7 @@ void MathObjectDraw::drawOneSequence(int i, int width)
             if(!ok  || !std::isfinite(y.v))
                 return;
 
-            painter.drawPoint(
+            painter->drawPoint(
               QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt{.x = real_x, .y = y})));
         }
     }
@@ -322,8 +320,8 @@ void MathObjectDraw::drawStaticParEq()
     ColorSaver *colorSaver;
 
     pen.setWidth(information.getGraphSettings().curvesThickness);
-    painter.setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
-    painter.setPen(pen);
+    painter->setRenderHint(QPainter::Antialiasing, information.getGraphSettings().smoothing && !moving);
+    painter->setPen(pen);
 
     for(int i = 0; i < parEqs->size(); i++)
     {
@@ -336,7 +334,7 @@ void MathObjectDraw::drawStaticParEq()
         for(int curve = 0; curve < list->size(); curve++)
         {
             pen.setColor(colorSaver->getColor(curve));
-            painter.setPen(pen);
+            painter->setPen(pen);
 
             polygon.clear();
 
@@ -346,7 +344,7 @@ void MathObjectDraw::drawStaticParEq()
                 polygon << QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt::from(point)));
             }
 
-            painter.drawPolyline(polygon);
+            painter->drawPolyline(polygon);
         }
     }
 }

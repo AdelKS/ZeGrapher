@@ -87,21 +87,21 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
 
   pdfWriter->setPageLayout(layout);
 
-  painter.begin(pdfWriter);
+  painter->begin(pdfWriter);
 
   if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
   {
-    painter.setBrush(QBrush(information.getGraphSettings().backgroundColor));
-    painter.drawRect(painter.viewport());
+    painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+    painter->drawRect(painter->viewport());
   }
 
-  figureRectScaled = getFigureRect(painter.viewport());
+  figureRectScaled = getFigureRect(painter->viewport());
 
-  painter.translate(figureRectScaled.topLeft());
+  painter->translate(figureRectScaled.topLeft());
 
   drawAll();
 
-  painter.end();
+  painter->end();
 
   delete pdfWriter;
 }
@@ -124,21 +124,21 @@ void MainView::exportSVG(QString fileName)
   svgGenerator.setSize(sizePx);
   svgGenerator.setViewBox(QRect(QPoint(0, 0), sizePx));
 
-  painter.begin(&svgGenerator);
+  painter->begin(&svgGenerator);
 
   if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
   {
-    painter.setBrush(QBrush(information.getGraphSettings().backgroundColor));
-    painter.drawRect(painter.viewport());
+    painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+    painter->drawRect(painter->viewport());
   }
 
-  figureRectScaled = getFigureRect(painter.viewport());
+  figureRectScaled = getFigureRect(painter->viewport());
 
-  painter.translate(figureRectScaled.topLeft());
+  painter->translate(figureRectScaled.topLeft());
 
   drawAll();
 
-  painter.end();
+  painter->end();
 }
 
 void MainView::updateSizeValues()
@@ -181,7 +181,8 @@ void MainView::paintEvent(QPaintEvent *event)
     onSizeSettingsChange();
   }
 
-  painter.begin(this);
+  QPainter tmp_painter(this);
+  painter = &tmp_painter;
 
   drawSupport();
 
@@ -192,7 +193,7 @@ void MainView::paintEvent(QPaintEvent *event)
 
   drawGraph();
 
-  painter.end();
+  painter = nullptr;
 }
 
 void MainView::assignMouseRects()
@@ -324,26 +325,26 @@ QRect MainView::supportRectFromViewRect(QRect viewRect)
 
 void MainView::drawSupport()
 { // draws the sheet on an untransformed view
-  painter.setBrush(QBrush(information.getGraphSettings().backgroundColor));
+  painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
 
-  supportRect = supportRectFromViewRect(painter.viewport());
+  supportRect = supportRectFromViewRect(painter->viewport());
 
-  painter.drawRect(supportRect);
+  painter->drawRect(supportRect);
 }
 
 void MainView::drawFigureRect()
 {
   figureRect = getFigureRect(supportRect);
 
-  painter.setBrush(Qt::NoBrush);
+  painter->setBrush(Qt::NoBrush);
   pen.setStyle(Qt::DashLine);
   pen.setWidth(1);
   pen.setColor(information.getAxesSettings().color);
-  painter.setPen(pen);
-  painter.drawRect(figureRect);
+  painter->setPen(pen);
+  painter->drawRect(figureRect);
 
   pen.setStyle(Qt::SolidLine);
-  painter.setPen(pen);
+  painter->setPen(pen);
 }
 
 void MainView::scaleView(const QRect &refSheetRect)
@@ -362,18 +363,18 @@ void MainView::scaleView(const QRect &refSheetRect)
 
   double totalScaleFactor = zoomSettings.zoom * sizeSettings.scalingFactor;
 
-  painter.scale(totalScaleFactor, totalScaleFactor);
+  painter->scale(totalScaleFactor, totalScaleFactor);
 }
 
 void MainView::drawGraph()
 {
   scaleView(supportRect);
 
-  sheetRectScaled = painter.worldTransform().inverted().mapRect(supportRect);
+  sheetRectScaled = painter->worldTransform().inverted().mapRect(supportRect);
 
   figureRectScaled = getFigureRect(sheetRectScaled);
 
-  painter.translate(figureRectScaled.topLeft());
+  painter->translate(figureRectScaled.topLeft());
 
   drawAll();
 }
