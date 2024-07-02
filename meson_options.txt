@@ -1,1 +1,1 @@
-option('debug_logs', type : 'boolean', value : false)
+option('loglevel', type: 'combo', choices : ['debug', 'info', 'warn', 'off'], value : 'off', description: 'Max log level in non-debug build')

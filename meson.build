@@ -13,9 +13,15 @@ project('ZeGrapher', 'cpp',
     ]
 )
 
-if not get_option('debug_logs')
+if get_option('loglevel') != 'debug'
     add_project_arguments('-D QT_NO_DEBUG_OUTPUT', language : 'cpp')
+endif
+
+if not ['debug', 'info'].contains(get_option('loglevel'))
     add_project_arguments('-D QT_NO_INFO_OUTPUT', language : 'cpp')
+endif
+
+if get_option('loglevel') == 'off'
     add_project_arguments('-D QT_NO_WARNING_OUTPUT', language : 'cpp')
 endif
 

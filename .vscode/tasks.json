@@ -6,12 +6,12 @@
         {
             "label": "setup-debug",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
         },
         {
             "label": "resetup-debug",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
+            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
         },
         {
             "label": "build-debug",
@@ -60,12 +60,12 @@
         {
             "label": "setup-debug-clang",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug-clang\" ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
+            "command": "[ -d \"${cwd}/build-zg-debug-clang\" ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
         },
         {
             "label": "resetup-debug-clang",
             "type": "shell",
-            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D debug_logs=true"
+            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
         },
         {
             "label": "build-debug-clang",
@@ -114,12 +114,12 @@
         {
             "label": "setup-release",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D debug_logs=false"
+            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off"
         },
         {
             "label": "resetup-release",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D debug_logs=false"
+            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off"
         },
         {
             "label": "build-release",
