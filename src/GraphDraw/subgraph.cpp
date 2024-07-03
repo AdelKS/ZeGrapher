@@ -21,7 +21,7 @@
 //#include "GraphDraw/subgraph.h"
 
 
-//SubGraph::SubGraph() : BaseGraphDraw()
+//SubGraph::SubGraph() : Graph()
 //{
 
 //    setMinimumSize(QSize(200, 200));
@@ -333,7 +333,7 @@
 //    /* Wait for showEvent to determine screen refresh rate
 //       to make zooming as smooth as the screen enables.*/
 
-//    BaseGraphDraw::showEvent(event);
+//    Graph::showEvent(event);
 
 //    QWindow *appWindow = window()->windowHandle();
 //    if(appWindow != nullptr)

@@ -23,11 +23,11 @@
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
 
-class BaseGraphDraw : public QWidget, public MathObjectDraw
+class Graph : public QWidget, public MathObjectDraw
 {
   Q_OBJECT
 public:
-  explicit BaseGraphDraw(QWidget* parent = nullptr);
+  explicit Graph(QWidget* parent = nullptr);
   QImage* drawImage();
 
 public slots:
@@ -99,7 +99,7 @@ protected:
 };
 
 template <ZeAxisName axis>
-void BaseGraphDraw::drawLine(zg::pixel_unit pos, const QColor& col, double lineWidth)
+void Graph::drawLine(zg::pixel_unit pos, const QColor& col, double lineWidth)
 {
   pen.setColor(col);
   pen.setWidthF(lineWidth);
@@ -113,7 +113,7 @@ void BaseGraphDraw::drawLine(zg::pixel_unit pos, const QColor& col, double lineW
 }
 
 template <ZeAxisName axis>
-void BaseGraphDraw::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
+void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
 {
   pen.setColor(col);
   pen.setWidthF(lineWidth);
@@ -127,7 +127,7 @@ void BaseGraphDraw::drawTick(zg::pixel_unit pos, const QColor& col, double lineW
 };
 
 template <ZeAxisName axis>
-void BaseGraphDraw::writeCoordinate(zg::pixel_unit pos, const QString& txt)
+void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
   painter->setFont(information.getGraphSettings().graphFont);
   pen.setColor(information.getAxesSettings().color);
@@ -153,7 +153,7 @@ void BaseGraphDraw::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 };
 
 template <ZeAxisName axis>
-void BaseGraphDraw::drawLinAxisGridTicks()
+void Graph::drawLinAxisGridTicks()
 {
   painter->setFont(information.getGraphSettings().graphFont);
   QFontMetrics fontMetrics = painter->fontMetrics();

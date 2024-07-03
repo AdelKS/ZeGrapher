@@ -28,7 +28,7 @@
 
 //#include "../Widgets/popupwidget.h"
 
-//class SubGraph : public BaseGraphDraw
+//class SubGraph : public Graph
 //{
 //    Q_OBJECT
 //public:

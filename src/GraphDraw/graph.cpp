@@ -18,10 +18,10 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/basegraphdraw.h"
+#include "GraphDraw/graph.h"
 #include "information.h"
 
-BaseGraphDraw::BaseGraphDraw(QWidget *parent)
+Graph::Graph(QWidget *parent)
   : QWidget(parent), MathObjectDraw(), gridCalculator(this),
     fontMetrics(information.getGraphSettings().graphFont)
 {
@@ -51,12 +51,12 @@ BaseGraphDraw::BaseGraphDraw(QWidget *parent)
 }
 
 
-void BaseGraphDraw::updateSettingsVals()
+void Graph::updateSettingsVals()
 {
   funcValuesSaver.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
 }
 
-void BaseGraphDraw::addRegSaver(Regression *reg)
+void Graph::addRegSaver(Regression *reg)
 {
   regValuesSavers << RegressionValuesSaver(information.getGraphSettings().distanceBetweenPoints,
                                            reg);
@@ -64,7 +64,7 @@ void BaseGraphDraw::addRegSaver(Regression *reg)
   update();
 }
 
-void BaseGraphDraw::delRegSaver(Regression *reg)
+void Graph::delRegSaver(Regression *reg)
 {
   for (int i = 0; i < regValuesSavers.size(); i++)
     if (regValuesSavers[i].getRegression() == reg)
@@ -74,37 +74,37 @@ void BaseGraphDraw::delRegSaver(Regression *reg)
 }
 
 
-void BaseGraphDraw::graphRangeChanged(const GraphRange &range)
+void Graph::graphRangeChanged(const GraphRange &range)
 {
   viewMapper.setGraphRange(range);
   update();
 }
 
-void BaseGraphDraw::setNumPrec(int prec)
+void Graph::setNumPrec(int prec)
 {
   numPrec = prec;
   update();
 }
 
-void BaseGraphDraw::setBold(bool state)
+void Graph::setBold(bool state)
 {
   bold = state;
   update();
 }
 
-void BaseGraphDraw::setUnderline(bool state)
+void Graph::setUnderline(bool state)
 {
   underline = state;
   update();
 }
 
-void BaseGraphDraw::setItalic(bool state)
+void Graph::setItalic(bool state)
 {
   italic = state;
   update();
 }
 
-void BaseGraphDraw::setlegendFontSize(int size)
+void Graph::setlegendFontSize(int size)
 {
   if (legendState)
   {
@@ -122,7 +122,7 @@ void BaseGraphDraw::setlegendFontSize(int size)
   update();
 }
 
-void BaseGraphDraw::setLegendState(bool show)
+void Graph::setLegendState(bool show)
 {
   if (show && !legendState)
   {
@@ -144,19 +144,19 @@ void BaseGraphDraw::setLegendState(bool show)
   update();
 }
 
-void BaseGraphDraw::setXaxisLegend(QString legend)
+void Graph::setXaxisLegend(QString legend)
 {
   xLegend = legend;
   update();
 }
 
-void BaseGraphDraw::setYaxisLegend(QString legend)
+void Graph::setYaxisLegend(QString legend)
 {
   yLegend = legend;
   update();
 }
 
-void BaseGraphDraw::updateGraphRect()
+void Graph::updateGraphRect()
 {
   graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
   graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
@@ -164,7 +164,7 @@ void BaseGraphDraw::updateGraphRect()
   viewMapper.setGraphRect(graphRectScaled);
 }
 
-void BaseGraphDraw::calculateTicksAndMargins()
+void Graph::calculateTicksAndMargins()
 {
   updateGraphRect();
 
@@ -210,7 +210,7 @@ void BaseGraphDraw::calculateTicksAndMargins()
   updateGraphRect();
 }
 
-void BaseGraphDraw::drawAll()
+void Graph::drawAll()
 {
   funcValuesSaver.update();
   painter->setFont(information.getGraphSettings().graphFont);
@@ -255,7 +255,7 @@ void BaseGraphDraw::drawAll()
   drawData();
 }
 
-void BaseGraphDraw::writeLegends()
+void Graph::writeLegends()
 {
   QFont font = information.getGraphSettings().graphFont;
   font.setPixelSize(legendFontSize);
@@ -291,7 +291,7 @@ void BaseGraphDraw::writeLegends()
   }
 }
 
-void BaseGraphDraw::writeAxisOffsetX()
+void Graph::writeAxisOffsetX()
 {
   pen.setColor(information.getAxesSettings().color);
   pen.setWidthF(information.getAxesSettings().lineWidth);
@@ -324,7 +324,7 @@ void BaseGraphDraw::writeAxisOffsetX()
   }
 }
 
-void BaseGraphDraw::writeAxisOffsetY()
+void Graph::writeAxisOffsetY()
 {
   int powerOffset_size = 0;
   int offset_margin = 0;
@@ -349,7 +349,7 @@ void BaseGraphDraw::writeAxisOffsetY()
   }
 }
 
-void BaseGraphDraw::drawGraphRect()
+void Graph::drawGraphRect()
 {
   const auto &axesSettings = information.getAxesSettings();
 
@@ -363,7 +363,7 @@ void BaseGraphDraw::drawGraphRect()
   painter->drawRect(graphRectScaled);
 }
 
-void BaseGraphDraw::updateCenterPosAndScaling()
+void Graph::updateCenterPosAndScaling()
 {
   // TODO: update this method not working here
 
@@ -381,7 +381,7 @@ void BaseGraphDraw::updateCenterPosAndScaling()
   centre.y = -viewMapper.y.getMin<zg::plane::view>().v * pxPerUnit.y;
 }
 
-QImage *BaseGraphDraw::drawImage()
+QImage *Graph::drawImage()
 {
   QImage *image = new QImage(size(), QImage::Format_RGB32);
   image->fill(information.getGraphSettings().backgroundColor.rgb());

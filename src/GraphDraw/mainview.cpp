@@ -21,7 +21,7 @@
 #include "GraphDraw/mainview.h"
 #include "information.h"
 
-MainView::MainView() : BaseGraphDraw()
+MainView::MainView() : Graph()
 {
   orientation = QPageLayout::Landscape;
   moveType = NOTHING;

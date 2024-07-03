@@ -21,7 +21,7 @@
 #ifndef MAINVIEW_H
 #define MAINVIEW_H
 
-#include "basegraphdraw.h"
+#include "graph.h"
 #include <QPageLayout>
 #include <QPdfWriter>
 #include <QSvgGenerator>
@@ -47,7 +47,7 @@ enum SheetSizeType
   CUSTOM
 };
 
-class MainView : public BaseGraphDraw
+class MainView : public Graph
 {
   Q_OBJECT
 
