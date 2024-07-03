@@ -21,8 +21,9 @@
 #include "GraphDraw/basegraphdraw.h"
 #include "information.h"
 
-BaseGraphDraw::BaseGraphDraw()
-  : MathObjectDraw(), gridCalculator(this), fontMetrics(information.getGraphSettings().graphFont)
+BaseGraphDraw::BaseGraphDraw(QWidget *parent)
+  : QWidget(parent), MathObjectDraw(), gridCalculator(this),
+    fontMetrics(information.getGraphSettings().graphFont)
 {
   leftMargin = 30;
   rightMargin = 30;

@@ -23,11 +23,11 @@
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
 
-class BaseGraphDraw : public MathObjectDraw
+class BaseGraphDraw : public QWidget, public MathObjectDraw
 {
   Q_OBJECT
 public:
-  explicit BaseGraphDraw();
+  explicit BaseGraphDraw(QWidget* parent = nullptr);
   QImage* drawImage();
 
 public slots:

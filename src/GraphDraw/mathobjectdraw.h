@@ -31,10 +31,8 @@
 #include "GraphDraw/viewmapper.h"
 
 
-class MathObjectDraw: public QWidget
+class MathObjectDraw
 {
-Q_OBJECT
-
 public:
     explicit MathObjectDraw();
 
