@@ -44,6 +44,11 @@ public slots:
 
   void graphRangeChanged(const GraphRange& range);
 
+protected slots:
+  void addRegSaver(Regression *reg);
+  void delRegSaver(Regression *reg);
+  void updateSettingsVals();
+
 protected:
   void updateCenterPosAndScaling();
   void drawBaseGraph();

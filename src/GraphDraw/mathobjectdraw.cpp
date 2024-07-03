@@ -23,13 +23,10 @@
 
 using namespace std;
 
-MathObjectDraw::MathObjectDraw(QWidget *parent)
-  : QWidget(parent),
-    funcValuesSaver(viewMapper, information.getGraphSettings().distanceBetweenPoints)
+MathObjectDraw::MathObjectDraw()
+    : funcValuesSaver(viewMapper, information.getGraphSettings().distanceBetweenPoints)
 {
     coef = sqrt(3)/2;
-
-    setMinimumSize(QSize(200, 200));
 
     pen.setCapStyle(Qt::RoundCap);
     brush.setStyle(Qt::SolidPattern);
@@ -39,31 +36,6 @@ MathObjectDraw::MathObjectDraw(QWidget *parent)
     seqs = information.getSeqsList();
 
     moving = false;
-
-    connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
-    connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
-    connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
-}
-
-void MathObjectDraw::updateSettingsVals()
-{
-    funcValuesSaver.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
-}
-
-void MathObjectDraw::addRegSaver(Regression *reg)
-{
-    regValuesSavers << RegressionValuesSaver(information.getGraphSettings().distanceBetweenPoints, reg);
-    recalculate = true;
-    update();
-}
-
-void MathObjectDraw::delRegSaver(Regression *reg)
-{
-    for(int i = 0 ; i < regValuesSavers.size() ; i++)
-        if(regValuesSavers[i].getRegression() == reg)
-            regValuesSavers.removeAt(i);
-    recalculate = false;
-    update();
 }
 
 void MathObjectDraw::drawRhombus(const QPointF &pt, double w)

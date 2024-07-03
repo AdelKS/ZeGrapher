@@ -31,16 +31,12 @@
 #include "GraphDraw/viewmapper.h"
 
 
-class MathObjectDraw : public QWidget // Base class from math objects drawing
+class MathObjectDraw: public QWidget
 {
-    Q_OBJECT
-public:
-    explicit MathObjectDraw(QWidget* parent = nullptr);
+Q_OBJECT
 
-protected slots:
-    void addRegSaver(Regression *reg);
-    void delRegSaver(Regression *reg);
-    void updateSettingsVals();
+public:
+    explicit MathObjectDraw();
 
 protected:
 
@@ -82,8 +78,6 @@ protected:
     QList<SeqCalculator*> seqs;
     QList<ParEqWidget*> *parEqs;
     QList< QList<double> > *regVals;
-
-    QFont font;
 };
 
 #endif // GRAPHDRAW_H

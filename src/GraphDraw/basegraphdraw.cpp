@@ -36,13 +36,42 @@ BaseGraphDraw::BaseGraphDraw()
   numPrec = NUM_PREC;
   viewMapper.setGraphRange(information.getGraphRange());
 
+  setMinimumSize(QSize(200, 200));
+
   connect(&information,
           SIGNAL(graphRangeChanged(GraphRange)),
           this,
           SLOT(graphRangeChanged(const GraphRange &)));
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
+  connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
+  connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
+  connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
 }
+
+
+void BaseGraphDraw::updateSettingsVals()
+{
+  funcValuesSaver.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
+}
+
+void BaseGraphDraw::addRegSaver(Regression *reg)
+{
+  regValuesSavers << RegressionValuesSaver(information.getGraphSettings().distanceBetweenPoints,
+                                           reg);
+  recalculate = true;
+  update();
+}
+
+void BaseGraphDraw::delRegSaver(Regression *reg)
+{
+  for (int i = 0; i < regValuesSavers.size(); i++)
+    if (regValuesSavers[i].getRegression() == reg)
+      regValuesSavers.removeAt(i);
+  recalculate = false;
+  update();
+}
+
 
 void BaseGraphDraw::graphRangeChanged(const GraphRange &range)
 {
@@ -227,7 +256,7 @@ void BaseGraphDraw::drawAll()
 
 void BaseGraphDraw::writeLegends()
 {
-  font = information.getGraphSettings().graphFont;
+  QFont font = information.getGraphSettings().graphFont;
   font.setPixelSize(legendFontSize);
   font.setItalic(italic);
   font.setBold(bold);
