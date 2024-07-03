@@ -4,7 +4,7 @@ MainViewContainer::MainViewContainer(QWidget *parent) : QScrollArea(parent)
 {
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    mainView = new MainView();
+    mainView = new InteractiveGraph();
 
     setWidget(mainView);
     setWidgetResizable(false);

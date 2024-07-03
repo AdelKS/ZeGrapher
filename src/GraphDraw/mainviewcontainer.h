@@ -1,7 +1,7 @@
 #ifndef MAINVIEWCONTAINER_H
 #define MAINVIEWCONTAINER_H
 
-#include "GraphDraw/mainview.h"
+#include "GraphDraw/interactivegraph.h"
 #include "Widgets/sheetzoom.h"
 #include "Widgets/popupwidget.h"
 
@@ -26,7 +26,7 @@ protected:
     void showEvent(QShowEvent *event);
 
     double screenDPI;
-    MainView *mainView;
+    InteractiveGraph *mainView;
     SheetZoom *sheetZoom;
     PopupWidget *zoomPopup;
 };

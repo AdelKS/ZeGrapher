@@ -18,10 +18,10 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/mainview.h"
+#include "GraphDraw/interactivegraph.h"
 #include "information.h"
 
-MainView::MainView() : Graph()
+InteractiveGraph::InteractiveGraph() : Graph()
 {
   orientation = QPageLayout::Landscape;
   moveType = NOTHING;
@@ -43,7 +43,7 @@ MainView::MainView() : Graph()
   connect(&information, SIGNAL(dataUpdated()), this, SLOT(update()));
 }
 
-void MainView::updateWidgetSize()
+void InteractiveGraph::updateWidgetSize()
 {
   QSize newSize;
   if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
@@ -57,12 +57,12 @@ void MainView::updateWidgetSize()
   emit widgetResized();
 }
 
-double MainView::getMinFigureRelativeSize()
+double InteractiveGraph::getMinFigureRelativeSize()
 {
   return minRelSize;
 }
 
-void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
+void InteractiveGraph::exportPDF(QString fileName, SheetSizeType sizeType)
 {
   QPdfWriter *pdfWriter = new QPdfWriter(fileName);
 
@@ -106,7 +106,7 @@ void MainView::exportPDF(QString fileName, SheetSizeType sizeType)
   delete pdfWriter;
 }
 
-void MainView::exportSVG(QString fileName)
+void InteractiveGraph::exportSVG(QString fileName)
 {
   QSvgGenerator svgGenerator;
   svgGenerator.setFileName(fileName);
@@ -141,7 +141,7 @@ void MainView::exportSVG(QString fileName)
   painter->end();
 }
 
-void MainView::updateSizeValues()
+void InteractiveGraph::updateSizeValues()
 {
   zoomSettings = information.getGraphZoomSettings();
   sizeSettings = information.getGraphSizeSettings();
@@ -168,7 +168,7 @@ void MainView::updateSizeValues()
   connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
-void MainView::paintEvent(QPaintEvent *event)
+void InteractiveGraph::paintEvent(QPaintEvent *event)
 {
   Q_UNUSED(event);
 
@@ -196,7 +196,7 @@ void MainView::paintEvent(QPaintEvent *event)
   painter = nullptr;
 }
 
-void MainView::assignMouseRects()
+void InteractiveGraph::assignMouseRects()
 {
   QPoint topLeftTranslation;
   topLeftTranslation.setX(-8);
@@ -231,7 +231,7 @@ void MainView::assignMouseRects()
   right.setBottomRight(bottomRight.topRight());
 }
 
-QRect MainView::getDrawableRect(const QRect &refSupportRect)
+QRect InteractiveGraph::getDrawableRect(const QRect &refSupportRect)
 { // gives the drawable rect in the given support, in the support's coordinates
   // the drawable rect is the support's rect minus the margins
 
@@ -254,7 +254,7 @@ QRect MainView::getDrawableRect(const QRect &refSupportRect)
   return drawableRect;
 }
 
-QRect MainView::getFigureRect(const QRect &refSupportRect)
+QRect InteractiveGraph::getFigureRect(const QRect &refSupportRect)
 {
   int margin = sizeSettings.pxMargins;
   QMargins margins(margin, margin, margin, margin);
@@ -280,7 +280,7 @@ QRect MainView::getFigureRect(const QRect &refSupportRect)
   return figRect;
 }
 
-QRect MainView::supportRectFromViewRect(QRect viewRect)
+QRect InteractiveGraph::supportRectFromViewRect(QRect viewRect)
 {
   QRect rect;
 
@@ -323,7 +323,7 @@ QRect MainView::supportRectFromViewRect(QRect viewRect)
   return rect;
 }
 
-void MainView::drawSupport()
+void InteractiveGraph::drawSupport()
 { // draws the sheet on an untransformed view
   painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
 
@@ -332,7 +332,7 @@ void MainView::drawSupport()
   painter->drawRect(supportRect);
 }
 
-void MainView::drawFigureRect()
+void InteractiveGraph::drawFigureRect()
 {
   figureRect = getFigureRect(supportRect);
 
@@ -347,7 +347,7 @@ void MainView::drawFigureRect()
   painter->setPen(pen);
 }
 
-void MainView::scaleView(const QRect &refSheetRect)
+void InteractiveGraph::scaleView(const QRect &refSheetRect)
 {
   if (zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
   {
@@ -366,7 +366,7 @@ void MainView::scaleView(const QRect &refSheetRect)
   painter->scale(totalScaleFactor, totalScaleFactor);
 }
 
-void MainView::drawGraph()
+void InteractiveGraph::drawGraph()
 {
   scaleView(supportRect);
 
@@ -379,7 +379,7 @@ void MainView::drawGraph()
   drawAll();
 }
 
-void MainView::mousePressEvent(QMouseEvent *event)
+void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 {
   if (event->buttons() == Qt::LeftButton and rect().contains(event->pos()))
     moveType = MOVE_VIEW;
@@ -411,7 +411,7 @@ void MainView::mousePressEvent(QMouseEvent *event)
     lastMousePos = event->pos();
 }
 
-void MainView::mouseMoveEvent(QMouseEvent *event)
+void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 {
   if (moveType == NOTHING and not sizeSettings.figureFillsSheet)
   {
@@ -515,7 +515,7 @@ void MainView::mouseMoveEvent(QMouseEvent *event)
   }
 }
 
-void MainView::onSizeSettingsChange()
+void InteractiveGraph::onSizeSettingsChange()
 {
   // Add function here that calcualtes the needed widget size
 
@@ -551,13 +551,13 @@ void MainView::onSizeSettingsChange()
   update();
 }
 
-void MainView::onZoomSettingsChange()
+void InteractiveGraph::onZoomSettingsChange()
 {
   updateWidgetSize();
   update();
 }
 
-void MainView::updateFigureSize()
+void InteractiveGraph::updateFigureSize()
 {
   sizeSettings.cmFigureSize.setWidth(relFigRect.width() * sizeSettings.cmSheetSize.width());
   sizeSettings.cmFigureSize.setHeight(relFigRect.height() * sizeSettings.cmSheetSize.height());
@@ -572,7 +572,7 @@ void MainView::updateFigureSize()
   connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
-void MainView::constrainFigureRectRel()
+void InteractiveGraph::constrainFigureRectRel()
 {
   if (relFigRect.width() > 1)
     relFigRect.setWidth(1);
@@ -602,14 +602,14 @@ void MainView::constrainFigureRectRel()
     relFigRect.moveTop(0);
 }
 
-void MainView::mouseReleaseEvent(QMouseEvent *event)
+void InteractiveGraph::mouseReleaseEvent(QMouseEvent *event)
 {
   Q_UNUSED(event);
   setCursor(Qt::ArrowCursor);
   moveType = NOTHING;
 }
 
-void MainView::wheelEvent(QWheelEvent *event)
+void InteractiveGraph::wheelEvent(QWheelEvent *event)
 {
   Q_UNUSED(event);
 }

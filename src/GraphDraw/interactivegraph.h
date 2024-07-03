@@ -47,12 +47,12 @@ enum SheetSizeType
   CUSTOM
 };
 
-class MainView : public Graph
+class InteractiveGraph : public Graph
 {
   Q_OBJECT
 
 public:
-  explicit MainView();
+  explicit InteractiveGraph();
 
   void onSizeUnitChange();
   double getMinFigureRelativeSize();
