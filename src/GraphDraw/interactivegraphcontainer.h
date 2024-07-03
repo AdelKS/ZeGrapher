@@ -10,13 +10,13 @@
 #include <QScrollArea>
 #include <algorithm>
 
-class MainViewContainer : public QScrollArea
+class InteractiveGraphContainer : public QScrollArea
 {
     Q_OBJECT
 
 public:
-    MainViewContainer(QWidget *parent = nullptr);
-    ~MainViewContainer();
+    InteractiveGraphContainer(QWidget *parent = nullptr);
+    ~InteractiveGraphContainer();
 
 protected slots:
     void onSizeSettingsChange();

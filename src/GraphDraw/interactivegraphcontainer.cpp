@@ -1,6 +1,6 @@
-#include "mainviewcontainer.h"
+#include "interactivegraphcontainer.h"
 
-MainViewContainer::MainViewContainer(QWidget *parent) : QScrollArea(parent)
+InteractiveGraphContainer::InteractiveGraphContainer(QWidget *parent) : QScrollArea(parent)
 {
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
@@ -33,14 +33,14 @@ MainViewContainer::MainViewContainer(QWidget *parent) : QScrollArea(parent)
     connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
-void MainViewContainer::onSizeSettingsChange()
+void InteractiveGraphContainer::onSizeSettingsChange()
 {
     if(information.getGraphSizeSettings().sheetFillsWindow)
         zoomPopup->hideWidget();
     else zoomPopup->showWidget();
 }
 
-void MainViewContainer::resizeEvent(QResizeEvent *event)
+void InteractiveGraphContainer::resizeEvent(QResizeEvent *event)
 {
     QScrollArea::resizeEvent(event);
 
@@ -48,14 +48,14 @@ void MainViewContainer::resizeEvent(QResizeEvent *event)
     zoomPopup->updatePositions();
 }
 
-void MainViewContainer::showEvent(QShowEvent *event)
+void InteractiveGraphContainer::showEvent(QShowEvent *event)
 {
     QScrollArea::showEvent(event);
 
     sheetZoom->resetZoom();
 }
 
-MainViewContainer::~MainViewContainer()
+InteractiveGraphContainer::~InteractiveGraphContainer()
 {
 
 }

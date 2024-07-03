@@ -23,7 +23,7 @@
 
 #include "Windows/settings.h"
 #include "Windows/about.h"
-#include "GraphDraw/mainviewcontainer.h"
+#include "GraphDraw/interactivegraphcontainer.h"
 #include "Widgets/keyboard.h"
 #include "Windows/updatecheck.h"
 
@@ -50,7 +50,7 @@ protected:
     void loadWindowSavedGeomtries();
     void saveWindowsGeometry();
 
-    MainViewContainer *mainGraphContainer;
+    InteractiveGraphContainer *mainGraphContainer;
     Settings *settingsWin;
     Keyboard *keyboard;
     About *aboutWin;
