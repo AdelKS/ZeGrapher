@@ -50,32 +50,34 @@ enum SheetSizeType
 class InteractiveGraph : public Graph
 {
   Q_OBJECT
+  QML_ELEMENT
 
 public:
-  explicit InteractiveGraph();
+  explicit InteractiveGraph(QQuickItem *parent = nullptr);
 
   void onSizeUnitChange();
   double getMinFigureRelativeSize();
+
+  virtual void paint(QPainter *p) override;
 
 signals:
   void newZoomValue(double value);
   void widgetResized();
 
 public slots:
-  void mousePressEvent(QMouseEvent *event);
-  void mouseMoveEvent(QMouseEvent *event);
-  void mouseReleaseEvent(QMouseEvent *event);
-  void wheelEvent(QWheelEvent *event);
+  virtual void mousePressEvent(QMouseEvent *event) override;
+  virtual void mouseMoveEvent(QMouseEvent *event) override;
+  virtual void mouseReleaseEvent(QMouseEvent *event) override;
+  virtual void wheelEvent(QWheelEvent *event) override;
 
   void onSizeSettingsChange();
-  void updateWidgetSize();
+  Q_INVOKABLE void updateWidgetSize();
 
   void exportPDF(QString fileName, SheetSizeType sizeType);
   void exportSVG(QString fileName);
   void onZoomSettingsChange();
 
 protected:
-  void paintEvent(QPaintEvent *event);
   void updateSizeValues();
 
   void drawSupport();
@@ -93,7 +95,7 @@ protected:
 
   QPageLayout::Orientation orientation;
   double minRelSize;
-  QSize currentSize;
+  QSizeF currentSize;
   // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
   // the other margin is scaled accordingly
   double screenDPI;

@@ -21,8 +21,8 @@
 #include "GraphDraw/graph.h"
 #include "information.h"
 
-Graph::Graph(QWidget *parent)
-  : QWidget(parent), MathObjectDraw(), gridCalculator(this),
+Graph::Graph(QQuickItem *parent)
+  : QQuickPaintedItem(parent), MathObjectDraw(), gridCalculator(this),
     fontMetrics(information.getGraphSettings().graphFont)
 {
   leftMargin = 30;
@@ -36,8 +36,6 @@ Graph::Graph(QWidget *parent)
   bold = italic = underline = false;
   numPrec = NUM_PREC;
   viewMapper.setGraphRange(information.getGraphRange());
-
-  setMinimumSize(QSize(200, 200));
 
   connect(&information,
           SIGNAL(graphRangeChanged(GraphRange)),
@@ -208,6 +206,13 @@ void Graph::calculateTicksAndMargins()
   topMargin = std::max(20, 5 + offset_margin);
 
   updateGraphRect();
+}
+
+void Graph::paint(QPainter *p)
+{
+  painter = p;
+  drawAll();
+  painter = nullptr;
 }
 
 void Graph::drawAll()
@@ -383,15 +388,15 @@ void Graph::updateCenterPosAndScaling()
 
 QImage *Graph::drawImage()
 {
-  QImage *image = new QImage(size(), QImage::Format_RGB32);
+  QImage *image = new QImage(size().toSize(), QImage::Format_RGB32);
   image->fill(information.getGraphSettings().backgroundColor.rgb());
 
-  painter->begin(image);
-  //trace du background
+  QPainter p(image);
+  painter = &p;
 
   drawAll();
 
-  painter->end();
+  painter = nullptr;
 
   //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
   return image;

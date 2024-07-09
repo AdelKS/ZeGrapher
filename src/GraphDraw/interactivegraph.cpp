@@ -21,11 +21,10 @@
 #include "GraphDraw/interactivegraph.h"
 #include "information.h"
 
-InteractiveGraph::InteractiveGraph() : Graph()
+InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 {
   orientation = QPageLayout::Landscape;
   moveType = NOTHING;
-  setMouseTracking(true);
   sizeSettings.scalingFactor = 1;
 
   minRelSize = RELATIVE_MIN_SIZE;
@@ -45,13 +44,13 @@ InteractiveGraph::InteractiveGraph() : Graph()
 
 void InteractiveGraph::updateWidgetSize()
 {
-  QSize newSize;
+  QSizeF newSize;
   if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
-    newSize = parentWidget()->size();
+    newSize = parentItem()->size();
   else
-    newSize = (QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom).toSize();
+    newSize = QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom;
 
-  resize(newSize);
+  setSize(newSize);
   updateFigureSize();
 
   emit widgetResized();
@@ -154,7 +153,7 @@ void InteractiveGraph::updateSizeValues()
 
   if (sizeSettings.sheetFillsWindow)
   {
-    sizeSettings.pxSheetSize = size();
+    sizeSettings.pxSheetSize = size().toSize();
     sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDPI * CM_PER_INCH;
   }
 
@@ -168,10 +167,8 @@ void InteractiveGraph::updateSizeValues()
   connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
-void InteractiveGraph::paintEvent(QPaintEvent *event)
+void InteractiveGraph::paint(QPainter *p)
 {
-  Q_UNUSED(event);
-
   updateSizeValues();
 
   if (currentSize != size())
@@ -181,8 +178,7 @@ void InteractiveGraph::paintEvent(QPaintEvent *event)
     onSizeSettingsChange();
   }
 
-  QPainter tmp_painter(this);
-  painter = &tmp_painter;
+  painter = p;
 
   drawSupport();
 
@@ -381,7 +377,7 @@ void InteractiveGraph::drawGraph()
 
 void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 {
-  if (event->buttons() == Qt::LeftButton and rect().contains(event->pos()))
+  if (event->buttons() == Qt::LeftButton and boundingRect().contains(event->pos()))
     moveType = MOVE_VIEW;
   else if (not sizeSettings.figureFillsSheet)
   {

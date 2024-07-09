@@ -20,14 +20,17 @@
 
 #pragma once
 
+#include <QQuickPaintedItem>
+#include <QImage>
+
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
 
-class Graph : public QWidget, public MathObjectDraw
+class Graph : public QQuickPaintedItem, public MathObjectDraw
 {
   Q_OBJECT
 public:
-  explicit Graph(QWidget* parent = nullptr);
+  explicit Graph(QQuickItem* parent = nullptr);
   QImage* drawImage();
 
 public slots:
@@ -43,6 +46,8 @@ public slots:
   void setNumPrec(int prec);
 
   void graphRangeChanged(const GraphRange& range);
+
+  virtual void paint(QPainter *p) override;
 
 protected slots:
   void addRegSaver(Regression *reg);

@@ -4,9 +4,9 @@ InteractiveGraphContainer::InteractiveGraphContainer(QWidget *parent) : QScrollA
 {
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-    mainView = new InteractiveGraph();
+    // mainView = new InteractiveGraph();
 
-    setWidget(mainView);
+    // setWidget(mainView);
     setWidgetResizable(false);
 
     mainView->onSizeSettingsChange();
