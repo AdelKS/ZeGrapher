@@ -12,9 +12,9 @@ foreach test_src: test_sources
     test_exe = executable(
       fs.stem(test_src), # name executable after source file without .cpp extension
       test_src,
-      source_files, compiled_ressources, compiled_ui, moc_files,
-      dependencies: [qt6_dep, boost_dep, zecalculator_dep],
-      include_directories: inc
+      link_with: zg_static_lib,
+      include_directories: inc,
+      dependencies: [qt6_dep, boost_dep, zecalculator_dep]
     )
 
     test(fs.stem(test_src), test_exe) # register as a test

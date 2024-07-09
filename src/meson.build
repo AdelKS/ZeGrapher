@@ -137,12 +137,18 @@ qt6 = import('qt6')
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
 compiled_ui = qt6.compile_ui(sources: ui_files)
 moc_files = qt6.compile_moc(
-    headers : moc_header_files,
-    include_directories: inc,
-    dependencies: qt6_dep
+  headers : moc_header_files,
+  include_directories: inc,
+  dependencies: qt6_dep
 )
 
-executable('ZeGrapher', 'main.cpp', source_files, compiled_ressources, compiled_ui, moc_files,
-    include_directories: inc,
-    dependencies: [qt6_dep, boost_dep, zecalculator_dep],
-    install: true)
+zg_static_lib = static_library('ZeGrapherLib',
+  source_files, compiled_ressources, compiled_ui, moc_files,
+  include_directories: inc,
+  dependencies: [qt6_dep, boost_dep, zecalculator_dep])
+
+executable('ZeGrapher', 'main.cpp', compiled_ui, compiled_ressources,
+  link_with: zg_static_lib,
+  include_directories: inc,
+  dependencies: [qt6_dep, boost_dep, zecalculator_dep],
+  install: true)
