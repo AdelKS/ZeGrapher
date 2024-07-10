@@ -159,7 +159,7 @@
             "options": {
                 "cwd": "${cwd}/build-zg-release"
             },
-            "dependsOn": "build",
+            "dependsOn": "build-release",
             "problemMatcher": []
         }
     ]
