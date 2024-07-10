@@ -70,12 +70,14 @@ public slots:
   virtual void mouseReleaseEvent(QMouseEvent *event) override;
   virtual void wheelEvent(QWheelEvent *event) override;
 
-  void onSizeSettingsChange();
-  Q_INVOKABLE void updateWidgetSize();
+  Q_INVOKABLE void onSizeSettingsChange();
+  void updateWidgetSize();
 
   void exportPDF(QString fileName, SheetSizeType sizeType);
   void exportSVG(QString fileName);
   void onZoomSettingsChange();
+
+  Q_INVOKABLE void updateFigureSize();
 
 protected:
   void updateSizeValues();
@@ -91,7 +93,6 @@ protected:
   QRect getDrawableRect(const QRect &refSupportRect);
   void scaleView(const QRect &refSheetRect);
   void setMaximalCanvas();
-  void updateFigureSize();
 
   QPageLayout::Orientation orientation;
   double minRelSize;

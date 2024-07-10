@@ -253,11 +253,11 @@ void Graph::drawAll()
 
   painter->translate(QPointF(centre.x, centre.y));
 
-  recalculateRegVals();
-  drawSequences();
-  drawStaticParEq();
-  drawRegressions();
-  drawData();
+  // recalculateRegVals();
+  // drawSequences();
+  // drawStaticParEq();
+  // drawRegressions();
+  // drawData();
 }
 
 void Graph::writeLegends()

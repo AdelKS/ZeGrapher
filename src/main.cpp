@@ -18,13 +18,16 @@
 **
 ****************************************************************************/
 
-#include "Windows/mainwindow.h"
 #include "Calculus/expreditbackend.h"
+#include "Windows/mainwindow.h"
 #include "structures.h"
+
+
+#include <QQuickView>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+  QGuiApplication a(argc, argv);
 
   qmlRegisterType<ExprEditBackend>("zegrapher.expreditbackend", 1, 0, "ExprEditBackend");
   qmlRegisterType<InteractiveGraph>("zegrapher.interactivegraph", 1, 0, "InteractiveGraph");
@@ -32,43 +35,45 @@ int main(int argc, char *argv[])
 
   qmlRegisterSingletonInstance("zegrapher.information", 1, 0, "Information", &information);
 
-    QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+  QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
-    QCoreApplication::setOrganizationName("ZeGrapher Project");
-    QCoreApplication::setOrganizationDomain("zegrapher.com");
-    QCoreApplication::setApplicationName("ZeGrapher");
+  QCoreApplication::setOrganizationName("ZeGrapher Project");
+  QCoreApplication::setOrganizationDomain("zegrapher.com");
+  QCoreApplication::setApplicationName("ZeGrapher");
 
-    QSettings settings;
-    QTranslator translator;
+  QSettings settings;
+  QTranslator translator;
 
-    settings.beginGroup("app");
+  settings.beginGroup("app");
 
-    QLocale::Language language;
+  QLocale::Language language;
 
-    if(settings.contains("language"))
-        language = settings.value("language").toLocale().language();
-    else language = QLocale::system().language();
+  if (settings.contains("language"))
+    language = settings.value("language").toLocale().language();
+  else
+    language = QLocale::system().language();
 
-    QString langString = langToShortString(language);
-    if(supportedLangs.contains(language))
-        [[maybe_unused]] bool loaded = translator.load(":/Translations/ZeGrapher_" + langToShortString(language) + ".qm");
+  QString langString = langToShortString(language);
+  if (supportedLangs.contains(language)) [[maybe_unused]]
+    bool loaded = translator.load(":/Translations/ZeGrapher_" + langToShortString(language) + ".qm");
 
-    settings.beginGroup("font");
+  settings.beginGroup("font");
 
-    if(settings.contains("family") && settings.contains("size"))
-    {
-        QFont font;
-        font.setPointSizeF(settings.value("size").toDouble());
-        font.setFamily(settings.value("family").toString());
-        font.setStyleStrategy(QFont::PreferAntialias);
-        a.setFont(font);
-    }
+  if (settings.contains("family") && settings.contains("size"))
+  {
+    QFont font;
+    font.setPointSizeF(settings.value("size").toDouble());
+    font.setFamily(settings.value("family").toString());
+    font.setStyleStrategy(QFont::PreferAntialias);
+    a.setFont(font);
+  }
 
-    a.installTranslator(&translator);
-    a.setStyle(QStyleFactory::create("Fusion"));
+  a.installTranslator(&translator);
 
-    MainWindow w;
-    w.show();
+  QQuickView view;
+  view.setSource(QUrl::fromLocalFile(":/src/QML/MainWindow.qml"));
+  view.setResizeMode(QQuickView::SizeRootObjectToView);
+  view.show();
 
-    return a.exec();
+  return a.exec();
 }

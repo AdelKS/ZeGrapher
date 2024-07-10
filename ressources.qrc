@@ -96,5 +96,6 @@
         <file>src/QML/MathObjectInput.qml</file>
         <file>src/QML/ColorButton.qml</file>
         <file>src/QML/InteractiveGraphView.qml</file>
+        <file>src/QML/MainWindow.qml</file>
     </qresource>
 </RCC>

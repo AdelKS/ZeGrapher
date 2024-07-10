@@ -35,6 +35,8 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
   relFigRect.setWidth(1);
   relFigRect.moveTopLeft(QPointF(0, 0));
 
+  onSizeSettingsChange();
+
   connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
   connect(&information, SIGNAL(graphZoomSettingsChanged()), this, SLOT(onZoomSettingsChange()));
   connect(&information, SIGNAL(axesSettingsChanged()), this, SLOT(update()));
@@ -562,10 +564,6 @@ void InteractiveGraph::updateFigureSize()
     int(relFigRect.width() * double(sizeSettings.pxSheetSize.width())));
   sizeSettings.pxFigureSize.setHeight(
     int(relFigRect.height() * double(sizeSettings.pxSheetSize.height())));
-
-  disconnect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-  information.setGraphSizeSettings(sizeSettings);
-  connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
 }
 
 void InteractiveGraph::constrainFigureRectRel()
