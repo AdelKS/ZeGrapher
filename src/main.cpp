@@ -26,10 +26,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    qmlRegisterType<ExprEditBackend>("zegrapher.expreditbackend", 1,0, "ExprEditBackend");
-    qmlRegisterType<InteractiveGraph>("zegrapher.interactivegraph", 1,0, "InteractiveGraph");
+  qmlRegisterType<ExprEditBackend>("zegrapher.expreditbackend", 1, 0, "ExprEditBackend");
+  qmlRegisterType<InteractiveGraph>("zegrapher.interactivegraph", 1, 0, "InteractiveGraph");
+  qmlRegisterType<ZeZoomSettings>("zegrapher.zezoomsettings", 1, 0, "ZeZoomSettings");
 
-    qmlRegisterSingletonInstance("zegrapher.information", 1,0, "Information", &information);
+  qmlRegisterSingletonInstance("zegrapher.information", 1, 0, "Information", &information);
 
     QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 

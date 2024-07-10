@@ -236,7 +236,14 @@ struct ZeSizeSettings
 
 struct ZeZoomSettings
 {
+  Q_GADGET
+  Q_PROPERTY(ZoomingType zoomingType MEMBER zoomingType)
+  Q_PROPERTY(double zoom MEMBER zoom)
+  QML_VALUE_TYPE(ZeZoomSettings)
+
+public:
     enum ZoomingType {FITSHEET, CUSTOM};
+  Q_ENUM(ZoomingType)
 
     ZoomingType zoomingType;
     double zoom;
