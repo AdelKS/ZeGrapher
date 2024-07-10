@@ -300,12 +300,12 @@ struct ZeGraphSettings
 {
     bool operator == (const ZeGraphSettings &other) const = default;
 
-    QColor backgroundColor;
-    QColor defaultColor;
-    int curvesThickness;
-    double distanceBetweenPoints;
-    bool smoothing;
-    QFont graphFont;
+    QColor backgroundColor = Qt::white;
+    QColor defaultColor = Qt::black;
+    int curvesThickness = 3;
+    double distanceBetweenPoints = 1;
+    bool smoothing = true;
+    QFont graphFont = {};
 };
 
 struct ZeAppSettings
