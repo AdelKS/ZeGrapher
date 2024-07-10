@@ -41,6 +41,14 @@ class Information: public QObject
 
     Q_PROPERTY(ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
     Q_PROPERTY(GraphRange range READ getGraphRange WRITE setGraphRange NOTIFY graphRangeChanged)
+    Q_PROPERTY(ZeZoomSettings graphZoomSettings
+               READ getGraphZoomSettings
+               WRITE setGraphZoomSettings
+               NOTIFY graphZoomSettingsChanged)
+    Q_PROPERTY(ZeSizeSettings graphSizeSettings
+               READ getGraphSizeSettings
+               WRITE setGraphSizeSettings
+               NOTIFY graphSizeSettingsChanged)
 
 public:
     Information();
