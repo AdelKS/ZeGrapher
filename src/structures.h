@@ -218,7 +218,24 @@ public:
 
 struct ZeSizeSettings
 {
+  Q_GADGET
+
+  Q_PROPERTY(SizeUnit sizeUnit MEMBER sizeUnit)
+  Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
+  Q_PROPERTY(bool figureFillsSheet MEMBER figureFillsSheet)
+  Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
+  Q_PROPERTY(QSize pxFigureSize MEMBER pxFigureSize)
+  Q_PROPERTY(QSize pxSheetSize MEMBER pxSheetSize)
+  Q_PROPERTY(int pxMargins MEMBER pxMargins)
+  Q_PROPERTY(QSizeF cmFigureSize MEMBER cmFigureSize)
+  Q_PROPERTY(QSizeF cmSheetSize MEMBER cmSheetSize)
+  Q_PROPERTY(double cmMargins MEMBER cmMargins)
+
+  QML_VALUE_TYPE(zesizesettings)
+
+public:
     enum SizeUnit {PIXEL, CENTIMETER};
+  Q_ENUM(SizeUnit)
 
     SizeUnit sizeUnit;
     bool sheetFillsWindow, figureFillsSheet;
