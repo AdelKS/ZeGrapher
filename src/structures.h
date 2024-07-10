@@ -234,21 +234,21 @@ struct ZeSizeSettings
   QML_VALUE_TYPE(zesizesettings)
 
 public:
-    enum SizeUnit {PIXEL, CENTIMETER};
+  enum SizeUnit {PIXEL, CENTIMETER};
   Q_ENUM(SizeUnit)
 
-    SizeUnit sizeUnit;
-    bool sheetFillsWindow, figureFillsSheet;
+  SizeUnit sizeUnit = PIXEL;
+  bool sheetFillsWindow = true, figureFillsSheet = true;
 
-    double scalingFactor;
+  double scalingFactor = 1.0;
 
-    QSize pxFigureSize, pxSheetSize;
-    int pxMargins;
+  QSize pxFigureSize, pxSheetSize;
+  int pxMargins;
 
-    QSizeF cmFigureSize, cmSheetSize;
-    double cmMargins;
+  QSizeF cmFigureSize, cmSheetSize;
+  double cmMargins;
 
-    bool operator == (const ZeSizeSettings &other) const = default;
+  bool operator == (const ZeSizeSettings &other) const = default;
 };
 
 struct ZeZoomSettings
@@ -259,13 +259,13 @@ struct ZeZoomSettings
   QML_VALUE_TYPE(ZeZoomSettings)
 
 public:
-    enum ZoomingType {FITSHEET, CUSTOM};
+  enum ZoomingType {FITSHEET, CUSTOM};
   Q_ENUM(ZoomingType)
 
-    ZoomingType zoomingType;
-    double zoom;
+  ZoomingType zoomingType;
+  double zoom;
 
-    bool operator == (const ZeZoomSettings &other) const = default;
+  bool operator == (const ZeZoomSettings &other) const = default;
 };
 
 struct Ze1DGridSettings
