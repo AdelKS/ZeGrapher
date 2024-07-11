@@ -8,10 +8,11 @@ Rectangle {
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   color: myPalette.window
+  implicitWidth: colLayout.implicitWidth
 
   ColumnLayout {
+    id: colLayout
     anchors.fill: parent
-    anchors.top: parent.top
 
     RangeAdjust {
       Layout.fillWidth: true

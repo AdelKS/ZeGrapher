@@ -9,13 +9,17 @@ Item {
 
   Drawer {
     id: drawer
-    width: 0.3 * parent.width
+    width: Math.max(0.3 * parent.width,
+                    userInput.implicitWidth + 2*side_margins)
     height: parent.height
     edge: Qt.LeftEdge
 
+    property int side_margins: 10
+
     UserInputPanel {
+      id: userInput
       anchors.fill: parent
-      anchors.margins: 20
+      anchors.margins: drawer.side_margins
     }
   }
 

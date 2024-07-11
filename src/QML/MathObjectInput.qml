@@ -12,15 +12,20 @@ Rectangle {
   color: myPalette.window
 
   implicitHeight: layout.implicitHeight
+  implicitWidth: layout.implicitWidth
 
   ColumnLayout {
     id: layout
     anchors.fill: parent
-    anchors.top: parent.top
 
     RowLayout {
+      Layout.fillWidth: true
+
       ComboBox {
+        Layout.fillWidth: false
+        Layout.maximumWidth: implicitContentWidth + 20
         model: ["Auto", "Function", "Sequence", "Constant"]
+        implicitContentWidthPolicy: ComboBox.WidestText
         onCurrentTextChanged: {
           switch (currentText)
           {
