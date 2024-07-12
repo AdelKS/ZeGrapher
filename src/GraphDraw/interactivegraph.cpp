@@ -26,6 +26,8 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
   orientation = QPageLayout::Landscape;
   moveType = NOTHING;
   sizeSettings.scalingFactor = 1;
+  setAcceptHoverEvents(true);
+  setAcceptedMouseButtons(Qt::LeftButton);
 
   minRelSize = RELATIVE_MIN_SIZE;
 
@@ -406,7 +408,10 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
   }
 
   if (moveType != NOTHING)
+  {
     lastMousePos = event->pos();
+    event->accept();
+  }
 }
 
 void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
