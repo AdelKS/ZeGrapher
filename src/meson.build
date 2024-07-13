@@ -54,6 +54,7 @@ source_files = files(
   './GraphDraw/viewmapper.cpp',
   './information.cpp',
   './structures.cpp',
+  './Utils/zc.cpp',
   './Widgets/abstractfuncwidget.cpp',
   './Widgets/appsettings.cpp',
   './Widgets/axissettingswidget.cpp',
