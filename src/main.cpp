@@ -22,7 +22,6 @@
 #include "Windows/mainwindow.h"
 #include "structures.h"
 
-
 #include <QQuickView>
 
 int main(int argc, char *argv[])

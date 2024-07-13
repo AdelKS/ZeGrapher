@@ -3,11 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import zegrapher.information 1.0
 
-Rectangle {
+Item {
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
-  color: myPalette.window
   implicitWidth: colLayout.implicitWidth
 
   ColumnLayout {
