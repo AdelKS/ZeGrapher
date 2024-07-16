@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "Calculus/expreditbackend.h"
+#include "MathObjects/expr.h"
 #include "Utils/opterror.h"
 #include "Windows/mainwindow.h"
 #include "structures.h"
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
   qmlRegisterType<ExprEditBackend>("zegrapher.expreditbackend", 1, 0, "ExprEditBackend");
   qmlRegisterType<InteractiveGraph>("zegrapher.interactivegraph", 1, 0, "InteractiveGraph");
   qmlRegisterType<ZeZoomSettings>("zegrapher.zezoomsettings", 1, 0, "ZeZoomSettings");
+  qmlRegisterType<zg::mathobj::Expr>("zegrapher.expr", 1, 0, "Expr");
   qmlRegisterType<zg::OptError>("zegrapher.opterror", 1, 0, "OptError");
 
   qmlRegisterSingletonInstance("zegrapher.information", 1, 0, "Information", &information);
