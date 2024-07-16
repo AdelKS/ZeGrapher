@@ -13,6 +13,10 @@ project('ZeGrapher', 'cpp',
     ]
 )
 
+if get_option('debug')
+    add_project_arguments('-D QT_QML_DEBUG', language: 'cpp')
+endif
+
 if get_option('loglevel') != 'debug'
     add_project_arguments('-D QT_NO_DEBUG_OUTPUT', language : 'cpp')
 endif
