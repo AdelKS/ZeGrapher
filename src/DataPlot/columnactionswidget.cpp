@@ -21,6 +21,7 @@
 
 
 #include "DataPlot/columnactionswidget.h"
+#include "information.h"
 #include "ui_sortoptions.h"
 #include "ui_confirmdelete.h"
 #include "ui_filloptions.h"

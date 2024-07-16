@@ -18,8 +18,8 @@
 **
 ****************************************************************************/
 
-
-#include "./datawindow.h"
+#include "datawindow.h"
+#include "information.h"
 #include "ui_datawindow.h"
 
 

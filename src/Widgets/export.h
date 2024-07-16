@@ -4,8 +4,6 @@
 #include <QWidget>
 #include <QTimer>
 
-#include "information.h"
-
 namespace Ui {
 class Export;
 }

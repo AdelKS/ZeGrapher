@@ -25,7 +25,6 @@
 
 #include "Calculus/exprcalculator.h"
 #include "DataPlot/datatable.h"
-#include "information.h"
 #include "Calculus/exprcalculator.h"
 
 namespace Ui {

@@ -21,8 +21,8 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
-#include "information.h"
 
+#include <zecalculator/zecalculator.h>
 #include <unordered_set>
 
 struct FuncCurve

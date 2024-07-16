@@ -1,10 +1,9 @@
 #ifndef GRAPHSIZESETTINGS_H
 #define GRAPHSIZESETTINGS_H
 
+#include "structures.h"
+
 #include <QWidget>
-
-#include "information.h"
-
 namespace Ui {
 class GraphSizeSettings;
 }

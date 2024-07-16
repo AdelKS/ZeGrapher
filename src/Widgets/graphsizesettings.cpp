@@ -1,4 +1,5 @@
 #include "graphsizesettings.h"
+#include "information.h"
 #include "ui_graphsizesettings.h"
 
 GraphSizeSettings::GraphSizeSettings(QWidget *parent) :

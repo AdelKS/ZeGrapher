@@ -18,9 +18,8 @@
 **
 ****************************************************************************/
 
-
-
 #include "Widgets/datawidget.h"
+#include "information.h"
 #include "ui_datawidget.h"
 
 DataWidget::DataWidget(QWidget *parent) :

@@ -1,4 +1,5 @@
 #include "sheetzoom.h"
+#include "information.h"
 #include "ui_sheetzoom.h"
 
 SheetZoom::SheetZoom(QWidget *parent) :

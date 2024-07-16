@@ -20,6 +20,7 @@
 
 
 #include "polynomialmodelwidget.h"
+#include "information.h"
 #include "ui_polynomialmodelwidget.h"
 
 PolynomialModelWidget::PolynomialModelWidget(const std::weak_ptr<const UserData> &userData,

@@ -24,7 +24,6 @@
 
 #include <QWidget>
 
-#include "information.h"
 #include "Widgets/numberlineedit.h"
 #include "Widgets/qcolorbutton.h"
 #include "Calculus/polynomialregression.h"

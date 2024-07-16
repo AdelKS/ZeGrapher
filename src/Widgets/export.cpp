@@ -1,5 +1,9 @@
 #include "export.h"
 #include "ui_export.h"
+#include "information.h"
+
+#include <QFileDialog>
+#include <QMessageBox>
 
 Export::Export(QWidget *parent) :
     QWidget(parent),

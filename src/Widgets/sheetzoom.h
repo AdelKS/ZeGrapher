@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "information.h"
+#include "structures.h"
 
 namespace Ui {
 class SheetZoom;

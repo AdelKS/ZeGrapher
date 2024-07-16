@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "Widgets/mathobjectsinput.h"
+#include "information.h"
 #include "ui_mathobjectsinput.h"
 
 

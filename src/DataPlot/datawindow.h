@@ -23,7 +23,6 @@
 #ifndef DATAWINDOW_H
 #define DATAWINDOW_H
 
-#include "information.h"
 #include "./datatable.h"
 #include "./columnselectorwidget.h"
 #include "./columnactionswidget.h"

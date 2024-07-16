@@ -21,7 +21,6 @@
 #ifndef MATHOBJECTSINPUT_H
 #define MATHOBJECTSINPUT_H
 
-#include "information.h"
 #include "Widgets/funcwidget.h"
 #include "Widgets/seqwidget.h"
 #include "Widgets/pareqcontroller.h"
