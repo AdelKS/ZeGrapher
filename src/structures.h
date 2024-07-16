@@ -327,7 +327,7 @@ public:
   bool startupUpdateCheck;
   QLocale::Language language;
   QFont font;
-  QColor validSyntax, invalidSyntax;
+  QColor validSyntax = Qt::darkGreen, invalidSyntax = Qt::darkRed;
 };
 
 struct FuncMap
