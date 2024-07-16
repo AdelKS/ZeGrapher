@@ -21,6 +21,7 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
+#include "zecalculator/parsing/types.h"
 #include <cmath>
 #include <cfloat>
 #include <QtWidgets>
@@ -73,6 +74,9 @@
 // Maximum and minimum relative size between the abscissa text and the horizontal tick spacing
 #define MAX_REL_TICK_SPACING 0.8
 #define MIN_REL_TICK_SPACING 0.2
+
+/// @brief type of math objects to use in ZeCalculator
+inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 
 // extern definitions for the supported languages
 inline const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
