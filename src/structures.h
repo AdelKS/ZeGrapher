@@ -100,7 +100,7 @@ struct ZeAxisRange
 
 public:
 
-  double min, max;
+  double min = -10., max = 10.;
 
   bool operator == (const ZeAxisRange&) const = default;
 
