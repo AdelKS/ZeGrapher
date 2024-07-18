@@ -3,7 +3,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Shapes
 import zegrapher.information 1.0
-import zegrapher.expreditbackend 1.0
 
 Rectangle {
 
@@ -30,16 +29,16 @@ Rectangle {
           switch (currentText)
           {
           case "Auto":
-            exprEdit.type = ExprEditBackend.OBJECT_AUTO;
+            // TODO
             break;
           case "Function":
-            exprEdit.type = ExprEditBackend.OBJECT_FUNCTION;
+            // TODO
             break;
           case "Sequence":
-            exprEdit.type = ExprEditBackend.OBJECT_SEQUENCE;
+            // TODO
             break;
           case "Constant":
-            exprEdit.type = ExprEditBackend.OBJECT_GLOBAL_CONSTANT;
+            // TODO
             break;
           default:
             console.error("Error in switch statement");
@@ -56,11 +55,6 @@ Rectangle {
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
       }
-    }
-
-    ExpressionEdit {
-      id: exprEdit
-      Layout.fillWidth: true
     }
 
   }

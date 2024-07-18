@@ -1,3 +1,6 @@
+- Centralize all math objects in information singleton
+  - Every object is cotained within a `mathobj::Dyn` instance
+  - Expression line edits go through that with the `mathobj::Expr` alternative
 - Change graph curve quality setting so it defines the smallest pixel distance between two calculated points
 - grid calculator: rework usage TARGET_TICKS_NUM (is it actually relevant ?)
 

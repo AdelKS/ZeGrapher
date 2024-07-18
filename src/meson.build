@@ -25,7 +25,6 @@ ui_files = files(
 source_files = files(
   './Calculus/colorsaver.cpp',
   './Calculus/exprcalculator.cpp',
-  './Calculus/expreditbackend.cpp',
   './Calculus/function.cpp',
   './Calculus/funcvaluessaver.cpp',
   './Calculus/polynomial.cpp',
@@ -87,7 +86,6 @@ source_files = files(
 
 moc_header_files = files(
   './Calculus/colorsaver.h',
-  './Calculus/expreditbackend.h',
   './Calculus/function.h',
   './Calculus/polynomialregression.h',
   './Calculus/regression.h',

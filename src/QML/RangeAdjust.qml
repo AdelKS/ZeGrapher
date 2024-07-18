@@ -43,8 +43,9 @@ Rectangle {
     width: parent.width/3
   }
 
-  ExpressionEdit {
+  ValueEdit {
     id: ymaxEdit
+    implicitName: "ymax"
     expression: "10"
     anchors.top: ymaxLbl.bottom
     anchors.horizontalCenter: root.horizontalCenter
@@ -59,7 +60,7 @@ Rectangle {
           Information.range.y.max = ymaxEdit.value;
           disableSignals = oldVal;
         } else {
-          setCustomErrorMsg("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>")
+          ymaxEdit.setCustomErrorMsg("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>")
         }
       }
       enabled: !disableSignals
@@ -81,8 +82,9 @@ Rectangle {
     anchors.bottom: xminEdit.top
   }
 
-  ExpressionEdit {
+  ValueEdit {
     id: xminEdit
+    implicitName: "xmin"
     expression: "-10"
     anchors.left: root.left
     anchors.top: ymaxEdit.bottom
@@ -97,7 +99,7 @@ Rectangle {
           Information.range.x.min = xminEdit.value
           disableSignals = oldVal;
         } else {
-          setCustomErrorMsg("<b>x</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>x</b><sub>max</sub>")
+          xminEdit.setCustomErrorMsg("<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>")
         }
       }
       enabled: !disableSignals
@@ -119,8 +121,9 @@ Rectangle {
     anchors.bottom: xmaxEdit.top
   }
 
-  ExpressionEdit {
+  ValueEdit {
     id: xmaxEdit
+    implicitName: "xmax"
     expression: "10"
     anchors.right: root.right
     anchors.top: ymaxEdit.bottom
@@ -135,7 +138,7 @@ Rectangle {
           Information.range.x.max = xmaxEdit.value
           disableSignals = oldVal;
         } else {
-          setCustomErrorMsg("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>")
+          xmaxEdit.setCustomErrorMsg("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>")
         }
       }
       enabled: !disableSignals
@@ -157,8 +160,9 @@ Rectangle {
 
   }
 
-  ExpressionEdit {
+  ValueEdit {
     id: yminEdit
+    implicitName: "ymin"
     expression: "-10"
     y: xminEdit.y + xminEdit.exprHeight + spacing
     anchors.horizontalCenter: root.horizontalCenter
@@ -173,7 +177,7 @@ Rectangle {
           Information.range.y.min = yminEdit.value
           disableSignals = oldVal;
         } else {
-          setCustomErrorMsg("<b>y</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>y</b><sub>max</sub>")
+          yminEdit.setCustomErrorMsg("<b>y</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>y</b><sub>max</sub>")
         }
       }
       enabled: !disableSignals

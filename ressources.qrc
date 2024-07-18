@@ -90,7 +90,6 @@
         <file>icons/add.png</file>
         <file>icons/axes.svg</file>
         <file>src/QML/RangeAdjust.qml</file>
-        <file>src/QML/ExpressionEdit.qml</file>
         <file>src/QML/ValueEdit.qml</file>
         <file>src/QML/LineEdit.qml</file>
         <file>src/QML/UserInputPanel.qml</file>

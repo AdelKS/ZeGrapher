@@ -212,6 +212,9 @@ void FuncValuesSaver::refine_visible_pts(size_t slot)
 
     extra_pts.clear();
 
+    if (curve.size() <= 2)
+      continue;
+
     for (size_t i = 0 ; i+2 != curve.size() ; i++)
     {
       if (std::isnan(curve[i].y.v) or std::isnan(curve[i+1].y.v))
