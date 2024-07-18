@@ -17,12 +17,11 @@ Item {
     width: 25
     height: 25
     flat: true
-    Image {
-      width: 20
-      height: 20
-      anchors.centerIn: parent
-      source: 'qrc:/icons/drawer.svg'
-    }
+    icon.source: 'qrc:/icons/drawer.svg'
+    icon.width: width
+    icon.height: height
+    display: Button.IconOnly
+    padding: 0
   }
 
   Rectangle {
