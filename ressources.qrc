@@ -98,5 +98,6 @@
         <file>src/QML/InteractiveGraphView.qml</file>
         <file>src/QML/MainWindow.qml</file>
         <file>icons/drawer.svg</file>
+        <file>src/QML/ZcExprEdit.qml</file>
     </qresource>
 </RCC>
