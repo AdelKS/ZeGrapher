@@ -4,7 +4,8 @@ import QtQuick
 
 Rectangle {
   id: rec
-  property TextEdit textEdit: edit
+  property alias text: edit.text
+  property alias textEdit: edit
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
