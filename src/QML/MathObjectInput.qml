@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Shapes
 import zegrapher.information 1.0
+import zegrapher.zc 1.0
 
 Rectangle {
 
@@ -22,23 +23,23 @@ Rectangle {
 
       ComboBox {
         Layout.fillWidth: false
-        Layout.maximumWidth: implicitContentWidth + 20
+        Layout.maximumWidth: implicitContentWidth + 30
         model: ["Auto", "Function", "Sequence", "Constant"]
         implicitContentWidthPolicy: ComboBox.WidestText
         onCurrentTextChanged: {
           switch (currentText)
           {
           case "Auto":
-            // TODO
+            eqEdit.type = ZC.AUTO;
             break;
           case "Function":
-            // TODO
+            eqEdit.type = ZC.FUNCTION;
             break;
           case "Sequence":
-            // TODO
+            eqEdit.type = ZC.SEQUENCE;
             break;
           case "Constant":
-            // TODO
+            eqEdit.type = ZC.CONSTANT;
             break;
           default:
             console.error("Error in switch statement");
@@ -56,6 +57,12 @@ Rectangle {
         Layout.maximumWidth: 30
       }
     }
+
+  EquationEdit {
+    id: eqEdit
+    type: ZC.AUTO
+    Layout.fillWidth: true
+  }
 
   }
 
