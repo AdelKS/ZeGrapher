@@ -99,5 +99,6 @@
         <file>src/QML/MainWindow.qml</file>
         <file>icons/drawer.svg</file>
         <file>src/QML/ZcExprEdit.qml</file>
+        <file>src/QML/EquationEdit.qml</file>
     </qresource>
 </RCC>
