@@ -31,8 +31,6 @@ Item {
     anchors.bottom: parent.bottom
     width: 200
     color: myPalette.window
-    property int drawer_width: userInput.implicitWidth + 2*side_margins
-    property int side_margins: 10
 
     SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
@@ -51,11 +49,27 @@ Item {
       NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad }
     }
 
-    MouseArea {
-      width: drawer.side_margins
-      anchors.right: drawer.right
+    UserInputPanel {
+      id: userInput
       anchors.top: drawer.top
       anchors.bottom: drawer.bottom
+      anchors.left: drawer.left
+      anchors.right: drawer.right
+
+      anchors.rightMargin: resizeArea.width
+      anchors.leftMargin: 10
+      width: parent.width - resizeArea.width
+
+      property int minWidth: implicitWidth
+    }
+
+    MouseArea {
+      id: resizeArea
+      z: 100
+      width: 10
+      anchors.top: drawer.top
+      anchors.bottom: drawer.bottom
+      anchors.left: userInput.right
       cursorShape: Qt.SizeHorCursor
       acceptedButtons: Qt.LeftButton
 
@@ -70,14 +84,6 @@ Item {
         if (drawer.width + diff > userInput.minWidth)
           drawer.width += diff;
       }
-    }
-
-    UserInputPanel {
-      id: userInput
-      anchors.fill: parent
-      anchors.margins: drawer.side_margins
-
-      property int minWidth: implicitWidth + 2*drawer.side_margins
     }
   }
 
