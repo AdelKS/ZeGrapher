@@ -13,6 +13,14 @@ Item {
 
     RangeAdjust {
       Layout.fillWidth: true
+      Layout.bottomMargin: 20
+    }
+
+    ToolSeparator
+    {
+      orientation: Qt.Horizontal
+      Layout.fillWidth: true
+      Layout.bottomMargin: 20
     }
 
     MathObjectInput {

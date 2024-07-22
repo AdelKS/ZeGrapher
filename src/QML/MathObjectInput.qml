@@ -64,6 +64,14 @@ Rectangle {
     Layout.fillWidth: true
   }
 
+  ToolSeparator
+  {
+    orientation: Qt.Horizontal
+    Layout.fillWidth: true
+    Layout.topMargin: 10
+  }
+
+
   }
 
 }
