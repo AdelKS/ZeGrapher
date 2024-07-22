@@ -6,13 +6,23 @@ import zegrapher.information 1.0
 import zegrapher.zc 1.0
 
 Rectangle {
+  id: root
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   color: myPalette.window
 
+  Behavior on height { SmoothedAnimation { duration: 200 } }
+  Behavior on opacity { SmoothedAnimation { duration: 150 } }
+
   implicitHeight: layout.implicitHeight
   implicitWidth: layout.implicitWidth
+
+  function removeObj() {
+    root.opacity = 0;
+    root.height = 0;
+    root.destroy(200);
+  }
 
   ColumnLayout {
     id: layout
@@ -51,10 +61,19 @@ Rectangle {
         Layout.fillWidth: true
       }
 
-      ColorButton {
-        Layout.fillHeight: true
+      RoundButton {
+        id: del
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
+
+        icon.source: "qrc:/icons/delete.svg"
+
+        onReleased: removeObj()
+
+        icon.width: 2*width/3
+        icon.height: 2*width/3
+        display: Button.IconOnly
+        padding: 0
       }
     }
 
