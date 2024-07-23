@@ -12,6 +12,9 @@ Shape {
 
   property real radius: 10
 
+  implicitHeight: 2*radius
+  implicitWidth: 2*radius
+
   ShapePath {
     id: shape_path
     strokeWidth: -1
