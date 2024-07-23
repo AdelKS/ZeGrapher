@@ -24,12 +24,14 @@ Rectangle {
     root.destroy(200);
   }
 
-  ColumnLayout {
+  Column {
     id: layout
     anchors.fill: parent
+    spacing: 5
 
     RowLayout {
-      Layout.fillWidth: true
+      id: firstRow
+      width: parent.width
 
       ComboBox {
         Layout.fillWidth: false
@@ -62,6 +64,30 @@ Rectangle {
       }
 
       RoundButton {
+        id: styleButton
+        Layout.minimumWidth: 20
+        Layout.maximumWidth: 30
+
+        checkable: true
+        checked: false
+
+        icon.source: "qrc:/icons/brush.svg"
+
+        icon.width: 2*width/3
+        icon.height: 2*width/3
+        display: Button.IconOnly
+        padding: 0
+      }
+
+      ColorButton {
+        radius: 12
+      }
+
+      Item {
+        Layout.fillWidth: true
+      }
+
+      RoundButton {
         id: del
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
@@ -77,18 +103,39 @@ Rectangle {
       }
     }
 
-  EquationEdit {
-    id: eqEdit
-    type: ZC.AUTO
-    Layout.fillWidth: true
-  }
+    ObjectStyle {
+      id: styleWidget
+      width: parent.width
+      height: 0
+      clip: true
+      showPointSettings: false
 
-  ToolSeparator
-  {
-    orientation: Qt.Horizontal
-    Layout.fillWidth: true
-    Layout.topMargin: 10
-  }
+      Behavior on height { SmoothedAnimation { duration: 200 } }
+
+      states: [
+        State {
+          name: "hidden"; when: !styleButton.checked
+          PropertyChanges { styleWidget.height: 0 }
+        },
+        State {
+          name: "shown"; when: styleButton.checked
+          PropertyChanges { styleWidget.height: 80 }
+        }
+      ]
+    }
+
+    EquationEdit {
+      id: eqEdit
+      type: ZC.AUTO
+      width: parent.width
+    }
+
+    ToolSeparator
+    {
+      orientation: Qt.Horizontal
+      anchors.topMargin: 10
+      width: parent.width
+    }
 
 
   }
