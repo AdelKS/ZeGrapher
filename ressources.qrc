@@ -98,10 +98,13 @@
         <file>src/QML/InteractiveGraphView.qml</file>
         <file>src/QML/MainWindow.qml</file>
         <file>icons/drawer.svg</file>
+        <file>src/QML/ObjectStyle.qml</file>
         <file>src/QML/ZcExprEdit.qml</file>
         <file>src/QML/EquationEdit.qml</file>
         <file>icons/add.svg</file>
         <file>icons/delete.svg</file>
+        <file>icons/noLine.png</file>
+        <file>icons/noPoint.png</file>
         <file>icons/selector.svg</file>
         <file>icons/selectorFlipped.svg</file>
         <file>src/QML/ImageTumbler.qml</file>
