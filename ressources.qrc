@@ -102,5 +102,8 @@
         <file>src/QML/EquationEdit.qml</file>
         <file>icons/add.svg</file>
         <file>icons/delete.svg</file>
+        <file>icons/selector.svg</file>
+        <file>icons/selectorFlipped.svg</file>
+        <file>src/QML/ImageTumbler.qml</file>
     </qresource>
 </RCC>
