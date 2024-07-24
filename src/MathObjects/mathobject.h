@@ -41,6 +41,7 @@ public:
   Q_ENUM(Type)
 
   explicit MathObject(QObject *parent = nullptr);
+  ~MathObject();
 
   Q_INVOKABLE void setBackend(mathobj::ZC*);
 
