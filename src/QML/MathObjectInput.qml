@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import QtQuick.Shapes
 import zegrapher.information 1.0
 import zegrapher.zc 1.0
+import zegrapher.mathobject 1.0
 
 Rectangle {
   id: root
@@ -22,6 +23,10 @@ Rectangle {
     root.opacity = 0;
     root.height = 0;
     root.destroy(200);
+  }
+
+  MathObject {
+    id: mathObj
   }
 
   Column {
@@ -145,6 +150,8 @@ Rectangle {
       id: eqEdit
       type: ZC.AUTO
       width: parent.width
+
+      Component.onCompleted: mathObj.setBackend(eqEdit.backend)
     }
 
     Item {
