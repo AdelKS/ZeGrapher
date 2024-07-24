@@ -109,5 +109,7 @@
         <file>icons/selectorFlipped.svg</file>
         <file>src/QML/ImageTumbler.qml</file>
         <file>icons/brush.svg</file>
+        <file>icons/open-eye.svg</file>
+        <file>icons/closed-eye.svg</file>
     </qresource>
 </RCC>

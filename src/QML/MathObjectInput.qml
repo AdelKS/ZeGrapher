@@ -32,6 +32,7 @@ Rectangle {
     RowLayout {
       id: firstRow
       width: parent.width
+      height: implicitHeight+4
 
       ComboBox {
         Layout.fillWidth: false
@@ -61,6 +62,22 @@ Rectangle {
 
       Item {
         Layout.fillWidth: true
+      }
+
+      RoundButton {
+        id: displayButton
+        Layout.minimumWidth: 20
+        Layout.maximumWidth: 30
+
+        checkable: true
+        checked: false
+
+        icon.source: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
+
+        icon.width: 2*width/3
+        icon.height: 2*width/3
+        display: Button.IconOnly
+        padding: 0
       }
 
       RoundButton {
@@ -130,10 +147,14 @@ Rectangle {
       width: parent.width
     }
 
+    Item {
+      height: 10
+      width: parent.width
+    }
+
     ToolSeparator
     {
       orientation: Qt.Horizontal
-      anchors.topMargin: 10
       width: parent.width
     }
 
