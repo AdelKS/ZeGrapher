@@ -20,10 +20,11 @@
 
 #include "GraphDraw/interactivegraph.h"
 #include "MathObjects/expr.h"
+#include "MathObjects/mathobject.h"
 #include "MathObjects/zc.h"
 #include "Utils/highlighter.h"
 #include "Utils/opterror.h"
-#include "Windows/mainwindow.h"
+#include "Utils/plotstyle.h"
 #include "structures.h"
 
 #include <QQuickView>
@@ -38,6 +39,8 @@ int main(int argc, char *argv[])
   qmlRegisterType<zg::mathobj::Expr>("zegrapher.expr", 1, 0, "Expr");
   qmlRegisterType<zg::mathobj::ZC>("zegrapher.zc", 1, 0, "ZC");
   qmlRegisterType<zg::OptError>("zegrapher.opterror", 1, 0, "OptError");
+  qmlRegisterType<zg::MathObject>("zegrapher.mathobject", 1, 0, "MathObject");
+  qmlRegisterType<zg::PlotStyle>("zegrapher.plotstyle", 1, 0, "PlotStyle");
 
   qmlRegisterSingletonInstance("zegrapher.information", 1, 0, "Information", &information);
 
