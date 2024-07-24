@@ -22,6 +22,7 @@
 #define INFORMATION_H
 
 #include "Calculus/regression.h"
+#include "MathObjects/mathobject.h"
 #include "Widgets/pareqwidget.h"
 #include "Calculus/seqcalculator.h"
 #include "Calculus/function.h"
@@ -91,6 +92,11 @@ public:
     const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
     zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
 
+    void registerMathObject(zg::MathObject*);
+    void deregisterMathObject(zg::MathObject*);
+
+    const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; };
+
 signals:
     void newOrthonormalityState(bool orth);
     void graphRangeChanged(GraphRange range);
@@ -142,6 +148,8 @@ protected:
     ZeAppSettings appSettings;
     QString exportFileName;
     zc::MathWorld<zc_t> mathWorld;
+
+    std::vector<zg::MathObject*> mathObjects;
 
     QList<ParEqWidget*> *parEqWidgets;
 };

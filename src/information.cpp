@@ -255,3 +255,21 @@ QString Information::getExportFileName()
 {
     return exportFileName;
 }
+
+void Information::registerMathObject(zg::MathObject* obj)
+{
+  Q_ASSERT(std::ranges::count(mathObjects, obj) == 0);
+
+  mathObjects.push_back(obj);
+}
+
+void Information::deregisterMathObject(zg::MathObject* obj)
+{
+  auto it = std::ranges::find(mathObjects, obj);
+
+  Q_ASSERT(it != mathObjects.end());
+  Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
+
+  mathObjects.erase(it);
+
+}
