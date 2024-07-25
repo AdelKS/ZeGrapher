@@ -44,6 +44,7 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
   connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
+  connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 }
 
 

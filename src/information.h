@@ -100,7 +100,7 @@ public:
 signals:
     void newOrthonormalityState(bool orth);
     void graphRangeChanged(GraphRange range);
-
+    void styleUpdated();
     void dataUpdated();
     void updateOccured();
     void drawStateUpdateOccured();
