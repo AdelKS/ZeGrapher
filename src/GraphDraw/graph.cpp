@@ -29,6 +29,7 @@ Graph::Graph(QQuickItem *parent)
   rightMargin = 30;
   topMargin = 20;
   bottomMargin = 30;
+  pen.setCapStyle(Qt::RoundCap);
 
   legendFontSize = 12;
   legendState = false;
@@ -37,10 +38,7 @@ Graph::Graph(QQuickItem *parent)
   numPrec = NUM_PREC;
   viewMapper.setGraphRange(information.getGraphRange());
 
-  connect(&information,
-          SIGNAL(graphRangeChanged(GraphRange)),
-          this,
-          SLOT(graphRangeChanged(const GraphRange &)));
+  connect(&information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(graphRangeChanged(GraphRange)));
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
   connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
@@ -363,6 +361,7 @@ void Graph::drawGraphRect()
 
   pen.setWidth(axesSettings.lineWidth);
   pen.setColor(axesSettings.color);
+  pen.setStyle(Qt::SolidLine);
   painter->setPen(pen);
 
   painter->drawRect(graphRectScaled);

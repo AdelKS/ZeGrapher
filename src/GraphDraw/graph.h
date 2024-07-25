@@ -108,6 +108,7 @@ void Graph::drawLine(zg::pixel_unit pos, const QColor& col, double lineWidth)
 {
   pen.setColor(col);
   pen.setWidthF(lineWidth);
+  pen.setStyle(Qt::SolidLine);
   painter->setPen(pen);
   painter->setRenderHint(QPainter::Antialiasing, false);
 

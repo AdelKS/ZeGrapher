@@ -43,14 +43,14 @@ public:
 
   Q_INVOKABLE bool isValid() const;
 
+  /// @note either contains a zc::Function or an Error
+  zc::DynMathObject<zc_t>& zcMathObj;
+
 signals:
   void optErrorChanged();
 
 protected:
   OptError optError = {};
-
-  /// @note either contains a zc::Function or an Error
-  zc::DynMathObject<zc_t>& zcMathObj;
 };
 
 }

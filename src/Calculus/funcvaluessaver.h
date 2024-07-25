@@ -21,12 +21,14 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
+#include "MathObjects/mathobject.h"
 
 #include <zecalculator/zecalculator.h>
 #include <unordered_set>
 
 struct FuncCurve
 {
+  const zg::MathObject* obj;
   const zc::Function<zc_t>& func;
   const size_t slot;
   std::string equation;

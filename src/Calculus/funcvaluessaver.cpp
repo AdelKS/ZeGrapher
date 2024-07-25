@@ -77,27 +77,31 @@ void FuncValuesSaver::refresh_valid_functions()
   for (const FuncCurve& f_curve: funCurves)
   {
     const size_t slot = f_curve.slot;
-    if (not information.getMathWorld().get<zc::Function<zc_t>>(slot))
+    if (not information.getMathWorld().get<zc::Function<zc_t>>(slot)
+        or std::ranges::count(information.getMathObjects(), f_curve.obj) == 0)
     {
       qInfo() << "clearing slot " << slot << "from cached functions";
       funCurves.free(slot);
     }
   }
 
-  for (const zc::DynMathObject<zc_t> &math_obj : information.getMathWorld())
+  for (const zg::MathObject* math_obj : information.getMathObjects())
   {
-    if (not math_obj.holds<zc::Function<zc_t>>() or funCurves.is_assigned(math_obj.get_slot()))
+    if (not math_obj->zcBackend or not math_obj->zcBackend->zcMathObj.holds<zc::Function<zc_t>>()
+        or funCurves.is_assigned(math_obj->zcBackend->zcMathObj.get_slot()))
       continue;
 
-    qInfo() << "caching new function " << math_obj.get_name() << " slot " << math_obj.get_slot();
+    qInfo() << "caching new function " << math_obj->zcBackend->zcMathObj.get_name() << " slot "
+            << math_obj->zcBackend->zcMathObj.get_slot();
 
     funCurves.push(
       FuncCurve{
-        .func = math_obj.value_as<zc::Function<zc_t>>(),
-        .slot = math_obj.get_slot(),
-        .equation = math_obj.value_as<zc::Function<zc_t>>().get_equation(),
+        .obj = math_obj,
+        .func = math_obj->zcBackend->zcMathObj.value_as<zc::Function<zc_t>>(),
+        .slot = math_obj->zcBackend->zcMathObj.get_slot(),
+        .equation = math_obj->zcBackend->zcMathObj.value_as<zc::Function<zc_t>>().get_equation(),
       },
-      math_obj.get_slot());
+      math_obj->zcBackend->zcMathObj.get_slot());
   }
 }
 
