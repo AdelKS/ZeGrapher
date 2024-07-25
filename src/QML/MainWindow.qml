@@ -27,6 +27,7 @@ Item {
   Rectangle {
     id: drawer
     x: 0
+    z: 50
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     width: 200
@@ -88,9 +89,18 @@ Item {
   }
 
   InteractiveGraphView {
+    id: interactiveGraph
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     anchors.right: parent.right
     anchors.left: drawer.right
+
+    states: State {
+      name: "anchorToDrawer"; when: win.width - drawer.width < 400
+      AnchorChanges { target: interactiveGraph; anchors.left: win.left }
+    }
+
+    transitions: Transition { AnchorAnimation { duration: 200 } }
+
   }
 }
