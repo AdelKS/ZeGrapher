@@ -80,6 +80,8 @@ int main(int argc, char *argv[])
   a.installTranslator(&translator);
 
   QQuickView view;
+  view.setMinimumWidth(600);
+  view.setMinimumHeight(600);
   view.setSource(QUrl::fromLocalFile(":/src/QML/MainWindow.qml"));
   view.setResizeMode(QQuickView::SizeRootObjectToView);
   view.show();
