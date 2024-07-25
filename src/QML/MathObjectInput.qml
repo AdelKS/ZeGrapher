@@ -5,6 +5,7 @@ import QtQuick.Shapes
 import zegrapher.information 1.0
 import zegrapher.zc 1.0
 import zegrapher.mathobject 1.0
+import zegrapher.plotstyle 1.0
 
 Rectangle {
   id: root
@@ -23,6 +24,16 @@ Rectangle {
     root.opacity = 0;
     root.height = 0;
     root.destroy(200);
+  }
+
+  PlotStyle {
+    id: plotStyle
+    visible: !displayButton.checked
+    color: colorButton.selectedColor
+    lineStyle: styleWidget.lineStyle
+    lineWidth: styleWidget.lineWidth
+    pointStyle: styleWidget.pointStyle
+    pointWidth: styleWidget.pointWidth
   }
 
   MathObject {
@@ -102,6 +113,7 @@ Rectangle {
       }
 
       ColorButton {
+        id: colorButton
         radius: 12
       }
 
