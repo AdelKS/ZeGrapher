@@ -51,24 +51,24 @@ Item {
 
     UserInputPanel {
       id: userInput
-      anchors.top: drawer.top
-      anchors.bottom: drawer.bottom
-      anchors.left: drawer.left
-      anchors.right: drawer.right
+      anchors.fill: parent
+
+      onImplicitWidthChanged: {
+        if (drawer.width < userInput.implicitWidth + resizeArea.width + 10)
+          drawer.width = userInput.implicitWidth + resizeArea.width + 10;
+      }
 
       anchors.rightMargin: resizeArea.width
       anchors.leftMargin: 10
       width: parent.width - resizeArea.width
-
-      property int minWidth: implicitWidth
     }
 
     MouseArea {
       id: resizeArea
       z: 100
       width: 10
-      anchors.top: drawer.top
-      anchors.bottom: drawer.bottom
+      anchors.top: parent.top
+      anchors.bottom: parent.bottom
       anchors.left: userInput.right
       cursorShape: Qt.SizeHorCursor
       acceptedButtons: Qt.LeftButton
@@ -81,7 +81,7 @@ Item {
 
       onMouseXChanged: {
         var diff = mouseX - mouseXonPress;
-        if (drawer.width + diff > userInput.minWidth)
+        if (drawer.width + diff > userInput.implicitWidth + resizeArea.width + 10)
           drawer.width += diff;
       }
     }

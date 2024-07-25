@@ -18,7 +18,7 @@ Rectangle {
   Behavior on opacity { SmoothedAnimation { duration: 150 } }
 
   implicitHeight: layout.implicitHeight
-  implicitWidth: layout.implicitWidth
+  implicitWidth: firstRow.implicitWidth
 
   function removeObj() {
     root.opacity = 0;

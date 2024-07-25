@@ -8,17 +8,6 @@ Item {
 
   implicitWidth: colLayout.implicitWidth
 
-  function createMathObjectInput() {
-    var component = Qt.createComponent("qrc:/src/QML/MathObjectInput.qml");
-    var inputWidget = component.createObject(mathObjCol)
-
-    inputWidget.width = Qt.binding(function (){ return mathObjCol.width - 5 });
-
-    if (inputWidget === null) {
-      console.log("Error creating object");
-    }
-  }
-
   ColumnLayout {
     id: colLayout
     anchors.fill: parent
@@ -44,7 +33,7 @@ Item {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
-      implicitWidth: mathObjCol.implicitWidth
+      implicitWidth: mathObjCol.minWidth
 
       contentWidth: availableWidth
 
@@ -56,7 +45,26 @@ Item {
         anchors.fill: parent
         spacing: 10
 
-        onImplicitHeightChanged: console.log("layout implicit height: ", implicitHeight)
+        property int minWidth: 0
+
+        function updateMinWidth(w: int) {
+          if (minWidth < w)
+            minWidth = w;
+        }
+
+        function createMathObjectInput() {
+          var component = Qt.createComponent("qrc:/src/QML/MathObjectInput.qml");
+          var inputWidget = component.createObject(mathObjCol)
+
+          inputWidget.width = Qt.binding(function (){ return mathObjCol.width - 5 });
+
+          updateMinWidth(inputWidget.implicitWidth);
+          inputWidget.implicitWidthChanged.connect(updateMinWidth);
+
+          if (inputWidget === null) {
+            console.log("Error creating object");
+          }
+        }
 
         Component.onCompleted: createMathObjectInput()
       }
@@ -75,7 +83,7 @@ Item {
 
     icon.source: "qrc:/icons/add.svg"
 
-    onReleased: createMathObjectInput()
+    onReleased: mathObjCol.createMathObjectInput()
 
     icon.width: 2*width/3
     icon.height: 2*width/3
