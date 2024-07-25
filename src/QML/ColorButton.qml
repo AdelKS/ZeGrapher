@@ -6,6 +6,8 @@ import QtQuick.Dialogs
 Shape {
   id: disk
 
+  readonly property alias selectedColor: colorDialog.selectedColor
+
   horizontalAlignment: Shape.AlignHCenter
   verticalAlignment: Shape.AlignVCenter
   preferredRendererType: Shape.CurveRenderer
