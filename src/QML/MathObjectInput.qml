@@ -38,6 +38,7 @@ Rectangle {
 
   MathObject {
     id: mathObj
+    style: plotStyle
   }
 
   Column {

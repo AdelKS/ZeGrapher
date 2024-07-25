@@ -33,7 +33,7 @@ struct MathObject: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(PlotStyle plotStyle MEMBER plotStyle)
+  Q_PROPERTY(PlotStyle* style MEMBER style)
 
 public:
 
@@ -45,7 +45,7 @@ public:
 
   Q_INVOKABLE void setBackend(mathobj::ZC*);
 
-  PlotStyle plotStyle;
+  PlotStyle* style = nullptr;
   mathobj::ZC* zcBackend = nullptr;
 
 };
