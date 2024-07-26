@@ -42,13 +42,15 @@ public:
 
   /// @brief changes the target ZC type
   void setType(Type type);
-
   void setEquation(QString eq);
 
   Q_INVOKABLE void refresh();
 
+  QString getName() const { return name; }
+
 protected:
   QString equation;
+  QString name;
 
   /// @brief The type of the math object
   /// @note not necessarily in a DynMathObject

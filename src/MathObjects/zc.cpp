@@ -36,6 +36,9 @@ void ZC::refresh()
     qDebug() << "[backend] setEquation: case not handled";
     break;
   }
+
+  name = QString::fromStdString(std::string(zcMathObj.get_name()));
+
   OptError oldOptError = optError;
   if (not zcMathObj.has_value())
     optError.value = zcMathObj.error();
