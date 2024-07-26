@@ -271,5 +271,33 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
 
   mathObjects.erase(it);
+}
 
+void Information::mathObjectUpdated(QString oldName, QString newName)
+{
+  QStringList affectedObjects;
+  QStringList toExplore;
+
+  auto appendName = [&](QString name) {
+    if (not name.isEmpty() and not affectedObjects.contains(name))
+    {
+      affectedObjects.push_back(name);
+      toExplore.push_back(name);
+    }
+  };
+
+  appendName(oldName);
+  appendName(newName);
+
+  while (not toExplore.empty())
+  {
+    QString name = toExplore.back();
+    toExplore.pop_back();
+
+    auto deps = mathWorld.direct_revdeps(name.toStdString());
+    for (auto&& [dep_name, useless]: deps)
+      appendName(QString::fromStdString(dep_name));
+  }
+
+  emit mathObjectsChanged(affectedObjects);
 }

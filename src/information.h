@@ -96,6 +96,7 @@ public:
     void deregisterMathObject(zg::MathObject*);
 
     const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; };
+    void mathObjectUpdated(QString oldName, QString newName);
 
 signals:
     void newOrthonormalityState(bool orth);
@@ -114,6 +115,7 @@ signals:
     void graphZoomSettingsChanged();
     void estheticSettingsChanged();
     void appSettingsChanged();
+    void mathObjectsChanged(QStringList objectNames);
 
 public slots:
     void emitUpdateSignal();
