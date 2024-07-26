@@ -1,4 +1,5 @@
 #include "MathObjects/zc.h"
+#include "information.h"
 
 namespace zg {
 namespace mathobj {
@@ -12,7 +13,11 @@ ZC::ZC(QObject *parent)
 void ZC::setEquation(QString eq)
 {
   equation = std::move(eq);
+  QString oldName = name;
   refresh();
+
+  if (not oldName.isEmpty() or not name.isEmpty())
+    information.mathObjectUpdated(oldName, name);
 }
 
 void ZC::refresh()

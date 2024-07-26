@@ -29,6 +29,7 @@ void Expr::setExpression(QString expr)
   else zcMathObj = zc::As<zc::Function<zc_t>>{""};
   expression = std::move(expr);
   refresh();
+  information.mathObjectUpdated(implicitName, implicitName);
 }
 
 void Expr::refresh()
