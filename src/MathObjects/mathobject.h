@@ -47,6 +47,8 @@ public:
   Q_INVOKABLE void setBackend(mathobj::ZC*);
   Q_INVOKABLE void setBackend(mathobj::Expr*);
 
+  QStringList handledMathObjects() const;
+
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
     requires (zc::utils::is_any_of<T, mathobj::ZC, mathobj::Expr>)
