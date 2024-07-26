@@ -5,6 +5,7 @@ import zegrapher.highlighter 1.0
 import zegrapher.information 1.0
 import zegrapher.expr 1.0
 import zegrapher.opterror 1.0
+import zegrapher.mathobject 1.0
 
 Item {
   id: root
@@ -20,9 +21,14 @@ Item {
     zcExprEdit.setCustomErrorMsg(msg);
   }
 
+  MathObject {
+    id: mathObj
+  }
+
   Expr {
     id: exprBackend
     expression: zcExprEdit.expression
+    Component.onCompleted: mathObj.setBackend(exprBackend);
   }
 
   ZcExprEdit {
