@@ -43,6 +43,8 @@ public:
 
   Q_INVOKABLE void setImplicitName(QString name);
 
+  QString getImplicitName() const { return implicitName; };
+
 signals:
   void valueChanged();
 
