@@ -87,21 +87,25 @@ void FuncValuesSaver::refresh_valid_functions()
 
   for (const zg::MathObject* math_obj : information.getMathObjects())
   {
-    if (not math_obj->zcBackend or not math_obj->zcBackend->zcMathObj.holds<zc::Function<zc_t>>()
-        or funCurves.is_assigned(math_obj->zcBackend->zcMathObj.get_slot()))
+    const zc::DynMathObject<zc_t>* zc_obj = nullptr;
+    if (math_obj->getBackend<zg::mathobj::ZC>())
+      zc_obj = &math_obj->getBackend<zg::mathobj::ZC>()->zcMathObj;
+
+    if (not zc_obj or not zc_obj->holds<zc::Function<zc_t>>()
+        or funCurves.is_assigned(zc_obj->get_slot()))
       continue;
 
-    qInfo() << "caching new function " << math_obj->zcBackend->zcMathObj.get_name() << " slot "
-            << math_obj->zcBackend->zcMathObj.get_slot();
+    qInfo() << "caching new function " << zc_obj->get_name() << " slot "
+            << zc_obj->get_slot();
 
     funCurves.push(
       FuncCurve{
         .obj = math_obj,
-        .func = math_obj->zcBackend->zcMathObj.value_as<zc::Function<zc_t>>(),
-        .slot = math_obj->zcBackend->zcMathObj.get_slot(),
-        .equation = math_obj->zcBackend->zcMathObj.value_as<zc::Function<zc_t>>().get_equation(),
+        .func = zc_obj->value_as<zc::Function<zc_t>>(),
+        .slot = zc_obj->get_slot(),
+        .equation = zc_obj->value_as<zc::Function<zc_t>>().get_equation(),
       },
-      math_obj->zcBackend->zcMathObj.get_slot());
+      zc_obj->get_slot());
   }
 }
 

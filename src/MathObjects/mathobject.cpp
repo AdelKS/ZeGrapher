@@ -8,9 +8,14 @@ MathObject::MathObject(QObject *parent) : QObject(parent)
   information.registerMathObject(this);
 }
 
-void MathObject::setBackend(mathobj::ZC* backend)
+void MathObject::setBackend(mathobj::ZC* b)
 {
-  zcBackend = backend;
+  backend = b;
+}
+
+void MathObject::setBackend(mathobj::Expr* b)
+{
+  backend = b;
 }
 
 MathObject::~MathObject()

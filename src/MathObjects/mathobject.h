@@ -23,6 +23,7 @@
 #include <QtQmlIntegration>
 #include <QObject>
 
+#include "MathObjects/expr.h"
 #include "Utils/plotstyle.h"
 #include "zc.h"
 
@@ -44,10 +45,35 @@ public:
   ~MathObject();
 
   Q_INVOKABLE void setBackend(mathobj::ZC*);
+  Q_INVOKABLE void setBackend(mathobj::Expr*);
+
+  /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
+  template <class T>
+    requires (zc::utils::is_any_of<T, mathobj::ZC, mathobj::Expr>)
+  T* getBackend();
+
+  template <class T>
+    requires (zc::utils::is_any_of<T, mathobj::ZC, mathobj::Expr>)
+  const T* getBackend() const;
 
   PlotStyle* style = nullptr;
-  mathobj::ZC* zcBackend = nullptr;
-
+  std::variant<std::monostate, mathobj::ZC*, mathobj::Expr*> backend;
 };
+
+template <class T>
+  requires (zc::utils::is_any_of<T, mathobj::ZC, mathobj::Expr>)
+const T* MathObject::getBackend() const
+{
+  if (std::holds_alternative<T*>(backend))
+    return std::get<T*>(backend);
+  else return nullptr;
+}
+
+template <class T>
+  requires (zc::utils::is_any_of<T, mathobj::ZC, mathobj::Expr>)
+T* MathObject::getBackend()
+{
+  return const_cast<T*>(std::as_const(*this).getBackend<T>());
+}
 
 }
