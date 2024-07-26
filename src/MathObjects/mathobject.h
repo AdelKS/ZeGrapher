@@ -47,6 +47,9 @@ public:
   Q_INVOKABLE void setBackend(mathobj::ZC*);
   Q_INVOKABLE void setBackend(mathobj::Expr*);
 
+  /// @brief forwards the refresh() call to the current active backend
+  void refresh();
+
   QStringList handledMathObjects() const;
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise

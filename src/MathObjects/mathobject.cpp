@@ -31,6 +31,14 @@ QStringList MathObject::handledMathObjects() const
   return QStringList();
 }
 
+void MathObject::refresh()
+{
+  std::visit(zc::utils::overloaded{
+    [](std::monostate) {},
+    [](auto* b) { b->refresh(); },
+  }, backend);
+}
+
 MathObject::~MathObject()
 {
   information.deregisterMathObject(this);
