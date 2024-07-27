@@ -21,11 +21,11 @@
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
+#include "Calculus/function.h"
 #include "Calculus/regression.h"
+#include "Calculus/seqcalculator.h"
 #include "MathObjects/mathobject.h"
 #include "Widgets/pareqwidget.h"
-#include "Calculus/seqcalculator.h"
-#include "Calculus/function.h"
 
 #include <QtQml/qqmlregistration.h>
 
@@ -33,127 +33,123 @@
 
 class Information: public QObject
 {
-    Q_OBJECT
-    QML_ELEMENT
-    QML_SINGLETON
+  Q_OBJECT
+  QML_ELEMENT
+  QML_SINGLETON
 
-    Q_PROPERTY(ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
-    Q_PROPERTY(GraphRange range READ getGraphRange WRITE setGraphRange NOTIFY graphRangeChanged)
-    Q_PROPERTY(ZeZoomSettings graphZoomSettings
-               READ getGraphZoomSettings
-               WRITE setGraphZoomSettings
+  Q_PROPERTY(
+    ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
+  Q_PROPERTY(GraphRange range READ getGraphRange WRITE setGraphRange NOTIFY graphRangeChanged)
+  Q_PROPERTY(ZeZoomSettings graphZoomSettings READ getGraphZoomSettings WRITE setGraphZoomSettings
                NOTIFY graphZoomSettingsChanged)
-    Q_PROPERTY(ZeSizeSettings graphSizeSettings
-               READ getGraphSizeSettings
-               WRITE setGraphSizeSettings
+  Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
 
 public:
-    Information();
+  Information();
 
-    const ZeZoomSettings& getGraphZoomSettings() const;
-    const ZeSizeSettings& getGraphSizeSettings() const;
-    const ZeGraphSettings& getGraphSettings() const;
-    const ZeGridSettings& getGridSettings() const;
-    const ZeAxesSettings& getAxesSettings() const;
-    const ZeGraphSettings &getEstheticSettings() const;
-    const GraphRange& getGraphRange() const;
-    const ZeAppSettings& getAppSettings() const;
+  const ZeZoomSettings& getGraphZoomSettings() const;
+  const ZeSizeSettings& getGraphSizeSettings() const;
+  const ZeGraphSettings& getGraphSettings() const;
+  const ZeGridSettings& getGridSettings() const;
+  const ZeAxesSettings& getAxesSettings() const;
+  const ZeGraphSettings& getEstheticSettings() const;
+  const GraphRange& getGraphRange() const;
+  const ZeAppSettings& getAppSettings() const;
 
-    void addDataList(const std::shared_ptr<const UserData> &userData);
-    void removeDataList(const std::shared_ptr<const UserData> &userData);
+  void addDataList(const std::shared_ptr<const UserData>& userData);
+  void removeDataList(const std::shared_ptr<const UserData>& userData);
 
-    int getDataListsCount();
-    std::shared_ptr<const UserData> getDataPoints(int index);
+  int getDataListsCount();
+  std::shared_ptr<const UserData> getDataPoints(int index);
 
-    QPalette getValidSyntaxPalette() const;
-    QPalette getInvalidSyntaxPalette() const;
+  QPalette getValidSyntaxPalette() const;
+  QPalette getInvalidSyntaxPalette() const;
 
-    void addDataRegression(Regression *reg);
-    void removeDataRegression(Regression *reg);
-    Regression* getRegression(int index);
-    QList<Regression*> getRegressions();
-    int getRegressionsCount();
+  void addDataRegression(Regression* reg);
+  void removeDataRegression(Regression* reg);
+  Regression* getRegression(int index);
+  QList<Regression*> getRegressions();
+  int getRegressionsCount();
 
-    void setParEqsListPointer(QList<ParEqWidget*> *list);
-    QList<ParEqWidget*>* getParEqsList();
+  void setParEqsListPointer(QList<ParEqWidget*>* list);
+  QList<ParEqWidget*>* getParEqsList();
 
-    void checkParametricEquations();
+  void checkParametricEquations();
 
-    void setSequencesList(QList<SeqCalculator*> list);
-    QList<SeqCalculator*> getSeqsList();
+  void setSequencesList(QList<SeqCalculator*> list);
+  QList<SeqCalculator*> getSeqsList();
 
-    void setFunctionsList(QList<Function*> list);
-    QList<Function*> getFuncsList();
+  void setFunctionsList(QList<Function*> list);
+  QList<Function*> getFuncsList();
 
-    void setExportFileName(QString fileName);
-    QString getExportFileName();
+  void setExportFileName(QString fileName);
+  QString getExportFileName();
 
-    const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
-    zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
+  const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
+  zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
 
-    void registerMathObject(zg::MathObject*);
-    void deregisterMathObject(zg::MathObject*);
+  void registerMathObject(zg::MathObject*);
+  void deregisterMathObject(zg::MathObject*);
 
-    const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; };
-    void mathObjectUpdated(QString oldName, QString newName);
+  const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; };
+  void mathObjectUpdated(QString oldName, QString newName);
 
 signals:
-    void newOrthonormalityState(bool orth);
-    void graphRangeChanged(GraphRange range);
-    void styleUpdated();
-    void dataUpdated();
-    void updateOccured();
-    void drawStateUpdateOccured();
-    void animationUpdate();
-    void regressionAdded(Regression *reg);
-    void regressionRemoved(Regression *reg);
-    void viewSettingsChanged();
-    void axesSettingsChanged();
-    void gridSettingsChanged();
-    void graphSizeSettingsChanged();
-    void graphZoomSettingsChanged();
-    void estheticSettingsChanged();
-    void appSettingsChanged();
-    void mathObjectsChanged(QStringList objectNames);
+  void newOrthonormalityState(bool orth);
+  void graphRangeChanged(GraphRange range);
+  void styleUpdated();
+  void dataUpdated();
+  void updateOccured();
+  void drawStateUpdateOccured();
+  void animationUpdate();
+  void regressionAdded(Regression* reg);
+  void regressionRemoved(Regression* reg);
+  void viewSettingsChanged();
+  void axesSettingsChanged();
+  void gridSettingsChanged();
+  void graphSizeSettingsChanged();
+  void graphZoomSettingsChanged();
+  void estheticSettingsChanged();
+  void appSettingsChanged();
+  void mathObjectsChanged(QStringList objectNames);
 
 public slots:
-    void emitUpdateSignal();
-    void emitDataUpdate();
-    void emitDrawStateUpdate();
-    void emitAnimationUpdate();
+  void emitUpdateSignal();
+  void emitDataUpdate();
+  void emitDrawStateUpdate();
+  void emitAnimationUpdate();
 
-    void setGraphRange(const GraphRange &range);
-    void setOrthonormal(bool state);
-    void setGraphSizeSettings(const ZeSizeSettings &graphSizeSettings);
-    void setGraphZoomSettings(const ZeZoomSettings &zoomSettings);
-    void setAxesSettings(const ZeAxesSettings &axesSettings);
-    void setGridSettings(const ZeGridSettings &gridSettings);
-    void setGraphSettings(const ZeGraphSettings &graphSettings);
-    void setAppSettings(const ZeAppSettings& appSettings);
+  void setGraphRange(const GraphRange& range);
+  void setOrthonormal(bool state);
+  void setGraphSizeSettings(const ZeSizeSettings& graphSizeSettings);
+  void setGraphZoomSettings(const ZeZoomSettings& zoomSettings);
+  void setAxesSettings(const ZeAxesSettings& axesSettings);
+  void setGridSettings(const ZeGridSettings& gridSettings);
+  void setGraphSettings(const ZeGraphSettings& graphSettings);
+  void setAppSettings(const ZeAppSettings& appSettings);
 
 protected:
+  std::list<std::shared_ptr<UserData const>> userDataSets;
 
-    std::list<std::shared_ptr<UserData const>> userDataSets;
+  QList<Regression*> regressions;
 
-    QList<Regression*> regressions;
+  QList<Function*> functions;
+  QList<SeqCalculator*> sequences;
 
-    QList<Function*> functions;
-    QList<SeqCalculator*> sequences;
+  GraphRange range;
+  ZeZoomSettings zoomSettings;
+  ZeSizeSettings sizeSettings;
+  ZeAxesSettings axesSettings;
+  ZeGridSettings gridSettings;
+  ZeGraphSettings graphSettings;
+  ZeAppSettings appSettings;
+  QString exportFileName;
+  zc::MathWorld<zc_t> mathWorld;
 
-    GraphRange range;
-    ZeZoomSettings zoomSettings;
-    ZeSizeSettings sizeSettings;
-    ZeAxesSettings axesSettings;
-    ZeGridSettings gridSettings;
-    ZeGraphSettings graphSettings;
-    ZeAppSettings appSettings;
-    QString exportFileName;
-    zc::MathWorld<zc_t> mathWorld;
+  std::vector<zg::MathObject*> mathObjects;
 
-    std::vector<zg::MathObject*> mathObjects;
-
-    QList<ParEqWidget*> *parEqWidgets;
+  QList<ParEqWidget*>* parEqWidgets;
 };
 
 inline Information information;
