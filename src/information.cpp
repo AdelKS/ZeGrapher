@@ -20,7 +20,10 @@
 
 #include "information.h"
 
-Information::Information() {}
+Information::Information()
+{
+  connect(this, &Information::mathObjectsChanged, this, &Information::refreshMathObjects);
+}
 
 void Information::emitDataUpdate()
 {
