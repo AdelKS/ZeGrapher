@@ -128,9 +128,17 @@ void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
   painter->setRenderHint(QPainter::Antialiasing, false);
 
   if constexpr (axis == ZeAxisName::X)
+  {
     painter->drawLine(QPointF(pos.v, 4), QPointF(pos.v, 0));
+    painter->drawLine(QPointF(pos.v, graphRectScaled.height() - 4),
+                      QPointF(pos.v, graphRectScaled.height()));
+  }
   else
+  {
     painter->drawLine(QPointF(4, pos.v), QPointF(0, pos.v));
+    painter->drawLine(QPointF(graphRectScaled.width() - 4, pos.v),
+                      QPointF(graphRectScaled.width(), pos.v));
+  }
 };
 
 template <ZeAxisName axis>
