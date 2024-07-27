@@ -148,22 +148,23 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
   pen.setColor(information.getAxesSettings().color);
   painter->setPen(pen);
 
-  auto boundingRect = fontMetrics.boundingRect(txt);
+  int txtWidth = fontMetrics.horizontalAdvance(txt);
+  int txtHeight = fontMetrics.boundingRect('0').height();
   if constexpr (axis == ZeAxisName::X)
   {
     double space;
     if (txt.startsWith('-'))
-      space = double(fontMetrics.boundingRect(txt.mid(1)).width()) / 2.
-              + fontMetrics.boundingRect('-').width();
+      space = double(fontMetrics.horizontalAdvance(txt.mid(1))) / 2.
+              + fontMetrics.horizontalAdvance('-');
     else
-      space = double(boundingRect.width()) / 2.;
+      space = double(txtWidth) / 2.;
 
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + boundingRect.height() + 5), txt);
+    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + txtHeight + 5), txt);
   }
   else
   {
-    painter->drawText(QPointF(- boundingRect.width() - 5, pos.v + boundingRect.height()/2.), txt);
+    painter->drawText(QPointF(- txtWidth - 5, pos.v + txtHeight/2.), txt);
   }
 };
 
