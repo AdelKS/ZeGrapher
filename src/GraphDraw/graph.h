@@ -53,6 +53,7 @@ protected slots:
   void addRegSaver(Regression *reg);
   void delRegSaver(Regression *reg);
   void updateSettingsVals();
+  void clearCache(QStringList objectNames);
 
 protected:
   void updateCenterPosAndScaling();

@@ -401,3 +401,11 @@ QImage *Graph::drawImage()
   //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
   return image;
 }
+
+void Graph::clearCache(QStringList objectNames)
+{
+  for (auto& curve: funcValuesSaver.getFunCurves())
+    if (std::ranges::any_of(curve.obj->handledMathObjects(),
+                            [&](auto&& name) { return objectNames.contains(name); }))
+      curve.clear();
+}
