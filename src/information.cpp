@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -294,4 +294,12 @@ void Information::mathObjectUpdated(QString oldName, QString newName)
   }
 
   emit mathObjectsChanged(affectedObjects);
+}
+
+void Information::refreshMathObjects(QStringList objectNames)
+{
+  for (zg::MathObject* obj: mathObjects)
+    if (std::ranges::any_of(obj->handledMathObjects(),
+                            [&](auto&& name) { return objectNames.contains(name); }))
+      obj->refresh();
 }

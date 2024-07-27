@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -128,6 +128,7 @@ public slots:
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
   void setAppSettings(const ZeAppSettings& appSettings);
+  void refreshMathObjects(QStringList objectNames);
 
 protected:
   std::list<std::shared_ptr<UserData const>> userDataSets;
