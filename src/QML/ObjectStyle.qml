@@ -35,11 +35,11 @@ Item {
         from: 1
         to: 100
         live: true
-        value: 10
+        value: 20
         stepSize: 10
 
         // workaround for value not being set on initialization
-        Component.onCompleted: { value = 10 }
+        Component.onCompleted: { value = 20 }
       }
     }
 
@@ -62,10 +62,10 @@ Item {
         from: 1
         to: 100
         live: true
-        value: 10
+        value: 20
         stepSize: 10
 
-        Component.onCompleted: { value = 10 }
+        Component.onCompleted: { value = 20 }
       }
     }
 
