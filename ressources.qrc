@@ -111,5 +111,6 @@
         <file>icons/brush.svg</file>
         <file>icons/open-eye.svg</file>
         <file>icons/closed-eye.svg</file>
+        <file>src/QML/TextTumbler.qml</file>
     </qresource>
 </RCC>
