@@ -49,31 +49,33 @@ Rectangle {
     RowLayout {
       id: firstRow
       width: parent.width
-      height: implicitHeight+4
+      height: 40
 
-      ComboBox {
+      TextTumbler {
         Layout.fillWidth: false
         Layout.maximumWidth: implicitContentWidth + 30
-        model: ["Auto", "Function", "Sequence", "Constant"]
-        implicitContentWidthPolicy: ComboBox.WidestText
-        onCurrentTextChanged: {
-          switch (currentText)
-          {
-          case "Auto":
-            eqEdit.type = ZC.AUTO;
-            break;
-          case "Function":
-            eqEdit.type = ZC.FUNCTION;
-            break;
-          case "Sequence":
-            eqEdit.type = ZC.SEQUENCE;
-            break;
-          case "Constant":
-            eqEdit.type = ZC.CONSTANT;
-            break;
-          default:
-            console.error("Error in switch statement");
+        model: ListModel {
+          id: eqTypeModel
+          ListElement {
+            txt: "Auto"
+            type: ZC.AUTO
           }
+          ListElement {
+            txt: "Function"
+            type: ZC.FUNCTION
+          }
+          ListElement {
+            txt: "Sequence"
+            type: ZC.SEQUENCE
+          }
+          ListElement {
+            txt: "Constant"
+            type: ZC.CONSTANT
+          }
+        }
+
+        onCurrentIndexChanged: {
+          eqEdit.type = eqTypeModel.get(currentIndex).type;
         }
       }
 
