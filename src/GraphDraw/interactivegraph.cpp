@@ -21,6 +21,8 @@
 #include "GraphDraw/interactivegraph.h"
 #include "information.h"
 
+#include <QQuickWindow>
+
 InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 {
   orientation = QPageLayout::Landscape;
@@ -363,14 +365,37 @@ void InteractiveGraph::scaleView(const QRect &refSheetRect)
 
   double totalScaleFactor = zoomSettings.zoom * sizeSettings.scalingFactor;
 
+  qDebug() << "Graph size: " << size();
+  qDebug() << "Painter viewport (before scaling): " << painter->viewport();
+  qDebug() << "Painter window (before scaling): " << painter->window();
+
+  pixelRatio = window()->effectiveDevicePixelRatio();
+
+  pixelRatioTransform.reset();
+  pixelRatioTransform.scale(pixelRatio, pixelRatio);
+
+  inversePixelRatioTransform.reset();
+  inversePixelRatioTransform.scale(1./pixelRatio, 1./pixelRatio);
+
+  qDebug() << "Painter scaled back window (before scaling): "
+           << inversePixelRatioTransform.mapRect(painter->window());
+
+  qDebug() << "Pixel ratio: " << pixelRatio;
+
   painter->scale(totalScaleFactor, totalScaleFactor);
+
+  worldTransform = painter->worldTransform();
+  inverseWorldTransform = painter->worldTransform().inverted();
+
+  qDebug() << "Painter viewport (after scaling): " << painter->viewport();
+  qDebug() << "Painter window (after scaling): " << painter->window();
 }
 
 void InteractiveGraph::drawGraph()
 {
   scaleView(supportRect);
 
-  sheetRectScaled = painter->worldTransform().inverted().mapRect(supportRect);
+  sheetRectScaled = inverseWorldTransform.mapRect(supportRect);
 
   figureRectScaled = getFigureRect(sheetRectScaled);
 
@@ -409,7 +434,7 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 
   if (moveType != NOTHING)
   {
-    lastMousePos = event->pos();
+    lastMousePos = inversePixelRatioTransform.map(event->pos());
     event->accept();
   }
 }
@@ -431,7 +456,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
     else
       setCursor(Qt::ArrowCursor);
 
-    lastMousePos = event->pos();
+    lastMousePos = inverseWorldTransform.map(event->pos());
   }
   else
   {
@@ -463,8 +488,13 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
       update();
     };
 
-    QPoint dr = event->pos() - lastMousePos;
-    lastMousePos = event->pos();
+    QPoint pos = inversePixelRatioTransform.map(event->pos());
+
+    qDebug() << "Graph size: " << size();
+    qDebug() << "Mouse position: " << pos;
+
+    QPoint dr = pos - lastMousePos;
+    lastMousePos = pos;
 
     switch (moveType)
     {

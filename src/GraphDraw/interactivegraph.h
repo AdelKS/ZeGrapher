@@ -99,11 +99,13 @@ protected:
   QSizeF currentSize;
   // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
   // the other margin is scaled accordingly
-  double screenDPI;
+  double screenDPI, pixelRatio;
   QRect figureRect, supportRect, sheetRectScaled;
 
   ZeSizeSettings sizeSettings;
   ZeZoomSettings zoomSettings;
+
+  QTransform worldTransform, inverseWorldTransform, pixelRatioTransform, inversePixelRatioTransform;
 
   QRectF relFigRect;
   QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
