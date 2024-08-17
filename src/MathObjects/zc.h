@@ -31,11 +31,11 @@ struct ZC: ZcBase {
   QML_ELEMENT
 
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation)
-  Q_PROPERTY(Type type WRITE setType MEMBER type)
+  Q_PROPERTY(Type type WRITE setType MEMBER type NOTIFY typeChanged)
 
 public:
 
-  enum struct Type {AUTO, FUNCTION, SEQUENCE, CONSTANT};
+  enum struct Type {FUNCTION, SEQUENCE, CONSTANT};
   Q_ENUM(Type)
 
   explicit ZC(QObject *parent = nullptr);
@@ -44,9 +44,12 @@ public:
   void setType(Type type);
   void setEquation(QString eq);
 
-  Q_INVOKABLE void refresh();
+  Q_INVOKABLE void refresh(bool canChangeType = true);
 
   QString getName() const { return name; }
+
+signals:
+  void typeChanged(Type);
 
 protected:
   QString equation;
@@ -54,7 +57,7 @@ protected:
 
   /// @brief The type of the math object
   /// @note not necessarily in a DynMathObject
-  Type type;
+  Type type = Type::FUNCTION;
 };
 
 }

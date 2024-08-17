@@ -52,14 +52,11 @@ Rectangle {
       height: 40
 
       TextTumbler {
+        id: objectTypeTumbler
         Layout.fillWidth: false
         Layout.maximumWidth: implicitContentWidth + 30
         model: ListModel {
           id: eqTypeModel
-          ListElement {
-            txt: "Auto"
-            type: ZC.AUTO
-          }
           ListElement {
             txt: "Function"
             type: ZC.FUNCTION
@@ -71,6 +68,16 @@ Rectangle {
           ListElement {
             txt: "Constant"
             type: ZC.CONSTANT
+          }
+        }
+
+        Connections {
+          target: eqEdit.backend
+          function onTypeChanged(type) {
+            console.log("type changed");
+            for (var i = 0 ; i < eqTypeModel.count ; i++)
+              if (eqTypeModel.get(i).type === type)
+                objectTypeTumbler.currentIndex = i;
           }
         }
 
@@ -163,7 +170,7 @@ Rectangle {
 
     EquationEdit {
       id: eqEdit
-      type: ZC.AUTO
+      type: ZC.FUNCTION
       width: parent.width
 
       Component.onCompleted: mathObj.setBackend(eqEdit.backend)

@@ -12,6 +12,9 @@ ZC::ZC(QObject *parent)
 
 void ZC::setEquation(QString eq)
 {
+  if (eq == equation)
+    return;
+
   equation = std::move(eq);
   QString oldName = name;
   refresh();
@@ -20,14 +23,11 @@ void ZC::setEquation(QString eq)
     information.mathObjectUpdated(oldName, name);
 }
 
-void ZC::refresh()
+void ZC::refresh(bool canChangeType)
 {
   std::string std_eq = equation.toStdString();
   switch (type)
   {
-  case Type::AUTO:
-    zcMathObj = std_eq;
-    break;
   case Type::FUNCTION:
     zcMathObj = zc::As<zc::Function<zc_t>>{std_eq};
     break;
@@ -39,7 +39,38 @@ void ZC::refresh()
     break;
   default:
     qDebug() << "[backend] setEquation: case not handled";
+    Q_ASSERT(false);
     break;
+  }
+
+  if (canChangeType and not zcMathObj.has_value())
+  {
+    // if the current type doesn't work, try AUTO
+    zcMathObj = std_eq;
+    if (zcMathObj.has_value())
+    {
+      // if it works, update type and notify about it
+      if (zcMathObj.holds<zc::Function<zc_t>>() and type != Type::FUNCTION)
+      {
+        type = Type::FUNCTION;
+        emit typeChanged(type);
+      }
+      else if (zcMathObj.holds<zc::Sequence<zc_t>>() and type != Type::SEQUENCE)
+      {
+        type = Type::SEQUENCE;
+        emit typeChanged(type);
+      }
+      else if (zcMathObj.holds<zc::GlobalConstant>() and type != Type::CONSTANT)
+      {
+        type = Type::CONSTANT;
+        emit typeChanged(type);
+      }
+      else
+      {
+        qDebug() << "[backend] setEquation: case not handled";
+        Q_ASSERT(false);
+      }
+    }
   }
 
   name = QString::fromStdString(std::string(zcMathObj.get_name()));
@@ -55,8 +86,12 @@ void ZC::refresh()
 
 void ZC::setType(Type type)
 {
+  if (this->type == type)
+    return;
+
   this->type = type;
-  refresh();
+  refresh(false);
+
 }
 
 }

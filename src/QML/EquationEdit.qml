@@ -19,6 +19,7 @@ Item {
   ZC {
     id: zcBackend
     equation: zcExprEdit.expression
+    type: ZC.FUNCTION
   }
 
   ZcExprEdit {
