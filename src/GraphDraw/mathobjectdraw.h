@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -24,58 +24,56 @@
 #include <QWidget>
 
 #include "Calculus/function.h"
-#include "Calculus/seqcalculator.h"
-#include "Widgets/pareqwidget.h"
 #include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
+#include "Calculus/seqcalculator.h"
 #include "GraphDraw/viewmapper.h"
-
+#include "Widgets/pareqwidget.h"
 
 class MathObjectDraw
 {
 public:
-    explicit MathObjectDraw();
+  explicit MathObjectDraw();
 
 protected:
+  inline void drawRhombus(const QPointF& pt, double w);
+  inline void drawDisc(const QPointF& pt, double w);
+  inline void drawSquare(const QPointF& pt, double w);
+  inline void drawTriangle(const QPointF& pt, double w);
+  inline void drawCross(const QPointF& pt, double w);
 
-    inline void drawRhombus(const QPointF &pt,double w);
-    inline void drawDisc(const QPointF &pt, double w);
-    inline void drawSquare(const QPointF &pt, double w);
-    inline void drawTriangle(const QPointF &pt, double w);
-    inline void drawCross(const QPointF &pt, double w);
+  void drawOneSequence(int id, int width);
+  void drawDataSet(int id, int width);
+  void drawCurve(int width, QColor color, const QPolygonF& curve);
+  void drawCurve(int width, QColor color, const QList<QPolygonF>& curves);
 
-    void drawOneSequence(int id, int width);
-    void drawDataSet(int id, int width);
-    void drawCurve(int width, QColor color, const QPolygonF &curve);
-    void drawCurve(int width, QColor color, const QList<QPolygonF> &curves);
+  void drawFunctions();
+  void drawRegressions();
+  void drawData();
+  void drawSequences();
+  void drawStaticParEq();
 
-    void drawFunctions();
-    void drawRegressions();
-    void drawData();
-    void drawSequences();
-    void drawStaticParEq();
+  void recalculateRegVals();
 
-    void recalculateRegVals();
+  QList<RegressionValuesSaver> regValuesSavers;
+  QPainter* painter = nullptr;
 
-    QList<RegressionValuesSaver> regValuesSavers;
-    QPainter* painter = nullptr;
+  QPolygonF polygon;
+  QPen pen;
+  QBrush brush;
+  Point centre;
+  zg::ZeViewMapper viewMapper;
+  FuncValuesSaver funcValuesSaver;
 
-    QPolygonF polygon;
-    QPen pen;
-    QBrush brush;
-    Point centre;
-    zg::ZeViewMapper viewMapper;
-    FuncValuesSaver funcValuesSaver;
+  double coef;
 
-    double coef;
+  Point pxPerUnit;
+  bool moving, recalculate, recalculateRegs;
 
-    Point pxPerUnit;
-    bool moving, recalculate, recalculateRegs;
-
-    QList<Function*> funcs;
-    QList<SeqCalculator*> seqs;
-    QList<ParEqWidget*> *parEqs;
-    QList< QList<double> > *regVals;
+  QList<Function*> funcs;
+  QList<SeqCalculator*> seqs;
+  QList<ParEqWidget*>* parEqs;
+  QList<QList<double>>* regVals;
 };
 
 #endif // GRAPHDRAW_H
