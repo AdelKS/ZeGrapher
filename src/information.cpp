@@ -270,6 +270,27 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   mathObjects.erase(it);
 }
 
+void Information::updateValidMathObjects()
+{
+  validFuncs.clear();
+  validSeqs.clear();
+
+  for (const zg::MathObject* math_obj : information.getMathObjects())
+  {
+    const zg::mathobj::ZC* zc = math_obj->getBackend<zg::mathobj::ZC>();
+    const zc::DynMathObject<zc_t>* zc_obj = zc ? &zc->zcMathObj : nullptr;
+
+    if (not zc_obj)
+      continue;
+
+    if (zc_obj->holds<zc::Function<zc_t>>())
+      validFuncs.emplace_back(&zc_obj->value_as<zc::Function<zc_t>>(), math_obj->style);
+
+    else if (zc_obj->holds<zc::Sequence<zc_t>>())
+      validSeqs.emplace_back(&zc_obj->value_as<zc::Sequence<zc_t>>(), math_obj->style);
+  }
+}
+
 void Information::mathObjectUpdated(QString oldName, QString newName)
 {
   QStringList affectedObjects;
@@ -295,6 +316,8 @@ void Information::mathObjectUpdated(QString oldName, QString newName)
     auto deps = mathWorld.direct_revdeps(name.toStdString());
     for (auto&& [dep_name, useless]: deps) appendName(QString::fromStdString(dep_name));
   }
+
+  updateValidMathObjects();
 
   emit mathObjectsChanged(affectedObjects);
 }

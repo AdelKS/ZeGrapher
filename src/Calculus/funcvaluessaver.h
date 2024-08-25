@@ -21,16 +21,17 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
-#include "MathObjects/mathobject.h"
 
 #include <zecalculator/zecalculator.h>
 #include <unordered_set>
 
+namespace zg {
+  struct PlotStyle;
+}
+
 struct FuncCurve
 {
-  const zg::MathObject* obj;
-  const zc::Function<zc_t>& func;
-  const size_t slot;
+  const zg::PlotStyle& style;
 
   void clear() { curve.clear(); discontinuities.clear(); }
 
@@ -46,30 +47,33 @@ public:
   void setPixelStep(double pxStep);
   void update();
 
-  zc::SlottedDeque<FuncCurve>& getFunCurves() { return funCurves; }
+  const auto& getFunCurves() { return funCurves; }
+
+  /// @brief clears the saved points of functions whose name is in 'objectNames'
+  void clearCache(QStringList objectNames);
+
+  /// @brief refreshes 'funcCurves' for the currently valid functions
+  void refresh_valid_functions();
 
 protected:
 
   enum Side {LEFT, RIGHT};
 
-  /// @brief refreshes 'funcCurves' for the currently valid functions
-  void refresh_valid_functions();
-
   /// @brief removes points that are not within the view, i.e. invisible
   void clear_hidden_pts();
 
   /// @brief computes points on uniformly distributed view abscissas
-  void compute_uniform_visible_pts(size_t slot);
+  void compute_uniform_visible_pts(const zc::Function<zc_t> &f, FuncCurve&);
 
   /// @brief computes more points where the function variation is too steep
-  void refine_visible_pts(size_t slot);
+  void refine_visible_pts(const zc::Function<zc_t> &f, FuncCurve&);
 
   /// @brief computes more points where the function variation is too steep
-  void find_discontinuities(size_t slot);
+  void find_discontinuities(const zc::Function<zc_t> &f, FuncCurve&);
 
   const zg::ZeViewMapper& mapper;
 
-  zc::SlottedDeque<FuncCurve> funCurves;
+  std::unordered_map<const zc::Function<zc_t>*, FuncCurve> funCurves;
   zg::pixel_unit pixelStep;
   size_t pxStepMaxDivider = 32;
   zg::Range1D<zg::u<zg::view>> viewRange;

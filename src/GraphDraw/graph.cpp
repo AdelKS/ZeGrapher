@@ -46,7 +46,10 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
   connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 
-  connect(&information, &Information::mathObjectsChanged, this, &Graph::clearCache);
+  connect(&information,
+          &Information::mathObjectsChanged,
+          this,
+          [this](QStringList names) { funcValuesSaver.clearCache(names); });
   connect(&information, &Information::mathObjectsChanged, this, [this]{ update(); });
 }
 
@@ -219,6 +222,7 @@ void Graph::paint(QPainter *p)
 
 void Graph::drawAll()
 {
+  information.updateValidMathObjects();
   funcValuesSaver.update();
   painter->setFont(information.getGraphSettings().graphFont);
   fontMetrics = painter->fontMetrics();
@@ -405,10 +409,3 @@ QImage *Graph::drawImage()
   return image;
 }
 
-void Graph::clearCache(QStringList objectNames)
-{
-  for (auto& curve: funcValuesSaver.getFunCurves())
-    if (std::ranges::any_of(curve.obj->handledMathObjects(),
-                            [&](auto&& name) { return objectNames.contains(name); }))
-      curve.clear();
-}

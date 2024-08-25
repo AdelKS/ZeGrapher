@@ -199,35 +199,35 @@ void MathObjectDraw::drawFunctions()
   painter->setPen(pen);
 
   std::vector<QPointF> mapped_curve;
-  auto draw_mapped_curve = [&](zg::PlotStyle* style)
+  auto draw_mapped_curve = [&](const zg::PlotStyle& style)
   {
     if (not mapped_curve.empty())
     {
-      pen.setWidth(style->lineWidth);
-      pen.setColor(style->color);
-      pen.setStyle(style->lineStyle);
+      pen.setWidth(style.lineWidth);
+      pen.setColor(style.color);
+      pen.setStyle(style.lineStyle);
       painter->setPen(pen);
       painter->drawPolyline(mapped_curve.data(), mapped_curve.size());
       mapped_curve.clear();
     }
   };
 
-  for (const FuncCurve& f_curve: funcValuesSaver.getFunCurves())
+  for (const auto& [_, f_curve]: funcValuesSaver.getFunCurves())
   {
-    if (not f_curve.obj->style->visible)
+    if (not f_curve.style.visible)
       continue;
 
     for (size_t i = 0; i != f_curve.curve.size(); i++)
     {
       const auto& pt = f_curve.curve[i];
       if (std::isnan(pt.y.v) or f_curve.discontinuities.contains(i))
-        draw_mapped_curve(f_curve.obj->style);
+        draw_mapped_curve(f_curve.style);
 
       if (not std::isnan(pt.y.v))
         mapped_curve.push_back(QPointF(viewMapper.to<zg::pixel>(pt)));
     }
 
-    draw_mapped_curve(f_curve.obj->style);
+    draw_mapped_curve(f_curve.style);
   }
 }
 

@@ -31,6 +31,10 @@
 
 #include <zecalculator/zecalculator.h>
 
+namespace zg {
+  struct PlotStyle;
+}
+
 class Information: public QObject
 {
   Q_OBJECT
@@ -92,7 +96,10 @@ public:
   void registerMathObject(zg::MathObject*);
   void deregisterMathObject(zg::MathObject*);
 
-  const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; };
+  const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; }
+  const auto& getValidFuncs() const { return validFuncs; }
+  const auto& getValidSeqs() const { return validSeqs; }
+
   void mathObjectUpdated(QString oldName, QString newName);
 
 signals:
@@ -119,6 +126,7 @@ public slots:
   void emitDataUpdate();
   void emitDrawStateUpdate();
   void emitAnimationUpdate();
+  void updateValidMathObjects();
 
   void setGraphRange(const GraphRange& range);
   void setOrthonormal(bool state);
@@ -149,6 +157,9 @@ protected:
   zc::MathWorld<zc_t> mathWorld;
 
   std::vector<zg::MathObject*> mathObjects;
+
+  std::vector<std::pair<const zc::Function<zc_t>*, const zg::PlotStyle*>> validFuncs;
+  std::vector<std::pair<const zc::Sequence<zc_t>*, const zg::PlotStyle*>> validSeqs;
 
   QList<ParEqWidget*>* parEqWidgets;
 };

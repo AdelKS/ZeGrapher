@@ -42,13 +42,13 @@ void FuncValuesSaver::clear_hidden_pts()
 
   if (not bool(viewRange.intersection(range)))
   {
-    for (FuncCurve& funcCurve: funCurves)
+    for (auto& [_, funcCurve]: funCurves)
       funcCurve.curve.clear();
 
     return;
   }
 
-  for (FuncCurve& funcCurve: funCurves)
+  for (auto& [_, funcCurve]: funCurves)
   {
     // clear from the right
     size_t vals_to_pop = 0;
@@ -74,44 +74,21 @@ void FuncValuesSaver::clear_hidden_pts()
 
 void FuncValuesSaver::refresh_valid_functions()
 {
-  for (const FuncCurve& f_curve: funCurves)
+  std::unordered_map<const zc::Function<zc_t>*, FuncCurve> curves;
+
+  for (auto&& [f, style] : information.getValidFuncs())
   {
-    const size_t slot = f_curve.slot;
-    if (not information.getMathWorld().get<zc::Function<zc_t>>(slot)
-        or std::ranges::count(information.getMathObjects(), f_curve.obj) == 0)
-    {
-      qInfo() << "clearing slot " << slot << "from cached functions";
-      funCurves.free(slot);
-    }
+    if (auto node = funCurves.extract(f))
+      curves.insert(std::move(node));
+    else
+      curves.emplace(f, FuncCurve{*style});
   }
 
-  for (const zg::MathObject* math_obj : information.getMathObjects())
-  {
-    const zc::DynMathObject<zc_t>* zc_obj = nullptr;
-    if (math_obj->getBackend<zg::mathobj::ZC>())
-      zc_obj = &math_obj->getBackend<zg::mathobj::ZC>()->zcMathObj;
-
-    if (not zc_obj or not zc_obj->holds<zc::Function<zc_t>>()
-        or funCurves.is_assigned(zc_obj->get_slot()))
-      continue;
-
-    qInfo() << "caching new function " << zc_obj->get_name() << " slot "
-            << zc_obj->get_slot();
-
-    funCurves.push(
-      FuncCurve{
-        .obj = math_obj,
-        .func = zc_obj->value_as<zc::Function<zc_t>>(),
-        .slot = zc_obj->get_slot(),
-      },
-      zc_obj->get_slot());
-  }
+  funCurves = std::move(curves);
 }
 
-void FuncValuesSaver::compute_uniform_visible_pts(size_t slot)
+void FuncValuesSaver::compute_uniform_visible_pts(const zc::Function<zc_t>& f, FuncCurve& f_curve)
 {
-  Q_ASSERT(funCurves.is_assigned(slot));
-
   const zg::view_unit viewUnitStep = pixelStep / mapper.x.getRange<zg::pixel>().amplitude()
                                      * mapper.x.getRange<zg::view>().amplitude();
 
@@ -119,9 +96,7 @@ void FuncValuesSaver::compute_uniform_visible_pts(size_t slot)
   RangeT current_range{.min = mapper.x.getRange<zg::view>().min - viewUnitStep,
                        .max = mapper.x.getRange<zg::view>().max + viewUnitStep};
 
-  auto& f_curve = funCurves[slot];
-
-  auto get_func_y = [&f = f_curve.func](zg::real_unit x_real)
+  auto get_func_y = [&f](zg::real_unit x_real)
   {
     tl::expected<double, zc::Error> exp_y_real = f(x_real.v);
 
@@ -160,13 +135,13 @@ void FuncValuesSaver::compute_uniform_visible_pts(size_t slot)
     {
       if constexpr (side == LEFT)
       {
-        qInfo() << "function slot " << slot << " - added " << extra_pts.size() << " uniform pts LEFT";
+        qInfo() << "function " << f.get_name() << " - added " << extra_pts.size() << " uniform pts LEFT";
         zg::utils::move_elements_right(f_curve.curve, extra_pts.size());
         std::ranges::copy(extra_pts, f_curve.curve.begin());
       }
       else
       {
-        qInfo() << "function slot " << slot << " - added " << extra_pts.size() << " uniform pts RIGHT";
+        qInfo() << "function " << f.get_name() << " - added " << extra_pts.size() << " uniform pts RIGHT";
         f_curve.curve.reserve(f_curve.curve.size() + extra_pts.size());
         std::ranges::copy(extra_pts, std::back_inserter(f_curve.curve));
       }
@@ -177,14 +152,11 @@ void FuncValuesSaver::compute_uniform_visible_pts(size_t slot)
   add_pts(std::integral_constant<Side, RIGHT>());
 }
 
-void FuncValuesSaver::refine_visible_pts(size_t slot)
+void FuncValuesSaver::refine_visible_pts(const zc::Function<zc_t>& f, FuncCurve& f_curve)
 {
   const zg::pixel_unit minPixelStep = pixelStep / double(pxStepMaxDivider);
   const double pxStepSq = pixelStep.v * pixelStep.v;
 
-  Q_ASSERT(funCurves.is_assigned(slot));
-
-  auto& f_curve = funCurves[slot];
   auto& curve = f_curve.curve;
 
   struct ExtraPt
@@ -193,7 +165,7 @@ void FuncValuesSaver::refine_visible_pts(size_t slot)
     zg::real_pt pt;
   };
 
-  auto get_func_y = [&f = f_curve.func](zg::real_unit x_real)
+  auto get_func_y = [&f](zg::real_unit x_real)
   {
     tl::expected<double, zc::Error> exp_y_real = f(x_real.v);
 
@@ -207,7 +179,7 @@ void FuncValuesSaver::refine_visible_pts(size_t slot)
     curve.reserve(curve.size() + extra_pts.size());
     if (not extra_pts.empty())
     {
-      qInfo() << "function slot " << slot << " added " << extra_pts.size()
+      qInfo() << "function " << f.get_name() << " added " << extra_pts.size()
               << " extra points in refining stage.";
       size_t inserted_num = 0;
       for (const ExtraPt& xpt: extra_pts)
@@ -241,12 +213,11 @@ void FuncValuesSaver::refine_visible_pts(size_t slot)
   while (not extra_pts.empty());
 }
 
-void FuncValuesSaver::find_discontinuities(size_t slot)
+void FuncValuesSaver::find_discontinuities(const zc::Function<zc_t>& f, FuncCurve& f_curve)
 {
   const zg::pixel_unit minPixelStep = pixelStep / double(pxStepMaxDivider);
   const double pxStepSq = pixelStep.v * pixelStep.v;
 
-  auto& f_curve = funCurves[slot];
   auto& curve = f_curve.curve;
 
   f_curve.discontinuities.clear();
@@ -309,7 +280,7 @@ void FuncValuesSaver::find_discontinuities(size_t slot)
         f_curve.discontinuities.insert(i+slice_size/2+1);
     }
   }
-  qInfo() << "function slot " << slot << " found : " << f_curve.discontinuities.size() << " discontinuities";
+  qInfo() << "function " << f.get_name() << " found : " << f_curve.discontinuities.size() << " discontinuities";
 }
 
 void FuncValuesSaver::update()
@@ -319,11 +290,19 @@ void FuncValuesSaver::update()
 
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
-  for (const auto& f_curve: funCurves)
+  for (auto& [f, curve]: funCurves)
   {
-    compute_uniform_visible_pts(f_curve.slot);
-    refine_visible_pts(f_curve.slot);
-    find_discontinuities(f_curve.slot);
+    compute_uniform_visible_pts(*f, curve);
+    refine_visible_pts(*f, curve);
+    find_discontinuities(*f, curve);
   }
+}
 
+void FuncValuesSaver::clearCache(QStringList objectNames)
+{
+  refresh_valid_functions();
+
+  for (auto& [f, curve]: funCurves)
+    if (objectNames.contains(QString::fromStdString(std::string(f->get_name()))))
+      curve.clear();
 }
