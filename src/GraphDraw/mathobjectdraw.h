@@ -28,6 +28,7 @@
 #include "Calculus/regressionvaluessaver.h"
 #include "Calculus/seqcalculator.h"
 #include "GraphDraw/viewmapper.h"
+#include "Utils/plotstyle.h"
 #include "Widgets/pareqwidget.h"
 
 class MathObjectDraw
@@ -36,13 +37,9 @@ public:
   explicit MathObjectDraw();
 
 protected:
-  inline void drawRhombus(const QPointF& pt, double w);
-  inline void drawDisc(const QPointF& pt, double w);
-  inline void drawSquare(const QPointF& pt, double w);
-  inline void drawTriangle(const QPointF& pt, double w);
-  inline void drawCross(const QPointF& pt, double w);
+  void drawDataPoint(const QPointF& pt, const zg::PlotStyle& style);
 
-  void drawOneSequence(int id, int width);
+  void drawOneSequence(const zc::Sequence<zc_t> &, const zg::PlotStyle&);
   void drawDataSet(int id, int width);
   void drawCurve(int width, QColor color, const QPolygonF& curve);
   void drawCurve(int width, QColor color, const QList<QPolygonF>& curves);

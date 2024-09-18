@@ -256,11 +256,11 @@ void Graph::drawAll()
 
   funcValuesSaver.update();
   drawFunctions();
+  drawSequences();
 
   painter->translate(QPointF(centre.x, centre.y));
 
   // recalculateRegVals();
-  // drawSequences();
   // drawStaticParEq();
   // drawRegressions();
   // drawData();

@@ -38,50 +38,61 @@ MathObjectDraw::MathObjectDraw()
   moving = false;
 }
 
-void MathObjectDraw::drawRhombus(const QPointF& pt, double w)
+void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style)
 {
-  QPolygonF polygon(
-    {pt + QPointF(-w, 0), pt + QPointF(0, w), pt + QPointF(w, 0), pt + QPointF(0, -w)});
+  double w = style.pointWidth;
 
-  painter->drawPolygon(polygon);
-}
-
-void MathObjectDraw::drawDisc(const QPointF& pt, double w)
-{
-  painter->drawEllipse(pt, w, w);
-}
-
-void MathObjectDraw::drawSquare(const QPointF& pt, double w)
-{
-  painter->setRenderHint(QPainter::Antialiasing, false);
-
-  QRectF rect;
-  rect.setTopLeft(pt + QPointF(-w, -w));
-  rect.setBottomRight(pt + QPointF(w, w));
-
-  painter->drawRect(rect);
-}
-
-void MathObjectDraw::drawTriangle(const QPointF& pt, double w)
-{
-  w *= 2;
-  QPolygonF polygon;
-  double d = w * coef;
-  double b = w / 2;
-
-  polygon << pt + QPointF(0, -w) << pt + QPointF(d, b) << pt + QPointF(-d, b);
-
-  painter->drawPolygon(polygon);
-}
-
-void MathObjectDraw::drawCross(const QPointF& pt, double w)
-{
-  painter->setRenderHint(QPainter::Antialiasing, false);
-
+  pen.setColor(style.color);
   pen.setWidth(w);
+  brush.setColor(style.color);
+  painter->setBrush(brush);
+  painter->setPen(pen);
 
-  painter->drawLine(pt + QPointF(0, 2 * w), pt + QPointF(0, -2 * w));
-  painter->drawLine(pt + QPointF(-2 * w, 0), pt + QPointF(2 * w, 0));
+  painter->setRenderHint(QPainter::Antialiasing, true);
+
+  switch (style.pointStyle)
+  {
+  case zg::PlotStyle::Cross:
+  {
+    painter->drawLine(pt + QPointF(0, 2 * w), pt + QPointF(0, -2 * w));
+    painter->drawLine(pt + QPointF(-2 * w, 0), pt + QPointF(2 * w, 0));
+    break;
+  }
+  case zg::PlotStyle::Disc:
+    painter->drawEllipse(pt, w, w);
+    break;
+  case zg::PlotStyle::Rhombus:
+  {
+    QPolygonF polygon(
+      {pt + QPointF(-w, 0), pt + QPointF(0, w), pt + QPointF(w, 0), pt + QPointF(0, -w)});
+
+    painter->drawPolygon(polygon);
+    break;
+  }
+  case zg::PlotStyle::Square:
+  {
+    QRectF rect;
+    rect.setTopLeft(pt + QPointF(-w, -w));
+    rect.setBottomRight(pt + QPointF(w, w));
+
+    painter->drawRect(rect);
+    break;
+  }
+  case zg::PlotStyle::Triangle:
+  {
+    w *= 2;
+    QPolygonF polygon;
+    double d = w * coef;
+    double b = w / 2;
+
+    polygon << pt + QPointF(0, -w) << pt + QPointF(d, b) << pt + QPointF(-d, b);
+
+    painter->drawPolygon(polygon);
+    break;
+  }
+  case zg::PlotStyle::None:
+    break;
+  }
 }
 
 void MathObjectDraw::drawDataSet(int id, int width)
@@ -91,12 +102,12 @@ void MathObjectDraw::drawDataSet(int id, int width)
   pen.setColor(userData->style.color);
   painter->setPen(pen);
 
-  static std::vector<std::function<void(MathObjectDraw*, QPointF, double)>> draw_functions
-    = {&MathObjectDraw::drawRhombus,
-       &MathObjectDraw::drawDisc,
-       &MathObjectDraw::drawSquare,
-       &MathObjectDraw::drawTriangle,
-       &MathObjectDraw::drawCross};
+  static std::vector<std::function<void(MathObjectDraw*, QPointF, double)>> draw_functions;
+    // = {&MathObjectDraw::drawRhombus,
+    //    &MathObjectDraw::drawDisc,
+    //    &MathObjectDraw::drawSquare,
+    //    &MathObjectDraw::drawTriangle,
+    //    &MathObjectDraw::drawCross};
 
   const std::vector<Point>& dataPoints = userData->dataPoints;
   QPolygonF polygon;
@@ -231,19 +242,19 @@ void MathObjectDraw::drawFunctions()
   }
 }
 
-void MathObjectDraw::drawOneSequence(int i, int width)
+void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::PlotStyle& style)
 {
   {
     double real_max = viewMapper.x.getMax<zg::plane::real>().v;
     double real_min = viewMapper.x.getMin<zg::plane::real>().v;
-    if (real_max <= seqs[0]->get_nMin() or trunc(real_max) <= real_min
-        or not seqs[i]->getDrawState())
+    if (real_max <= 0
+        or trunc(real_max) <= real_min
+        or not style.visible)
       return;
   }
 
   painter->setRenderHint(QPainter::Antialiasing,
                          information.getGraphSettings().smoothing && !moving);
-  pen.setWidth(width);
 
   zg::view_unit posX;
 
@@ -252,46 +263,42 @@ void MathObjectDraw::drawOneSequence(int i, int width)
 
   zg::real_unit Xmin = viewMapper.x.getMin<zg::plane::real>();
 
-  zg::real_unit n_min = {double(seqs[0]->get_nMin())};
+  zg::real_unit n_min = {0.};
   if (Xmin > n_min)
     posX = viewXmin;
   else
     posX = viewMapper.x.to<zg::plane::view>(n_min);
 
-  zg::view_unit step = {1.};
+  zg::view_unit step = viewMapper.x.to<zg::plane::view>(zg::pixel_unit{10 * style.pointWidth})
+                       - viewMapper.x.to<zg::plane::view>(zg::pixel_unit{0.});
+  step.v = std::round(step.v);
 
-  if (pxPerUnit.x < 1.)
-    step = zg::view_unit{5 * trunc(1. / pxPerUnit.x)};
+  zg::view_unit real_unit_step = viewMapper.x.to<zg::plane::view>(zg::real_unit{1.0})
+                                 - viewMapper.x.to<zg::plane::view>(zg::real_unit{0.});
+  if (step <= real_unit_step)
+    step = real_unit_step;
 
-  bool ok = true;
-  int end = seqs[i]->getDrawsNum();
-
-  ColorSaver* colorSaver = seqs[i]->getColorSaver();
-
-  for (int k = 0; k < end; k++)
+  for (zg::view_unit view_x = posX; view_x <= viewXmax + step; view_x += step)
   {
-    pen.setColor(colorSaver->getColor(k));
-    painter->setPen(pen);
+    zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
+    real_x.v = trunc(real_x.v);
 
-    for (zg::view_unit view_x = posX; view_x < viewXmax; view_x += step)
-    {
-      zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
-      real_x.v = trunc(real_x.v);
+    auto exp_y = seq(real_x.v);
 
-      zg::real_unit y = {seqs[i]->getSeqValue(real_x.v, ok, k)};
+    if (not exp_y or std::isnan(*exp_y))
+      continue;
 
-      if (!ok || !std::isfinite(y.v))
-        return;
+    QPointF pt = QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt{.x = real_x, .y = {*exp_y}}));
 
-      painter->drawPoint(QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt{.x = real_x, .y = y})));
-    }
+    drawDataPoint(pt, style);
   }
+
 }
 
 void MathObjectDraw::drawSequences()
 {
-  for (int i = 0; i < seqs.size(); i++)
-    drawOneSequence(i, information.getGraphSettings().curvesThickness + 3);
+  for (const auto& [f, style]: information.getValidSeqs())
+    drawOneSequence(*f, *style);
 }
 
 void MathObjectDraw::drawStaticParEq()
