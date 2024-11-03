@@ -319,6 +319,11 @@ void Information::mathObjectUpdated(QString oldName, QString newName)
 
   updateValidMathObjects();
 
+  // Clear cache of changed object
+  for (const QString& name: affectedObjects)
+    if (auto it = mathObjectCache.find(name.toStdString()); it != mathObjectCache.end())
+      mathObjectCache.erase(it);
+
   emit mathObjectsChanged(affectedObjects);
 }
 

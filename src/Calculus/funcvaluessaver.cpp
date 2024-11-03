@@ -98,7 +98,7 @@ void FuncValuesSaver::compute_uniform_visible_pts(const zc::Function<zc_t>& f, F
 
   auto get_func_y = [&f](zg::real_unit x_real)
   {
-    tl::expected<double, zc::Error> exp_y_real = f(x_real.v);
+    tl::expected<double, zc::Error> exp_y_real = f({x_real.v}, &information.mathObjectCache);
 
     if (exp_y_real.has_value())
       return zg::real_unit{*exp_y_real};
@@ -167,7 +167,7 @@ void FuncValuesSaver::refine_visible_pts(const zc::Function<zc_t>& f, FuncCurve&
 
   auto get_func_y = [&f](zg::real_unit x_real)
   {
-    tl::expected<double, zc::Error> exp_y_real = f(x_real.v);
+    tl::expected<double, zc::Error> exp_y_real = f({x_real.v}, &information.mathObjectCache);
 
     if (exp_y_real.has_value())
       return zg::real_unit{*exp_y_real};

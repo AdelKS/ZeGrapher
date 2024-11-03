@@ -283,7 +283,7 @@ void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::Pl
     zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
     real_x.v = trunc(real_x.v);
 
-    auto exp_y = seq(real_x.v);
+    auto exp_y = seq(real_x.v, &information.mathObjectCache);
 
     if (not exp_y or std::isnan(*exp_y))
       continue;

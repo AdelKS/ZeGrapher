@@ -138,6 +138,9 @@ public slots:
   void setAppSettings(const ZeAppSettings& appSettings);
   void refreshMathObjects(QStringList objectNames);
 
+public:
+  zc::eval::Cache mathObjectCache;
+
 protected:
   std::list<std::shared_ptr<UserData const>> userDataSets;
 
