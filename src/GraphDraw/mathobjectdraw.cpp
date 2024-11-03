@@ -244,30 +244,28 @@ void MathObjectDraw::drawFunctions()
 
 void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::PlotStyle& style)
 {
-  {
-    double real_max = viewMapper.x.getMax<zg::plane::real>().v;
-    double real_min = viewMapper.x.getMin<zg::plane::real>().v;
-    if (real_max <= 0
-        or trunc(real_max) <= real_min
-        or not style.visible)
-      return;
-  }
+  constexpr zg::real_unit n_min = {0.};
+  constexpr zg::real_unit n_max = {1.E6}; // stop plotting sequence above this value
+
+  zg::real_unit realStart = viewMapper.x.getMin<zg::plane::real>();
+  zg::real_unit realStop = viewMapper.x.getMax<zg::plane::real>();
+  if (realStop <= n_min
+      or trunc(realStop.v) <= realStart.v
+      or realStart >= n_max
+      or not style.visible)
+    return;
+
+  if (realStart < n_min)
+    realStart = n_min;
+
+  if (realStop > n_max)
+    realStop = n_max;
+
+  zg::view_unit viewStart = viewMapper.x.to<zg::plane::view>(realStart);
+  zg::view_unit viewStop = viewMapper.x.to<zg::plane::view>(realStop);
 
   painter->setRenderHint(QPainter::Antialiasing,
                          information.getGraphSettings().smoothing && !moving);
-
-  zg::view_unit posX;
-
-  zg::view_unit viewXmin = viewMapper.x.getMin<zg::plane::view>();
-  zg::view_unit viewXmax = viewMapper.x.getMax<zg::plane::view>();
-
-  zg::real_unit Xmin = viewMapper.x.getMin<zg::plane::real>();
-
-  zg::real_unit n_min = {0.};
-  if (Xmin > n_min)
-    posX = viewXmin;
-  else
-    posX = viewMapper.x.to<zg::plane::view>(n_min);
 
   zg::view_unit step = viewMapper.x.to<zg::plane::view>(zg::pixel_unit{10 * style.pointWidth})
                        - viewMapper.x.to<zg::plane::view>(zg::pixel_unit{0.});
@@ -278,7 +276,16 @@ void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::Pl
   if (step <= real_unit_step)
     step = real_unit_step;
 
-  for (zg::view_unit view_x = posX; view_x <= viewXmax + step; view_x += step)
+  const size_t integerStop = realStop.v;
+  zc::eval::ObjectCache &cache = information.mathObjectCache[std::string(seq.get_name())];
+  if (cache.get_buffer_size() < integerStop)
+  {
+    size_t new_buffer_size = 2*cache.get_buffer_size();
+    while (new_buffer_size < integerStop){ new_buffer_size *= 2u; }
+    cache.set_buffer_size(new_buffer_size);
+  }
+
+  for (zg::view_unit view_x = viewStart - step; view_x <= viewStop + step; view_x += step)
   {
     zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
     real_x.v = trunc(real_x.v);
