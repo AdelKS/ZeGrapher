@@ -115,7 +115,6 @@ moc_header_files = files(
   './MathObjects/zcbase.h',
   './MathObjects/zc.h',
   './structures.h',
-  './Utils/highlighter.h',
   './Utils/opterror.h',
   './Utils/plotstyle.h',
   './Widgets/abstractfuncwidget.h',
@@ -154,8 +153,18 @@ moc_files = qt6.compile_moc(
   dependencies: qt6_dep
 )
 
+highlighter_qmlmod = qt6.qml_module(
+  'zegrapher.highlighter',
+  version: '1.0',
+  moc_headers: files('Utils/highlighter.h'),
+  include_directories: inc,
+  dependencies: [qt6_dep],
+  install: true
+)
+
+
 zg_static_lib = static_library('ZeGrapherLib',
-  source_files, compiled_ressources, compiled_ui, moc_files,
+  sources: [source_files, compiled_ressources, compiled_ui, moc_files, highlighter_qmlmod],
   include_directories: inc,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep])
 
