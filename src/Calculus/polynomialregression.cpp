@@ -1,10 +1,10 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
-**  under the terms of the GNU General Public License as published by the
+**  under the terms of the GNU Affero General Public License as published by the
 **  Free Software Foundation, either version 3 of the License, or (at your
 **  option) any later version.
 **
@@ -149,7 +149,7 @@ void PolynomialRegression::calculateRegressionPolynomials()
         discretePol += discreteScalarProduct(orthonormalBasisDiscrete.at(n), normalisedData) * orthonormalBasisDiscrete.at(n);
 
     continuousPol.translateX(1);
-    continuousPol.expand(xamp/2);    
+    continuousPol.expand(xamp/2);
     continuousPol.translateX(xmin);
 
     continuousPol.translateY(1);
@@ -266,7 +266,7 @@ double continuousNorm(const Polynomial &P, double xmin, double xmax)
 }
 
 double discreteNorm(const Polynomial &P, const std::vector<Point> &data)
-{    
+{
     double res = 0, tmp;
 
     for(const Point &pt: data)
@@ -282,4 +282,3 @@ PolynomialRegression::~PolynomialRegression()
 {
 
 }
-

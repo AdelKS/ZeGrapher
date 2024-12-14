@@ -1,10 +1,10 @@
 /****************************************************************************
-**  Copyright (c) 2021, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
-**  under the terms of the GNU General Public License as published by the
+**  under the terms of the GNU Affero General Public License as published by the
 **  Free Software Foundation, either version 3 of the License, or (at your
 **  option) any later version.
 **
@@ -63,7 +63,7 @@ void TreeCreator::refreshAuthorizedVars()
 }
 
 FastTree* TreeCreator::getTreeFromExpr(QString expr, bool &ok, QStringList additionnalVars)
-{    
+{
     FastTree *tree = nullptr;
 
     customVars = additionnalVars;
@@ -89,7 +89,7 @@ void TreeCreator::insertMultiplySigns(QString &formula)
         if((formula[i].isDigit() && formula[i+1].isLetter()) ||
                 (formula[i].isLetter() && formula[i+1].isDigit()) ||
                 (formula[i].isDigit() && formula[i+1] == '(') ||
-                (formula[i] == ')' && formula[i+1] == '(') ||               
+                (formula[i] == ')' && formula[i+1] == '(') ||
                 (formula[i] == ')' && (formula[i+1].isDigit() || formula[i+1].isLetter())))
         {
             formula.insert(i+1, QString("*"));
@@ -230,7 +230,7 @@ bool TreeCreator::check(QString formula)
             if(i+1 < formula.size() && formula[i+1] == '\'')
                 i++;
 
-            int numLetters = i - letterPosStart + 1;           
+            int numLetters = i - letterPosStart + 1;
 
             QString name = formula.mid(letterPosStart, numLetters);
 
@@ -291,14 +291,14 @@ bool TreeCreator::check(QString formula)
                     decompTypes.push_back(vars.indexOf(name) + VARS_START + 1);
                     decompPriorites.push_back(VAR);
                     decompValues.push_back(0.0);
-                }                           
+                }
 
                 else return false;
             }
 
             else return false;
 
-        }       
+        }
         else if(operators.contains(formula[i]) && ope)
         {
             short pos = operators.indexOf(formula[i]);
@@ -311,7 +311,7 @@ bool TreeCreator::check(QString formula)
             ope = numberSign = closingParenthesis = canEnd = false;
         }
         else if(formula[i]=='(' && openingParenthesis)
-        {           
+        {
             pth++;
 
             decompTypes.push_back(PTHO);
@@ -322,7 +322,7 @@ bool TreeCreator::check(QString formula)
             ope = closingParenthesis = canEnd = false;
         }
         else if(formula[i]==')' && closingParenthesis && pth > 0)
-        {            
+        {
             pth--;
 
             decompTypes.push_back(PTHF);
@@ -332,7 +332,7 @@ bool TreeCreator::check(QString formula)
             ope = closingParenthesis = canEnd = true;
             digit = numberSign = openingParenthesis = varOrFunc = false;
 
-        }        
+        }
         else return false;
     }
 

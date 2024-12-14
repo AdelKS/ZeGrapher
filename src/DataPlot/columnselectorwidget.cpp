@@ -1,10 +1,10 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
-**  under the terms of the GNU General Public License as published by the
+**  under the terms of the GNU Affero General Public License as published by the
 **  Free Software Foundation, either version 3 of the License, or (at your
 **  option) any later version.
 **
@@ -23,18 +23,18 @@
 #include "DataPlot/columnselectorwidget.h"
 
 ColumnSelectorWidget::ColumnSelectorWidget(int count, int xindex, int yindex, int selectorindex)
-{      
+{
     setCoordinateSystem(CARTESIAN);
 
     columnCount = count;
 
     xselector.index = xindex;
     xselector.draw = true;
-    xselector.betweenColumns = false;   
+    xselector.betweenColumns = false;
 
     yselector.index = yindex;
     yselector.draw = true;
-    yselector.betweenColumns = false;  
+    yselector.betweenColumns = false;
 
     selector.index = selectorindex;
     selector.draw = true;
@@ -47,7 +47,7 @@ ColumnSelectorWidget::ColumnSelectorWidget(int count, int xindex, int yindex, in
     selectors << &xselector << &yselector << &selector;
 
     timer.setInterval(ANIMATION_PERIOD);
-    connect(&timer, SIGNAL(timeout()), this, SLOT(updateAnimationProgress()));  
+    connect(&timer, SIGNAL(timeout()), this, SLOT(updateAnimationProgress()));
 }
 
 int ColumnSelectorWidget::getXindex()
@@ -112,7 +112,7 @@ void ColumnSelectorWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    painter.begin(this);   
+    painter.begin(this);
 
     drawSelectors();
 
@@ -125,7 +125,7 @@ void ColumnSelectorWidget::drawSelectors()
     for(int i = 0 ; i < selectors.size(); i++)
     {
         if(selectors[i]->draw)
-        {            
+        {
             painter.drawImage(selectors[i]->pos, selectors[i]->image);
         }
     }

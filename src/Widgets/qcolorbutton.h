@@ -1,10 +1,10 @@
 /****************************************************************************
-**  Copyright (c) 2019, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
 **  ZeGrapher is free software: you may copy, redistribute and/or modify it
-**  under the terms of the GNU General Public License as published by the
+**  under the terms of the GNU Affero General Public License as published by the
 **  Free Software Foundation, either version 3 of the License, or (at your
 **  option) any later version.
 **
@@ -33,7 +33,7 @@ class QColorButton : public QPushButton
 public:
     explicit QColorButton(QWidget *parent = nullptr);
     explicit QColorButton(QColor color, QWidget *parent = nullptr);
-    
+
     void setColor(QColor color);
     QColor getCurrentColor();
 
@@ -42,11 +42,11 @@ signals:
 
 protected slots:
     void openColorDialog();
-    
+
 protected:
     QColor currentColor;
     int buttonSize;
-    
+
 };
 
 #endif // QCOLORBUTTON_H
