@@ -10,7 +10,8 @@ project('ZeGrapher', 'cpp',
         'c_args=-pipe',
         'cpp_args=-pipe',
         'warning_level=3',
-    ]
+    ],
+    meson_version: '>=1.7'
 )
 
 if get_option('debug')
