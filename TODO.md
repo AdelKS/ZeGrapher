@@ -1,12 +1,11 @@
-- Centralize all math objects in information singleton
-  - Every object is cotained within a `mathobj::Dyn` instance
-  - Expression line edits go through that with the `mathobj::Expr` alternative
-- Change graph curve quality setting so it defines the smallest pixel distance between two calculated points
+- parametric equation using zc
+  - cartesian / polar toggle switch
+  - give two function names that are already defined standalone
+  - running variable
+    - give start and end
+    - the step is in "continuous" mode by default: automatically computed
+      - Can be un-toggled to be given manually, in which case the curve can be a scatter plot.
 - grid calculator: rework usage TARGET_TICKS_NUM (is it actually relevant ?)
-
-- Make GraphDraw and mainGraph use the new settings:
-    - update graphview to handle new approach and definitions
-    - display tick coordinates properly following the settings (decimal global multiplier or not ...etc)
 - Implement properly reset to default view in settings window for both the linear scale and log and for both axes,
 basing off the base given by the user
 
@@ -19,8 +18,7 @@ Other work:
 - update pictures in appdata/screenshots with new window layouts
 
 Possible improvements:
-- Make a linestyle chooser widget based off a priori on QComboBox and images of line styles.
-  - Use it to offer the ability to change line styles for the grid and subgrid.
+- Use line-style chooser to offer the ability to change line styles for the grid and subgrid.
 
 Potentially useful QML classes
 - Frame
