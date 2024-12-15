@@ -94,14 +94,14 @@ Rectangle {
         id: displayButton
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
+        Layout.preferredHeight: Layout.preferredWidth
+        Layout.preferredWidth: 30
 
         checkable: true
         checked: false
 
         icon.source: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
 
-        icon.width: 2*width/3
-        icon.height: 2*width/3
         display: Button.IconOnly
         padding: 0
       }
@@ -110,14 +110,13 @@ Rectangle {
         id: styleButton
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
+        Layout.preferredHeight: Layout.preferredWidth
+        Layout.preferredWidth: 30
 
         checkable: true
         checked: false
 
         icon.source: "qrc:/icons/brush.svg"
-
-        icon.width: 2*width/3
-        icon.height: 2*width/3
         display: Button.IconOnly
         padding: 0
       }
@@ -135,13 +134,13 @@ Rectangle {
         id: del
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
+        Layout.preferredHeight: Layout.preferredWidth
+        Layout.preferredWidth: 30
 
         icon.source: "qrc:/icons/delete.svg"
 
         onReleased: removeObj()
 
-        icon.width: 2*width/3
-        icon.height: 2*width/3
         display: Button.IconOnly
         padding: 0
       }
