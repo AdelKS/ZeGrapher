@@ -1,5 +1,6 @@
 #include "MathObjects/zc.h"
 #include "information.h"
+#include "Utils/zc.h"
 
 namespace zg {
 namespace mathobj {
@@ -75,13 +76,8 @@ void ZC::refresh(bool canChangeType)
 
   name = QString::fromStdString(std::string(zcMathObj.get_name()));
 
-  OptError oldOptError = optError;
-  if (not zcMathObj.has_value())
-    optError.value = zcMathObj.error();
-  else optError.value.reset();
-
-  if (oldOptError != optError)
-    emit optErrorChanged();
+  if (state)
+    state->update(zcMathObj);
 }
 
 void ZC::setType(Type type)

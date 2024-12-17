@@ -3,42 +3,40 @@
 import QtQuick
 import zegrapher.highlighter 1.0
 import zegrapher.information 1.0
-import zegrapher.opterror 1.0
+import zegrapher.state 1.0
 
 Item {
   id: root
 
-  property OptError optError
+  property alias state: m_state
   property alias expression: lineEdit.text
   property alias highlighter: mhighlighter
   readonly property alias exprHeight: lineEdit.height
 
   implicitHeight: lineEdit.height + errorLbl.height
 
-  function setCustomErrorMsg(msg: string) {
-    errorLbl.setErrorMsg(msg);
-    lineEdit.border.color = Information.appSettings.invalidSyntax;
-  }
-
-  onOptErrorChanged: {
-    console.log("ZcExprEdit: OptError update")
-    if (optError.type === OptError.NEUTRAL)
-    {
-      errorLbl.setErrorMsg("");
+  function updateBorderColor() {
+    if (state.status === ZgState.NEUTRAL) {
+      console.log("ZcExprEdit: border color updated to neutral")
       lineEdit.border.color = "grey";
-    }
-    else if (optError.type === OptError.VALID)
-    {
-      errorLbl.setErrorMsg("");
+    } else if (state.status === ZgState.VALID) {
+      console.log("ZcExprEdit: border color updated to valid")
       lineEdit.border.color = Information.appSettings.validSyntax;
-    }
-    else
-    {
-      errorLbl.setErrorMsg(optError.getMessage());
+    } else {
+      console.log("ZcExprEdit: border color updated to invalid")
       lineEdit.border.color = Information.appSettings.invalidSyntax;
     }
   }
 
+  ZgState {
+    id: m_state
+
+    onUpdated: {
+      console.log("state updated")
+      errorLbl.setErrorMsg(m_state.errorMsg);
+      root.updateBorderColor();
+    }
+  }
 
   LineEdit {
     id: lineEdit
@@ -51,13 +49,13 @@ Item {
   Connections {
     target: Information
     function onAppSettingsChanged() {
-      highlighter.rehighlight();
+      root.updateBorderColor();
     }
   }
 
   Highlighter {
     id: mhighlighter
-    optError: root.optError
+    state: m_state
     textDocument: lineEdit.textEdit.textDocument
   }
 
@@ -67,8 +65,8 @@ Item {
 
     function setErrorMsg(msg: string) {
       console.log("ZcExprEdit: new error message: ", msg);
-      textEdit.text = msg;
-      height = msg ?  textEdit.contentHeight + 4 : 0;
+      errorLbl.textEdit.text = msg;
+      height = msg ? textEdit.contentHeight + 4 : 0;
     }
 
     Behavior on height { SmoothedAnimation { duration: 200 } }

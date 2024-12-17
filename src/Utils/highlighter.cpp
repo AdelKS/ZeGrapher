@@ -3,10 +3,10 @@
 
 #include <zecalculator/zecalculator.h>
 
-void Highlighter::setOptError(zg::OptError optError)
+void Highlighter::setState(zg::State* state)
 {
-  this->optError = std::move(optError);
-  rehighlight();
+  this->state = state;
+  connect(state, &zg::State::updated, this, &Highlighter::rehighlight);
 }
 
 void Highlighter::highlightBlock(const QString &text)
@@ -19,14 +19,12 @@ void Highlighter::highlightBlock(const QString &text)
   invalidFormat.setUnderlineColor(information.getAppSettings().invalidSyntax);
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
-  if (optError.getType() == zg::OptError::INVALID)
+  if (state and state->getErrToken())
   {
-    const auto& err = *optError.value;
+    setFormat(state->getErrToken()->begin - offset, state->getErrToken()->substr.size(), invalidFormat);
 
-    setFormat(err.token.begin - offset, err.token.substr.size(), invalidFormat);
-
-    qDebug() << "Highlighted token: '" + QString::fromStdString(err.token.substr) + "' at "
-                  + QString::number(err.token.begin - offset);
+    qDebug() << "Highlighted token: '" + QString::fromStdString(state->getErrToken()->substr) + "' at "
+                  + QString::number(state->getErrToken()->begin - offset);
   };
 }
 

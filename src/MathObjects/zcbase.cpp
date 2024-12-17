@@ -11,7 +11,9 @@ ZcBase::ZcBase(QObject *parent)
 
 bool ZcBase::isValid() const
 {
-  return optError.getType() == OptError::VALID;
+  if (state)
+    return state->getStatus() == State::VALID;
+  else return false;
 }
 
 ZcBase::~ZcBase()

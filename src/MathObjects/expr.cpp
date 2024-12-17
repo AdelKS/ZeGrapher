@@ -1,6 +1,8 @@
 #include "expr.h"
 #include "information.h"
 
+#include "Utils/zc.h"
+
 namespace zg {
 namespace mathobj {
 
@@ -34,27 +36,21 @@ void Expr::setExpression(QString expr)
 
 void Expr::refresh()
 {
-  OptError oldOptError = optError;
   double oldValue = value;
 
   if (zcMathObj.has_value())
   {
     auto exp_val = zcMathObj.value_as<zc::Function<zc_t>>().evaluate();
     if (exp_val)
-    {
       value = *exp_val;
-      optError.value.reset();
-    }
-    else
-      optError.value = exp_val.error();
+
+    if (state)
+      state->update(exp_val);
   }
   else
-    optError.value = zcMathObj.error();
-
-  if (oldOptError != optError)
   {
-    qDebug() << "[backend] " << implicitName << ": new optError value";
-    emit optErrorChanged();
+    if (state)
+      state->update(zcMathObj.as_expected());
   }
 
   if (oldValue != value)

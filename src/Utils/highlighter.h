@@ -2,7 +2,7 @@
 
 #include <QSyntaxHighlighter>
 #include <QQuickTextDocument>
-#include "Utils/opterror.h"
+#include "Utils/state.h"
 
 /// @brief backend that highlights parsing errors in math expressions in LineEdit
 class Highlighter: public QSyntaxHighlighter
@@ -10,7 +10,7 @@ class Highlighter: public QSyntaxHighlighter
   Q_OBJECT
   QML_ELEMENT
   Q_PROPERTY(QQuickTextDocument* textDocument WRITE setDocument MEMBER textDocument)
-  Q_PROPERTY(zg::OptError optError WRITE setOptError MEMBER optError)
+  Q_PROPERTY(zg::State* state WRITE setState MEMBER state)
   Q_PROPERTY(int offset MEMBER offset)
 
 public:
@@ -19,7 +19,7 @@ public:
 
   void highlightBlock(const QString &text) override final;
 
-  Q_INVOKABLE void setOptError(zg::OptError optError);
+  Q_INVOKABLE void setState(zg::State* state);
   Q_INVOKABLE void setDocument(QQuickTextDocument* doc);
 
 signals:
@@ -28,7 +28,7 @@ signals:
 
 protected:
   QQuickTextDocument* textDocument = nullptr;
-  zg::OptError optError;
+  zg::State* state = nullptr;
   int offset = 0;
 
 };

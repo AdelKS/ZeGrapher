@@ -4,7 +4,7 @@ import QtQuick
 import zegrapher.highlighter 1.0
 import zegrapher.information 1.0
 import zegrapher.zc 1.0
-import zegrapher.opterror 1.0
+import zegrapher.state 1.0
 
 Item {
   id: root
@@ -20,6 +20,7 @@ Item {
     id: zcBackend
     equation: zcExprEdit.expression
     type: ZC.FUNCTION
+    state: zcExprEdit.state
   }
 
   ZcExprEdit {
@@ -27,7 +28,5 @@ Item {
 
     anchors.left: parent.left
     anchors.right: parent.right
-
-    optError: zcBackend.optError
   }
 }

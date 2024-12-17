@@ -1,3 +1,6 @@
+- implement 1D data widget
+  - Create new possibility within MathObjects/zc
+
 - parametric equation using zc
   - cartesian / polar toggle switch
   - give two function names that are already defined standalone

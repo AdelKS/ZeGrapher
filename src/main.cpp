@@ -23,7 +23,7 @@
 #include "MathObjects/mathobject.h"
 #include "MathObjects/zc.h"
 #include "Utils/highlighter.h"
-#include "Utils/opterror.h"
+#include "Utils/state.h"
 #include "Utils/plotstyle.h"
 #include "structures.h"
 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   qmlRegisterType<ZeZoomSettings>("zegrapher.zezoomsettings", 1, 0, "ZeZoomSettings");
   qmlRegisterType<zg::mathobj::Expr>("zegrapher.expr", 1, 0, "Expr");
   qmlRegisterType<zg::mathobj::ZC>("zegrapher.zc", 1, 0, "ZC");
-  qmlRegisterType<zg::OptError>("zegrapher.opterror", 1, 0, "OptError");
+  qmlRegisterType<zg::State>("zegrapher.state", 1, 0, "ZgState");
   qmlRegisterType<zg::MathObject>("zegrapher.mathobject", 1, 0, "MathObject");
   qmlRegisterType<zg::PlotStyle>("zegrapher.plotstyle", 1, 0, "PlotStyle");
 

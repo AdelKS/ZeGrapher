@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include "Utils/opterror.h"
+#include "Utils/state.h"
 #include "structures.h"
 
 #include <zecalculator/zecalculator.h>
@@ -33,7 +33,7 @@ struct ZcBase : QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(OptError optError MEMBER optError NOTIFY optErrorChanged)
+  Q_PROPERTY(State* state MEMBER state)
 
 public:
 
@@ -46,11 +46,8 @@ public:
   /// @note either contains a zc::Function or an Error
   zc::DynMathObject<zc_t>& zcMathObj;
 
-signals:
-  void optErrorChanged();
-
 protected:
-  OptError optError = {};
+  State* state = nullptr;
 };
 
 }

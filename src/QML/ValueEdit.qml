@@ -4,7 +4,7 @@ import QtQuick
 import zegrapher.highlighter 1.0
 import zegrapher.information 1.0
 import zegrapher.expr 1.0
-import zegrapher.opterror 1.0
+import zegrapher.state 1.0
 import zegrapher.mathobject 1.0
 
 Item {
@@ -12,14 +12,11 @@ Item {
 
   readonly property alias value: exprBackend.value;
   property alias implicitName : exprBackend.implicitName;
+  property alias state: zcExprEdit.state
   property alias expression: zcExprEdit.expression
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
   implicitHeight: zcExprEdit.implicitHeight
-
-  function setCustomErrorMsg(msg: string) {
-    zcExprEdit.setCustomErrorMsg(msg);
-  }
 
   MathObject {
     id: mathObj
@@ -29,6 +26,7 @@ Item {
     id: exprBackend
     expression: zcExprEdit.expression
     Component.onCompleted: mathObj.setBackend(exprBackend);
+    state: zcExprEdit.state
   }
 
   ZcExprEdit {
@@ -37,7 +35,6 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    optError: exprBackend.optError
     highlighter.offset: implicitName.length+1
   }
 }
