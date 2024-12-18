@@ -24,9 +24,6 @@ Item {
 
   Expr {
     id: exprBackend
-    expression: zcExprEdit.expression
-    Component.onCompleted: mathObj.setBackend(exprBackend);
-    state: zcExprEdit.state
   }
 
   ZcExprEdit {
@@ -35,6 +32,13 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    highlighter.offset: implicitName.length+1
+    highlighter.offset: implicitName.length + 1
+  }
+
+  Component.onCompleted: {
+    mathObj.setBackend(exprBackend);
+
+    exprBackend.expression = Qt.binding(function() { return zcExprEdit.expression })
+    exprBackend.state = Qt.binding(function() { return zcExprEdit.state })
   }
 }
