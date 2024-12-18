@@ -274,20 +274,28 @@ void Information::updateValidMathObjects()
 {
   validFuncs.clear();
   validSeqs.clear();
+  validConstants.clear();
 
   for (const zg::MathObject* math_obj : information.getMathObjects())
   {
     const zg::mathobj::ZC* zc = math_obj->getBackend<zg::mathobj::ZC>();
-    const zc::DynMathObject<zc_t>* zc_obj = zc ? &zc->zcMathObj : nullptr;
+    const zg::mathobj::Expr* expr = math_obj->getBackend<zg::mathobj::Expr>();
+
+    const zc::DynMathObject<zc_t>* zc_obj = zc ? &zc->zcMathObj : expr ? &expr->zcMathObj : nullptr;
 
     if (not zc_obj)
       continue;
 
-    if (zc_obj->holds<zc::Function<zc_t>>())
-      validFuncs.emplace_back(&zc_obj->value_as<zc::Function<zc_t>>(), math_obj->style);
+    const QString object_name = QString::fromStdString(std::string(zc_obj->get_name()));
+
+    if (zc_obj->holds<zc::Function<zc_t>>() and zc)
+      validFuncs[object_name] = std::make_pair(&zc_obj->value_as<zc::Function<zc_t>>(), math_obj->style);
+
+    if (zc_obj->holds<zc::Function<zc_t>>() and expr)
+      validConstants[object_name] = &zc_obj->value_as<zc::Function<zc_t>>();
 
     else if (zc_obj->holds<zc::Sequence<zc_t>>())
-      validSeqs.emplace_back(&zc_obj->value_as<zc::Sequence<zc_t>>(), math_obj->style);
+      validSeqs[object_name] = std::make_pair(&zc_obj->value_as<zc::Sequence<zc_t>>(), math_obj->style);
   }
 }
 
