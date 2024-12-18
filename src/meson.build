@@ -60,7 +60,7 @@ source_files = files(
   './Utils/highlighter.cpp',
   './Utils/plotstyle.cpp',
   './Utils/state.cpp',
-  './Utils/zc.cpp',
+  './Utils/zc-utils.cpp',
   './Widgets/abstractfuncwidget.cpp',
   './Widgets/appsettings.cpp',
   './Widgets/axissettingswidget.cpp',

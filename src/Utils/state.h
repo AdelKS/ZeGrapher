@@ -26,7 +26,7 @@
 #include <zecalculator/parsing/data_structures/token.h>
 #include <zecalculator/error.h>
 
-#include "Utils/zc.h"
+#include "Utils/zc-utils.h"
 
 namespace zg {
 

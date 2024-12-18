@@ -1,8 +1,6 @@
 #include "expr.h"
 #include "information.h"
 
-#include "Utils/zc.h"
-
 namespace zg {
 namespace mathobj {
 

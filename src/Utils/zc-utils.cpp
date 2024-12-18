@@ -1,4 +1,4 @@
-#include "zc.h"
+#include "zc-utils.h"
 
 #include <QObject>
 
