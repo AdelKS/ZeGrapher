@@ -35,7 +35,7 @@ endif
 
 qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets'])
 boost_dep = dependency('boost')
-zecalculator_dep = dependency('zecalculator', default_options: ['default_library=static'])
+zecalculator_dep = dependency('zecalculator')
 
 subdir('src')
 subdir('appdata')
