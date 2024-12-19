@@ -54,7 +54,7 @@ Rectangle {
       TextTumbler {
         id: objectTypeTumbler
         Layout.fillWidth: false
-        Layout.maximumWidth: implicitContentWidth + 30
+        Layout.maximumWidth: implicitWidth + 30
         model: ListModel {
           id: eqTypeModel
           ListElement {

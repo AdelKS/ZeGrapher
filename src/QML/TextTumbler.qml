@@ -26,6 +26,26 @@ RowLayout {
     Layout.fillHeight: true
     Layout.maximumWidth: root.maxWidth
     visibleItemCount: 3
+    model: ListModel {}
+
+    onModelChanged: {
+      var newImplicitWidth = "";
+      for (var i = 0; i != model.count; i++) {
+        textMetrics.text = model.get(i).txt;
+        var calculatedImplicitWidth = textMetrics.width;
+        if (calculatedImplicitWidth > newImplicitWidth) {
+          console.log("TextTumbler: changing longest text to", model.get(i).txt)
+          newImplicitWidth = calculatedImplicitWidth;
+        }
+      }
+      console.log("TextTumbler: changing implicitWidth to ", newImplicitWidth);
+      tumbler.implicitWidth = newImplicitWidth;
+    }
+
+    TextMetrics {
+      id: textMetrics
+    }
+
     delegate: Label {
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
