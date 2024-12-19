@@ -1,9 +1,8 @@
 // A line edit where the user enters an expression that evaluates to a value
 
 import QtQuick
-import zegrapher.highlighter 1.0
-import zegrapher.information 1.0
-import zegrapher.state 1.0
+
+import ZeGrapher as ZG
 
 Item {
   id: root
@@ -16,10 +15,10 @@ Item {
   implicitHeight: lineEdit.height + errorLbl.height
 
   function updateBorderColor() {
-    if (state.status === ZgState.NEUTRAL) {
+    if (state.status === ZG.State.NEUTRAL) {
       console.log("ZcExprEdit: border color updated to neutral")
       lineEdit.border.color = "grey";
-    } else if (state.status === ZgState.VALID) {
+    } else if (state.status === ZG.State.VALID) {
       console.log("ZcExprEdit: border color updated to valid")
       lineEdit.border.color = Information.appSettings.validSyntax;
     } else {
@@ -28,7 +27,7 @@ Item {
     }
   }
 
-  ZgState {
+  ZG.State {
     id: m_state
 
     onUpdated: {

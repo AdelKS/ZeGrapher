@@ -18,31 +18,14 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/interactivegraph.h"
-#include "MathObjects/expr.h"
-#include "MathObjects/mathobject.h"
-#include "MathObjects/zc.h"
-#include "Utils/highlighter.h"
-#include "Utils/state.h"
-#include "Utils/plotstyle.h"
 #include "structures.h"
 
-#include <QQuickView>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
 int main(int argc, char *argv[])
 {
   QGuiApplication a(argc, argv);
-
-  qmlRegisterType<Highlighter>("zegrapher.highlighter", 1, 0, "Highlighter");
-  qmlRegisterType<InteractiveGraph>("zegrapher.interactivegraph", 1, 0, "InteractiveGraph");
-  qmlRegisterType<ZeZoomSettings>("zegrapher.zezoomsettings", 1, 0, "ZeZoomSettings");
-  qmlRegisterType<zg::mathobj::Expr>("zegrapher.expr", 1, 0, "Expr");
-  qmlRegisterType<zg::mathobj::ZC>("zegrapher.zc", 1, 0, "ZC");
-  qmlRegisterType<zg::State>("zegrapher.state", 1, 0, "ZgState");
-  qmlRegisterType<zg::MathObject>("zegrapher.mathobject", 1, 0, "MathObject");
-  qmlRegisterType<zg::PlotStyle>("zegrapher.plotstyle", 1, 0, "PlotStyle");
-
-  qmlRegisterSingletonInstance("zegrapher.information", 1, 0, "Information", &information);
 
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
@@ -79,12 +62,17 @@ int main(int argc, char *argv[])
 
   a.installTranslator(&translator);
 
-  QQuickView view;
-  view.setMinimumWidth(600);
-  view.setMinimumHeight(600);
-  view.setSource(QUrl::fromLocalFile(":/src/QML/MainWindow.qml"));
-  view.setResizeMode(QQuickView::SizeRootObjectToView);
-  view.show();
+  QQmlApplicationEngine engine;
+
+  QObject::connect(&engine,
+                   &QQmlApplicationEngine::objectCreated,
+                   [](QObject* object, const QUrl&)
+                   {
+                     if (object == nullptr)
+                       qFatal("unable to load scene");
+                   });
+
+  engine.load("qrc:///qt/qml/ZeGrapher/MainWindow.qml");
 
   return a.exec();
 }

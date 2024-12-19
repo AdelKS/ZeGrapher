@@ -114,7 +114,6 @@ moc_header_files = files(
   './MathObjects/mathobject.h',
   './MathObjects/base.h',
   './MathObjects/zc.h',
-  './structures.h',
   './Utils/highlighter.h',
   './Utils/plotstyle.h',
   './Utils/state.h',
@@ -144,6 +143,42 @@ moc_header_files = files(
   './Windows/updatecheck.h',
 )
 
+qml_files = files(
+  './QML/ColorButton.qml',
+  './QML/EquationEdit.qml',
+  './QML/ImageTumbler.qml',
+  './QML/InteractiveGraphView.qml',
+  './QML/LineEdit.qml',
+  './QML/MainWindow.qml',
+  './QML/MathObjectInput.qml',
+  './QML/ObjectStyle.qml',
+  './QML/RangeAdjust.qml',
+  './QML/TextTumbler.qml',
+  './QML/UserInputPanel.qml',
+  './QML/ValueEdit.qml',
+  './QML/ZcExprEdit.qml',
+)
+
+qmlcpp_files = files(
+  './GraphDraw/interactivegraph.h',
+  './information.h',
+  './MathObjects/expr.h',
+  './MathObjects/mathobject.h',
+  './MathObjects/base.h',
+  './MathObjects/zc.h',
+  './structures.h',
+  './Utils/highlighter.h',
+  './Utils/plotstyle.h',
+  './Utils/state.h',
+)
+
+fs = import('fs')
+
+qmlcpp_inc_dirs = []
+foreach qmlcpp_file: qmlcpp_files
+  qmlcpp_inc_dirs += [include_directories(fs.relative_to(fs.parent(qmlcpp_file), 'src'))]
+endforeach
+
 qt6 = import('qt6')
 
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
@@ -159,8 +194,17 @@ zg_static_lib = static_library('ZeGrapherLib',
   include_directories: inc,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep])
 
-executable('ZeGrapher', 'main.cpp', compiled_ui, compiled_ressources,
+qml_mods = qt6.qml_module(
+  'ZeGrapher',
+  qml_sources: qml_files,
+  moc_headers: qmlcpp_files,
+  include_directories: qmlcpp_inc_dirs,
+  dependencies: [qt6_dep],
+)
+
+executable('ZeGrapher',
+  sources: ['main.cpp', compiled_ui, compiled_ressources, qml_mods],
   link_with: zg_static_lib,
-  include_directories: inc,
+  include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
   install: true)

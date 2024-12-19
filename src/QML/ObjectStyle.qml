@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import zegrapher.plotstyle 1.0
 
 // A line edit without borders, that follows its content
 

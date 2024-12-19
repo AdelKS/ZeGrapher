@@ -2,10 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Shapes
-import zegrapher.information 1.0
-import zegrapher.zc 1.0
-import zegrapher.mathobject 1.0
-import zegrapher.plotstyle 1.0
 
 Rectangle {
   id: root

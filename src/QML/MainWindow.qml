@@ -1,11 +1,11 @@
 import QtQuick
 import QtQuick.Controls
-import zegrapher.interactivegraph 1.0
 
-Item {
+Window {
   id: win
   width: 800
   height: 600
+  visible: true
 
   Button {
     id: drawer_button
