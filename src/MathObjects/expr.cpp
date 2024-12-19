@@ -15,7 +15,7 @@ void Expr::setImplicitName(QString name)
   implicitName = std::move(name);
   while (information.getMathWorld().contains(implicitName.toStdString()))
   {
-    qDebug() << "[backend] variable name '" << implicitName << "' already taken. Appending 'z' to it.";
+    qDebug() << "[backend] Expr: variable name '" << implicitName << "' already taken. Appending 'z' to it.";
     implicitName.push_back('z');
   }
   setExpression(expression);
@@ -23,17 +23,24 @@ void Expr::setImplicitName(QString name)
 
 void Expr::setExpression(QString expr)
 {
-  qDebug() << "[backend] parsing expression: " << implicitName + "=" + expr;
-  if (not expr.isEmpty())
-    zcMathObj = zc::As<zc::Function<zc_t>>{implicitName.toStdString() + "=" + expr.toStdString()};
-  else zcMathObj = zc::As<zc::Function<zc_t>>{""};
+  if (expr == expression)
+    return;
+
   expression = std::move(expr);
+  std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();
+  qDebug() << "[backend] Expr: setting expression: " << full_expression;
+
+  if (not expression.isEmpty())
+    zcMathObj = zc::As<zc::Function<zc_t>>{full_expression};
+  else zcMathObj = zc::As<zc::Function<zc_t>>{""};
   refresh();
   information.mathObjectUpdated(implicitName, implicitName);
 }
 
 void Expr::refresh()
 {
+  std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();
+  qDebug() << "[backend] Expr: refreshing evaluation of expression: " << full_expression;
   double oldValue = value;
 
   if (zcMathObj.has_value())
@@ -41,9 +48,11 @@ void Expr::refresh()
     auto exp_val = zcMathObj.value_as<zc::Function<zc_t>>().evaluate();
     if (exp_val)
       value = *exp_val;
-
-    if (state)
-      state->update(exp_val);
+    else
+    {
+      if (state)
+        state->update(exp_val);
+    }
   }
   else
   {
@@ -53,7 +62,9 @@ void Expr::refresh()
 
   if (oldValue != value)
   {
-    qDebug() << "[backend] " << implicitName << ": new value";
+    qDebug() << "[backend] Expr: new value: " << full_expression << "=" << value;
+    if (state)
+      state->setValid();
     emit valueChanged();
   }
 }

@@ -14,19 +14,53 @@ Rectangle {
 
   color: myPalette.window
 
+  function checkHorizontalWindow() {
+    console.log("checking x range");
+    var oldVal = disableSignals;
+    root.disableSignals = true;
+    if (xminEdit.value < xmaxEdit.value) {
+      Information.range.x.min = xminEdit.value;
+      Information.range.x.max = xmaxEdit.value;
+      xminEdit.state.setValid();
+      xmaxEdit.state.setValid();
+    } else {
+      console.log('setting x range as invalid');
+      xminEdit.state.setInvalid("<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>");
+      xmaxEdit.state.setInvalid("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>");
+    }
+    disableSignals = oldVal;
+  }
+
+  function checkVerticalWindow() {
+    console.log("checking y range");
+    var oldVal = disableSignals;
+    root.disableSignals = true;
+    if (yminEdit.value < ymaxEdit.value) {
+      Information.range.y.min = yminEdit.value;
+      Information.range.y.max = ymaxEdit.value;
+      yminEdit.state.setValid();
+      ymaxEdit.state.setValid();
+    } else {
+      console.log('setting y range as invalid');
+      yminEdit.state.setInvalid("<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>");
+      ymaxEdit.state.setInvalid("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>");
+    }
+    disableSignals = oldVal;
+  }
+
   Connections {
     target: Information
     function onGraphRangeChanged() {
-      disableSignals = true;
+      console.log("new graph range from information singleton")
+      root.disableSignals = true;
       ymaxEdit.expression = Number(Information.range.y.max).toLocaleString();
       yminEdit.expression = Number(Information.range.y.min).toLocaleString();
       xmaxEdit.expression = Number(Information.range.x.max).toLocaleString();
       xminEdit.expression = Number(Information.range.x.min).toLocaleString();
-      disableSignals = false;
+      root.disableSignals = false;
     }
-    enabled: !disableSignals
+    enabled: !root.disableSignals
   }
-
 
   TextEdit {
     id: ymaxLbl
@@ -54,16 +88,9 @@ Rectangle {
 
     Connections {
       function onValueChanged() {
-        if (ymaxEdit.value > yminEdit.value) {
-          var oldVal = disableSignals;
-          disableSignals = true;
-          Information.range.y.max = ymaxEdit.value;
-          disableSignals = oldVal;
-        } else {
-          ymaxEdit.setCustomErrorMsg("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>")
-        }
+        root.checkVerticalWindow();
       }
-      enabled: !disableSignals
+      enabled: !root.disableSignals
     }
   }
 
@@ -93,14 +120,7 @@ Rectangle {
 
     Connections {
       function onValueChanged() {
-        if (xminEdit.value < xmaxEdit.value) {
-          var oldVal = disableSignals;
-          disableSignals = true;
-          Information.range.x.min = xminEdit.value
-          disableSignals = oldVal;
-        } else {
-          xminEdit.setCustomErrorMsg("<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>")
-        }
+        root.checkHorizontalWindow();
       }
       enabled: !disableSignals
     }
@@ -132,16 +152,9 @@ Rectangle {
 
     Connections {
       function onValueChanged() {
-        if (xmaxEdit.value > xminEdit.value) {
-          var oldVal = disableSignals;
-          disableSignals = true;
-          Information.range.x.max = xmaxEdit.value
-          disableSignals = oldVal;
-        } else {
-          xmaxEdit.setCustomErrorMsg("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>")
-        }
+        root.checkHorizontalWindow();
       }
-      enabled: !disableSignals
+      enabled: !root.disableSignals
     }
   }
 
@@ -166,21 +179,14 @@ Rectangle {
     expression: "-10"
     y: xminEdit.y + xminEdit.exprHeight + spacing
     anchors.horizontalCenter: root.horizontalCenter
-    anchors.margins: spacing
+    anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
 
     Connections {
       function onValueChanged() {
-        if (yminEdit.value < ymaxEdit.value) {
-          var oldVal = disableSignals;
-          disableSignals = true;
-          Information.range.y.min = yminEdit.value
-          disableSignals = oldVal;
-        } else {
-          yminEdit.setCustomErrorMsg("<b>y</b><sub>min</sub>" + qsTr(" must be less than ") + "<b>y</b><sub>max</sub>")
-        }
+        root.checkVerticalWindow();
       }
-      enabled: !disableSignals
+      enabled: !root.disableSignals
     }
   }
 }
