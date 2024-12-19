@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import zegrapher.information 1.0
 
 Item {
   id: userInputPanel
@@ -53,7 +52,7 @@ Item {
         }
 
         function createMathObjectInput() {
-          var component = Qt.createComponent("qrc:/src/QML/MathObjectInput.qml");
+          var component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/MathObjectInput.qml");
           var inputWidget = component.createObject(mathObjCol)
 
           inputWidget.width = Qt.binding(function (){ return mathObjCol.width - 5 });

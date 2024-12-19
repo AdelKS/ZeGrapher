@@ -38,8 +38,6 @@ namespace zg {
 class Information: public QObject
 {
   Q_OBJECT
-  QML_ELEMENT
-  QML_SINGLETON
 
   Q_PROPERTY(
     ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
@@ -169,5 +167,39 @@ protected:
 };
 
 inline Information information;
+
+/// @brief register the 'information' global variable with QML
+/// @note  see https://doc.qt.io/qt-6/qml-singleton.html#exposing-an-existing-object-as-a-singleton
+
+struct InformationForeign
+{
+  Q_GADGET
+  QML_FOREIGN(Information)
+  QML_SINGLETON
+  QML_NAMED_ELEMENT(Information)
+
+public:
+
+  static Information *create(QQmlEngine *, QJSEngine *engine)
+  {
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(engine->thread() == information.thread());
+
+    // There can only be one engine accessing the singleton.
+    if (s_engine)
+      Q_ASSERT(engine == s_engine);
+    else
+      s_engine = engine;
+
+    // Explicitly specify C++ ownership so that the engine doesn't delete
+    // the instance.
+    QJSEngine::setObjectOwnership(&information,
+                                  QJSEngine::CppOwnership);
+    return &information;
+  }
+
+private:
+  inline static QJSEngine *s_engine = nullptr;
+};
 
 #endif // INFORMATION_H

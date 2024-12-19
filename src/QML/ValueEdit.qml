@@ -1,11 +1,6 @@
 // A line edit where the user enters an expression that evaluates to a value
 
 import QtQuick
-import zegrapher.highlighter 1.0
-import zegrapher.information 1.0
-import zegrapher.expr 1.0
-import zegrapher.state 1.0
-import zegrapher.mathobject 1.0
 
 Item {
   id: root

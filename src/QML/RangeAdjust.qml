@@ -1,7 +1,4 @@
 import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
-import zegrapher.information 1.0
 
 Rectangle {
   id: root
