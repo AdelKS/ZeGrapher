@@ -1,22 +1,22 @@
-#include "zcbase.h"
+#include "base.h"
 #include "information.h"
 
 namespace zg {
 namespace mathobj {
 
-ZcBase::ZcBase(QObject *parent)
+Base::Base(QObject *parent)
   : QObject(parent), zcMathObj(information.getMathWorld().new_object())
 {
 }
 
-bool ZcBase::isValid() const
+bool Base::isValid() const
 {
   if (state)
     return state->getStatus() == State::VALID;
   else return false;
 }
 
-ZcBase::~ZcBase()
+Base::~Base()
 {
   information.getMathWorld().erase(zcMathObj);
 }

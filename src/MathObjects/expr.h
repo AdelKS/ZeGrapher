@@ -20,13 +20,13 @@
 **
 ****************************************************************************/
 
-#include "zcbase.h"
+#include "base.h"
 
 namespace zg {
 namespace mathobj {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Expr : ZcBase {
+struct Expr : Base {
   Q_OBJECT
   QML_ELEMENT
 

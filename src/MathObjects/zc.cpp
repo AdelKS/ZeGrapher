@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 ZC::ZC(QObject *parent)
-  : ZcBase(parent)
+  : Base(parent)
 {
 
 }

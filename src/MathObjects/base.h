@@ -29,7 +29,7 @@ namespace zg {
 namespace mathobj {
 
 /// @brief Shared base class for backends that use zc::DynMathObject
-struct ZcBase : QObject {
+struct Base : QObject {
   Q_OBJECT
   QML_ELEMENT
 
@@ -37,9 +37,9 @@ struct ZcBase : QObject {
 
 public:
 
-  explicit ZcBase(QObject *parent = nullptr);
+  explicit Base(QObject *parent = nullptr);
 
-  ~ZcBase();
+  ~Base();
 
   Q_INVOKABLE bool isValid() const;
 
