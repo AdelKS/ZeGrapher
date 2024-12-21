@@ -20,13 +20,14 @@
 **
 ****************************************************************************/
 
-#include "base.h"
+#include "BuildingBlocks/statebb.h"
+#include "BuildingBlocks/zcmathobjectbb.h"
 
 namespace zg {
 namespace mathobj {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Expr : Base {
+struct Expr : shared::StateBB, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 

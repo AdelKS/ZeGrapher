@@ -20,47 +20,32 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/statebb.h"
-#include "BuildingBlocks/zcmathobjectbb.h"
-#include "type.h"
+#include "Utils/state.h"
+
+#include <zecalculator/zecalculator.h>
 
 namespace zg {
 namespace mathobj {
+namespace shared {
 
-/// @brief ZeGrapher math objects that are entirely defined by a single math expression
-///        which also fits in a single zc::DynMathObject
-struct ZC: shared::StateBB, shared::ZcMathObjectBB {
+/// @brief Shared base class for backends that use zc::DynMathObject
+struct StateBB : QObject {
   Q_OBJECT
   QML_ELEMENT
+  QML_UNCREATABLE("This is an internal class that is used as a building block for QML math object backends");
 
-  Q_PROPERTY(QString equation WRITE setEquation MEMBER equation)
-  Q_PROPERTY(Type type WRITE setType MEMBER type NOTIFY typeChanged)
-
-  static constexpr std::array valid_types = {CONSTANT, FUNCTION, SEQUENCE};
+  Q_PROPERTY(State* state MEMBER state)
 
 public:
 
-  explicit ZC(QObject *parent = nullptr);
+  explicit StateBB(QObject *parent = nullptr);
 
-  /// @brief changes the target ZC type
-  void setType(Type type);
-  void setEquation(QString eq);
-
-  Q_INVOKABLE void refresh(bool canChangeType = true);
-
-  QString getName() const { return name; }
-
-signals:
-  void typeChanged(Type);
+  Q_INVOKABLE bool isValid() const;
 
 protected:
-  QString equation;
-  QString name;
-
-  /// @brief The type of the math object
-  /// @note not necessarily in a DynMathObject
-  Type type = Type::FUNCTION;
+  State* state = nullptr;
 };
 
+}
 }
 }

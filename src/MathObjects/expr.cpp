@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 Expr::Expr(QObject *parent)
-  : Base(parent)
+  : shared::StateBB(parent), shared::ZcMathObjectBB()
 {
   setImplicitName("init");
 }

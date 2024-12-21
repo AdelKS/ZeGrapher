@@ -5,10 +5,8 @@ namespace zg {
 namespace mathobj {
 
 ZC::ZC(QObject *parent)
-  : Base(parent)
-{
-
-}
+  : shared::StateBB(parent), shared::ZcMathObjectBB()
+{}
 
 void ZC::setEquation(QString eq)
 {

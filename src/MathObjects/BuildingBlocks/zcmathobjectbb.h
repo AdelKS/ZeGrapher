@@ -20,35 +20,25 @@
 **
 ****************************************************************************/
 
-#include "Utils/state.h"
 #include "structures.h"
 
 #include <zecalculator/zecalculator.h>
 
 namespace zg {
 namespace mathobj {
+namespace shared {
 
 /// @brief Shared base class for backends that use zc::DynMathObject
-struct Base : QObject {
-  Q_OBJECT
-  QML_ELEMENT
-
-  Q_PROPERTY(State* state MEMBER state)
+///        creates a new handle on instantiation, and releases it on destruction
+struct ZcMathObjectBB {
 
 public:
+  explicit ZcMathObjectBB();
+  ~ZcMathObjectBB();
 
-  explicit Base(QObject *parent = nullptr);
-
-  ~Base();
-
-  Q_INVOKABLE bool isValid() const;
-
-  /// @note either contains a zc::Function or an Error
   zc::DynMathObject<zc_t>& zcMathObj;
-
-protected:
-  State* state = nullptr;
 };
 
+}
 }
 }
