@@ -25,26 +25,31 @@ void ZC::setEquation(QString eq)
 
 void ZC::refresh(bool canChangeType)
 {
+  qDebug() << "[backend] zc: refreshing evaluation of equation: " << equation;
   std::string std_eq = equation.toStdString();
   switch (type)
   {
   case Type::FUNCTION:
+    qDebug() << "[backend] zc: interpreting as FUNCTION";
     zcMathObj = zc::As<zc::Function<zc_t>>{std_eq};
     break;
   case Type::CONSTANT:
+    qDebug() << "[backend] zc: interpreting as CONSTANT";
     zcMathObj = zc::As<zc::GlobalConstant>{std_eq};
     break;
   case Type::SEQUENCE:
+    qDebug() << "[backend] zc: interpreting as SEQUENCE";
     zcMathObj = zc::As<zc::Sequence<zc_t>>{std_eq};
     break;
   default:
-    qDebug() << "[backend] setEquation: case not handled";
+    qDebug() << "[backend] zc: setEquation: case not handled";
     Q_ASSERT(false);
     break;
   }
 
   if (canChangeType and not zcMathObj.has_value())
   {
+    qDebug() << "[backend] zc: interpretation with initial type failed, trying automatic interpretation";
     // if the current type doesn't work, try AUTO
     zcMathObj = std_eq;
     if (zcMathObj.has_value())
@@ -53,21 +58,24 @@ void ZC::refresh(bool canChangeType)
       if (zcMathObj.holds<zc::Function<zc_t>>() and type != Type::FUNCTION)
       {
         type = Type::FUNCTION;
+        qDebug() << "[backend] zc: type changed to FUNCTION";
         emit typeChanged(type);
       }
       else if (zcMathObj.holds<zc::Sequence<zc_t>>() and type != Type::SEQUENCE)
       {
         type = Type::SEQUENCE;
+        qDebug() << "[backend] zc: type changed to SEQUENCE";
         emit typeChanged(type);
       }
       else if (zcMathObj.holds<zc::GlobalConstant>() and type != Type::CONSTANT)
       {
         type = Type::CONSTANT;
+        qDebug() << "[backend] zc: type changed to CONSTANT";
         emit typeChanged(type);
       }
       else
       {
-        qDebug() << "[backend] setEquation: case not handled";
+        qDebug() << "[backend] zc: setEquation: case not handled";
         Q_ASSERT(false);
       }
     }
@@ -81,6 +89,10 @@ void ZC::refresh(bool canChangeType)
 
 void ZC::setType(Type type)
 {
+  // ZC only supports a subset of all the types offered by ZeGrapher
+  // because some others are complex composite
+  assert(std::ranges::count(valid_types, type) == 1);
+
   if (this->type == type)
     return;
 

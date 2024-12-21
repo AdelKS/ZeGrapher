@@ -38,9 +38,6 @@ struct MathObject: QObject {
 
 public:
 
-  enum Type {ZC, Constant};
-  Q_ENUM(Type)
-
   explicit MathObject(QObject *parent = nullptr);
   ~MathObject();
 

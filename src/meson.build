@@ -164,6 +164,7 @@ qmlcpp_files = files(
   './information.h',
   './MathObjects/expr.h',
   './MathObjects/mathobject.h',
+  './MathObjects/type.h',
   './MathObjects/base.h',
   './MathObjects/zc.h',
   './structures.h',

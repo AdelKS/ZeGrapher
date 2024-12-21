@@ -55,15 +55,15 @@ Rectangle {
           id: eqTypeModel
           ListElement {
             txt: "Function"
-            type: ZC.FUNCTION
+            type: ObjectType.FUNCTION
           }
           ListElement {
             txt: "Sequence"
-            type: ZC.SEQUENCE
+            type: ObjectType.SEQUENCE
           }
           ListElement {
             txt: "Constant"
-            type: ZC.CONSTANT
+            type: ObjectType.CONSTANT
           }
         }
 

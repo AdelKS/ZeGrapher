@@ -21,11 +21,13 @@
 ****************************************************************************/
 
 #include "base.h"
+#include "type.h"
 
 namespace zg {
 namespace mathobj {
 
-/// @brief Contains the information needed to compute the math object and how to plot it
+/// @brief ZeGrapher math objects that are entirely defined by a single math expression
+///        which also fits in a single zc::DynMathObject
 struct ZC: Base {
   Q_OBJECT
   QML_ELEMENT
@@ -33,10 +35,9 @@ struct ZC: Base {
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation)
   Q_PROPERTY(Type type WRITE setType MEMBER type NOTIFY typeChanged)
 
-public:
+  static constexpr std::array valid_types = {CONSTANT, FUNCTION, SEQUENCE};
 
-  enum struct Type {FUNCTION, SEQUENCE, CONSTANT};
-  Q_ENUM(Type)
+public:
 
   explicit ZC(QObject *parent = nullptr);
 
