@@ -1,5 +1,9 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+pushd "$SCRIPT_DIR"
+
 # outputs the source files that meson should handle
 echo "ui_files = files("
 for f in $(find . -type f -name "*.ui" | sort); do
@@ -34,3 +38,5 @@ for f in $(grep -E -lir --include=*.h "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)"
     echo "  '$f',"
 done
 echo ")"
+
+popd
