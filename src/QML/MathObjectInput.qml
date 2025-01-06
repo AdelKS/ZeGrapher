@@ -57,7 +57,13 @@ Rectangle {
             txt: "Equation"
             type: ObjectType.EQUATION
           }
+          ListElement {
+            txt: "Constant"
+            type: ObjectType.CONSTANT
+          }
         }
+
+        onCurrentIndexChanged: placeholder.updateObjectType()
       }
 
       Item {
@@ -118,6 +124,49 @@ Rectangle {
         display: Button.IconOnly
         padding: 0
       }
+
+      states: [
+        State {
+          name: "hidden";
+          when: eqTypeModel.get(objectTypeTumbler.currentIndex).type !== ObjectType.EQUATION
+          PropertyChanges {
+            colorButton.opacity: 0.
+            styleButton.opacity: 0.
+            displayButton.opacity: 0.
+            colorButton.visible: false
+            styleButton.visible: false
+            displayButton.visible: false
+          }
+        },
+        State {
+          name: "shown";
+          when: eqTypeModel.get(objectTypeTumbler.currentIndex).type === ObjectType.EQUATION
+          PropertyChanges {
+            colorButton.opacity: 1.
+            styleButton.opacity: 1.
+            displayButton.opacity: 1.
+            colorButton.visible: true
+            styleButton.visible: true
+            displayButton.visible: true
+          }
+        }
+      ]
+
+      transitions: Transition {
+        reversible: true
+        from: "shown"
+        to: "hidden"
+        SequentialAnimation {
+          NumberAnimation {
+            easing.type: Easing.InOutQuad;
+            property: "opacity";
+            duration: 500;
+          }
+          PropertyAction {
+            property: "visible"
+          }
+        }
+      }
     }
 
     ObjectStyle {
@@ -141,11 +190,38 @@ Rectangle {
       ]
     }
 
-    EquationEdit {
-      id: eqEdit
+    Item {
+      id: placeholder
       width: parent.width
 
-      Component.onCompleted: mathObj.setBackend(eqEdit.backend)
+      property int currentType: 0
+
+      function updateObjectType() {
+        if (children.length !== 0 &&
+            currentType !== eqTypeModel.get(objectTypeTumbler.currentIndex).type)
+        {
+          for (var i = 0 ; i != children.length ; i++)
+            children[i].removeObj();
+        }
+        currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
+        var component;
+        if (currentType === ObjectType.EQUATION) {
+          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/EquationEdit.qml");
+        } else if (currentType === ObjectType.CONSTANT) {
+          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml");
+        }
+        else console.error("Case not handled");
+
+        var widget = component.createObject(placeholder)
+
+        if (widget === null) {
+          console.log("Error creating object");
+        } else {
+          mathObj.setBackend(widget.backend);
+          widget.width = Qt.binding(function (){ return placeholder.width });
+          placeholder.height = Qt.binding(function (){ return widget.implicitHeight });
+        }
+      }
     }
 
     Item {
@@ -158,8 +234,6 @@ Rectangle {
       orientation: Qt.Horizontal
       width: parent.width
     }
-
-
   }
 
 }

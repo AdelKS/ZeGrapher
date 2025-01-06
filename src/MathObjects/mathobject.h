@@ -26,6 +26,7 @@
 #include "MathObjects/expr.h"
 #include "Utils/plotstyle.h"
 #include "equation.h"
+#include "constant.h"
 
 namespace zg {
 
@@ -41,6 +42,7 @@ public:
   explicit MathObject(QObject *parent = nullptr);
   ~MathObject();
 
+  Q_INVOKABLE void setBackend(mathobj::Constant*);
   Q_INVOKABLE void setBackend(mathobj::Equation*);
   Q_INVOKABLE void setBackend(mathobj::Expr*);
 
@@ -51,19 +53,19 @@ public:
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
-    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr>)
+    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   T* getBackend();
 
   template <class T>
-    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr>)
+    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   const T* getBackend() const;
 
   PlotStyle* style = nullptr;
-  std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*> backend;
+  std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*> backend;
 };
 
 template <class T>
-  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr>)
+  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
 const T* MathObject::getBackend() const
 {
   if (std::holds_alternative<T*>(backend))
@@ -72,7 +74,7 @@ const T* MathObject::getBackend() const
 }
 
 template <class T>
-  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr>)
+  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
 T* MathObject::getBackend()
 {
   return const_cast<T*>(std::as_const(*this).getBackend<T>());

@@ -18,17 +18,32 @@ void MathObject::setBackend(mathobj::Expr* b)
   backend = b;
 }
 
+void MathObject::setBackend(mathobj::Constant* b)
+{
+  backend = b;
+}
+
 QStringList MathObject::handledMathObjects() const
 {
-  if (std::holds_alternative<zg::mathobj::Expr*>(backend))
-    return QStringList(std::get<zg::mathobj::Expr*>(backend)->getImplicitName());
-  else if (std::holds_alternative<zg::mathobj::Equation*>(backend))
-  {
-    QString name = std::get<zg::mathobj::Equation*>(backend)->getName();
-    if (not name.isEmpty())
-      return QStringList(name);
-  }
-  return QStringList();
+  return std::visit(
+    zc::utils::overloaded{
+      [](const zg::mathobj::Expr* expr) -> QStringList {
+        return {expr->getImplicitName()};
+      },
+      [](const zg::mathobj::Equation* eq) -> QStringList {
+        if (QString name = eq->getName(); not name.isEmpty())
+          return {name};
+        else return {};
+      },
+      [](const zg::mathobj::Constant* cst) -> QStringList {
+        if (QString name = cst->getName(); not name.isEmpty())
+          return {name};
+        else return {};
+      },
+      [](std::monostate) -> QStringList { return {}; },
+    },
+    backend
+  );
 }
 
 void MathObject::refresh()

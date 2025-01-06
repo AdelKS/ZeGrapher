@@ -11,6 +11,14 @@ Item {
 
   implicitHeight: zcExprEdit.implicitHeight
 
+  Behavior on height { SmoothedAnimation { duration: 200 } }
+
+  function removeObj() {
+    root.opacity = 0;
+    root.height = 0;
+    root.destroy(200);
+  }
+
   Equation {
     id: zcBackend
     equation: zcExprEdit.expression

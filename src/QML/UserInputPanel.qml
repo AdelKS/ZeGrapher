@@ -17,14 +17,14 @@ Item {
       id: rangeAdjust
       Layout.topMargin: 10
       Layout.fillWidth: true
-      Layout.bottomMargin: 20
+      Layout.bottomMargin: 10
     }
 
     ToolSeparator
     {
       orientation: Qt.Horizontal
       Layout.fillWidth: true
-      Layout.bottomMargin: 20
+      Layout.bottomMargin: 10
     }
 
     ScrollView {
