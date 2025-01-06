@@ -48,7 +48,7 @@ class Information: public QObject
                NOTIFY graphSizeSettingsChanged)
 
 public:
-  Information();
+  Information(QObject* parent = nullptr);
 
   const ZeZoomSettings& getGraphZoomSettings() const;
   const ZeSizeSettings& getGraphSizeSettings() const;

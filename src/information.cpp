@@ -20,10 +20,8 @@
 
 #include "information.h"
 
-Information::Information()
-{
-  connect(this, &Information::mathObjectsChanged, this, &Information::refreshMathObjects);
-}
+Information::Information(QObject* parent): QObject(parent)
+{}
 
 void Information::emitDataUpdate()
 {
@@ -335,12 +333,14 @@ void Information::mathObjectUpdated(QString oldName, QString newName)
         mathObjectCache.erase(it);
   }
 
+  emit mathObjectsChanged(affectedObjects);
+
   affectedObjects.removeAll(newName);
+
+  refreshMathObjects(affectedObjects);
 
   qDebug() << "Information singleton: Math object changed, and renamed from " << oldName << " to " << newName;
   qDebug() << "Information singleton: affected objects: " << affectedObjects;
-
-  emit mathObjectsChanged(affectedObjects);
 }
 
 void Information::refreshMathObjects(QStringList objectNames)
