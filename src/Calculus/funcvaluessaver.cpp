@@ -74,7 +74,7 @@ void FuncValuesSaver::clear_hidden_pts()
 
 void FuncValuesSaver::refresh_valid_functions()
 {
-  std::unordered_map<const zc::Function<zc_t>*, FuncCurve> curves;
+  std::unordered_map<const zc::DynMathObject<zc_t>*, FuncCurve> curves;
 
   for (auto&& [f, style] : information.getValidFuncs())
   {
@@ -87,7 +87,7 @@ void FuncValuesSaver::refresh_valid_functions()
   funCurves = std::move(curves);
 }
 
-void FuncValuesSaver::compute_uniform_visible_pts(const zc::Function<zc_t>& f, FuncCurve& f_curve)
+void FuncValuesSaver::compute_uniform_visible_pts(const zc::DynMathObject<zc_t>& f, FuncCurve& f_curve)
 {
   const zg::view_unit viewUnitStep = pixelStep / mapper.x.getRange<zg::pixel>().amplitude()
                                      * mapper.x.getRange<zg::view>().amplitude();
@@ -152,7 +152,7 @@ void FuncValuesSaver::compute_uniform_visible_pts(const zc::Function<zc_t>& f, F
   add_pts(std::integral_constant<Side, RIGHT>());
 }
 
-void FuncValuesSaver::refine_visible_pts(const zc::Function<zc_t>& f, FuncCurve& f_curve)
+void FuncValuesSaver::refine_visible_pts(const zc::DynMathObject<zc_t>& f, FuncCurve& f_curve)
 {
   const zg::pixel_unit minPixelStep = pixelStep / double(pxStepMaxDivider);
   const double pxStepSq = pixelStep.v * pixelStep.v;
@@ -213,7 +213,7 @@ void FuncValuesSaver::refine_visible_pts(const zc::Function<zc_t>& f, FuncCurve&
   while (not extra_pts.empty());
 }
 
-void FuncValuesSaver::find_discontinuities(const zc::Function<zc_t>& f, FuncCurve& f_curve)
+void FuncValuesSaver::find_discontinuities(const zc::DynMathObject<zc_t>& f, FuncCurve& f_curve)
 {
   const zg::pixel_unit minPixelStep = pixelStep / double(pxStepMaxDivider);
   const double pxStepSq = pixelStep.v * pixelStep.v;

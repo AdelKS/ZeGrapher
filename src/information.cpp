@@ -278,7 +278,7 @@ void Information::updateValidMathObjects()
 
   for (const zg::MathObject* math_obj : information.getMathObjects())
   {
-    const zg::mathobj::ZC* zc = math_obj->getBackend<zg::mathobj::ZC>();
+    const zg::mathobj::Equation* zc = math_obj->getBackend<zg::mathobj::Equation>();
     const zg::mathobj::Expr* expr = math_obj->getBackend<zg::mathobj::Expr>();
 
     const zc::DynMathObject<zc_t>* zc_obj = zc ? &zc->zcMathObj : expr ? &expr->zcMathObj : nullptr;
@@ -288,14 +288,14 @@ void Information::updateValidMathObjects()
 
     const QString object_name = QString::fromStdString(std::string(zc_obj->get_name()));
 
-    if (zc_obj->holds<zc::Function<zc_t>>() and zc)
-      validFuncs[object_name] = std::make_pair(&zc_obj->value_as<zc::Function<zc_t>>(), math_obj->style);
+    if (zc_obj->holds(zc::FUNCTION)  and zc)
+      validFuncs[object_name] = std::make_pair(zc_obj, math_obj->style);
 
-    if (zc_obj->holds<zc::Function<zc_t>>() and expr)
-      validConstants[object_name] = &zc_obj->value_as<zc::Function<zc_t>>();
+    if (zc_obj->holds(zc::FUNCTION) and expr)
+      validConstants[object_name] = zc_obj;
 
-    else if (zc_obj->holds<zc::Sequence<zc_t>>())
-      validSeqs[object_name] = std::make_pair(&zc_obj->value_as<zc::Sequence<zc_t>>(), math_obj->style);
+    else if (zc_obj->holds(zc::SEQUENCE))
+      validSeqs[object_name] = std::make_pair(zc_obj, math_obj->style);
   }
 }
 
@@ -329,8 +329,11 @@ void Information::mathObjectUpdated(QString oldName, QString newName)
 
   // Clear cache of changed object
   for (const QString& name: affectedObjects)
-    if (auto it = mathObjectCache.find(name.toStdString()); it != mathObjectCache.end())
-      mathObjectCache.erase(it);
+  {
+    if (const auto* obj = mathWorld.get(name.toStdString()); obj)
+      if (auto it = mathObjectCache.find(obj->get_slot()); it != mathObjectCache.end())
+        mathObjectCache.erase(it);
+  }
 
   affectedObjects.removeAll(newName);
 

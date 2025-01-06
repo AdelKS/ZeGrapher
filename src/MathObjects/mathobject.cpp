@@ -8,7 +8,7 @@ MathObject::MathObject(QObject *parent) : QObject(parent)
   information.registerMathObject(this);
 }
 
-void MathObject::setBackend(mathobj::ZC* b)
+void MathObject::setBackend(mathobj::Equation* b)
 {
   backend = b;
 }
@@ -22,9 +22,9 @@ QStringList MathObject::handledMathObjects() const
 {
   if (std::holds_alternative<zg::mathobj::Expr*>(backend))
     return QStringList(std::get<zg::mathobj::Expr*>(backend)->getImplicitName());
-  else if (std::holds_alternative<zg::mathobj::ZC*>(backend))
+  else if (std::holds_alternative<zg::mathobj::Equation*>(backend))
   {
-    QString name = std::get<zg::mathobj::ZC*>(backend)->getName();
+    QString name = std::get<zg::mathobj::Equation*>(backend)->getName();
     if (not name.isEmpty())
       return QStringList(name);
   }

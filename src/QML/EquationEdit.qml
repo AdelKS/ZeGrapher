@@ -6,16 +6,14 @@ Item {
   id: root
 
   property alias expression: zcExprEdit.expression
-  property alias type: zcBackend.type
   property alias backend: zcBackend
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
   implicitHeight: zcExprEdit.implicitHeight
 
-  ZC {
+  Equation {
     id: zcBackend
     equation: zcExprEdit.expression
-    type: ZC.FUNCTION
     state: zcExprEdit.state
   }
 

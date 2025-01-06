@@ -31,8 +31,8 @@ void Expr::setExpression(QString expr)
   qDebug() << "[backend] Expr: setting expression: " << full_expression;
 
   if (not expression.isEmpty())
-    zcMathObj = zc::As<zc::Function<zc_t>>{full_expression};
-  else zcMathObj = zc::As<zc::Function<zc_t>>{""};
+    zcMathObj = full_expression;
+  else zcMathObj = "";
   refresh();
   information.mathObjectUpdated(implicitName, implicitName);
 }
@@ -45,7 +45,7 @@ void Expr::refresh()
 
   if (zcMathObj.has_value())
   {
-    auto exp_val = zcMathObj.value_as<zc::Function<zc_t>>().evaluate();
+    auto exp_val = zcMathObj();
     if (exp_val)
       value = *exp_val;
     else
@@ -57,7 +57,7 @@ void Expr::refresh()
   else
   {
     if (state)
-      state->update(zcMathObj.as_expected());
+      state->update(zcMathObj.status());
   }
 
   if (oldValue != value)

@@ -242,7 +242,7 @@ void MathObjectDraw::drawFunctions()
   }
 }
 
-void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::PlotStyle& style)
+void MathObjectDraw::drawOneSequence(const zc::DynMathObject<zc_t>& seq, const zg::PlotStyle& style)
 {
   constexpr zg::real_unit n_min = {0.};
   constexpr zg::real_unit n_max = {1.E6}; // stop plotting sequence above this value
@@ -277,7 +277,7 @@ void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::Pl
     step = real_unit_step;
 
   const size_t integerStop = realStop.v;
-  zc::eval::ObjectCache &cache = information.mathObjectCache[std::string(seq.get_name())];
+  zc::eval::ObjectCache &cache = information.mathObjectCache[seq.get_slot()];
   if (cache.get_buffer_size() < integerStop)
   {
     size_t new_buffer_size = 2*cache.get_buffer_size();
@@ -290,7 +290,7 @@ void MathObjectDraw::drawOneSequence(const zc::Sequence<zc_t>& seq, const zg::Pl
     zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
     real_x.v = trunc(real_x.v);
 
-    auto exp_y = seq(real_x.v, &information.mathObjectCache);
+    auto exp_y = seq({real_x.v}, &information.mathObjectCache);
 
     if (not exp_y or std::isnan(*exp_y))
       continue;

@@ -159,9 +159,9 @@ protected:
 
   std::vector<zg::MathObject*> mathObjects;
 
-  QHash<QString, std::pair<const zc::Function<zc_t>*, const zg::PlotStyle*>> validFuncs;
-  QHash<QString, std::pair<const zc::Sequence<zc_t>*, const zg::PlotStyle*>> validSeqs;
-  QHash<QString, const zc::Function<zc_t>*> validConstants;
+  QHash<QString, std::pair<const zc::DynMathObject<zc_t>*, const zg::PlotStyle*>> validFuncs;
+  QHash<QString, std::pair<const zc::DynMathObject<zc_t>*, const zg::PlotStyle*>> validSeqs;
+  QHash<QString, const zc::DynMathObject<zc_t>*> validConstants;
 
   QList<ParEqWidget*>* parEqWidgets;
 };

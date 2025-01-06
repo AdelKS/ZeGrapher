@@ -54,31 +54,9 @@ Rectangle {
         model: ListModel {
           id: eqTypeModel
           ListElement {
-            txt: "Function"
-            type: ObjectType.FUNCTION
+            txt: "Equation"
+            type: ObjectType.EQUATION
           }
-          ListElement {
-            txt: "Sequence"
-            type: ObjectType.SEQUENCE
-          }
-          ListElement {
-            txt: "Constant"
-            type: ObjectType.CONSTANT
-          }
-        }
-
-        Connections {
-          target: eqEdit.backend
-          function onTypeChanged(type) {
-            console.log("type changed");
-            for (var i = 0 ; i < eqTypeModel.count ; i++)
-              if (eqTypeModel.get(i).type === type)
-                objectTypeTumbler.currentIndex = i;
-          }
-        }
-
-        onCurrentIndexChanged: {
-          eqEdit.type = eqTypeModel.get(currentIndex).type;
         }
       }
 
@@ -165,7 +143,6 @@ Rectangle {
 
     EquationEdit {
       id: eqEdit
-      type: ZC.FUNCTION
       width: parent.width
 
       Component.onCompleted: mathObj.setBackend(eqEdit.backend)

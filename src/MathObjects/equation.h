@@ -22,44 +22,32 @@
 
 #include "BuildingBlocks/statebb.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
-#include "type.h"
 
 namespace zg {
 namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
 ///        which also fits in a single zc::DynMathObject
-struct ZC: shared::StateBB, shared::ZcMathObjectBB {
+struct Equation: shared::StateBB, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation)
-  Q_PROPERTY(Type type WRITE setType MEMBER type NOTIFY typeChanged)
-
-  static constexpr std::array valid_types = {CONSTANT, FUNCTION, SEQUENCE};
 
 public:
 
-  explicit ZC(QObject *parent = nullptr);
+  explicit Equation(QObject *parent = nullptr);
 
-  /// @brief changes the target ZC type
-  void setType(Type type);
   void setEquation(QString eq);
-
-  Q_INVOKABLE void refresh(bool canChangeType = true);
 
   QString getName() const { return name; }
 
-signals:
-  void typeChanged(Type);
+public slots:
+  void refresh();
 
 protected:
   QString equation;
   QString name;
-
-  /// @brief The type of the math object
-  /// @note not necessarily in a DynMathObject
-  Type type = Type::FUNCTION;
 };
 
 }
