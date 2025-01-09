@@ -37,15 +37,15 @@ void Constant::refresh()
   if (state)
     state->update(zcMathObj.name_status());
 
-  if ((not oldName.isEmpty() or not name.isEmpty()) and oldName != name)
-    information.mathObjectUpdated(oldName, name);
+  if ((not oldName.isEmpty() or not name.isEmpty()) and oldName != name and slot)
+    information.mathObjectUpdated(*slot, oldName, name);
 }
 
 void Constant::set_value(double val)
 {
   zcMathObj = val;
-  if (not name.isEmpty())
-    information.mathObjectUpdated(name, name);
+  if (not name.isEmpty() and slot)
+    information.mathObjectUpdated(*slot, name, name);
 }
 
 }

@@ -40,7 +40,9 @@ void Expr::setExpression(QString expr)
     zcMathObj = full_expression;
   else zcMathObj = "";
   refresh();
-  information.mathObjectUpdated(implicitName, implicitName);
+
+  if (slot)
+    information.mathObjectUpdated(*slot, implicitName, implicitName);
 }
 
 void Expr::refresh()

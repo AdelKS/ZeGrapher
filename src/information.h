@@ -98,7 +98,7 @@ public:
   const auto& getValidFuncs() const { return validFuncs; }
   const auto& getValidSeqs() const { return validSeqs; }
 
-  void mathObjectUpdated(QString oldName, QString newName);
+  void mathObjectUpdated(size_t zgSlot, QString oldName, QString newName);
 
 signals:
   void newOrthonormalityState(bool orth);
@@ -134,7 +134,7 @@ public slots:
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
   void setAppSettings(const ZeAppSettings& appSettings);
-  void refreshMathObjects(QStringList objectNames);
+  void refreshMathObjects(size_t excludedZgSlot, QStringList objectNames);
 
 public:
   zc::eval::Cache mathObjectCache;

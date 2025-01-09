@@ -17,8 +17,8 @@ void Equation::setEquation(QString eq)
   QString oldName = name;
   refresh();
 
-  if (not oldName.isEmpty() or not name.isEmpty())
-    information.mathObjectUpdated(oldName, name);
+  if ((not oldName.isEmpty() or not name.isEmpty()) and slot)
+    information.mathObjectUpdated(*slot, oldName, name);
 }
 
 void Equation::setSlot(size_t slot)

@@ -299,7 +299,7 @@ void Information::updateValidMathObjects()
   }
 }
 
-void Information::mathObjectUpdated(QString oldName, QString newName)
+void Information::mathObjectUpdated(size_t zgSlot, QString oldName, QString newName)
 {
   QStringList affectedObjects;
   QStringList toExplore;
@@ -336,20 +336,18 @@ void Information::mathObjectUpdated(QString oldName, QString newName)
   }
 
   emit mathObjectsChanged(affectedObjects);
-
-  affectedObjects.removeAll(newName);
-
-  refreshMathObjects(affectedObjects);
+  refreshMathObjects(zgSlot, affectedObjects);
 
   qDebug() << "Information singleton: Math object changed, and renamed from " << oldName << " to " << newName;
   qDebug() << "Information singleton: affected objects: " << affectedObjects;
 }
 
-void Information::refreshMathObjects(QStringList objectNames)
+void Information::refreshMathObjects(size_t excludedZgSlot, QStringList objectNames)
 {
   for (zg::MathObject* obj: mathObjects)
-    if (std::ranges::any_of(obj->handledMathObjects(),
-                            [&](auto&& name) { return objectNames.contains(name); }))
+    if (obj->get_slot() and *obj->get_slot() != excludedZgSlot
+        and std::ranges::any_of(obj->handledMathObjects(),
+                                [&](auto&& name) { return objectNames.contains(name); }))
     {
       qDebug() << "information singleton: refreshing object that handles " << obj->handledMathObjects();
       obj->refresh();
