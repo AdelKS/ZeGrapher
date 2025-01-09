@@ -11,16 +11,36 @@ MathObject::MathObject(QObject *parent) : QObject(parent)
 void MathObject::setBackend(mathobj::Equation* b)
 {
   backend = b;
+  if (slot)
+    setSlot(*slot);
 }
 
 void MathObject::setBackend(mathobj::Expr* b)
 {
   backend = b;
+  if (slot)
+    setSlot(*slot);
 }
 
 void MathObject::setBackend(mathobj::Constant* b)
 {
   backend = b;
+  if (slot)
+    setSlot(*slot);
+}
+
+void MathObject::setSlot(size_t slot)
+{
+  this->slot = slot;
+  std::visit(
+    zc::utils::overloaded{
+      [slot](auto* v) {
+        v->setSlot(slot);
+      },
+      [](std::monostate) {},
+    },
+    backend
+  );
 }
 
 QStringList MathObject::handledMathObjects() const

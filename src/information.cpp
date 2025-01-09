@@ -255,7 +255,9 @@ void Information::registerMathObject(zg::MathObject* obj)
 {
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 0);
 
-  mathObjects.push_back(obj);
+  size_t slot = mathObjects.next_free_slot();
+  mathObjects.push(obj);
+  obj->setSlot(slot);
 }
 
 void Information::deregisterMathObject(zg::MathObject* obj)
@@ -265,7 +267,7 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   Q_ASSERT(it != mathObjects.end());
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
 
-  mathObjects.erase(it);
+  mathObjects.free((*it)->get_slot().value());
 }
 
 void Information::updateValidMathObjects()

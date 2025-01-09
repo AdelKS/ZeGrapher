@@ -39,7 +39,7 @@ public:
   explicit Equation(QObject *parent = nullptr);
 
   void setEquation(QString eq);
-
+  void setSlot(size_t slot);
   QString getName() const { return name; }
 
 public slots:
@@ -48,6 +48,7 @@ public slots:
 protected:
   QString equation;
   QString name;
+  std::optional<size_t> slot;
 };
 
 }

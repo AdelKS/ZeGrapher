@@ -21,6 +21,12 @@ void Equation::setEquation(QString eq)
     information.mathObjectUpdated(oldName, name);
 }
 
+void Equation::setSlot(size_t slot)
+{
+  this->slot = slot;
+  static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
+}
+
 void Equation::refresh()
 {
   qDebug() << "[backend] zc: refreshing evaluation of equation: " << equation;

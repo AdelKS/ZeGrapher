@@ -94,7 +94,7 @@ public:
   void registerMathObject(zg::MathObject*);
   void deregisterMathObject(zg::MathObject*);
 
-  const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; }
+  const zc::SlottedDeque<zg::MathObject*>& getMathObjects() const { return mathObjects; }
   const auto& getValidFuncs() const { return validFuncs; }
   const auto& getValidSeqs() const { return validSeqs; }
 
@@ -157,7 +157,7 @@ protected:
   QString exportFileName;
   zc::MathWorld<zc_t> mathWorld;
 
-  std::vector<zg::MathObject*> mathObjects;
+  zc::SlottedDeque<zg::MathObject*> mathObjects;
 
   QHash<QString, std::pair<const zc::DynMathObject<zc_t>*, const zg::PlotStyle*>> validFuncs;
   QHash<QString, std::pair<const zc::DynMathObject<zc_t>*, const zg::PlotStyle*>> validSeqs;

@@ -40,6 +40,7 @@ public:
 
   void setName(QString name);
   QString getName() const { return name; }
+  void setSlot(size_t slot);
 
 public slots:
   void refresh();
@@ -47,6 +48,7 @@ public slots:
 
 protected:
   QString input_name, name;
+  std::optional<size_t> slot;
 };
 
 }

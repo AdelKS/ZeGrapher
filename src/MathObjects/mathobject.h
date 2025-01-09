@@ -46,6 +46,9 @@ public:
   Q_INVOKABLE void setBackend(mathobj::Equation*);
   Q_INVOKABLE void setBackend(mathobj::Expr*);
 
+  void setSlot(size_t slot);
+  std::optional<size_t> get_slot() const { return slot; }
+
   /// @brief forwards the refresh() call to the current active backend
   void refresh();
 
@@ -61,7 +64,10 @@ public:
   const T* getBackend() const;
 
   PlotStyle* style = nullptr;
+
+protected:
   std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*> backend;
+  std::optional<size_t> slot;
 };
 
 template <class T>

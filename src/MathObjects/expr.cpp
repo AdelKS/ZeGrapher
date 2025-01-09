@@ -10,6 +10,12 @@ Expr::Expr(QObject *parent)
   setImplicitName("init");
 }
 
+void Expr::setSlot(size_t slot)
+{
+  this->slot = slot;
+  static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
+}
+
 void Expr::setImplicitName(QString name)
 {
   implicitName = std::move(name);

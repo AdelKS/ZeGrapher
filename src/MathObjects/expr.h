@@ -41,9 +41,9 @@ public:
 
   Q_INVOKABLE void refresh();
   Q_INVOKABLE void setExpression(QString expr);
-
   Q_INVOKABLE void setImplicitName(QString name);
 
+  void setSlot(size_t slot);
   QString getImplicitName() const { return implicitName; };
 
 signals:
@@ -58,6 +58,7 @@ protected:
   ///          will be forwarded to ZeCalculator as "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
+  std::optional<size_t> slot;
 };
 
 }
