@@ -47,18 +47,21 @@ Rectangle {
       width: parent.width
       height: 40
 
-      TextTumbler {
+      ComboBox {
         id: objectTypeTumbler
-        Layout.fillWidth: false
-        Layout.maximumWidth: implicitWidth + 30
+        implicitContentWidthPolicy: ComboBox.WidestText
+        textRole: "text"
+        valueRole: "type"
+        background.implicitWidth: implicitContentWidth
+
         model: ListModel {
           id: eqTypeModel
           ListElement {
-            txt: "Equation"
+            text: "Equation"
             type: ObjectType.EQUATION
           }
           ListElement {
-            txt: "Constant"
+            text: "Constant"
             type: ObjectType.CONSTANT
           }
         }
