@@ -58,6 +58,7 @@ protected:
   ///          will be forwarded to ZeCalculator as "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
+  std::optional<zc::Error> opt_error;
   std::optional<size_t> slot;
 };
 

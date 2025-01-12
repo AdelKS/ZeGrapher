@@ -51,28 +51,22 @@ void Expr::refresh()
   qDebug() << "[backend] Expr: refreshing evaluation of expression: " << full_expression;
   double oldValue = value;
 
+  auto old_opt_error = opt_error;
+
   if (zcMathObj.has_value())
   {
     auto exp_val = zcMathObj();
     if (exp_val)
       value = *exp_val;
-    else
-    {
-      if (state)
-        state->update(exp_val);
-    }
+    else opt_error = exp_val.error();
   }
-  else
-  {
-    if (state)
-      state->update(zcMathObj.status());
-  }
+  else opt_error = zcMathObj.error();
 
-  if (oldValue != value)
+  if (oldValue != value or old_opt_error != opt_error)
   {
     qDebug() << "[backend] Expr: new value: " << full_expression << "=" << value;
     if (state)
-      state->setValid();
+      state->update(opt_error);
     emit valueChanged();
   }
 }
