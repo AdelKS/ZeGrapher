@@ -48,6 +48,8 @@ public:
   template <class T>
   void update(const tl::expected<T, zc::Error>& exp);
 
+  void update(const std::optional<zc::Error>& err);
+
   void setInvalid(QString errorMsg, std::optional<zc::parsing::tokens::Text> errorToken);
 
   Q_INVOKABLE Status getStatus() const;
@@ -72,14 +74,7 @@ protected:
 template <class T>
 void State::update(const tl::expected<T, zc::Error>& exp)
 {
-  if (not exp)
-  {
-    if (exp.error().type == zc::Error::EMPTY_EXPRESSION)
-      setNeutral();
-    else
-      setInvalid(zg::zcErrorToStr(exp.error()), exp.error().token);
-  }
-  else setValid();
+  update(exp.has_value() ? std::optional<zc::Error>{} : exp.error());
 }
 
 }
