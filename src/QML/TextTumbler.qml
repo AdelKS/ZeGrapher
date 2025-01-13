@@ -9,6 +9,9 @@ RowLayout {
   property real maxWidth: Number.POSITIVE_INFINITY
   property alias currentIndex: tumbler.currentIndex
 
+  implicitHeight: tumbler.implicitHeight
+  implicitWidth: selector1.implicitWidth + tumbler.implicitWidth + selector2.implicitWidth + 5
+
   Image {
     id: selector1
     Layout.alignment: Layout.Center
@@ -29,17 +32,23 @@ RowLayout {
     model: ListModel {}
 
     onModelChanged: {
-      var newImplicitWidth = "";
+      var newImplicitWidth = 0;
+      var biggestHeight = 0
       for (var i = 0; i != model.count; i++) {
         textMetrics.text = model.get(i).txt;
-        var calculatedImplicitWidth = textMetrics.width;
-        if (calculatedImplicitWidth > newImplicitWidth) {
+        if (textMetrics.width > newImplicitWidth) {
           console.log("TextTumbler: changing longest text to", model.get(i).txt)
-          newImplicitWidth = calculatedImplicitWidth;
+          newImplicitWidth = textMetrics.width;
+        }
+        if (textMetrics.height > biggestHeight) {
+          console.log("TextTumbler: changing Biggest height to", textMetrics.height)
+          biggestHeight = textMetrics.height;
         }
       }
       console.log("TextTumbler: changing implicitWidth to ", newImplicitWidth);
       tumbler.implicitWidth = newImplicitWidth;
+      console.log("TextTumbler: changing implicitHeigh to ", Math.round(biggestHeight*2.5));
+      tumbler.implicitHeight = Math.round(biggestHeight*2.2);
     }
 
     TextMetrics {
