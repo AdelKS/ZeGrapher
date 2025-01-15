@@ -59,10 +59,17 @@ Rectangle {
           ListElement {
             text: "Equation"
             type: ObjectType.EQUATION
+            has_graph: true
           }
           ListElement {
             text: "Constant"
             type: ObjectType.CONSTANT
+            has_graph: false
+          }
+          ListElement {
+            text: "Parametric"
+            type: ObjectType.PARAMETRIC
+            has_graph: true
           }
         }
 
@@ -131,7 +138,7 @@ Rectangle {
       states: [
         State {
           name: "hidden";
-          when: eqTypeModel.get(objectTypeTumbler.currentIndex).type !== ObjectType.EQUATION
+          when: ! eqTypeModel.get(objectTypeTumbler.currentIndex).has_graph
           PropertyChanges {
             colorButton.opacity: 0.
             styleButton.opacity: 0.
@@ -143,7 +150,7 @@ Rectangle {
         },
         State {
           name: "shown";
-          when: eqTypeModel.get(objectTypeTumbler.currentIndex).type === ObjectType.EQUATION
+          when: eqTypeModel.get(objectTypeTumbler.currentIndex).has_graph
           PropertyChanges {
             colorButton.opacity: 1.
             styleButton.opacity: 1.
@@ -212,6 +219,8 @@ Rectangle {
           component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/EquationEdit.qml");
         } else if (currentType === ObjectType.CONSTANT) {
           component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml");
+        } else if (currentType === ObjectType.PARAMETRIC) {
+          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml");
         }
         else console.error("Case not handled");
 

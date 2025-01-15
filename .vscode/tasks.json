@@ -53,7 +53,7 @@
             },
             "dependsOn": "build-debug",
             "problemMatcher": []
-        }
+        },
 
         // clang
 
@@ -71,7 +71,7 @@
         {
             "label": "resetup-debug-clang",
             "type": "shell",
-            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
+            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug",
         },
         {
             "label": "resetup-clangd",
@@ -96,11 +96,11 @@
             }
         },
         {
-            "label": "rebuild-debugc-clang",
+            "label": "rebuild-debug-clang",
             "type": "shell",
             "command": "meson compile",
             "options": {
-                "cwd": "${cwd}/build-zg-debug-clang"
+                "cwd": "${cwd}/build-zg-debug-clang",
             },
             "dependsOn": "resetup-debug-clang",
             "problemMatcher": [
@@ -119,7 +119,7 @@
             },
             "dependsOn": "build-debug-clang",
             "problemMatcher": []
-        }
+        },
 
         // release
 

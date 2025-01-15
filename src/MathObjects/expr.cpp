@@ -7,7 +7,7 @@ namespace mathobj {
 Expr::Expr(QObject *parent)
   : shared::StateBB(parent), shared::ZcMathObjectBB()
 {
-  setImplicitName("init");
+  setImplicitName("hidden_variable_");
 }
 
 void Expr::setSlot(size_t slot)
@@ -22,7 +22,7 @@ void Expr::setImplicitName(QString name)
   while (information.getMathWorld().contains(implicitName.toStdString()))
   {
     qDebug() << "[backend] Expr: variable name '" << implicitName << "' already taken. Appending 'z' to it.";
-    implicitName.push_back('z');
+    implicitName.push_back('_');
   }
   setExpression(expression);
 }

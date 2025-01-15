@@ -43,6 +43,13 @@ void MathObject::setSlot(size_t slot)
   );
 }
 
+void MathObject::setBackend(mathobj::Parametric* b)
+{
+  backend = b;
+  if (slot)
+    setSlot(*slot);
+}
+
 QStringList MathObject::handledMathObjects() const
 {
   return std::visit(
@@ -59,6 +66,14 @@ QStringList MathObject::handledMathObjects() const
         if (QString name = cst->getName(); not name.isEmpty())
           return {name};
         else return {};
+      },
+      [](const zg::mathobj::Parametric* par) -> QStringList {
+        QStringList res;
+        if (not par->getFirstName().isEmpty())
+          return res << par->getFirstName();
+        if (not par->getSecondName().isEmpty())
+          return res << par->getSecondName();
+        return res;
       },
       [](std::monostate) -> QStringList { return {}; },
     },
