@@ -46,6 +46,13 @@ Rectangle {
       focus: true
       text: ""
       onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+
+      Keys.onPressed: (event)=> {
+        if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+          // filter linebreaks events
+          event.accepted = true;
+        }
+      }
     }
 
     TextMetrics {
