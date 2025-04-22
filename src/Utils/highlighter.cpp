@@ -3,28 +3,38 @@
 
 #include <zecalculator/zecalculator.h>
 
-void Highlighter::setState(zg::State* state)
+void Highlighter::setMathObj(zg::MathObject* mathObj)
 {
-  this->state = state;
-  connect(state, &zg::State::updated, this, &Highlighter::rehighlight);
+  qDebug() << "Highlighter: setting matObj pointer" << mathObj;
+  qDebug() << "Highlighter: address" << this;
+  this->mathObj = mathObj;
+  rehighlight();
 }
 
 void Highlighter::highlightBlock(const QString &text)
 {
-  Q_UNUSED(text);
-  qDebug() << "Highlighting called";
+  qDebug() << "Highlighting string: " << text << "\n"
+           << "Highlighter address: " << this;
+
+  if (not mathObj)
+  {
+    qDebug() << "Math object still undefined in highlighter";
+    return;
+  }
+
   QTextCharFormat invalidFormat;
   invalidFormat.setForeground(information.getAppSettings().invalidSyntax);
   invalidFormat.setFontUnderline(true);
   invalidFormat.setUnderlineColor(information.getAppSettings().invalidSyntax);
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
-  if (state and state->getErrToken())
+  zg::State new_state = mathObj->setExpression(text);
+  if (auto opt_err_tok = new_state.getErrToken(); opt_err_tok)
   {
-    setFormat(state->getErrToken()->begin - offset, state->getErrToken()->substr.size(), invalidFormat);
+    setFormat(opt_err_tok->begin - offset, opt_err_tok->substr.size(), invalidFormat);
 
-    qDebug() << "Highlighted token: '" + QString::fromStdString(state->getErrToken()->substr) + "' at "
-                  + QString::number(state->getErrToken()->begin - offset);
+    qDebug() << "Highlighted token: '" + QString::fromStdString(opt_err_tok->substr) + "' at "
+                  + QString::number(opt_err_tok->begin - offset);
   };
 }
 

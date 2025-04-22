@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 Expr::Expr(QObject *parent)
-  : shared::StateBB(parent), shared::ZcMathObjectBB()
+  : QObject(parent), shared::ZcMathObjectBB()
 {
   setImplicitName("init");
 }
@@ -16,7 +16,7 @@ void Expr::setSlot(size_t slot)
   static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
 }
 
-void Expr::setImplicitName(QString name)
+State Expr::setImplicitName(QString name)
 {
   implicitName = std::move(name);
   while (information.getMathWorld().contains(implicitName.toStdString()))
@@ -24,13 +24,13 @@ void Expr::setImplicitName(QString name)
     qDebug() << "[backend] Expr: variable name '" << implicitName << "' already taken. Appending 'z' to it.";
     implicitName.push_back('z');
   }
-  setExpression(expression);
+  return setExpression(expression);
 }
 
-void Expr::setExpression(QString expr)
+State Expr::setExpression(QString expr)
 {
   if (expr == expression)
-    return;
+    return state;
 
   expression = std::move(expr);
   std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();
@@ -43,32 +43,38 @@ void Expr::setExpression(QString expr)
 
   if (slot)
     information.mathObjectUpdated(*slot, implicitName, implicitName);
+
+  return state;
 }
 
-void Expr::refresh()
+State Expr::getState() const { return state; }
+
+void Expr::setState(State newState) { state = newState; }
+
+State Expr::refresh()
 {
   std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();
   qDebug() << "[backend] Expr: refreshing evaluation of expression: " << full_expression;
   double oldValue = value;
 
-  auto old_opt_error = opt_error;
+  auto old_state = state;
 
   if (zcMathObj.has_value())
   {
     auto exp_val = zcMathObj();
     if (exp_val)
       value = *exp_val;
-    else opt_error = exp_val.error();
+    state.update(exp_val);
   }
-  else opt_error = zcMathObj.error();
+  else state.update(zcMathObj.status());
 
-  if (oldValue != value or old_opt_error != opt_error)
+  if (oldValue != value or old_state != state)
   {
     qDebug() << "[backend] Expr: new value: " << full_expression << "=" << value;
-    if (state)
-      state->update(opt_error);
     emit valueChanged();
   }
+
+  return state;
 }
 
 }

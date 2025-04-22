@@ -23,23 +23,21 @@
 #include <QObject>
 #include <QQmlEngine>
 
-#include <zecalculator/parsing/data_structures/token.h>
 #include <zecalculator/error.h>
-
-#include "Utils/zc-utils.h"
+#include <zecalculator/parsing/data_structures/token.h>
 
 namespace zg {
 
 /// @brief QML-exposed "state" wrapper
-struct State: QObject {
-  Q_OBJECT
+struct State {
+  Q_GADGET
   QML_ELEMENT
 
   Q_PROPERTY(QString errorMsg READ getErrorMsg)
   Q_PROPERTY(Status status READ getStatus)
 
 public:
-  explicit State(QObject *parent = nullptr);
+  explicit State() = default;
 
   enum Status {NEUTRAL, VALID, INVALID};
   Q_ENUM(Status)
@@ -50,24 +48,24 @@ public:
 
   void update(const std::optional<zc::Error>& err);
 
-  void setInvalid(QString errorMsg, std::optional<zc::parsing::tokens::Text> errorToken);
-
   Q_INVOKABLE Status getStatus() const;
   Q_INVOKABLE QString getErrorMsg() const;
-  std::optional<zc::parsing::tokens::Text> getErrToken() const;
 
-public slots:
-  void setValid();
-  void setNeutral();
-  void setInvalid(QString errorMsg);
+  std::optional<zc::parsing::tokens::Text> getErrToken() const { if (opt_zc_error) return opt_zc_error->token; else return {}; }
 
-signals:
-  void updated();
+  bool operator == (const State&) const = default;
+
+  Q_INVOKABLE void setValid();
+  Q_INVOKABLE void setNeutral();
+
+  /// @brief set an error message coming from ZG
+  Q_INVOKABLE void setInvalid(QString zgErrorMsg);
 
 protected:
-
   QString errorMsg;
-  std::optional<zc::parsing::tokens::Text> errorToken;
+  /// @brief error that comes from the ZC backend
+  /// @note errors can come from ZG too, in which case this one will be empty
+  std::optional<zc::Error> opt_zc_error;
   Status status = NEUTRAL;
 };
 

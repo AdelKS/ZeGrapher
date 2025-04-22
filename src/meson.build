@@ -52,7 +52,6 @@ source_files = files(
   './GraphDraw/subgraph.cpp',
   './GraphDraw/viewmapper.cpp',
   './information.cpp',
-  './MathObjects/BuildingBlocks/statebb.cpp',
   './MathObjects/BuildingBlocks/zcmathobjectbb.cpp',
   './MathObjects/constant.cpp',
   './MathObjects/equation.cpp',
@@ -112,7 +111,6 @@ moc_header_files = files(
   './GraphDraw/interactivegraph.h',
   './GraphDraw/subgraph.h',
   './information.h',
-  './MathObjects/BuildingBlocks/statebb.h',
   './MathObjects/constant.h',
   './MathObjects/equation.h',
   './MathObjects/expr.h',
@@ -167,7 +165,6 @@ qml_files = files(
 qmlcpp_files = files(
   './GraphDraw/interactivegraph.h',
   './information.h',
-  './MathObjects/BuildingBlocks/statebb.h',
   './MathObjects/constant.h',
   './MathObjects/equation.h',
   './MathObjects/expr.h',

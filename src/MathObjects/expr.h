@@ -20,31 +20,36 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/statebb.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
+#include "Utils/state.h"
 
 namespace zg {
 namespace mathobj {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Expr : shared::StateBB, shared::ZcMathObjectBB {
+struct Expr : QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
   Q_PROPERTY(double value MEMBER value NOTIFY valueChanged)
   Q_PROPERTY(QString expression WRITE setExpression MEMBER expression)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName)
+  Q_PROPERTY(State state READ getState WRITE setState)
 
 public:
 
   explicit Expr(QObject *parent = nullptr);
 
-  Q_INVOKABLE void refresh();
-  Q_INVOKABLE void setExpression(QString expr);
-  Q_INVOKABLE void setImplicitName(QString name);
+  Q_INVOKABLE State setExpression(QString expr);
+  Q_INVOKABLE State setImplicitName(QString name);
+  Q_INVOKABLE State getState() const;
+  Q_INVOKABLE void setState(State);
 
   void setSlot(size_t slot);
   QString getImplicitName() const { return implicitName; };
+
+public slots:
+  State refresh();
 
 signals:
   void valueChanged();
@@ -58,7 +63,7 @@ protected:
   ///          will be forwarded to ZeCalculator as "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
-  std::optional<zc::Error> opt_error;
+  State state;
   std::optional<size_t> slot;
 };
 

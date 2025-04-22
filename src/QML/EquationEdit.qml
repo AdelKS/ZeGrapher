@@ -5,7 +5,10 @@ import QtQuick
 Item {
   id: root
 
+  required property MathObject mathObj
+
   property alias expression: zcExprEdit.expression
+  property alias exprEdit: zcExprEdit
   property alias backend: zcBackend
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
@@ -21,14 +24,17 @@ Item {
 
   Equation {
     id: zcBackend
-    equation: zcExprEdit.expression
-    state: zcExprEdit.state
   }
 
   ZcExprEdit {
     id: zcExprEdit
+    mathObj: root.mathObj
 
     anchors.left: parent.left
     anchors.right: parent.right
+  }
+
+  Component.onCompleted: {
+    root.mathObj.setBackend(zcBackend);
   }
 }

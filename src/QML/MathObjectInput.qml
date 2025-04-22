@@ -6,6 +6,8 @@ import QtQuick.Shapes
 Rectangle {
   id: root
 
+  property alias mathObj: m_mathObj
+
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   color: myPalette.window
@@ -33,7 +35,7 @@ Rectangle {
   }
 
   MathObject {
-    id: mathObj
+    id: m_mathObj
     style: plotStyle
   }
 
@@ -213,14 +215,23 @@ Rectangle {
         } else if (currentType === ObjectType.CONSTANT) {
           component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml");
         }
-        else console.error("Case not handled");
+        else
+        {
+          console.error("Case not handled");
+          return;
+        }
 
-        var widget = component.createObject(placeholder)
+        if (component.status !== Component.Ready)
+        {
+          console.error("Component not ready");
+          return;
+        }
+
+        var widget = component.createObject(placeholder, {"mathObj": root.mathObj})
 
         if (widget === null) {
           console.log("Error creating object");
         } else {
-          mathObj.setBackend(widget.backend);
           widget.width = Qt.binding(function (){ return placeholder.width });
           placeholder.height = Qt.binding(function (){ return widget.implicitHeight });
         }

@@ -22,6 +22,7 @@
 
 #include <QtQmlIntegration>
 #include <QObject>
+#include <QSyntaxHighlighter>
 
 #include "MathObjects/expr.h"
 #include "Utils/plotstyle.h"
@@ -36,6 +37,8 @@ struct MathObject: QObject {
   QML_ELEMENT
 
   Q_PROPERTY(PlotStyle* style MEMBER style)
+  Q_PROPERTY(QSyntaxHighlighter* highlighter MEMBER highlighter)
+  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 
@@ -46,11 +49,13 @@ public:
   Q_INVOKABLE void setBackend(mathobj::Equation*);
   Q_INVOKABLE void setBackend(mathobj::Expr*);
 
+  Q_INVOKABLE State setExpression(QString);
+  Q_INVOKABLE State getState() const;
+  Q_INVOKABLE void setState(State);
+
+
   void setSlot(size_t slot);
   std::optional<size_t> get_slot() const { return slot; }
-
-  /// @brief forwards the refresh() call to the current active backend
-  void refresh();
 
   QStringList handledMathObjects() const;
 
@@ -64,6 +69,14 @@ public:
   const T* getBackend() const;
 
   PlotStyle* style = nullptr;
+  QSyntaxHighlighter* highlighter = nullptr;
+
+public slots:
+  /// @brief forwards the refresh() call to the current active backend
+  State refresh();
+
+signals:
+  void stateChanged();
 
 protected:
   std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*> backend;

@@ -29,6 +29,63 @@ void MathObject::setBackend(mathobj::Constant* b)
     setSlot(*slot);
 }
 
+State MathObject::setExpression(QString expr)
+{
+  State old_sate = getState();
+
+  State new_state = std::visit(
+    zc::utils::overloaded{
+      [&](mathobj::Constant* v) {
+        return v->setName(expr);
+      },
+      [&](mathobj::Expr* v) {
+        return v->setExpression(expr);
+      },
+      [&](mathobj::Equation* v) {
+        return v->setEquation(expr);
+      },
+      [](std::monostate) {
+        return State();
+      },
+    },
+    backend
+  );
+
+  if (old_sate != new_state)
+    emit stateChanged();
+
+  return new_state;
+}
+
+State MathObject::getState() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [&](const auto* v) {
+        return v->getState();
+      },
+      [](std::monostate) {
+        return State();
+      },
+    },
+    backend
+  );
+}
+
+void MathObject::setState(State newState)
+{
+  std::visit(
+    zc::utils::overloaded{
+      [&](auto* v) {
+        return v->setState(newState);
+      },
+      [](std::monostate) {
+      },
+    },
+    backend
+  );
+}
+
 void MathObject::setSlot(size_t slot)
 {
   this->slot = slot;
@@ -66,12 +123,22 @@ QStringList MathObject::handledMathObjects() const
   );
 }
 
-void MathObject::refresh()
+State MathObject::refresh()
 {
-  std::visit(zc::utils::overloaded{
-    [](std::monostate) {},
-    [](auto* b) { b->refresh(); },
+  State old_sate = getState();
+
+  State new_state = std::visit(zc::utils::overloaded{
+    [](std::monostate) {return State(); },
+    [](auto* b) { return b->refresh(); },
   }, backend);
+
+  if (old_sate != new_state)
+    emit stateChanged();
+
+  if (highlighter)
+    highlighter->rehighlight();
+
+  return new_state;
 }
 
 MathObject::~MathObject()

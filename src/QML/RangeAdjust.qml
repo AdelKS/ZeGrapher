@@ -25,6 +25,8 @@ Rectangle {
       xminEdit.state.setInvalid("<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>");
       xmaxEdit.state.setInvalid("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>");
     }
+    xminEdit.refresh();
+    xmaxEdit.refresh();
     disableSignals = oldVal;
   }
 
@@ -42,6 +44,8 @@ Rectangle {
       yminEdit.state.setInvalid("<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>");
       ymaxEdit.state.setInvalid("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>");
     }
+    yminEdit.refresh();
+    ymaxEdit.refresh();
     disableSignals = oldVal;
   }
 

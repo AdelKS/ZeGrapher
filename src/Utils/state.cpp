@@ -1,69 +1,57 @@
 #include "state.h"
+#include "Utils/zc-utils.h"
+
 
 namespace zg {
 
-State::State(QObject *parent): QObject(parent)
-{}
-
 void State::update(const std::optional<zc::Error>& err)
 {
+  opt_zc_error = err;
+
   if (err)
   {
     if (err->type == zc::Error::EMPTY_EXPRESSION)
-      setNeutral();
+    {
+      status = State::NEUTRAL;
+      errorMsg.clear();
+    }
     else
-      setInvalid(zg::zcErrorToStr(*err), err->token);
+    {
+      status = State::INVALID;
+      errorMsg = zcErrorToStr(*err);
+    }
   }
-  else setValid();
-
+  else
+  {
+    status = State::VALID;
+    errorMsg.clear();
+  }
 }
+
 
 void State::setValid()
 {
-  bool changed = status != State::INVALID or errorToken.has_value() or not errorMsg.isEmpty();
-
   status = State::VALID;
-  errorToken.reset();
+  opt_zc_error.reset();
   errorMsg.clear();
-
-  if (changed)
-    emit updated();
 }
 
 void State::setNeutral()
 {
-  bool changed = status != State::NEUTRAL or errorToken.has_value() or not errorMsg.isEmpty();
-
   status = State::NEUTRAL;
-  errorToken.reset();
+  opt_zc_error.reset();
   errorMsg.clear();
-
-  if (changed)
-    emit updated();
 }
 
-void State::setInvalid(QString errorMsg)
+QString State::getErrorMsg() const { return errorMsg; };
+
+void State::setInvalid(QString zgErrorMsg)
 {
-  setInvalid(std::move(errorMsg), {});
-}
-
-void State::setInvalid(QString errorMsg, std::optional<zc::parsing::tokens::Text> errorToken)
-{
-  bool changed = status != State::INVALID or this->errorToken != errorToken
-                 or this->errorMsg != errorMsg;
-
-  status = State::INVALID;
-  this->errorToken = std::move(errorToken);
-  this->errorMsg = std::move(errorMsg);
-
-  if (changed)
-    emit updated();
+  opt_zc_error.reset();
+  errorMsg = zgErrorMsg;
+  status = INVALID;
 }
 
 State::Status State::getStatus() const { return status; }
-
-QString State::getErrorMsg() const { return errorMsg; }
-
-std::optional<zc::parsing::tokens::Text> State::getErrToken() const { return errorToken; }
 
 }

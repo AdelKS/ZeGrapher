@@ -7,8 +7,11 @@ import QtQuick.Controls
 Item {
   id: root
 
+  required property MathObject mathObj
+
   property alias name: zcExprEdit.expression
   property alias backend: zcBackend
+  property alias exprEdit: zcExprEdit
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
   implicitHeight: zcExprEdit.implicitHeight
@@ -23,8 +26,6 @@ Item {
 
   Constant {
     id: zcBackend
-    name: zcExprEdit.expression
-    state: zcExprEdit.state
   }
 
   RowLayout {
@@ -32,6 +33,8 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
+
+      mathObj: root.mathObj
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
@@ -61,8 +64,10 @@ Item {
         }
       }
     }
-
   }
 
+  Component.onCompleted: {
+    root.mathObj.setBackend(zcBackend);
+  }
 
 }

@@ -7,18 +7,20 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  property alias state: m_state
+  required property MathObject mathObj
+
   property alias expression: lineEdit.text
   property alias highlighter: mhighlighter
   readonly property alias exprHeight: lineEdit.height
 
   implicitHeight: lineEdit.height + errorLbl.height
 
-  function updateBorderColor() {
-    if (state.status === ZG.State.NEUTRAL) {
+  function refresh() {
+    errorLbl.setErrorMsg(mathObj.state.errorMsg);
+    if (mathObj.state.status === ZG.State.NEUTRAL) {
       console.log("ZcExprEdit: border color updated to neutral")
       lineEdit.border.color = "grey";
-    } else if (state.status === ZG.State.VALID) {
+    } else if (mathObj.state.status === ZG.State.VALID) {
       console.log("ZcExprEdit: border color updated to valid")
       lineEdit.border.color = Information.appSettings.validSyntax;
     } else {
@@ -27,13 +29,10 @@ Item {
     }
   }
 
-  ZG.State {
-    id: m_state
-
-    onUpdated: {
-      console.log("state updated")
-      errorLbl.setErrorMsg(m_state.errorMsg);
-      root.updateBorderColor();
+  Connections {
+    target: mathObj
+    function onStateChanged() {
+      root.refresh();
     }
   }
 
@@ -48,13 +47,12 @@ Item {
   Connections {
     target: Information
     function onAppSettingsChanged() {
-      root.updateBorderColor();
+      root.refresh();
     }
   }
 
   Highlighter {
     id: mhighlighter
-    state: m_state
     textDocument: lineEdit.textEdit.textDocument
   }
 
@@ -79,6 +77,10 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.top: lineEdit.bottom
+  }
 
+  Component.onCompleted: {
+    mhighlighter.mathObj = mathObj;
+    mathObj.highlighter = mhighlighter;
   }
 }

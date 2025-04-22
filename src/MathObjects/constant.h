@@ -20,34 +20,40 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/statebb.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
+#include "Utils/state.h"
+#include <optional>
 
 namespace zg {
 namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
 ///        which also fits in a single zc::DynMathObject
-struct Constant: shared::StateBB, shared::ZcMathObjectBB {
+struct Constant: QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER name)
+  Q_PROPERTY(State state READ getState WRITE setState)
 
 public:
 
   explicit Constant(QObject *parent = nullptr);
 
-  void setName(QString name);
+  State setName(QString name);
   QString getName() const { return name; }
   void setSlot(size_t slot);
 
+  Q_INVOKABLE void set_value(double val);
+  Q_INVOKABLE State getState() const;
+  Q_INVOKABLE void setState(State);
+
 public slots:
-  void refresh();
-  void set_value(double val);
+  State refresh();
 
 protected:
   QString input_name, name;
+  State state;
   std::optional<size_t> slot;
 };
 
