@@ -179,7 +179,6 @@ Rectangle {
       width: parent.width
       height: 0
       clip: true
-      showPointSettings: false
 
       Behavior on height { SmoothedAnimation { duration: 200 } }
 
@@ -190,7 +189,10 @@ Rectangle {
         },
         State {
           name: "shown"; when: styleButton.checked
-          PropertyChanges { styleWidget.height: 80 }
+          PropertyChanges {
+            explicit: false
+            styleWidget.height: styleWidget.implicitHeight
+          }
         }
       ]
     }

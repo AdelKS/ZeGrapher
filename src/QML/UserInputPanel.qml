@@ -53,16 +53,22 @@ Item {
 
         function createMathObjectInput() {
           var component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/MathObjectInput.qml");
+          if (component.status === Component.Error) {
+            console.error("Failed loading MathObjectInput.qml \n Error message:\n  |", component.errorString().replace("\n", "\n  | "));
+            return;
+          }
+
           var inputWidget = component.createObject(mathObjCol)
+
+          if (inputWidget === null) {
+            console.error("Error creating object");
+            return;
+          }
 
           inputWidget.width = Qt.binding(function (){ return mathObjCol.width - 5 });
 
           updateMinWidth(inputWidget.implicitWidth);
           inputWidget.implicitWidthChanged.connect(updateMinWidth);
-
-          if (inputWidget === null) {
-            console.log("Error creating object");
-          }
         }
 
         Component.onCompleted: createMathObjectInput()

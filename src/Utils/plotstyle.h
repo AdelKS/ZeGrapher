@@ -40,8 +40,14 @@ struct PlotStyle: QObject {
 
 public:
 
-  enum PointStyle : unsigned int { None, Rhombus, Disc, Square, Triangle, Cross };
+  enum PointStyle : int { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle)
+
+  enum CoordinateSystem: int {Cartesian, Polar};
+  Q_ENUM(CoordinateSystem);
+
+  enum ObjectType: int {Continuous, Discrete};
+  Q_ENUM(ObjectType);
 
   explicit PlotStyle(QObject *parent = nullptr);
 
@@ -51,6 +57,14 @@ public:
   Qt::PenStyle lineStyle = Qt::SolidLine;
   double pointWidth = 1.0;
   PointStyle pointStyle = None;
+  CoordinateSystem coordinates = Cartesian;
+  ObjectType type = Continuous;
+  double cartesianStart = 0;
+  double cartesianEnd = 10;
+  double cartesianStep = 1;
+  double polarStart = 0;
+  double polarEnd = 2*std::numbers::pi;
+  double polarStep = std::numbers::pi/6.;
 
 signals:
   void updated();
