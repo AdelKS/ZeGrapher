@@ -36,39 +36,41 @@ void FuncValuesSaver::clear_hidden_pts()
   const zg::view_unit viewUnitStep = pixelStep / mapper.x.getRange<zg::pixel>().amplitude()
                                      * mapper.x.getRange<zg::view>().amplitude();
 
-  zg::Range1D<zg::u<zg::view>> range{.min = mapper.x.getRange<zg::view>().min - viewUnitStep,
-                                     .max = mapper.x.getRange<zg::view>().max + viewUnitStep};
-
-
-  if (not bool(viewRange.intersection(range)))
-  {
-    for (auto& [_, funcCurve]: funCurves)
-      funcCurve.curve.clear();
-
-    return;
-  }
+  const zg::real_range1d graph_range = mapper.x.getRange<zg::real>();
 
   for (auto& [_, funcCurve]: funCurves)
   {
-    // clear from the right
-    size_t vals_to_pop = 0;
-    while (not funcCurve.curve.empty()
-           and vals_to_pop < funcCurve.curve.size()
-           and mapper.x.to<zg::view>((funcCurve.curve.crbegin() + vals_to_pop)->x)
-                 >= range.max)
-      vals_to_pop++;
+    if (auto opt_object_range = graph_range.intersection(funcCurve.style.range))
+    {
+      zg::view_range1d object_range = mapper.x.to<zg::view>(*opt_object_range);
+      object_range.min -= viewUnitStep;
+      object_range.max += viewUnitStep;
 
-    funcCurve.curve.resize(funcCurve.curve.size() - vals_to_pop);
+      // clear from the right
+      size_t vals_to_pop = 0;
+      while (not funcCurve.curve.empty()
+             and vals_to_pop < funcCurve.curve.size()
+             and mapper.x.to<zg::view>((funcCurve.curve.crbegin() + vals_to_pop)->x)
+                   >= object_range.max)
+        vals_to_pop++;
 
-    // clear from the left
-    vals_to_pop = 0;
-    while (not funcCurve.curve.empty()
-           and vals_to_pop < funcCurve.curve.size()
-           and mapper.x.to<zg::view>(funcCurve.curve[vals_to_pop].x) <= range.min)
+      funcCurve.curve.resize(funcCurve.curve.size() - vals_to_pop);
 
-      vals_to_pop++;
+      // clear from the left
+      vals_to_pop = 0;
+      while (not funcCurve.curve.empty()
+             and vals_to_pop < funcCurve.curve.size()
+             and mapper.x.to<zg::view>(funcCurve.curve[vals_to_pop].x) <= object_range.min)
 
-    funcCurve.curve.erase(funcCurve.curve.begin(), funcCurve.curve.begin() + vals_to_pop);
+        vals_to_pop++;
+
+      funcCurve.curve.erase(funcCurve.curve.begin(), funcCurve.curve.begin() + vals_to_pop);
+    }
+    else
+    {
+      funcCurve.curve.clear();
+      continue;
+    }
   }
 }
 
@@ -78,6 +80,7 @@ void FuncValuesSaver::refresh_valid_functions()
 
   for (auto&& [f, style] : information.getValidFuncs())
   {
+    Q_ASSERT(style);
     if (auto node = funCurves.extract(f))
       curves.insert(std::move(node));
     else
@@ -92,9 +95,21 @@ void FuncValuesSaver::compute_uniform_visible_pts(const zc::DynMathObject<zc_t>&
   const zg::view_unit viewUnitStep = pixelStep / mapper.x.getRange<zg::pixel>().amplitude()
                                      * mapper.x.getRange<zg::view>().amplitude();
 
-  using RangeT = zg::Range1D<zg::u<zg::view>>;
-  RangeT current_range{.min = mapper.x.getRange<zg::view>().min - viewUnitStep,
-                       .max = mapper.x.getRange<zg::view>().max + viewUnitStep};
+  const zg::real_range1d monitor_range = mapper.x.getRange<zg::real>();
+
+  zg::view_range1d current_range;
+  if (auto opt_range = monitor_range.intersection(f_curve.style.range))
+  {
+    current_range = mapper.x.to<zg::view>(*opt_range);
+    current_range.min -= viewUnitStep;
+    current_range.max += viewUnitStep;
+  }
+  else
+  {
+    f_curve.curve.clear();
+    qDebug() << "Skipping computing uniform points for " << f.get_name();
+    return;
+  }
 
   auto get_func_y = [&f](zg::real_unit x_real)
   {
@@ -107,7 +122,7 @@ void FuncValuesSaver::compute_uniform_visible_pts(const zc::DynMathObject<zc_t>&
 
   auto add_pts = [&]<Side side>(std::integral_constant<Side, side>)
   {
-    RangeT loop_range;
+    zg::view_range1d loop_range;
     if (f_curve.curve.empty()) [[unlikely]]
       loop_range = current_range;
     else

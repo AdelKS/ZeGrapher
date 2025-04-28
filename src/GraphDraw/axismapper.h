@@ -95,6 +95,9 @@ public:
   template <plane q, plane p>
   unit<u<q>> to(unit<u<p>> x) const;
 
+  template <plane q, plane p>
+  Range1D<u<q>> to(const Range1D<u<p>>& r) const;
+
 protected:
   template <plane p>
   Range1D<u<p>>& getRange();
@@ -238,6 +241,13 @@ unit<u<q>> ZeAxisMapper<axis>::to(unit<u<p>> x) const
     }
     return result;
   }
+}
+
+template <ZeAxisName axis>
+template <plane q, plane p>
+Range1D<u<q>> ZeAxisMapper<axis>::to(const Range1D<u<p>>& r) const
+{
+  return Range1D<u<q>>{to<q>(r.min), to<q>(r.max)};
 }
 
 template <ZeAxisName axis>
