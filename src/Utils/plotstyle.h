@@ -24,6 +24,8 @@
 #include <QObject>
 #include <QtQmlIntegration>
 
+#include "GraphDraw/axismapper.h"
+
 namespace zg {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
@@ -37,13 +39,25 @@ struct PlotStyle: QObject {
   Q_PROPERTY(Qt::PenStyle lineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
+  Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
+  Q_PROPERTY(bool continuous MEMBER continuous NOTIFY continuousChanged)
+  Q_PROPERTY(double start WRITE setStart READ getStart NOTIFY rangeChanged)
+  Q_PROPERTY(double end WRITE setEnd READ getEnd NOTIFY rangeChanged)
+  Q_PROPERTY(double step WRITE setStep READ getStep NOTIFY rangeChanged)
 
 public:
 
-  enum PointStyle : unsigned int { None, Rhombus, Disc, Square, Triangle, Cross };
+  enum PointStyle : int { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle)
 
+  enum CoordinateSystem: int {Cartesian, Polar};
+  Q_ENUM(CoordinateSystem);
+
   explicit PlotStyle(QObject *parent = nullptr);
+
+  Q_INVOKABLE double getStart();
+  Q_INVOKABLE double getEnd();
+  Q_INVOKABLE double getStep();
 
   bool visible = true;
   QColor color = Qt::black;
@@ -51,6 +65,15 @@ public:
   Qt::PenStyle lineStyle = Qt::SolidLine;
   double pointWidth = 1.0;
   PointStyle pointStyle = None;
+  CoordinateSystem coordinateSystem = Cartesian;
+  bool continuous = true;
+  zg::real_range1d range;
+  zg::real_unit step = {1.};
+
+public slots:
+  void setStart(double);
+  void setEnd(double);
+  void setStep(double);
 
 signals:
   void updated();
@@ -61,6 +84,9 @@ signals:
   void pointWidthChanged();
   void lineStyleChanged();
   void backendChanged();
+  void coordinateSystemChanged();
+  void continuousChanged();
+  void rangeChanged();
 };
 
 }

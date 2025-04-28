@@ -44,6 +44,14 @@ using view_pt = point<u<plane::view>>;
 using pixel_pt = point<u<plane::pixel>>;
 using real_pt = point<u<plane::real>>;
 
+using view_range1d = Range1D<u<plane::view>>;
+using pixel_range1d = Range1D<u<plane::pixel>>;
+using real_range1d = Range1D<u<plane::real>>;
+
+using view_range2d = Range2D<u<plane::view>>;
+using pixel_range2d = Range2D<u<plane::pixel>>;
+using real_range2d = Range2D<u<plane::real>>;
+
 template <ZeAxisName axis>
 class ZeAxisMapper
 {

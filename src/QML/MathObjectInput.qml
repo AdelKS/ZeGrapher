@@ -32,6 +32,11 @@ Rectangle {
     lineWidth: styleWidget.lineWidth
     pointStyle: styleWidget.pointStyle
     pointWidth: styleWidget.pointWidth
+    coordinateSystem: styleWidget.coordinateSystem
+    continuous: styleWidget.continuous
+    start: styleWidget.start
+    end: styleWidget.end
+    step: styleWidget.step
   }
 
   MathObject {
@@ -179,18 +184,20 @@ Rectangle {
       width: parent.width
       height: 0
       clip: true
-      showPointSettings: false
 
       Behavior on height { SmoothedAnimation { duration: 200 } }
 
       states: [
         State {
-          name: "hidden"; when: !styleButton.checked
+          name: "hidden"; when: !styleButton.checked || !styleButton.visible
           PropertyChanges { styleWidget.height: 0 }
         },
         State {
-          name: "shown"; when: styleButton.checked
-          PropertyChanges { styleWidget.height: 80 }
+          name: "shown"; when: styleButton.checked && styleButton.visible
+          PropertyChanges {
+            explicit: false
+            styleWidget.height: styleWidget.implicitHeight
+          }
         }
       ]
     }
