@@ -1,4 +1,10 @@
-if host_machine.system() == 'linux'
+if host_machine.system() == 'darwin' # macos
+    install_data('ZeGrapher.icns', install_dir : 'Contents/Resources')
+    install_data('Info.plist', install_dir : 'Contents')
+elif host_machine.system() == 'windows'
+    # TODO: can we actually properly install stuff on windows ?
+else
+    # Treat everything else the same
     install_data('ZeGrapher.metainfo.xml', install_dir : get_option('datadir') / 'metainfo')
     # https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html
 
@@ -23,7 +29,4 @@ if host_machine.system() == 'linux'
 
     install_data('ZeGrapher.desktop', install_dir : get_option('datadir') / 'applications')
     # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s02.html
-elif host_machine.system() == 'darwin' # macos
-    install_data('ZeGrapher.icns', install_dir : 'Contents/Resources')
-    install_data('Info.plist', install_dir : 'Contents')
 endif
