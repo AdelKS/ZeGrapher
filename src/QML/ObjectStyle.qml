@@ -79,18 +79,12 @@ Item {
     }
 
     ColumnLayout {
-      Layout.fillHeight: true
       Layout.alignment: Qt.AlignHCenter
-      Layout.preferredHeight: implicitHeight
 
       ImageTumbler {
         id: lineStyleTumbler
         Layout.alignment: Qt.AlignHCenter
         model: lineStyleModel
-
-        Component.onCompleted: {
-          lineStyleTumbler.implicitHeight = 40
-        }
       }
       SpinBox {
         id: lineWidthSpinBox
@@ -108,20 +102,13 @@ Item {
     }
 
     ColumnLayout {
-      Layout.fillHeight: true
       Layout.alignment: Qt.AlignHCenter
-      Layout.preferredHeight: implicitHeight
 
       ImageTumbler {
         id: pointStyleTumbler
         Layout.alignment: Qt.AlignHCenter
         model: pointStyleModel
         fillMode: Image.PreserveAspectFit
-        maxWidth: 18
-
-        Component.onCompleted: {
-          pointStyleTumbler.implicitHeight = 40
-        }
       }
       SpinBox {
         id: pointWidthSpinBox
@@ -151,8 +138,12 @@ Item {
           PropertyChanges {
             stepLabel.opacity: 0.
             step.opacity: 0.
+            pointStyleTumbler.opacity: 0
+            pointWidthSpinBox.opacity: 0
             stepLabel.visible: false
             step.visible: false
+            pointStyleTumbler.visible: false
+            pointWidthSpinBox.visible: false
           }
         },
         State {
@@ -161,8 +152,12 @@ Item {
           PropertyChanges {
             stepLabel.opacity: 1.
             step.opacity: 1.
+            pointStyleTumbler.opacity: 1.
+            pointWidthSpinBox.opacity: 1.
             stepLabel.visible: true
             step.visible: true
+            pointStyleTumbler.visible: true
+            pointWidthSpinBox.visible: true
           }
         }
       ]
