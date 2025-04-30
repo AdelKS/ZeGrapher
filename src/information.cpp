@@ -283,7 +283,7 @@ void Information::updateValidMathObjects()
 
     const zc::DynMathObject<zc_t>* zc_obj = zc ? &zc->zcMathObj : expr ? &expr->zcMathObj : nullptr;
 
-    if (not zc_obj)
+    if (not zc_obj or not(*zc_obj))
       continue;
 
     const QString object_name = QString::fromStdString(std::string(zc_obj->get_name()));
