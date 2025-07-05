@@ -86,8 +86,17 @@ struct point
 {
   unit<U> x = {}, y = {};
 
-  point& translate(point vec) { x += vec.x; y *= vec.y; return *this; }
-  point translated(point vec) const { return point{.x = x + vec, .y = x + vec}; }
+  point& operator *= (double f)
+  {
+    x *= f;
+    y *= f;
+    return *this;
+  }
+
+  double dot(const point& other) const
+  {
+    return x.v * other.x.v + y.v * other.y.v;
+  }
 
   double square_length() const { return x.v*x.v + y.v*y.v; };
 
@@ -117,6 +126,18 @@ template <UnitType U>
 point<U> operator + (const point<U>& a, const point<U>& b)
 {
   return point<U>{.x = a.x + b.x, .y = a.y + b.y};
+}
+
+template <UnitType U>
+point<U> operator * (double f, const point<U>& a)
+{
+  return point<U>{.x = f * a.x, .y = f * a.y};
+}
+
+template <UnitType U>
+point<U> operator * (double f, point<U>&& a)
+{
+  return (a *= f);
 }
 
 template <UnitType U>
