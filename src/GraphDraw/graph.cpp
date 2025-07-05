@@ -223,7 +223,6 @@ void Graph::paint(QPainter *p)
 void Graph::drawAll()
 {
   information.updateValidMathObjects();
-  funcValuesSaver.update();
   painter->setFont(information.getGraphSettings().graphFont);
   fontMetrics = painter->fontMetrics();
 

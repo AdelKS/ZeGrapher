@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2025, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -21,23 +21,13 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
+#include "Utils/funccurve.h"
 
 #include <zecalculator/zecalculator.h>
-#include <unordered_set>
 
 namespace zg {
   struct PlotStyle;
 }
-
-struct FuncCurve
-{
-  const zg::PlotStyle& style;
-
-  void clear() { curve.clear(); discontinuities.clear(); }
-
-  std::vector<zg::real_pt> curve = {};
-  std::unordered_set<size_t> discontinuities = {};
-};
 
 class FuncValuesSaver
 {
@@ -57,24 +47,11 @@ public:
 
 protected:
 
-  enum Side {LEFT, RIGHT};
-
-  /// @brief removes points that are not within the view, i.e. invisible
-  void clear_hidden_pts();
-
-  /// @brief computes points on uniformly distributed view abscissas
-  void compute_uniform_visible_pts(const zc::DynMathObject<zc_t> &f, FuncCurve&);
-
-  /// @brief computes more points where the function variation is too steep
-  void refine_visible_pts(const zc::DynMathObject<zc_t> &f, FuncCurve&);
-
-  /// @brief computes more points where the function variation is too steep
-  void find_discontinuities(const zc::DynMathObject<zc_t> &f, FuncCurve&);
+  void compute_pts(const zc::DynMathObject<zc_t> &f, zg::FuncCurve&);
 
   const zg::ZeViewMapper& mapper;
 
-  std::unordered_map<const zc::DynMathObject<zc_t>*, FuncCurve> funCurves;
+  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::FuncCurve> funCurves;
   zg::pixel_unit pixelStep;
-  size_t pxStepMaxDivider = 32;
   zg::Range1D<zg::u<zg::view>> viewRange;
 };

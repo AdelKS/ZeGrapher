@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2025, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -20,7 +20,6 @@
 
 #include "Calculus/funcvaluessaver.h"
 #include "information.h"
-#include "Utils/algos.h"
 
 FuncValuesSaver::FuncValuesSaver(const zg::ZeViewMapper& mapper, double pxStep)
   : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
@@ -31,52 +30,9 @@ void FuncValuesSaver::setPixelStep(double pxStep)
   pixelStep = zg::pixel_unit{pxStep};
 }
 
-void FuncValuesSaver::clear_hidden_pts()
-{
-  const zg::view_unit viewUnitStep = pixelStep / mapper.x.getRange<zg::pixel>().amplitude()
-                                     * mapper.x.getRange<zg::view>().amplitude();
-
-  const zg::real_range1d graph_range = mapper.x.getRange<zg::real>();
-
-  for (auto& [_, funcCurve]: funCurves)
-  {
-    if (auto opt_object_range = graph_range.intersection(funcCurve.style.range))
-    {
-      zg::view_range1d object_range = mapper.x.to<zg::view>(*opt_object_range);
-      object_range.min -= viewUnitStep;
-      object_range.max += viewUnitStep;
-
-      // clear from the right
-      size_t vals_to_pop = 0;
-      while (not funcCurve.curve.empty()
-             and vals_to_pop < funcCurve.curve.size()
-             and mapper.x.to<zg::view>((funcCurve.curve.crbegin() + vals_to_pop)->x)
-                   >= object_range.max)
-        vals_to_pop++;
-
-      funcCurve.curve.resize(funcCurve.curve.size() - vals_to_pop);
-
-      // clear from the left
-      vals_to_pop = 0;
-      while (not funcCurve.curve.empty()
-             and vals_to_pop < funcCurve.curve.size()
-             and mapper.x.to<zg::view>(funcCurve.curve[vals_to_pop].x) <= object_range.min)
-
-        vals_to_pop++;
-
-      funcCurve.curve.erase(funcCurve.curve.begin(), funcCurve.curve.begin() + vals_to_pop);
-    }
-    else
-    {
-      funcCurve.curve.clear();
-      continue;
-    }
-  }
-}
-
 void FuncValuesSaver::refresh_valid_functions()
 {
-  std::unordered_map<const zc::DynMathObject<zc_t>*, FuncCurve> curves;
+  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::FuncCurve> curves;
 
   for (auto&& [f, style] : information.getValidFuncs())
   {
@@ -84,233 +40,155 @@ void FuncValuesSaver::refresh_valid_functions()
     if (auto node = funCurves.extract(f))
       curves.insert(std::move(node));
     else
-      curves.emplace(f, FuncCurve{*style});
+      curves.emplace(f, zg::FuncCurve{*style});
   }
 
   funCurves = std::move(curves);
 }
 
-void FuncValuesSaver::compute_uniform_visible_pts(const zc::DynMathObject<zc_t>& f, FuncCurve& f_curve)
+/// @brief returns the square distance between B and the segment [AB]
+double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, const zg::pixel_pt& B) {
+  const zg::pixel_pt AB = B - A;
+  const zg::pixel_pt AP = P - A;
+  const double t = std::max(0., std::min(AP.dot(AB) / AB.square_length(), 1.));
+  return (AP - t * AB).square_length();
+};
+
+void FuncValuesSaver::compute_pts(const zc::DynMathObject<zc_t> &f, zg::FuncCurve& data)
 {
-  const zg::view_unit viewUnitStep = pixelStep / mapper.x.getRange<zg::pixel>().amplitude()
-                                     * mapper.x.getRange<zg::view>().amplitude();
-
-  const zg::real_range1d monitor_range = mapper.x.getRange<zg::real>();
-
-  zg::view_range1d current_range;
-  if (auto opt_range = monitor_range.intersection(f_curve.style.range))
+  auto get_f_pt = [&f](zg::real_unit x)
   {
-    current_range = mapper.x.to<zg::view>(*opt_range);
-    current_range.min -= viewUnitStep;
-    current_range.max += viewUnitStep;
-  }
-  else
-  {
-    f_curve.curve.clear();
-    qDebug() << "Skipping computing uniform points for " << f.get_name();
-    return;
-  }
-
-  auto get_func_y = [&f](zg::real_unit x_real)
-  {
-    tl::expected<double, zc::Error> exp_y_real = f({x_real.v}, &information.mathObjectCache);
+    tl::expected<double, zc::Error> exp_y_real = f({x.v}, &information.mathObjectCache);
 
     if (exp_y_real.has_value())
-      return zg::real_unit{*exp_y_real};
-    else return zg::real_unit{std::nan("")};
+      return zg::real_pt{x, {*exp_y_real}};
+    else return zg::real_pt{x, {std::nan("")}};
   };
 
-  auto add_pts = [&]<Side side>(std::integral_constant<Side, side>)
+  const double sq_px_step = pixelStep.v * pixelStep.v;
+
+  const std::vector<zg::real_unit>& input_vals = data.get_input();
+  const std::vector<zg::real_pt>& curve = data.get_curve();
+
+  // clear from the right
+  if (not input_vals.empty())
   {
-    zg::view_range1d loop_range;
-    if (f_curve.curve.empty()) [[unlikely]]
-      loop_range = current_range;
-    else
+    size_t vals_to_pop = 0;
+    while (input_vals[input_vals.size() - vals_to_pop - 1] > data.style.range.max)
+      vals_to_pop++;
+
+    data.pop_back(vals_to_pop);
+
+    vals_to_pop = 0;
+    while (input_vals[vals_to_pop] < data.style.range.min)
+      vals_to_pop++;
+
+    data.pop_front(vals_to_pop);
+  }
+
+  qDebug() << "Object caching: " << f.get_name()
+    << " sampling range: min=" << QString::number(data.style.range.min.v, 'g', 14)
+    << " max=" << QString::number(data.style.range.max.v, 'g', 14);
+
+  auto min_pt = get_f_pt(data.style.range.min);
+  if (curve.empty()
+      or (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front())).square_length()
+           > sq_px_step)
+    data.insert_pt(0, data.style.range.min, min_pt);
+
+  auto max_pt = get_f_pt(data.style.range.max);
+  if (curve.size() == 1
+      or (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back())).square_length()
+           > sq_px_step)
+    data.insert_pt(curve.size(), data.style.range.max, max_pt);
+
+  assert(curve.size() >= 2);
+
+  size_t i = 0;
+
+  while (i + 1 < input_vals.size())
+  {
+    const size_t i_b = i;
+    const zg::real_unit& b = input_vals[i_b];
+    const zg::real_pt& B = curve[i_b];
+    const zg::pixel_pt px_B = mapper.to<zg::pixel>(B);
+
+    const size_t i_c = i+1;
+    const zg::real_unit& c = input_vals[i_c];
+    const zg::real_pt& C = curve[i_c];
+    const zg::pixel_pt px_C = mapper.to<zg::pixel>(C);
+
+    const zg::real_unit bc = c - b;
+    const zg::pixel_pt px_BC = px_C - px_B;
+
+    if (px_BC.square_length() > sq_px_step)
     {
-      if constexpr (side == LEFT)
+      if (bc > data.get_smallest_allowed_step())
       {
-        loop_range.min = current_range.min;
-        loop_range.max = mapper.x.to<zg::view>(f_curve.curve.front().x);
+        const zg::real_unit mid_input = (c + b) / 2.;
+        data.insert_pt(i_c, mid_input, get_f_pt(mid_input));
+        i = i_b;
       }
       else
       {
-        loop_range.min = mapper.x.to<zg::view>(f_curve.curve.back().x) + viewUnitStep;
-        loop_range.max = current_range.max;
+        // try to figure out if there's a discontinuity
+
+        bool is_discontinuity = true;
+        if (i > 0)
+        {
+          const size_t i_a = i-1;
+          const zg::real_pt& A = curve[i_a];
+          const zg::pixel_pt px_A = mapper.to<zg::pixel>(A);
+
+          const zg::pixel_pt px_AB = px_B - px_A;
+
+          double dot = px_AB.dot(px_BC);
+          if (sq_dist_to_segment(px_A, px_B, px_C) < 4 * sq_px_step and dot > 0
+              and dot * dot > 0.9 * px_AB.square_length() * px_BC.square_length())
+            is_discontinuity = false;
+        }
+        if (is_discontinuity and i + 1 < input_vals.size())
+        {
+          const size_t i_d = i+2;
+          const zg::real_pt& D = curve[i_d];
+          const zg::pixel_pt px_D = mapper.to<zg::pixel>(D);
+
+          const zg::pixel_pt px_CD = px_D - px_C;
+
+          double dot = px_BC.dot(px_CD);
+          if (sq_dist_to_segment(px_B, px_C, px_D) < 4 * sq_px_step and dot > 0
+              and dot * dot > 0.9 * px_BC.square_length() * px_CD.square_length())
+            is_discontinuity = false;
+        }
+
+        if (is_discontinuity)
+          data.discontinuities.insert(i_c);
+
+        i = i_c;
       }
     }
-
-    std::vector<zg::real_pt> extra_pts;
-    for (zg::view_unit x_view = loop_range.min; x_view < loop_range.max; x_view += viewUnitStep)
-    {
-      zg::real_unit x_real = mapper.x.to<zg::real>(x_view);
-      extra_pts.push_back({.x = x_real, .y = get_func_y(x_real)});
-    }
-
-    if (not extra_pts.empty())
-    {
-      if constexpr (side == LEFT)
-      {
-        qInfo() << "function " << f.get_name() << " - added " << extra_pts.size() << " uniform pts LEFT";
-        zg::utils::move_elements_right(f_curve.curve, extra_pts.size());
-        std::ranges::copy(extra_pts, f_curve.curve.begin());
-      }
-      else
-      {
-        qInfo() << "function " << f.get_name() << " - added " << extra_pts.size() << " uniform pts RIGHT";
-        f_curve.curve.reserve(f_curve.curve.size() + extra_pts.size());
-        std::ranges::copy(extra_pts, std::back_inserter(f_curve.curve));
-      }
-    }
-  };
-
-  add_pts(std::integral_constant<Side, LEFT>());
-  add_pts(std::integral_constant<Side, RIGHT>());
-}
-
-void FuncValuesSaver::refine_visible_pts(const zc::DynMathObject<zc_t>& f, FuncCurve& f_curve)
-{
-  const zg::pixel_unit minPixelStep = pixelStep / double(pxStepMaxDivider);
-  const double pxStepSq = pixelStep.v * pixelStep.v;
-
-  auto& curve = f_curve.curve;
-
-  struct ExtraPt
-  {
-    size_t i;
-    zg::real_pt pt;
-  };
-
-  auto get_func_y = [&f](zg::real_unit x_real)
-  {
-    tl::expected<double, zc::Error> exp_y_real = f({x_real.v}, &information.mathObjectCache);
-
-    if (exp_y_real.has_value())
-      return zg::real_unit{*exp_y_real};
-    else return zg::real_unit{std::nan("")};
-  };
-
-  std::vector<ExtraPt> extra_pts;
-  do {
-    curve.reserve(curve.size() + extra_pts.size());
-    if (not extra_pts.empty())
-    {
-      qInfo() << "function " << f.get_name() << " added " << extra_pts.size()
-              << " extra points in refining stage.";
-      size_t inserted_num = 0;
-      for (const ExtraPt& xpt: extra_pts)
-      {
-        curve.insert(curve.begin() + xpt.i + inserted_num, xpt.pt);
-        inserted_num++;
-      }
-    }
-
-    extra_pts.clear();
-
-    if (curve.size() <= 2)
-      continue;
-
-    for (size_t i = 0 ; i+2 != curve.size() ; i++)
-    {
-      if (std::isnan(curve[i].y.v) or std::isnan(curve[i+1].y.v))
-        continue;
-
-      const zg::pixel_pt px_pt0 = mapper.to<zg::pixel>(curve[i]);
-      const zg::pixel_pt px_pt1 = mapper.to<zg::pixel>(curve[i+1]);
-
-      if ((px_pt0 - px_pt1).square_length() > pxStepSq and (px_pt0.x - px_pt1.x).length() > minPixelStep)
-      {
-        // the two points are too far apart, and we can still subdivide
-        zg::real_unit real_x = mapper.x.to<zg::real>(0.5 * px_pt0.x + 0.5 * px_pt1.x);
-        extra_pts.push_back({.i = i+1, .pt = {.x = real_x, .y = get_func_y(real_x)}});
-      }
-    }
+    else i++;
   }
-  while (not extra_pts.empty());
-}
 
-void FuncValuesSaver::find_discontinuities(const zc::DynMathObject<zc_t>& f, FuncCurve& f_curve)
-{
-  const zg::pixel_unit minPixelStep = pixelStep / double(pxStepMaxDivider);
-  const double pxStepSq = pixelStep.v * pixelStep.v;
-
-  auto& curve = f_curve.curve;
-
-  f_curve.discontinuities.clear();
-
-  constexpr size_t slice_size = 5;
-  if (curve.size() <= slice_size)
-    return;
-
-  std::vector<zg::pixel_pt> px_pts;
-  px_pts.reserve(curve.size());
-
-  std::ranges::transform(curve, std::back_inserter(px_pts),
-                         [&](const zg::real_pt& pt) { return mapper.to<zg::pixel>(pt); });
-
-  std::vector<double> px_sq_lengths;
-  px_sq_lengths.reserve(curve.size());
-
-  for (size_t j = 0 ; j+1 != curve.size() ; j++)
-    px_sq_lengths.push_back((px_pts[j+1] - px_pts[j]).square_length());
-
-  std::array<zg::real_pt, slice_size> sub_arr;
-  std::array<zg::pixel_pt, slice_size> sub_px_arr;
-  std::array<double, slice_size-1> sub_sql_arr;
-
-  for (size_t i = 0 ; i+slice_size != curve.size() ; i++)
+  qDebug() << "Object caching: " << f.get_name() << " curve has " << curve.size() << " points and " << data.discontinuities.size() << " discontinuities.";
+  i = 1;
+  for (size_t index : data.discontinuities)
   {
-    auto subrange = std::ranges::subrange(curve.begin() + i, curve.begin() + i + slice_size);
-    auto px_subrange = std::ranges::subrange(px_pts.begin() + i, px_pts.begin() + i + slice_size);
-    auto px_sql_subrange = std::ranges::subrange(px_sq_lengths.begin() + i, px_sq_lengths.begin() + i + slice_size - 1);
-
-    std::ranges::copy(subrange, sub_arr.begin());
-    std::ranges::copy(px_subrange, sub_px_arr.begin());
-    std::ranges::copy(px_sql_subrange, sub_sql_arr.begin());
-
-    if (std::ranges::any_of(subrange, [](const zg::real_pt& pt){ return std::isnan(pt.y.v); }))
-      continue;
-
-    if (std::ranges::all_of(px_sql_subrange, [pxStepSq](double sql){ return sql > pxStepSq; }))
-    {
-      constexpr auto indices = std::views::iota(0ul, slice_size-2);
-      if (std::ranges::all_of(indices, [&](size_t j) { return subrange[j].y <= subrange[j + 1].y; }))
-        if(subrange.front().y >= subrange.back().y)
-          f_curve.discontinuities.insert(i+slice_size-1);
-      if (std::ranges::all_of(indices, [&](size_t j) { return subrange[j].y >= subrange[j + 1].y; }))
-        if(subrange.front().y <= subrange.back().y)
-          f_curve.discontinuities.insert(i+slice_size-1);
-    }
-
-    if (f_curve.discontinuities.contains(i+slice_size/2+1))
-      continue;
-
-    if (px_sql_subrange[slice_size/2] > pxStepSq)
-    {
-      Q_ASSERT((px_subrange[slice_size/2].x - px_subrange[slice_size/2+1].x).length() <= minPixelStep);
-      // the step above should've already subdivided here, so we should be under minViewUnitStep
-
-      if (px_sql_subrange[slice_size / 2] >= 4 * px_sql_subrange[slice_size / 2 - 1]
-          and px_sql_subrange[slice_size / 2] >= 4 * px_sql_subrange[slice_size / 2 + 1])
-        // no explanation, this is just an intuition of mine haha
-        f_curve.discontinuities.insert(i+slice_size/2+1);
-    }
+    qDebug() << "- Discontinuity " << i << ": between ( " << data.get_curve()[index-1].x.v << ", " << data.get_curve()[index-1].y.v << " ) and (" << data.get_curve()[index].x.v << ", " << data.get_curve()[index].y.v << " )";
+    i++;
   }
-  qInfo() << "function " << f.get_name() << " found : " << f_curve.discontinuities.size() << " discontinuities";
+
 }
 
 void FuncValuesSaver::update()
 {
   refresh_valid_functions();
-  clear_hidden_pts();
 
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
-  for (auto& [f, curve]: funCurves)
-  {
-    compute_uniform_visible_pts(*f, curve);
-    refine_visible_pts(*f, curve);
-    find_discontinuities(*f, curve);
-  }
+  for (auto& [f, data]: funCurves)
+    compute_pts(*f, data);
+
 }
 
 void FuncValuesSaver::clearCache(QStringList objectNames)

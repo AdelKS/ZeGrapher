@@ -228,9 +228,11 @@ void MathObjectDraw::drawFunctions()
     if (not f_curve.style.visible)
       continue;
 
-    for (size_t i = 0; i != f_curve.curve.size(); i++)
+    const auto& curve = f_curve.get_curve();
+
+    for (size_t i = 0; i != curve.size(); i++)
     {
-      const auto& pt = f_curve.curve[i];
+      const auto& pt = curve[i];
       if (std::isnan(pt.y.v) or f_curve.discontinuities.contains(i))
         draw_mapped_curve(f_curve.style);
 
