@@ -126,24 +126,27 @@ void MathObject::setSlot(size_t slot)
   );
 }
 
-QStringList MathObject::handledMathObjects() const
+QString MathObject::getName() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [](const zg::mathobj::Expr* expr) -> QStringList {
-        return {expr->getName()};
+      [](const auto* e) {
+        return e->getName();
       },
-      [](const zg::mathobj::Equation* eq) -> QStringList {
-        if (QString name = eq->getName(); not name.isEmpty())
-          return {name};
-        else return {};
+      [](std::monostate) { return QString{}; },
+    },
+    backend
+  );
+}
+
+QStringList MathObject::directDependencies() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [](const auto* e) {
+        return QStringList{e->getName()};
       },
-      [](const zg::mathobj::Constant* cst) -> QStringList {
-        if (QString name = cst->getName(); not name.isEmpty())
-          return {name};
-        else return {};
-      },
-      [](std::monostate) -> QStringList { return {}; },
+      [](std::monostate) { return QStringList{}; },
     },
     backend
   );

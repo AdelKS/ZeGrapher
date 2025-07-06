@@ -346,10 +346,10 @@ void Information::refreshMathObjects(size_t excludedZgSlot, QStringList objectNa
 {
   for (zg::MathObject* obj: mathObjects)
     if (obj->get_slot() and *obj->get_slot() != excludedZgSlot
-        and std::ranges::any_of(obj->handledMathObjects(),
+        and std::ranges::any_of(obj->directDependencies(),
                                 [&](auto&& name) { return objectNames.contains(name); }))
     {
-      qDebug() << "information singleton: refreshing object that handles " << obj->handledMathObjects();
+      qDebug() << "information singleton: refreshing object " << obj->getName();
       obj->refresh();
     }
 }

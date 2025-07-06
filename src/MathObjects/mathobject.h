@@ -57,7 +57,11 @@ public:
   void setSlot(size_t slot);
   std::optional<size_t> get_slot() const { return slot; }
 
-  QStringList handledMathObjects() const;
+  /// @returns the name of the currently active math object
+  QString getName() const;
+
+  /// @returns list of math object names this object directly uses
+  QStringList directDependencies() const;
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
