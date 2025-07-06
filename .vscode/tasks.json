@@ -53,10 +53,7 @@
             },
             "dependsOn": "build-debug",
             "problemMatcher": []
-        }
-
-        // clang
-
+        },
         {
             "label": "setup-debug-clang",
             "type": "shell",
@@ -66,7 +63,7 @@
             "label": "setup-clangd",
             "type": "shell",
             "dependsOn": "setup-debug-clang",
-            "command": "[ -f \"${cwd}/clangd-compile-db/compile_commands.json\" ] || ( mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zg-debug-clang/ list > ${cwd}/clangd-compile-db/compile_commands.json )",
+            "command": "[ -f \"${cwd}/clangd-compile-db/compile_commands.json\" ] || ( mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zg-debug-clang/ list > ${cwd}/clangd-compile-db/compile_commands.json )"
         },
         {
             "label": "resetup-debug-clang",
@@ -77,7 +74,8 @@
             "label": "resetup-clangd",
             "type": "shell",
             "dependsOn": "resetup-debug-clang",
-            "command": "rm -rf ${cwd}/clangd-compile-db && mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zc-debug-clang/ list > ${cwd}/clangd-compile-db/compile_commands.json",
+            "command": "rm -rf ${cwd}/clangd-compile-db && mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zg-debug-clang/ list > ${cwd}/clangd-compile-db/compile_commands.json",
+            "problemMatcher": []
         },
         {
             "label": "build-debug-clang",
@@ -119,10 +117,7 @@
             },
             "dependsOn": "build-debug-clang",
             "problemMatcher": []
-        }
-
-        // release
-
+        },
         {
             "label": "setup-release",
             "type": "shell",

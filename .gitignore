@@ -1,3 +1,4 @@
 *.user
 deploy/*
 build*
+clangd-compile-db
