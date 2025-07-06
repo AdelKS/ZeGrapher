@@ -60,7 +60,6 @@ source_files = files(
   './structures.cpp',
   './Utils/highlighter.cpp',
   './Utils/plotstyle.cpp',
-  './Utils/sampledcurve.cpp',
   './Utils/state.cpp',
   './Utils/zc-utils.cpp',
   './Widgets/abstractfuncwidget.cpp',

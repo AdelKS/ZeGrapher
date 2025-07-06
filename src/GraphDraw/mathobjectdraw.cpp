@@ -223,7 +223,7 @@ void MathObjectDraw::drawFunctions()
     }
   };
 
-  for (const auto& [_, f_curve]: sampler.getCurves())
+  for (const auto& [_, f_curve]: sampler.getContinuousCurves())
   {
     if (not f_curve.style.visible)
       continue;

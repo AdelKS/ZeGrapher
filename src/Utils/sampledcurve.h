@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstddef>
 #include <unordered_set>
 #include <vector>
@@ -7,12 +9,25 @@
 
 namespace zg {
 
-struct SampledCurve
-{
+enum struct CurveType {DISCRETE, CONTINUOUS};
+
+template <CurveType t>
+struct SampledCurve;
+
+using SampledCurveContinuous = SampledCurve<CurveType::CONTINUOUS>;
+using SampledCurveDiscrete = SampledCurve<CurveType::DISCRETE>;
+
+template <CurveType t>
+struct SampledCurve {
+
   static constexpr size_t min_size = 1024;
   static constexpr size_t max_size = 16384;
 
   explicit SampledCurve(const PlotStyle& _st): style(_st) {}
+
+  const std::vector<real_unit>& get_input() const { return input; };
+
+  const std::vector<real_pt>& get_curve() const { return curve; };
 
   size_t size() const;
 
@@ -27,26 +42,19 @@ struct SampledCurve
 
   void pop_front(size_t pop_num);
 
-  //--------------------------------
-
-  /// @brief returns the biggest step that can be made between two computed points
+    /// @brief returns the biggest step that can be made between two computed points
   real_unit get_biggest_allowed_step() const;
 
   /// @brief returns the smallest step that can be made between two computed points before giving up and looking for
   real_unit get_smallest_allowed_step() const;
 
-
-  const std::vector<real_unit>& get_input() const { return input; };
-
-  const std::vector<real_pt>& get_curve() const { return curve; };
-
-  //--------------------------------
-
   const PlotStyle& style;
 
   /// @brief the indices in 'curve' before which a discontinuity happened
-  std::unordered_set<size_t> discontinuities = {};
-
+  /// @note only exists in continuous curves
+  [[no_unique_address]] std::conditional_t<t == CurveType::CONTINUOUS,
+                                           std::unordered_set<size_t>,
+                                           std::monostate> discontinuities = {};
 
 protected:
   std::vector<real_unit> input;

@@ -38,7 +38,7 @@ public:
   void setPixelStep(double pxStep);
   void update();
 
-  const auto& getCurves() { return curves; }
+  const auto& getContinuousCurves() { return continuous_curves; }
 
   /// @brief clears the saved points of functions whose name is in 'objectNames'
   void clearCache(QStringList objectNames);
@@ -48,11 +48,15 @@ public:
 
 protected:
 
-  void compute_pts(const zg::MathObject&, zg::SampledCurve&);
+  /// @brief samples an object given the current range and graph size
+  /// @tparam continuous: whether the object is continuous or discrete
+  template <zg::CurveType t>
+  void sample(const zg::MathObject&, zg::SampledCurve<t>&);
 
   const zg::ZeViewMapper& mapper;
 
-  std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> continuous_curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> discrete_curves;
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;
 };
