@@ -1,31 +1,31 @@
-#include "funccurve.h"
+#include "sampledcurve.h"
 
 namespace zg {
 
-void FuncCurve::clear()
+void SampledCurve::clear()
 {
   input.clear();
   curve.clear();
   discontinuities.clear();
 }
 
-size_t FuncCurve::size() const
+size_t SampledCurve::size() const
 {
   assert(input.size() == curve.size());
   return curve.size();
 }
 
-void FuncCurve::pop_back(size_t pop_num)
+void SampledCurve::pop_back(size_t pop_num)
 {
   erase_chunk(curve.size() - pop_num, pop_num);
 }
 
-void FuncCurve::pop_front(size_t pop_num)
+void SampledCurve::pop_front(size_t pop_num)
 {
   erase_chunk(0, pop_num);
 }
 
-void FuncCurve::erase_chunk(size_t from, size_t size)
+void SampledCurve::erase_chunk(size_t from, size_t size)
 {
   if (size == 0)
     return;
@@ -58,17 +58,17 @@ void FuncCurve::erase_chunk(size_t from, size_t size)
   curve.erase(curve.begin() + from, curve.begin() + to);
 }
 
-zg::real_unit FuncCurve::get_biggest_allowed_step() const
+zg::real_unit SampledCurve::get_biggest_allowed_step() const
 {
   return style.range.amplitude() / double(min_size);
 };
 
-zg::real_unit FuncCurve::get_smallest_allowed_step() const
+zg::real_unit SampledCurve::get_smallest_allowed_step() const
 {
   return style.range.amplitude() / double(max_size);
 };
 
-void FuncCurve::insert_pt(size_t index, zg::real_unit x, zg::real_pt pt)
+void SampledCurve::insert_pt(size_t index, zg::real_unit x, zg::real_pt pt)
 {
   curve.insert(curve.begin() + index, pt);
   input.insert(input.begin() + index, x);

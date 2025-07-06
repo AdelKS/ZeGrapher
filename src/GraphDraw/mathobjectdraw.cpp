@@ -223,7 +223,7 @@ void MathObjectDraw::drawFunctions()
     }
   };
 
-  for (const auto& [_, f_curve]: funcValuesSaver.getFunCurves())
+  for (const auto& [_, f_curve]: funcValuesSaver.getCurves())
   {
     if (not f_curve.style.visible)
       continue;

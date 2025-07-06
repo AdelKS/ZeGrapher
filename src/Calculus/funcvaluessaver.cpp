@@ -32,18 +32,18 @@ void FuncValuesSaver::setPixelStep(double pxStep)
 
 void FuncValuesSaver::refresh_valid_functions()
 {
-  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::FuncCurve> curves;
+  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::SampledCurve> refreshed_curves;
 
   for (auto&& [f, style] : information.getValidFuncs())
   {
     Q_ASSERT(style);
-    if (auto node = funCurves.extract(f))
-      curves.insert(std::move(node));
+    if (auto node = curves.extract(f))
+      refreshed_curves.insert(std::move(node));
     else
-      curves.emplace(f, zg::FuncCurve{*style});
+      refreshed_curves.emplace(f, zg::SampledCurve{*style});
   }
 
-  funCurves = std::move(curves);
+  curves = std::move(refreshed_curves);
 }
 
 /// @brief returns the square distance between B and the segment [AB]
@@ -54,7 +54,7 @@ double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, const zg
   return (AP - t * AB).square_length();
 };
 
-void FuncValuesSaver::compute_pts(const zc::DynMathObject<zc_t> &f, zg::FuncCurve& data)
+void FuncValuesSaver::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& data)
 {
   auto get_f_pt = [&f](zg::real_unit x)
   {
@@ -186,7 +186,7 @@ void FuncValuesSaver::update()
 
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
-  for (auto& [f, data]: funCurves)
+  for (auto& [f, data]: curves)
     compute_pts(*f, data);
 
 }
@@ -195,7 +195,7 @@ void FuncValuesSaver::clearCache(QStringList objectNames)
 {
   refresh_valid_functions();
 
-  for (auto& [f, curve]: funCurves)
+  for (auto& [f, curve]: curves)
     if (objectNames.contains(QString::fromStdString(std::string(f->get_name()))))
       curve.clear();
 }

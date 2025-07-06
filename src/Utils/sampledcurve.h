@@ -7,12 +7,12 @@
 
 namespace zg {
 
-struct FuncCurve
+struct SampledCurve
 {
   static constexpr size_t min_size = 1024;
   static constexpr size_t max_size = 16384;
 
-  explicit FuncCurve(const PlotStyle& _st): style(_st) {}
+  explicit SampledCurve(const PlotStyle& _st): style(_st) {}
 
   size_t size() const;
 

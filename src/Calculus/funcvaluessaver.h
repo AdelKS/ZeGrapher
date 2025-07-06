@@ -21,7 +21,7 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
-#include "Utils/funccurve.h"
+#include "Utils/sampledcurve.h"
 
 #include <zecalculator/zecalculator.h>
 
@@ -37,7 +37,7 @@ public:
   void setPixelStep(double pxStep);
   void update();
 
-  const auto& getFunCurves() { return funCurves; }
+  const auto& getCurves() { return curves; }
 
   /// @brief clears the saved points of functions whose name is in 'objectNames'
   void clearCache(QStringList objectNames);
@@ -47,11 +47,11 @@ public:
 
 protected:
 
-  void compute_pts(const zc::DynMathObject<zc_t> &f, zg::FuncCurve&);
+  void compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve&);
 
   const zg::ZeViewMapper& mapper;
 
-  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::FuncCurve> funCurves;
+  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::SampledCurve> curves;
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;
 };
