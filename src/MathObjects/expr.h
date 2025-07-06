@@ -21,6 +21,7 @@
 ****************************************************************************/
 
 #include "BuildingBlocks/zcmathobjectbb.h"
+#include "GraphDraw/axismapper.h"
 #include "Utils/state.h"
 
 namespace zg {
@@ -47,6 +48,9 @@ public:
 
   void setSlot(size_t slot);
   QString getImplicitName() const { return implicitName; };
+
+  zg::real_unit operator () (zc::eval::Cache* cache = nullptr) const;
+  zg::real_unit evaluate(zc::eval::Cache* cache = nullptr) const;
 
 public slots:
   State refresh();

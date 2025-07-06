@@ -72,6 +72,32 @@ State MathObject::getState() const
   );
 }
 
+zg::real_pt MathObject::operator () (zg::real_unit input, zc::eval::Cache* cache) const
+{
+  return evaluate(input, cache);
+}
+
+zg::real_pt MathObject::evaluate(zg::real_unit input, zc::eval::Cache* cache) const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [&](const mathobj::Constant* c) {
+        return zg::real_pt{input, c->evaluate()};
+      },
+      [&](const mathobj::Equation* e) {
+        return zg::real_pt{input, e->evaluate(input, cache)};
+      },
+      [&](const mathobj::Expr* e) {
+        return zg::real_pt{input, e->evaluate(cache)};
+      },
+      [](std::monostate) {
+        return zg::real_pt{{std::nan("")}, {std::nan("")}};
+      },
+    },
+    backend
+  );
+}
+
 void MathObject::setState(State newState)
 {
   std::visit(

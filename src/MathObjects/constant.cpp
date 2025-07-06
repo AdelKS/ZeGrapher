@@ -41,6 +41,19 @@ State Constant::refresh()
   return state;
 }
 
+zg::real_unit Constant::operator () () const
+{
+  return evaluate();
+}
+
+zg::real_unit Constant::evaluate() const
+{
+  tl::expected<double, zc::Error> exp_res = zcMathObj();
+  if (exp_res)
+    return zg::real_unit{*exp_res};
+  else return zg::real_unit{std::nan("")};
+}
+
 State Constant::getState() const { return state; };
 void Constant::setState(State newState) { state = newState; }
 

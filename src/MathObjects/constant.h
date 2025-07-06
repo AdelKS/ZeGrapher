@@ -21,7 +21,9 @@
 ****************************************************************************/
 
 #include "BuildingBlocks/zcmathobjectbb.h"
+#include "GraphDraw/axismapper.h"
 #include "Utils/state.h"
+
 #include <optional>
 
 namespace zg {
@@ -47,6 +49,9 @@ public:
   Q_INVOKABLE void set_value(double val);
   Q_INVOKABLE State getState() const;
   Q_INVOKABLE void setState(State);
+
+  zg::real_unit operator () () const;
+  zg::real_unit evaluate() const;
 
 public slots:
   State refresh();

@@ -27,6 +27,20 @@ State Expr::setImplicitName(QString name)
   return setExpression(expression);
 }
 
+zg::real_unit Expr::operator () (zc::eval::Cache* cache) const
+{
+  return evaluate(cache);
+
+}
+
+zg::real_unit Expr::evaluate(zc::eval::Cache* cache) const
+{
+  tl::expected<double, zc::Error> exp_res = zcMathObj({}, cache);
+  if (exp_res)
+    return zg::real_unit{*exp_res};
+  else return zg::real_unit{std::nan("")};
+}
+
 State Expr::setExpression(QString expr)
 {
   if (expr == expression)
