@@ -49,14 +49,14 @@ Graph::Graph(QQuickItem *parent)
   connect(&information,
           &Information::mathObjectsChanged,
           this,
-          [this](QStringList names) { funcValuesSaver.clearCache(names); });
+          [this](QStringList names) { sampler.clearCache(names); });
   connect(&information, &Information::mathObjectsChanged, this, [this]{ update(); });
 }
 
 
 void Graph::updateSettingsVals()
 {
-  funcValuesSaver.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
+  sampler.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
 }
 
 void Graph::addRegSaver(Regression *reg)
@@ -253,7 +253,7 @@ void Graph::drawAll()
 
   painter->setClipRect(graphRectScaled);
 
-  funcValuesSaver.update();
+  sampler.update();
   drawFunctions();
   drawSequences();
 

@@ -24,8 +24,8 @@
 #include <QWidget>
 
 #include "Calculus/function.h"
-#include "Calculus/funcvaluessaver.h"
 #include "Calculus/regressionvaluessaver.h"
+#include "Calculus/sampler.h"
 #include "Calculus/seqcalculator.h"
 #include "GraphDraw/viewmapper.h"
 #include "Utils/plotstyle.h"
@@ -60,7 +60,7 @@ protected:
   QBrush brush;
   Point centre;
   zg::ZeViewMapper viewMapper;
-  FuncValuesSaver funcValuesSaver;
+  Sampler sampler;
 
   double coef;
 

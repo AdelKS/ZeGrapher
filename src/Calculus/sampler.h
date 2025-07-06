@@ -29,10 +29,10 @@ namespace zg {
   struct PlotStyle;
 }
 
-class FuncValuesSaver
+class Sampler
 {
 public:
-  FuncValuesSaver(const zg::ZeViewMapper& mapper, double pxStep);
+  Sampler(const zg::ZeViewMapper& mapper, double pxStep);
 
   void setPixelStep(double pxStep);
   void update();

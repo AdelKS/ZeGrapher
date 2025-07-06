@@ -24,7 +24,7 @@
 using namespace std;
 
 MathObjectDraw::MathObjectDraw()
-  : funcValuesSaver(viewMapper, information.getGraphSettings().distanceBetweenPoints)
+  : sampler(viewMapper, information.getGraphSettings().distanceBetweenPoints)
 {
   coef = sqrt(3) / 2;
 
@@ -223,7 +223,7 @@ void MathObjectDraw::drawFunctions()
     }
   };
 
-  for (const auto& [_, f_curve]: funcValuesSaver.getCurves())
+  for (const auto& [_, f_curve]: sampler.getCurves())
   {
     if (not f_curve.style.visible)
       continue;

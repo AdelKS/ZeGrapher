@@ -18,19 +18,19 @@
 **
 ****************************************************************************/
 
-#include "Calculus/funcvaluessaver.h"
+#include "Calculus/sampler.h"
 #include "information.h"
 
-FuncValuesSaver::FuncValuesSaver(const zg::ZeViewMapper& mapper, double pxStep)
+Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
   : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
 {}
 
-void FuncValuesSaver::setPixelStep(double pxStep)
+void Sampler::setPixelStep(double pxStep)
 {
   pixelStep = zg::pixel_unit{pxStep};
 }
 
-void FuncValuesSaver::refresh_valid_functions()
+void Sampler::refresh_valid_functions()
 {
   std::unordered_map<const zc::DynMathObject<zc_t>*, zg::SampledCurve> refreshed_curves;
 
@@ -54,7 +54,7 @@ double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, const zg
   return (AP - t * AB).square_length();
 };
 
-void FuncValuesSaver::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& data)
+void Sampler::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& data)
 {
   auto get_f_pt = [&f](zg::real_unit x)
   {
@@ -180,7 +180,7 @@ void FuncValuesSaver::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledC
 
 }
 
-void FuncValuesSaver::update()
+void Sampler::update()
 {
   refresh_valid_functions();
 
@@ -191,7 +191,7 @@ void FuncValuesSaver::update()
 
 }
 
-void FuncValuesSaver::clearCache(QStringList objectNames)
+void Sampler::clearCache(QStringList objectNames)
 {
   refresh_valid_functions();
 
