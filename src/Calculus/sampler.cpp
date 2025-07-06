@@ -47,14 +47,14 @@ void Sampler::refresh_valid_objects()
       if (auto node = continuous_curves.extract(f))
         refreshed_continuous_curves.insert(std::move(node));
       else
-        refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous{*f->style});
+        refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous(*f->style));
     }
     else if (f->style->objectType == zg::PlotStyle::Discrete)
     {
       if (auto node = discrete_curves.extract(f))
         refreshed_discrete_curves.insert(std::move(node));
       else
-        refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete{*f->style});
+        refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete(*f->style));
     }
   }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Utils/unit.h"
 #include "information.h"
 #include "sampler.h"
 
@@ -14,12 +15,20 @@ inline double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, c
 template <zg::CurveType t>
 void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
 {
-  auto get_f_pt = [&f](zg::real_unit x)
+  auto get_acceptable_input = [&](zg::real_unit x)
+  {
+    if constexpr (t == zg::CurveType::DISCRETE)
+      return std::round(std::max(0., x.v) / data.style.step.v) * data.style.step;
+    else return x;
+  };
+  auto get_f_pt = [&](zg::real_unit x)
   {
     return f(x, &information.mathObjectCache);
   };
 
-  const double sq_px_step = pixelStep.v * pixelStep.v;
+  const double sq_px_step = t == zg::CurveType::CONTINUOUS
+                              ? pixelStep.v * pixelStep.v
+                              : data.style.pointWidth * data.style.pointWidth;
 
   const std::vector<zg::real_unit>& input_vals = data.get_input();
   const std::vector<zg::real_pt>& curve = data.get_curve();
@@ -28,13 +37,15 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
   if (not input_vals.empty())
   {
     size_t vals_to_pop = 0;
-    while (input_vals[input_vals.size() - vals_to_pop - 1] > data.style.range.max)
+    const auto max = get_acceptable_input(data.style.range.max);
+    while (input_vals[input_vals.size() - vals_to_pop - 1] > max)
       vals_to_pop++;
 
     data.pop_back(vals_to_pop);
 
     vals_to_pop = 0;
-    while (input_vals[vals_to_pop] < data.style.range.min)
+    const auto min = get_acceptable_input(data.style.range.min);
+    while (input_vals[vals_to_pop] < min)
       vals_to_pop++;
 
     data.pop_front(vals_to_pop);
@@ -45,18 +56,26 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
     << " max=" << QString::number(data.style.range.max.v, 'g', 14);
 
   {
-    auto min_pt = get_f_pt(data.style.range.min);
+    const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
+    const auto min = get_acceptable_input(data.style.range.min);
+    const auto min_pt = get_f_pt(min);
     if (curve.empty()
-        or (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front())).square_length()
-            > sq_px_step)
-      data.insert_pt(0, data.style.range.min, min_pt);
+        or (input_vals.front() - min >= smallest_allowed_step
+            and (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front()))
+               .square_length()
+             > sq_px_step))
+      data.insert_pt(0, min, min_pt);
   }
   {
-    auto max_pt = get_f_pt(data.style.range.max);
+    const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
+    const auto max = get_acceptable_input(data.style.range.max);
+    const auto max_pt = get_f_pt(max);
     if (curve.size() == 1
-        or (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back())).square_length()
-            > sq_px_step)
-      data.insert_pt(curve.size(), data.style.range.max, max_pt);
+        or (max - input_vals.front() >= smallest_allowed_step
+            and (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back()))
+               .square_length()
+             > sq_px_step))
+      data.insert_pt(curve.size(), max, max_pt);
   }
 
   assert(curve.size() >= 2);
@@ -80,9 +99,18 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
 
     if (px_BC.square_length() > sq_px_step)
     {
-      if (bc > data.get_smallest_allowed_step())
+      const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
+      if (bc >= 2*smallest_allowed_step)
       {
-        const zg::real_unit mid_input = (c + b) / 2.;
+        const zg::real_unit mid_input = get_acceptable_input((c + b) / 2.);
+        if constexpr (t == zg::CurveType::DISCRETE)
+        {
+          if (not (b < mid_input and mid_input < c))
+          {
+            i = i_c;
+            continue;
+          }
+        }
         auto pt = get_f_pt(mid_input);
         data.insert_pt(i_c, mid_input, pt);
         i = i_b;
