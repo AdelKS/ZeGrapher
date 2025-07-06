@@ -57,7 +57,7 @@ struct unit
 
   unit length() const { return unit{std::fabs(v)}; }
 
-  auto operator <=> (unit other) const { return v <=> other.v; }
+  auto operator <=> (const unit& other) const = default;
 };
 
 template <UnitType U>
