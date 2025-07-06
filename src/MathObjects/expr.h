@@ -47,7 +47,7 @@ public:
   Q_INVOKABLE void setState(State);
 
   void setSlot(size_t slot);
-  QString getImplicitName() const { return implicitName; };
+  QString getName() const { return implicitName; };
 
   zg::real_unit operator () (zc::eval::Cache* cache = nullptr) const;
   zg::real_unit evaluate(zc::eval::Cache* cache = nullptr) const;

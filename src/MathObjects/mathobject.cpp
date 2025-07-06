@@ -131,7 +131,7 @@ QStringList MathObject::handledMathObjects() const
   return std::visit(
     zc::utils::overloaded{
       [](const zg::mathobj::Expr* expr) -> QStringList {
-        return {expr->getImplicitName()};
+        return {expr->getName()};
       },
       [](const zg::mathobj::Equation* eq) -> QStringList {
         if (QString name = eq->getName(); not name.isEmpty())
