@@ -21,6 +21,7 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
+#include "MathObjects/mathobject.h"
 #include "Utils/sampledcurve.h"
 
 #include <zecalculator/zecalculator.h>
@@ -42,16 +43,16 @@ public:
   /// @brief clears the saved points of functions whose name is in 'objectNames'
   void clearCache(QStringList objectNames);
 
-  /// @brief refreshes 'funcCurves' for the currently valid functions
-  void refresh_valid_functions();
+  /// @brief refreshes 'curves' for the currently valid objects
+  void refresh_valid_objects();
 
 protected:
 
-  void compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve&);
+  void compute_pts(const zg::MathObject&, zg::SampledCurve&);
 
   const zg::ZeViewMapper& mapper;
 
-  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::SampledCurve> curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;
 };

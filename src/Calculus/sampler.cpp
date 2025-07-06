@@ -30,17 +30,20 @@ void Sampler::setPixelStep(double pxStep)
   pixelStep = zg::pixel_unit{pxStep};
 }
 
-void Sampler::refresh_valid_functions()
+void Sampler::refresh_valid_objects()
 {
-  std::unordered_map<const zc::DynMathObject<zc_t>*, zg::SampledCurve> refreshed_curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurve> refreshed_curves;
 
-  for (auto&& [f, style] : information.getValidFuncs())
+  for (const zg::MathObject* f : information.getMathObjects())
   {
-    Q_ASSERT(style);
+    if (not f->getBackend<zg::mathobj::Equation>() or f->getState().getStatus() != zg::State::VALID)
+      continue;
+
+    Q_ASSERT(f->style);
     if (auto node = curves.extract(f))
       refreshed_curves.insert(std::move(node));
     else
-      refreshed_curves.emplace(f, zg::SampledCurve{*style});
+      refreshed_curves.emplace(f, zg::SampledCurve{*f->style});
   }
 
   curves = std::move(refreshed_curves);
@@ -54,15 +57,11 @@ double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, const zg
   return (AP - t * AB).square_length();
 };
 
-void Sampler::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& data)
+void Sampler::compute_pts(const zg::MathObject&f, zg::SampledCurve& data)
 {
   auto get_f_pt = [&f](zg::real_unit x)
   {
-    tl::expected<double, zc::Error> exp_y_real = f({x.v}, &information.mathObjectCache);
-
-    if (exp_y_real.has_value())
-      return zg::real_pt{x, {*exp_y_real}};
-    else return zg::real_pt{x, {std::nan("")}};
+    return f(x, &information.mathObjectCache);
   };
 
   const double sq_px_step = pixelStep.v * pixelStep.v;
@@ -86,7 +85,7 @@ void Sampler::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& da
     data.pop_front(vals_to_pop);
   }
 
-  qDebug() << "Object caching: " << f.get_name()
+  qDebug() << "Object caching: " << f.getName()
     << " sampling range: min=" << QString::number(data.style.range.min.v, 'g', 14)
     << " max=" << QString::number(data.style.range.max.v, 'g', 14);
 
@@ -170,7 +169,7 @@ void Sampler::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& da
     else i++;
   }
 
-  qDebug() << "Object caching: " << f.get_name() << " curve has " << curve.size() << " points and " << data.discontinuities.size() << " discontinuities.";
+  qDebug() << "Object caching: " << f.getName() << " curve has " << curve.size() << " points and " << data.discontinuities.size() << " discontinuities.";
   i = 1;
   for (size_t index : data.discontinuities)
   {
@@ -182,7 +181,7 @@ void Sampler::compute_pts(const zc::DynMathObject<zc_t> &f, zg::SampledCurve& da
 
 void Sampler::update()
 {
-  refresh_valid_functions();
+  refresh_valid_objects();
 
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
@@ -193,9 +192,9 @@ void Sampler::update()
 
 void Sampler::clearCache(QStringList objectNames)
 {
-  refresh_valid_functions();
+  refresh_valid_objects();
 
   for (auto& [f, curve]: curves)
-    if (objectNames.contains(QString::fromStdString(std::string(f->get_name()))))
+    if (objectNames.contains(f->getName()))
       curve.clear();
 }
