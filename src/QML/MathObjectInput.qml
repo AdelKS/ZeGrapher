@@ -33,7 +33,6 @@ Rectangle {
     pointStyle: styleWidget.pointStyle
     pointWidth: styleWidget.pointWidth
     coordinateSystem: styleWidget.coordinateSystem
-    continuous: styleWidget.continuous
     start: styleWidget.start
     end: styleWidget.end
     step: styleWidget.step
@@ -184,6 +183,7 @@ Rectangle {
       width: parent.width
       height: 0
       clip: true
+      objectType: plotStyle.objectType
 
       Behavior on height { SmoothedAnimation { duration: 200 } }
 

@@ -13,7 +13,6 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::pointWidthChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::pointStyleChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::coordinateSystemChanged, this, &PlotStyle::updated);
-  connect(this, &PlotStyle::continuousChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::rangeChanged, this, &PlotStyle::updated);
 
   connect(this, &PlotStyle::updated, &information, &Information::styleUpdated);
@@ -47,6 +46,15 @@ void PlotStyle::setEnd(double v)
 void PlotStyle::setStep(double v)
 {
   step.v = v;
+}
+
+void PlotStyle::setObjectType(ObjectType newObjectType)
+{
+  if (objectType != newObjectType)
+  {
+    objectType = newObjectType;
+    emit objectTypeChanged();
+  }
 }
 
 }

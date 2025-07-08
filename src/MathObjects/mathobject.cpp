@@ -33,6 +33,7 @@ State MathObject::setExpression(QString expr)
 {
   State old_sate = getState();
 
+  PlotStyle::ObjectType objectType = PlotStyle::NonRepresentable;
   State new_state = std::visit(
     zc::utils::overloaded{
       [&](mathobj::Constant* v) {
@@ -42,14 +43,24 @@ State MathObject::setExpression(QString expr)
         return v->setExpression(expr);
       },
       [&](mathobj::Equation* v) {
-        return v->setEquation(expr);
+        State state = v->setEquation(expr);
+        if (style and state.getStatus() == State::VALID)
+        {
+          if (v->zcMathObj.holds(zc::ObjectType::DATA) or v->zcMathObj.holds(zc::ObjectType::SEQUENCE))
+            objectType = PlotStyle::Discrete;
+          else objectType = PlotStyle::Continuous;
+        }
+        return state;
       },
-      [](std::monostate) {
+      [&](std::monostate) {
         return State();
       },
     },
     backend
   );
+
+  if (style)
+    style->setObjectType(objectType);
 
   if (old_sate != new_state)
     emit stateChanged();

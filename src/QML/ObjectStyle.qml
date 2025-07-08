@@ -10,17 +10,28 @@ Item {
   property double lineWidth: Number(lineWidthSpinBox.value) / 10.0
   property int lineStyle: lineStyleModel.get(lineStyleTumbler.currentIndex).type
 
+  property int objectType: PlotStyle.NonRepresentable
   property double pointWidth: Number(pointWidthSpinBox.value) / 10.0
   property int pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
   property int coordinateSystem: coordinates.currentValue
-  property bool continuous: repr.currentValue
-  property alias start: start.value
-  property alias end: end.value
-  property alias step: step.value
+
+  property alias start: startEdit.value
+  property alias end: endEdit.value
+  property alias step: stepEdit.value
 
   property int implicitHeight: mainLayout.implicitHeight
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
+
+  onObjectTypeChanged: {
+    console.log('object type changed: ', objectType);
+    if (objectType === PlotStyle.Discrete) {
+      // last element of the lineStyleModel is no line
+      lineStyleTumbler.currentIndex = lineStyleModel.count  - 1;
+    } else {
+      lineStyleTumbler.currentIndex = 0;
+    }
+  }
 
   GridLayout {
     id: mainLayout
@@ -34,27 +45,6 @@ Item {
       Layout.maximumWidth: implicitWidth
       Layout.preferredHeight: implicitHeight
 
-      ComboBox {
-        Layout.fillWidth: true
-        Layout.minimumWidth: implicitWidth
-
-        id: repr
-        implicitContentWidthPolicy: ComboBox.WidestText
-        textRole: "text"
-        valueRole: "continuous"
-        background.implicitWidth: implicitContentWidth
-
-        model: ListModel {
-          ListElement {
-            text: "Continuous"
-            continuous: true
-          }
-          ListElement {
-            text: "Discrete"
-            continuous: false
-          }
-        }
-      }
       ComboBox {
         Layout.fillWidth: true
         Layout.minimumWidth: implicitWidth
@@ -134,28 +124,28 @@ Item {
       states: [
         State {
           name: "hidden";
-          when: repr.currentValue
+          when: root.objectType !== PlotStyle.Discrete
           PropertyChanges {
             stepLabel.opacity: 0.
-            step.opacity: 0.
+            stepEdit.opacity: 0.
             pointStyleTumbler.opacity: 0
             pointWidthSpinBox.opacity: 0
             stepLabel.visible: false
-            step.visible: false
+            stepEdit.visible: false
             pointStyleTumbler.visible: false
             pointWidthSpinBox.visible: false
           }
         },
         State {
           name: "shown";
-          when: !repr.currentValue
+          when: root.objectType === PlotStyle.Discrete
           PropertyChanges {
             stepLabel.opacity: 1.
-            step.opacity: 1.
+            stepEdit.opacity: 1.
             pointStyleTumbler.opacity: 1.
             pointWidthSpinBox.opacity: 1.
             stepLabel.visible: true
-            step.visible: true
+            stepEdit.visible: true
             pointStyleTumbler.visible: true
             pointWidthSpinBox.visible: true
           }
@@ -199,7 +189,7 @@ Item {
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
-        id: start
+        id: startEdit
         implicitName: "Start"
         expression: "xmin"
       }
@@ -224,7 +214,7 @@ Item {
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
-        id: end
+        id: endEdit
         implicitName: "end"
         expression: "xmax"
       }
@@ -247,7 +237,7 @@ Item {
         Layout.fillWidth: true
         Layout.minimumWidth: 30
 
-        id: step
+        id: stepEdit
         implicitName: "step"
         expression: "1"
       }
@@ -269,12 +259,12 @@ Item {
       type: Qt.DashDotLine
     }
     ListElement {
-      path: "qrc:/icons/noLine.png"
-      type: Qt.NoPen
-    }
-    ListElement {
       path: "qrc:/icons/dotLine.png"
       type: Qt.DotLine
+    }
+    ListElement {
+      path: "qrc:/icons/noLine.png"
+      type: Qt.NoPen
     }
   }
 

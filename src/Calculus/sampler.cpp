@@ -42,14 +42,14 @@ void Sampler::refresh_valid_objects()
     if (not f->style or f->getState().getStatus() != zg::State::VALID)
       continue;
 
-    if (f->style->continuous)
+    if (f->style->objectType == zg::PlotStyle::Continuous)
     {
       if (auto node = continuous_curves.extract(f))
         refreshed_continuous_curves.insert(std::move(node));
       else
         refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous{*f->style});
     }
-    else
+    else if (f->style->objectType == zg::PlotStyle::Discrete)
     {
       if (auto node = discrete_curves.extract(f))
         refreshed_discrete_curves.insert(std::move(node));

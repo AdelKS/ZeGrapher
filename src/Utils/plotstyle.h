@@ -40,17 +40,20 @@ struct PlotStyle: QObject {
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
-  Q_PROPERTY(bool continuous MEMBER continuous NOTIFY continuousChanged)
+  Q_PROPERTY(ObjectType objectType WRITE setObjectType MEMBER objectType NOTIFY objectTypeChanged)
   Q_PROPERTY(double start WRITE setStart READ getStart NOTIFY rangeChanged)
   Q_PROPERTY(double end WRITE setEnd READ getEnd NOTIFY rangeChanged)
   Q_PROPERTY(double step WRITE setStep READ getStep NOTIFY rangeChanged)
 
 public:
 
-  enum PointStyle : int { None, Rhombus, Disc, Square, Triangle, Cross };
-  Q_ENUM(PointStyle)
+  enum ObjectType { NonRepresentable, Continuous, Discrete};
+  Q_ENUM(ObjectType);
 
-  enum CoordinateSystem: int {Cartesian, Polar};
+  enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
+  Q_ENUM(PointStyle);
+
+  enum CoordinateSystem {Cartesian, Polar};
   Q_ENUM(CoordinateSystem);
 
   explicit PlotStyle(QObject *parent = nullptr);
@@ -66,7 +69,8 @@ public:
   double pointWidth = 1.0;
   PointStyle pointStyle = None;
   CoordinateSystem coordinateSystem = Cartesian;
-  bool continuous = true;
+
+  ObjectType objectType = NonRepresentable;
   zg::real_range1d range;
   zg::real_unit step = {1.};
 
@@ -74,6 +78,7 @@ public slots:
   void setStart(double);
   void setEnd(double);
   void setStep(double);
+  void setObjectType(ObjectType);
 
 signals:
   void updated();
@@ -85,8 +90,8 @@ signals:
   void lineStyleChanged();
   void backendChanged();
   void coordinateSystemChanged();
-  void continuousChanged();
   void rangeChanged();
+  void objectTypeChanged();
 };
 
 }
