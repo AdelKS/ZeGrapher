@@ -25,6 +25,10 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
   {
     return f(x, &information.mathObjectCache);
   };
+  auto is_nan_pt = [](const zg::real_pt& pt)
+  {
+    return std::isnan(pt.x.v) or std::isnan(pt.y.v);
+  };
 
   const double sq_px_step = t == zg::CurveType::CONTINUOUS
                               ? pixelStep.v * pixelStep.v
@@ -38,14 +42,14 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
   {
     size_t vals_to_pop = 0;
     const auto max = get_acceptable_input(data.style.range.max);
-    while (input_vals[input_vals.size() - vals_to_pop - 1] > max)
+    while (vals_to_pop < input_vals.size() and input_vals[input_vals.size() - vals_to_pop - 1] > max)
       vals_to_pop++;
 
     data.pop_back(vals_to_pop);
 
     vals_to_pop = 0;
     const auto min = get_acceptable_input(data.style.range.min);
-    while (input_vals[vals_to_pop] < min)
+    while (vals_to_pop < input_vals.size() and input_vals[vals_to_pop] < min)
       vals_to_pop++;
 
     data.pop_front(vals_to_pop);
@@ -61,9 +65,10 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
     const auto min_pt = get_f_pt(min);
     if (curve.empty()
         or (input_vals.front() - min >= smallest_allowed_step
-            and (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front()))
-               .square_length()
-             > sq_px_step))
+            and (is_nan_pt(min_pt) or is_nan_pt(curve.front())
+                 or (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front()))
+                        .square_length()
+                      > sq_px_step)))
       data.insert_pt(0, min, min_pt);
   }
   {
@@ -72,9 +77,10 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
     const auto max_pt = get_f_pt(max);
     if (curve.size() == 1
         or (max - input_vals.front() >= smallest_allowed_step
-            and (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back()))
-               .square_length()
-             > sq_px_step))
+            and (is_nan_pt(max_pt) or is_nan_pt(curve.back())
+                 or (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back()))
+                        .square_length()
+                      > sq_px_step)))
       data.insert_pt(curve.size(), max, max_pt);
   }
 
@@ -97,9 +103,11 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
     const zg::real_unit bc = c - b;
     const zg::pixel_pt px_BC = px_C - px_B;
 
-    if (px_BC.square_length() > sq_px_step)
+    const bool nan_pt = is_nan_pt(B) or is_nan_pt(C);
+    const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
+
+    if (nan_pt or px_BC.square_length() > sq_px_step)
     {
-      const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
       if (bc >= 2*smallest_allowed_step)
       {
         const zg::real_unit mid_input = get_acceptable_input((c + b) / 2.);
@@ -119,45 +127,43 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
       {
         if constexpr (t == zg::CurveType::CONTINUOUS)
         {
-          // try to figure out if there's a discontinuity
-
-          bool is_discontinuity = true;
-          if (i > 0)
+          if (not nan_pt)
           {
-            const size_t i_a = i-1;
-            const zg::real_pt& A = curve[i_a];
-            const zg::pixel_pt px_A = mapper.to<zg::pixel>(A);
+            // try to figure out if there's a discontinuity
 
-            const zg::pixel_pt px_AB = px_B - px_A;
+            bool is_discontinuity = true;
+            if (i > 0)
+            {
+              const size_t i_a = i-1;
+              const zg::real_pt& A = curve[i_a];
+              const zg::pixel_pt px_A = mapper.to<zg::pixel>(A);
 
-            double dot = px_AB.dot(px_BC);
-            if (sq_dist_to_segment(px_A, px_B, px_C) < 4 * sq_px_step and dot > 0
-                and dot * dot > 0.9 * px_AB.square_length() * px_BC.square_length())
-              is_discontinuity = false;
+              const zg::pixel_pt px_AB = px_B - px_A;
+
+              double dot = px_AB.dot(px_BC);
+              if (sq_dist_to_segment(px_A, px_B, px_C) < 4 * sq_px_step and dot > 0
+                  and dot * dot > 0.9 * px_AB.square_length() * px_BC.square_length())
+                is_discontinuity = false;
+            }
+            if (is_discontinuity and i + 2 < input_vals.size())
+            {
+              const size_t i_d = i+2;
+              const zg::real_pt& D = curve[i_d];
+              const zg::pixel_pt px_D = mapper.to<zg::pixel>(D);
+
+              const zg::pixel_pt px_CD = px_D - px_C;
+
+              double dot = px_BC.dot(px_CD);
+              if (sq_dist_to_segment(px_B, px_C, px_D) < 4 * sq_px_step and dot > 0
+                  and dot * dot > 0.9 * px_BC.square_length() * px_CD.square_length())
+                is_discontinuity = false;
+            }
+
+            if (is_discontinuity)
+              data.discontinuities.insert(i_c);
           }
-          if (is_discontinuity and i + 2 < input_vals.size())
-          {
-            const size_t i_d = i+2;
-            const zg::real_pt& D = curve[i_d];
-            const zg::pixel_pt px_D = mapper.to<zg::pixel>(D);
-
-            const zg::pixel_pt px_CD = px_D - px_C;
-
-            double dot = px_BC.dot(px_CD);
-            if (sq_dist_to_segment(px_B, px_C, px_D) < 4 * sq_px_step and dot > 0
-                and dot * dot > 0.9 * px_BC.square_length() * px_CD.square_length())
-              is_discontinuity = false;
-          }
-
-          if (is_discontinuity)
-            data.discontinuities.insert(i_c);
-
-          i = i_c;
         }
-        else
-        {
-          i++;
-        }
+        i = i_c;
       }
     }
     else i++;
@@ -167,11 +173,15 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
 
   if constexpr (t == zg::CurveType::CONTINUOUS)
   {
-    qDebug() << "Object caching: " << f.getName() << " has " << data.discontinuities.size() << " discontinuities.";
+    qDebug() << "Object caching (continuous object): " << f.getName() << " has " << data.discontinuities.size() << " discontinuities.";
     i = 1;
     for (size_t index : data.discontinuities)
     {
-      qDebug() << "- Discontinuity " << i << ": between ( " << data.get_curve()[index-1].x.v << ", " << data.get_curve()[index-1].y.v << " ) and (" << data.get_curve()[index].x.v << ", " << data.get_curve()[index].y.v << " )";
+      if (index == 0 or is_nan_pt(curve[index - 1]) or is_nan_pt(curve[index]))
+        continue;
+      qDebug() << "- Discontinuity " << i << ": between ( " << curve[index - 1].x.v << ", "
+               << curve[index - 1].y.v << " ) and (" << curve[index].x.v << ", " << curve[index].y.v
+               << " )";
       i++;
     }
   }

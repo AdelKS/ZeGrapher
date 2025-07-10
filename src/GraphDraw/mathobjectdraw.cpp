@@ -233,10 +233,10 @@ void MathObjectDraw::drawFunctions()
     for (size_t i = 0; i != curve.size(); i++)
     {
       const auto& pt = curve[i];
-      if (std::isnan(pt.y.v) or f_curve.discontinuities.contains(i))
+      if (std::isnan(pt.y.v) or std::isnan(pt.x.v) or f_curve.discontinuities.contains(i))
         draw_mapped_curve(f_curve.style);
 
-      if (not std::isnan(pt.y.v))
+      if (not std::isnan(pt.y.v) and not std::isnan(pt.x.v))
         mapped_curve.push_back(QPointF(viewMapper.to<zg::pixel>(pt)));
     }
 
