@@ -39,7 +39,6 @@ public:
 protected:
   void drawDataPoint(const QPointF& pt, const zg::PlotStyle& style);
 
-  void drawOneSequence(const zc::DynMathObject<zc_t> &, const zg::PlotStyle&);
   void drawDataSet(int id, int width);
   void drawCurve(int width, QColor color, const QPolygonF& curve);
   void drawCurve(int width, QColor color, const QList<QPolygonF>& curves);

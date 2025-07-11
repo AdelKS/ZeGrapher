@@ -39,6 +39,7 @@ public:
   void update();
 
   const auto& getContinuousCurves() { return continuous_curves; }
+  const auto& getDiscreteCurves() { return discrete_curves; }
 
   /// @brief clears the saved points of functions whose name is in 'objectNames'
   void clearCache(QStringList objectNames);

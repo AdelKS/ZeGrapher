@@ -244,70 +244,22 @@ void MathObjectDraw::drawFunctions()
   }
 }
 
-void MathObjectDraw::drawOneSequence(const zc::DynMathObject<zc_t>& seq, const zg::PlotStyle& style)
-{
-  constexpr zg::real_unit n_min = {0.};
-  constexpr zg::real_unit n_max = {1.E6}; // stop plotting sequence above this value
-
-  zg::real_unit realStart = viewMapper.x.getMin<zg::plane::real>();
-  zg::real_unit realStop = viewMapper.x.getMax<zg::plane::real>();
-  if (realStop <= n_min
-      or trunc(realStop.v) <= realStart.v
-      or realStart >= n_max
-      or not style.visible)
-    return;
-
-  if (realStart < n_min)
-    realStart = n_min;
-
-  if (realStop > n_max)
-    realStop = n_max;
-
-  zg::view_unit viewStart = viewMapper.x.to<zg::plane::view>(realStart);
-  zg::view_unit viewStop = viewMapper.x.to<zg::plane::view>(realStop);
-
-  painter->setRenderHint(QPainter::Antialiasing,
-                         information.getGraphSettings().smoothing && !moving);
-
-  zg::view_unit step = viewMapper.x.to<zg::plane::view>(zg::pixel_unit{10 * style.pointWidth})
-                       - viewMapper.x.to<zg::plane::view>(zg::pixel_unit{0.});
-  step.v = std::round(step.v);
-
-  zg::view_unit real_unit_step = viewMapper.x.to<zg::plane::view>(zg::real_unit{1.0})
-                                 - viewMapper.x.to<zg::plane::view>(zg::real_unit{0.});
-  if (step <= real_unit_step)
-    step = real_unit_step;
-
-  const size_t integerStop = realStop.v;
-  zc::eval::ObjectCache &cache = information.mathObjectCache[seq.get_slot()];
-  if (cache.get_buffer_size() < integerStop)
-  {
-    size_t new_buffer_size = 2*cache.get_buffer_size();
-    while (new_buffer_size < integerStop){ new_buffer_size *= 2u; }
-    cache.set_buffer_size(new_buffer_size);
-  }
-
-  for (zg::view_unit view_x = viewStart - step; view_x <= viewStop + step; view_x += step)
-  {
-    zg::real_unit real_x = viewMapper.x.to<zg::plane::real>(view_x);
-    real_x.v = trunc(real_x.v);
-
-    auto exp_y = seq({real_x.v}, &information.mathObjectCache);
-
-    if (not exp_y or std::isnan(*exp_y))
-      continue;
-
-    QPointF pt = QPointF(viewMapper.to<zg::plane::pixel>(zg::real_pt{.x = real_x, .y = {*exp_y}}));
-
-    drawDataPoint(pt, style);
-  }
-
-}
-
 void MathObjectDraw::drawSequences()
 {
-  for (const auto& [f, style]: information.getValidSeqs())
-    drawOneSequence(*f, *style);
+  for (const auto& [_, f_curve]: sampler.getDiscreteCurves())
+  {
+    if (not f_curve.style.visible)
+      continue;
+
+    const auto& curve = f_curve.get_curve();
+
+    for (size_t i = 0; i != curve.size(); i++)
+    {
+      const auto& pt = curve[i];
+      if (not std::isnan(pt.x.v) and not std::isnan(pt.y.v))
+        drawDataPoint(QPointF(viewMapper.to<zg::pixel>(pt)), f_curve.style);
+    }
+  }
 }
 
 void MathObjectDraw::drawStaticParEq()
