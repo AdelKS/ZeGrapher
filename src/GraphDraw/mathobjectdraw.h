@@ -43,6 +43,9 @@ protected:
   void drawCurve(int width, QColor color, const QPolygonF& curve);
   void drawCurve(int width, QColor color, const QList<QPolygonF>& curves);
 
+  template <zg::CurveType t>
+  void drawSampledCurve(const zg::SampledCurve<t>&);
+
   void drawFunctions();
   void drawRegressions();
   void drawData();

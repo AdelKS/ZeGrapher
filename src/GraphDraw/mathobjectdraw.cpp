@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "GraphDraw/mathobjectdraw.h"
+#include "GraphDraw/mathobjectdraw.impl.h"
 #include "information.h"
 
 using namespace std;
@@ -203,63 +204,14 @@ void MathObjectDraw::recalculateRegVals()
 
 void MathObjectDraw::drawFunctions()
 {
-  painter->setRenderHint(QPainter::Antialiasing,
-                         information.getGraphSettings().smoothing && !moving);
-
-  pen.setColor(Qt::red);
-  painter->setPen(pen);
-
-  std::vector<QPointF> mapped_curve;
-  auto draw_mapped_curve = [&](const zg::PlotStyle& style)
-  {
-    if (not mapped_curve.empty())
-    {
-      pen.setWidth(style.lineWidth);
-      pen.setColor(style.color);
-      pen.setStyle(style.lineStyle);
-      painter->setPen(pen);
-      painter->drawPolyline(mapped_curve.data(), mapped_curve.size());
-      mapped_curve.clear();
-    }
-  };
-
   for (const auto& [_, f_curve]: sampler.getContinuousCurves())
-  {
-    if (not f_curve.style.visible)
-      continue;
-
-    const auto& curve = f_curve.get_curve();
-
-    for (size_t i = 0; i != curve.size(); i++)
-    {
-      const auto& pt = curve[i];
-      if (std::isnan(pt.y.v) or std::isnan(pt.x.v) or f_curve.discontinuities.contains(i))
-        draw_mapped_curve(f_curve.style);
-
-      if (not std::isnan(pt.y.v) and not std::isnan(pt.x.v))
-        mapped_curve.push_back(QPointF(viewMapper.to<zg::pixel>(pt)));
-    }
-
-    draw_mapped_curve(f_curve.style);
-  }
+    drawSampledCurve(f_curve);
 }
 
 void MathObjectDraw::drawSequences()
 {
   for (const auto& [_, f_curve]: sampler.getDiscreteCurves())
-  {
-    if (not f_curve.style.visible)
-      continue;
-
-    const auto& curve = f_curve.get_curve();
-
-    for (size_t i = 0; i != curve.size(); i++)
-    {
-      const auto& pt = curve[i];
-      if (not std::isnan(pt.x.v) and not std::isnan(pt.y.v))
-        drawDataPoint(QPointF(viewMapper.to<zg::pixel>(pt)), f_curve.style);
-    }
-  }
+    drawSampledCurve(f_curve);
 }
 
 void MathObjectDraw::drawStaticParEq()
