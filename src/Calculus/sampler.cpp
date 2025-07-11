@@ -42,19 +42,35 @@ void Sampler::refresh_valid_objects()
     if (not f->style or f->getState().getStatus() != zg::State::VALID)
       continue;
 
+    auto sampled_settings_node = sampled_settings.extract(f);
+    auto discrete_curve_node = discrete_curves.extract(f);
+    auto continuous_curve_node = continuous_curves.extract(f);
+
     if (f->style->objectType == zg::PlotStyle::Continuous)
     {
-      if (auto node = continuous_curves.extract(f))
-        refreshed_continuous_curves.insert(std::move(node));
+      assert((sampled_settings_node and continuous_curve_node)
+             or (not sampled_settings_node and not continuous_curve_node));
+
+      if (continuous_curve_node
+          and sampled_settings_node.mapped() == f->style->get_sampling_settings())
+        refreshed_continuous_curves.insert(std::move(continuous_curve_node));
       else
         refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous(*f->style));
+
+      sampled_settings.emplace(f, f->style->get_sampling_settings());
     }
     else if (f->style->objectType == zg::PlotStyle::Discrete)
     {
-      if (auto node = discrete_curves.extract(f))
-        refreshed_discrete_curves.insert(std::move(node));
+      assert((sampled_settings_node and discrete_curve_node)
+             or (not sampled_settings_node and not discrete_curve_node));
+
+      if (discrete_curve_node
+          and sampled_settings_node.mapped() == f->style->get_sampling_settings())
+        refreshed_discrete_curves.insert(std::move(discrete_curve_node));
       else
         refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete(*f->style));
+
+      sampled_settings.emplace(f, f->style->get_sampling_settings());
     }
   }
 

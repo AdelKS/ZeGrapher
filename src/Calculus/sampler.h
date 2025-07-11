@@ -58,6 +58,10 @@ protected:
 
   std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> continuous_curves;
   std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> discrete_curves;
+
+  /// @brief settings with which the current curves have been sampled with
+  std::unordered_map<const zg::MathObject*, zg::PlotStyle::SamplingSettings> sampled_settings;
+
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;
 };
