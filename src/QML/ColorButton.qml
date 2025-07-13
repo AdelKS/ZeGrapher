@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Shapes
-import QtQuick.Controls
 import QtQuick.Dialogs
 
 Shape {
@@ -63,17 +62,17 @@ Shape {
     }
 
     PathAngleArc {
-      centerX: radius
-      centerY: radius
-      radiusX: radius
-      radiusY: radius
+      centerX: disk.radius
+      centerY: disk.radius
+      radiusX: disk.radius
+      radiusY: disk.radius
       sweepAngle: 360
     }
 
     fillGradient: RadialGradient {
-      centerX: radius * 0.8
-      centerY: radius * 0.8
-      centerRadius: radius * 0.9
+      centerX: disk.radius * 0.8
+      centerY: disk.radius * 0.8
+      centerRadius: disk.radius * 0.9
       focalX: centerX
       focalY: centerY
       GradientStop { position: 0; color: Qt.hsva(shape_path.h, shape_path.s, shape_path.stop0_v, 1.0)}
@@ -95,7 +94,7 @@ Shape {
     property bool entered: false
 
     onPositionChanged: {
-      if ((mouseX - disk.width/2)**2 + (mouseY - disk.height/2)**2 <= radius * radius)
+      if ((mouseX - disk.width/2)**2 + (mouseY - disk.height/2)**2 <= disk.radius * disk.radius)
       {
         if(!shape_path.hovered)
           shape_path.hovered = true
