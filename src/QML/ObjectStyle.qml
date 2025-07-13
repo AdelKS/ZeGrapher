@@ -33,6 +33,18 @@ Item {
     }
   }
 
+  onCoordinateSystemChanged: {
+    if (coordinateSystem === PlotStyle.Cartesian) {
+      startEdit.expression = "xmin";
+      endEdit.expression = "xmax";
+      stepEdit.expression = "1";
+    } else if (coordinateSystem === PlotStyle.Polar) {
+      startEdit.expression = "0";
+      endEdit.expression = "2*math::pi";
+      stepEdit.expression = "math::pi/12";
+    }
+  }
+
   GridLayout {
     id: mainLayout
     columns: 3

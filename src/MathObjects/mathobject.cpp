@@ -90,7 +90,7 @@ zg::real_pt MathObject::operator () (zg::real_unit input, zc::eval::Cache* cache
 
 zg::real_pt MathObject::evaluate(zg::real_unit input, zc::eval::Cache* cache) const
 {
-  return std::visit(
+  real_pt res = std::visit(
     zc::utils::overloaded{
       [&](const mathobj::Constant* c) {
         return zg::real_pt{input, c->evaluate()};
@@ -107,6 +107,10 @@ zg::real_pt MathObject::evaluate(zg::real_unit input, zc::eval::Cache* cache) co
     },
     backend
   );
+
+  if (style->coordinateSystem == PlotStyle::Cartesian)
+    return res;
+  else return real_pt{.x = std::cos(res.x.v) * res.y, .y = std::sin(res.x.v) * res.y};
 }
 
 void MathObject::setState(State newState)
