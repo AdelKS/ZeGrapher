@@ -74,6 +74,17 @@ public:
   zg::real_range1d range;
   zg::real_unit step = {1.};
 
+    /// @brief settings that affect the resulting sampled values
+  struct SamplingSettings {
+    zg::real_unit step;
+    zg::PlotStyle::CoordinateSystem coordinateSystem;
+    ObjectType objectType;
+
+    bool operator == (const SamplingSettings&) const = default;
+  };
+
+  SamplingSettings get_sampling_settings() const;
+
 public slots:
   void setStart(double);
   void setEnd(double);
