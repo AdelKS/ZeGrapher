@@ -105,8 +105,9 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
 
     const bool nan_pt = is_nan_pt(B) or is_nan_pt(C);
     const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
+    const zg::real_unit biggest_allowed_step = data.get_smallest_allowed_step();
 
-    if (nan_pt or px_BC.square_length() > sq_px_step)
+    if (bc > biggest_allowed_step or nan_pt or px_BC.square_length() > sq_px_step)
     {
       if (bc >= 2*smallest_allowed_step)
       {
