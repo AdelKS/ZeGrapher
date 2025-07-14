@@ -113,6 +113,22 @@ zg::real_pt MathObject::evaluate(zg::real_unit input, zc::eval::Cache* cache) co
   else return real_pt{.x = std::cos(res.x.v) * res.y, .y = std::sin(res.x.v) * res.y};
 }
 
+const zc::DynMathObject<zc_t>* MathObject::getZcObject() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [&](const auto* c) {
+        return &c->zcMathObj;
+      },
+      [](std::monostate) -> zc::DynMathObject<zc_t>*{
+        return nullptr;
+      },
+    },
+    backend
+  );
+
+}
+
 void MathObject::setState(State newState)
 {
   std::visit(

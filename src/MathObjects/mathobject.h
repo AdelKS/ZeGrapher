@@ -72,6 +72,8 @@ public:
     requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   const T* getBackend() const;
 
+  const zc::DynMathObject<zc_t>* getZcObject() const;
+
   zg::real_pt operator () (zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
   zg::real_pt evaluate(zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
 

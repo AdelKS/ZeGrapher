@@ -12,8 +12,8 @@ inline double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, c
   return (AP - t * AB).square_length();
 };
 
-template <zg::CurveType t>
-void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
+template <zg::CurveType t, zg::PlotStyle::CoordinateSystem coordinates>
+void Sampler::sample(const zc::DynMathObject<zc_t>&f, zg::SampledCurve<t>& data)
 {
   auto get_acceptable_input = [&](zg::real_unit x)
   {
@@ -23,7 +23,17 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
   };
   auto get_f_pt = [&](zg::real_unit x)
   {
-    return f(x, &information.mathObjectCache);
+    tl::expected<double, zc::Error> exp_res = f({x.v}, &information.mathObjectCache);
+    double res = exp_res ? *exp_res : std::nan("");
+    if constexpr (coordinates == zg::PlotStyle::CoordinateSystem::Cartesian)
+    {
+      return zg::real_pt{x, zg::real_unit{res}};
+    }
+    else
+    {
+      static_assert(coordinates == zg::PlotStyle::CoordinateSystem::Polar, "Expecting this to be Polar plot");
+      return zg::real_pt{std::cos(x.v) * zg::real_unit{res}, std::sin(x.v) * zg::real_unit{res}};
+    }
   };
   auto is_nan_pt = [](const zg::real_pt& pt)
   {
@@ -55,7 +65,7 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
     data.pop_front(vals_to_pop);
   }
 
-  qDebug() << "Object caching: " << f.getName()
+  qDebug() << "Object caching: " << f.get_name()
     << " sampling range: min=" << QString::number(data.style.range.min.v, 'g', 14)
     << " max=" << QString::number(data.style.range.max.v, 'g', 14);
 
@@ -170,11 +180,11 @@ void Sampler::sample(const zg::MathObject&f, zg::SampledCurve<t>& data)
     else i++;
   }
 
-  qDebug() << "Object caching: " << f.getName() << " curve has " << curve.size() << " points";
+  qDebug() << "Object caching: " << f.get_name() << " curve has " << curve.size() << " points";
 
   if constexpr (t == zg::CurveType::CONTINUOUS)
   {
-    qDebug() << "Object caching (continuous object): " << f.getName() << " has " << data.discontinuities.size() << " discontinuities.";
+    qDebug() << "Object caching (continuous object): " << f.get_name() << " has " << data.discontinuities.size() << " discontinuities.";
     i = 1;
     for (size_t index : data.discontinuities)
     {

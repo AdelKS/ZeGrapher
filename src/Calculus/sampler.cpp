@@ -85,10 +85,24 @@ void Sampler::update()
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
   for (auto& [f, data]: continuous_curves)
-    sample(*f, data);
+  {
+    const auto* zcObj = f->getZcObject();
+    assert(zcObj and f->style);
+    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Cartesian)
+      sample<zg::CurveType::CONTINUOUS, zg::PlotStyle::CoordinateSystem::Cartesian>(*zcObj, data);
+    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Polar)
+      sample<zg::CurveType::CONTINUOUS, zg::PlotStyle::CoordinateSystem::Polar>(*zcObj, data);
+  }
 
   for (auto& [f, data]: discrete_curves)
-    sample(*f, data);
+  {
+    const auto* zcObj = f->getZcObject();
+    assert(zcObj and f->style);
+    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Cartesian)
+      sample<zg::CurveType::DISCRETE, zg::PlotStyle::CoordinateSystem::Cartesian>(*zcObj, data);
+    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Polar)
+      sample<zg::CurveType::DISCRETE, zg::PlotStyle::CoordinateSystem::Polar>(*zcObj, data);
+  }
 
 }
 
