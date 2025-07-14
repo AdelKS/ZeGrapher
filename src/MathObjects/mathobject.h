@@ -74,9 +74,6 @@ public:
 
   const zc::DynMathObject<zc_t>* getZcObject() const;
 
-  zg::real_pt operator () (zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
-  zg::real_pt evaluate(zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
-
   PlotStyle* style = nullptr;
   QSyntaxHighlighter* highlighter = nullptr;
 

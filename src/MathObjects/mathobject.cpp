@@ -83,36 +83,6 @@ State MathObject::getState() const
   );
 }
 
-zg::real_pt MathObject::operator () (zg::real_unit input, zc::eval::Cache* cache) const
-{
-  return evaluate(input, cache);
-}
-
-zg::real_pt MathObject::evaluate(zg::real_unit input, zc::eval::Cache* cache) const
-{
-  real_pt res = std::visit(
-    zc::utils::overloaded{
-      [&](const mathobj::Constant* c) {
-        return zg::real_pt{input, c->evaluate()};
-      },
-      [&](const mathobj::Equation* e) {
-        return zg::real_pt{input, e->evaluate(input, cache)};
-      },
-      [&](const mathobj::Expr* e) {
-        return zg::real_pt{input, e->evaluate(cache)};
-      },
-      [](std::monostate) {
-        return zg::real_pt{{std::nan("")}, {std::nan("")}};
-      },
-    },
-    backend
-  );
-
-  if (style->coordinateSystem == PlotStyle::Cartesian)
-    return res;
-  else return real_pt{.x = std::cos(res.x.v) * res.y, .y = std::sin(res.x.v) * res.y};
-}
-
 const zc::DynMathObject<zc_t>* MathObject::getZcObject() const
 {
   return std::visit(
