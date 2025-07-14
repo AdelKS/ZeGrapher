@@ -32,7 +32,7 @@
 namespace zg {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct MathObject: QObject {
+struct ZcMathObject: QObject {
   Q_OBJECT
   QML_ELEMENT
 
@@ -42,8 +42,8 @@ struct MathObject: QObject {
 
 public:
 
-  explicit MathObject(QObject *parent = nullptr);
-  ~MathObject();
+  explicit ZcMathObject(QObject *parent = nullptr);
+  ~ZcMathObject();
 
   Q_INVOKABLE void setBackend(mathobj::Constant*);
   Q_INVOKABLE void setBackend(mathobj::Equation*);
@@ -91,7 +91,7 @@ protected:
 
 template <class T>
   requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
-const T* MathObject::getBackend() const
+const T* ZcMathObject::getBackend() const
 {
   if (std::holds_alternative<T*>(backend))
     return std::get<T*>(backend);
@@ -100,7 +100,7 @@ const T* MathObject::getBackend() const
 
 template <class T>
   requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
-T* MathObject::getBackend()
+T* ZcMathObject::getBackend()
 {
   return const_cast<T*>(std::as_const(*this).getBackend<T>());
 }

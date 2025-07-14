@@ -28,7 +28,7 @@ Item {
     id: zcBackend
   }
 
-  MathObject {
+  ZcMathObject {
     id: mathObj
   }
 

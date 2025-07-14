@@ -17,7 +17,7 @@ Item {
     zcExprEdit.refresh();
   }
 
-  MathObject {
+  ZcMathObject {
     id: mathObj
   }
 

@@ -7,7 +7,7 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  required property MathObject mathObj
+  required property ZcMathObject mathObj
 
   property alias expression: lineEdit.text
   property alias highlighter: mhighlighter

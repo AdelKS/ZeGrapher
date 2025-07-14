@@ -1,35 +1,35 @@
-#include "MathObjects/mathobject.h"
+#include "MathObjects/zcmathobject.h"
 #include "information.h"
 
 namespace zg {
 
-MathObject::MathObject(QObject *parent) : QObject(parent)
+ZcMathObject::ZcMathObject(QObject *parent) : QObject(parent)
 {
   information.registerMathObject(this);
 }
 
-void MathObject::setBackend(mathobj::Equation* b)
+void ZcMathObject::setBackend(mathobj::Equation* b)
 {
   backend = b;
   if (slot)
     setSlot(*slot);
 }
 
-void MathObject::setBackend(mathobj::Expr* b)
+void ZcMathObject::setBackend(mathobj::Expr* b)
 {
   backend = b;
   if (slot)
     setSlot(*slot);
 }
 
-void MathObject::setBackend(mathobj::Constant* b)
+void ZcMathObject::setBackend(mathobj::Constant* b)
 {
   backend = b;
   if (slot)
     setSlot(*slot);
 }
 
-State MathObject::setExpression(QString expr)
+State ZcMathObject::setExpression(QString expr)
 {
   State old_sate = getState();
 
@@ -68,7 +68,7 @@ State MathObject::setExpression(QString expr)
   return new_state;
 }
 
-State MathObject::getState() const
+State ZcMathObject::getState() const
 {
   return std::visit(
     zc::utils::overloaded{
@@ -83,7 +83,7 @@ State MathObject::getState() const
   );
 }
 
-const zc::DynMathObject<zc_t>* MathObject::getZcObject() const
+const zc::DynMathObject<zc_t>* ZcMathObject::getZcObject() const
 {
   return std::visit(
     zc::utils::overloaded{
@@ -99,7 +99,7 @@ const zc::DynMathObject<zc_t>* MathObject::getZcObject() const
 
 }
 
-void MathObject::setState(State newState)
+void ZcMathObject::setState(State newState)
 {
   std::visit(
     zc::utils::overloaded{
@@ -113,7 +113,7 @@ void MathObject::setState(State newState)
   );
 }
 
-void MathObject::setSlot(size_t slot)
+void ZcMathObject::setSlot(size_t slot)
 {
   this->slot = slot;
   std::visit(
@@ -127,7 +127,7 @@ void MathObject::setSlot(size_t slot)
   );
 }
 
-QString MathObject::getName() const
+QString ZcMathObject::getName() const
 {
   return std::visit(
     zc::utils::overloaded{
@@ -140,7 +140,7 @@ QString MathObject::getName() const
   );
 }
 
-QStringList MathObject::directDependencies() const
+QStringList ZcMathObject::directDependencies() const
 {
   return std::visit(
     zc::utils::overloaded{
@@ -153,7 +153,7 @@ QStringList MathObject::directDependencies() const
   );
 }
 
-State MathObject::refresh()
+State ZcMathObject::refresh()
 {
   State old_sate = getState();
 
@@ -171,7 +171,7 @@ State MathObject::refresh()
   return new_state;
 }
 
-MathObject::~MathObject()
+ZcMathObject::~ZcMathObject()
 {
   information.deregisterMathObject(this);
 }

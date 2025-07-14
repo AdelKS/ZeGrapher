@@ -34,10 +34,10 @@ void Sampler::setPixelStep(double pxStep)
 
 void Sampler::refresh_valid_objects()
 {
-  std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> refreshed_continuous_curves;
-  std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
+  std::unordered_map<const zg::ZcMathObject*, zg::SampledCurveContinuous> refreshed_continuous_curves;
+  std::unordered_map<const zg::ZcMathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
 
-  for (const zg::MathObject* f : information.getMathObjects())
+  for (const zg::ZcMathObject* f : information.getMathObjects())
   {
     auto sampled_settings_node = sampled_settings.extract(f);
     auto discrete_curve_node = discrete_curves.extract(f);

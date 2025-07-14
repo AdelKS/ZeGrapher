@@ -3,7 +3,7 @@
 
 #include <zecalculator/zecalculator.h>
 
-void Highlighter::setMathObj(zg::MathObject* mathObj)
+void Highlighter::setMathObj(zg::ZcMathObject* mathObj)
 {
   qDebug() << "Highlighter: setting matObj pointer" << mathObj;
   qDebug() << "Highlighter: address" << this;
