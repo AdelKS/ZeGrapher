@@ -7,7 +7,7 @@ import QtQuick.Controls
 Item {
   id: root
 
-  required property MathObject mathObj
+  required property PlotStyle style
 
   property alias name: zcExprEdit.expression
   property alias backend: zcBackend
@@ -28,13 +28,17 @@ Item {
     id: zcBackend
   }
 
+  MathObject {
+    id: mathObj
+  }
+
   RowLayout {
     anchors.fill: parent
 
     ZcExprEdit {
       id: zcExprEdit
 
-      mathObj: root.mathObj
+      mathObj: mathObj
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
@@ -67,7 +71,7 @@ Item {
   }
 
   Component.onCompleted: {
-    root.mathObj.setBackend(zcBackend);
+    mathObj.setBackend(zcBackend);
   }
 
 }

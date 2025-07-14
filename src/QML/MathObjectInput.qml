@@ -6,7 +6,7 @@ import QtQuick.Shapes
 Rectangle {
   id: root
 
-  property alias mathObj: m_mathObj
+  property alias style: plotStyle
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
@@ -36,11 +36,6 @@ Rectangle {
     start: styleWidget.start
     end: styleWidget.end
     step: styleWidget.step
-  }
-
-  MathObject {
-    id: m_mathObj
-    style: plotStyle
   }
 
   Column {
@@ -234,7 +229,7 @@ Rectangle {
           return;
         }
 
-        var widget = component.createObject(placeholder, {"mathObj": root.mathObj})
+        var widget = component.createObject(placeholder, {"style": root.style})
 
         if (widget === null) {
           console.log("Error creating object");

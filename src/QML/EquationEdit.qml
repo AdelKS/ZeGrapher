@@ -5,7 +5,7 @@ import QtQuick
 Item {
   id: root
 
-  required property MathObject mathObj
+  required property PlotStyle style
 
   property alias expression: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -26,15 +26,20 @@ Item {
     id: zcBackend
   }
 
+  MathObject {
+    id: mathObj
+  }
+
   ZcExprEdit {
     id: zcExprEdit
-    mathObj: root.mathObj
+    mathObj: mathObj
 
     anchors.left: parent.left
     anchors.right: parent.right
   }
 
   Component.onCompleted: {
-    root.mathObj.setBackend(zcBackend);
+    mathObj.setBackend(zcBackend);
+    mathObj.style = root.style;
   }
 }
