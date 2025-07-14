@@ -39,12 +39,12 @@ void Sampler::refresh_valid_objects()
 
   for (const zg::MathObject* f : information.getMathObjects())
   {
-    if (not f->style or f->getState().getStatus() != zg::State::VALID)
-      continue;
-
     auto sampled_settings_node = sampled_settings.extract(f);
     auto discrete_curve_node = discrete_curves.extract(f);
     auto continuous_curve_node = continuous_curves.extract(f);
+
+    if (not f->style or f->getState().getStatus() != zg::State::VALID)
+      continue;
 
     if (f->style->objectType == zg::PlotStyle::Continuous)
     {
