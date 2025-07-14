@@ -222,7 +222,6 @@ void Graph::paint(QPainter *p)
 
 void Graph::drawAll()
 {
-  information.updateValidMathObjects();
   painter->setFont(information.getGraphSettings().graphFont);
   fontMetrics = painter->fontMetrics();
 

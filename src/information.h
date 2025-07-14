@@ -95,8 +95,6 @@ public:
   void deregisterMathObject(zg::MathObject*);
 
   const zc::SlottedDeque<zg::MathObject*>& getMathObjects() const { return mathObjects; }
-  const auto& getValidFuncs() const { return validFuncs; }
-  const auto& getValidSeqs() const { return validSeqs; }
 
   void mathObjectUpdated(size_t zgSlot, QString oldName, QString newName);
 
@@ -124,7 +122,6 @@ public slots:
   void emitDataUpdate();
   void emitDrawStateUpdate();
   void emitAnimationUpdate();
-  void updateValidMathObjects();
 
   void setGraphRange(const GraphRange& range);
   void setOrthonormal(bool state);
@@ -158,10 +155,6 @@ protected:
   zc::MathWorld<zc_t> mathWorld;
 
   zc::SlottedDeque<zg::MathObject*> mathObjects;
-
-  QHash<QString, std::pair<const zc::DynMathObject<zc_t>*, const zg::PlotStyle*>> validFuncs;
-  QHash<QString, std::pair<const zc::DynMathObject<zc_t>*, const zg::PlotStyle*>> validSeqs;
-  QHash<QString, const zc::DynMathObject<zc_t>*> validConstants;
 
   QList<ParEqWidget*>* parEqWidgets;
 };
