@@ -9,6 +9,7 @@ Item {
   property alias implicitName : exprBackend.implicitName;
   property alias state: exprBackend.state
   property alias expression: zcExprEdit.expression
+  property alias customErrorMsg: zcExprEdit.customErrorMsg
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
   implicitHeight: zcExprEdit.implicitHeight

@@ -12,40 +12,38 @@ Rectangle {
   color: myPalette.window
 
   function checkHorizontalWindow() {
-    console.log("checking x range");
+    console.log("checking x range: ", xminEdit.value, " to ", xmaxEdit.value);
     var oldVal = disableSignals;
     root.disableSignals = true;
     if (xminEdit.value < xmaxEdit.value) {
+      console.log("Updating information singleton with new x range.");
       Information.range.x.min = xminEdit.value;
       Information.range.x.max = xmaxEdit.value;
-      xminEdit.state.setValid();
-      xmaxEdit.state.setValid();
+      xminEdit.customErrorMsg = "";
+      xmaxEdit.customErrorMsg = "";
     } else {
       console.log('setting x range as invalid');
-      xminEdit.state.setInvalid("<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>");
-      xmaxEdit.state.setInvalid("<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>");
+      xminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
+      xmaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
     }
-    xminEdit.refresh();
-    xmaxEdit.refresh();
     disableSignals = oldVal;
   }
 
   function checkVerticalWindow() {
-    console.log("checking y range");
+    console.log("checking y range: ", yminEdit.value, " to ", ymaxEdit.value);
     var oldVal = disableSignals;
     root.disableSignals = true;
     if (yminEdit.value < ymaxEdit.value) {
+      console.log("Updating information singleton with new y range.");
       Information.range.y.min = yminEdit.value;
       Information.range.y.max = ymaxEdit.value;
-      yminEdit.state.setValid();
-      ymaxEdit.state.setValid();
+      yminEdit.customErrorMsg = "";
+      ymaxEdit.customErrorMsg = "";
     } else {
       console.log('setting y range as invalid');
-      yminEdit.state.setInvalid("<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>");
-      ymaxEdit.state.setInvalid("<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>");
+      yminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
+      ymaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
     }
-    yminEdit.refresh();
-    ymaxEdit.refresh();
     disableSignals = oldVal;
   }
 
