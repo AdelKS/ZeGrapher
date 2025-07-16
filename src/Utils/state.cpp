@@ -52,6 +52,11 @@ void State::setInvalid(QString zgErrorMsg)
   status = INVALID;
 }
 
+bool State::isValid() const
+{
+  return status == VALID;
+}
+
 State::Status State::getStatus() const { return status; }
 
 }

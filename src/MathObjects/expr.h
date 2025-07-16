@@ -46,6 +46,8 @@ public:
   Q_INVOKABLE State getState() const;
   Q_INVOKABLE void setState(State);
 
+  Q_INVOKABLE bool isValid() const;
+
   void setSlot(size_t slot);
   QString getName() const { return implicitName; };
 

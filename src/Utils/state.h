@@ -61,6 +61,8 @@ public:
   /// @brief set an error message coming from ZG
   Q_INVOKABLE void setInvalid(QString zgErrorMsg);
 
+  Q_INVOKABLE bool isValid() const;
+
 protected:
   QString errorMsg;
   /// @brief error that comes from the ZC backend

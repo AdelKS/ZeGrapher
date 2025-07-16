@@ -50,6 +50,8 @@ public:
   Q_INVOKABLE State getState() const;
   Q_INVOKABLE void setState(State);
 
+  Q_INVOKABLE bool isValid() const;
+
   zg::real_unit operator () () const;
   zg::real_unit evaluate() const;
 

@@ -25,6 +25,11 @@ State Constant::setName(QString new_input_name)
   return refresh();
 }
 
+bool Constant::isValid() const
+{
+  return state.isValid();
+}
+
 State Constant::refresh()
 {
   QString oldName = name;

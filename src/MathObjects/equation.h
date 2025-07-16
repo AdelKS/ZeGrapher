@@ -49,6 +49,8 @@ public:
   Q_INVOKABLE State getState() const;
   Q_INVOKABLE void setState(State);
 
+  Q_INVOKABLE bool isValid() const;
+
   zg::real_unit operator () (zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
   zg::real_unit evaluate(zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
 

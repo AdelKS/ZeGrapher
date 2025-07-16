@@ -53,6 +53,7 @@ public:
   bool isContinuous() const;
   bool isDiscrete() const;
 
+  bool isValid() const;
 
   void setSlot(size_t slot);
   std::optional<size_t> get_slot() const { return slot; }

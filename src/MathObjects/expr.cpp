@@ -16,6 +16,11 @@ void Expr::setSlot(size_t slot)
   static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
 }
 
+bool Expr::isValid() const
+{
+  return state.isValid();
+}
+
 State Expr::setImplicitName(QString name)
 {
   implicitName = std::move(name);

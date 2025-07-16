@@ -26,6 +26,11 @@ void ZcMathObject::setBackend(mathobj::Constant* b)
     setSlot(*slot);
 }
 
+bool ZcMathObject::isValid() const
+{
+  return getState().getStatus() == State::VALID;
+}
+
 State ZcMathObject::setExpression(QString expr)
 {
   State old_sate = getState();

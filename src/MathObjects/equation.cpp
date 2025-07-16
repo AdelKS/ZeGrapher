@@ -23,6 +23,11 @@ State Equation::setEquation(QString eq)
   return state;
 }
 
+bool Equation::isValid() const
+{
+  return state.isValid();
+}
+
 void Equation::setSlot(size_t slot)
 {
   this->slot = slot;
