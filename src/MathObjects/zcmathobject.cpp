@@ -7,23 +7,34 @@ ZcMathObject::ZcMathObject(QObject *parent) : QObject(parent)
 
 void ZcMathObject::setBackend(mathobj::Equation* b)
 {
+  Q_ASSERT(b);
   backend = b;
   if (slot)
-    setSlot(*slot);
+    b->setSlot(*slot);
 }
 
 void ZcMathObject::setBackend(mathobj::Expr* b)
 {
+  Q_ASSERT(b);
   backend = b;
   if (slot)
-    setSlot(*slot);
+    b->setSlot(*slot);
 }
 
 void ZcMathObject::setBackend(mathobj::Constant* b)
 {
+  Q_ASSERT(b);
   backend = b;
   if (slot)
-    setSlot(*slot);
+    b->setSlot(*slot);
+}
+
+void ZcMathObject::setBackend(mathobj::NamedRef* n)
+{
+  Q_ASSERT(n);
+  backend = n;
+  if (slot)
+    n->setSlot(*slot);
 }
 
 bool ZcMathObject::isValid() const
@@ -45,6 +56,9 @@ State ZcMathObject::setExpression(QString expr)
       },
       [&](mathobj::Equation* v) {
         return v->setEquation(expr);
+      },
+      [&](mathobj::NamedRef* n) {
+        return n->setName(expr);
       },
       [&](std::monostate) {
         return State();
@@ -90,12 +104,16 @@ State ZcMathObject::getState() const
 
 const zc::DynMathObject<zc_t>* ZcMathObject::getZcObject() const
 {
+  using Ret = const zc::DynMathObject<zc_t>*;
   return std::visit(
     zc::utils::overloaded{
-      [&](const auto* c) {
+      [&](const auto* c) -> Ret {
         return &c->zcMathObj;
       },
-      [](std::monostate) -> zc::DynMathObject<zc_t>*{
+      [](const mathobj::NamedRef* n) -> Ret {
+        return n->getZcObject();
+      },
+      [](std::monostate) -> Ret {
         return nullptr;
       },
     },
@@ -150,6 +168,7 @@ State ZcMathObject::refresh()
 
   State new_state = std::visit(zc::utils::overloaded{
     [](std::monostate) {return State(); },
+    [](mathobj::NamedRef* n){ return n->getState(); },
     [](auto* b) { return b->refresh(); },
   }, backend);
 

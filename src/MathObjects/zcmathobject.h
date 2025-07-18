@@ -27,6 +27,7 @@
 #include "MathObjects/expr.h"
 #include "equation.h"
 #include "constant.h"
+#include "namedref.h"
 
 namespace zg {
 
@@ -45,6 +46,7 @@ public:
   Q_INVOKABLE void setBackend(mathobj::Constant*);
   Q_INVOKABLE void setBackend(mathobj::Equation*);
   Q_INVOKABLE void setBackend(mathobj::Expr*);
+  Q_INVOKABLE void setBackend(mathobj::NamedRef*);
 
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State getState() const;
@@ -84,7 +86,7 @@ signals:
   void stateChanged();
 
 protected:
-  std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*> backend;
+  std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*, mathobj::NamedRef*> backend;
   std::optional<size_t> slot;
 };
 
