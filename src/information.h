@@ -24,7 +24,7 @@
 #include "Calculus/function.h"
 #include "Calculus/regression.h"
 #include "Calculus/seqcalculator.h"
-#include "MathObjects/zcmathobject.h"
+#include "MathObjects/mathobject.h"
 #include "Widgets/pareqwidget.h"
 
 #include <QtQml/qqmlregistration.h>
@@ -91,10 +91,10 @@ public:
   const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
   zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
 
-  void registerMathObject(zg::ZcMathObject*);
-  void deregisterMathObject(zg::ZcMathObject*);
+  size_t registerMathObject(zg::MathObject*);
+  void deregisterMathObject(zg::MathObject*);
 
-  const zc::SlottedDeque<zg::ZcMathObject*>& getMathObjects() const { return mathObjects; }
+  const zc::SlottedDeque<zg::MathObject*>& getMathObjects() const { return mathObjects; }
 
   void mathObjectUpdated(size_t zgSlot, QString oldName, QString newName);
 
@@ -154,7 +154,7 @@ protected:
   QString exportFileName;
   zc::MathWorld<zc_t> mathWorld;
 
-  zc::SlottedDeque<zg::ZcMathObject*> mathObjects;
+  zc::SlottedDeque<zg::MathObject*> mathObjects;
 
   QList<ParEqWidget*>* parEqWidgets;
 };

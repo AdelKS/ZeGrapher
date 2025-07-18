@@ -27,19 +27,26 @@ Item {
   }
 
   ZcMathObject {
+    id: zcMathObj
+  }
+
+  MathObject {
     id: mathObj
   }
 
   ZcExprEdit {
     id: zcExprEdit
-    mathObj: mathObj
+    mathObj: zcMathObj
 
     anchors.left: parent.left
     anchors.right: parent.right
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(zcBackend);
-    mathObj.style = root.style;
+    console.log("EquationEdit: backend=", zcBackend);
+    console.log("EquationEdit: style=", style);
+    mathObj.style = style;
+    zcMathObj.setBackend(zcBackend);
+    mathObj.setBackend(zcMathObj);
   }
 }

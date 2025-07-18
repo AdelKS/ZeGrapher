@@ -17,18 +17,21 @@ Item {
     zcExprEdit.refresh();
   }
 
-  ZcMathObject {
-    id: mathObj
-  }
-
   Expr {
     id: exprBackend
   }
 
+  ZcMathObject {
+    id: zcMathObj
+  }
+
+  MathObject {
+    id: mathObj
+  }
+
   ZcExprEdit {
     id: zcExprEdit
-
-    mathObj: mathObj
+    mathObj: zcMathObj
 
     anchors.left: parent.left
     anchors.right: parent.right
@@ -37,6 +40,8 @@ Item {
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(exprBackend);
+    console.log("ValueEdit: backend=", exprBackend);
+    zcMathObj.setBackend(exprBackend);
+    mathObj.setBackend(zcMathObj);
   }
 }

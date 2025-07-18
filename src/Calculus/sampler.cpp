@@ -34,19 +34,20 @@ void Sampler::setPixelStep(double pxStep)
 
 void Sampler::refresh_valid_objects()
 {
-  std::unordered_map<const zg::ZcMathObject*, zg::SampledCurveContinuous> refreshed_continuous_curves;
-  std::unordered_map<const zg::ZcMathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> refreshed_continuous_curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
 
-  for (const zg::ZcMathObject* f : information.getMathObjects())
+  [[maybe_unused]] const auto& objs = information.getMathObjects();
+  for (const zg::MathObject* f : information.getMathObjects())
   {
     auto sampled_settings_node = sampled_settings.extract(f);
     auto discrete_curve_node = discrete_curves.extract(f);
     auto continuous_curve_node = continuous_curves.extract(f);
 
-    if (not f->style or f->getState().getStatus() != zg::State::VALID)
+    if (not f->style or not f->isValid())
       continue;
 
-    if (f->style->objectType == zg::PlotStyle::Continuous)
+    if (f->isContinuous())
     {
       assert((sampled_settings_node and continuous_curve_node)
              or (not sampled_settings_node and not continuous_curve_node));
@@ -59,7 +60,7 @@ void Sampler::refresh_valid_objects()
 
       sampled_settings.emplace(f, f->style->get_sampling_settings());
     }
-    else if (f->style->objectType == zg::PlotStyle::Discrete)
+    else if (f->isDiscrete())
     {
       assert((sampled_settings_node and discrete_curve_node)
              or (not sampled_settings_node and not discrete_curve_node));

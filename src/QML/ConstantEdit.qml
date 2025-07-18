@@ -29,6 +29,10 @@ Item {
   }
 
   ZcMathObject {
+    id: zcMathObj
+  }
+
+  MathObject {
     id: mathObj
   }
 
@@ -37,8 +41,7 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-
-      mathObj: mathObj
+      mathObj: zcMathObj
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
@@ -71,7 +74,9 @@ Item {
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(zcBackend);
+    console.log("ConstantEdit: backend=", zcBackend);
+    zcMathObj.setBackend(zcBackend);
+    mathObj.setBackend(zcMathObj);
   }
 
 }

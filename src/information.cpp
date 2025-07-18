@@ -251,29 +251,32 @@ QString Information::getExportFileName()
   return exportFileName;
 }
 
-void Information::registerMathObject(zg::ZcMathObject* obj)
+size_t Information::registerMathObject(zg::MathObject* obj)
 {
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 0);
 
   size_t slot = mathObjects.next_free_slot();
   mathObjects.push(obj);
-  obj->setSlot(slot);
+
+  return slot;
 }
 
-void Information::deregisterMathObject(zg::ZcMathObject* obj)
+void Information::deregisterMathObject(zg::MathObject* obj)
 {
   auto it = std::ranges::find(mathObjects, obj);
 
   Q_ASSERT(it != mathObjects.end());
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
 
-  mathObjects.free((*it)->get_slot().value());
+  mathObjects.free((*it)->get_slot());
 }
 
 void Information::mathObjectUpdated(size_t zgSlot, QString oldName, QString newName)
 {
   QStringList affectedObjects;
   QStringList toExplore;
+
+  mathObjects[zgSlot]->updateMetadata();
 
   auto appendName = [&](QString name)
   {
@@ -313,8 +316,8 @@ void Information::mathObjectUpdated(size_t zgSlot, QString oldName, QString newN
 
 void Information::refreshMathObjects(size_t excludedZgSlot, QStringList objectNames)
 {
-  for (zg::ZcMathObject* obj: mathObjects)
-    if (obj->get_slot() and *obj->get_slot() != excludedZgSlot
+  for (zg::MathObject* obj: mathObjects)
+    if (obj->get_slot() and obj->get_slot() != excludedZgSlot
         and std::ranges::any_of(obj->directDependencies(),
                                 [&](auto&& name) { return objectNames.contains(name); }))
     {

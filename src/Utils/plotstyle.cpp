@@ -50,9 +50,11 @@ void PlotStyle::setStep(double v)
 
 PlotStyle::SamplingSettings PlotStyle::get_sampling_settings() const
 {
-  return SamplingSettings{.step = step,
-                          .coordinateSystem = coordinateSystem,
-                          .objectType = objectType};
+  return SamplingSettings{
+    .step = step,
+    .coordinateSystem = coordinateSystem,
+    .objectType = objectType
+  };
 }
 
 void PlotStyle::setObjectType(ObjectType newObjectType)

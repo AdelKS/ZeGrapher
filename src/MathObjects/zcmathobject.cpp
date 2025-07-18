@@ -1,12 +1,9 @@
 #include "MathObjects/zcmathobject.h"
-#include "information.h"
 
 namespace zg {
 
 ZcMathObject::ZcMathObject(QObject *parent) : QObject(parent)
-{
-  information.registerMathObject(this);
-}
+{}
 
 void ZcMathObject::setBackend(mathobj::Equation* b)
 {
@@ -33,7 +30,6 @@ State ZcMathObject::setExpression(QString expr)
 {
   State old_sate = getState();
 
-  PlotStyle::ObjectType objectType = PlotStyle::NonRepresentable;
   State new_state = std::visit(
     zc::utils::overloaded{
       [&](mathobj::Constant* v) {
@@ -43,14 +39,7 @@ State ZcMathObject::setExpression(QString expr)
         return v->setExpression(expr);
       },
       [&](mathobj::Equation* v) {
-        State state = v->setEquation(expr);
-        if (style and state.getStatus() == State::VALID)
-        {
-          if (v->zcMathObj.holds(zc::ObjectType::DATA) or v->zcMathObj.holds(zc::ObjectType::SEQUENCE))
-            objectType = PlotStyle::Discrete;
-          else objectType = PlotStyle::Continuous;
-        }
-        return state;
+        return v->setEquation(expr);
       },
       [&](std::monostate) {
         return State();
@@ -59,13 +48,24 @@ State ZcMathObject::setExpression(QString expr)
     backend
   );
 
-  if (style)
-    style->setObjectType(objectType);
-
   if (old_sate != new_state)
     emit stateChanged();
 
   return new_state;
+}
+
+bool ZcMathObject::isContinuous() const
+{
+  if (const auto* v = getZcObject())
+    return not (v->holds(zc::ObjectType::DATA) or v->holds(zc::ObjectType::SEQUENCE));
+  else return false;
+}
+
+bool ZcMathObject::isDiscrete() const
+{
+  if (const auto* v = getZcObject())
+    return v->holds(zc::ObjectType::DATA) or v->holds(zc::ObjectType::SEQUENCE);
+  else return false;
 }
 
 State ZcMathObject::getState() const
@@ -169,11 +169,6 @@ State ZcMathObject::refresh()
     highlighter->rehighlight();
 
   return new_state;
-}
-
-ZcMathObject::~ZcMathObject()
-{
-  information.deregisterMathObject(this);
 }
 
 }

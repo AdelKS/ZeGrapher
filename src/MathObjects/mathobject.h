@@ -24,73 +24,65 @@
 #include <QObject>
 #include <QSyntaxHighlighter>
 
-#include "MathObjects/expr.h"
-#include "equation.h"
-#include "constant.h"
+#include "Utils/plotstyle.h"
+#include "zcmathobject.h"
 
 namespace zg {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct ZcMathObject: QObject {
+struct MathObject: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QSyntaxHighlighter* highlighter MEMBER highlighter)
-  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(PlotStyle* style MEMBER style)
 
 public:
 
-  explicit ZcMathObject(QObject *parent = nullptr);
+  explicit MathObject(QObject *parent = nullptr);
+  ~MathObject();
 
-  Q_INVOKABLE void setBackend(mathobj::Constant*);
-  Q_INVOKABLE void setBackend(mathobj::Equation*);
-  Q_INVOKABLE void setBackend(mathobj::Expr*);
+  Q_INVOKABLE void setBackend(ZcMathObject*);
 
-  Q_INVOKABLE State setExpression(QString);
-  Q_INVOKABLE State getState() const;
-  Q_INVOKABLE void setState(State);
+  size_t get_slot() const { return slot; }
 
-  bool isContinuous() const;
-  bool isDiscrete() const;
-
-
-  void setSlot(size_t slot);
-  std::optional<size_t> get_slot() const { return slot; }
+  bool isValid() const;
 
   /// @returns the name of the currently active math object
   QString getName() const;
+
+  const zc::DynMathObject<zc_t>* getZcObject() const;
+
+  bool isContinuous() const;
+
+  bool isDiscrete() const;
 
   /// @returns list of math object names this object directly uses
   QStringList directDependencies() const;
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
-    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   T* getBackend();
 
   template <class T>
-    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   const T* getBackend() const;
 
-  const zc::DynMathObject<zc_t>* getZcObject() const;
-
-  QSyntaxHighlighter* highlighter = nullptr;
+  PlotStyle* style = nullptr;
 
 public slots:
   /// @brief forwards the refresh() call to the current active backend
-  State refresh();
+  void refresh();
+  void updateMetadata();
 
 signals:
   void stateChanged();
 
 protected:
-  std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*> backend;
-  std::optional<size_t> slot;
+  std::variant<std::monostate, ZcMathObject*> backend;
+  size_t slot = -1;
 };
 
 template <class T>
-  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
-const T* ZcMathObject::getBackend() const
+const T* MathObject::getBackend() const
 {
   if (std::holds_alternative<T*>(backend))
     return std::get<T*>(backend);
@@ -98,8 +90,7 @@ const T* ZcMathObject::getBackend() const
 }
 
 template <class T>
-  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
-T* ZcMathObject::getBackend()
+T* MathObject::getBackend()
 {
   return const_cast<T*>(std::as_const(*this).getBackend<T>());
 }
