@@ -269,6 +269,11 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
 
   mathObjects.free((*it)->get_slot());
+
+  for (zg::MathObject* f: mathObjects)
+    f->refresh();
+
+  emit mathObjectsChanged({});
 }
 
 void Information::mathObjectUpdated(size_t zgSlot, QString oldName, QString newName)
