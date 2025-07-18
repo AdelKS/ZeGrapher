@@ -12,8 +12,8 @@ inline double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, c
   return (AP - t * AB).square_length();
 };
 
-template <zg::CurveType t, zg::PlotStyle::CoordinateSystem coordinates>
-void Sampler::sample(const zc::DynMathObject<zc_t>&f, zg::SampledCurve<t>& data)
+template <zg::PlotStyle::CoordinateSystem coordinates, zg::CurveType t>
+void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
 {
   auto get_acceptable_input = [&](zg::real_unit x)
   {
@@ -21,20 +21,50 @@ void Sampler::sample(const zc::DynMathObject<zc_t>&f, zg::SampledCurve<t>& data)
       return std::round(std::max(0., x.v) / data.style.step.v) * data.style.step;
     else return x;
   };
-  auto get_f_pt = [&](zg::real_unit x)
-  {
-    tl::expected<double, zc::Error> exp_res = f({x.v}, &information.mathObjectCache);
-    double res = exp_res ? *exp_res : std::nan("");
-    if constexpr (coordinates == zg::PlotStyle::CoordinateSystem::Cartesian)
+  auto dispatcher = zc::utils::overloaded{
+    [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
+      requires (coordinates == zg::PlotStyle::CoordinateSystem::Cartesian)
     {
+      tl::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
+      double res = exp_res ? *exp_res : std::nan("");
       return zg::real_pt{x, zg::real_unit{res}};
-    }
-    else
+    },
+    [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
+      requires (coordinates == zg::PlotStyle::CoordinateSystem::Polar)
     {
-      static_assert(coordinates == zg::PlotStyle::CoordinateSystem::Polar, "Expecting this to be Polar plot");
+      tl::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
+      double res = exp_res ? *exp_res : std::nan("");
       return zg::real_pt{std::cos(x.v) * zg::real_unit{res}, std::sin(x.v) * zg::real_unit{res}};
+    },
+    [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
+      requires (coordinates == zg::PlotStyle::CoordinateSystem::Cartesian)
+    {
+      tl::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
+      double res1 = exp_res1 ? *exp_res1 : std::nan("");
+
+      tl::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information.mathObjectCache);
+      double res2 = exp_res2 ? *exp_res2 : std::nan("");
+
+      return zg::real_pt{zg::real_unit{res1}, zg::real_unit{res2}};
+    },
+    [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
+      requires (coordinates == zg::PlotStyle::CoordinateSystem::Polar)
+    {
+      tl::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
+      double res1 = exp_res1 ? *exp_res1 : std::nan("");
+
+      tl::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information.mathObjectCache);
+      double res2 = exp_res2 ? *exp_res2 : std::nan("");
+
+      return zg::real_pt{std::cos(res1) * zg::real_unit{res2}, std::sin(res1) * zg::real_unit{res2}};
     }
   };
+
+  auto get_f_pt = [&](zg::real_unit x)
+  {
+    return dispatcher(handle, x);
+  };
+
   auto is_nan_pt = [](const zg::real_pt& pt)
   {
     return std::isnan(pt.x.v) or std::isnan(pt.y.v);
@@ -65,7 +95,18 @@ void Sampler::sample(const zc::DynMathObject<zc_t>&f, zg::SampledCurve<t>& data)
     data.pop_front(vals_to_pop);
   }
 
-  qDebug() << "Object caching: " << f.get_name()
+  std::string obj_name = zc::utils::overloaded{
+    [&](const zc::DynMathObject<zc_t>* f)
+    {
+      return std::string(f->get_name());
+    },
+    [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f)
+    {
+      return std::string(f.first->get_name()) + "," + std::string(f.second->get_name());
+    },
+  }(handle);
+
+  qDebug() << "Object caching: " << obj_name
     << " sampling range: min=" << QString::number(data.style.range.min.v, 'g', 14)
     << " max=" << QString::number(data.style.range.max.v, 'g', 14);
 
@@ -180,11 +221,11 @@ void Sampler::sample(const zc::DynMathObject<zc_t>&f, zg::SampledCurve<t>& data)
     else i++;
   }
 
-  qDebug() << "Object caching: " << f.get_name() << " curve has " << curve.size() << " points";
+  qDebug() << "Object caching: " << obj_name << " curve has " << curve.size() << " points";
 
   if constexpr (t == zg::CurveType::CONTINUOUS)
   {
-    qDebug() << "Object caching (continuous object): " << f.get_name() << " has " << data.discontinuities.size() << " discontinuities.";
+    qDebug() << "  and has " << data.discontinuities.size() << " discontinuities.";
     i = 1;
     for (size_t index : data.discontinuities)
     {

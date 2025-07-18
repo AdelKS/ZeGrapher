@@ -83,27 +83,31 @@ void Sampler::update()
 {
   refresh_valid_objects();
 
+  auto dispatch = [this](zg::MathObject::EvalHandle var_handle, const zg::PlotStyle* style, auto& data)
+  {
+    if (not style)
+      return;
+
+    std::visit(zc::utils::overloaded{
+      [](std::monostate){},
+      [&](auto handle){
+        if (style->coordinateSystem == zg::PlotStyle::Cartesian)
+          sample<zg::PlotStyle::Cartesian>(handle, data);
+        else if (style->coordinateSystem == zg::PlotStyle::Polar)
+          sample<zg::PlotStyle::Polar>(handle, data);
+        else qCritical() << "Case not handled, aborting program";
+      }
+    }, var_handle);
+  };
+
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
   for (auto& [f, data]: continuous_curves)
-  {
-    const auto* zcObj = f->getZcObject();
-    assert(zcObj and f->style);
-    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Cartesian)
-      sample<zg::CurveType::CONTINUOUS, zg::PlotStyle::CoordinateSystem::Cartesian>(*zcObj, data);
-    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Polar)
-      sample<zg::CurveType::CONTINUOUS, zg::PlotStyle::CoordinateSystem::Polar>(*zcObj, data);
-  }
+    dispatch(f->getZcObject(), f->style, data);
+
 
   for (auto& [f, data]: discrete_curves)
-  {
-    const auto* zcObj = f->getZcObject();
-    assert(zcObj and f->style);
-    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Cartesian)
-      sample<zg::CurveType::DISCRETE, zg::PlotStyle::CoordinateSystem::Cartesian>(*zcObj, data);
-    if (f->style->coordinateSystem == zg::PlotStyle::CoordinateSystem::Polar)
-      sample<zg::CurveType::DISCRETE, zg::PlotStyle::CoordinateSystem::Polar>(*zcObj, data);
-  }
+    dispatch(f->getZcObject(), f->style, data);
 
 }
 

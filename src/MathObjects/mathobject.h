@@ -25,6 +25,7 @@
 #include <QSyntaxHighlighter>
 
 #include "Utils/plotstyle.h"
+#include "parametric.h"
 #include "zcmathobject.h"
 
 namespace zg {
@@ -37,11 +38,16 @@ struct MathObject: QObject {
   Q_PROPERTY(PlotStyle* style MEMBER style)
 
 public:
+  using EvalHandle
+    = std::variant<std::monostate,
+                   const zc::DynMathObject<zc_t>*,
+                   std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
 
   explicit MathObject(QObject *parent = nullptr);
   ~MathObject();
 
   Q_INVOKABLE void setBackend(ZcMathObject*);
+  Q_INVOKABLE void setBackend(Parametric*);
 
   size_t get_slot() const { return slot; }
 
@@ -50,7 +56,8 @@ public:
   /// @returns the name of the currently active math object
   QString getName() const;
 
-  const zc::DynMathObject<zc_t>* getZcObject() const;
+
+  EvalHandle getZcObject() const;
 
   bool isContinuous() const;
 
@@ -77,7 +84,7 @@ signals:
   void stateChanged();
 
 protected:
-  std::variant<std::monostate, ZcMathObject*> backend;
+  std::variant<std::monostate, ZcMathObject*, Parametric*> backend;
   size_t slot = -1;
 };
 

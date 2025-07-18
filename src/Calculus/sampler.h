@@ -51,8 +51,8 @@ protected:
 
   /// @brief samples an object given the current range and graph size
   /// @tparam continuous: whether the object is continuous or discrete
-  template <zg::CurveType t, zg::PlotStyle::CoordinateSystem c>
-  void sample(const zc::DynMathObject<zc_t>&, zg::SampledCurve<t>&);
+  template <zg::PlotStyle::CoordinateSystem c, zg::CurveType t>
+  void sample(auto, zg::SampledCurve<t>&);
 
   const zg::ZeViewMapper& mapper;
 

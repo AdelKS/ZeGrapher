@@ -15,15 +15,25 @@ void MathObject::setBackend(ZcMathObject* b)
   b->setSlot(slot);
 }
 
-const zc::DynMathObject<zc_t>* MathObject::getZcObject() const
+void MathObject::setBackend(Parametric* p)
+{
+  assert(p);
+  backend = p;
+  p->setSlot(slot);
+}
+
+MathObject::EvalHandle MathObject::getZcObject() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [&](const ZcMathObject* c) {
+      [](const ZcMathObject* c) -> EvalHandle {
         return c->getZcObject();
       },
-      [](std::monostate) -> const zc::DynMathObject<zc_t>* {
-        return nullptr;
+      [](const Parametric* p) -> EvalHandle {
+        return std::make_pair(p->obj1->getZcObject(), p->obj2->getZcObject());
+      },
+      [](std::monostate) -> EvalHandle {
+        return std::monostate{};
       },
     },
     backend
@@ -34,8 +44,11 @@ bool MathObject::isContinuous() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [&](const ZcMathObject* c) {
+      [](const ZcMathObject* c) {
         return c->isContinuous();
+      },
+      [](const Parametric* p) {
+        return p->obj1->isContinuous() and p->obj2->isContinuous();
       },
       [](std::monostate) {
         return false;
@@ -52,6 +65,9 @@ bool MathObject::isDiscrete() const
       [&](const ZcMathObject* c) {
         return c->isDiscrete();
       },
+      [](const Parametric* p) {
+        return p->obj1->isDiscrete() or p->obj2->isDiscrete();
+      },
       [](std::monostate) {
         return false;
       },
@@ -66,6 +82,9 @@ bool MathObject::isValid() const
     zc::utils::overloaded{
       [](const ZcMathObject* e) {
         return e->getState().getStatus() == State::VALID;
+      },
+      [](const Parametric* p) {
+        return p->obj1->isValid() and p->obj2->isValid();
       },
       [](std::monostate) { return false; },
     },
@@ -82,6 +101,9 @@ QString MathObject::getName() const
           return QString::fromStdString(std::string(zc_obj->get_name()));
         else return QString();
       },
+      [](const Parametric*) {
+        return QString();
+      },
       [](std::monostate) { return QString{}; },
     },
     backend
@@ -96,6 +118,14 @@ QStringList MathObject::directDependencies() const
         if (const auto* zc_obj = e->getZcObject())
           return QStringList{QString::fromStdString(std::string(zc_obj->get_name()))};
         else return QStringList();
+      },
+      [](const Parametric* p) {
+        QStringList res;
+        if (const auto* zc_obj = p->obj1->getZcObject())
+          res << QString::fromStdString(std::string(zc_obj->get_name()));
+        if (const auto* zc_obj = p->obj2->getZcObject())
+          res << QString::fromStdString(std::string(zc_obj->get_name()));
+        return res;
       },
       [](std::monostate) { return QStringList{}; },
     },
@@ -119,7 +149,7 @@ void MathObject::refresh()
 {
   std::visit(zc::utils::overloaded{
     [](std::monostate) {return State(); },
-    [](auto* b) { return b->refresh(); },
+    [](auto* e) { return e->refresh(); },
   }, backend);
   updateMetadata();
 }
