@@ -68,8 +68,6 @@ State Expr::setExpression(QString expr)
 
 State Expr::getState() const { return state; }
 
-void Expr::setState(State newState) { state = newState; }
-
 State Expr::refresh()
 {
   std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();

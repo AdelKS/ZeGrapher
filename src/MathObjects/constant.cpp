@@ -60,7 +60,6 @@ zg::real_unit Constant::evaluate() const
 }
 
 State Constant::getState() const { return state; };
-void Constant::setState(State newState) { state = newState; }
 
 void Constant::set_value(double val)
 {

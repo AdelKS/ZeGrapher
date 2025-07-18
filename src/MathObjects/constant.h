@@ -36,7 +36,7 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER name)
-  Q_PROPERTY(State state READ getState WRITE setState)
+  Q_PROPERTY(State state READ getState)
 
 public:
 
@@ -48,7 +48,6 @@ public:
 
   Q_INVOKABLE void set_value(double val);
   Q_INVOKABLE State getState() const;
-  Q_INVOKABLE void setState(State);
 
   Q_INVOKABLE bool isValid() const;
 

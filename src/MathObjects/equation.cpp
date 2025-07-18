@@ -49,7 +49,6 @@ zg::real_unit Equation::evaluate(zg::real_unit input, zc::eval::Cache* cache) co
 
 QString Equation::getName() const { return name; }
 State Equation::getState() const { return state; };
-void Equation::setState(State newState) { state = newState; }
 
 State Equation::refresh()
 {

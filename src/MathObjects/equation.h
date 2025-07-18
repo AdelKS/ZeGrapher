@@ -37,7 +37,7 @@ struct Equation: QObject, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation)
-  Q_PROPERTY(State state READ getState WRITE setState)
+  Q_PROPERTY(State state READ getState)
 
 public:
 
@@ -47,7 +47,6 @@ public:
   Q_INVOKABLE State setEquation(QString eq);
   Q_INVOKABLE QString getName() const;
   Q_INVOKABLE State getState() const;
-  Q_INVOKABLE void setState(State);
 
   Q_INVOKABLE bool isValid() const;
 

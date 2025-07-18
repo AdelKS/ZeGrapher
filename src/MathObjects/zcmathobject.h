@@ -36,7 +36,7 @@ struct ZcMathObject: QObject {
   QML_ELEMENT
 
   Q_PROPERTY(QSyntaxHighlighter* highlighter MEMBER highlighter)
-  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(State state READ getState NOTIFY stateChanged)
 
 public:
 
@@ -48,7 +48,6 @@ public:
 
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State getState() const;
-  Q_INVOKABLE void setState(State);
 
   bool isContinuous() const;
   bool isDiscrete() const;

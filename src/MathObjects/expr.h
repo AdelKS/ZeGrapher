@@ -35,7 +35,7 @@ struct Expr : QObject, shared::ZcMathObjectBB {
   Q_PROPERTY(double value MEMBER value NOTIFY valueChanged)
   Q_PROPERTY(QString expression WRITE setExpression MEMBER expression)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName)
-  Q_PROPERTY(State state READ getState WRITE setState)
+  Q_PROPERTY(State state READ getState)
 
 public:
 
@@ -44,7 +44,6 @@ public:
   Q_INVOKABLE State setExpression(QString expr);
   Q_INVOKABLE State setImplicitName(QString name);
   Q_INVOKABLE State getState() const;
-  Q_INVOKABLE void setState(State);
 
   Q_INVOKABLE bool isValid() const;
 

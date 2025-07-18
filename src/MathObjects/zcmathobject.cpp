@@ -104,20 +104,6 @@ const zc::DynMathObject<zc_t>* ZcMathObject::getZcObject() const
 
 }
 
-void ZcMathObject::setState(State newState)
-{
-  std::visit(
-    zc::utils::overloaded{
-      [&](auto* v) {
-        return v->setState(newState);
-      },
-      [](std::monostate) {
-      },
-    },
-    backend
-  );
-}
-
 void ZcMathObject::setSlot(size_t slot)
 {
   this->slot = slot;
