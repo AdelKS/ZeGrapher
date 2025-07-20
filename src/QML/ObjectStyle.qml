@@ -181,7 +181,8 @@ Item {
       }
 
       Label {
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.topMargin: 5
+        Layout.alignment: Qt.AlignTop | Qt.AlignRight
         Layout.preferredWidth: implicitWidth
         Layout.preferredHeight: implicitHeight
 
@@ -195,6 +196,7 @@ Item {
       }
 
       ValueEdit {
+        Layout.alignment: Qt.AlignTop
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
@@ -211,7 +213,8 @@ Item {
       }
 
       Label {
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.topMargin: 5
+        Layout.alignment: Qt.AlignTop | Qt.AlignRight
         Layout.preferredWidth: implicitWidth
         Layout.preferredHeight: implicitHeight
 
@@ -220,6 +223,7 @@ Item {
       }
 
       ValueEdit {
+        Layout.alignment: Qt.AlignTop
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
@@ -236,7 +240,8 @@ Item {
       }
 
       Label {
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.topMargin: 5
+        Layout.alignment: Qt.AlignTop | Qt.AlignRight
         Layout.preferredWidth: implicitWidth
         Layout.preferredHeight: implicitHeight
 
@@ -245,6 +250,7 @@ Item {
       }
 
       ValueEdit {
+        Layout.alignment: Qt.AlignTop
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30

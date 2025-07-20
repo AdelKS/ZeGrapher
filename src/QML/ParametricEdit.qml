@@ -9,7 +9,7 @@ Item {
 
   required property PlotStyle style
 
-  implicitHeight: lineEdit1.implicitHeight
+  implicitHeight: Math.max(lineEdit1.implicitHeight, lineEdit2.implicitHeight)
 
   Behavior on height { SmoothedAnimation { duration: 200 } }
 
@@ -49,12 +49,16 @@ Item {
     anchors.fill: parent
 
     Label {
+      Layout.alignment: Qt.AlignTop
+      Layout.topMargin: 5
       id: ref1Label
       text: "x: "
+      verticalAlignment: Text.AlignTop
     }
 
     ZcExprEdit {
       Layout.fillWidth: true
+      Layout.alignment: Qt.AlignTop
 
       id: lineEdit1
       mathObj: zcObj1
@@ -66,12 +70,17 @@ Item {
     }
 
     Label {
+      Layout.topMargin: 5
+      Layout.alignment: Qt.AlignTop
+
       id: ref2Label
       text: "y: "
+      verticalAlignment: Text.AlignTop
     }
 
     ZcExprEdit {
       Layout.fillWidth: true
+      Layout.alignment: Qt.AlignTop
 
       id: lineEdit2
       mathObj: zcObj2
