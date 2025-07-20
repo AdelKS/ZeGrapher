@@ -18,32 +18,20 @@ void Constant::setSlot(size_t slot)
 State Constant::setName(QString new_input_name)
 {
   if (input_name == new_input_name)
-    return state;
+    return getState();
 
   input_name = new_input_name;
+  zcMathObj.set_name(input_name.toStdString());
 
-  return refresh();
+  if (slot)
+    information.mathObjectUpdated(*slot);
+
+  return getState();
 }
 
 bool Constant::isValid() const
 {
-  return state.isValid();
-}
-
-State Constant::refresh()
-{
-  QString oldName = name;
-
-  zcMathObj.set_name(input_name.toStdString());
-
-  name = QString::fromStdString(std::string(zcMathObj.get_name()));
-
-  if ((not oldName.isEmpty() or not name.isEmpty()) and oldName != name and slot)
-    information.mathObjectUpdated(*slot, oldName, name);
-
-  state.update(zcMathObj.name_status());
-
-  return state;
+  return getState().isValid();
 }
 
 zg::real_unit Constant::operator () () const
@@ -59,13 +47,15 @@ zg::real_unit Constant::evaluate() const
   else return zg::real_unit{std::nan("")};
 }
 
-State Constant::getState() const { return state; };
+State Constant::getState() const {
+  State state;
+  state.update(zcMathObj.name_status());
+  return state;
+};
 
 void Constant::set_value(double val)
 {
   zcMathObj = val;
-  if (not name.isEmpty() and slot)
-    information.mathObjectUpdated(*slot, name, name);
 }
 
 }

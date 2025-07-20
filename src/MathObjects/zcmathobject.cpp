@@ -149,36 +149,28 @@ QString ZcMathObject::getName() const
   );
 }
 
-QStringList ZcMathObject::directDependencies() const
+State ZcMathObject::sync()
 {
-  return std::visit(
-    zc::utils::overloaded{
-      [](const auto* e) {
-        return QStringList{e->getName()};
-      },
-      [](std::monostate) { return QStringList{}; },
-    },
-    backend
-  );
-}
+  State old_state = state;
 
-State ZcMathObject::refresh()
-{
-  State old_sate = getState();
-
-  State new_state = std::visit(zc::utils::overloaded{
+  state = std::visit(zc::utils::overloaded{
     [](std::monostate) {return State(); },
-    [](mathobj::NamedRef* n){ return n->getState(); },
-    [](auto* b) { return b->refresh(); },
+    [](mathobj::Expr* e) {
+      e->updateValue();
+      return e->getState();
+    },
+    [](auto* b) { return b->getState(); },
   }, backend);
 
-  if (old_sate != new_state)
+  if (old_state != state)
+  {
+    if (highlighter)
+      highlighter->rehighlight();
+
     emit stateChanged();
+  }
 
-  if (highlighter)
-    highlighter->rehighlight();
-
-  return new_state;
+  return state;
 }
 
 }

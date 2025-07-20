@@ -62,9 +62,6 @@ public:
   /// @returns the name of the currently active math object
   QString getName() const;
 
-  /// @returns list of math object names this object directly uses
-  QStringList directDependencies() const;
-
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
     requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
@@ -79,8 +76,8 @@ public:
   QSyntaxHighlighter* highlighter = nullptr;
 
 public slots:
-  /// @brief forwards the refresh() call to the current active backend
-  State refresh();
+  /// @brief syncs with the backend
+  State sync();
 
 signals:
   void stateChanged();
@@ -88,6 +85,7 @@ signals:
 protected:
   std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*, mathobj::NamedRef*> backend;
   std::optional<size_t> slot;
+  State state;
 };
 
 template <class T>

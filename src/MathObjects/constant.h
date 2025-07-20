@@ -35,7 +35,7 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name WRITE setName MEMBER name)
+  Q_PROPERTY(QString name WRITE setName MEMBER input_name)
   Q_PROPERTY(State state READ getState)
 
 public:
@@ -43,7 +43,7 @@ public:
   explicit Constant(QObject *parent = nullptr);
 
   State setName(QString name);
-  QString getName() const { return name; }
+  QString getName() const { return input_name; }
   void setSlot(size_t slot);
 
   Q_INVOKABLE void set_value(double val);
@@ -54,12 +54,8 @@ public:
   zg::real_unit operator () () const;
   zg::real_unit evaluate() const;
 
-public slots:
-  State refresh();
-
 protected:
-  QString input_name, name;
-  State state;
+  QString input_name;
   std::optional<size_t> slot;
 };
 

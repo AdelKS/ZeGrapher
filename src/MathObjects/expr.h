@@ -32,7 +32,7 @@ struct Expr : QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(double value MEMBER value NOTIFY valueChanged)
+  Q_PROPERTY(double value READ getValue NOTIFY valueChanged)
   Q_PROPERTY(QString expression WRITE setExpression MEMBER expression)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName)
   Q_PROPERTY(State state READ getState)
@@ -44,23 +44,20 @@ public:
   Q_INVOKABLE State setExpression(QString expr);
   Q_INVOKABLE State setImplicitName(QString name);
   Q_INVOKABLE State getState() const;
-
+  Q_INVOKABLE double getValue() const { return value; };
   Q_INVOKABLE bool isValid() const;
 
   void setSlot(size_t slot);
   QString getName() const { return implicitName; };
 
-  zg::real_unit operator () (zc::eval::Cache* cache = nullptr) const;
-  zg::real_unit evaluate(zc::eval::Cache* cache = nullptr) const;
-
-public slots:
-  State refresh();
+  void updateValue();
 
 signals:
   void valueChanged();
 
 protected:
-  QString expression = {};
+  QString expression;
+  std::string fullExpression;
 
   /// @brief the implicit variable that gets
   ///        defined in ZeCalculator for this expression
@@ -68,7 +65,6 @@ protected:
   ///          will be forwarded to ZeCalculator as "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
-  State state;
   std::optional<size_t> slot;
 };
 

@@ -96,7 +96,7 @@ public:
 
   const zc::SlottedDeque<zg::MathObject*>& getMathObjects() const { return mathObjects; }
 
-  void mathObjectUpdated(size_t zgSlot, QString oldName, QString newName);
+  void mathObjectUpdated(size_t slot);
 
 signals:
   void newOrthonormalityState(bool orth);
@@ -131,7 +131,6 @@ public slots:
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
   void setAppSettings(const ZeAppSettings& appSettings);
-  void refreshMathObjects(size_t excludedZgSlot, QStringList objectNames);
 
 public:
   zc::eval::Cache mathObjectCache;

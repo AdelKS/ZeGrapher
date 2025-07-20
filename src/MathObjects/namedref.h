@@ -23,8 +23,6 @@
 #include "Utils/state.h"
 #include "structures.h"
 
-#include <optional>
-
 #include <zecalculator/zecalculator.h>
 
 namespace zg {

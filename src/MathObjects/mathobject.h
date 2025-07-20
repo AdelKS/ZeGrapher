@@ -56,15 +56,11 @@ public:
   /// @returns the name of the currently active math object
   QString getName() const;
 
-
   EvalHandle getZcObject() const;
 
   bool isContinuous() const;
 
   bool isDiscrete() const;
-
-  /// @returns list of math object names this object directly uses
-  QStringList directDependencies() const;
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
@@ -77,7 +73,7 @@ public:
 
 public slots:
   /// @brief forwards the refresh() call to the current active backend
-  void refresh();
+  void sync();
   void updateMetadata();
 
 signals:
@@ -85,6 +81,8 @@ signals:
 
 protected:
   std::variant<std::monostate, ZcMathObject*, Parametric*> backend;
+  QString name;
+  State state;
   size_t slot = -1;
 };
 

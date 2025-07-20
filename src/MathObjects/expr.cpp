@@ -18,7 +18,7 @@ void Expr::setSlot(size_t slot)
 
 bool Expr::isValid() const
 {
-  return state.isValid();
+  return getState().isValid();
 }
 
 State Expr::setImplicitName(QString name)
@@ -32,67 +32,49 @@ State Expr::setImplicitName(QString name)
   return setExpression(expression);
 }
 
-zg::real_unit Expr::operator () (zc::eval::Cache* cache) const
+void Expr::updateValue()
 {
-  return evaluate(cache);
-
-}
-
-zg::real_unit Expr::evaluate(zc::eval::Cache* cache) const
-{
-  tl::expected<double, zc::Error> exp_res = zcMathObj({}, cache);
+  tl::expected<double, zc::Error> exp_res = zcMathObj({}, &information.mathObjectCache);
+  double old_value = value;
   if (exp_res)
-    return zg::real_unit{*exp_res};
-  else return zg::real_unit{std::nan("")};
+    value = zg::real_unit{*exp_res}.v;
+  else value = std::nan("");
+
+  if (old_value != value)
+    emit valueChanged();
 }
 
 State Expr::setExpression(QString expr)
 {
-  if (expr == expression)
-    return state;
+  expression = expr;
 
-  expression = std::move(expr);
-  std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();
-  qDebug() << "[backend] Expr: setting expression: " << full_expression;
+  std::string fullExpr = implicitName.toStdString() + "=" + expr.toStdString();
+
+  if (fullExpression == fullExpr)
+    return getState();
+
+  fullExpression = fullExpr;
+
+  qDebug() << "[backend] Expr: setting expression: " << fullExpression;
 
   if (not expression.isEmpty())
-    zcMathObj = full_expression;
+    zcMathObj = fullExpression;
   else zcMathObj = "";
-  refresh();
+
+  updateValue();
 
   if (slot)
-    information.mathObjectUpdated(*slot, implicitName, implicitName);
+    information.mathObjectUpdated(*slot);
 
-  return state;
+  return getState();
 }
 
-State Expr::getState() const { return state; }
-
-State Expr::refresh()
+State Expr::getState() const
 {
-  std::string full_expression = implicitName.toStdString() + "=" + expression.toStdString();
-  qDebug() << "[backend] Expr: refreshing evaluation of expression: " << full_expression;
-  double oldValue = value;
-
-  auto old_state = state;
-
-  if (zcMathObj.has_value())
-  {
-    auto exp_val = zcMathObj();
-    if (exp_val)
-      value = *exp_val;
-    state.update(exp_val);
-  }
-  else state.update(zcMathObj.status());
-
-  if (oldValue != value or old_state != state)
-  {
-    qDebug() << "[backend] Expr: new value: " << full_expression << "=" << value;
-    emit valueChanged();
-  }
-
+  State state;
+  state.update(zcMathObj.status());
   return state;
 }
 
-}
-}
+} // namespace mathobj
+} // namespace zg

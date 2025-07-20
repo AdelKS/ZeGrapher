@@ -271,62 +271,16 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   mathObjects.free((*it)->get_slot());
 
   for (zg::MathObject* f: mathObjects)
-    f->refresh();
+    f->sync();
 
   emit mathObjectsChanged({});
 }
 
-void Information::mathObjectUpdated(size_t zgSlot, QString oldName, QString newName)
+void Information::mathObjectUpdated(size_t slot)
 {
-  QStringList affectedObjects;
-  QStringList toExplore;
+  for (zg::MathObject* f: mathObjects)
+    if (f->get_slot() != slot)
+      f->sync();
 
-  mathObjects[zgSlot]->updateMetadata();
-
-  auto appendName = [&](QString name)
-  {
-    if (not name.isEmpty() and not affectedObjects.contains(name))
-    {
-      affectedObjects.push_back(name);
-      toExplore.push_back(name);
-    }
-  };
-
-  appendName(oldName);
-  appendName(newName);
-
-  while (not toExplore.empty())
-  {
-    QString name = toExplore.back();
-    toExplore.pop_back();
-
-    auto deps = mathWorld.direct_revdeps(name.toStdString());
-    for (auto&& [dep_name, useless]: deps) appendName(QString::fromStdString(dep_name));
-  }
-
-  // Clear cache of changed object
-  for (const QString& name: affectedObjects)
-  {
-    if (const auto* obj = mathWorld.get(name.toStdString()); obj)
-      if (auto it = mathObjectCache.find(obj->get_slot()); it != mathObjectCache.end())
-        mathObjectCache.erase(it);
-  }
-
-  emit mathObjectsChanged(affectedObjects);
-  refreshMathObjects(zgSlot, affectedObjects);
-
-  qDebug() << "Information singleton: Math object changed, and renamed from " << oldName << " to " << newName;
-  qDebug() << "Information singleton: affected objects: " << affectedObjects;
-}
-
-void Information::refreshMathObjects(size_t excludedZgSlot, QStringList objectNames)
-{
-  for (zg::MathObject* obj: mathObjects)
-    if (obj->get_slot() and obj->get_slot() != excludedZgSlot
-        and std::ranges::any_of(obj->directDependencies(),
-                                [&](auto&& name) { return objectNames.contains(name); }))
-    {
-      qDebug() << "information singleton: refreshing object " << obj->getName();
-      obj->refresh();
-    }
+  emit updateOccured();
 }

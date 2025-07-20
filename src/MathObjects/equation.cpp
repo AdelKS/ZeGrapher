@@ -11,21 +11,20 @@ Equation::Equation(QObject *parent)
 State Equation::setEquation(QString eq)
 {
   if (eq == equation)
-    return state;
+    return getState();
 
-  equation = std::move(eq);
-  QString oldName = name;
-  refresh();
+  equation = eq;
+  zcMathObj = equation.toStdString();
 
-  if ((not oldName.isEmpty() or not name.isEmpty()) and slot)
-    information.mathObjectUpdated(*slot, oldName, name);
+  if (slot)
+    information.mathObjectUpdated(*slot);
 
-  return state;
+  return getState();
 }
 
 bool Equation::isValid() const
 {
-  return state.isValid();
+  return getState().isValid();
 }
 
 void Equation::setSlot(size_t slot)
@@ -47,19 +46,17 @@ zg::real_unit Equation::evaluate(zg::real_unit input, zc::eval::Cache* cache) co
   else return zg::real_unit{std::nan("")};
 }
 
-QString Equation::getName() const { return name; }
-State Equation::getState() const { return state; };
-
-State Equation::refresh()
+QString Equation::getName() const
 {
-  qDebug() << "[backend] zc: refreshing evaluation of equation: " << equation;
+  return QString::fromStdString(std::string(zcMathObj.get_name()));
+}
 
-  zcMathObj = equation.toStdString();;
-  name = QString::fromStdString(std::string(zcMathObj.get_name()));
-
+State Equation::getState() const
+{
+  State state;
   state.update(zcMathObj.status());
   return state;
-}
+};
 
 }
 }

@@ -53,13 +53,8 @@ public:
   zg::real_unit operator () (zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
   zg::real_unit evaluate(zg::real_unit input, zc::eval::Cache* cache = nullptr) const;
 
-  public slots:
-    State refresh();
-
 protected:
   QString equation;
-  QString name;
-  State state;
   std::optional<size_t> slot;
 };
 

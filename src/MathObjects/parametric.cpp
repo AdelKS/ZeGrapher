@@ -7,17 +7,12 @@ Parametric::Parametric(QObject *parent)
   : QObject(parent)
 {}
 
-State Parametric::refresh()
+void Parametric::sync()
 {
   Q_ASSERT(obj1 and obj2);
 
-  State state1 = obj1->refresh();
-  State state2 = obj2->refresh();
-  if (not state1.isValid())
-    return state1;
-  if (not state2.isValid())
-    return state2;
-  return state1;
+  obj1->sync();
+  obj2->sync();
 }
 
 void Parametric::setSlot(size_t slot)

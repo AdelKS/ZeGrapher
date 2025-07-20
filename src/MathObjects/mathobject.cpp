@@ -97,37 +97,12 @@ QString MathObject::getName() const
   return std::visit(
     zc::utils::overloaded{
       [](const ZcMathObject* e) {
-        if (const auto* zc_obj = e->getZcObject())
-          return QString::fromStdString(std::string(zc_obj->get_name()));
-        else return QString();
+        return e->getName();
       },
       [](const Parametric*) {
         return QString();
       },
       [](std::monostate) { return QString{}; },
-    },
-    backend
-  );
-}
-
-QStringList MathObject::directDependencies() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const ZcMathObject* e) {
-        if (const auto* zc_obj = e->getZcObject())
-          return QStringList{QString::fromStdString(std::string(zc_obj->get_name()))};
-        else return QStringList();
-      },
-      [](const Parametric* p) {
-        QStringList res;
-        if (const auto* zc_obj = p->obj1->getZcObject())
-          res << QString::fromStdString(std::string(zc_obj->get_name()));
-        if (const auto* zc_obj = p->obj2->getZcObject())
-          res << QString::fromStdString(std::string(zc_obj->get_name()));
-        return res;
-      },
-      [](std::monostate) { return QStringList{}; },
     },
     backend
   );
@@ -145,11 +120,11 @@ void MathObject::updateMetadata()
   else style->setObjectType(PlotStyle::NonRepresentable);
 }
 
-void MathObject::refresh()
+void MathObject::sync()
 {
   std::visit(zc::utils::overloaded{
-    [](std::monostate) {return State(); },
-    [](auto* e) { return e->refresh(); },
+    [](std::monostate) {},
+    [](auto* e) { e->sync(); },
   }, backend);
   updateMetadata();
 }

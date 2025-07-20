@@ -41,7 +41,7 @@ public:
 
   void setSlot(size_t slot);
 
-  State refresh();
+  void sync();
 
   ZcMathObject* obj1 = nullptr;
   ZcMathObject* obj2 = nullptr;
