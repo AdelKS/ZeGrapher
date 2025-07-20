@@ -27,6 +27,31 @@ Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
   : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
 {}
 
+Sampler::SamplingSettings::SamplingSettings(const zg::MathObject* obj)
+{
+  if (obj->style)
+  {
+    step = obj->style->step;
+    coordinateSystem = obj->style->coordinateSystem;
+  }
+
+  if (const zg::ZcMathObject* zc = obj->getBackend<zg::ZcMathObject>(); zc)
+  {
+    if (const auto* handle = zc->getZcObject(); handle)
+      revision = handle->get_revision();
+  }
+  else if (const zg::Parametric* par = obj->getBackend<zg::Parametric>(); par)
+  {
+    if (par->obj1)
+      if (const auto* handle = par->obj1->getZcObject(); handle)
+        revision += handle->get_revision();
+
+    if (par->obj2)
+      if (const auto* handle = par->obj2->getZcObject(); handle)
+        revision += handle->get_revision();
+  }
+}
+
 void Sampler::setPixelStep(double pxStep)
 {
   pixelStep = zg::pixel_unit{pxStep};
@@ -53,12 +78,12 @@ void Sampler::refresh_valid_objects()
              or (not sampled_settings_node and not continuous_curve_node));
 
       if (continuous_curve_node
-          and sampled_settings_node.mapped() == f->style->get_sampling_settings())
+          and sampled_settings_node.mapped() == SamplingSettings(f))
         refreshed_continuous_curves.insert(std::move(continuous_curve_node));
       else
         refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous(*f->style));
 
-      sampled_settings.emplace(f, f->style->get_sampling_settings());
+      sampled_settings.emplace(f, SamplingSettings(f));
     }
     else if (f->isDiscrete())
     {
@@ -66,12 +91,12 @@ void Sampler::refresh_valid_objects()
              or (not sampled_settings_node and not discrete_curve_node));
 
       if (discrete_curve_node
-          and sampled_settings_node.mapped() == f->style->get_sampling_settings())
+          and sampled_settings_node.mapped() == SamplingSettings(f))
         refreshed_discrete_curves.insert(std::move(discrete_curve_node));
       else
         refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete(*f->style));
 
-      sampled_settings.emplace(f, f->style->get_sampling_settings());
+      sampled_settings.emplace(f, SamplingSettings(f));
     }
   }
 

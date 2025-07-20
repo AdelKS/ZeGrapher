@@ -59,8 +59,20 @@ protected:
   std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> continuous_curves;
   std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> discrete_curves;
 
+  /// @brief settings that affect the resulting sampled values
+  struct SamplingSettings {
+
+    explicit SamplingSettings(const zg::MathObject*);
+
+    zg::real_unit step = {0.};
+    zg::PlotStyle::CoordinateSystem coordinateSystem = zg::PlotStyle::Cartesian;
+    size_t revision = 0;
+
+    bool operator == (const SamplingSettings&) const = default;
+  };
+
   /// @brief settings with which the current curves have been sampled with
-  std::unordered_map<const zg::MathObject*, zg::PlotStyle::SamplingSettings> sampled_settings;
+  std::unordered_map<const zg::MathObject*, SamplingSettings> sampled_settings;
 
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;

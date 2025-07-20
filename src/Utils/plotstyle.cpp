@@ -48,15 +48,6 @@ void PlotStyle::setStep(double v)
   step.v = v;
 }
 
-PlotStyle::SamplingSettings PlotStyle::get_sampling_settings() const
-{
-  return SamplingSettings{
-    .step = step,
-    .coordinateSystem = coordinateSystem,
-    .objectType = objectType
-  };
-}
-
 void PlotStyle::setObjectType(ObjectType newObjectType)
 {
   if (objectType != newObjectType)
