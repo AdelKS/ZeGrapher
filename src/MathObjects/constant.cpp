@@ -23,9 +23,6 @@ State Constant::setName(QString new_input_name)
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
 
-  if (slot)
-    information.mathObjectUpdated(*slot);
-
   return getState();
 }
 
@@ -56,6 +53,7 @@ State Constant::getState() const {
 void Constant::set_value(double val)
 {
   zcMathObj = val;
+  information.mathObjectUpdated();
 }
 
 }

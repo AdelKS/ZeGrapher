@@ -1,4 +1,5 @@
 #include "MathObjects/zcmathobject.h"
+#include "information.h"
 
 namespace zg {
 
@@ -44,9 +45,9 @@ bool ZcMathObject::isValid() const
 
 State ZcMathObject::setExpression(QString expr)
 {
-  State old_sate = getState();
+  State old_sate = state;
 
-  State new_state = std::visit(
+  state = std::visit(
     zc::utils::overloaded{
       [&](mathobj::Constant* v) {
         return v->setName(expr);
@@ -67,10 +68,13 @@ State ZcMathObject::setExpression(QString expr)
     backend
   );
 
-  if (old_sate != new_state)
+  if (slot)
+    information.mathObjectUpdated(*slot);
+
+  if (old_sate != state)
     emit stateChanged();
 
-  return new_state;
+  return state;
 }
 
 bool ZcMathObject::isContinuous() const
@@ -89,17 +93,7 @@ bool ZcMathObject::isDiscrete() const
 
 State ZcMathObject::getState() const
 {
-  return std::visit(
-    zc::utils::overloaded{
-      [&](const auto* v) {
-        return v->getState();
-      },
-      [](std::monostate) {
-        return State();
-      },
-    },
-    backend
-  );
+  return state;
 }
 
 const zc::DynMathObject<zc_t>* ZcMathObject::getZcObject() const

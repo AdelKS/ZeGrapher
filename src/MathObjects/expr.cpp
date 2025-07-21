@@ -63,9 +63,6 @@ State Expr::setExpression(QString expr)
 
   updateValue();
 
-  if (slot)
-    information.mathObjectUpdated(*slot);
-
   return getState();
 }
 

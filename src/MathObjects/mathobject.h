@@ -74,7 +74,6 @@ public:
 public slots:
   /// @brief forwards the refresh() call to the current active backend
   void sync();
-  void updateMetadata();
 
 signals:
   void stateChanged();

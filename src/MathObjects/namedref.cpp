@@ -18,9 +18,6 @@ State NamedRef::setName(QString new_input_name)
   if (new_input_name == input_name)
     return getState();
 
-  if (slot)
-    information.mathObjectUpdated(*slot);
-
   input_name = new_input_name;
 
   return getState();
