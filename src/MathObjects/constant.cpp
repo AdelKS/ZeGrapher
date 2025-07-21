@@ -1,5 +1,4 @@
 #include "MathObjects/constant.h"
-#include "information.h"
 
 namespace zg {
 namespace mathobj {
@@ -22,9 +21,6 @@ State Constant::setName(QString new_input_name)
 
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
-
-  if (slot)
-    information.mathObjectUpdated(*slot);
 
   return getState();
 }

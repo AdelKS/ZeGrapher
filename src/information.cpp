@@ -276,11 +276,11 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   emit mathObjectsChanged({});
 }
 
-void Information::mathObjectUpdated(size_t slot)
+void Information::mathObjectUpdated([[maybe_unused]] size_t slot)
 {
   for (zg::MathObject* f: mathObjects)
-    if (f->get_slot() != slot)
-      f->sync();
+    f->sync();
+
 
   emit updateOccured();
 }

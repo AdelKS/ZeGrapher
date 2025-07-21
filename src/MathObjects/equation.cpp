@@ -1,5 +1,4 @@
 #include "MathObjects/equation.h"
-#include "information.h"
 
 namespace zg {
 namespace mathobj {
@@ -15,9 +14,6 @@ State Equation::setEquation(QString eq)
 
   equation = eq;
   zcMathObj = equation.toStdString();
-
-  if (slot)
-    information.mathObjectUpdated(*slot);
 
   return getState();
 }
