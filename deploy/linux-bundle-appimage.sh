@@ -21,10 +21,9 @@ meson install
 cd ..
 
 wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
-chmod a+x linuxdeploy-x86_64.AppImage
+chmod +x linuxdeploy-x86_64.AppImage
 
-wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
-chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
+chmod +x linuxdeploy-plugin-qt-x86_64.AppImage
 
 export QMAKE=`which qmake6`
 export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
