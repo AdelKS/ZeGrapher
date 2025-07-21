@@ -4,11 +4,13 @@ set -e
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
+[[ -d "${deploy_dir}/appdir-linux" ]] && rm -rf "${deploy_dir}/appdir-linux"
+
 meson setup \
   -D optimization=3 \
   -D debug=false \
   -D b_ndebug=true \
-  -D debug_logs=false \
+  -D loglevel=off \
   -D prefix="${deploy_dir}/appdir-linux/usr" \
   "${deploy_dir}/build-linux" \
   "${deploy_dir}/.."
