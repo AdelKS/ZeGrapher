@@ -30,6 +30,12 @@ void ZcMathObject::setBackend(mathobj::NamedRef* n)
   backend = n;
 }
 
+void ZcMathObject::setBackend(mathobj::Data* n)
+{
+  Q_ASSERT(n);
+  backend = n;
+}
+
 bool ZcMathObject::isValid() const
 {
   return getState().getStatus() == State::VALID;
@@ -51,6 +57,9 @@ State ZcMathObject::setExpression(QString expr)
         return v->setEquation(expr);
       },
       [&](mathobj::NamedRef* n) {
+        return n->setName(expr);
+      },
+      [&](mathobj::Data* n) {
         return n->setName(expr);
       },
       [&](std::monostate) {
