@@ -72,6 +72,11 @@ Rectangle {
             type: ObjectType.PARAMETRIC
             has_graph: true
           }
+          ListElement {
+            text: "Data"
+            type: ObjectType.DATA
+            has_graph: true
+          }
         }
 
         onCurrentIndexChanged: placeholder.updateObjectType()
@@ -225,6 +230,8 @@ Rectangle {
           component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml");
         } else if (currentType === ObjectType.PARAMETRIC) {
           component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml");
+        } else if (currentType === ObjectType.DATA) {
+          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/DataEdit.qml");
         }
         else
         {

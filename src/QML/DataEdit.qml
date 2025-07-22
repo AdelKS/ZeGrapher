@@ -1,0 +1,64 @@
+// A line edit where the user enters an expression that evaluates to a value
+
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+
+Item {
+  id: root
+
+  required property PlotStyle style
+
+  property alias name: zcExprEdit.expression
+  property alias backend: zcBackend
+  property alias exprEdit: zcExprEdit
+  readonly property alias exprHeight: zcExprEdit.exprHeight
+
+  implicitHeight: zcExprEdit.implicitHeight
+
+  Behavior on height { SmoothedAnimation { duration: 200 } }
+
+  function removeObj() {
+    root.opacity = 0;
+    root.height = 0;
+    root.destroy(200);
+  }
+
+  Data {
+    id: zcBackend
+  }
+
+  ZcMathObject {
+    id: zcMathObj
+  }
+
+  MathObject {
+    id: mathObj
+  }
+
+  RowLayout {
+    anchors.fill: parent
+
+    Label {
+      text: qsTr("Name: ")
+      Layout.topMargin: 5
+      Layout.alignment: Qt.AlignTop | Qt.AlignRight
+    }
+
+    ZcExprEdit {
+      id: zcExprEdit
+      mathObj: zcMathObj
+
+      Layout.fillWidth: true
+      Layout.alignment: Qt.AlignVCenter
+    }
+  }
+
+  Component.onCompleted: {
+    console.log("DataEdit: backend=", zcBackend);
+    zcMathObj.setBackend(zcBackend);
+    mathObj.setBackend(zcMathObj);
+    mathObj.style = style;
+  }
+
+}
