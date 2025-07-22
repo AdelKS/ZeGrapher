@@ -21,7 +21,6 @@
 ****************************************************************************/
 
 #include "BuildingBlocks/zcmathobjectbb.h"
-#include "GraphDraw/axismapper.h"
 #include "Utils/state.h"
 
 #include <optional>
@@ -50,9 +49,6 @@ public:
   Q_INVOKABLE State getState() const;
 
   Q_INVOKABLE bool isValid() const;
-
-  zg::real_unit operator () () const;
-  zg::real_unit evaluate() const;
 
 protected:
   QString input_name;

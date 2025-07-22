@@ -31,19 +31,6 @@ bool Constant::isValid() const
   return getState().isValid();
 }
 
-zg::real_unit Constant::operator () () const
-{
-  return evaluate();
-}
-
-zg::real_unit Constant::evaluate() const
-{
-  tl::expected<double, zc::Error> exp_res = zcMathObj();
-  if (exp_res)
-    return zg::real_unit{*exp_res};
-  else return zg::real_unit{std::nan("")};
-}
-
 State Constant::getState() const {
   State state;
   state.update(zcMathObj.name_status());
