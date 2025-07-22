@@ -91,12 +91,12 @@ public:
   const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
   zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
 
-  size_t registerMathObject(zg::MathObject*);
+  void registerMathObject(zg::MathObject*);
   void deregisterMathObject(zg::MathObject*);
 
-  const zc::SlottedDeque<zg::MathObject*>& getMathObjects() const { return mathObjects; }
+  const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; }
 
-  void mathObjectUpdated(size_t slot);
+  void mathObjectUpdated();
 
 signals:
   void newOrthonormalityState(bool orth);
@@ -153,7 +153,7 @@ protected:
   QString exportFileName;
   zc::MathWorld<zc_t> mathWorld;
 
-  zc::SlottedDeque<zg::MathObject*> mathObjects;
+  std::vector<zg::MathObject*> mathObjects;
 
   QList<ParEqWidget*>* parEqWidgets;
 };

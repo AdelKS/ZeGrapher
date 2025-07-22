@@ -41,7 +41,6 @@ struct Equation: QObject, shared::ZcMathObjectBB {
 public:
 
   explicit Equation(QObject *parent = nullptr);
-  void setSlot(size_t slot);
 
   Q_INVOKABLE State setEquation(QString eq);
   Q_INVOKABLE QString getName() const;
@@ -51,7 +50,6 @@ public:
 
 protected:
   QString equation;
-  std::optional<size_t> slot;
 };
 
 }

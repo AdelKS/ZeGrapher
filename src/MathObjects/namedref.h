@@ -40,7 +40,6 @@ public:
 
   explicit NamedRef(QObject *parent = nullptr);
 
-  void setSlot(size_t slot);
   State setName(QString name);
   QString getName() const { return input_name; }
 
@@ -52,7 +51,6 @@ public:
 
 protected:
   QString input_name;
-  std::optional<size_t> slot;
 };
 
 } // namespace mathobj

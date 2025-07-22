@@ -10,12 +10,6 @@ Expr::Expr(QObject *parent)
   setImplicitName("hidden_variable_");
 }
 
-void Expr::setSlot(size_t slot)
-{
-  this->slot = slot;
-  static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
-}
-
 bool Expr::isValid() const
 {
   return getState().isValid();

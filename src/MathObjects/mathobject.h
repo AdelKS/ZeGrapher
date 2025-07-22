@@ -49,8 +49,6 @@ public:
   Q_INVOKABLE void setBackend(ZcMathObject*);
   Q_INVOKABLE void setBackend(Parametric*);
 
-  size_t get_slot() const { return slot; }
-
   bool isValid() const;
 
   /// @returns the name of the currently active math object
@@ -82,7 +80,6 @@ protected:
   std::variant<std::monostate, ZcMathObject*, Parametric*> backend;
   QString name;
   State state;
-  size_t slot = -1;
 };
 
 template <class T>

@@ -5,21 +5,19 @@ namespace zg {
 
 MathObject::MathObject(QObject *parent) : QObject(parent)
 {
-  slot = information.registerMathObject(this);
+  information.registerMathObject(this);
 }
 
 void MathObject::setBackend(ZcMathObject* b)
 {
   assert(b);
   backend = b;
-  b->setSlot(slot);
 }
 
 void MathObject::setBackend(Parametric* p)
 {
   assert(p);
   backend = p;
-  p->setSlot(slot);
 }
 
 MathObject::EvalHandle MathObject::getZcObject() const

@@ -43,7 +43,6 @@ public:
 
   State setName(QString name);
   QString getName() const { return input_name; }
-  void setSlot(size_t slot);
 
   Q_INVOKABLE void set_value(double val);
   Q_INVOKABLE State getState() const;
@@ -52,7 +51,6 @@ public:
 
 protected:
   QString input_name;
-  std::optional<size_t> slot;
 };
 
 }

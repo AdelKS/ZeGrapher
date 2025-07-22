@@ -251,14 +251,10 @@ QString Information::getExportFileName()
   return exportFileName;
 }
 
-size_t Information::registerMathObject(zg::MathObject* obj)
+void Information::registerMathObject(zg::MathObject* obj)
 {
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 0);
-
-  size_t slot = mathObjects.next_free_slot();
-  mathObjects.push(obj);
-
-  return slot;
+  mathObjects.push_back(obj);
 }
 
 void Information::deregisterMathObject(zg::MathObject* obj)
@@ -268,19 +264,15 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   Q_ASSERT(it != mathObjects.end());
   Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
 
-  mathObjects.free((*it)->get_slot());
+  mathObjects.erase(it);
 
-  for (zg::MathObject* f: mathObjects)
-    f->sync();
-
-  emit mathObjectsChanged({});
+  mathObjectUpdated();
 }
 
-void Information::mathObjectUpdated([[maybe_unused]] size_t slot)
+void Information::mathObjectUpdated()
 {
   for (zg::MathObject* f: mathObjects)
     f->sync();
-
 
   emit updateOccured();
 }

@@ -15,13 +15,4 @@ void Parametric::sync()
   obj2->sync();
 }
 
-void Parametric::setSlot(size_t slot)
-{
-  if (obj1)
-    obj1->setSlot(slot);
-
-  if (obj2)
-    obj2->setSlot(slot);
-}
-
 } // namespace zg

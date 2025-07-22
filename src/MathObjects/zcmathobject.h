@@ -56,9 +56,6 @@ public:
 
   bool isValid() const;
 
-  void setSlot(size_t slot);
-  std::optional<size_t> get_slot() const { return slot; }
-
   /// @returns the name of the currently active math object
   QString getName() const;
 
@@ -84,7 +81,6 @@ signals:
 
 protected:
   std::variant<std::monostate, mathobj::Equation*, mathobj::Expr*, mathobj::Constant*, mathobj::NamedRef*> backend;
-  std::optional<size_t> slot;
   State state;
 };
 

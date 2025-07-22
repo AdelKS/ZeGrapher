@@ -23,12 +23,6 @@ bool Equation::isValid() const
   return getState().isValid();
 }
 
-void Equation::setSlot(size_t slot)
-{
-  this->slot = slot;
-  static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
-}
-
 QString Equation::getName() const
 {
   return QString::fromStdString(std::string(zcMathObj.get_name()));

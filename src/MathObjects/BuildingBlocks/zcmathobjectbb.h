@@ -36,7 +36,6 @@ public:
   explicit ZcMathObjectBB();
   ~ZcMathObjectBB();
 
-  std::optional<size_t> slot;
   zc::DynMathObject<zc_t>& zcMathObj;
 };
 

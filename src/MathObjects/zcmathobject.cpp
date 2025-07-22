@@ -10,32 +10,24 @@ void ZcMathObject::setBackend(mathobj::Equation* b)
 {
   Q_ASSERT(b);
   backend = b;
-  if (slot)
-    b->setSlot(*slot);
 }
 
 void ZcMathObject::setBackend(mathobj::Expr* b)
 {
   Q_ASSERT(b);
   backend = b;
-  if (slot)
-    b->setSlot(*slot);
 }
 
 void ZcMathObject::setBackend(mathobj::Constant* b)
 {
   Q_ASSERT(b);
   backend = b;
-  if (slot)
-    b->setSlot(*slot);
 }
 
 void ZcMathObject::setBackend(mathobj::NamedRef* n)
 {
   Q_ASSERT(n);
   backend = n;
-  if (slot)
-    n->setSlot(*slot);
 }
 
 bool ZcMathObject::isValid() const
@@ -68,8 +60,7 @@ State ZcMathObject::setExpression(QString expr)
     backend
   );
 
-  if (slot)
-    information.mathObjectUpdated(*slot);
+  information.mathObjectUpdated();
 
   if (old_sate != state)
     emit stateChanged();
@@ -114,20 +105,6 @@ const zc::DynMathObject<zc_t>* ZcMathObject::getZcObject() const
     backend
   );
 
-}
-
-void ZcMathObject::setSlot(size_t slot)
-{
-  this->slot = slot;
-  std::visit(
-    zc::utils::overloaded{
-      [slot](auto* v) {
-        v->setSlot(slot);
-      },
-      [](std::monostate) {},
-    },
-    backend
-  );
 }
 
 QString ZcMathObject::getName() const

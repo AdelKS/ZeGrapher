@@ -9,12 +9,6 @@ Constant::Constant(QObject *parent): QObject(parent)
   zcMathObj = std::nan("");
 }
 
-void Constant::setSlot(size_t slot)
-{
-  this->slot = slot;
-  static_cast<shared::ZcMathObjectBB&>(*this).slot = slot;
-}
-
 State Constant::setName(QString new_input_name)
 {
   if (input_name == new_input_name)

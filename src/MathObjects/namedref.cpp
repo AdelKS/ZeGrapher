@@ -8,11 +8,6 @@ NamedRef::NamedRef(QObject *parent): QObject(parent)
 {
 }
 
-void NamedRef::setSlot(size_t slot)
-{
-  this->slot = slot;
-}
-
 State NamedRef::setName(QString new_input_name)
 {
   if (new_input_name == input_name)

@@ -39,8 +39,6 @@ public:
 
   explicit Parametric(QObject *parent = nullptr);
 
-  void setSlot(size_t slot);
-
   void sync();
 
   ZcMathObject* obj1 = nullptr;

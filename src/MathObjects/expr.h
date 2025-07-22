@@ -47,7 +47,6 @@ public:
   Q_INVOKABLE double getValue() const { return value; };
   Q_INVOKABLE bool isValid() const;
 
-  void setSlot(size_t slot);
   QString getName() const { return implicitName; };
 
   void updateValue();
@@ -65,7 +64,6 @@ protected:
   ///          will be forwarded to ZeCalculator as "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
-  std::optional<size_t> slot;
 };
 
 }
