@@ -52,6 +52,29 @@ Item {
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
     }
+
+    RoundButton {
+      id: del
+      Layout.minimumWidth: 20
+      Layout.maximumWidth: 30
+      Layout.preferredHeight: Layout.preferredWidth
+      Layout.preferredWidth: 30
+
+      checkable: true
+      checked: false
+      icon.source: "qrc:/icons/table.svg"
+
+      onToggled: {
+        if (del.checked) {
+          Information.registerTableColumn(zcBackend);
+        } else {
+          Information.deregisterTableColumn(zcBackend);
+        }
+      }
+
+      display: Button.IconOnly
+      padding: 0
+    }
   }
 
   Component.onCompleted: {

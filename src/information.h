@@ -46,6 +46,7 @@ class Information: public QObject
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
+  Q_PROPERTY(size_t dataColumnCount READ getDataColumnCount NOTIFY dataColumnCountChanged)
 
 public:
   Information(QObject* parent = nullptr);
@@ -96,6 +97,12 @@ public:
 
   const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; }
 
+  Q_INVOKABLE void registerTableColumn(zg::mathobj::Data*);
+  Q_INVOKABLE void deregisterTableColumn(zg::mathobj::Data*);
+  Q_INVOKABLE size_t getDataColumnCount() const;
+
+  const std::vector<zg::mathobj::Data*>& getTableColumns() const { return tableColumns; }
+
   void mathObjectUpdated();
 
 signals:
@@ -116,6 +123,7 @@ signals:
   void estheticSettingsChanged();
   void appSettingsChanged();
   void mathObjectsChanged(QStringList objectNames);
+  void dataColumnCountChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -154,6 +162,7 @@ protected:
   zc::MathWorld<zc_t> mathWorld;
 
   std::vector<zg::MathObject*> mathObjects;
+  std::vector<zg::mathobj::Data*> tableColumns;
 
   QList<ParEqWidget*>* parEqWidgets;
 };

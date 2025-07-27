@@ -269,6 +269,26 @@ void Information::deregisterMathObject(zg::MathObject* obj)
   mathObjectUpdated();
 }
 
+void Information::registerTableColumn(zg::mathobj::Data* d)
+{
+  tableColumns.push_back(d);
+  emit dataColumnCountChanged();
+}
+
+void Information::deregisterTableColumn(zg::mathobj::Data* d)
+{
+  if (auto it = std::ranges::find(tableColumns, d); it != tableColumns.end())
+  {
+    tableColumns.erase(it);
+    emit dataColumnCountChanged();
+  }
+}
+
+size_t Information::getDataColumnCount() const
+{
+  return tableColumns.size();
+}
+
 void Information::mathObjectUpdated()
 {
   for (zg::MathObject* f: mathObjects)

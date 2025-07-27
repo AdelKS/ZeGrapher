@@ -5,7 +5,9 @@ namespace mathobj {
 
 Data::Data(QObject *parent): QObject(parent)
 {
-  zcMathObj.set_data("", {});
+  std::vector<std::string> vec;
+  vec.resize(100, "1");
+  zcMathObj.set_data("", vec);
 }
 
 State Data::setName(QString new_input_name)
