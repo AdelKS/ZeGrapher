@@ -30,7 +30,7 @@ Window {
     z: 50
     anchors.top: parent.top
     anchors.bottom: parent.bottom
-    width: 200
+    width: row.width
     color: myPalette.window
 
     SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
@@ -50,57 +50,192 @@ Window {
       NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad }
     }
 
-    UserInputPanel {
-      id: userInput
-      anchors.fill: parent
-
-      onImplicitWidthChanged: {
-        if (drawer.width < userInput.implicitWidth + resizeArea.width + 10)
-          drawer.width = userInput.implicitWidth + resizeArea.width + 10;
-      }
-
-      anchors.rightMargin: resizeArea.width
-      anchors.leftMargin: 10
-      width: parent.width - resizeArea.width
-    }
-
-    MouseArea {
-      id: resizeArea
-      z: 100
-      width: 10
+    Row {
+      id: row
       anchors.top: parent.top
       anchors.bottom: parent.bottom
-      anchors.left: userInput.right
-      cursorShape: Qt.SizeHorCursor
-      acceptedButtons: Qt.LeftButton
+      anchors.left: parent.left
 
-      property real mouseXonPress
-
-      onPressed: {
-        mouseXonPress = mouseX;
+      Behavior on width {
+        NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
       }
 
-      onMouseXChanged: {
-        var diff = mouseX - mouseXonPress;
-        if (drawer.width + diff > userInput.implicitWidth + resizeArea.width + 10)
-          drawer.width += diff;
+      Item {
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: 10
+      }
+
+      UserInputPanel {
+        id: userInput
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        width: 250
+
+        Behavior on width {
+          NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
+        }
+      }
+
+      Item {
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        width: 5
+      }
+
+      Item {
+        id: resizeHandle1
+        width: 5
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        z: 100
+
+        ToolSeparator
+        {
+          orientation: Qt.Vertical
+          anchors.fill: parent
+        }
+
+        MouseArea {
+          anchors.fill: parent
+
+          cursorShape: Qt.SizeHorCursor
+          acceptedButtons: Qt.LeftButton
+
+          property real mouseXonPress
+
+          onPressed: {
+            mouseXonPress = mouseX;
+          }
+
+          onMouseXChanged: {
+            var diff = mouseX - mouseXonPress;
+            if (drawer.width + diff < win.width) {
+              userInput.width += diff;
+            }
+          }
+        }
+
+      }
+
+      DataTable {
+        id: dataTable
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+        width: 150
+
+        property int widthWhenVisible: 150
+
+        Behavior on width {
+          NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
+        }
+      }
+
+      Item {
+        id: resizeHandle2
+        width: 5
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        z: 100
+
+        ToolSeparator
+        {
+          orientation: Qt.Vertical
+          anchors.fill: parent
+        }
+
+        MouseArea {
+          anchors.fill: parent
+
+          cursorShape: Qt.SizeHorCursor
+          acceptedButtons: Qt.LeftButton
+
+          property real mouseXonPress
+
+          onPressed: {
+            mouseXonPress = mouseX;
+          }
+
+          onMouseXChanged: {
+            var diff = mouseX - mouseXonPress;
+            if (drawer.width + diff < win.width && dataTable.width + diff > 0) {
+              dataTable.widthWhenVisible = dataTable.width + diff;
+              dataTable.width += diff;
+            }
+          }
+        }
+      }
+
+      states: [
+        State {
+          name: "hidden";
+          when: DataTableModel.columns === 0
+          PropertyChanges {
+            dataTable.opacity: 0.
+            resizeHandle2.opacity: 0.
+            dataTable.visible: false
+            resizeHandle2.visible: false
+            dataTable.width: 0
+            resizeHandle2.width: 0
+          }
+        },
+        State {
+          name: "shown";
+          when: DataTableModel.columns !== 0
+          PropertyChanges {
+            dataTable.opacity: 1.
+            resizeHandle2.opacity: 1.
+            dataTable.visible: true
+            resizeHandle2.visible: true
+            dataTable.width: dataTable.widthWhenVisible
+            resizeHandle2.width: 5
+          }
+        }
+      ]
+
+      transitions: Transition {
+        reversible: true
+        from: "shown"
+        to: "hidden"
+        SequentialAnimation {
+          ParallelAnimation {
+            NumberAnimation {
+              easing.type: Easing.InOutQuad;
+              property: "opacity";
+              duration: 250;
+            }
+            NumberAnimation {
+              easing.type: Easing.InOutQuad;
+              property: "width";
+              duration: 250;
+            }
+          }
+          PropertyAction {
+            property: "visible"
+          }
+        }
       }
     }
   }
 
   InteractiveGraphView {
     id: interactiveGraph
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
-    anchors.right: parent.right
-    anchors.left: drawer.right
+    x: anchorToDrawer ? drawer.width : 0
+    y: 0
+    height: win.height
+    width: anchorToDrawer ? win.width - drawer.width : win.width
 
-    states: State {
-      name: "anchorToDrawer"; when: win.width - drawer.width < 400
-      AnchorChanges { target: interactiveGraph; anchors.left: win.left }
+    property bool anchorToDrawer: drawer_button.checked && win.width - drawer.width >= 400
+
+    Behavior on x {
+      NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
     }
 
-    transitions: Transition { AnchorAnimation { duration: 200 } }
-
+    Behavior on width {
+      NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+    }
   }
 }

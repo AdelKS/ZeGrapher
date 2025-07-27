@@ -116,6 +116,7 @@ signals:
   void estheticSettingsChanged();
   void appSettingsChanged();
   void mathObjectsChanged(QStringList objectNames);
+  void dataColumnCountChanged();
 
 public slots:
   void emitUpdateSignal();

@@ -99,5 +99,6 @@
         <file>icons/brush.svg</file>
         <file>icons/open-eye.svg</file>
         <file>icons/closed-eye.svg</file>
+        <file>icons/table.svg</file>
     </qresource>
 </RCC>

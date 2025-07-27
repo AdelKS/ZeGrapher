@@ -12,6 +12,7 @@ Item {
   property alias expression: lineEdit.text
   property alias highlighter: mhighlighter
   property string customErrorMsg: ''
+  property alias lineEditBackend: lineEdit
   readonly property alias exprHeight: lineEdit.height
 
   implicitHeight: lineEdit.height + errorLbl.height
