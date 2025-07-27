@@ -49,8 +49,42 @@ Item {
       id: zcExprEdit
       mathObj: zcMathObj
 
+      onExpressionChanged: {
+        if (showInTable.checked) {
+          console.debug("Updating name in DataTableModel singleton.");
+          if (zcBackend.isValid())
+            DataTableModel.setColumnName(zcBackend, expression);
+          else
+            DataTableModel.setColumnName(zcBackend, "");
+
+        }
+      }
+
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
+    }
+
+    RoundButton {
+      id: showInTable
+      Layout.minimumWidth: 20
+      Layout.maximumWidth: 30
+      Layout.preferredHeight: Layout.preferredWidth
+      Layout.preferredWidth: 30
+
+      checkable: true
+      checked: false
+      icon.source: "qrc:/icons/table.svg"
+
+      onToggled: {
+        if (showInTable.checked) {
+          DataTableModel.registerTableColumn(zcBackend);
+        } else {
+          DataTableModel.deregisterTableColumn(zcBackend);
+        }
+      }
+
+      display: Button.IconOnly
+      padding: 0
     }
   }
 
@@ -59,6 +93,10 @@ Item {
     zcMathObj.setBackend(zcBackend);
     mathObj.setBackend(zcMathObj);
     mathObj.style = style;
+  }
+
+  Component.onDestruction: {
+    DataTableModel.deregisterTableColumn(zcBackend);
   }
 
 }

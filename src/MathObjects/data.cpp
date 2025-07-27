@@ -1,11 +1,12 @@
 #include "MathObjects/data.h"
+#include <string>
 
 namespace zg {
 namespace mathobj {
 
 Data::Data(QObject *parent): QObject(parent)
 {
-  zcMathObj.set_data("", {});
+  zcMathObj.set_data("", std::vector<std::string>(10));
 }
 
 State Data::setName(QString new_input_name)
