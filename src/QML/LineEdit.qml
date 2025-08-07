@@ -7,14 +7,12 @@ Rectangle {
   property alias text: edit.text
   property alias textEdit: edit
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
   border.width: 1.5
   radius: 4
 
   height: Math.max(textMetrics.height, edit.font.pixelSize) + 2*edit.textMargin + border.width
 
-  color: myPalette.base
+  color: palette.base
 
   Flickable {
     id: flick
@@ -42,7 +40,7 @@ Rectangle {
       verticalAlignment: TextEdit.AlignVCenter
       anchors.fill: parent
       textMargin: 5
-      color: myPalette.text
+      color: palette.text
       focus: true
       text: ""
       onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
