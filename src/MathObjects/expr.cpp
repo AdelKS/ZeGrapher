@@ -7,7 +7,7 @@ namespace mathobj {
 Expr::Expr(QObject *parent)
   : QObject(parent), shared::ZcMathObjectBB()
 {
-  setImplicitName("hidden_variable_");
+  setImplicitName("hidden_variable");
 }
 
 bool Expr::isValid() const
@@ -17,12 +17,18 @@ bool Expr::isValid() const
 
 State Expr::setImplicitName(QString name)
 {
-  implicitName = std::move(name);
-  while (information.getMathWorld().contains(implicitName.toStdString()))
+  size_t i = 1;
+  implicitName = name;
+  zcMathObj.set_name(implicitName.toStdString());
+
+  auto name_status = zcMathObj.name_status();
+  while (not name_status and name_status.error().type == zc::Error::NAME_ALREADY_TAKEN)
   {
-    qDebug() << "[backend] Expr: variable name '" << implicitName << "' already taken. Appending 'z' to it.";
-    implicitName.push_back('_');
+    implicitName = name + QString::number(i++);
+    zcMathObj.set_name(implicitName.toStdString());
+    name_status = zcMathObj.name_status();
   }
+
   return setExpression(expression);
 }
 
