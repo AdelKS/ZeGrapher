@@ -73,6 +73,12 @@ bool DataTableModel::setData(const QModelIndex &index, const QVariant &value, in
   return true;
 }
 
+void DataTableModel::clearCells(QModelIndexList list)
+{
+  for (auto index: list)
+    setData(index, QString());
+}
+
 QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int) const
 {
   if (orientation == Qt::Orientation::Horizontal)

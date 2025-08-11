@@ -9,6 +9,27 @@ Item {
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
+  function clearSelection() {
+    console.debug("TableEdit: clearing selection");
+    if (tableView.selectionModel.hasSelection)
+      DataTableModel.clearCells(tableView.selectionModel.selectedIndexes);
+  }
+
+  ContextMenu.menu: Menu {
+    MenuItem {
+      text: qsTr("Clear")
+      onTriggered: { clearSelection(); }
+      visible: tableView.selectionModel.hasSelection
+    }
+  }
+
+  Keys.onPressed: (event)=> {
+    if ([Qt.Key_Delete, Qt.Key_Backspace].includes(event.key)) {
+      clearSelection();
+      event.accepted = true;
+    }
+  }
+
   HorizontalHeaderView {
     id: horizontalHeader
     anchors.right: parent.right
