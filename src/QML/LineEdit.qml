@@ -10,7 +10,7 @@ Rectangle {
   border.width: 1.5
   radius: 4
 
-  height: Math.max(textMetrics.height, edit.font.pixelSize) + 2*edit.textMargin + border.width
+  implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 2*edit.textMargin + 2*border.width
 
   color: palette.base
 
@@ -55,7 +55,8 @@ Rectangle {
 
     TextMetrics {
       id: textMetrics
-      text: edit.text
+      text: "=+-*/_()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+      font: edit.font
     }
   }
 }
