@@ -248,7 +248,7 @@ Rectangle {
         var widget = component.createObject(placeholder, {"style": root.style})
 
         if (widget === null) {
-          console.log("Error creating object");
+          console.debug("Error creating object");
         } else {
           widget.width = Qt.binding(function (){ return placeholder.width });
           placeholder.height = Qt.binding(function (){ return widget.implicitHeight });

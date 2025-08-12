@@ -88,9 +88,9 @@ Item {
   }
 
   Component.onCompleted: {
-    console.log("ParametricEdit: backend1=", eq1);
-    console.log("ParametricEdit: backend2=", eq2);
-    console.log("ParametricEdit: style=", style);
+    console.debug("ParametricEdit: backend1=", eq1);
+    console.debug("ParametricEdit: backend2=", eq2);
+    console.debug("ParametricEdit: style=", style);
 
     mathObj.style = style;
     zcObj1.setBackend(eq1);

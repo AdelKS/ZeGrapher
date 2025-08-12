@@ -24,7 +24,7 @@ Item {
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   onObjectTypeChanged: {
-    console.log('object type changed: ', objectType);
+    console.debug('object type changed: ', objectType);
     if (objectType === PlotStyle.Discrete) {
       // last element of the lineStyleModel is no line
       lineStyleTumbler.currentIndex = lineStyleModel.count  - 1;
@@ -187,8 +187,8 @@ Item {
         Layout.preferredHeight: implicitHeight
 
         Component.onCompleted: {
-          console.log("Start label implicit size: ", implicitWidth, "x", implicitHeight)
-          console.log("Start label size: ", width, "x", height)
+          console.debug("Start label implicit size: ", implicitWidth, "x", implicitHeight)
+          console.debug("Start label size: ", width, "x", height)
         }
 
         id: startLabel

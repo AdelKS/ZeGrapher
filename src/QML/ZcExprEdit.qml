@@ -27,13 +27,13 @@ Item {
     else errorLbl.setErrorMsg(mathObj.state.errorMsg);
 
     if (customErrorMsg.length !== 0 || mathObj.state.status === ZG.State.INVALID) {
-      console.log("ZcExprEdit: border color updated to invalid")
+      console.debug("ZcExprEdit: border color updated to invalid")
       lineEdit.border.color = Information.appSettings.invalidSyntax;
     } else if (mathObj.state.status === ZG.State.VALID) {
-      console.log("ZcExprEdit: border color updated to valid")
+      console.debug("ZcExprEdit: border color updated to valid")
       lineEdit.border.color = Information.appSettings.validSyntax;
     } else {
-      console.log("ZcExprEdit: border color updated to neutral")
+      console.debug("ZcExprEdit: border color updated to neutral")
       lineEdit.border.color = "grey";
     }
   }
@@ -70,7 +70,7 @@ Item {
     height: 0
 
     function setErrorMsg(msg: string) {
-      console.log("ZcExprEdit: new error message: ", msg);
+      console.debug("ZcExprEdit: new error message: ", msg);
       errorLbl.textEdit.text = msg;
       height = msg ? textEdit.contentHeight + 4 : 0;
     }

@@ -89,7 +89,7 @@ Item {
   }
 
   Component.onCompleted: {
-    console.log("DataEdit: backend=", zcBackend);
+    console.debug("DataEdit: backend=", zcBackend);
     zcMathObj.setBackend(zcBackend);
     mathObj.setBackend(zcMathObj);
     mathObj.style = style;

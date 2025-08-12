@@ -12,17 +12,17 @@ Rectangle {
   color: myPalette.window
 
   function checkHorizontalWindow() {
-    console.log("checking x range: ", xminEdit.value, " to ", xmaxEdit.value);
+    console.debug("checking x range: ", xminEdit.value, " to ", xmaxEdit.value);
     var oldVal = disableSignals;
     root.disableSignals = true;
     if (xminEdit.value < xmaxEdit.value) {
-      console.log("Updating information singleton with new x range.");
+      console.debug("Updating information singleton with new x range.");
       Information.range.x.min = xminEdit.value;
       Information.range.x.max = xmaxEdit.value;
       xminEdit.customErrorMsg = "";
       xmaxEdit.customErrorMsg = "";
     } else {
-      console.log('setting x range as invalid');
+      console.debug('setting x range as invalid');
       xminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
       xmaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
     }
@@ -30,17 +30,17 @@ Rectangle {
   }
 
   function checkVerticalWindow() {
-    console.log("checking y range: ", yminEdit.value, " to ", ymaxEdit.value);
+    console.debug("checking y range: ", yminEdit.value, " to ", ymaxEdit.value);
     var oldVal = disableSignals;
     root.disableSignals = true;
     if (yminEdit.value < ymaxEdit.value) {
-      console.log("Updating information singleton with new y range.");
+      console.debug("Updating information singleton with new y range.");
       Information.range.y.min = yminEdit.value;
       Information.range.y.max = ymaxEdit.value;
       yminEdit.customErrorMsg = "";
       ymaxEdit.customErrorMsg = "";
     } else {
-      console.log('setting y range as invalid');
+      console.debug('setting y range as invalid');
       yminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
       ymaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
     }
@@ -50,7 +50,7 @@ Rectangle {
   Connections {
     target: Information
     function onGraphRangeChanged() {
-      console.log("new graph range from information singleton")
+      console.debug("new graph range from information singleton")
       root.disableSignals = true;
       ymaxEdit.expression = Number(Information.range.y.max).toLocaleString();
       yminEdit.expression = Number(Information.range.y.min).toLocaleString();

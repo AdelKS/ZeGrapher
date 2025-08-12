@@ -43,8 +43,8 @@ Item {
   }
 
   Component.onCompleted: {
-    console.log("EquationEdit: backend=", zcBackend);
-    console.log("EquationEdit: style=", style);
+    console.debug("EquationEdit: backend=", zcBackend);
+    console.debug("EquationEdit: style=", style);
     mathObj.style = style;
     zcMathObj.setBackend(zcBackend);
     mathObj.setBackend(zcMathObj);

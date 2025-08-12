@@ -66,7 +66,7 @@ Item {
       Connections {
         target: constant.textInput
         function onTextEdited() {
-          console.log("new double value: ", constant.textInput.text);
+          console.debug("new double value: ", constant.textInput.text);
           zcBackend.set_value(parseFloat(constant.textInput.text));
         }
       }
@@ -74,7 +74,7 @@ Item {
   }
 
   Component.onCompleted: {
-    console.log("ConstantEdit: backend=", zcBackend);
+    console.debug("ConstantEdit: backend=", zcBackend);
     zcMathObj.setBackend(zcBackend);
     mathObj.setBackend(zcMathObj);
   }

@@ -42,7 +42,7 @@ Item {
   }
 
   Component.onCompleted: {
-    console.log("ValueEdit: backend=", exprBackend);
+    console.debug("ValueEdit: backend=", exprBackend);
     zcMathObj.setBackend(exprBackend);
     mathObj.setBackend(zcMathObj);
   }
