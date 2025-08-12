@@ -27,6 +27,7 @@ wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/downl
 chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
 
 export QMAKE=`which qmake6`
+export EXTRA_QT_PLUGINS="waylandcompositor"
 export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
 export QML_SOURCES_PATHS="${deploy_dir}/../src/"
 export NO_STRIP=1
