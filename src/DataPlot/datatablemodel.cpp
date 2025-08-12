@@ -73,6 +73,34 @@ bool DataTableModel::setData(const QModelIndex &index, const QVariant &value, in
   return true;
 }
 
+bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+  if (parent.isValid())
+    return false;
+
+  auto empty_cells = std::vector<std::string>(count);
+
+  int old_row_count = rowCount();
+
+  beginInsertRows(parent, row, row + count - 1);
+
+  for (mathobj::Data* dataObj: tableColumns)
+    dataObj->zcMathObj.insert_data_points(row, empty_cells);
+
+  endInsertRows();
+
+  Q_ASSERT(rowCount() == old_row_count + count);
+
+  if (old_row_count > 0)
+  {
+    QModelIndex topLeft = index(row, 0);
+    QModelIndex bottomRight = index(old_row_count - 1 + count, columnCount() - 1);
+    emit dataChanged(topLeft, bottomRight, {Qt::DisplayRole});
+  }
+
+  return true;
+}
+
 void DataTableModel::clearCells(QModelIndexList list)
 {
   for (auto index: list)

@@ -21,6 +21,22 @@ Item {
       onTriggered: { clearSelection(); }
       visible: tableView.selectionModel.hasSelection
     }
+    MenuItem {
+      text: qsTr("Insert row above")
+      onTriggered: {
+        let row = tableView.currentRow;
+        DataTableModel.insertRows(row, 1);
+      }
+      visible: tableView.currentRow >= 0
+    }
+    MenuItem {
+      text: qsTr("Insert row bellow")
+      onTriggered: {
+        let row = tableView.currentRow;
+        DataTableModel.insertRows(row+1, 1);
+      }
+      visible: tableView.currentRow >= 0
+    }
   }
 
   Keys.onPressed: (event)=> {
