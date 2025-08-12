@@ -20,16 +20,20 @@ meson compile
 meson install
 cd ..
 
-wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
-chmod a+x linuxdeploy-x86_64.AppImage
+appimagetool=$(echo appimagetool-*.AppImage)
+if [[ ! -f "$appimagetool" ]]; then
+  wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+  chmod +x appimagetool-*.AppImage
+fi
 
-wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
-chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
+export QTDIR=/usr/lib/qt6/
 
-export QMAKE=`which qmake6`
-export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
-export QML_SOURCES_PATHS="${deploy_dir}/../src/"
-export NO_STRIP=1
+./"$appimagetool" -s deploy ./appdir-linux/usr/share/applications/*.desktop
 
-# ./linuxdeploy-x86_64.AppImage --list-plugins
-./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage
+# Workaround for Wayland
+rm -rf ./appdir-linux/usr/lib/qt6/plugins
+cp -r /usr/lib/qt6/plugins ./appdir-linux/usr/lib/qt6/
+
+export VERSION=$(meson introspect ../meson.build --projectinfo | jq -r .version)
+
+./"$appimagetool" ./appdir-linux
