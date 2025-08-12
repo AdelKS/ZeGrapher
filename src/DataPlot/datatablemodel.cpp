@@ -65,10 +65,19 @@ bool DataTableModel::setData(const QModelIndex &index, const QVariant &value, in
 {
   Q_ASSERT(index.column() < columnCount());
 
+  const std::string str = value.toString().toStdString();
+
   const mathobj::Data* dataObj = tableColumns.at(index.column());
-  dataObj->zcMathObj.set_data_point(index.row(), value.toString().toStdString());
+  dataObj->zcMathObj.set_data_point(index.row(), str);
 
   emit dataChanged(index, index);
+
+  if (not str.empty())
+  {
+    int row_num = rowCount();
+    if (index.row()+1 == row_num)
+      insertRow(row_num);
+  }
 
   return true;
 }
