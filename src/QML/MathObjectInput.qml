@@ -62,8 +62,8 @@ Rectangle {
     anchors.fill: parent
     spacing: 5
 
-    implicitWidth: Math.max(firstRow.implicitWidth, placeholder.implicitWidth)
-    implicitHeight: firstRow.implicitHeight + placeholder.implicitHeight
+    implicitWidth: Math.max(firstRow.implicitWidth, loader.implicitWidth)
+    implicitHeight: firstRow.implicitHeight + loader.implicitHeight
 
     RowLayout {
       id: firstRow
@@ -101,7 +101,7 @@ Rectangle {
           }
         }
 
-        onCurrentIndexChanged: placeholder.updateObjectType()
+        onCurrentIndexChanged: loader.updateObjectType()
       }
 
       Item {
@@ -233,51 +233,31 @@ Rectangle {
       ]
     }
 
-    Item {
-      id: placeholder
+    Loader {
+      id: loader
       Layout.fillWidth: true
 
       property int currentType: 0
 
+      onStatusChanged: {
+        let statusStrings = [];
+        statusStrings[Loader.Null] = "Null";
+        statusStrings[Loader.Ready] = "Ready";
+        statusStrings[Loader.Loading] = "Loading";
+        statusStrings[Loader.Error] = "Error";
+        console.debug("Loader status: ", statusStrings[status]);
+      }
+
       function updateObjectType() {
-        if (children.length !== 0 &&
-            currentType !== eqTypeModel.get(objectTypeTumbler.currentIndex).type)
-        {
-          for (var i = 0 ; i != children.length ; i++)
-            children[i].removeObj();
-        }
         currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
-        var component;
         if (currentType === ObjectType.EQUATION) {
-          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/EquationEdit.qml");
+          loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"style": root.style});
         } else if (currentType === ObjectType.CONSTANT) {
-          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml");
+          loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"style": root.style});
         } else if (currentType === ObjectType.PARAMETRIC) {
-          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml");
+          loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"style": root.style});
         } else if (currentType === ObjectType.DATA) {
-          component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/DataEdit.qml");
-        }
-        else
-        {
-          console.error("Case not handled");
-          return;
-        }
-
-        if (component.status !== Component.Ready)
-        {
-          console.error("Component not ready: ", component.errorString());
-          return;
-        }
-
-        var widget = component.createObject(placeholder, {"style": root.style})
-
-        if (widget === null) {
-          console.debug("Error creating object");
-        } else {
-          widget.width = Qt.binding(function (){ return placeholder.width });
-          placeholder.height = Qt.binding(function (){ return widget.implicitHeight });
-          placeholder.implicitHeight = Qt.binding(function (){ return widget.implicitHeight });
-          placeholder.implicitWidth = Qt.binding(function (){ return widget.implicitWidth });
+          loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"style": root.style});
         }
       }
     }
