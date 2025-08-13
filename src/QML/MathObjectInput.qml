@@ -5,23 +5,42 @@ import QtQuick.Shapes
 
 Rectangle {
   id: root
+  signal deleteMe()
 
   property alias style: plotStyle
+  property int deleteDuration: 250
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   color: myPalette.window
 
-  Behavior on height { SmoothedAnimation { duration: 200 } }
-  Behavior on opacity { SmoothedAnimation { duration: 150 } }
+  Behavior on height { SmoothedAnimation { duration: root.deleteDuration } }
+  Behavior on implicitHeight { SmoothedAnimation { duration: root.deleteDuration } }
+  Behavior on opacity { SmoothedAnimation { duration: root.deleteDuration } }
 
+  implicitWidth: layout.implicitWidth
   implicitHeight: layout.implicitHeight
-  implicitWidth: firstRow.implicitWidth
+
+  onImplicitWidthChanged: {
+    console.debug("MathObjectInput: implicit width", implicitWidth);
+  }
+
+  onImplicitHeightChanged: {
+    console.debug("MathObjectInput: implicit height", implicitHeight);
+  }
+
+  Timer {
+    id: deleteMeTimer
+    onTriggered: deleteMe()
+    interval: root.deleteDuration
+    repeat: false
+  }
 
   function removeObj() {
     root.opacity = 0;
     root.height = 0;
-    root.destroy(200);
+    root.implicitHeight = 0;
+    deleteMeTimer.start();
   }
 
   PlotStyle {
@@ -38,15 +57,18 @@ Rectangle {
     step: styleWidget.step
   }
 
-  Column {
+  ColumnLayout {
     id: layout
     anchors.fill: parent
     spacing: 5
 
+    implicitWidth: Math.max(firstRow.implicitWidth, placeholder.implicitWidth)
+    implicitHeight: firstRow.implicitHeight + placeholder.implicitHeight
+
     RowLayout {
       id: firstRow
-      width: parent.width
-      height: 40
+      Layout.fillWidth: true
+      Layout.preferredHeight: 40
 
       ComboBox {
         id: objectTypeTumbler
@@ -187,23 +209,25 @@ Rectangle {
 
     ObjectStyle {
       id: styleWidget
-      width: parent.width
-      height: 0
+      Layout.fillWidth: true
+      Layout.preferredHeight: preferredHeight
       clip: true
       objectType: plotStyle.objectType
 
-      Behavior on height { SmoothedAnimation { duration: 200 } }
+      property int preferredHeight: 0
+
+      Behavior on preferredHeight { SmoothedAnimation { duration: 200 } }
 
       states: [
         State {
           name: "hidden"; when: !styleButton.checked || !styleButton.visible
-          PropertyChanges { styleWidget.height: 0 }
+          PropertyChanges { styleWidget.preferredHeight: 0 }
         },
         State {
           name: "shown"; when: styleButton.checked && styleButton.visible
           PropertyChanges {
             explicit: false
-            styleWidget.height: styleWidget.implicitHeight
+            styleWidget.preferredHeight: styleWidget.implicitHeight
           }
         }
       ]
@@ -211,7 +235,7 @@ Rectangle {
 
     Item {
       id: placeholder
-      width: parent.width
+      Layout.fillWidth: true
 
       property int currentType: 0
 
@@ -252,19 +276,21 @@ Rectangle {
         } else {
           widget.width = Qt.binding(function (){ return placeholder.width });
           placeholder.height = Qt.binding(function (){ return widget.implicitHeight });
+          placeholder.implicitHeight = Qt.binding(function (){ return widget.implicitHeight });
+          placeholder.implicitWidth = Qt.binding(function (){ return widget.implicitWidth });
         }
       }
     }
 
     Item {
-      height: 10
-      width: parent.width
+      Layout.preferredHeight: 10
+      Layout.fillWidth: true
     }
 
     ToolSeparator
     {
       orientation: Qt.Horizontal
-      width: parent.width
+      Layout.fillWidth: true
     }
   }
 

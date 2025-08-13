@@ -4,14 +4,19 @@ import QtQuick.Layouts
 
 Item {
   id: userInputPanel
+  clip: true
 
   implicitWidth: colLayout.implicitWidth
+
+  onImplicitWidthChanged: {
+    console.debug("UserInputPanel: new implicit width: ", implicitWidth);
+  }
 
   ColumnLayout {
     id: colLayout
     anchors.fill: parent
 
-    implicitWidth: Math.max(rangeAdjust.implicitWidth, scrollView.implicitWidth)
+    implicitWidth: Math.max(rangeAdjust.implicitWidth, scrollView.implicitContentWidth)
 
     RangeAdjust {
       id: rangeAdjust
@@ -32,49 +37,47 @@ Item {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
-      implicitWidth: mathObjCol.minWidth
+      contentWidth: Math.max(availableWidth, mathObjCol.implicitWidth)
 
-      contentWidth: availableWidth
+      implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
 
-      ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-      ScrollBar.vertical.interactive: true
-
-      Column {
-        id: mathObjCol
-        anchors.fill: parent
-        spacing: 10
-
-        property int minWidth: 0
-
-        function updateMinWidth(w: int) {
-          if (minWidth < w)
-            minWidth = w;
-        }
-
-        function createMathObjectInput() {
-          var component = Qt.createComponent("qrc:/qt/qml/ZeGrapher/MathObjectInput.qml");
-          if (component.status === Component.Error) {
-            console.error("Failed loading MathObjectInput.qml \n Error message:\n  |", component.errorString().replace("\n", "\n  | "));
-            return;
-          }
-
-          var inputWidget = component.createObject(mathObjCol)
-
-          if (inputWidget === null) {
-            console.error("Error creating object");
-            return;
-          }
-
-          inputWidget.width = Qt.binding(function (){ return mathObjCol.width - 5 });
-
-          updateMinWidth(inputWidget.implicitWidth);
-          inputWidget.implicitWidthChanged.connect(updateMinWidth);
-        }
-
-        Component.onCompleted: createMathObjectInput()
+      onAvailableWidthChanged: {
+        console.debug("UserInputPanel: scroll view, available width: ", availableWidth);
       }
 
+      onImplicitWidthChanged: {
+        console.debug("UserInputPanel: scroll view: implicit width: ", implicitWidth)
+      }
+
+      ColumnLayout {
+        id: mathObjCol
+        spacing: 10
+        anchors.fill: parent
+
+        onImplicitWidthChanged: {
+          console.debug("UserInputPanel: column layout: new implicit width", implicitWidth);
+        }
+
+        Repeater {
+          model: mathWidgetList
+          delegate: MathObjectInput {
+            required property int index
+            Layout.fillWidth: true
+
+            onDeleteMe: {
+              mathWidgetList.remove(index);
+            }
+          }
+        }
+      }
+
+
     }
+  }
+
+  ListModel {
+    id: mathWidgetList
+    ListElement {}
   }
 
   RoundButton {
@@ -88,7 +91,7 @@ Item {
 
     icon.source: "qrc:/icons/add.svg"
 
-    onReleased: mathObjCol.createMathObjectInput()
+    onReleased: mathWidgetList.append({})
 
     icon.width: 2*width/3
     icon.height: 2*width/3

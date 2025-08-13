@@ -71,11 +71,19 @@ Window {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.margins: 10
-        width: 250
 
         Behavior on width {
           NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
         }
+
+        Timer {
+          id: widthResetTimer
+          interval: 1000
+          repeat: false
+          onTriggered: userInput.width = userInput.implicitWidth;
+        }
+
+        Component.onCompleted: widthResetTimer.start()
       }
 
       Item {
