@@ -9,7 +9,19 @@ Item {
   implicitWidth: colLayout.implicitWidth
 
   onImplicitWidthChanged: {
-    console.debug("UserInputPanel: new implicit width: ", implicitWidth);
+    console.debug("UserInputPanel: implicitWidth: ", implicitWidth);
+  }
+
+  onImplicitHeightChanged: {
+    console.debug("UserInputPanel: implicitHeight: ", implicitHeight);
+  }
+
+  onHeightChanged: {
+    console.debug("UserInputPanel: height: ", height);
+  }
+
+  onWidthChanged: {
+    console.debug("UserInputPanel: width: ", width);
   }
 
   ColumnLayout {
@@ -38,15 +50,27 @@ Item {
       Layout.fillHeight: true
 
       contentWidth: Math.max(availableWidth, mathObjCol.implicitWidth)
+      contentHeight: mathObjCol.implicitHeight
 
       implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
+      implicitHeight: mathObjCol.implicitHeight + ScrollBar.horizontal.height
+
+      onContentHeightChanged: {
+        console.debug("UserInputPanel: ScrollView: contentHeight=", contentHeight);
+      }
+
+      onHeightChanged: {
+        console.debug("UserInputPanel: ScrollView: height=", height);
+      }
+
+      ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
       onAvailableWidthChanged: {
-        console.debug("UserInputPanel: scroll view, available width: ", availableWidth);
+        console.debug("UserInputPanel: ScrollView, availableWidth: ", availableWidth);
       }
 
       onImplicitWidthChanged: {
-        console.debug("UserInputPanel: scroll view: implicit width: ", implicitWidth)
+        console.debug("UserInputPanel: ScrollView: implicitWidth: ", implicitWidth)
       }
 
       ColumnLayout {
@@ -55,7 +79,11 @@ Item {
         anchors.fill: parent
 
         onImplicitWidthChanged: {
-          console.debug("UserInputPanel: column layout: new implicit width", implicitWidth);
+          console.debug("UserInputPanel: ColumnLayout: implicitWidth", implicitWidth);
+        }
+
+        onImplicitHeightChanged: {
+          console.debug("UserInputPanel: ColumnLayout: implicitHeight", implicitHeight);
         }
 
         Repeater {
@@ -63,6 +91,7 @@ Item {
           delegate: MathObjectInput {
             required property int index
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
 
             onDeleteMe: {
               mathWidgetList.remove(index);
@@ -97,5 +126,11 @@ Item {
     icon.height: 2*width/3
     display: Button.IconOnly
     padding: 0
+  }
+
+  Component.onCompleted: {
+    scrollView.ScrollBar.vertical.policy = Qt.binding(function() {
+      return scrollView.contentHeight > scrollView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+    });
   }
 }

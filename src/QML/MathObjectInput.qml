@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 Rectangle {
   id: root
@@ -22,11 +21,19 @@ Rectangle {
   implicitHeight: layout.implicitHeight
 
   onImplicitWidthChanged: {
-    console.debug("MathObjectInput: implicit width", implicitWidth);
+    console.debug("MathObjectInput: implicitWidth", implicitWidth);
   }
 
   onImplicitHeightChanged: {
-    console.debug("MathObjectInput: implicit height", implicitHeight);
+    console.debug("MathObjectInput: implicitHeight", implicitHeight);
+  }
+
+  onWidthChanged: {
+    console.debug("MathObjectInput: width", width);
+  }
+
+  onHeightChanged: {
+    console.debug("MathObjectInput: height", height);
   }
 
   Timer {
