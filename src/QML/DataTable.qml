@@ -6,7 +6,9 @@ import QtQuick.Controls
 Item {
   id: root
   clip: true
+
   required property var model
+  property bool interactive: false
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
@@ -16,7 +18,8 @@ Item {
       root.model.clearCells(tableView.selectionModel.selectedIndexes);
   }
 
-  ContextMenu.menu: Menu {
+  Menu {
+    id: menu
     MenuItem {
       text: qsTr("Clear")
       onTriggered: { clearSelection(); }
@@ -40,12 +43,15 @@ Item {
     }
   }
 
+  ContextMenu.menu: interactive ? menu : null
+
   Keys.onPressed: (event)=> {
     if ([Qt.Key_Delete, Qt.Key_Backspace].includes(event.key)) {
       clearSelection();
       event.accepted = true;
     }
   }
+  Keys.enabled: root.interactive
 
   HorizontalHeaderView {
     id: horizontalHeader
@@ -71,6 +77,7 @@ Item {
             ItemSelectionModel.Columns | ItemSelectionModel.ClearAndSelect
           );
         }
+        enabled: root.interactive
       }
 
       TapHandler {
@@ -82,6 +89,7 @@ Item {
             ItemSelectionModel.Columns | ItemSelectionModel.Select
           );
         }
+        enabled: root.interactive
       }
 
       Label {
@@ -118,6 +126,7 @@ Item {
             ItemSelectionModel.Rows | ItemSelectionModel.ClearAndSelect
           );
         }
+        enabled: root.interactive
       }
 
       TapHandler {
@@ -129,6 +138,7 @@ Item {
             ItemSelectionModel.Rows | ItemSelectionModel.Select
           );
         }
+        enabled: root.interactive
       }
 
       Label {
@@ -182,7 +192,7 @@ Item {
         }
 
         onCurrentChanged: {
-          if (current && !selected)
+          if (root.interactive && current && !selected)
           {
             console.debug("Making current cell selected")
             tableView.selectionModel.select(tableView.index(row, column), ItemSelectionModel.Select);
@@ -198,15 +208,15 @@ Item {
           anchors.fill: parent
           implicitName: "tableCell"
 
-          palette.base: item.current
+          palette.base: root.interactive && item.current
             ? item.palette.accent
-            : item.selected
+            : root.interactive && item.selected
             ? item.palette.light
             : tableView.alternatingRows && item.row % 2 !== 0
             ? item.palette.base
             : item.palette.alternateBase
 
-          visible: !editing
+          visible: !root.interactive || !editing
           enabled: false
 
           expression: { expression = display }
@@ -224,7 +234,7 @@ Item {
           ValueEdit {
             id: valueEdit
             anchors.fill: parent
-            visible: item.editing
+            visible: root.interactive && item.editing
             expression: display
             exprEdit.lineEditBackend.textEdit.focus: true
           }

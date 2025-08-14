@@ -130,6 +130,8 @@ Window {
       DataTable {
         id: dataTable
         model: DataTableModel
+        interactive: true
+
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.leftMargin: 10
