@@ -6,13 +6,14 @@ import QtQuick.Controls
 Item {
   id: root
   clip: true
+  required property var model
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   function clearSelection() {
     console.debug("TableEdit: clearing selection");
     if (tableView.selectionModel.hasSelection)
-      DataTableModel.clearCells(tableView.selectionModel.selectedIndexes);
+      root.model.clearCells(tableView.selectionModel.selectedIndexes);
   }
 
   ContextMenu.menu: Menu {
@@ -25,7 +26,7 @@ Item {
       text: qsTr("Insert row above")
       onTriggered: {
         let row = tableView.currentRow;
-        DataTableModel.insertRows(row, 1);
+        root.model.insertRows(row, 1);
       }
       visible: tableView.currentRow >= 0
     }
@@ -33,7 +34,7 @@ Item {
       text: qsTr("Insert row bellow")
       onTriggered: {
         let row = tableView.currentRow;
-        DataTableModel.insertRows(row+1, 1);
+        root.model.insertRows(row+1, 1);
       }
       visible: tableView.currentRow >= 0
     }
@@ -148,7 +149,7 @@ Item {
     TableView {
 
       id: tableView
-      model: DataTableModel
+      model: root.model
 
       columnSpacing: 1
       rowSpacing: 1

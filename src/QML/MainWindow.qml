@@ -129,6 +129,7 @@ Window {
 
       DataTable {
         id: dataTable
+        model: DataTableModel
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.leftMargin: 10
