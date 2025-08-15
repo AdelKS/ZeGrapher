@@ -100,5 +100,6 @@
         <file>icons/open-eye.svg</file>
         <file>icons/closed-eye.svg</file>
         <file>icons/table.svg</file>
+        <file>icons/csv-import.svg</file>
     </qresource>
 </RCC>

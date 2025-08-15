@@ -18,6 +18,12 @@ Item {
       root.model.clearCells(tableView.selectionModel.selectedIndexes);
   }
 
+  implicitHeight: scrollView.implicitHeight + horizontalHeader.implicitHeight
+
+  onImplicitHeightChanged: {
+    console.debug("DataTable: implicitHeight=", implicitHeight);
+  }
+
   Menu {
     id: menu
     MenuItem {
@@ -151,6 +157,8 @@ Item {
   }
 
   ScrollView {
+    id: scrollView
+
     anchors.top: horizontalHeader.bottom
     anchors.left: verticalHeader.right
     anchors.right: parent.right

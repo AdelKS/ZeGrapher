@@ -36,6 +36,7 @@ source_files = files(
   './DataPlot/columnactionswidget.cpp',
   './DataPlot/columnselectorwidget.cpp',
   './DataPlot/csvhandler.cpp',
+  './DataPlot/csvpreviewmodel.cpp',
   './DataPlot/datatable.cpp',
   './DataPlot/datatablemodel.cpp',
   './DataPlot/datawindow.cpp',
@@ -103,6 +104,7 @@ moc_header_files = files(
   './DataPlot/columnactionswidget.h',
   './DataPlot/columnselectorwidget.h',
   './DataPlot/csvhandler.h',
+  './DataPlot/csvpreviewmodel.h',
   './DataPlot/datatable.h',
   './DataPlot/datatablemodel.h',
   './DataPlot/datawindow.h',
@@ -156,7 +158,9 @@ moc_header_files = files(
 qml_files = files(
   './QML/ColorButton.qml',
   './QML/ConstantEdit.qml',
+  './QML/CsvImportSettings.qml',
   './QML/DataEdit.qml',
+  './QML/DataPane.qml',
   './QML/DataTable.qml',
   './QML/EquationEdit.qml',
   './QML/ImageTumbler.qml',
@@ -175,6 +179,7 @@ qml_files = files(
 )
 
 qmlcpp_files = files(
+  './DataPlot/csvpreviewmodel.h',
   './DataPlot/datatablemodel.h',
   './GraphDraw/interactivegraph.h',
   './information.h',

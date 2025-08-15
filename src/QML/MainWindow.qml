@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 import QtQuick.Layouts
 
 Window {
@@ -7,6 +8,16 @@ Window {
   width: 800
   height: 600
   visible: true
+
+  FileDialog {
+    id: fileDialog
+    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    fileMode: FileDialog.OpenFile
+    options: FileDialog.ReadOnly
+    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
+    visible: false
+    onAccepted: dataPane.loadCSV(selectedFile)
+  }
 
   Button {
     id: drawer_button
@@ -100,6 +111,23 @@ Window {
           }
 
           RoundButton {
+            id: importCSV
+            z: 100
+            Layout.preferredHeight: 35
+            Layout.preferredWidth: 35
+            Layout.alignment: Qt.AlignRight
+
+            icon.source: "qrc:/icons/csv-import.svg"
+
+            onReleased: fileDialog.visible = true
+
+            icon.width: 2*width/3
+            icon.height: 2*width/3
+            display: Button.IconOnly
+            padding: 0
+          }
+
+          RoundButton {
             id: add
             z: 100
             Layout.preferredHeight: 35
@@ -159,10 +187,8 @@ Window {
 
       }
 
-      DataTable {
-        id: dataTable
-        model: DataTableModel
-        interactive: true
+      DataPane {
+        id: dataPane
 
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -204,9 +230,9 @@ Window {
 
           onMouseXChanged: {
             var diff = mouseX - mouseXonPress;
-            if (drawer.width + diff < win.width && dataTable.width + diff > 0) {
-              dataTable.widthWhenVisible = dataTable.width + diff;
-              dataTable.width += diff;
+            if (drawer.width + diff < win.width && dataPane.width + diff > 0) {
+              dataPane.widthWhenVisible = dataPane.width + diff;
+              dataPane.width += diff;
             }
           }
         }
@@ -215,25 +241,25 @@ Window {
       states: [
         State {
           name: "hidden";
-          when: DataTableModel.columns === 0
+          when: DataTableModel.columns === 0 && !dataPane.importingCSV
           PropertyChanges {
-            dataTable.opacity: 0.
+            dataPane.opacity: 0.
             resizeHandle2.opacity: 0.
-            dataTable.visible: false
+            dataPane.visible: false
             resizeHandle2.visible: false
-            dataTable.width: 0
+            dataPane.width: 0
             resizeHandle2.width: 0
           }
         },
         State {
           name: "shown";
-          when: DataTableModel.columns !== 0
+          when: DataTableModel.columns !== 0 || dataPane.importingCSV
           PropertyChanges {
-            dataTable.opacity: 1.
+            dataPane.opacity: 1.
             resizeHandle2.opacity: 1.
-            dataTable.visible: true
+            dataPane.visible: true
             resizeHandle2.visible: true
-            dataTable.width: dataTable.widthWhenVisible
+            dataPane.width: dataPane.widthWhenVisible
             resizeHandle2.width: 5
           }
         }
