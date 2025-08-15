@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Window {
   id: win
@@ -84,6 +85,37 @@ Window {
         }
 
         Component.onCompleted: widthResetTimer.start()
+
+        RowLayout
+        {
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.bottom: parent.bottom
+          anchors.margins: 5
+          height: implicitHeight
+          spacing: 5
+
+          Item {
+            Layout.fillWidth: true
+          }
+
+          RoundButton {
+            id: add
+            z: 100
+            Layout.preferredHeight: 35
+            Layout.preferredWidth: 35
+            Layout.alignment: Qt.AlignRight
+
+            icon.source: "qrc:/icons/add.svg"
+
+            onReleased: userInput.addWidget()
+
+            icon.width: 2*width/3
+            icon.height: 2*width/3
+            display: Button.IconOnly
+            padding: 0
+          }
+        }
       }
 
       Item {

@@ -24,6 +24,10 @@ Item {
     console.debug("UserInputPanel: width: ", width);
   }
 
+  function addWidget() {
+    mathWidgetList.append({});
+  }
+
   ColumnLayout {
     id: colLayout
     anchors.fill: parent
@@ -107,25 +111,6 @@ Item {
   ListModel {
     id: mathWidgetList
     ListElement {}
-  }
-
-  RoundButton {
-    id: add
-    z: 100
-    width: 35
-    height: width
-
-    x: userInputPanel.width - width
-    y: userInputPanel.height - width - 10
-
-    icon.source: "qrc:/icons/add.svg"
-
-    onReleased: mathWidgetList.append({})
-
-    icon.width: 2*width/3
-    icon.height: 2*width/3
-    display: Button.IconOnly
-    padding: 0
   }
 
   Component.onCompleted: {
