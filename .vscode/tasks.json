@@ -62,20 +62,14 @@
         {
             "label": "setup-clangd",
             "type": "shell",
-            "dependsOn": "setup-debug-clang",
-            "command": "[ -f \"${cwd}/clangd-compile-db/compile_commands.json\" ] || ( mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zg-debug-clang/ list > ${cwd}/clangd-compile-db/compile_commands.json )"
+            "dependsOn": "build-debug",
+            "command": "mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zg-debug/ list > ${cwd}/clangd-compile-db/compile_commands.json",
+            "problemMatcher": []
         },
         {
             "label": "resetup-debug-clang",
             "type": "shell",
             "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
-        },
-        {
-            "label": "resetup-clangd",
-            "type": "shell",
-            "dependsOn": "resetup-debug-clang",
-            "command": "rm -rf ${cwd}/clangd-compile-db && mkdir -p ${cwd}/clangd-compile-db && compdb -p ${cwd}/build-zg-debug-clang/ list > ${cwd}/clangd-compile-db/compile_commands.json",
-            "problemMatcher": []
         },
         {
             "label": "build-debug-clang",
@@ -94,7 +88,7 @@
             }
         },
         {
-            "label": "rebuild-debugc-clang",
+            "label": "rebuild-debug-clang",
             "type": "shell",
             "command": "meson compile",
             "options": {
