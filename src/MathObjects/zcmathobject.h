@@ -42,16 +42,21 @@ struct ZcMathObject: QObject {
 
 public:
 
+  enum BackendType {MONOSTATE, EQUATION, EXPR, CONSTANT, NAMEDREF, DATA};
+  Q_ENUM(BackendType);
+
   explicit ZcMathObject(QObject *parent = nullptr);
 
-  Q_INVOKABLE void setBackend(mathobj::Constant*);
-  Q_INVOKABLE void setBackend(mathobj::Equation*);
-  Q_INVOKABLE void setBackend(mathobj::Expr*);
-  Q_INVOKABLE void setBackend(mathobj::NamedRef*);
-  Q_INVOKABLE void setBackend(mathobj::Data*);
+  Q_INVOKABLE void setBackend(BackendType);
 
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State getState() const;
+
+  Q_INVOKABLE mathobj::Equation* getEquation();
+  Q_INVOKABLE mathobj::Expr* getExpr();
+  Q_INVOKABLE mathobj::Constant* getConstant();
+  Q_INVOKABLE mathobj::NamedRef* getNamedRef();
+  Q_INVOKABLE mathobj::Data* getData();
 
   bool isContinuous() const;
   bool isDiscrete() const;
@@ -63,11 +68,9 @@ public:
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
-    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   T* getBackend();
 
   template <class T>
-    requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
   const T* getBackend() const;
 
   const zc::DynMathObject<zc_t>* getZcObject() const;
@@ -94,7 +97,6 @@ protected:
 };
 
 template <class T>
-  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
 const T* ZcMathObject::getBackend() const
 {
   if (std::holds_alternative<T*>(backend))
@@ -103,7 +105,6 @@ const T* ZcMathObject::getBackend() const
 }
 
 template <class T>
-  requires (zc::utils::is_any_of<T, mathobj::Equation, mathobj::Expr, mathobj::Constant>)
 T* ZcMathObject::getBackend()
 {
   return const_cast<T*>(std::as_const(*this).getBackend<T>());

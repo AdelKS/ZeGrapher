@@ -25,7 +25,8 @@ Item {
   }
 
   function addWidget() {
-    mathWidgetList.append({});
+    let slot = Information.addMathObject();
+    mathWidgetList.append({"slot": slot});
   }
 
   ColumnLayout {
@@ -94,10 +95,14 @@ Item {
           model: mathWidgetList
           delegate: MathObjectInput {
             required property int index
+            required property int slot
+
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
+            mathObj: Information.getMathObject(slot)
 
             onDeleteMe: {
+              Information.removeMathObject(slot);
               mathWidgetList.remove(index);
             }
           }
@@ -110,12 +115,12 @@ Item {
 
   ListModel {
     id: mathWidgetList
-    ListElement {}
   }
 
   Component.onCompleted: {
     scrollView.ScrollBar.vertical.policy = Qt.binding(function() {
       return scrollView.contentHeight > scrollView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     });
+    addWidget();
   }
 }

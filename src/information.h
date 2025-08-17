@@ -91,10 +91,10 @@ public:
   const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
   zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
 
-  void registerMathObject(zg::MathObject*);
-  void deregisterMathObject(zg::MathObject*);
-
-  const std::vector<zg::MathObject*>& getMathObjects() const { return mathObjects; }
+  const auto& getMathObjects() const { return mathObjects; }
+  Q_INVOKABLE zg::MathObject* getMathObject(size_t slot) { return mathObjects.at(slot); }
+  Q_INVOKABLE void removeMathObject(size_t slot);
+  Q_INVOKABLE size_t addMathObject();
 
   void mathObjectUpdated();
 
@@ -153,7 +153,7 @@ protected:
   QString exportFileName;
   zc::MathWorld<zc_t> mathWorld;
 
-  std::vector<zg::MathObject*> mathObjects;
+  zc::SlottedDeque<zg::MathObject*> mathObjects;
 
   QList<ParEqWidget*>* parEqWidgets;
 };

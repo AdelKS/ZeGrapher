@@ -7,7 +7,16 @@ import QtQuick.Controls
 Item {
   id: root
 
+  required property MathObject mathObj
   required property PlotStyle style
+
+  property Parametric parametric
+
+  property ZcMathObject zcObj1
+  property NamedRef eq1
+
+  property ZcMathObject zcObj2
+  property NamedRef eq2
 
   implicitHeight: Math.max(lineEdit1.implicitHeight, lineEdit2.implicitHeight)
 
@@ -17,32 +26,6 @@ Item {
     root.opacity = 0;
     root.height = 0;
     root.destroy(200);
-  }
-
-  NamedRef {
-    id: eq1
-  }
-
-  NamedRef {
-    id: eq2
-  }
-
-  ZcMathObject {
-    id: zcObj1
-  }
-
-  ZcMathObject {
-    id: zcObj2
-  }
-
-  Parametric {
-    id: parObj
-    obj1: zcObj1
-    obj2: zcObj2
-  }
-
-  MathObject {
-    id: mathObj
   }
 
   RowLayout {
@@ -88,13 +71,15 @@ Item {
   }
 
   Component.onCompleted: {
+    mathObj.setBackend(MathObject.PARAMETRIC);
+    parametric = mathObj.getParametric();
+    zcObj1 = parametric.getObj1();
+    zcObj2 = parametric.getObj2();
+    eq1 = zcObj1.getNamedRef();
+    eq2 = zcObj1.getNamedRef();
     console.debug("ParametricEdit: backend1=", eq1);
     console.debug("ParametricEdit: backend2=", eq2);
     console.debug("ParametricEdit: style=", style);
-
     mathObj.style = style;
-    zcObj1.setBackend(eq1);
-    zcObj2.setBackend(eq2);
-    mathObj.setBackend(parObj);
   }
 }

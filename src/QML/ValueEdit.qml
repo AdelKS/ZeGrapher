@@ -5,9 +5,11 @@ import QtQuick
 Item {
   id: root
 
-  readonly property alias value: exprBackend.value;
-  property alias implicitName : exprBackend.implicitName;
-  property alias state: exprBackend.state
+  readonly property int slot: Information.addMathObject();
+  readonly property MathObject mathObj: Information.getMathObject(slot);
+
+  property double value
+  property string implicitName
   property alias exprEdit: zcExprEdit
   property alias expression: zcExprEdit.expression
   property alias customErrorMsg: zcExprEdit.customErrorMsg
@@ -17,18 +19,6 @@ Item {
 
   function refresh() {
     zcExprEdit.refresh();
-  }
-
-  Expr {
-    id: exprBackend
-  }
-
-  ZcMathObject {
-    id: zcMathObj
-  }
-
-  MathObject {
-    id: mathObj
   }
 
   ZcExprEdit {
@@ -42,8 +32,19 @@ Item {
   }
 
   Component.onCompleted: {
+    mathObj.setBackend(MathObject.ZCMATHOBJECT);
+    let zcMathObj = mathObj.getZcMathObject();
+    zcMathObj.setBackend(ZcMathObject.EXPR);
+    zcExprEdit.mathObj = zcMathObj;
+
+    let exprBackend = zcMathObj.getExpr();
+    value = Qt.binding(function() { return exprBackend.value; });
+    exprBackend.implicitName = implicitName;
+    implicitName = Qt.binding(function() { return exprBackend.implicitName; });
     console.debug("ValueEdit: backend=", exprBackend);
-    zcMathObj.setBackend(exprBackend);
-    mathObj.setBackend(zcMathObj);
+  }
+
+  Component.onDestruction: {
+    Information.removeMathObject(slot);
   }
 }

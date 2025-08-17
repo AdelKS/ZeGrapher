@@ -251,28 +251,22 @@ QString Information::getExportFileName()
   return exportFileName;
 }
 
-void Information::registerMathObject(zg::MathObject* obj)
-{
-  Q_ASSERT(std::ranges::count(mathObjects, obj) == 0);
-  mathObjects.push_back(obj);
-}
-
-void Information::deregisterMathObject(zg::MathObject* obj)
-{
-  auto it = std::ranges::find(mathObjects, obj);
-
-  Q_ASSERT(it != mathObjects.end());
-  Q_ASSERT(std::ranges::count(mathObjects, obj) == 1);
-
-  mathObjects.erase(it);
-
-  mathObjectUpdated();
-}
-
 void Information::mathObjectUpdated()
 {
-  for (zg::MathObject* f: mathObjects)
+  for (auto&& f: mathObjects)
     f->sync();
 
   emit updateOccured();
+}
+
+void Information::removeMathObject(size_t slot)
+{
+  mathObjects.at(slot)->deleteLater();
+  mathObjects.free(slot);
+}
+
+size_t Information::addMathObject()
+{
+  size_t slot = mathObjects.emplace(new zg::MathObject(this));
+  return slot;
 }

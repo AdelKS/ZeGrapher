@@ -5,19 +5,47 @@ namespace zg {
 
 MathObject::MathObject(QObject *parent) : QObject(parent)
 {
-  information.registerMathObject(this);
 }
 
-void MathObject::setBackend(ZcMathObject* b)
+void MathObject::setBackend(MathObject::BackendType t)
 {
-  assert(b);
-  backend = b;
+  // we assume here that the order of the enum is the same as in the variant alternatives
+  // if the index is different, delete the pointer, Qt style memory management
+  if (backend.index() != size_t(t))
+  {
+    std::visit(
+      zc::utils::overloaded{
+        [](auto* n) {
+          n->deleteLater();
+        },
+        [](std::monostate) {},
+      },
+      backend
+    );
+  }
+  else return; // backend is already correct
+
+  switch (t) {
+    case MONOSTATE:
+      backend = std::monostate{};
+    break;
+    case ZCMATHOBJECT:
+      backend = new ZcMathObject(this);
+    break;
+    case PARAMETRIC:
+      backend = new Parametric(this);
+    break;
+  }
 }
 
-void MathObject::setBackend(Parametric* p)
+ZcMathObject* MathObject::getZcMathObject()
 {
-  assert(p);
-  backend = p;
+  return getBackend<ZcMathObject>();
+}
+
+Parametric* MathObject::getParametric()
+{
+  return getBackend<Parametric>();
 }
 
 MathObject::EvalHandle MathObject::getZcObject() const
@@ -110,7 +138,7 @@ void MathObject::sync()
 {
   std::visit(zc::utils::overloaded{
     [](std::monostate) {},
-    [](auto* e) { e->sync(); },
+    [](auto& e) { e->sync(); },
   }, backend);
 
   if (not style)
@@ -121,11 +149,6 @@ void MathObject::sync()
   else if (isContinuous())
     style->setObjectType(PlotStyle::Continuous);
   else style->setObjectType(PlotStyle::NonRepresentable);
-}
-
-MathObject::~MathObject()
-{
-  information.deregisterMathObject(this);
 }
 
 }

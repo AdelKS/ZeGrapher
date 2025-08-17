@@ -6,6 +6,8 @@ Rectangle {
   id: root
   signal deleteMe()
 
+  required property MathObject mathObj
+
   property alias style: plotStyle
   property int deleteDuration: 250
 
@@ -258,13 +260,13 @@ Rectangle {
       function updateObjectType() {
         currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
         if (currentType === ObjectType.EQUATION) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"style": root.style});
+          loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"mathObj": root.mathObj, "style": root.style});
         } else if (currentType === ObjectType.CONSTANT) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"style": root.style});
+          loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"mathObj": root.mathObj, "style": root.style});
         } else if (currentType === ObjectType.PARAMETRIC) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"style": root.style});
+          loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"mathObj": root.mathObj, "style": root.style});
         } else if (currentType === ObjectType.DATA) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"style": root.style});
+          loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"mathObj": root.mathObj, "style": root.style});
         }
       }
     }

@@ -34,8 +34,7 @@ struct Expr : QObject, shared::ZcMathObjectBB {
 
   Q_PROPERTY(double value READ getValue NOTIFY valueChanged)
   Q_PROPERTY(QString expression WRITE setExpression MEMBER expression)
-  Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName)
-  Q_PROPERTY(State state READ getState)
+  Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName NOTIFY implicitNameChanged)
 
 public:
 
@@ -53,6 +52,7 @@ public:
 
 signals:
   void valueChanged();
+  void implicitNameChanged();
 
 protected:
   QString expression;

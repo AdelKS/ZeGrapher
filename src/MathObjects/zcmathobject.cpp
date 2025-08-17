@@ -6,34 +6,69 @@ namespace zg {
 ZcMathObject::ZcMathObject(QObject *parent) : QObject(parent)
 {}
 
-void ZcMathObject::setBackend(mathobj::Equation* b)
+void ZcMathObject::setBackend(ZcMathObject::BackendType t)
 {
-  Q_ASSERT(b);
-  backend = b;
+  // we assume here that the order of the enum is the same as in the variant alternatives
+  // if the index is different, delete the pointer, Qt style memory management
+  if (backend.index() != size_t(t))
+  {
+    std::visit(
+      zc::utils::overloaded{
+        [](auto* n) {
+          n->deleteLater();
+        },
+        [](std::monostate) {},
+      },
+      backend
+    );
+  }
+  else return; // backend is already correct
+
+  switch (t) {
+    case MONOSTATE:
+      backend = std::monostate{};
+    break;
+    case EQUATION:
+      backend = new mathobj::Equation(this);
+    break;
+    case EXPR:
+      backend = new mathobj::Expr(this);
+    break;
+    case CONSTANT:
+      backend = new mathobj::Constant(this);
+    break;
+    case NAMEDREF:
+      backend = new mathobj::NamedRef(this);
+    break;
+    case DATA:
+      backend = new mathobj::Data(this);
+    break;
+  }
 }
 
-void ZcMathObject::setBackend(mathobj::Expr* b)
+mathobj::Equation* ZcMathObject::getEquation()
 {
-  Q_ASSERT(b);
-  backend = b;
+  return getBackend<mathobj::Equation>();
 }
 
-void ZcMathObject::setBackend(mathobj::Constant* b)
+mathobj::Expr* ZcMathObject::getExpr()
 {
-  Q_ASSERT(b);
-  backend = b;
+  return getBackend<mathobj::Expr>();
 }
 
-void ZcMathObject::setBackend(mathobj::NamedRef* n)
+mathobj::Constant* ZcMathObject::getConstant()
 {
-  Q_ASSERT(n);
-  backend = n;
+  return getBackend<mathobj::Constant>();
 }
 
-void ZcMathObject::setBackend(mathobj::Data* n)
+mathobj::NamedRef* ZcMathObject::getNamedRef()
 {
-  Q_ASSERT(n);
-  backend = n;
+  return getBackend<mathobj::NamedRef>();
+}
+
+mathobj::Data* ZcMathObject::getData()
+{
+  return getBackend<mathobj::Data>();
 }
 
 bool ZcMathObject::isValid() const
@@ -139,7 +174,7 @@ State ZcMathObject::sync()
       e->updateValue();
       return e->getState();
     },
-    [](auto* b) { return b->getState(); },
+    [](auto& b) { return b->getState(); },
   }, backend);
 
   if (old_state != state)

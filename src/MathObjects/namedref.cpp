@@ -33,7 +33,7 @@ State NamedRef::getState() const
     {
       if (*zcObj)
         state.setValid();
-      else state.setInvalid(tr("Object is in an invalid state."));
+      else state.setInvalid(tr("Math object in invalid state."));
     }
     else state.setInvalid(tr("Math object doesn't exist."));
   }

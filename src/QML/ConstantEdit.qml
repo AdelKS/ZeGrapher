@@ -7,10 +7,13 @@ import QtQuick.Controls
 Item {
   id: root
 
+  required property MathObject mathObj
   required property PlotStyle style
 
+  property ZcMathObject zcMathObj
+  property Constant zcBackend
+
   property alias name: zcExprEdit.expression
-  property alias backend: zcBackend
   property alias exprEdit: zcExprEdit
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
@@ -22,18 +25,6 @@ Item {
     root.opacity = 0;
     root.height = 0;
     root.destroy(200);
-  }
-
-  Constant {
-    id: zcBackend
-  }
-
-  ZcMathObject {
-    id: zcMathObj
-  }
-
-  MathObject {
-    id: mathObj
   }
 
   RowLayout {
@@ -74,9 +65,11 @@ Item {
   }
 
   Component.onCompleted: {
+    mathObj.setBackend(MathObject.ZCMATHOBJECT);
+    zcMathObj = mathObj.getZcMathObject();
+    zcMathObj.setBackend(ZcMathObject.CONSTANT);
+    zcBackend = zcMathObj.getConstant();
     console.debug("ConstantEdit: backend=", zcBackend);
-    zcMathObj.setBackend(zcBackend);
-    mathObj.setBackend(zcMathObj);
   }
 
 }

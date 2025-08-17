@@ -58,6 +58,7 @@ public slots:
   void setCsvHasHeaderRow(bool);
   void setCsvFile(QUrl);
   void setSeparator(QString);
+  void loadIntoWorld() const;
 
 protected:
   void splitCsvFile();

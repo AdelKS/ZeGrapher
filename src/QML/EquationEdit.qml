@@ -5,11 +5,14 @@ import QtQuick
 Item {
   id: root
 
+  required property MathObject mathObj
   required property PlotStyle style
+
+  property ZcMathObject zcMathObj
+  property Equation zcBackend
 
   property alias expression: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
-  property alias backend: zcBackend
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
   implicitHeight: zcExprEdit.implicitHeight
@@ -22,18 +25,6 @@ Item {
     root.destroy(200);
   }
 
-  Equation {
-    id: zcBackend
-  }
-
-  ZcMathObject {
-    id: zcMathObj
-  }
-
-  MathObject {
-    id: mathObj
-  }
-
   ZcExprEdit {
     id: zcExprEdit
     mathObj: zcMathObj
@@ -43,10 +34,12 @@ Item {
   }
 
   Component.onCompleted: {
+    mathObj.style = style;
+    mathObj.setBackend(MathObject.ZCMATHOBJECT);
+    zcMathObj = mathObj.getZcMathObject();
+    zcMathObj.setBackend(ZcMathObject.EQUATION);
+    zcBackend = zcMathObj.getEquation();
     console.debug("EquationEdit: backend=", zcBackend);
     console.debug("EquationEdit: style=", style);
-    mathObj.style = style;
-    zcMathObj.setBackend(zcBackend);
-    mathObj.setBackend(zcMathObj);
   }
 }

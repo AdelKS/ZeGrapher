@@ -171,4 +171,25 @@ void CsvPreviewModel::splitCsvFile()
   endResetModel();
 }
 
+void CsvPreviewModel::loadIntoWorld() const
+{
+  QFile file(csvFile.toLocalFile());
+
+  if(file.open(QFile::ReadOnly | QFile::Text))
+  {
+    QTextStream in(&file);
+    int line_num = 0;
+    while (not in.atEnd())
+    {
+      QString line = in.readLine();
+
+      if (line_num++ < rowSkipCount)
+        continue;
+    }
+
+    file.close();
+  }
+
+}
+
 }

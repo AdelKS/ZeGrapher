@@ -29,6 +29,9 @@ State Expr::setImplicitName(QString name)
     name_status = zcMathObj.name_status();
   }
 
+  if (implicitName != name)
+    emit implicitNameChanged();
+
   return setExpression(expression);
 }
 

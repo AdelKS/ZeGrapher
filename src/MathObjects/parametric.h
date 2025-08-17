@@ -32,17 +32,17 @@ struct Parametric: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(ZcMathObject* obj1 MEMBER obj1)
-  Q_PROPERTY(ZcMathObject* obj2 MEMBER obj2)
-
 public:
 
   explicit Parametric(QObject *parent = nullptr);
 
   void sync();
 
-  ZcMathObject* obj1 = nullptr;
-  ZcMathObject* obj2 = nullptr;
+  Q_INVOKABLE ZcMathObject* getObj1() { return obj1; }
+  Q_INVOKABLE ZcMathObject* getObj2() { return obj2; }
+
+  ZcMathObject* obj1;
+  ZcMathObject* obj2;
 };
 
 } // namespace zg

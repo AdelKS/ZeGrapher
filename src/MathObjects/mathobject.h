@@ -44,10 +44,11 @@ public:
                    std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
 
   explicit MathObject(QObject *parent = nullptr);
-  ~MathObject();
 
-  Q_INVOKABLE void setBackend(ZcMathObject*);
-  Q_INVOKABLE void setBackend(Parametric*);
+  enum BackendType {MONOSTATE, ZCMATHOBJECT, PARAMETRIC};
+  Q_ENUM(BackendType);
+
+  Q_INVOKABLE void setBackend(BackendType);
 
   bool isValid() const;
 
@@ -55,6 +56,9 @@ public:
   QString getName() const;
 
   EvalHandle getZcObject() const;
+
+  Q_INVOKABLE ZcMathObject* getZcMathObject();
+  Q_INVOKABLE Parametric* getParametric();
 
   bool isContinuous() const;
 

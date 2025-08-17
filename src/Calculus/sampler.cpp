@@ -35,20 +35,18 @@ Sampler::SamplingSettings::SamplingSettings(const zg::MathObject* obj)
     coordinateSystem = obj->style->coordinateSystem;
   }
 
-  if (const zg::ZcMathObject* zc = obj->getBackend<zg::ZcMathObject>(); zc)
+  if (const zg::ZcMathObject* zc = obj->getBackend<zg::ZcMathObject>())
   {
-    if (const auto* handle = zc->getZcObject(); handle)
+    if (const auto* handle = zc->getZcObject())
       revision = handle->get_revision();
   }
-  else if (const zg::Parametric* par = obj->getBackend<zg::Parametric>(); par)
+  else if (const zg::Parametric* par = obj->getBackend<zg::Parametric>())
   {
-    if (par->obj1)
-      if (const auto* handle = par->obj1->getZcObject(); handle)
-        revision += handle->get_revision();
+    if (const auto* handle = par->obj1->getZcObject())
+      revision += handle->get_revision();
 
-    if (par->obj2)
-      if (const auto* handle = par->obj2->getZcObject(); handle)
-        revision += handle->get_revision();
+    if (const auto* handle = par->obj2->getZcObject())
+      revision += handle->get_revision();
   }
 }
 
