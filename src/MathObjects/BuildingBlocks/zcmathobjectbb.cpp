@@ -6,13 +6,13 @@ namespace mathobj {
 namespace shared {
 
 ZcMathObjectBB::ZcMathObjectBB()
-  : zcMathObj(information.getMathWorld().new_object())
+  : zcMathObj(mathWorld.new_object())
 {
 }
 
 ZcMathObjectBB::~ZcMathObjectBB()
 {
-  information.getMathWorld().erase(zcMathObj);
+  mathWorld.erase(zcMathObj);
 }
 
 }

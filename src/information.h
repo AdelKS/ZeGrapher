@@ -88,9 +88,6 @@ public:
   void setExportFileName(QString fileName);
   QString getExportFileName();
 
-  const zc::rpn::MathWorld& getMathWorld() const { return mathWorld; }
-  zc::rpn::MathWorld& getMathWorld() { return mathWorld; }
-
   const auto& getMathObjects() const { return mathObjects; }
   Q_INVOKABLE zg::MathObject* getMathObject(size_t slot) { return mathObjects.at(slot); }
   Q_INVOKABLE void removeMathObject(size_t slot);
@@ -151,13 +148,13 @@ protected:
   ZeGraphSettings graphSettings;
   ZeAppSettings appSettings;
   QString exportFileName;
-  zc::MathWorld<zc_t> mathWorld;
 
   zc::SlottedDeque<zg::MathObject*> mathObjects;
 
   QList<ParEqWidget*>* parEqWidgets;
 };
 
+inline zc::MathWorld<zc_t> mathWorld;
 inline Information information;
 
 /// @brief register the 'information' global variable with QML

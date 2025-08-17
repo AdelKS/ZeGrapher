@@ -43,7 +43,7 @@ State NamedRef::getState() const
 
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
 {
-  return information.getMathWorld().get(input_name.toStdString());
+  return mathWorld.get(input_name.toStdString());
 }
 
 } // namespace mathobj
