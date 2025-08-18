@@ -20,10 +20,11 @@
 **
 ****************************************************************************/
 
-#include "zcmathobject.h"
+#include "namedref.h"
 #include <zecalculator/zecalculator.h>
 
 namespace zg {
+namespace mathobj {
 
 struct ZcMathObject;
 
@@ -32,17 +33,18 @@ struct Parametric: QObject {
   Q_OBJECT
   QML_ELEMENT
 
+  Q_PROPERTY(NamedRef* obj1 MEMBER obj1)
+  Q_PROPERTY(NamedRef* obj2 MEMBER obj2)
+
 public:
 
   explicit Parametric(QObject *parent = nullptr);
 
   State sync();
 
-  Q_INVOKABLE ZcMathObject* getObj1() { return obj1; }
-  Q_INVOKABLE ZcMathObject* getObj2() { return obj2; }
-
-  ZcMathObject* obj1;
-  ZcMathObject* obj2;
+  NamedRef* obj1;
+  NamedRef* obj2;
 };
 
+} // namespace mathobj
 } // namespace zg

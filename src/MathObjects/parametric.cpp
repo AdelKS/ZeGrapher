@@ -1,13 +1,11 @@
 #include "parametric.h"
-#include "zcmathobject.h"
 
 namespace zg {
+namespace mathobj {
 
 Parametric::Parametric(QObject *parent)
-  : QObject(parent), obj1(new ZcMathObject(this)), obj2(new ZcMathObject(this))
+  : QObject(parent), obj1(new NamedRef(this)), obj2(new NamedRef(this))
 {
-  obj1->setBackend(ZcMathObject::NAMEDREF);
-  obj2->setBackend(ZcMathObject::NAMEDREF);
 }
 
 State Parametric::sync()
@@ -23,4 +21,5 @@ State Parametric::sync()
   return obj1->getState();
 }
 
+} // namespace mathobj
 } // namespace zg

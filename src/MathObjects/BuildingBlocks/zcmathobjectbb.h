@@ -36,6 +36,9 @@ public:
   explicit ZcMathObjectBB();
   ~ZcMathObjectBB();
 
+  bool isDiscrete() const;
+  bool isContinuous() const;
+
   zc::DynMathObject<zc_t>& zcMathObj;
 };
 

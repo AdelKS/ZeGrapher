@@ -61,6 +61,20 @@ State NamedRef::sync()
   return state;
 };
 
+bool NamedRef::isContinuous() const
+{
+  if (const auto* zcMathObj = getZcObject(); zcMathObj and *zcMathObj)
+    return not(zcMathObj->holds(zc::ObjectType::DATA) or zcMathObj->holds(zc::ObjectType::SEQUENCE));
+  else return false;
+}
+
+bool NamedRef::isDiscrete() const
+{
+  if (const auto* zcMathObj = getZcObject(); zcMathObj and *zcMathObj)
+    return zcMathObj->holds(zc::ObjectType::DATA) or zcMathObj->holds(zc::ObjectType::SEQUENCE);
+  else return false;
+}
+
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
 {
   return mathWorld.get(input_name.toStdString());

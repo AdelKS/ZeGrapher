@@ -43,6 +43,8 @@ public:
 
   Q_INVOKABLE virtual State setExpression(QString) = 0;
 
+  State getState() const { return state; }
+
   QSyntaxHighlighter* highlighter = nullptr;
 
 signals:

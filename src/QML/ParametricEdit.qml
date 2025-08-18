@@ -15,11 +15,8 @@ Item {
     parametric = mathObj.getParametric();
   }
 
-  readonly property ZcMathObject zcObj1: parametric.getObj1()
-  readonly property NamedRef eq1: zcObj1.getNamedRef();
-
-  readonly property ZcMathObject zcObj2: parametric.getObj2()
-  readonly property NamedRef eq2: zcObj2.getNamedRef();
+  property NamedRef eq1: parametric.obj1
+  property NamedRef eq2: parametric.obj2
 
   implicitHeight: Math.max(lineEdit1.implicitHeight, lineEdit2.implicitHeight)
 

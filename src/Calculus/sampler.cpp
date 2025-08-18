@@ -35,19 +35,7 @@ Sampler::SamplingSettings::SamplingSettings(const zg::MathObject* obj)
     coordinateSystem = obj->style->coordinateSystem;
   }
 
-  if (const zg::ZcMathObject* zc = obj->getBackend<zg::ZcMathObject>())
-  {
-    if (const auto* handle = zc->getZcObject())
-      revision = handle->get_revision();
-  }
-  else if (const zg::Parametric* par = obj->getBackend<zg::Parametric>())
-  {
-    if (const auto* handle = par->obj1->getZcObject())
-      revision += handle->get_revision();
-
-    if (const auto* handle = par->obj2->getZcObject())
-      revision += handle->get_revision();
-  }
+  revision = obj->getRevision();
 }
 
 void Sampler::setPixelStep(double pxStep)

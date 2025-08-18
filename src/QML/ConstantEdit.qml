@@ -10,14 +10,9 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property ZcMathObject zcMathObj: {
-    mathObj.setBackend(MathObject.ZCMATHOBJECT);
-    zcMathObj = mathObj.getZcMathObject();
-  }
-
   property Constant zcBackend: {
-    zcMathObj.setBackend(ZcMathObject.Constant);
-    zcBackend = zcMathObj.getConstant();
+    mathObj.setBackend(MathObject.CONSTANT);
+    zcBackend = mathObj.getConstant();
   }
 
   property alias name: zcExprEdit.expression

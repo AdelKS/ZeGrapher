@@ -1,4 +1,3 @@
-#include "MathObjects/zcmathobject.h"
 #include "information.h"
 
 namespace zg {
@@ -26,54 +25,92 @@ void MathObject::setBackend(MathObject::BackendType t)
   else return; // backend is already correct
 
   switch (t) {
-    case MONOSTATE:
+ case MONOSTATE:
       backend = std::monostate{};
     break;
-    case ZCMATHOBJECT:
-      backend = new ZcMathObject(this);
+    case EQUATION:
+      backend = new mathobj::Equation(this);
+    break;
+    case EXPR:
+      backend = new mathobj::Expr(this);
+    break;
+    case CONSTANT:
+      backend = new mathobj::Constant(this);
+    break;
+    case NAMEDREF:
+      backend = new mathobj::NamedRef(this);
+    break;
+    case DATA:
+      backend = new mathobj::Data(this);
     break;
     case PARAMETRIC:
-      backend = new Parametric(this);
+      backend = new mathobj::Parametric(this);
     break;
   }
 }
 
-ZcMathObject* MathObject::getZcMathObject()
+mathobj::Equation* MathObject::getEquation()
 {
-  return getBackend<ZcMathObject>();
+  return getBackend<mathobj::Equation>();
 }
 
-Parametric* MathObject::getParametric()
+mathobj::Expr* MathObject::getExpr()
 {
-  return getBackend<Parametric>();
+  return getBackend<mathobj::Expr>();
+}
+
+mathobj::Constant* MathObject::getConstant()
+{
+  return getBackend<mathobj::Constant>();
+}
+
+mathobj::NamedRef* MathObject::getNamedRef()
+{
+  return getBackend<mathobj::NamedRef>();
+}
+
+mathobj::Data* MathObject::getData()
+{
+  return getBackend<mathobj::Data>();
+}
+
+
+mathobj::Parametric* MathObject::getParametric()
+{
+  return getBackend<mathobj::Parametric>();
 }
 
 MathObject::EvalHandle MathObject::getZcObject() const
 {
+  using Ret = MathObject::EvalHandle;
   return std::visit(
     zc::utils::overloaded{
-      [](const ZcMathObject* c) -> EvalHandle {
-        return c->getZcObject();
+      [&](const auto* c) -> Ret {
+        return &c->zcMathObj;
       },
-      [](const Parametric* p) -> EvalHandle {
+      [](const mathobj::Parametric* p) -> Ret {
         return std::make_pair(p->obj1->getZcObject(), p->obj2->getZcObject());
       },
-      [](std::monostate) -> EvalHandle {
-        return std::monostate{};
+      [](const mathobj::NamedRef* n) -> Ret {
+        return n->getZcObject();
+      },
+      [](std::monostate) -> Ret {
+        return nullptr;
       },
     },
     backend
   );
+
 }
 
 bool MathObject::isContinuous() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [](const ZcMathObject* c) {
+      [](const auto* c) {
         return c->isContinuous();
       },
-      [](const Parametric* p) {
+      [](const mathobj::Parametric* p) {
         return p->obj1->isContinuous() and p->obj2->isContinuous();
       },
       [](std::monostate) {
@@ -88,10 +125,10 @@ bool MathObject::isDiscrete() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [&](const ZcMathObject* c) {
+      [](const auto* c) {
         return c->isDiscrete();
       },
-      [](const Parametric* p) {
+      [](const mathobj::Parametric* p) {
         return p->obj1->isDiscrete() or p->obj2->isDiscrete();
       },
       [](std::monostate) {
@@ -106,13 +143,39 @@ bool MathObject::isValid() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [](const ZcMathObject* e) {
+      [](const auto* e) {
         return e->getState().getStatus() == State::VALID;
       },
-      [](const Parametric* p) {
+      [](const mathobj::Parametric* p) {
         return p->obj1->isValid() and p->obj2->isValid();
       },
       [](std::monostate) { return false; },
+    },
+    backend
+  );
+}
+
+size_t MathObject::getRevision() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [](const auto* e) {
+        return e->zcMathObj.get_revision();
+      },
+      [](const mathobj::NamedRef* r) {
+        if (const auto* o = r->getZcObject())
+          return o->get_revision();
+        else return 0ul;
+      },
+      [](const mathobj::Parametric* p) {
+        size_t rev1 = 0, rev2 = 0;
+        if (const auto* o1 = p->obj1->getZcObject())
+          rev1 = o1->get_revision();
+        if (const auto* o2 = p->obj1->getZcObject())
+          rev2 = o2->get_revision();
+        return rev1 + rev2;
+      },
+      [](std::monostate) { return 0ul; },
     },
     backend
   );
@@ -122,10 +185,10 @@ QString MathObject::getName() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [](const ZcMathObject* e) {
+      [](const auto* e) {
         return e->getName();
       },
-      [](const Parametric*) {
+      [](const mathobj::Parametric*) {
         return QString();
       },
       [](std::monostate) { return QString{}; },

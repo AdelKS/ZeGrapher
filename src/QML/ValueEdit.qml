@@ -7,11 +7,10 @@ Item {
 
   readonly property int slot: Information.addMathObject();
   readonly property MathObject mathObj: Information.getMathObject(slot);
+
   property Expr exprBackend: {
-    mathObj.setBackend(MathObject.ZCMATHOBJECT);
-    let zcMathObj = mathObj.getZcMathObject();
-    zcMathObj.setBackend(ZcMathObject.EXPR);
-    exprBackend = zcMathObj.getExpr();
+    mathObj.setBackend(MathObject.EXPR);
+    exprBackend = mathObj.getExpr();
   }
 
   property double value

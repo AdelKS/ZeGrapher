@@ -26,7 +26,10 @@
 
 #include "Utils/plotstyle.h"
 #include "parametric.h"
-#include "zcmathobject.h"
+#include "equation.h"
+#include "expr.h"
+#include "constant.h"
+#include "data.h"
 
 namespace zg {
 
@@ -45,7 +48,17 @@ public:
 
   explicit MathObject(QObject *parent = nullptr);
 
-  enum BackendType {MONOSTATE, ZCMATHOBJECT, PARAMETRIC};
+  enum BackendType
+  {
+    MONOSTATE,
+    EQUATION,
+    EXPR,
+    CONSTANT,
+    NAMEDREF,
+    DATA,
+    PARAMETRIC
+  };
+
   Q_ENUM(BackendType);
 
   Q_INVOKABLE void setBackend(BackendType);
@@ -55,10 +68,16 @@ public:
   /// @returns the name of the currently active math object
   QString getName() const;
 
+  size_t getRevision() const;
+
   EvalHandle getZcObject() const;
 
-  Q_INVOKABLE ZcMathObject* getZcMathObject();
-  Q_INVOKABLE Parametric* getParametric();
+  Q_INVOKABLE mathobj::Equation* getEquation();
+  Q_INVOKABLE mathobj::Expr* getExpr();
+  Q_INVOKABLE mathobj::Constant* getConstant();
+  Q_INVOKABLE mathobj::NamedRef* getNamedRef();
+  Q_INVOKABLE mathobj::Data* getData();
+  Q_INVOKABLE mathobj::Parametric* getParametric();
 
   bool isContinuous() const;
 
@@ -81,7 +100,13 @@ signals:
   void stateChanged();
 
 protected:
-  std::variant<std::monostate, ZcMathObject*, Parametric*> backend;
+  std::variant<std::monostate,
+               mathobj::Equation*,
+               mathobj::Expr*,
+               mathobj::Constant*,
+               mathobj::NamedRef*,
+               mathobj::Data*,
+               mathobj::Parametric*> backend;
   QString name;
   State state;
 };

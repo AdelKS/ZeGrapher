@@ -47,6 +47,9 @@ public:
 
   State sync();
 
+  bool isDiscrete() const;
+  bool isContinuous() const;
+
   Q_INVOKABLE bool isValid() const;
 
   const zc::DynMathObject<zc_t>* getZcObject() const;

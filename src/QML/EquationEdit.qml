@@ -8,14 +8,9 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property ZcMathObject zcMathObj: {
-    mathObj.setBackend(MathObject.ZCMATHOBJECT);
-    zcMathObj = mathObj.getZcMathObject();
-  }
-
   property Equation zcBackend: {
-    zcMathObj.setBackend(ZcMathObject.EQUATION);
-    zcBackend = zcMathObj.getEquation();
+    mathObj.setBackend(MathObject.EQUATION);
+    zcBackend = mathObj.getEquation();
   }
 
   property alias expression: zcExprEdit.expression
