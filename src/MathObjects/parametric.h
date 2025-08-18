@@ -36,7 +36,7 @@ public:
 
   explicit Parametric(QObject *parent = nullptr);
 
-  void sync();
+  State sync();
 
   Q_INVOKABLE ZcMathObject* getObj1() { return obj1; }
   Q_INVOKABLE ZcMathObject* getObj2() { return obj2; }

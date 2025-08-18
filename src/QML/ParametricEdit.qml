@@ -10,13 +10,16 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property Parametric parametric
+  property Parametric parametric: {
+    mathObj.setBackend(MathObject.PARAMETRIC);
+    parametric = mathObj.getParametric();
+  }
 
-  property ZcMathObject zcObj1
-  property NamedRef eq1
+  readonly property ZcMathObject zcObj1: parametric.getObj1()
+  readonly property NamedRef eq1: zcObj1.getNamedRef();
 
-  property ZcMathObject zcObj2
-  property NamedRef eq2
+  readonly property ZcMathObject zcObj2: parametric.getObj2()
+  readonly property NamedRef eq2: zcObj2.getNamedRef();
 
   implicitHeight: Math.max(lineEdit1.implicitHeight, lineEdit2.implicitHeight)
 
@@ -44,7 +47,7 @@ Item {
       Layout.alignment: Qt.AlignTop
 
       id: lineEdit1
-      mathObj: zcObj1
+      backend: eq1
     }
 
     Item {
@@ -66,17 +69,11 @@ Item {
       Layout.alignment: Qt.AlignTop
 
       id: lineEdit2
-      mathObj: zcObj2
+      backend: eq2
     }
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(MathObject.PARAMETRIC);
-    parametric = mathObj.getParametric();
-    zcObj1 = parametric.getObj1();
-    zcObj2 = parametric.getObj2();
-    eq1 = zcObj1.getNamedRef();
-    eq2 = zcObj1.getNamedRef();
     console.debug("ParametricEdit: backend1=", eq1);
     console.debug("ParametricEdit: backend2=", eq2);
     console.debug("ParametricEdit: style=", style);

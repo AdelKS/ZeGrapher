@@ -7,6 +7,12 @@ Item {
 
   readonly property int slot: Information.addMathObject();
   readonly property MathObject mathObj: Information.getMathObject(slot);
+  property Expr exprBackend: {
+    mathObj.setBackend(MathObject.ZCMATHOBJECT);
+    let zcMathObj = mathObj.getZcMathObject();
+    zcMathObj.setBackend(ZcMathObject.EXPR);
+    exprBackend = zcMathObj.getExpr();
+  }
 
   property double value
   property string implicitName
@@ -23,7 +29,7 @@ Item {
 
   ZcExprEdit {
     id: zcExprEdit
-    mathObj: zcMathObj
+    backend: exprBackend
 
     anchors.left: parent.left
     anchors.right: parent.right
@@ -32,12 +38,8 @@ Item {
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(MathObject.ZCMATHOBJECT);
-    let zcMathObj = mathObj.getZcMathObject();
-    zcMathObj.setBackend(ZcMathObject.EXPR);
-    zcExprEdit.mathObj = zcMathObj;
 
-    let exprBackend = zcMathObj.getExpr();
+    zcExprEdit.backend = exprBackend;
     value = Qt.binding(function() { return exprBackend.value; });
     exprBackend.implicitName = implicitName;
     implicitName = Qt.binding(function() { return exprBackend.implicitName; });

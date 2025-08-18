@@ -20,6 +20,7 @@
 **
 ****************************************************************************/
 
+#include "BuildingBlocks/highlighted.h"
 #include "Utils/state.h"
 #include "structures.h"
 
@@ -29,21 +30,22 @@ namespace zg {
 namespace mathobj {
 
 /// @brief ZeGrapher proxy object that refers to another
-struct NamedRef: QObject {
+struct NamedRef: Highlighted {
   Q_OBJECT
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER input_name)
-  Q_PROPERTY(State state READ getState)
 
 public:
 
   explicit NamedRef(QObject *parent = nullptr);
 
+  State setExpression(QString) override;
+
   State setName(QString name);
   QString getName() const { return input_name; }
 
-  Q_INVOKABLE State getState() const;
+  State sync();
 
   Q_INVOKABLE bool isValid() const;
 

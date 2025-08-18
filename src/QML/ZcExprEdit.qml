@@ -7,7 +7,7 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  required property ZcMathObject mathObj
+  required property Highlighted backend
 
   property alias expression: lineEdit.text
   property alias highlighter: mhighlighter
@@ -24,12 +24,12 @@ Item {
   function refresh() {
     if (customErrorMsg.length !== 0)
       errorLbl.setErrorMsg(customErrorMsg);
-    else errorLbl.setErrorMsg(mathObj.state.errorMsg);
+    else errorLbl.setErrorMsg(backend.state.errorMsg);
 
-    if (customErrorMsg.length !== 0 || mathObj.state.status === ZG.State.INVALID) {
+    if (customErrorMsg.length !== 0 || backend.state.status === ZG.State.INVALID) {
       console.debug("ZcExprEdit: border color updated to invalid")
       lineEdit.border.color = Information.appSettings.invalidSyntax;
-    } else if (mathObj.state.status === ZG.State.VALID) {
+    } else if (backend.state.status === ZG.State.VALID) {
       console.debug("ZcExprEdit: border color updated to valid")
       lineEdit.border.color = Information.appSettings.validSyntax;
     } else {
@@ -39,7 +39,7 @@ Item {
   }
 
   Connections {
-    target: mathObj
+    target: backend
     function onStateChanged() {
       root.refresh();
     }
@@ -89,7 +89,7 @@ Item {
   }
 
   Component.onCompleted: {
-    mhighlighter.mathObj = mathObj;
-    mathObj.highlighter = mhighlighter;
+    mhighlighter.backend = backend;
+    backend.highlighter = mhighlighter;
   }
 }

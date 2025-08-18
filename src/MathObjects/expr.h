@@ -20,15 +20,15 @@
 **
 ****************************************************************************/
 
+#include "BuildingBlocks/highlighted.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
-#include "GraphDraw/axismapper.h"
 #include "Utils/state.h"
 
 namespace zg {
 namespace mathobj {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Expr : QObject, shared::ZcMathObjectBB {
+struct Expr : Highlighted, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
@@ -40,9 +40,10 @@ public:
 
   explicit Expr(QObject *parent = nullptr);
 
-  Q_INVOKABLE State setExpression(QString expr);
+  Q_INVOKABLE State setExpression(QString) override;
+
   Q_INVOKABLE State setImplicitName(QString name);
-  Q_INVOKABLE State getState() const;
+  State sync();
   Q_INVOKABLE double getValue() const { return value; };
   Q_INVOKABLE bool isValid() const;
 

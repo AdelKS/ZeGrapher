@@ -5,14 +5,14 @@ namespace zg {
 namespace mathobj {
 
 Expr::Expr(QObject *parent)
-  : QObject(parent), shared::ZcMathObjectBB()
+  : Highlighted(parent), shared::ZcMathObjectBB()
 {
   setImplicitName("hidden_variable");
 }
 
 bool Expr::isValid() const
 {
-  return getState().isValid();
+  return state.isValid();
 }
 
 State Expr::setImplicitName(QString name)
@@ -49,12 +49,13 @@ void Expr::updateValue()
 
 State Expr::setExpression(QString expr)
 {
+  doNotRehighlight = true;
   expression = expr;
 
   std::string fullExpr = implicitName.toStdString() + "=" + expr.toStdString();
 
   if (fullExpression == fullExpr)
-    return getState();
+    return sync();
 
   fullExpression = fullExpr;
 
@@ -65,14 +66,30 @@ State Expr::setExpression(QString expr)
   else zcMathObj = "";
 
   updateValue();
+  sync();
 
-  return getState();
+  information.mathObjectUpdated();
+
+  doNotRehighlight = false;
+
+  return state;
 }
 
-State Expr::getState() const
+State Expr::sync()
 {
-  State state;
+  State oldState = state;
   state.update(zcMathObj.status());
+
+  if (state != oldState)
+  {
+    if (highlighter and not doNotRehighlight)
+      highlighter->rehighlight();
+
+    emit stateChanged();
+  }
+
+  updateValue();
+
   return state;
 }
 

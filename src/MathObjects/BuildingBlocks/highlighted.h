@@ -20,38 +20,37 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/highlighted.h"
-#include "BuildingBlocks/zcmathobjectbb.h"
+#include <QtQmlIntegration>
+#include <QObject>
+#include <QSyntaxHighlighter>
+
 #include "Utils/state.h"
 
 namespace zg {
-namespace mathobj {
 
-/// @brief ZeGrapher math objects that are entirely defined by a single math expression
-///        which also fits in a single zc::DynMathObject
-struct Constant: Highlighted, shared::ZcMathObjectBB {
+/// @brief Contains the information needed to compute the math object and how to plot it
+struct Highlighted: QObject {
   Q_OBJECT
   QML_ELEMENT
+  QML_UNCREATABLE("Abstract class only used to cast to a common parent")
 
-  Q_PROPERTY(QString name WRITE setName MEMBER input_name)
+  Q_PROPERTY(QSyntaxHighlighter* highlighter MEMBER highlighter)
+  Q_PROPERTY(State state MEMBER state NOTIFY stateChanged)
 
 public:
+  Highlighted(QObject* parent): QObject(parent) {}
+  virtual ~Highlighted() {};
 
-  explicit Constant(QObject *parent = nullptr);
+  Q_INVOKABLE virtual State setExpression(QString) = 0;
 
-  State setExpression(QString) override;
+  QSyntaxHighlighter* highlighter = nullptr;
 
-  State setName(QString name);
-  QString getName() const { return input_name; }
-  State sync();
-
-  Q_INVOKABLE void set_value(double val);
-
-  Q_INVOKABLE bool isValid() const;
+signals:
+  void stateChanged();
 
 protected:
-  QString input_name;
+  State state;
+  bool doNotRehighlight = false;
 };
 
-}
-}
+} // namespace zg

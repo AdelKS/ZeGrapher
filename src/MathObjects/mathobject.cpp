@@ -134,21 +134,28 @@ QString MathObject::getName() const
   );
 }
 
-void MathObject::sync()
+State MathObject::sync()
 {
-  std::visit(zc::utils::overloaded{
-    [](std::monostate) {},
-    [](auto& e) { e->sync(); },
+  State oldState = state;
+
+  state = std::visit(zc::utils::overloaded{
+    [](std::monostate) { return State(); },
+    [](auto& e) { return e->sync(); },
   }, backend);
 
+  if (oldState != state)
+    emit stateChanged();
+
   if (not style)
-    return;
+    return state;
 
   if (isDiscrete())
     style->setObjectType(PlotStyle::Discrete);
   else if (isContinuous())
     style->setObjectType(PlotStyle::Continuous);
   else style->setObjectType(PlotStyle::NonRepresentable);
+
+  return state;
 }
 
 }

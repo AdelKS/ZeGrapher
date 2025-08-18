@@ -170,11 +170,7 @@ State ZcMathObject::sync()
 
   state = std::visit(zc::utils::overloaded{
     [](std::monostate) {return State(); },
-    [](mathobj::Expr* e) {
-      e->updateValue();
-      return e->getState();
-    },
-    [](auto& b) { return b->getState(); },
+    [](auto* b) { return b->sync(); },
   }, backend);
 
   if (old_state != state)

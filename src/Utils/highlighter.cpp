@@ -3,11 +3,11 @@
 
 #include <zecalculator/zecalculator.h>
 
-void Highlighter::setMathObj(zg::ZcMathObject* mathObj)
+void Highlighter::setBackend(zg::Highlighted* b)
 {
-  qDebug() << "Highlighter: setting matObj pointer" << mathObj;
+  qDebug() << "Highlighter: setting backend pointer" << b;
   qDebug() << "Highlighter: address" << this;
-  this->mathObj = mathObj;
+  this->backend = b;
   rehighlight();
 }
 
@@ -16,7 +16,7 @@ void Highlighter::highlightBlock(const QString &text)
   qDebug() << "Highlighting string: " << text << "\n"
            << "Highlighter address: " << this;
 
-  if (not mathObj)
+  if (not backend)
   {
     qDebug() << "Math object still undefined in highlighter";
     return;
@@ -28,7 +28,7 @@ void Highlighter::highlightBlock(const QString &text)
   invalidFormat.setUnderlineColor(information.getAppSettings().invalidSyntax);
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
-  zg::State new_state = mathObj->setExpression(text);
+  zg::State new_state = backend->setExpression(text);
   if (auto opt_err_tok = new_state.getErrToken(); opt_err_tok)
   {
     setFormat(opt_err_tok->begin - offset, opt_err_tok->substr.size(), invalidFormat);

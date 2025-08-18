@@ -10,8 +10,15 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property ZcMathObject zcMathObj
-  property Data zcBackend
+  property ZcMathObject zcMathObj: {
+    mathObj.setBackend(MathObject.ZCMATHOBJECT);
+    zcMathObj = mathObj.getZcMathObject();
+  }
+
+  property Data zcBackend: {
+    zcMathObj.setBackend(ZcMathObject.DATA);
+    zcBackend = zcMathObj.getData();
+  }
 
   property alias name: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -38,7 +45,7 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-      mathObj: zcMathObj
+      backend: zcBackend
 
       onExpressionChanged: {
         if (showInTable.checked) {
@@ -80,10 +87,6 @@ Item {
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(MathObject.ZCMATHOBJECT);
-    zcMathObj = mathObj.getZcMathObject();
-    zcMathObj.setBackend(ZcMathObject.DATA);
-    zcBackend = zcMathObj.getData();
     mathObj.style = style;
     console.debug("DataEdit: backend=", zcBackend);
   }

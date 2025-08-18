@@ -10,8 +10,15 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property ZcMathObject zcMathObj
-  property Constant zcBackend
+  property ZcMathObject zcMathObj: {
+    mathObj.setBackend(MathObject.ZCMATHOBJECT);
+    zcMathObj = mathObj.getZcMathObject();
+  }
+
+  property Constant zcBackend: {
+    zcMathObj.setBackend(ZcMathObject.Constant);
+    zcBackend = zcMathObj.getConstant();
+  }
 
   property alias name: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -32,7 +39,7 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-      mathObj: zcMathObj
+      backend: zcBackend
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
@@ -65,10 +72,6 @@ Item {
   }
 
   Component.onCompleted: {
-    mathObj.setBackend(MathObject.ZCMATHOBJECT);
-    zcMathObj = mathObj.getZcMathObject();
-    zcMathObj.setBackend(ZcMathObject.CONSTANT);
-    zcBackend = zcMathObj.getConstant();
     console.debug("ConstantEdit: backend=", zcBackend);
   }
 
