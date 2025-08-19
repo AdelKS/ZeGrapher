@@ -23,13 +23,9 @@
 
 #include <QWidget>
 
-#include "Calculus/function.h"
-#include "Calculus/regressionvaluessaver.h"
 #include "Calculus/sampler.h"
-#include "Calculus/seqcalculator.h"
 #include "GraphDraw/viewmapper.h"
 #include "Utils/plotstyle.h"
-#include "Widgets/pareqwidget.h"
 
 class MathObjectDraw
 {
@@ -39,22 +35,11 @@ public:
 protected:
   void drawDataPoint(const QPointF& pt, const zg::PlotStyle& style);
 
-  void drawDataSet(int id, int width);
-  void drawCurve(int width, QColor color, const QPolygonF& curve);
-  void drawCurve(int width, QColor color, const QList<QPolygonF>& curves);
+  void drawObjects();
 
   template <zg::CurveType t>
   void drawSampledCurve(const zg::SampledCurve<t>&);
 
-  void drawFunctions();
-  void drawRegressions();
-  void drawData();
-  void drawSequences();
-  void drawStaticParEq();
-
-  void recalculateRegVals();
-
-  QList<RegressionValuesSaver> regValuesSavers;
   QPainter* painter = nullptr;
 
   QPolygonF polygon;
@@ -68,11 +53,6 @@ protected:
 
   Point pxPerUnit;
   bool moving, recalculate, recalculateRegs;
-
-  QList<Function*> funcs;
-  QList<SeqCalculator*> seqs;
-  QList<ParEqWidget*>* parEqs;
-  QList<QList<double>>* regVals;
 };
 
 #endif // GRAPHDRAW_H

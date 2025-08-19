@@ -50,8 +50,6 @@ public slots:
   virtual void paint(QPainter *p) override;
 
 protected slots:
-  void addRegSaver(Regression *reg);
-  void delRegSaver(Regression *reg);
   void updateSettingsVals();
 
 protected:

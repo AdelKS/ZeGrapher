@@ -21,11 +21,7 @@
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
-#include "Calculus/function.h"
-#include "Calculus/regression.h"
-#include "Calculus/seqcalculator.h"
 #include "MathObjects/mathobject.h"
-#include "Widgets/pareqwidget.h"
 
 #include <QtQml/qqmlregistration.h>
 
@@ -59,31 +55,8 @@ public:
   const GraphRange& getGraphRange() const;
   const ZeAppSettings& getAppSettings() const;
 
-  void addDataList(const std::shared_ptr<const UserData>& userData);
-  void removeDataList(const std::shared_ptr<const UserData>& userData);
-
-  int getDataListsCount();
-  std::shared_ptr<const UserData> getDataPoints(int index);
-
   QPalette getValidSyntaxPalette() const;
   QPalette getInvalidSyntaxPalette() const;
-
-  void addDataRegression(Regression* reg);
-  void removeDataRegression(Regression* reg);
-  Regression* getRegression(int index);
-  QList<Regression*> getRegressions();
-  int getRegressionsCount();
-
-  void setParEqsListPointer(QList<ParEqWidget*>* list);
-  QList<ParEqWidget*>* getParEqsList();
-
-  void checkParametricEquations();
-
-  void setSequencesList(QList<SeqCalculator*> list);
-  QList<SeqCalculator*> getSeqsList();
-
-  void setFunctionsList(QList<Function*> list);
-  QList<Function*> getFuncsList();
 
   void setExportFileName(QString fileName);
   QString getExportFileName();
@@ -103,8 +76,6 @@ signals:
   void updateOccured();
   void drawStateUpdateOccured();
   void animationUpdate();
-  void regressionAdded(Regression* reg);
-  void regressionRemoved(Regression* reg);
   void viewSettingsChanged();
   void axesSettingsChanged();
   void gridSettingsChanged();
@@ -133,13 +104,6 @@ public:
   zc::eval::Cache mathObjectCache;
 
 protected:
-  std::list<std::shared_ptr<UserData const>> userDataSets;
-
-  QList<Regression*> regressions;
-
-  QList<Function*> functions;
-  QList<SeqCalculator*> sequences;
-
   GraphRange range;
   ZeZoomSettings zoomSettings;
   ZeSizeSettings sizeSettings;
@@ -150,8 +114,6 @@ protected:
   QString exportFileName;
 
   zc::SlottedDeque<zg::MathObject*> mathObjects;
-
-  QList<ParEqWidget*>* parEqWidgets;
 };
 
 inline zc::MathWorld<zc_t> mathWorld;

@@ -28,94 +28,14 @@ void Information::emitDataUpdate()
   emit dataUpdated();
 }
 
-void Information::addDataList(const std::shared_ptr<UserData const>& userData)
-{
-  userDataSets.push_back(userData);
-}
-
-void Information::removeDataList(const std::shared_ptr<UserData const>& userData)
-{
-  userDataSets.remove(userData);
-  emit updateOccured();
-}
-
-int Information::getDataListsCount()
-{
-  return userDataSets.size();
-}
-
-std::shared_ptr<const UserData> Information::getDataPoints(int index)
-{
-  auto it = userDataSets.begin();
-  std::advance(it, index);
-  return *it;
-}
-
 void Information::setGraphSettings(const ZeGraphSettings& graphSettings)
 {
   this->graphSettings = graphSettings;
 }
 
-void Information::addDataRegression(Regression* reg)
-{
-  regressions << reg;
-  emit regressionAdded(reg);
-}
-
-void Information::removeDataRegression(Regression* reg)
-{
-  regressions.removeOne(reg);
-  emit regressionRemoved(reg);
-}
-
-QList<Regression*> Information::getRegressions()
-{
-  return regressions;
-}
-
-Regression* Information::getRegression(int index)
-{
-  return regressions.at(index);
-}
-
-int Information::getRegressionsCount()
-{
-  return regressions.size();
-}
-
-void Information::setParEqsListPointer(QList<ParEqWidget*>* list)
-{
-  parEqWidgets = list;
-}
-
-QList<ParEqWidget*>* Information::getParEqsList()
-{
-  return parEqWidgets;
-}
-
 void Information::emitAnimationUpdate()
 {
   emit animationUpdate();
-}
-
-void Information::setSequencesList(QList<SeqCalculator*> list)
-{
-  sequences = list;
-}
-
-QList<SeqCalculator*> Information::getSeqsList()
-{
-  return sequences;
-}
-
-void Information::setFunctionsList(QList<Function*> list)
-{
-  functions = list;
-}
-
-QList<Function*> Information::getFuncsList()
-{
-  return functions;
 }
 
 void Information::setGraphRange(const GraphRange& range)

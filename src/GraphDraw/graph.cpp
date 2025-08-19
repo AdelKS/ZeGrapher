@@ -53,29 +53,10 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, &Information::mathObjectsChanged, this, [this]{ update(); });
 }
 
-
 void Graph::updateSettingsVals()
 {
   sampler.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
 }
-
-void Graph::addRegSaver(Regression *reg)
-{
-  regValuesSavers << RegressionValuesSaver(information.getGraphSettings().distanceBetweenPoints,
-                                           reg);
-  recalculate = true;
-  update();
-}
-
-void Graph::delRegSaver(Regression *reg)
-{
-  for (int i = 0; i < regValuesSavers.size(); i++)
-    if (regValuesSavers[i].getRegression() == reg)
-      regValuesSavers.removeAt(i);
-  recalculate = false;
-  update();
-}
-
 
 void Graph::graphRangeChanged(const GraphRange &range)
 {
@@ -253,15 +234,9 @@ void Graph::drawAll()
   painter->setClipRect(graphRectScaled);
 
   sampler.update();
-  drawFunctions();
-  drawSequences();
+  drawObjects();
 
   painter->translate(QPointF(centre.x, centre.y));
-
-  // recalculateRegVals();
-  // drawStaticParEq();
-  // drawRegressions();
-  // drawData();
 }
 
 void Graph::writeLegends()
