@@ -2,14 +2,13 @@
 
 namespace zg {
 
-MathObject::MathObject(QObject *parent) : QObject(parent)
+MathObject::MathObject(QObject *parent, Type type) : QObject(parent)
 {
+  setType(type);
 }
 
-void MathObject::setBackend(MathObject::BackendType t)
+void MathObject::setType(Type t)
 {
-  // we assume here that the order of the enum is the same as in the variant alternatives
-  // if the index is different, delete the pointer, Qt style memory management
   if (backend.index() != size_t(t))
   {
     std::visit(
@@ -47,6 +46,48 @@ void MathObject::setBackend(MathObject::BackendType t)
       backend = new mathobj::Parametric(this);
     break;
   }
+
+  std::visit(
+    zc::utils::overloaded{
+      [this]<typename T>(T* n) {
+        connect(n, &T::updated, this, [this]{ emit updated(this); });
+      },
+      [](std::monostate) {},
+    },
+    backend
+  );
+
+  emit typeChanged();
+}
+
+MathObject::Type MathObject::getType() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [&](std::monostate) {
+        return MONOSTATE;
+      },
+      [](const mathobj::Equation*) {
+        return EQUATION;
+      },
+      [](const mathobj::Expr*) {
+        return EXPR;
+      },
+      [](const mathobj::Constant*) {
+        return CONSTANT;
+      },
+      [](const mathobj::NamedRef*) {
+        return NAMEDREF;
+      },
+      [](const mathobj::Data*) {
+        return DATA;
+      },
+      [](const mathobj::Parametric*) {
+        return PARAMETRIC;
+      },
+    },
+    backend
+  );
 }
 
 mathobj::Equation* MathObject::getEquation()
@@ -207,7 +248,7 @@ State MathObject::sync()
   }, backend);
 
   if (oldState != state)
-    emit stateChanged();
+    emit stateChanged(this);
 
   if (not style)
     return state;

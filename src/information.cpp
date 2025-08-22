@@ -170,23 +170,3 @@ QString Information::getExportFileName()
 {
   return exportFileName;
 }
-
-void Information::mathObjectUpdated()
-{
-  for (auto&& f: mathObjects)
-    f->sync();
-
-  emit updateOccured();
-}
-
-void Information::removeMathObject(size_t slot)
-{
-  mathObjects.at(slot)->deleteLater();
-  mathObjects.free(slot);
-}
-
-size_t Information::addMathObject()
-{
-  size_t slot = mathObjects.emplace(new zg::MathObject(this));
-  return slot;
-}

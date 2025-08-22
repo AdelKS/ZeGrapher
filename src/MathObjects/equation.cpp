@@ -18,7 +18,7 @@ State Equation::setEquation(QString eq)
 
   sync();
 
-  information.mathObjectUpdated();
+  emit updated();
 
   return state;
 }

@@ -50,6 +50,9 @@ public:
 
   Q_INVOKABLE bool isValid() const;
 
+signals:
+  void updated();
+
 protected:
   QString equation;
 };

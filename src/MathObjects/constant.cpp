@@ -17,7 +17,7 @@ State Constant::setName(QString new_input_name)
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
 
-  information.mathObjectUpdated();
+  emit updated();
 
   return sync();
 }
@@ -53,7 +53,6 @@ State Constant::sync() {
 void Constant::set_value(double val)
 {
   zcMathObj = val;
-  information.mathObjectUpdated();
 }
 
 }

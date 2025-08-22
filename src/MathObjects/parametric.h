@@ -44,6 +44,10 @@ public:
 
   NamedRef* obj1;
   NamedRef* obj2;
+
+signals:
+  void updated();
+
 };
 
 } // namespace mathobj

@@ -20,6 +20,7 @@
 
 #include "GraphDraw/graph.h"
 #include "information.h"
+#include "MathObjects/mathworld.h"
 
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent), MathObjectDraw(), gridCalculator(this),
@@ -41,16 +42,10 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(graphRangeChanged(GraphRange)));
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
-  connect(&information, SIGNAL(regressionAdded(Regression*)), this, SLOT(addRegSaver(Regression*)));
-  connect(&information, SIGNAL(regressionRemoved(Regression*)), this, SLOT(delRegSaver(Regression*)));
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
   connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 
-  connect(&information,
-          &Information::mathObjectsChanged,
-          this,
-          [this](QStringList names) { sampler.clearCache(names); });
-  connect(&information, &Information::mathObjectsChanged, this, [this]{ update(); });
+  connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
 }
 
 void Graph::updateSettingsVals()

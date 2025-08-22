@@ -25,8 +25,7 @@ Item {
   }
 
   function addWidget() {
-    let slot = Information.addMathObject();
-    mathWidgetList.append({"slot": slot});
+    MathWorld.addMathObject();
   }
 
   ColumnLayout {
@@ -92,18 +91,16 @@ Item {
         }
 
         Repeater {
-          model: mathWidgetList
+          model: MathWorld
           delegate: MathObjectInput {
-            required property int index
-            required property int slot
+            required property MathObject modelData
 
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
-            mathObj: Information.getMathObject(slot)
+            mathObj: modelData
 
             onDeleteMe: {
-              Information.removeMathObject(slot);
-              mathWidgetList.remove(index);
+              MathWorld.removeMathObject(modelData);
             }
           }
         }
@@ -111,10 +108,6 @@ Item {
 
 
     }
-  }
-
-  ListModel {
-    id: mathWidgetList
   }
 
   Component.onCompleted: {

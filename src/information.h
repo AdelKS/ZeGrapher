@@ -61,13 +61,6 @@ public:
   void setExportFileName(QString fileName);
   QString getExportFileName();
 
-  const auto& getMathObjects() const { return mathObjects; }
-  Q_INVOKABLE zg::MathObject* getMathObject(size_t slot) { return mathObjects.at(slot); }
-  Q_INVOKABLE void removeMathObject(size_t slot);
-  Q_INVOKABLE size_t addMathObject();
-
-  void mathObjectUpdated();
-
 signals:
   void newOrthonormalityState(bool orth);
   void graphRangeChanged(GraphRange range);
@@ -83,7 +76,6 @@ signals:
   void graphZoomSettingsChanged();
   void estheticSettingsChanged();
   void appSettingsChanged();
-  void mathObjectsChanged(QStringList objectNames);
 
 public slots:
   void emitUpdateSignal();
@@ -112,11 +104,8 @@ protected:
   ZeGraphSettings graphSettings;
   ZeAppSettings appSettings;
   QString exportFileName;
-
-  zc::SlottedDeque<zg::MathObject*> mathObjects;
 };
 
-inline zc::MathWorld<zc_t> mathWorld;
 inline Information information;
 
 /// @brief register the 'information' global variable with QML

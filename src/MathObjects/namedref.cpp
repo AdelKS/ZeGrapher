@@ -1,5 +1,5 @@
 #include "namedref.h"
-#include "information.h"
+#include "mathworld.h"
 
 namespace zg {
 namespace mathobj {
@@ -17,7 +17,7 @@ State NamedRef::setName(QString new_input_name)
 
   sync();
 
-  information.mathObjectUpdated();
+  emit updated();
 
   return state;
 }
@@ -77,7 +77,7 @@ bool NamedRef::isDiscrete() const
 
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
 {
-  return mathWorld.get(input_name.toStdString());
+  return zc::mathWorld.get(input_name.toStdString());
 }
 
 } // namespace mathobj

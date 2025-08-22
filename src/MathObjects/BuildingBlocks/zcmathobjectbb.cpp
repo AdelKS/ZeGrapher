@@ -1,18 +1,18 @@
 #include "zcmathobjectbb.h"
-#include "information.h"
+#include "MathObjects/mathworld.h"
 
 namespace zg {
 namespace mathobj {
 namespace shared {
 
 ZcMathObjectBB::ZcMathObjectBB()
-  : zcMathObj(mathWorld.new_object())
+  : zcMathObj(zc::mathWorld.new_object())
 {
 }
 
 ZcMathObjectBB::~ZcMathObjectBB()
 {
-  mathWorld.erase(zcMathObj);
+  zc::mathWorld.erase(zcMathObj);
 }
 
 bool ZcMathObjectBB::isContinuous() const

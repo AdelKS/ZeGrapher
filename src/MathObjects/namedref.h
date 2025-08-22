@@ -54,6 +54,9 @@ public:
 
   const zc::DynMathObject<zc_t>* getZcObject() const;
 
+signals:
+  void updated();
+
 protected:
   QString input_name;
 };

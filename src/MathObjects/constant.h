@@ -49,6 +49,9 @@ public:
 
   Q_INVOKABLE bool isValid() const;
 
+signals:
+  void updated();
+
 protected:
   QString input_name;
 };

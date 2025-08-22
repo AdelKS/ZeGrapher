@@ -20,7 +20,7 @@
 
 #include "Calculus/sampler.h"
 #include "Utils/sampledcurve.impl.h"
-#include "information.h"
+#include "MathObjects/mathworld.h"
 #include "sampler.impl.h"
 
 Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
@@ -48,8 +48,8 @@ void Sampler::refresh_valid_objects()
   std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> refreshed_continuous_curves;
   std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
 
-  [[maybe_unused]] const auto& objs = information.getMathObjects();
-  for (const zg::MathObject* f : information.getMathObjects())
+  [[maybe_unused]] const auto& objs = zg::mathWorld.getMathObjects();
+  for (const zg::MathObject* f : zg::mathWorld.getMathObjects())
   {
     auto sampled_settings_node = sampled_settings.extract(f);
     auto discrete_curve_node = discrete_curves.extract(f);

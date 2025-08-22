@@ -1,5 +1,4 @@
 #include "MathObjects/data.h"
-#include "information.h"
 #include <string>
 
 namespace zg {
@@ -18,7 +17,7 @@ State Data::setName(QString new_input_name)
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
 
-  information.mathObjectUpdated();
+  emit updated();
 
   return sync();
 }

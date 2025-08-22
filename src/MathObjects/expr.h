@@ -54,6 +54,7 @@ public:
 signals:
   void valueChanged();
   void implicitNameChanged();
+  void updated();
 
 protected:
   QString expression;

@@ -68,7 +68,7 @@ State Expr::setExpression(QString expr)
   updateValue();
   sync();
 
-  information.mathObjectUpdated();
+  emit updated();
 
   doNotRehighlight = false;
 

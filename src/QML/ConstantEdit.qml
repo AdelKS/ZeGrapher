@@ -11,7 +11,7 @@ Item {
   required property PlotStyle style
 
   property Constant zcBackend: {
-    mathObj.setBackend(MathObject.CONSTANT);
+    mathObj.type = MathObject.CONSTANT;
     zcBackend = mathObj.getConstant();
   }
 

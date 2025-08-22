@@ -39,6 +39,7 @@ struct MathObject: QObject {
   QML_ELEMENT
 
   Q_PROPERTY(PlotStyle* style MEMBER style)
+  Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
 
 public:
   using EvalHandle
@@ -46,9 +47,7 @@ public:
                    const zc::DynMathObject<zc_t>*,
                    std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
 
-  explicit MathObject(QObject *parent = nullptr);
-
-  enum BackendType
+  enum Type
   {
     MONOSTATE,
     EQUATION,
@@ -59,9 +58,12 @@ public:
     PARAMETRIC
   };
 
-  Q_ENUM(BackendType);
+  explicit MathObject(QObject *parent = nullptr, Type type = EQUATION);
 
-  Q_INVOKABLE void setBackend(BackendType);
+  Q_ENUM(Type);
+
+  Q_INVOKABLE void setType(Type);
+  Q_INVOKABLE Type getType() const;
 
   bool isValid() const;
 
@@ -97,7 +99,9 @@ public slots:
   State sync();
 
 signals:
-  void stateChanged();
+  void stateChanged(MathObject*);
+  void updated(MathObject*);
+  void typeChanged();
 
 protected:
   std::variant<std::monostate,

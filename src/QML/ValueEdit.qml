@@ -5,13 +5,9 @@ import QtQuick
 Item {
   id: root
 
-  readonly property int slot: Information.addMathObject();
-  readonly property MathObject mathObj: Information.getMathObject(slot);
+  readonly property MathObject mathObj: MathWorld.addAltMathObject(MathObject.EXPR)
 
-  property Expr exprBackend: {
-    mathObj.setBackend(MathObject.EXPR);
-    exprBackend = mathObj.getExpr();
-  }
+  property Expr exprBackend: mathObj.getExpr()
 
   property double value
   property string implicitName
@@ -46,6 +42,6 @@ Item {
   }
 
   Component.onDestruction: {
-    Information.removeMathObject(slot);
+    MathWorld.removeMathObject(mathObj);
   }
 }

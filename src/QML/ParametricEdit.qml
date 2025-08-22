@@ -11,7 +11,7 @@ Item {
   required property PlotStyle style
 
   property Parametric parametric: {
-    mathObj.setBackend(MathObject.PARAMETRIC);
+    mathObj.type = MathObject.PARAMETRIC;
     parametric = mathObj.getParametric();
   }
 

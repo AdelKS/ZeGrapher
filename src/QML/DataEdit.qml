@@ -11,7 +11,7 @@ Item {
   required property PlotStyle style
 
   property Data zcBackend: {
-    mathObj.setBackend(MathObject.DATA);
+    mathObj.type = MathObject.DATA;
     zcBackend = mathObj.getData();
   }
 

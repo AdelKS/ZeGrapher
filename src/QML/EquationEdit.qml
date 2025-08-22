@@ -9,7 +9,7 @@ Item {
   required property PlotStyle style
 
   property Equation zcBackend: {
-    mathObj.setBackend(MathObject.EQUATION);
+    mathObj.type = MathObject.EQUATION;
     zcBackend = mathObj.getEquation();
   }
 
