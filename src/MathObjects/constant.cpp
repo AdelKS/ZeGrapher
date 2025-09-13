@@ -53,6 +53,7 @@ State Constant::sync() {
 void Constant::set_value(double val)
 {
   zcMathObj = val;
+  emit updated();
 }
 
 }
