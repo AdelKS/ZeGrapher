@@ -293,13 +293,13 @@ Rectangle {
         {
           currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
           if (currentType === MathObject.EQUATION) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+            loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"backend": mathObj.getEquation()});
           } else if (currentType === MathObject.CONSTANT) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+            loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"backend": mathObj.getConstant()});
           } else if (currentType === MathObject.PARAMETRIC) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+            loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"backend": mathObj.getParametric()});
           } else if (currentType === MathObject.DATA) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+            loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"backend": mathObj.getData()});
           }
         }
       }
@@ -321,6 +321,7 @@ Rectangle {
   Component.onCompleted: {
     loader.sync();
     objectTypeTumbler.sync();
+    mathObj.style = root.style
   }
 
 }

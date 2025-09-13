@@ -7,10 +7,7 @@ import QtQuick.Controls
 Item {
   id: root
 
-  required property MathObject mathObj
-  required property PlotStyle style
-
-  property Data zcBackend: mathObj.getData()
+  required property Data backend
 
   property alias name: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -37,15 +34,15 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-      backend: zcBackend
+      backend: root.backend
 
       onExpressionChanged: {
         if (showInTable.checked) {
           console.debug("Updating name in DataTableModel singleton.");
-          if (zcBackend.isValid())
-            DataTableModel.setColumnName(zcBackend, expression);
+          if (backend.isValid())
+            DataTableModel.setColumnName(backend, expression);
           else
-            DataTableModel.setColumnName(zcBackend, "");
+            DataTableModel.setColumnName(backend, "");
 
         }
       }
@@ -67,9 +64,9 @@ Item {
 
       onToggled: {
         if (showInTable.checked) {
-          DataTableModel.registerTableColumn(zcBackend);
+          DataTableModel.registerTableColumn(backend);
         } else {
-          DataTableModel.deregisterTableColumn(zcBackend);
+          DataTableModel.deregisterTableColumn(backend);
         }
       }
 
@@ -79,13 +76,11 @@ Item {
   }
 
   Component.onCompleted: {
-    mathObj.style = style;
-    console.debug("DataEdit: backend=", zcBackend);
-    console.assert(mathObj.type === MathObject.DATA);
+    console.debug("DataEdit: backend=", backend);
   }
 
   Component.onDestruction: {
-    DataTableModel.deregisterTableColumn(zcBackend);
+    DataTableModel.deregisterTableColumn(backend);
   }
 
 }

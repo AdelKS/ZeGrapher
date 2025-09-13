@@ -7,10 +7,7 @@ import QtQuick.Controls
 Item {
   id: root
 
-  required property MathObject mathObj
-  required property PlotStyle style
-
-  property Constant zcBackend: mathObj.getConstant()
+  required property Constant backend
 
   property alias name: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -31,7 +28,7 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-      backend: zcBackend
+      backend: root.backend
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
@@ -57,15 +54,14 @@ Item {
         target: constant.textInput
         function onTextEdited() {
           console.debug("new double value: ", constant.textInput.text);
-          zcBackend.set_value(parseFloat(constant.textInput.text));
+          backend.set_value(parseFloat(constant.textInput.text));
         }
       }
     }
   }
 
   Component.onCompleted: {
-    console.debug("ConstantEdit: backend=", zcBackend);
-    console.assert(mathObj.type === MathObject.CONSTANT);
+    console.debug("backendEdit: backend=", backend);
   }
 
 }

@@ -7,13 +7,10 @@ import QtQuick.Controls
 Item {
   id: root
 
-  required property MathObject mathObj
-  required property PlotStyle style
+  required property Parametric backend
 
-  property Parametric parametric: mathObj.getParametric()
-
-  property NamedRef eq1: parametric.obj1
-  property NamedRef eq2: parametric.obj2
+  property NamedRef eq1: backend.obj1
+  property NamedRef eq2: backend.obj2
 
   implicitHeight: Math.max(lineEdit1.implicitHeight, lineEdit2.implicitHeight)
 
@@ -68,10 +65,7 @@ Item {
   }
 
   Component.onCompleted: {
-    console.debug("ParametricEdit: backend1=", eq1);
-    console.debug("ParametricEdit: backend2=", eq2);
-    console.debug("ParametricEdit: style=", style);
-    mathObj.style = style;
-    console.assert(mathObj.type === MathObject.PARAMETRIC);
+    console.debug("backendEdit: backend1=", eq1);
+    console.debug("backendEdit: backend2=", eq2);
   }
 }
