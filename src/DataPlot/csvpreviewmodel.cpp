@@ -19,6 +19,8 @@
 ****************************************************************************/
 
 #include "csvpreviewmodel.h"
+#include "MathObjects/mathobject.h"
+#include "MathObjects/mathworld.h"
 
 #include <QFile>
 
@@ -178,13 +180,55 @@ void CsvPreviewModel::loadIntoWorld() const
   if(file.open(QFile::ReadOnly | QFile::Text))
   {
     QTextStream in(&file);
+
+    std::vector<std::vector<std::string>> data;
+    QStringList names;
+
+    auto append_values = [&](QStringList values)
+    {
+      // make sure that size of values is the same as data size
+      // top up with empty values if needed
+
+      if (data.size() < size_t(values.size()))
+        data.resize(size_t(values.size()), std::vector<std::string>(!data.empty() ? data.front().size() : 0));
+
+      else if (size_t(values.size()) < data.size())
+        values.resize(data.size());
+
+      if (names.size() < values.size())
+        names.resize(values.size());
+
+      assert(data.size() == size_t(values.size()));
+
+      for (int i = 0 ; i != values.size(); i++)
+        data[i].push_back(values[i].toStdString());
+    };
+
     int line_num = 0;
+
     while (not in.atEnd())
     {
       QString line = in.readLine();
 
-      if (line_num++ < rowSkipCount)
-        continue;
+      if (line_num < rowSkipCount)
+        ;
+      else if (line_num == rowSkipCount and csvHasHeaderRow)
+        names = line.split(separator);
+      else
+        append_values(line.split(separator));
+
+      line_num++;
+    }
+
+    assert(data.size() == size_t(names.size()));
+
+    for (size_t i = 0 ; i != data.size() ; i++)
+    {
+      MathObject* obj = mathWorld.addMathObject(MathObject::DATA);
+
+      obj->getData()->setData(names[i], std::move(data[i]));
+
+      
     }
 
     file.close();

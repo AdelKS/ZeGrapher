@@ -241,6 +241,7 @@ Item {
 
           ValueEdit {
             id: valueEdit
+            implicitName: "editCell"
             anchors.fill: parent
             visible: root.interactive && item.editing
             expression: display

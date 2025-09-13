@@ -49,6 +49,7 @@ public:
 
 signals:
   void stateChanged();
+  void expressionChangedByBackend(QString);
 
 protected:
   State state;

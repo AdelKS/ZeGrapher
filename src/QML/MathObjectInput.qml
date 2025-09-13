@@ -291,7 +291,7 @@ Rectangle {
       function sync() {
         if (currentType !== mathObj.type)
         {
-          currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
+          currentType = mathObj.type
           if (currentType === MathObject.EQUATION) {
             loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"backend": mathObj.getEquation()});
           } else if (currentType === MathObject.CONSTANT) {

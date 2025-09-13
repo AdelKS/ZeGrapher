@@ -24,6 +24,9 @@
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
+#include <string>
+#include <vector>
+
 namespace zg {
 namespace mathobj {
 
@@ -42,6 +45,7 @@ public:
   State setExpression(QString) override;
 
   State setName(QString name);
+  State setData(QString name, std::vector<std::string> values);
   QString getName() const { return input_name; }
 
   State sync();

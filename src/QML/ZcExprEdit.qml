@@ -21,6 +21,14 @@ Item {
     refresh();
   }
 
+  Connections {
+    target: root.backend
+    function onExpressionChangedByBackend(str) {
+      console.debug("Expression changed by backend to ", str);
+      lineEdit.text = str;
+    }
+  }
+
   function refresh() {
     if (customErrorMsg.length !== 0)
       errorLbl.setErrorMsg(customErrorMsg);
