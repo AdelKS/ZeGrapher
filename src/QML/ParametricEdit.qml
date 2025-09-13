@@ -10,10 +10,7 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property Parametric parametric: {
-    mathObj.type = MathObject.PARAMETRIC;
-    parametric = mathObj.getParametric();
-  }
+  property Parametric parametric: mathObj.getParametric()
 
   property NamedRef eq1: parametric.obj1
   property NamedRef eq2: parametric.obj2
@@ -75,5 +72,6 @@ Item {
     console.debug("ParametricEdit: backend2=", eq2);
     console.debug("ParametricEdit: style=", style);
     mathObj.style = style;
+    console.assert(mathObj.type === MathObject.PARAMETRIC);
   }
 }

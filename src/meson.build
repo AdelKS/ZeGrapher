@@ -93,7 +93,6 @@ qmlcpp_files = files(
   './MathObjects/mathworld.h',
   './MathObjects/namedref.h',
   './MathObjects/parametric.h',
-  './MathObjects/type.h',
   './structures.h',
   './Utils/highlighter.h',
   './Utils/plotstyle.h',

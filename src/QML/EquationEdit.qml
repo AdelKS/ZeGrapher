@@ -8,10 +8,7 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property Equation zcBackend: {
-    mathObj.type = MathObject.EQUATION;
-    zcBackend = mathObj.getEquation();
-  }
+  property Equation zcBackend: mathObj.getEquation()
 
   property alias expression: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -39,5 +36,6 @@ Item {
     mathObj.style = style;
     console.debug("EquationEdit: backend=", zcBackend);
     console.debug("EquationEdit: style=", style);
+    console.assert(mathObj.type === MathObject.EQUATION);
   }
 }

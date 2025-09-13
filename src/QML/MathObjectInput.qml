@@ -90,27 +90,51 @@ Rectangle {
           id: eqTypeModel
           ListElement {
             text: "Equation"
-            type: ObjectType.EQUATION
+            type: MathObject.EQUATION
             has_graph: true
           }
           ListElement {
             text: "Constant"
-            type: ObjectType.CONSTANT
+            type: MathObject.CONSTANT
             has_graph: false
           }
           ListElement {
             text: "Parametric"
-            type: ObjectType.PARAMETRIC
+            type: MathObject.PARAMETRIC
             has_graph: true
           }
           ListElement {
             text: "Data"
-            type: ObjectType.DATA
+            type: MathObject.DATA
             has_graph: true
           }
         }
 
-        onCurrentIndexChanged: loader.updateObjectType()
+        Connections {
+          target: mathObj
+          function onTypeChanged() {
+            objectTypeTumbler.sync();
+          }
+        }
+
+        function sync() {
+          let currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
+          if (mathObj.type !== currentType)
+          {
+            for (var i = 0; i != eqTypeModel.count; i++) {
+              if (mathObj.type === model.get(i).type) {
+                currentIndex = i;
+                break;
+              }
+            }
+          }
+        }
+
+        onActivated: {
+          let newType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
+          if (mathObj.type !== newType)
+            mathObj.type = newType;
+        }
       }
 
       Item {
@@ -246,7 +270,7 @@ Rectangle {
       id: loader
       Layout.fillWidth: true
 
-      property int currentType: 0
+      property int currentType: -1
 
       onStatusChanged: {
         let statusStrings = [];
@@ -257,16 +281,26 @@ Rectangle {
         console.debug("Loader status: ", statusStrings[status]);
       }
 
-      function updateObjectType() {
-        currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
-        if (currentType === ObjectType.EQUATION) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"mathObj": root.mathObj, "style": root.style});
-        } else if (currentType === ObjectType.CONSTANT) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"mathObj": root.mathObj, "style": root.style});
-        } else if (currentType === ObjectType.PARAMETRIC) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"mathObj": root.mathObj, "style": root.style});
-        } else if (currentType === ObjectType.DATA) {
-          loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+      Connections {
+        target: mathObj
+        function onTypeChanged() {
+          loader.sync();
+        }
+      }
+
+      function sync() {
+        if (currentType !== mathObj.type)
+        {
+          currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
+          if (currentType === MathObject.EQUATION) {
+            loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+          } else if (currentType === MathObject.CONSTANT) {
+            loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+          } else if (currentType === MathObject.PARAMETRIC) {
+            loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+          } else if (currentType === MathObject.DATA) {
+            loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"mathObj": root.mathObj, "style": root.style});
+          }
         }
       }
     }
@@ -281,6 +315,12 @@ Rectangle {
       orientation: Qt.Horizontal
       Layout.fillWidth: true
     }
+  }
+
+
+  Component.onCompleted: {
+    loader.sync();
+    objectTypeTumbler.sync();
   }
 
 }

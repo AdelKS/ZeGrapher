@@ -10,10 +10,7 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property Data zcBackend: {
-    mathObj.type = MathObject.DATA;
-    zcBackend = mathObj.getData();
-  }
+  property Data zcBackend: mathObj.getData()
 
   property alias name: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -84,6 +81,7 @@ Item {
   Component.onCompleted: {
     mathObj.style = style;
     console.debug("DataEdit: backend=", zcBackend);
+    console.assert(mathObj.type === MathObject.DATA);
   }
 
   Component.onDestruction: {

@@ -10,10 +10,7 @@ Item {
   required property MathObject mathObj
   required property PlotStyle style
 
-  property Constant zcBackend: {
-    mathObj.type = MathObject.CONSTANT;
-    zcBackend = mathObj.getConstant();
-  }
+  property Constant zcBackend: mathObj.getConstant()
 
   property alias name: zcExprEdit.expression
   property alias exprEdit: zcExprEdit
@@ -68,6 +65,7 @@ Item {
 
   Component.onCompleted: {
     console.debug("ConstantEdit: backend=", zcBackend);
+    console.assert(mathObj.type === MathObject.CONSTANT);
   }
 
 }
