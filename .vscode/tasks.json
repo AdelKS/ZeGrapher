@@ -6,12 +6,12 @@
         {
             "label": "setup-debug",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined"
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
         },
         {
             "label": "resetup-debug",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined",
+            "command": "rm -rf ${cwd}/build-zg-debug; meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug",
             "problemMatcher": []
         },
         {
@@ -51,11 +51,63 @@
             "command": "./src/ZeGrapher",
             "options": {
                 "cwd": "${cwd}/build-zg-debug",
+            },
+            "dependsOn": "build-debug",
+            "problemMatcher": []
+        },
+         {
+            "label": "setup-debug-asan",
+            "type": "shell",
+            "command": "[ -d \"${cwd}/build-zg-debug-asan\" ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined"
+        },
+        {
+            "label": "resetup-debug-asan",
+            "type": "shell",
+            "command": "meson setup --wipe build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined",
+            "problemMatcher": []
+        },
+        {
+            "label": "build-debug-asan",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug-asan"
+            },
+            "dependsOn": "setup-debug-asan",
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "rebuild-debug-asan",
+            "type": "shell",
+            "command": "meson compile",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug-asan"
+            },
+            "dependsOn": "resetup-debug-asan",
+            "problemMatcher": [
+                "$meson-gcc"
+            ],
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "label": "run-debug-asan",
+            "type": "shell",
+            "command": "./src/ZeGrapher",
+            "options": {
+                "cwd": "${cwd}/build-zg-debug-asan",
                 "env": {
                     "LSAN_OPTIONS": "suppressions=../asan-leak-suppress.txt"
                 }
             },
-            "dependsOn": "build-debug",
+            "dependsOn": "build-debug-asan",
             "problemMatcher": []
         },
         {
