@@ -113,12 +113,19 @@ void Sampler::update()
 
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
+
+  const auto start = std::chrono::high_resolution_clock::now();
+
   for (auto& [f, data]: continuous_curves)
     dispatch(f->getZcObject(), f->style, data);
 
 
   for (auto& [f, data]: discrete_curves)
     dispatch(f->getZcObject(), f->style, data);
+
+  const auto end = std::chrono::high_resolution_clock::now();
+
+  qDebug() << "Sampling took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
 }
 

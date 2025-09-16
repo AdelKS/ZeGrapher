@@ -139,6 +139,9 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
 
   size_t i = 0;
 
+  const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
+  const zg::real_unit biggest_allowed_step = data.get_biggest_allowed_step();
+
   while (i + 1 < input_vals.size())
   {
     const size_t i_b = i;
@@ -156,8 +159,6 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
     const double px_sq_BC = px_BC.square_length();
 
     const bool nan_pt = is_nan_pt(B) or is_nan_pt(C);
-    const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
-    const zg::real_unit biggest_allowed_step = data.get_biggest_allowed_step();
 
     if (bc > biggest_allowed_step or nan_pt or px_sq_BC > sq_px_step)
     {
