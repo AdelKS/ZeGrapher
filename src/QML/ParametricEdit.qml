@@ -37,8 +37,16 @@ Item {
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignTop
 
+      onExpressionChanged: root.eq1.setName(expression);
+
       id: lineEdit1
-      backend: eq1
+
+      Connections {
+        target: root.eq1
+        function onStateChanged() {
+          lineEdit1.setState(root.eq1.state);
+        }
+      }
     }
 
     Item {
@@ -59,8 +67,16 @@ Item {
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignTop
 
+      onExpressionChanged: root.eq2.setName(expression);
+
       id: lineEdit2
-      backend: eq2
+
+      Connections {
+        target: root.eq2
+        function onStateChanged() {
+          lineEdit2.setState(root.eq2.state);
+        }
+      }
     }
   }
 

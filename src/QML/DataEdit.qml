@@ -34,9 +34,16 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-      backend: root.backend
+
+      Connections {
+        target: root.backend
+        function onStateChanged() {
+          zcExprEdit.setState(root.backend.state);
+        }
+      }
 
       onExpressionChanged: {
+        backend.setName(expression);
         if (showInTable.checked) {
           console.debug("Updating name in DataTableModel singleton.");
           if (backend.isValid())

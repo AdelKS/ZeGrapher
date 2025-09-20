@@ -4,7 +4,7 @@
 
 namespace zg {
 
-void State::update(const std::optional<zc::Error>& err)
+State& State::update(const std::optional<zc::Error>& err)
 {
   opt_zc_error = err;
 
@@ -26,6 +26,8 @@ void State::update(const std::optional<zc::Error>& err)
     status = State::VALID;
     errorMsg.clear();
   }
+
+  return *this;
 }
 
 

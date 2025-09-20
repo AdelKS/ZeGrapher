@@ -28,7 +28,15 @@ Item {
 
     ZcExprEdit {
       id: zcExprEdit
-      backend: root.backend
+
+      Connections {
+        target: root.backend
+        function onStateChanged() {
+          zcExprEdit.setState(root.backend.state);
+        }
+      }
+
+      onExpressionChanged: root.backend.setName(expression)
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter

@@ -4,7 +4,7 @@
 namespace zg {
 namespace mathobj {
 
-Constant::Constant(QObject *parent): Highlighted(parent)
+Constant::Constant(QObject *parent): Stateful(parent)
 {
   zcMathObj = std::nan("");
 }
@@ -24,30 +24,13 @@ State Constant::setName(QString new_input_name)
 
 bool Constant::isValid() const
 {
-  return state.isValid();
-}
-
-State Constant::setExpression(QString name)
-{
-  doNotRehighlight = true;
-  setName(name);
-  doNotRehighlight = false;
-  return state;
+  return getState().isValid();
 }
 
 State Constant::sync() {
-  State oldState = state;
-  state.update(zcMathObj.name_status());
+  setState(State().update(zcMathObj.name_status()));
 
-  if (state != oldState)
-  {
-    if (highlighter and not doNotRehighlight)
-      highlighter->rehighlight();
-
-    emit stateChanged();
-  }
-
-  return state;
+  return getState();
 };
 
 void Constant::set_value(double val)

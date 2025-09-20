@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 Equation::Equation(QObject *parent)
-  : Highlighted(parent), shared::ZcMathObjectBB()
+  : Stateful(parent), shared::ZcMathObjectBB()
 {}
 
 State Equation::setEquation(QString eq)
@@ -20,12 +20,12 @@ State Equation::setEquation(QString eq)
 
   emit updated();
 
-  return state;
+  return getState();
 }
 
 bool Equation::isValid() const
 {
-  return state.isValid();
+  return getState().isValid();
 }
 
 QString Equation::getName() const
@@ -33,28 +33,11 @@ QString Equation::getName() const
   return QString::fromStdString(std::string(zcMathObj.get_name()));
 }
 
-State Equation::setExpression(QString expr)
-{
-  doNotRehighlight = true;
-  setEquation(expr);
-  doNotRehighlight = false;
-  return state;
-}
-
 State Equation::sync()
 {
-  State oldState = state;
-  state.update(zcMathObj.status());
+  setState(State().update(zcMathObj.status()));
 
-  if (state != oldState)
-  {
-    if (highlighter and not doNotRehighlight)
-      highlighter->rehighlight();
-
-    emit stateChanged();
-  }
-
-  return state;
+  return getState();
 };
 
 }

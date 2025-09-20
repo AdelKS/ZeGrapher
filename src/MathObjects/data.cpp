@@ -4,7 +4,7 @@
 namespace zg {
 namespace mathobj {
 
-Data::Data(QObject *parent): Highlighted(parent)
+Data::Data(QObject *parent): Stateful(parent)
 {
   zcMathObj.set_data("", std::vector<std::string>(10));
 }
@@ -27,8 +27,6 @@ State Data::setData(QString name, std::vector<std::string> values)
   input_name = name;
   zcMathObj.set_data(name.toStdString(), std::move(values));
 
-  emit expressionChangedByBackend(name);
-
   emit updated();
 
   return sync();
@@ -36,30 +34,13 @@ State Data::setData(QString name, std::vector<std::string> values)
 
 bool Data::isValid() const
 {
-  return state.isValid();
-}
-
-State Data::setExpression(QString name)
-{
-  doNotRehighlight = true;
-  setName(name);
-  doNotRehighlight = false;
-  return state;
+  return getState().isValid();
 }
 
 State Data::sync() {
-  State oldState = state;
-  state.update(zcMathObj.name_status());
+  setState(State().update(zcMathObj.name_status()));
 
-  if (state != oldState)
-  {
-    if (highlighter and not doNotRehighlight)
-      highlighter->rehighlight();
-
-    emit stateChanged();
-  }
-
-  return state;
+  return getState();
 };
 
 }

@@ -23,7 +23,15 @@ Item {
 
   ZcExprEdit {
     id: zcExprEdit
-    backend: root.backend
+
+    Connections {
+      target: root.backend
+      function onStateChanged() {
+        zcExprEdit.setState(root.backend.state);
+      }
+    }
+
+    onExpressionChanged: backend.setEquation(expression)
 
     anchors.left: parent.left
     anchors.right: parent.right

@@ -20,9 +20,7 @@
 **
 ****************************************************************************/
 
-#include <optional>
-
-#include "BuildingBlocks/highlighted.h"
+#include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
@@ -32,7 +30,7 @@ namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
 ///        which also fits in a single zc::DynMathObject
-struct Equation: Highlighted, shared::ZcMathObjectBB {
+struct Equation: Stateful, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
@@ -41,8 +39,6 @@ struct Equation: Highlighted, shared::ZcMathObjectBB {
 public:
 
   explicit Equation(QObject *parent = nullptr);
-
-  State setExpression(QString) override;
 
   Q_INVOKABLE State setEquation(QString eq);
   Q_INVOKABLE QString getName() const;

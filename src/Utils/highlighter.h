@@ -3,7 +3,7 @@
 #include <QSyntaxHighlighter>
 #include <QQuickTextDocument>
 
-#include "MathObjects/BuildingBlocks/highlighted.h"
+#include "Utils/state.h"
 
 /// @brief backend that highlights parsing errors in math expressions in LineEdit
 class Highlighter: public QSyntaxHighlighter
@@ -11,7 +11,7 @@ class Highlighter: public QSyntaxHighlighter
   Q_OBJECT
   QML_ELEMENT
   Q_PROPERTY(QQuickTextDocument* textDocument WRITE setDocument MEMBER textDocument)
-  Q_PROPERTY(zg::Highlighted* backend WRITE setBackend MEMBER backend)
+  Q_PROPERTY(zg::State state WRITE setState MEMBER state)
   Q_PROPERTY(int offset MEMBER offset)
 
 public:
@@ -20,8 +20,8 @@ public:
 
   void highlightBlock(const QString &text) override final;
 
-  Q_INVOKABLE void setBackend(zg::Highlighted*);
   Q_INVOKABLE void setDocument(QQuickTextDocument* doc);
+  Q_INVOKABLE void setState(zg::State state);
 
 signals:
   void valueChanged(double);
@@ -29,7 +29,7 @@ signals:
 
 protected:
   QQuickTextDocument* textDocument = nullptr;
-  zg::Highlighted* backend = nullptr;
+  zg::State state;
   int offset = 0;
 
 };

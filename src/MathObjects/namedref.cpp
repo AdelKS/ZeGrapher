@@ -4,7 +4,7 @@
 namespace zg {
 namespace mathobj {
 
-NamedRef::NamedRef(QObject *parent): Highlighted(parent)
+NamedRef::NamedRef(QObject *parent): Stateful(parent)
 {
 }
 
@@ -19,46 +19,32 @@ State NamedRef::setName(QString new_input_name)
 
   emit updated();
 
-  return state;
+  return getState();
 }
 
 bool NamedRef::isValid() const
 {
-  return state.isValid();
-}
-
-State NamedRef::setExpression(QString name)
-{
-  doNotRehighlight = true;
-  setName(name);
-  doNotRehighlight = false;
-  return state;
+  return getState().isValid();
 }
 
 State NamedRef::sync()
 {
-  State oldState = state;
+  State newState;
   if (not input_name.isEmpty())
   {
     const auto* zcObj = getZcObject();
     if (zcObj)
     {
       if (*zcObj)
-        state.setValid();
-      else state.setInvalid(tr("Math object in invalid state."));
+        newState.setValid();
+      else newState.setInvalid(tr("Math object in invalid state."));
     }
-    else state.setInvalid(tr("Math object doesn't exist."));
+    else newState.setInvalid(tr("Math object doesn't exist."));
   }
 
-  if (state != oldState)
-  {
-    if (highlighter and not doNotRehighlight)
-      highlighter->rehighlight();
+  setState(newState);
 
-    emit stateChanged();
-  }
-
-  return state;
+  return getState();
 };
 
 bool NamedRef::isContinuous() const

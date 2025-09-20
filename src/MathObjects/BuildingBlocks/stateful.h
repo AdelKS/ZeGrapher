@@ -29,31 +29,32 @@
 namespace zg {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Highlighted: QObject {
+struct Stateful: QObject {
   Q_OBJECT
   QML_ELEMENT
-  QML_UNCREATABLE("Abstract class only used to cast to a common parent")
 
-  Q_PROPERTY(QSyntaxHighlighter* highlighter MEMBER highlighter)
-  Q_PROPERTY(State state MEMBER state NOTIFY stateChanged)
+  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
-  Highlighted(QObject* parent): QObject(parent) {}
-  virtual ~Highlighted() {};
+  Stateful(QObject* parent = nullptr): QObject(parent) {}
 
-  Q_INVOKABLE virtual State setExpression(QString) = 0;
+  void setState(State s)
+  {
+    if (state != s)
+    {
+      state = s;
+      emit stateChanged();
+    }
+  }
 
-  State getState() const { return state; }
-
-  QSyntaxHighlighter* highlighter = nullptr;
+  const State& getState() const { return state; }
 
 signals:
   void stateChanged();
-  void expressionChangedByBackend(QString);
 
-protected:
+private:
   State state;
-  bool doNotRehighlight = false;
+
 };
 
 } // namespace zg

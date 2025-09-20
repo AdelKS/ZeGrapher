@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/highlighted.h"
+#include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
@@ -28,7 +28,7 @@ namespace zg {
 namespace mathobj {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Expr : Highlighted, shared::ZcMathObjectBB {
+struct Expr : Stateful, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
@@ -40,8 +40,7 @@ public:
 
   explicit Expr(QObject *parent = nullptr);
 
-  Q_INVOKABLE State setExpression(QString) override;
-
+  Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State setImplicitName(QString name);
   State sync();
   Q_INVOKABLE double getValue() const { return value; };

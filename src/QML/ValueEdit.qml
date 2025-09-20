@@ -24,7 +24,15 @@ Item {
 
   ZcExprEdit {
     id: zcExprEdit
-    backend: exprBackend
+
+    Connections {
+      target: root.exprBackend
+      function onStateChanged() {
+        zcExprEdit.setState(root.exprBackend.state);
+      }
+    }
+
+    onExpressionChanged: root.exprBackend.setExpression(expression);
 
     anchors.left: parent.left
     anchors.right: parent.right
@@ -33,8 +41,6 @@ Item {
   }
 
   Component.onCompleted: {
-
-    zcExprEdit.backend = exprBackend;
     value = Qt.binding(function() { return exprBackend.value; });
     exprBackend.implicitName = implicitName;
     implicitName = Qt.binding(function() { return exprBackend.implicitName; });

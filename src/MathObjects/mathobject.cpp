@@ -244,7 +244,7 @@ State MathObject::sync()
 
   state = std::visit(zc::utils::overloaded{
     [](std::monostate) { return State(); },
-    [](auto& e) { return e->sync(); },
+    [](auto* e) { return e->sync(); },
   }, backend);
 
   if (oldState != state)
