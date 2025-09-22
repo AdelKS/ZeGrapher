@@ -17,9 +17,11 @@ State Data::setName(QString new_input_name)
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
 
+  sync();
+
   emit updated();
 
-  return sync();
+  return getState();
 }
 
 State Data::setData(QString name, std::vector<std::string> values)
@@ -27,9 +29,11 @@ State Data::setData(QString name, std::vector<std::string> values)
   input_name = name;
   zcMathObj.set_data(name.toStdString(), std::move(values));
 
+  sync();
+
   emit updated();
 
-  return sync();
+  return getState();
 }
 
 bool Data::isValid() const
