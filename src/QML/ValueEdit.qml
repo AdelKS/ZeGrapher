@@ -7,7 +7,7 @@ Item {
 
   readonly property MathObject mathObj: MathWorld.addAltMathObject(MathObject.EXPR)
 
-  property Expr exprBackend: mathObj.getExpr()
+  property Expr backend: mathObj.getExpr()
 
   property double value
   property string implicitName
@@ -26,25 +26,27 @@ Item {
     id: zcExprEdit
 
     Connections {
-      target: root.exprBackend
+      target: root.backend
       function onStateChanged() {
-        zcExprEdit.setState(root.exprBackend.state);
+        zcExprEdit.setState(root.backend.state);
       }
     }
 
-    onExpressionChanged: root.exprBackend.setExpression(expression);
+    onTextEdited: root.backend.setExpression(expression);
 
     anchors.left: parent.left
     anchors.right: parent.right
 
     highlighter.offset: implicitName.length + 1
+
+    Component.onCompleted: root.backend.setExpression(expression)
   }
 
   Component.onCompleted: {
-    value = Qt.binding(function() { return exprBackend.value; });
-    exprBackend.implicitName = implicitName;
-    implicitName = Qt.binding(function() { return exprBackend.implicitName; });
-    console.debug("ValueEdit: backend=", exprBackend);
+    value = Qt.binding(function() { return backend.value; });
+    backend.implicitName = implicitName;
+    implicitName = Qt.binding(function() { return backend.implicitName; });
+    console.debug("ValueEdit: backend=", backend);
   }
 
   Component.onDestruction: {

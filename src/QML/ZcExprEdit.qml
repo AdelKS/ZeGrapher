@@ -15,6 +15,8 @@ Item {
   property alias lineEditBackend: lineEdit
   readonly property alias exprHeight: lineEdit.height
 
+  signal textEdited()
+
   implicitHeight: lineEdit.height + errorLbl.height
 
   onCustomErrorMsgChanged: refresh()
@@ -47,6 +49,9 @@ Item {
 
     anchors.left: parent.left
     anchors.right: parent.right
+
+    onTextEdited: root.textEdited()
+
   }
 
   Connections {
