@@ -19,6 +19,7 @@ State Data::setName(QString new_input_name)
 
   sync();
 
+  emit nameChanged();
   emit updated();
 
   return getState();
@@ -26,10 +27,14 @@ State Data::setName(QString new_input_name)
 
 State Data::setData(QString name, std::vector<std::string> values)
 {
+  bool nameChange = input_name != name;
   input_name = name;
   zcMathObj.set_data(name.toStdString(), std::move(values));
 
   sync();
+
+  if (nameChange)
+    emit nameChanged();
 
   emit updated();
 

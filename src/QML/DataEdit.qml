@@ -17,6 +17,14 @@ Item {
 
   Behavior on height { SmoothedAnimation { duration: 200 } }
 
+  Connections {
+    target: backend
+    function onNameChanged() {
+      if (root.name != backend.name)
+        root.name = backend.name;
+    }
+  }
+
   function removeObj() {
     root.opacity = 0;
     root.height = 0;
@@ -42,10 +50,11 @@ Item {
         }
       }
 
-      onExpressionChanged: {
+      onTextEdited: {
+        console.debug("DataEdit: updating name in backend: ", expression);
         backend.setName(expression);
         if (showInTable.checked) {
-          console.debug("Updating name in DataTableModel singleton.");
+          console.debug("DataEdit: updating name in DataTableModel singleton.");
           if (backend.isValid())
             DataTableModel.setColumnName(backend, expression);
           else
