@@ -7,7 +7,6 @@ namespace mathobj {
 Expr::Expr(QObject *parent)
   : Stateful(parent), shared::ZcMathObjectBB()
 {
-  setImplicitName("hidden_variable");
 }
 
 bool Expr::isValid() const
@@ -21,10 +20,14 @@ State Expr::setImplicitName(QString name)
   implicitName = name;
   zcMathObj.set_name(implicitName.toStdString());
 
+  qDebug() << "Setting implicit name: " << implicitName;
+
   auto name_status = zcMathObj.name_status();
   while (not name_status and name_status.error().type == zc::Error::NAME_ALREADY_TAKEN)
   {
+    qDebug() << "implicit name taken: " << implicitName;
     implicitName = name + QString::number(i++);
+    qDebug() << "Setting new implicit name: " << implicitName;
     zcMathObj.set_name(implicitName.toStdString());
     name_status = zcMathObj.name_status();
   }
