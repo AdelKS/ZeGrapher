@@ -225,10 +225,8 @@ void CsvPreviewModel::loadIntoWorld() const
     for (size_t i = 0 ; i != data.size() ; i++)
     {
       MathObject* obj = mathWorld.addMathObject(MathObject::DATA);
-
       obj->getData()->setData(names[i], std::move(data[i]));
-
-      
+      qApp->processEvents();
     }
 
     file.close();
