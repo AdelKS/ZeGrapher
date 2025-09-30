@@ -51,6 +51,9 @@ public:
   Q_INVOKABLE void removeMathObject(MathObject*);
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
 
+  /// @brief attaches the plotstyle to the given mathobject
+  Q_INVOKABLE void attachStyle(MathObject*, PlotStyle*);
+
   /// @brief add math object but that is not part of the list
   /// @note because it's used in separate widgets
   /// @note but we still need to forward sync requests so we track them here
@@ -62,10 +65,10 @@ signals:
   void updated();
 
 protected slots:
-  void objectUpdated(zg::MathObject*);
+  void objectUpdated();
 
 protected:
-  std::vector<zg::MathObject*> mathObjects;
+  std::vector<std::pair<zg::MathObject*, PlotStyle*>> mathObjects;
 
   /// @brief math objects that aren't part of the model (that the view represents)
   std::vector<zg::MathObject*> altMathObjects;

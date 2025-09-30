@@ -1,7 +1,7 @@
 #pragma once
 
 /****************************************************************************
-**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2025, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -38,8 +38,10 @@ struct MathObject: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(PlotStyle* style MEMBER style)
+  Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
+  Q_PROPERTY(bool discrete READ isDiscrete NOTIFY continuityChanged)
+  Q_PROPERTY(bool continuous READ isContinuous NOTIFY continuityChanged)
 
 public:
   using EvalHandle
@@ -65,10 +67,8 @@ public:
   Q_INVOKABLE void setType(Type);
   Q_INVOKABLE Type getType() const;
 
-  bool isValid() const;
-
-  /// @returns the name of the currently active math object
-  QString getName() const;
+  bool isValid() const { return state.isValid(); };
+  QString getName() const { return name; };
 
   size_t getRevision() const;
 
@@ -81,9 +81,8 @@ public:
   Q_INVOKABLE mathobj::Data* getData();
   Q_INVOKABLE mathobj::Parametric* getParametric();
 
-  bool isContinuous() const;
-
-  bool isDiscrete() const;
+  Q_INVOKABLE bool isContinuous() const { return continuous; };
+  Q_INVOKABLE bool isDiscrete() const { return discrete; };
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
@@ -92,16 +91,16 @@ public:
   template <class T>
   const T* getBackend() const;
 
-  PlotStyle* style = nullptr;
-
 public slots:
   /// @brief forwards the refresh() call to the current active backend
   State sync();
 
 signals:
-  void stateChanged(MathObject*);
-  void updated(MathObject*);
+  void stateChanged();
+  void updated();
   void typeChanged();
+  void continuityChanged();
+  void nameChanged();
 
 protected:
   std::variant<std::monostate,
@@ -113,6 +112,8 @@ protected:
                mathobj::Parametric*> backend;
   QString name;
   State state;
+  bool discrete = false;
+  bool continuous = false;
 };
 
 template <class T>

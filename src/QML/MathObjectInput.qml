@@ -245,7 +245,7 @@ Rectangle {
       Layout.fillWidth: true
       Layout.preferredHeight: preferredHeight
       clip: true
-      objectType: plotStyle.objectType
+      discrete: mathObj.discrete
 
       property int preferredHeight: 0
 
@@ -321,7 +321,7 @@ Rectangle {
   Component.onCompleted: {
     loader.sync();
     objectTypeTumbler.sync();
-    mathObj.style = root.style
+    MathWorld.attachStyle(mathObj, style);
   }
 
 }

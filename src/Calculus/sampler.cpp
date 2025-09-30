@@ -27,15 +27,11 @@ Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
   : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
 {}
 
-Sampler::SamplingSettings::SamplingSettings(const zg::MathObject* obj)
+Sampler::SamplingSettings::SamplingSettings(const zg::MathObject& obj, const zg::PlotStyle& style)
 {
-  if (obj->style)
-  {
-    step = obj->style->step;
-    coordinateSystem = obj->style->coordinateSystem;
-  }
-
-  revision = obj->getRevision();
+  step = style.step;
+  coordinateSystem = style.coordinateSystem;
+  revision = obj.getRevision();
 }
 
 void Sampler::setPixelStep(double pxStep)
@@ -49,14 +45,16 @@ void Sampler::refresh_valid_objects()
   std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
 
   [[maybe_unused]] const auto& objs = zg::mathWorld.getMathObjects();
-  for (const zg::MathObject* f : zg::mathWorld.getMathObjects())
+  for (auto&& [f, style] : zg::mathWorld.getMathObjects())
   {
     auto sampled_settings_node = sampled_settings.extract(f);
     auto discrete_curve_node = discrete_curves.extract(f);
     auto continuous_curve_node = continuous_curves.extract(f);
 
-    if (not f->style or not f->isValid())
+    if (not style or not f->isValid())
       continue;
+
+    const auto sampling_settings = SamplingSettings(*f, *style);
 
     if (f->isContinuous())
     {
@@ -64,12 +62,12 @@ void Sampler::refresh_valid_objects()
              or (not sampled_settings_node and not continuous_curve_node));
 
       if (continuous_curve_node
-          and sampled_settings_node.mapped() == SamplingSettings(f))
+          and sampled_settings_node.mapped() == sampling_settings)
         refreshed_continuous_curves.insert(std::move(continuous_curve_node));
       else
-        refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous(*f->style));
+        refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous(*style));
 
-      sampled_settings.emplace(f, SamplingSettings(f));
+      sampled_settings.emplace(f, std::move(sampling_settings));
     }
     else if (f->isDiscrete())
     {
@@ -77,12 +75,12 @@ void Sampler::refresh_valid_objects()
              or (not sampled_settings_node and not discrete_curve_node));
 
       if (discrete_curve_node
-          and sampled_settings_node.mapped() == SamplingSettings(f))
+          and sampled_settings_node.mapped() == sampling_settings)
         refreshed_discrete_curves.insert(std::move(discrete_curve_node));
       else
-        refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete(*f->style));
+        refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete(*style));
 
-      sampled_settings.emplace(f, SamplingSettings(f));
+      sampled_settings.emplace(f, std::move(sampling_settings));
     }
   }
 
@@ -94,17 +92,14 @@ void Sampler::update()
 {
   refresh_valid_objects();
 
-  auto dispatch = [this](zg::MathObject::EvalHandle var_handle, const zg::PlotStyle* style, auto& data)
+  auto dispatch = [this](zg::MathObject::EvalHandle var_handle, auto& data)
   {
-    if (not style)
-      return;
-
     std::visit(zc::utils::overloaded{
       [](std::monostate){},
       [&](auto handle){
-        if (style->coordinateSystem == zg::PlotStyle::Cartesian)
+        if (data.style.coordinateSystem == zg::PlotStyle::Cartesian)
           sample<zg::PlotStyle::Cartesian>(handle, data);
-        else if (style->coordinateSystem == zg::PlotStyle::Polar)
+        else if (data.style.coordinateSystem == zg::PlotStyle::Polar)
           sample<zg::PlotStyle::Polar>(handle, data);
         else qCritical() << "Case not handled, aborting program";
       }
@@ -117,11 +112,11 @@ void Sampler::update()
   const auto start = std::chrono::high_resolution_clock::now();
 
   for (auto& [f, data]: continuous_curves)
-    dispatch(f->getZcObject(), f->style, data);
+    dispatch(f->getZcObject(), data);
 
 
   for (auto& [f, data]: discrete_curves)
-    dispatch(f->getZcObject(), f->style, data);
+    dispatch(f->getZcObject(), data);
 
   const auto end = std::chrono::high_resolution_clock::now();
 

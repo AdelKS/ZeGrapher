@@ -16,14 +16,14 @@ QVariant MathWorld::data(const QModelIndex &index, int role) const
     return QVariant();
 
   QVariant var;
-  var.setValue(mathObjects.at(index.row()));
+  var.setValue(mathObjects.at(index.row()).first);
 
   return var;
 }
 
 void MathWorld::removeMathObject(MathObject* obj)
 {
-  auto it = std::ranges::find(mathObjects, obj);
+  auto it = std::ranges::find(mathObjects, obj, &std::pair<zg::MathObject*, PlotStyle*>::first);
   if (it == mathObjects.end())
     return;
 
@@ -34,14 +34,23 @@ void MathWorld::removeMathObject(MathObject* obj)
   endRemoveRows();
 }
 
+void MathWorld::attachStyle(MathObject* obj, PlotStyle* style)
+{
+  auto it = std::ranges::find(mathObjects, obj, &std::pair<zg::MathObject*, PlotStyle*>::first);
+  if (it == mathObjects.end())
+    return;
+
+  it->second = style;
+}
+
 MathObject* MathWorld::addMathObject(MathObject::Type type)
 {
   beginInsertRows(QModelIndex(), mathObjects.size(), mathObjects.size());
-  mathObjects.emplace_back(new zg::MathObject(this, type));
-  connect(mathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
-  connect(mathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
+  mathObjects.emplace_back(std::make_pair(new zg::MathObject(this, type), static_cast<PlotStyle*>(nullptr)));
+  connect(mathObjects.back().first, &MathObject::stateChanged, this, &MathWorld::objectUpdated);
+  connect(mathObjects.back().first, &MathObject::updated, this, &MathWorld::objectUpdated);
   endInsertRows();
-  return mathObjects.back();
+  return mathObjects.back().first;
 }
 
 MathObject* MathWorld::addAltMathObject(MathObject::Type type)
@@ -52,20 +61,18 @@ MathObject* MathWorld::addAltMathObject(MathObject::Type type)
   return altMathObjects.back();
 }
 
-void MathWorld::objectUpdated(MathObject* obj)
+void MathWorld::objectUpdated()
 {
   if (syncing)
     return;
 
   syncing = true;
 
-  for (auto&& f: mathObjects)
-    if (f != obj)
-      f->sync();
+  for (auto&& [f, _]: mathObjects)
+    f->sync();
 
   for (auto&& f: altMathObjects)
-    if (f != obj)
-      f->sync();
+    f->sync();
 
   syncing = false;
 

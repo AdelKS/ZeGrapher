@@ -62,7 +62,7 @@ protected:
   /// @brief settings that affect the resulting sampled values
   struct SamplingSettings {
 
-    explicit SamplingSettings(const zg::MathObject*);
+    explicit SamplingSettings(const zg::MathObject&, const zg::PlotStyle&);
 
     zg::real_unit step = {0.};
     zg::PlotStyle::CoordinateSystem coordinateSystem = zg::PlotStyle::Cartesian;

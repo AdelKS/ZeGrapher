@@ -10,7 +10,7 @@ Item {
   property double lineWidth: Number(lineWidthSpinBox.value) / 10.0
   property int lineStyle: lineStyleModel.get(lineStyleTumbler.currentIndex).type
 
-  property int objectType: PlotStyle.NonRepresentable
+  property bool discrete: false
   property double pointWidth: Number(pointWidthSpinBox.value) / 10.0
   property int pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
   property int coordinateSystem: coordinates.currentValue
@@ -23,9 +23,9 @@ Item {
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-  onObjectTypeChanged: {
-    console.debug('object type changed: ', objectType);
-    if (objectType === PlotStyle.Discrete) {
+  onDiscreteChanged: {
+    console.debug('ObjectStyle: discrete changed: ', root.discrete);
+    if (root.discrete) {
       // last element of the lineStyleModel is no line
       lineStyleTumbler.currentIndex = lineStyleModel.count  - 1;
     } else {
@@ -136,7 +136,7 @@ Item {
       states: [
         State {
           name: "hidden";
-          when: root.objectType !== PlotStyle.Discrete
+          when: !root.discrete
           PropertyChanges {
             stepLabel.opacity: 0.
             stepEdit.opacity: 0.
@@ -150,7 +150,7 @@ Item {
         },
         State {
           name: "shown";
-          when: root.objectType === PlotStyle.Discrete
+          when: root.discrete
           PropertyChanges {
             stepLabel.opacity: 1.
             stepEdit.opacity: 1.

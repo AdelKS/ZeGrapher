@@ -1,4 +1,24 @@
-#include "information.h"
+/****************************************************************************
+**  Copyright (c) 2025, Adel Kara Slimane <adel.ks@zegrapher.com>
+**
+**  This file is part of ZeGrapher's source code.
+**
+**  ZeGrapher is free software: you may copy, redistribute and/or modify it
+**  under the terms of the GNU Affero General Public License as published by the
+**  Free Software Foundation, either version 3 of the License, or (at your
+**  option) any later version.
+**
+**  This file is distributed in the hope that it will be useful, but
+**  WITHOUT ANY WARRANTY; without even the implied warranty of
+**  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+**  General Public License for more details.
+**
+**  You should have received a copy of the GNU General Public License
+**  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+****************************************************************************/
+
+#include "MathObjects/mathobject.h"
 
 namespace zg {
 
@@ -50,7 +70,7 @@ void MathObject::setType(Type t)
   std::visit(
     zc::utils::overloaded{
       [this]<typename T>(T* n) {
-        connect(n, &T::updated, this, [this]{ emit updated(this); });
+        connect(n, &T::updated, this, &MathObject::updated);
       },
       [](std::monostate) {},
     },
@@ -144,58 +164,6 @@ MathObject::EvalHandle MathObject::getZcObject() const
 
 }
 
-bool MathObject::isContinuous() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const auto* c) {
-        return c->isContinuous();
-      },
-      [](const mathobj::Parametric* p) {
-        return p->obj1->isContinuous() and p->obj2->isContinuous();
-      },
-      [](std::monostate) {
-        return false;
-      },
-    },
-    backend
-  );
-}
-
-bool MathObject::isDiscrete() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const auto* c) {
-        return c->isDiscrete();
-      },
-      [](const mathobj::Parametric* p) {
-        return p->obj1->isDiscrete() or p->obj2->isDiscrete();
-      },
-      [](std::monostate) {
-        return false;
-      },
-    },
-    backend
-  );
-}
-
-bool MathObject::isValid() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const auto* e) {
-        return e->getState().getStatus() == State::VALID;
-      },
-      [](const mathobj::Parametric* p) {
-        return p->obj1->isValid() and p->obj2->isValid();
-      },
-      [](std::monostate) { return false; },
-    },
-    backend
-  );
-}
-
 size_t MathObject::getRevision() const
 {
   return std::visit(
@@ -222,9 +190,17 @@ size_t MathObject::getRevision() const
   );
 }
 
-QString MathObject::getName() const
+State MathObject::sync()
 {
-  return std::visit(
+  State oldState = state;
+
+  state = std::visit(zc::utils::overloaded{
+    [](std::monostate) { return State(); },
+    [](auto* e) { return e->sync(); },
+  }, backend);
+
+  QString old_name = name;
+  name = std::visit(
     zc::utils::overloaded{
       [](const auto* e) {
         return e->getName();
@@ -236,28 +212,35 @@ QString MathObject::getName() const
     },
     backend
   );
-}
 
-State MathObject::sync()
-{
-  State oldState = state;
+  const bool old_continuous = continuous;
+  const bool old_discrete = discrete;
+  std::visit(
+    zc::utils::overloaded{
+      [&](const auto* c) {
+        continuous = c->isContinuous();
+        discrete = c->isDiscrete();
+      },
+      [&](const mathobj::Parametric* p) {
+        continuous = p->obj1->isContinuous() and p->obj2->isContinuous();
+        discrete = p->obj1->isDiscrete() or p->obj2->isDiscrete();
+      },
+      [&](std::monostate) {
+        continuous = false;
+        discrete = false;
+      },
+    },
+    backend
+  );
 
-  state = std::visit(zc::utils::overloaded{
-    [](std::monostate) { return State(); },
-    [](auto* e) { return e->sync(); },
-  }, backend);
+  if (old_discrete != discrete or old_continuous != continuous)
+    emit continuityChanged();
+
+  if (old_name != name)
+    emit nameChanged();
 
   if (oldState != state)
-    emit stateChanged(this);
-
-  if (not style)
-    return state;
-
-  if (isDiscrete())
-    style->setObjectType(PlotStyle::Discrete);
-  else if (isContinuous())
-    style->setObjectType(PlotStyle::Continuous);
-  else style->setObjectType(PlotStyle::NonRepresentable);
+    emit stateChanged();
 
   return state;
 }

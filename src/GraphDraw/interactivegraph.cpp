@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "GraphDraw/interactivegraph.h"
+#include "MathObjects/mathworld.h"
 #include "information.h"
 
 #include <QQuickWindow>
@@ -46,6 +47,7 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
   connect(&information, SIGNAL(axesSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(gridSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(dataUpdated()), this, SLOT(update()));
+  connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
 }
 
 void InteractiveGraph::updateWidgetSize()
