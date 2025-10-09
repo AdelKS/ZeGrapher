@@ -29,7 +29,7 @@ Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
 
 Sampler::SamplingSettings::SamplingSettings(const zg::MathObject& obj, const zg::PlotStyle& style)
 {
-  step = style.step;
+  step = style.getStep();
   coordinateSystem = style.coordinateSystem;
   revision = obj.getRevision();
 }
@@ -51,7 +51,14 @@ void Sampler::refresh_valid_objects()
     auto discrete_curve_node = discrete_curves.extract(f);
     auto continuous_curve_node = continuous_curves.extract(f);
 
-    if (not style or not f->isValid())
+    if (not style or not f->isValid()
+        or not bool(style->start)
+        or not bool(style->end)
+        or (f->isDiscrete() and not bool(style->step))
+        or std::isnan(style->start->getValue())
+        or std::isnan(style->start->getValue())
+        or (f->isDiscrete() and not std::isnan(style->step->getValue()))
+        )
       continue;
 
     const auto sampling_settings = SamplingSettings(*f, *style);

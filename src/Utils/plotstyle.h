@@ -24,6 +24,8 @@
 #include <QObject>
 #include <QtQmlIntegration>
 
+#include "MathObjects/expr.h"
+
 #include "GraphDraw/axismapper.h"
 
 namespace zg {
@@ -41,9 +43,9 @@ struct PlotStyle: QObject {
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(ObjectType objectType WRITE setObjectType MEMBER objectType NOTIFY objectTypeChanged)
-  Q_PROPERTY(double start WRITE setStart READ getStart NOTIFY rangeChanged)
-  Q_PROPERTY(double end WRITE setEnd READ getEnd NOTIFY rangeChanged)
-  Q_PROPERTY(double step WRITE setStep READ getStep NOTIFY rangeChanged)
+  Q_PROPERTY(mathobj::Expr* start MEMBER start)
+  Q_PROPERTY(mathobj::Expr* end MEMBER end)
+  Q_PROPERTY(mathobj::Expr* step MEMBER step)
 
 public:
 
@@ -58,9 +60,15 @@ public:
 
   explicit PlotStyle(QObject *parent = nullptr);
 
-  Q_INVOKABLE double getStart();
-  Q_INVOKABLE double getEnd();
-  Q_INVOKABLE double getStep();
+  mathobj::Expr* start = nullptr;
+  mathobj::Expr* end = nullptr;
+  mathobj::Expr* step = nullptr;
+
+  zg::real_unit getStart() const;
+  zg::real_unit getEnd() const;
+  zg::real_unit getStep() const;
+
+  zg::real_range1d getRange() const;
 
   bool visible = true;
   QColor color = Qt::black;
@@ -71,13 +79,8 @@ public:
   CoordinateSystem coordinateSystem = Cartesian;
 
   ObjectType objectType = NonRepresentable;
-  zg::real_range1d range;
-  zg::real_unit step = {1.};
 
 public slots:
-  void setStart(double);
-  void setEnd(double);
-  void setStep(double);
   void setObjectType(ObjectType);
 
 signals:

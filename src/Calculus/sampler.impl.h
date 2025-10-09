@@ -18,7 +18,7 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
   auto get_acceptable_input = [&](zg::real_unit x)
   {
     if constexpr (t == zg::CurveType::DISCRETE)
-      return std::round(std::max(0., x.v) / data.style.step.v) * data.style.step;
+      return std::round(std::max(0., x.v) / data.style.getStep().v) * data.style.getStep();
     else return x;
   };
   auto dispatcher = zc::utils::overloaded{
@@ -77,18 +77,20 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
   const std::vector<zg::real_unit>& input_vals = data.get_input();
   const std::vector<zg::real_pt>& curve = data.get_curve();
 
+  const auto range = data.style.getRange();
+
   // clear from the right
   if (not input_vals.empty())
   {
     size_t vals_to_pop = 0;
-    const auto max = get_acceptable_input(data.style.range.max);
+    const auto max = get_acceptable_input(range.max);
     while (vals_to_pop < input_vals.size() and input_vals[input_vals.size() - vals_to_pop - 1] > max)
       vals_to_pop++;
 
     data.pop_back(vals_to_pop);
 
     vals_to_pop = 0;
-    const auto min = get_acceptable_input(data.style.range.min);
+    const auto min = get_acceptable_input(range.min);
     while (vals_to_pop < input_vals.size() and input_vals[vals_to_pop] < min)
       vals_to_pop++;
 
@@ -107,12 +109,12 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
   }(handle);
 
   qDebug() << "Object caching: " << obj_name
-    << " sampling range: min=" << QString::number(data.style.range.min.v, 'g', 14)
-    << " max=" << QString::number(data.style.range.max.v, 'g', 14);
+    << " sampling range: min=" << QString::number(range.min.v, 'g', 14)
+    << " max=" << QString::number(range.max.v, 'g', 14);
 
   {
     const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
-    const auto min = get_acceptable_input(data.style.range.min);
+    const auto min = get_acceptable_input(range.min);
     const auto min_pt = get_f_pt(min);
     if (curve.empty()
         or (input_vals.front() - min >= smallest_allowed_step
@@ -124,7 +126,7 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
   }
   {
     const zg::real_unit smallest_allowed_step = data.get_smallest_allowed_step();
-    const auto max = get_acceptable_input(data.style.range.max);
+    const auto max = get_acceptable_input(range.max);
     const auto max_pt = get_f_pt(max);
     if (curve.size() == 1
         or (max - input_vals.front() >= smallest_allowed_step

@@ -15,9 +15,9 @@ Item {
   property int pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
   property int coordinateSystem: coordinates.currentValue
 
-  property alias start: startEdit.value
-  property alias end: endEdit.value
-  property alias step: stepEdit.value
+  property alias start: startEdit.backend
+  property alias end: endEdit.backend
+  property alias step: stepEdit.backend
 
   property int implicitHeight: mainLayout.implicitHeight
 

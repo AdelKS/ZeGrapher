@@ -74,16 +74,16 @@ template <CurveType t>
 zg::real_unit SampledCurve<t>::get_biggest_allowed_step() const
 {
   if constexpr (t == CurveType::DISCRETE)
-    return std::max(std::round(style.range.amplitude() / double(min_size) / style.step) * style.step, style.step);
-  else return style.range.amplitude() / double(min_size);
+    return std::max(std::round(style.getRange().amplitude() / double(min_size) / style.getStep()) * style.getStep(), style.getStep());
+  else return style.getRange().amplitude() / double(min_size);
 };
 
 template <CurveType t>
 zg::real_unit SampledCurve<t>::get_smallest_allowed_step() const
 {
   if constexpr (t == CurveType::DISCRETE)
-    return std::max(std::round(style.range.amplitude() / double(max_size) / style.step) * style.step, style.step);
-  else return style.range.amplitude() / double(max_size);
+    return std::max(std::round(style.getRange().amplitude() / double(max_size) / style.getStep()) * style.getStep(), style.getStep());
+  else return style.getRange().amplitude() / double(max_size);
 };
 
 template <CurveType t>

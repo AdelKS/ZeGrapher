@@ -18,34 +18,30 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::updated, &information, &Information::styleUpdated);
 }
 
-double PlotStyle::getStart()
+zg::real_unit PlotStyle::getStart() const
 {
-  return range.min.v;
+  if (start)
+    return {start->getValue()};
+  else return {std::nan("")};
 }
 
-double PlotStyle::getEnd()
+zg::real_unit PlotStyle::getEnd() const
 {
-  return range.max.v;
+  if (end)
+    return {end->getValue()};
+  else return {std::nan("")};
 }
 
-double PlotStyle::getStep()
+zg::real_unit PlotStyle::getStep() const
 {
-  return step.v;
+  if (step)
+    return {step->getValue()};
+  else return {std::nan("")};
 }
 
-void PlotStyle::setStart(double v)
+zg::real_range1d PlotStyle::getRange() const
 {
-  range.min.v = v;
-}
-
-void PlotStyle::setEnd(double v)
-{
-  range.max.v = v;
-}
-
-void PlotStyle::setStep(double v)
-{
-  step.v = v;
+  return real_range1d{.min = getStart(), .max = getEnd()};
 }
 
 void PlotStyle::setObjectType(ObjectType newObjectType)
