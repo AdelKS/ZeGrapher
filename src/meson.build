@@ -26,6 +26,7 @@ source_files = files(
   './MathObjects/namedref.cpp',
   './MathObjects/parametric.cpp',
   './structures.cpp',
+  './Utils/graphrange.cpp',
   './Utils/highlighter.cpp',
   './Utils/plotstyle.cpp',
   './Utils/state.cpp',
@@ -52,6 +53,7 @@ moc_header_files = files(
   './MathObjects/mathworld.h',
   './MathObjects/namedref.h',
   './MathObjects/parametric.h',
+  './Utils/graphrange.h',
   './Utils/highlighter.h',
   './Utils/plotstyle.h',
 )
@@ -94,6 +96,7 @@ qmlcpp_files = files(
   './MathObjects/namedref.h',
   './MathObjects/parametric.h',
   './structures.h',
+  './Utils/graphrange.h',
   './Utils/highlighter.h',
   './Utils/plotstyle.h',
   './Utils/state.h',

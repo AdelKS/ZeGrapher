@@ -37,9 +37,13 @@ Graph::Graph(QQuickItem *parent)
   additionalMargin = 0;
   bold = italic = underline = false;
   numPrec = NUM_PREC;
-  viewMapper.setGraphRange(information.getGraphRange());
 
-  connect(&information, SIGNAL(graphRangeChanged(GraphRange)), this, SLOT(graphRangeChanged(GraphRange)));
+  if (information.graph_range)
+    viewMapper.setGraphRange(information.graph_range->snapshot());
+  else
+    viewMapper.setGraphRange(
+      zg::real_range2d{.x = {.min = {-10.}, .max = {10.}}, .y = {.min = {-10.}, .max = {10.}}});
+
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
@@ -51,12 +55,6 @@ Graph::Graph(QQuickItem *parent)
 void Graph::updateSettingsVals()
 {
   sampler.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
-}
-
-void Graph::graphRangeChanged(const GraphRange &range)
-{
-  viewMapper.setGraphRange(range);
-  update();
 }
 
 void Graph::setNumPrec(int prec)

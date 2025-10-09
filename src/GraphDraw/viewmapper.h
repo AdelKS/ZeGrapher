@@ -61,7 +61,7 @@ public:
   template <plane q, plane p, plane r>
   point<u<q>> to(unit<u<p>> x_val, unit<u<r>> y_val) const;
 
-  void setGraphRange(const GraphRange& range);
+  void setGraphRange(const real_range2d& range);
   void setAxesSettings(const ZeAxesSettings& axesSettings);
 
 protected:

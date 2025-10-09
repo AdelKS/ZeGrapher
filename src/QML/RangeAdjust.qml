@@ -11,14 +11,20 @@ Rectangle {
 
   color: myPalette.window
 
+  GraphRange {
+    id: graphRange
+    x.min: xminEdit.backend
+    x.max: xmaxEdit.backend
+    y.min: yminEdit.backend
+    y.max: ymaxEdit.backend
+  }
+
   function checkHorizontalWindow() {
     console.debug("checking x range: ", xminEdit.value, " to ", xmaxEdit.value);
     var oldVal = disableSignals;
     root.disableSignals = true;
     if (xminEdit.value < xmaxEdit.value) {
       console.debug("Updating information singleton with new x range.");
-      Information.range.x.min = xminEdit.value;
-      Information.range.x.max = xmaxEdit.value;
       xminEdit.customErrorMsg = "";
       xmaxEdit.customErrorMsg = "";
     } else {
@@ -35,8 +41,6 @@ Rectangle {
     root.disableSignals = true;
     if (yminEdit.value < ymaxEdit.value) {
       console.debug("Updating information singleton with new y range.");
-      Information.range.y.min = yminEdit.value;
-      Information.range.y.max = ymaxEdit.value;
       yminEdit.customErrorMsg = "";
       ymaxEdit.customErrorMsg = "";
     } else {
@@ -45,20 +49,6 @@ Rectangle {
       ymaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
     }
     disableSignals = oldVal;
-  }
-
-  Connections {
-    target: Information
-    function onGraphRangeChanged() {
-      console.debug("new graph range from information singleton")
-      root.disableSignals = true;
-      ymaxEdit.expression = Number(Information.range.y.max).toLocaleString();
-      yminEdit.expression = Number(Information.range.y.min).toLocaleString();
-      xmaxEdit.expression = Number(Information.range.x.max).toLocaleString();
-      xminEdit.expression = Number(Information.range.x.min).toLocaleString();
-      root.disableSignals = false;
-    }
-    enabled: !root.disableSignals
   }
 
   TextEdit {
@@ -187,5 +177,9 @@ Rectangle {
       }
       enabled: !root.disableSignals
     }
+  }
+
+  Component.onCompleted: {
+    Information.range = graphRange;
   }
 }

@@ -506,7 +506,8 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
         .x = zg::pixel_unit{double(-dr.x())},
         .y = zg::pixel_unit{double(-dr.y())},
       });
-      information.setGraphRange(viewMapper.getRange<zg::real>().toGraphRange());
+      if (information.graph_range)
+        information.graph_range->update(viewMapper.getRange<zg::real>());
       break;
     case RESIZE_GRAPH_TOPLEFT_CORNER:
       figureRect.setTopLeft(figureRect.topLeft() + dr);

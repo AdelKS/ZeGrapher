@@ -21,11 +21,11 @@
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
-#include "MathObjects/mathobject.h"
-
 #include <QtQml/qqmlregistration.h>
 
 #include <zecalculator/zecalculator.h>
+
+#include "Utils/graphrange.h"
 
 namespace zg {
   struct PlotStyle;
@@ -37,7 +37,7 @@ class Information: public QObject
 
   Q_PROPERTY(
     ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
-  Q_PROPERTY(GraphRange range READ getGraphRange WRITE setGraphRange NOTIFY graphRangeChanged)
+  Q_PROPERTY(zg::GraphRange* range MEMBER graph_range)
   Q_PROPERTY(ZeZoomSettings graphZoomSettings READ getGraphZoomSettings WRITE setGraphZoomSettings
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
@@ -52,7 +52,6 @@ public:
   const ZeGridSettings& getGridSettings() const;
   const ZeAxesSettings& getAxesSettings() const;
   const ZeGraphSettings& getEstheticSettings() const;
-  const GraphRange& getGraphRange() const;
   const ZeAppSettings& getAppSettings() const;
 
   QPalette getValidSyntaxPalette() const;
@@ -61,9 +60,10 @@ public:
   void setExportFileName(QString fileName);
   QString getExportFileName();
 
+  zg::GraphRange* graph_range = nullptr;
+
 signals:
   void newOrthonormalityState(bool orth);
-  void graphRangeChanged(GraphRange range);
   void styleUpdated();
   void dataUpdated();
   void updateOccured();
@@ -83,7 +83,6 @@ public slots:
   void emitDrawStateUpdate();
   void emitAnimationUpdate();
 
-  void setGraphRange(const GraphRange& range);
   void setOrthonormal(bool state);
   void setGraphSizeSettings(const ZeSizeSettings& graphSizeSettings);
   void setGraphZoomSettings(const ZeZoomSettings& zoomSettings);
@@ -96,7 +95,6 @@ public:
   zc::eval::Cache mathObjectCache;
 
 protected:
-  GraphRange range;
   ZeZoomSettings zoomSettings;
   ZeSizeSettings sizeSettings;
   ZeAxesSettings axesSettings;

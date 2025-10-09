@@ -41,15 +41,10 @@ QRectF ZeViewMapper::getGraphRect() const
   return QRectF(xr.min.v, yr.min.v, xr.amplitude().v, yr.amplitude().v);
 }
 
-void ZeViewMapper::setGraphRange(const GraphRange &range)
+void ZeViewMapper::setGraphRange(const real_range2d& range)
 {
-  using view_unit = u<plane::view>;
-
-  x.setRange(
-    Range1D<view_unit>{.min = unit<view_unit>{range.x.min}, .max = unit<view_unit>{range.x.max}});
-
-  y.setRange(
-    Range1D<view_unit>{.min = unit<view_unit>{range.y.min}, .max = unit<view_unit>{range.y.max}});
+  x.setRange(range.x);
+  y.setRange(range.y);
 }
 
 void ZeViewMapper::enforceOrthonormality()

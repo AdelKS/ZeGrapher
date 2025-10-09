@@ -45,8 +45,6 @@ public slots:
   void setItalic(bool state);
   void setNumPrec(int prec);
 
-  void graphRangeChanged(const GraphRange& range);
-
   virtual void paint(QPainter *p) override;
 
 protected slots:

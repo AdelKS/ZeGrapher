@@ -72,6 +72,9 @@ struct Range1D
   Range1D& translate(unit<U> vec) { min += vec; max += vec; return *this; }
   Range1D translated(unit<U> vec) const { return Range1D{.min = min + vec, .max = max + vec}; }
   bool contains(unit<U> x) const { return min <= x and x <= max; }
+  Range1D& operator /= (double c) { min /= c; max /= c; return *this; }
+  Range1D& operator *= (double c) { min *= c; max *= c; return *this; }
+  Range1D& operator -= (unit<U> c) { min -= c; max -= c; return *this; }
   std::optional<Range1D> intersection(const Range1D& other) const
   {
     if (other.max <= min or max <= other.min)
@@ -149,12 +152,6 @@ struct Range2D
   Range2D& translate(point<U> vec) { x.translate(vec.x); y.translate(vec.y); return *this; }
   Range2D translated(point<U> vec) const { return Range1D{.x = x.translated(vec.x), .y = y.translated(vec.y)}; }
   bool contains(point<U> pt) const { return x.contains(pt.x) and y.contains(pt.y); }
-
-  GraphRange toGraphRange() const
-  {
-    return GraphRange{.x = ZeAxisRange{.min = x.min.v, .max = x.max.v},
-                      .y = ZeAxisRange{.min = y.min.v, .max = y.max.v}};
-  }
 };
 
 }

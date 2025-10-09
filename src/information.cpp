@@ -38,16 +38,6 @@ void Information::emitAnimationUpdate()
   emit animationUpdate();
 }
 
-void Information::setGraphRange(const GraphRange& range)
-{
-  if (this->range != range)
-  {
-    this->range = range;
-
-    emit graphRangeChanged(range);
-  }
-}
-
 QPalette Information::getValidSyntaxPalette() const
 {
   QPalette validPalette;
@@ -87,11 +77,6 @@ const ZeGridSettings& Information::getGridSettings() const
 const ZeAxesSettings& Information::getAxesSettings() const
 {
   return axesSettings;
-}
-
-const GraphRange& Information::getGraphRange() const
-{
-  return range;
 }
 
 const ZeAppSettings& Information::getAppSettings() const

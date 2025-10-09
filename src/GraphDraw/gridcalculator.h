@@ -101,7 +101,7 @@ public:
 
 protected:
   template <ZeAxisName axis>
-  int getMaxStrPxSize(const ZeAxisRange &range, double realStep, const QFontMetrics &metrics);
+  int getMaxStrPxSize(const zg::real_range1d &range, double realStep, const QFontMetrics &metrics);
 
   QString get_coordinate_string(const ZeLinAxisSettings &axisSettings, double multiplier);
 
@@ -109,15 +109,15 @@ protected:
 };
 
 template <ZeAxisName axis>
-int GridCalculator::getMaxStrPxSize(const ZeAxisRange &scaled_range,
+int GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
                                     double realStep,
                                     const QFontMetrics &metrics)
 {
-  double multiplier = floor(scaled_range.min / realStep) * realStep;
+  double multiplier = floor(scaled_range.min.v / realStep) * realStep;
   int maxStrPxSize = 0, currentStrPxSize = 0;
   QString posStr;
 
-  while (multiplier < scaled_range.max)
+  while (multiplier < scaled_range.max.v)
   {
     if constexpr (axis == ZeAxisName::X)
     {
@@ -179,12 +179,11 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
       baseMultiplier = 2;
   };
 
-  ZeAxisRange range{.min = axis_mapper.template getMin<zg::real>().v,
-                    .max = axis_mapper.template getMax<zg::real>().v};
+  zg::real_range1d range = axis_mapper.template getRange<zg::real>();
 
   const double windowWidth = axis_mapper.template getRange<zg::pixel>().amplitude().v;
 
-  double pxPerUnit = windowWidth / range.amplitude();
+  double pxPerUnit = windowWidth / range.amplitude().v;
 
   ZeLinAxisTicks axisTicks;
 
@@ -194,7 +193,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
   const double &constantMultiplier = axisSettings.constantMultiplier;
 
-  ZeAxisRange scaledOffsetRange(range), offsetRange(range);
+  zg::real_range1d scaledOffsetRange(range), offsetRange(range);
   scaledOffsetRange /= constantMultiplier;
   offsetRange /= constantMultiplier;
 
@@ -213,9 +212,9 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   // TODO: start from biggest step, which is lround(log10(scaledRange.amplitude())) then go down and down till
   // there's no more space for writing numbers
 
-  int amplitudePower = lround(log10(scaledOffsetRange.amplitude())) + 1;
+  int amplitudePower = lround(log10(scaledOffsetRange.amplitude().v)) + 1;
   int rangeEdgePower = lround(
-    log10(std::max(fabs(scaledOffsetRange.min), fabs(scaledOffsetRange.max))));
+    log10(std::max(fabs(scaledOffsetRange.min.v), fabs(scaledOffsetRange.max.v))));
 
   // if the range goes from 5434645.345434 to 5434645.345436
   // these digits:          ^^^^^^^^^^^^^     ^^^^^^^^^^^^^
@@ -224,9 +223,9 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   int power_diff = rangeEdgePower - amplitudePower;
   if (power_diff >= axisSettings.maxDigitsNum - 2)
   {
-    axisTicks.offset.sumOffset = trunc(scaledOffsetRange.min * int_pow(10.0, -amplitudePower))
+    axisTicks.offset.sumOffset = trunc(scaledOffsetRange.min.v * int_pow(10.0, -amplitudePower))
                                  / int_pow(10.0, -amplitudePower);
-    offsetRange -= axisTicks.offset.sumOffset;
+    offsetRange -= zg::real_unit{axisTicks.offset.sumOffset};
 
     int sumOffsetPow = lround(log10(axisTicks.offset.sumOffset));
     if (-sumOffsetPow >= axisSettings.maxDigitsNum)
@@ -234,7 +233,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   }
 
   scaledOffsetRange = offsetRange;
-  int targetPower = lround(log10(scaledOffsetRange.amplitude() / targetTicksNum));
+  int targetPower = lround(log10(scaledOffsetRange.amplitude().v / targetTicksNum));
 
   while (not goodSpacing)
   {
@@ -242,7 +241,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     {
       scaledOffsetRange = offsetRange;
       scaledOffsetRange *= int_pow(10.0, -targetPower);
-      pxPerUnit = windowWidth / scaledOffsetRange.amplitude();
+      pxPerUnit = windowWidth / scaledOffsetRange.amplitude().v;
 
       axisTicks.offset.basePowerOffset = targetPower;
       targetPower = 0;
@@ -286,7 +285,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   // qDebug() << axisNameStr << " Max range power " << maxRangePower;
   // qDebug() << axisNameStr << " step power " << targetPower;
 
-  double multiplier = (floor(scaledOffsetRange.min / realStep) - 1) * realStep;
+  double multiplier = (floor(scaledOffsetRange.min.v / realStep) - 1) * realStep;
   double power_offset = int_pow(10.0, axisTicks.offset.basePowerOffset);
 
   // TODO: offset is not good, figure it out
@@ -306,7 +305,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
     axisTicks.ticks.push_back(tick);
   }
-  while (multiplier < scaledOffsetRange.max);
+  while (multiplier < scaledOffsetRange.max.v);
 
   return axisTicks;
 }
