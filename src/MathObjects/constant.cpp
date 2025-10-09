@@ -22,8 +22,9 @@ State Constant::setName(QString new_input_name)
   return sync();
 }
 
-bool Constant::isValid() const
+bool Constant::isValid()
 {
+  sync();
   return getState().isValid();
 }
 

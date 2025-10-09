@@ -48,7 +48,7 @@ public:
   bool isDiscrete() const;
   bool isContinuous() const;
 
-  Q_INVOKABLE bool isValid() const;
+  Q_INVOKABLE bool isValid();
 
   const zc::DynMathObject<zc_t>* getZcObject() const;
 

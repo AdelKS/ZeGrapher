@@ -44,7 +44,7 @@ public:
   Q_INVOKABLE QString getName() const;
   State sync();
 
-  Q_INVOKABLE bool isValid() const;
+  Q_INVOKABLE bool isValid();
 
 signals:
   void updated();

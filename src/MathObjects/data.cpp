@@ -41,8 +41,9 @@ State Data::setData(QString name, std::vector<std::string> values)
   return getState();
 }
 
-bool Data::isValid() const
+bool Data::isValid()
 {
+  sync();
   return getState().isValid();
 }
 

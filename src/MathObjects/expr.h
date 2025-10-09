@@ -43,8 +43,8 @@ public:
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State setImplicitName(QString name);
   State sync();
-  Q_INVOKABLE double getValue() const { return value; };
-  Q_INVOKABLE bool isValid() const;
+  Q_INVOKABLE double getValue();
+  Q_INVOKABLE bool isValid();
 
   QString getName() const { return implicitName; };
 

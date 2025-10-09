@@ -45,7 +45,7 @@ public:
 
   Q_INVOKABLE void set_value(double val);
 
-  Q_INVOKABLE bool isValid() const;
+  Q_INVOKABLE bool isValid();
 
 signals:
   void updated();

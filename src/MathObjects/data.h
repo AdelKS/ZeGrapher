@@ -47,7 +47,7 @@ public:
   QString getName() const { return input_name; }
 
   State sync();
-  Q_INVOKABLE bool isValid() const;
+  Q_INVOKABLE bool isValid();
 
 signals:
   void updated();

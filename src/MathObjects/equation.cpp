@@ -23,8 +23,9 @@ State Equation::setEquation(QString eq)
   return getState();
 }
 
-bool Equation::isValid() const
+bool Equation::isValid()
 {
+  sync();
   return getState().isValid();
 }
 

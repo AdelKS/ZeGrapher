@@ -22,8 +22,9 @@ State NamedRef::setName(QString new_input_name)
   return getState();
 }
 
-bool NamedRef::isValid() const
+bool NamedRef::isValid()
 {
+  sync();
   return getState().isValid();
 }
 

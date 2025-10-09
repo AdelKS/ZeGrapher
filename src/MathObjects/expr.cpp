@@ -9,8 +9,9 @@ Expr::Expr(QObject *parent)
 {
 }
 
-bool Expr::isValid() const
+bool Expr::isValid()
 {
+  sync();
   return getState().isValid();
 }
 
@@ -44,11 +45,16 @@ void Expr::updateValue()
   double old_value = value;
   if (exp_res)
     value = zg::real_unit{*exp_res}.v;
-  else value = std::nan("");
 
   if (old_value != value)
     emit valueChanged();
 }
+
+double Expr::getValue()
+{
+  sync();
+  return value;
+};
 
 State Expr::setExpression(QString expr)
 {
