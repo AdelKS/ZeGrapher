@@ -5,9 +5,7 @@ import QtQuick
 Item {
   id: root
 
-  readonly property MathObject mathObj: MathWorld.addAltMathObject(MathObject.EXPR)
-
-  property Expr backend: mathObj.getExpr()
+  property Expr backend: MathWorld.addAltExprObject()
 
   property double value
   property string implicitName
@@ -50,6 +48,6 @@ Item {
   }
 
   Component.onDestruction: {
-    MathWorld.removeMathObject(mathObj);
+    MathWorld.removeAltExprObject(backend);
   }
 }

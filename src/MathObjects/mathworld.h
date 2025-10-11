@@ -54,10 +54,9 @@ public:
   /// @brief attaches the plotstyle to the given mathobject
   Q_INVOKABLE void attachStyle(MathObject*, PlotStyle*);
 
-  /// @brief add math object but that is not part of the list
-  /// @note because it's used in separate widgets
-  /// @note but we still need to forward sync requests so we track them here
-  Q_INVOKABLE MathObject* addAltMathObject(MathObject::Type type);
+  /// @brief add Expr object that is not part of the model because its widget is elsewhere
+  Q_INVOKABLE mathobj::Expr* addAltExprObject();
+  Q_INVOKABLE void removeAltExprObject(mathobj::Expr*);
 
   QHash<int, QByteArray> roleNames() const override;
 

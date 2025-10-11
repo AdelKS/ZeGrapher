@@ -34,6 +34,16 @@ void MathWorld::removeMathObject(MathObject* obj)
   endRemoveRows();
 }
 
+void MathWorld::removeAltExprObject(mathobj::Expr* expr)
+{
+  auto it = std::ranges::find_if(altMathObjects, [&](MathObject* obj){ return obj->getExpr() == expr; });
+  if (it == altMathObjects.end())
+    return;
+
+  (*it)->deleteLater();
+  altMathObjects.erase(it);
+}
+
 void MathWorld::attachStyle(MathObject* obj, PlotStyle* style)
 {
   auto it = std::ranges::find(mathObjects, obj, &std::pair<zg::MathObject*, PlotStyle*>::first);
@@ -53,12 +63,12 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
   return mathObjects.back().first;
 }
 
-MathObject* MathWorld::addAltMathObject(MathObject::Type type)
+mathobj::Expr* MathWorld::addAltExprObject()
 {
-  altMathObjects.emplace_back(new zg::MathObject(this, type));
+  altMathObjects.emplace_back(new zg::MathObject(this, MathObject::EXPR));
   connect(altMathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
   connect(altMathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
-  return altMathObjects.back();
+  return altMathObjects.back()->getExpr();
 }
 
 void MathWorld::objectUpdated()
