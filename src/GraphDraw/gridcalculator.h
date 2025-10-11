@@ -23,7 +23,7 @@
 #include <QObject>
 
 #include "axismapper.h"
-#include "information.h"
+#include "globalvars.h"
 #include "structures.h"
 
 #define TARGET_TICKS_NUM 20

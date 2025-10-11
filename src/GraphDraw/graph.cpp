@@ -19,8 +19,7 @@
 ****************************************************************************/
 
 #include "GraphDraw/graph.h"
-#include "information.h"
-#include "MathObjects/mathworld.h"
+#include "globalvars.h"
 
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent), MathObjectDraw(), gridCalculator(this),

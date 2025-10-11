@@ -21,7 +21,7 @@
 #include <cmath>
 
 #include "Utils/graphrange.h"
-#include "MathObjects/expr.h"
+#include "globalvars.h"
 
 namespace zg {
 

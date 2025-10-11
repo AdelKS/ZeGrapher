@@ -19,8 +19,7 @@
 ****************************************************************************/
 
 #include "GraphDraw/interactivegraph.h"
-#include "MathObjects/mathworld.h"
-#include "information.h"
+#include "globalvars.h"
 
 #include <QQuickWindow>
 

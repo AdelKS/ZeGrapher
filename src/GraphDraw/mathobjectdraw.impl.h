@@ -1,6 +1,6 @@
 #pragma once
 
-#include "information.h"
+#include "globalvars.h"
 #include "mathobjectdraw.h"
 
 template <zg::CurveType t>

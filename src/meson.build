@@ -84,6 +84,7 @@ qml_files = files(
 qmlcpp_files = files(
   './DataPlot/csvpreviewmodel.h',
   './DataPlot/datatablemodel.h',
+  './globalvars.h',
   './GraphDraw/interactivegraph.h',
   './information.h',
   './MathObjects/BuildingBlocks/stateful.h',

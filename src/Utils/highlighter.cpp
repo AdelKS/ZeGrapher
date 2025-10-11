@@ -1,5 +1,5 @@
 #include "highlighter.h"
-#include "information.h"
+#include "globalvars.h"
 
 #include <zecalculator/zecalculator.h>
 

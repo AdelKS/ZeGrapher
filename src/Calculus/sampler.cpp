@@ -20,7 +20,7 @@
 
 #include "Calculus/sampler.h"
 #include "Utils/sampledcurve.impl.h"
-#include "MathObjects/mathworld.h"
+#include "globalvars.h"
 #include "sampler.impl.h"
 
 Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
