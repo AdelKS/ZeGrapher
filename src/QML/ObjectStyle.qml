@@ -6,26 +6,14 @@ import QtQuick.Controls
 
 Item {
   id: root
-
-  property double lineWidth: Number(lineWidthSpinBox.value) / 10.0
-  property int lineStyle: lineStyleModel.get(lineStyleTumbler.currentIndex).type
-
   property bool discrete: false
-  property double pointWidth: Number(pointWidthSpinBox.value) / 10.0
-  property int pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
-  property int coordinateSystem: coordinates.currentValue
-
-  property alias start: startEdit.backend
-  property alias end: endEdit.backend
-  property alias step: stepEdit.backend
+  property alias dataBackend: backend
 
   property int implicitHeight: mainLayout.implicitHeight
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
   onDiscreteChanged: {
-    console.debug('ObjectStyle: discrete changed: ', root.discrete);
-    if (root.discrete) {
+    console.debug('ObjectStyle: discrete changed: ', discrete);
+    if (discrete) {
       // last element of the lineStyleModel is no line
       lineStyleTumbler.currentIndex = lineStyleModel.count  - 1;
     } else {
@@ -33,17 +21,29 @@ Item {
     }
   }
 
-  onCoordinateSystemChanged: {
-    if (coordinateSystem === PlotStyle.Cartesian) {
-      startEdit.expression = "xmin";
-      endEdit.expression = "xmax";
-      stepEdit.expression = "1";
-    } else if (coordinateSystem === PlotStyle.Polar) {
-      startEdit.expression = "0";
-      endEdit.expression = "2*math::pi";
-      stepEdit.expression = "math::pi/12";
+  PlotStyle {
+    id: backend
+    lineStyle: lineStyleModel.get(lineStyleTumbler.currentIndex).type
+    lineWidth: Number(lineWidthSpinBox.value) / 10.0
+    pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
+    pointWidth: Number(pointWidthSpinBox.value) / 10.0
+    coordinateSystem: coordinates.currentValue
+
+    onCoordinateSystemChanged: {
+      if (coordinateSystem === PlotStyle.Cartesian) {
+        startEdit.expression = "xmin";
+        endEdit.expression = "xmax";
+        stepEdit.expression = "1";
+      } else if (coordinateSystem === PlotStyle.Polar) {
+        startEdit.expression = "0";
+        endEdit.expression = "2*math::pi";
+        stepEdit.expression = "math::pi/12";
+      }
     }
+
   }
+
+  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   GridLayout {
     id: mainLayout
@@ -200,11 +200,11 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
+        backend: backend.start
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
         id: startEdit
-        implicitName: "Start"
         expression: "xmin"
       }
 
@@ -227,11 +227,11 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
+        backend: backend.end
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
         id: endEdit
-        implicitName: "end"
         expression: "xmax"
       }
 
@@ -254,9 +254,9 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
+        backend: backend.step
 
         id: stepEdit
-        implicitName: "step"
         expression: "1"
       }
     }

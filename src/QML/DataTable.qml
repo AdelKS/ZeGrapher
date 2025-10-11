@@ -213,8 +213,9 @@ Item {
         ValueEdit {
           id: displayWidget
 
+          backend: MathWorld.addAltExprObject()
+
           anchors.fill: parent
-          implicitName: "tableCell"
 
           palette.base: root.interactive && item.current
             ? item.palette.accent
@@ -228,6 +229,10 @@ Item {
           enabled: false
 
           expression: { expression = display }
+
+          Component.onCompleted: backend.setImplicitName("tableCell")
+
+          Component.onDestruction : MathWorld.removeAltExprObject(backend)
         }
 
         TableView.onReused: {
@@ -241,11 +246,14 @@ Item {
 
           ValueEdit {
             id: valueEdit
-            implicitName: "editCell"
             anchors.fill: parent
             visible: root.interactive && item.editing
             expression: display
             exprEdit.lineEditBackend.textEdit.focus: true
+            backend: MathWorld.addAltExprObject();
+
+            Component.onCompleted: backend.setImplicitName("editCell")
+            Component.onDestruction: MathWorld.removeAltExprObject(backend)
           }
 
           TableView.onCommit: {

@@ -5,10 +5,8 @@ import QtQuick
 Item {
   id: root
 
-  property Expr backend: MathWorld.addAltExprObject()
+  required property Expr backend
 
-  property double value
-  property string implicitName
   property alias exprEdit: zcExprEdit
   property alias expression: zcExprEdit.expression
   property alias customErrorMsg: zcExprEdit.customErrorMsg
@@ -35,19 +33,15 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    highlighter.offset: implicitName.length + 1
+    highlighter.offset: root.backend.implicitName.length + 1
+
+    state: root.backend.state
 
     Component.onCompleted: root.backend.setExpression(expression)
   }
 
   Component.onCompleted: {
-    value = Qt.binding(function() { return backend.value; });
-    backend.implicitName = implicitName;
-    implicitName = Qt.binding(function() { return backend.implicitName; });
     console.debug("ValueEdit: backend=", backend);
-  }
-
-  Component.onDestruction: {
-    MathWorld.removeAltExprObject(backend);
+    refresh();
   }
 }

@@ -44,27 +44,27 @@ void MathObject::setType(Type t)
   else return; // backend is already correct
 
   switch (t) {
- case MONOSTATE:
+    case MONOSTATE:
       backend = std::monostate{};
-    break;
+      break;
     case EQUATION:
       backend = new mathobj::Equation(this);
-    break;
+      break;
     case EXPR:
       backend = new mathobj::Expr(this);
-    break;
+      break;
     case CONSTANT:
       backend = new mathobj::Constant(this);
-    break;
+      break;
     case NAMEDREF:
       backend = new mathobj::NamedRef(this);
-    break;
+      break;
     case DATA:
       backend = new mathobj::Data(this);
-    break;
+      break;
     case PARAMETRIC:
       backend = new mathobj::Parametric(this);
-    break;
+      break;
   }
 
   std::visit(

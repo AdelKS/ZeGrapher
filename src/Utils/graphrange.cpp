@@ -25,6 +25,18 @@
 
 namespace zg {
 
+ZeAxisRange::ZeAxisRange(QObject *parent)
+  : QObject(parent),
+    min(mathWorld.addAltExprObject()),
+    max(mathWorld.addAltExprObject())
+{}
+
+ZeAxisRange::~ZeAxisRange()
+{
+  mathWorld.removeAltExprObject(min);
+  mathWorld.removeAltExprObject(max);
+}
+
 double ZeAxisRange::amplitude() const
 {
   if (not min or not max) [[unlikely]]

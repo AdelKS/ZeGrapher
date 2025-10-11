@@ -37,11 +37,7 @@ Graph::Graph(QQuickItem *parent)
   bold = italic = underline = false;
   numPrec = NUM_PREC;
 
-  if (information.graph_range)
-    viewMapper.setGraphRange(information.graph_range->snapshot());
-  else
-    viewMapper.setGraphRange(
-      zg::real_range2d{.x = {.min = {-10.}, .max = {10.}}, .y = {.min = {-10.}, .max = {10.}}});
+  viewMapper.setGraphRange(information.getGraphRange()->snapshot());
 
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
@@ -197,6 +193,7 @@ void Graph::drawAll()
 {
   painter->setFont(information.getGraphSettings().graphFont);
   fontMetrics = painter->fontMetrics();
+  viewMapper.setGraphRange(information.getGraphRange()->snapshot());
 
   calculateTicksAndMargins();
   calculateTicksAndMargins();

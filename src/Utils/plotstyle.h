@@ -25,7 +25,6 @@
 #include <QtQmlIntegration>
 
 #include "MathObjects/expr.h"
-
 #include "GraphDraw/axismapper.h"
 
 namespace zg {
@@ -43,9 +42,9 @@ struct PlotStyle: QObject {
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(ObjectType objectType WRITE setObjectType MEMBER objectType NOTIFY objectTypeChanged)
-  Q_PROPERTY(mathobj::Expr* start MEMBER start)
-  Q_PROPERTY(mathobj::Expr* end MEMBER end)
-  Q_PROPERTY(mathobj::Expr* step MEMBER step)
+  Q_PROPERTY(mathobj::Expr* start READ getStartBackend)
+  Q_PROPERTY(mathobj::Expr* end READ getEndBackend)
+  Q_PROPERTY(mathobj::Expr* step READ getStepBackend)
 
 public:
 
@@ -59,10 +58,11 @@ public:
   Q_ENUM(CoordinateSystem);
 
   explicit PlotStyle(QObject *parent = nullptr);
+  ~PlotStyle();
 
-  mathobj::Expr* start = nullptr;
-  mathobj::Expr* end = nullptr;
-  mathobj::Expr* step = nullptr;
+  Q_INVOKABLE mathobj::Expr* getStartBackend() { return start; }
+  Q_INVOKABLE mathobj::Expr* getEndBackend() { return end; }
+  Q_INVOKABLE mathobj::Expr* getStepBackend() { return step; }
 
   zg::real_unit getStart() const;
   zg::real_unit getEnd() const;
@@ -95,6 +95,11 @@ signals:
   void coordinateSystemChanged();
   void rangeChanged();
   void objectTypeChanged();
+
+protected:
+  mathobj::Expr* start;
+  mathobj::Expr* end;
+  mathobj::Expr* step;
 };
 
 }

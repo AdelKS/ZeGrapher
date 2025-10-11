@@ -36,10 +36,11 @@ struct ZeAxisRange: QObject
 
 public:
 
-  ZeAxisRange(QObject *parent = nullptr) : QObject(parent) {};
+  ZeAxisRange(QObject *parent = nullptr);
+  ~ZeAxisRange();
 
-  mathobj::Expr* min = nullptr;
-  mathobj::Expr* max = nullptr;
+  mathobj::Expr* min;
+  mathobj::Expr* max;
 
   double amplitude() const;
 
@@ -60,7 +61,20 @@ struct GraphRange: QObject
 
 public:
   GraphRange(QObject* parent = nullptr)
-    : QObject(parent), x(new ZeAxisRange(this)), y(new ZeAxisRange(this)) {};
+    : QObject(parent), x(new ZeAxisRange(this)), y(new ZeAxisRange(this))
+  {
+    x->min->setImplicitName("xmin");
+    x->min->setExpression("-10");
+
+    x->max->setImplicitName("xmax");
+    x->max->setExpression("10");
+
+    y->min->setImplicitName("ymin");
+    y->min->setExpression("-10");
+
+    y->max->setImplicitName("ymax");
+    y->max->setExpression("10");
+  };
 
   ZeAxisRange* x;
   ZeAxisRange* y;

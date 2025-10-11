@@ -33,7 +33,7 @@ struct Expr : Stateful, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(double value READ getValue NOTIFY valueChanged)
-  Q_PROPERTY(QString expression WRITE setExpression MEMBER expression)
+  Q_PROPERTY(QString expression WRITE setExpression READ getExpression)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName NOTIFY implicitNameChanged)
 
 public:
@@ -44,6 +44,7 @@ public:
   Q_INVOKABLE State setImplicitName(QString name);
   State sync();
   Q_INVOKABLE double getValue();
+  Q_INVOKABLE QString getExpression() const { return expression; }
   Q_INVOKABLE bool isValid();
 
   QString getName() const { return implicitName; };

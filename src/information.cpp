@@ -20,7 +20,8 @@
 
 #include "information.h"
 
-Information::Information(QObject* parent): QObject(parent)
+Information::Information(QObject* parent):
+  QObject(parent), graph_range(new zg::GraphRange(this))
 {}
 
 void Information::emitDataUpdate()
@@ -82,6 +83,12 @@ const ZeAxesSettings& Information::getAxesSettings() const
 const ZeAppSettings& Information::getAppSettings() const
 {
   return appSettings;
+}
+
+void Information::setGraphRangeMouseEdit(const zg::real_range2d& snapshot)
+{
+  graph_range->update(snapshot);
+  emit rangeChangedWithMouse();
 }
 
 void Information::setOrthonormal([[maybe_unused]] bool state)

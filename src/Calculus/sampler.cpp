@@ -52,12 +52,10 @@ void Sampler::refresh_valid_objects()
     auto continuous_curve_node = continuous_curves.extract(f);
 
     if (not style or not f->isValid()
-        or not bool(style->start)
-        or not bool(style->end)
-        or (f->isDiscrete() and not bool(style->step))
-        or std::isnan(style->start->getValue())
-        or std::isnan(style->start->getValue())
-        or (f->isDiscrete() and not std::isnan(style->step->getValue()))
+        or std::isnan(style->getStart().v)
+        or std::isnan(style->getEnd().v)
+        or (f->isDiscrete() and std::isnan(style->getStep().v))
+        or style->getStart() >= style->getEnd()
         )
       continue;
 

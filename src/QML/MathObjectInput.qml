@@ -8,7 +8,6 @@ Rectangle {
 
   required property MathObject mathObj
 
-  property alias style: plotStyle
   property int deleteDuration: 250
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
@@ -50,20 +49,6 @@ Rectangle {
     root.height = 0;
     root.implicitHeight = 0;
     deleteMeTimer.start();
-  }
-
-  PlotStyle {
-    id: plotStyle
-    visible: !displayButton.checked
-    color: colorButton.selectedColor
-    lineStyle: styleWidget.lineStyle
-    lineWidth: styleWidget.lineWidth
-    pointStyle: styleWidget.pointStyle
-    pointWidth: styleWidget.pointWidth
-    coordinateSystem: styleWidget.coordinateSystem
-    start: styleWidget.start
-    end: styleWidget.end
-    step: styleWidget.step
   }
 
   ColumnLayout {
@@ -246,6 +231,8 @@ Rectangle {
       Layout.preferredHeight: preferredHeight
       clip: true
       discrete: mathObj.discrete
+      dataBackend.color: colorButton.selectedColor
+      dataBackend.visible: !displayButton.checked
 
       property int preferredHeight: 0
 
@@ -321,7 +308,7 @@ Rectangle {
   Component.onCompleted: {
     loader.sync();
     objectTypeTumbler.sync();
-    MathWorld.attachStyle(mathObj, style);
+    MathWorld.attachStyle(mathObj, styleWidget.dataBackend);
   }
 
 }

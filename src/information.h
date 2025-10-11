@@ -37,7 +37,7 @@ class Information: public QObject
 
   Q_PROPERTY(
     ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
-  Q_PROPERTY(zg::GraphRange* range MEMBER graph_range)
+  Q_PROPERTY(zg::GraphRange* range READ getGraphRange)
   Q_PROPERTY(ZeZoomSettings graphZoomSettings READ getGraphZoomSettings WRITE setGraphZoomSettings
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
@@ -53,14 +53,16 @@ public:
   const ZeAxesSettings& getAxesSettings() const;
   const ZeGraphSettings& getEstheticSettings() const;
   const ZeAppSettings& getAppSettings() const;
+  Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
+
+  /// @brief graph range change from user mouse interaction
+  void setGraphRangeMouseEdit(const zg::real_range2d&);
 
   QPalette getValidSyntaxPalette() const;
   QPalette getInvalidSyntaxPalette() const;
 
   void setExportFileName(QString fileName);
   QString getExportFileName();
-
-  zg::GraphRange* graph_range = nullptr;
 
 signals:
   void newOrthonormalityState(bool orth);
@@ -76,6 +78,7 @@ signals:
   void graphZoomSettingsChanged();
   void estheticSettingsChanged();
   void appSettingsChanged();
+  void rangeChangedWithMouse();
 
 public slots:
   void emitUpdateSignal();
@@ -102,6 +105,7 @@ protected:
   ZeGraphSettings graphSettings;
   ZeAppSettings appSettings;
   QString exportFileName;
+  zg::GraphRange* graph_range = nullptr;
 };
 
 #endif // INFORMATION_H
