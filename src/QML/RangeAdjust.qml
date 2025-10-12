@@ -10,29 +10,42 @@ Rectangle {
 
   color: myPalette.window
 
-  function checkHorizontalWindow() {
-    console.debug("checking x range: ", Information.range.x.min, " to ", Information.range.x.max);
-    if (Information.range.x.min >= Information.range.x.max) {
-      console.debug('setting x range as invalid');
-      xminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
-      xmaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
-    } else {
-      xminEdit.customErrorMsg = "";
-      xmaxEdit.customErrorMsg = "";
+  Connections {
+    target: Information.range.y
+    function onStateChanged() {
+      console.debug("Y range state change: ", Information.range.y.state)
+      if (Information.range.y.state) {
+        yminEdit.customErrorMsg = "";
+        ymaxEdit.customErrorMsg = "";
+      }
+      else {
+        if (!isNaN(Information.range.y.min.value) && !isNaN(Information.range.y.max.value) &&
+            Information.range.y.min.value >= Information.range.y.max.value) {
+          yminEdit.customErrorMsg = "<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>";
+          ymaxEdit.customErrorMsg = "<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>";
+        }
+      }
     }
   }
 
-  function checkVerticalWindow() {
-    console.debug("checking y range: ", Information.range.y.min, " to ", Information.range.y.max);
-    if (Information.range.y.min >= Information.range.y.max) {
-      console.debug('setting y range as invalid');
-      yminEdit.customErrorMsg = "<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>";
-      ymaxEdit.customErrorMsg = "<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>";
-    } else {
-      yminEdit.customErrorMsg = "";
-      ymaxEdit.customErrorMsg = "";
+  Connections {
+    target: Information.range.x
+    function onStateChanged() {
+      console.debug("X range state change: ", Information.range.x.state)
+      if (Information.range.x.state) {
+        xminEdit.customErrorMsg = "";
+        xmaxEdit.customErrorMsg = "";
+      }
+      else {
+        if (!isNaN(Information.range.x.min.value) && !isNaN(Information.range.x.max.value) &&
+            Information.range.x.min.value >= Information.range.x.max.value) {
+          xminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
+          xmaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
+        }
+      }
     }
   }
+
 
   Connections {
     target: Information
@@ -68,13 +81,6 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
     backend: Information.range.y.max
-
-    Connections {
-      target: Information.range.y.max
-      function onValueChanged() {
-        root.checkVerticalWindow();
-      }
-    }
   }
 
   TextEdit {
@@ -99,13 +105,6 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
     backend: Information.range.x.min
-
-    Connections {
-      target: Information.range.x.min
-      function onValueChanged() {
-        root.checkHorizontalWindow();
-      }
-    }
   }
 
 
@@ -131,13 +130,6 @@ Rectangle {
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
     backend: Information.range.x.max
-
-    Connections {
-      target: Information.range.x.max
-      function onValueChanged() {
-        root.checkHorizontalWindow();
-      }
-    }
   }
 
   TextEdit {
@@ -163,12 +155,5 @@ Rectangle {
     anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
     backend: Information.range.y.min
-
-    Connections {
-      target: Information.range.y.min
-      function onValueChanged() {
-        root.checkVerticalWindow();
-      }
-    }
   }
 }
