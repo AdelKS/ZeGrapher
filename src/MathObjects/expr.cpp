@@ -45,8 +45,10 @@ void Expr::updateValue()
   double old_value = value;
   if (exp_res)
     value = zg::real_unit{*exp_res}.v;
+  else value = std::nan("");
 
-  if (old_value != value)
+  if (std::isnan(old_value) != std::isnan(value)
+      or (not std::isnan(old_value) and not std::isnan(value) and old_value != value))
     emit valueChanged();
 }
 
