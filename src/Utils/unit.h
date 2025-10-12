@@ -82,6 +82,8 @@ struct Range1D
     else
       return Range1D{.min = std::max(min, other.min), .max = std::min(max, other.max)};
   }
+
+  bool is_valid() const { return not std::isnan(min.v) and not std::isnan(max.v) and min < max; }
 };
 
 template <UnitType U>
