@@ -173,13 +173,20 @@ void CsvPreviewModel::splitCsvFile()
   endResetModel();
 }
 
-void CsvPreviewModel::loadIntoWorld() const
+void CsvPreviewModel::loadIntoWorld()
 {
+  if (loadingState != FREE)
+    return;
+
   QFile file(csvFile.toLocalFile());
 
   if(file.open(QFile::ReadOnly | QFile::Text))
   {
     QTextStream in(&file);
+
+    // Get the total size of the file
+    qint64 totalBytes = file.size();
+    qint64 processedBytes = 0; // Tracks processed bytes
 
     std::vector<std::vector<std::string>> data;
     QStringList names;
@@ -205,10 +212,36 @@ void CsvPreviewModel::loadIntoWorld() const
     };
 
     int line_num = 0;
+    progressPercentage = 0;
+
+    loadingState = READING_CSV_FILE;
+    emit loadingStateChanged();
+    qApp->processEvents();
+
+    auto start = std::chrono::high_resolution_clock::now();
 
     while (not in.atEnd())
     {
       QString line = in.readLine();
+
+      processedBytes += line.size() + 1; // Account for the newline character
+
+      if (totalBytes > 0)
+      {
+        // Cap at 50% since we still need to add to the world
+        progressPercentage = static_cast<int>((processedBytes * 50) / totalBytes);
+        progressPercentage = qMin(progressPercentage, 50);
+      }
+
+      auto now = std::chrono::high_resolution_clock::now();
+
+      using namespace std::chrono_literals;
+      if (now - start > 10ms)
+      {
+        emit progressPercentageChanged();
+        start = now;
+        qApp->processEvents();
+      }
 
       if (line_num < rowSkipCount)
         ;
@@ -222,14 +255,22 @@ void CsvPreviewModel::loadIntoWorld() const
 
     assert(data.size() == size_t(names.size()));
 
+    loadingState = ADDING_TO_WORLD;
+    emit loadingStateChanged();
+
     for (size_t i = 0 ; i != data.size() ; i++)
     {
       MathObject* obj = mathWorld.addMathObject(MathObject::DATA);
       obj->getData()->setData(names[i], std::move(data[i]));
+      progressPercentage = 50 + i*50/data.size();
+      emit progressPercentageChanged();
       qApp->processEvents();
     }
 
     file.close();
+
+    loadingState = FREE;
+    emit loadingStateChanged();
   }
 
 }

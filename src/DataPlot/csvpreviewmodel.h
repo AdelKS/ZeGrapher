@@ -37,6 +37,8 @@ class CsvPreviewModel: public QAbstractTableModel
   Q_PROPERTY(bool csvHasHeaderRow WRITE setCsvHasHeaderRow MEMBER csvHasHeaderRow)
   Q_PROPERTY(QString separator WRITE setSeparator MEMBER separator)
   Q_PROPERTY(QUrl csvFile WRITE setCsvFile MEMBER csvFile)
+  Q_PROPERTY(LoadingState loadingState READ getLoadingState NOTIFY loadingStateChanged)
+  Q_PROPERTY(int progressPercentage READ getProgressPercentage NOTIFY progressPercentageChanged)
 
 public:
   CsvPreviewModel(QObject *parent = nullptr);
@@ -52,17 +54,31 @@ public:
 
   QHash<int, QByteArray> roleNames() const override;
 
+  enum LoadingState {FREE, READING_CSV_FILE, ADDING_TO_WORLD};
+
+  Q_ENUM(LoadingState);
+
+  Q_INVOKABLE LoadingState getLoadingState() const { return loadingState; }
+  Q_INVOKABLE int getProgressPercentage() const { return progressPercentage; }
+
 public slots:
   void setMaxRowCount(size_t);
   void setRowSkipCount(size_t);
   void setCsvHasHeaderRow(bool);
   void setCsvFile(QUrl);
   void setSeparator(QString);
-  void loadIntoWorld() const;
+  void loadIntoWorld();
+
+signals:
+  void loadingStateChanged();
+  void progressPercentageChanged();
 
 protected:
   void splitCsvFile();
   void readCsvFile();
+
+  LoadingState loadingState = FREE;
+  int progressPercentage = 0;
 
   int maxRowCount = 10;
   int rowSkipCount = 0;
