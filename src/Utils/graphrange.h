@@ -33,6 +33,7 @@ struct ZeAxisRange: QObject
   QML_ELEMENT
   Q_PROPERTY(mathobj::Expr* min READ getMinBackend)
   Q_PROPERTY(mathobj::Expr* max READ getMaxBackend)
+  Q_PROPERTY(bool state READ getState NOTIFY stateChanged)
 
 public:
 
@@ -41,6 +42,7 @@ public:
 
   Q_INVOKABLE mathobj::Expr* getMinBackend() const { return min; }
   Q_INVOKABLE mathobj::Expr* getMaxBackend() const { return max; }
+  Q_INVOKABLE bool getState() const { return state; }
 
   mathobj::Expr* const min;
   mathobj::Expr* const max;
@@ -49,10 +51,15 @@ public:
 
   real_range1d getLatestValidSnapshot();
 
-  real_range1d snapshot() const;
   void update(const real_range1d& range);
 
+signals:
+  void stateChanged();
+
 protected:
+  /// @brief tells whether the latest requested snapshot was valid
+  bool state = false;
+
   real_range1d latestValidSnapshot = real_range1d{.min = {-10.}, .max = {10.}};
 };
 
