@@ -6,10 +6,10 @@ Item {
   id: root
   clip: true
 
-  implicitHeight: layout.implicitHeight
-  implicitWidth: layout.implicitWidth
+  implicitHeight: scrollView.implicitHeight
+  implicitWidth: scrollView.implicitWidth
 
-  property alias csvFile: csvFile.text
+  property alias csvFilePath: csvFile.text
   property alias previewModel: csvPreviewModel
 
   signal done()
@@ -46,106 +46,115 @@ Item {
     }
   }
 
-
-  ColumnLayout {
-    id: layout
-    spacing: 10
-
+  ScrollView {
+    id: scrollView
     anchors.fill: parent
+    contentWidth: availableWidth
 
-    Label {
-      text: qsTr("CSV file to load")
-    }
+    onAvailableWidthChanged: console.debug("CSV import available width: ", availableWidth)
 
-    TextEdit {
-      id: csvFile
-      Layout.leftMargin: 10
-      readOnly: true
+    ColumnLayout {
+      id: layout
+      anchors.fill: parent
+      spacing: 10
 
-      color: root.palette.text
-    }
-
-    GroupBox {
-      title: qsTr("CSV import settings")
-      Layout.fillWidth: true
-
-      GridLayout {
-        anchors.fill: parent
-        columns: 2
-
-        RowLayout {
-          Label {
-            text: qsTr("Separator:")
-          }
-          LineEdit {
-            id: separatorEdit
-            Layout.preferredWidth: 30
-            text: ","
-            border.color: Information.appSettings.validSyntax
-          }
-        }
-        RowLayout {
-          Label {
-            text: qsTr("Skip rows:")
-          }
-          SpinBox {
-            id: skipRows
-            value: 0
-          }
-        }
-        CheckBox {
-          id: hasHeaderRow
-          text: "Header row"
-        }
-        RowLayout {
-          Label {
-            text: qsTr("Preview rows:")
-          }
-          SpinBox {
-            id: maxRows
-            value: 10
-          }
-        }
+      Label {
+        Layout.leftMargin: 10
+        text: qsTr("CSV file to load")
       }
-    }
 
-    GroupBox {
-      Layout.fillWidth: true;
-
-      title: qsTr("Preview")
-
-      DataTable {
-        id: csvPreviewTable
-        anchors.fill: parent
-
-        model: csvPreviewModel
-        interactive: false
-      }
-    }
-
-    RowLayout {
-      Item {
+      LineEdit {
+        id: csvFile
+        Layout.leftMargin: 20
+        Layout.rightMargin: 5
         Layout.fillWidth: true
       }
 
-      Button {
-        text: qsTr("Cancel")
-        onReleased: root.done()
-      }
+      GroupBox {
+        title: qsTr("CSV import settings")
+        Layout.fillWidth: true
 
-      Button {
-        text: qsTr("Load")
-        onReleased: {
-          csvPreviewModel.loadIntoWorld();
-          root.done();
+        GridLayout {
+          anchors.fill: parent
+          columns: 2
+
+          RowLayout {
+            Label {
+              text: qsTr("Separator:")
+            }
+            LineEdit {
+              id: separatorEdit
+              Layout.preferredWidth: 30
+              text: ","
+              border.color: Information.appSettings.validSyntax
+            }
+          }
+          RowLayout {
+            Label {
+              text: qsTr("Skip rows:")
+            }
+            SpinBox {
+              id: skipRows
+              value: 0
+            }
+          }
+          CheckBox {
+            id: hasHeaderRow
+            text: "Header row"
+          }
+          RowLayout {
+            Label {
+              text: qsTr("Preview rows:")
+            }
+            SpinBox {
+              id: maxRows
+              value: 10
+            }
+          }
         }
       }
-    }
 
-    ToolSeparator
-    {
-      orientation: Qt.Horizontal
-      Layout.fillWidth: true
+      GroupBox {
+        Layout.fillWidth: true;
+
+        title: qsTr("Preview")
+
+        DataTable {
+          id: csvPreviewTable
+          anchors.fill: parent
+
+          model: csvPreviewModel
+          interactive: false
+        }
+      }
+
+      RowLayout {
+        Layout.fillWidth: true
+        Layout.rightMargin: 5
+
+        Item {
+          Layout.fillWidth: true
+        }
+
+        Button {
+          text: qsTr("Cancel")
+          onReleased: root.done()
+        }
+
+        Button {
+          text: qsTr("Load")
+          onReleased: {
+            csvPreviewModel.loadIntoWorld();
+            root.done();
+          }
+        }
+      }
+
+      ToolSeparator
+      {
+        orientation: Qt.Horizontal
+        Layout.fillWidth: true
+      }
     }
   }
 }

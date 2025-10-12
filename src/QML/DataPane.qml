@@ -6,7 +6,7 @@ Item {
   property bool importingCSV: false
 
   function loadCSV(csvFile: url) {
-    csvImportSettings.csvFile = csvFile.toString();
+    csvImportSettings.csvFilePath = csvFile.toString();
     csvImportSettings.previewModel.csvFile = csvFile;
     importingCSV = true;
   }
@@ -17,7 +17,6 @@ Item {
     anchors.top: parent.top
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.margins: 5
 
     onDone: {
       root.importingCSV = false;
@@ -54,7 +53,7 @@ Item {
       name: "shown";
       when: root.importingCSV
       PropertyChanges {
-        csvImportSettings.height: csvImportSettings.implicitHeight
+        csvImportSettings.height: Math.min(csvImportSettings.implicitHeight, parent.height)
         csvImportSettings.visible: true
       }
       AnchorChanges {
