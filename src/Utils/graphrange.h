@@ -31,57 +31,51 @@ struct ZeAxisRange: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(mathobj::Expr* min MEMBER min)
-  Q_PROPERTY(mathobj::Expr* max MEMBER max)
+  Q_PROPERTY(mathobj::Expr* min READ getMinBackend)
+  Q_PROPERTY(mathobj::Expr* max READ getMaxBackend)
 
 public:
 
   ZeAxisRange(QObject *parent = nullptr);
   ~ZeAxisRange();
 
-  mathobj::Expr* min;
-  mathobj::Expr* max;
+  Q_INVOKABLE mathobj::Expr* getMinBackend() const { return min; }
+  Q_INVOKABLE mathobj::Expr* getMaxBackend() const { return max; }
 
-  double amplitude() const;
+  mathobj::Expr* const min;
+  mathobj::Expr* const max;
 
-  double getMin() const;
+  real_range1d getSnapshot();
 
-  double getMax() const;
+  real_range1d getLatestValidSnapshot();
 
   real_range1d snapshot() const;
   void update(const real_range1d& range);
+
+protected:
+  real_range1d latestValidSnapshot = real_range1d{.min = {-10.}, .max = {10.}};
 };
 
 struct GraphRange: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(ZeAxisRange* x MEMBER x)
-  Q_PROPERTY(ZeAxisRange* y MEMBER y)
+  Q_PROPERTY(ZeAxisRange* x READ getXBackend)
+  Q_PROPERTY(ZeAxisRange* y READ getYBackend)
 
 public:
-  GraphRange(QObject* parent = nullptr)
-    : QObject(parent), x(new ZeAxisRange(this)), y(new ZeAxisRange(this))
-  {
-    x->min->setImplicitName("xmin");
-    x->min->setExpression("-10");
+  GraphRange(QObject* parent = nullptr);
 
-    x->max->setImplicitName("xmax");
-    x->max->setExpression("10");
+  Q_INVOKABLE ZeAxisRange* getXBackend() const { return x; }
+  Q_INVOKABLE ZeAxisRange* getYBackend() const { return y; }
 
-    y->min->setImplicitName("ymin");
-    y->min->setExpression("-10");
+  ZeAxisRange* const x;
+  ZeAxisRange* const y;
 
-    y->max->setImplicitName("ymax");
-    y->max->setExpression("10");
-  };
+  QRectF getLatestValidRect() const;
+  real_range2d getLatestValidSnapshot() const;
 
-  ZeAxisRange* x;
-  ZeAxisRange* y;
-
-  QRectF getRect() const;
   void update(const real_range2d& range);
-  real_range2d snapshot() const;
 };
 
 } // namespace zg

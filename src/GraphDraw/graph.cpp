@@ -37,7 +37,7 @@ Graph::Graph(QQuickItem *parent)
   bold = italic = underline = false;
   numPrec = NUM_PREC;
 
-  viewMapper.setGraphRange(information.getGraphRange()->snapshot());
+  viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
 
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
@@ -193,7 +193,7 @@ void Graph::drawAll()
 {
   painter->setFont(information.getGraphSettings().graphFont);
   fontMetrics = painter->fontMetrics();
-  viewMapper.setGraphRange(information.getGraphRange()->snapshot());
+  viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
 
   calculateTicksAndMargins();
   calculateTicksAndMargins();

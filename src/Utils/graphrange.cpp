@@ -18,8 +18,6 @@
 **
 ****************************************************************************/
 
-#include <cmath>
-
 #include "Utils/graphrange.h"
 #include "globalvars.h"
 
@@ -37,33 +35,22 @@ ZeAxisRange::~ZeAxisRange()
   mathWorld.removeAltExprObject(max);
 }
 
-double ZeAxisRange::amplitude() const
+real_range1d ZeAxisRange::getSnapshot()
 {
-  if (not min or not max) [[unlikely]]
-    return std::nan("");
+  real_range1d newSnapshot = {.min = {min->getValue()}, .max = {max->getValue()}};
+  if (newSnapshot.is_valid())
+    latestValidSnapshot = newSnapshot;
 
-  return fabs(max->getValue() - min->getValue());
+  return newSnapshot;
 }
 
-double ZeAxisRange::getMin() const
+real_range1d ZeAxisRange::getLatestValidSnapshot()
 {
-  if (not min) [[unlikely]]
-    return std::nan("");
+  real_range1d newSnapshot = {.min = {min->getValue()}, .max = {max->getValue()}};
+  if (newSnapshot.is_valid())
+    latestValidSnapshot = newSnapshot;
 
-  return min->getValue();
-}
-
-double ZeAxisRange::getMax() const
-{
-  if (not max) [[unlikely]]
-    return std::nan("");
-
-  return max->getValue();
-}
-
-real_range1d ZeAxisRange::snapshot() const
-{
-  return real_range1d{.min = {getMin()}, .max = {getMax()}};
+  return latestValidSnapshot;
 }
 
 void ZeAxisRange::update(const real_range1d& range)
@@ -75,13 +62,32 @@ void ZeAxisRange::update(const real_range1d& range)
   max->setExpression(QString::number(range.max.v, 'g', 12));
 }
 
-QRectF GraphRange::getRect() const
+GraphRange::GraphRange(QObject* parent)
+  : QObject(parent), x(new ZeAxisRange(this)), y(new ZeAxisRange(this))
 {
+  x->min->setImplicitName("xmin");
+  x->min->setExpression("-10");
+
+  x->max->setImplicitName("xmax");
+  x->max->setExpression("10");
+
+  y->min->setImplicitName("ymin");
+  y->min->setExpression("-10");
+
+  y->max->setImplicitName("ymax");
+  y->max->setExpression("10");
+};
+
+QRectF GraphRange::getLatestValidRect() const
+{
+  real_range1d xSnapshot = x->getLatestValidSnapshot();
+  real_range1d ySnapshot = y->getLatestValidSnapshot();
+
   QRectF graphWin;
-  graphWin.setBottom(y->getMin());
-  graphWin.setTop(y->getMax());
-  graphWin.setLeft(x->getMin());
-  graphWin.setRight(x->getMax());
+  graphWin.setBottom(ySnapshot.min.v);
+  graphWin.setTop(ySnapshot.max.v);
+  graphWin.setLeft(xSnapshot.min.v);
+  graphWin.setRight(xSnapshot.max.v);
   return graphWin;
 }
 
@@ -91,9 +97,9 @@ void GraphRange::update(const real_range2d& range)
   y->update(range.y);
 }
 
-real_range2d GraphRange::snapshot() const
+real_range2d GraphRange::getLatestValidSnapshot() const
 {
-  return real_range2d{.x = x->snapshot(), .y = y->snapshot()};
+  return real_range2d{.x = x->getLatestValidSnapshot(), .y = y->getLatestValidSnapshot()};
 }
 
 
