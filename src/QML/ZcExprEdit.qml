@@ -20,11 +20,7 @@ Item {
   implicitHeight: lineEdit.height + errorLbl.height
 
   onCustomErrorMsgChanged: refresh()
-
-  function setState(s: ZG.State) {
-    root.state = s;
-    refresh();
-  }
+  onStateChanged: refresh()
 
   function refresh() {
     if (customErrorMsg.length !== 0)

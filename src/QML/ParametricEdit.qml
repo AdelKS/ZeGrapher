@@ -41,12 +41,7 @@ Item {
 
       id: lineEdit1
 
-      Connections {
-        target: root.eq1
-        function onStateChanged() {
-          lineEdit1.setState(root.eq1.state);
-        }
-      }
+      state: root.eq1.state
     }
 
     Item {
@@ -71,12 +66,7 @@ Item {
 
       id: lineEdit2
 
-      Connections {
-        target: root.eq2
-        function onStateChanged() {
-          lineEdit2.setState(root.eq2.state);
-        }
-      }
+      state: root.eq2.state
     }
   }
 

@@ -43,12 +43,7 @@ Item {
     ZcExprEdit {
       id: zcExprEdit
 
-      Connections {
-        target: root.backend
-        function onStateChanged() {
-          zcExprEdit.setState(root.backend.state);
-        }
-      }
+      state: root.backend.state
 
       onTextEdited: {
         console.debug("DataEdit: updating name in backend: ", expression);

@@ -21,13 +21,6 @@ Item {
   ZcExprEdit {
     id: zcExprEdit
 
-    Connections {
-      target: root.backend
-      function onStateChanged() {
-        zcExprEdit.setState(root.backend.state);
-      }
-    }
-
     onTextEdited: root.backend.setExpression(expression);
 
     anchors.left: parent.left
