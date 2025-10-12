@@ -21,6 +21,8 @@ Item {
   ZcExprEdit {
     id: zcExprEdit
 
+    nanValue: isNaN(root.backend.value)
+
     onTextEdited: root.backend.setExpression(expression);
 
     anchors.left: parent.left

@@ -253,6 +253,7 @@ struct ZeAppSettings
   Q_PROPERTY(QFont font MEMBER font)
   Q_PROPERTY(QColor validSyntax MEMBER validSyntax)
   Q_PROPERTY(QColor invalidSyntax MEMBER invalidSyntax)
+  Q_PROPERTY(QColor warningSyntax MEMBER warningSyntax)
   QML_VALUE_TYPE(zeappsettings)
 
 public:
@@ -260,7 +261,7 @@ public:
   bool startupUpdateCheck;
   QLocale::Language language;
   QFont font;
-  QColor validSyntax = Qt::darkGreen, invalidSyntax = Qt::darkRed;
+  QColor validSyntax = Qt::darkGreen, invalidSyntax = Qt::darkRed, warningSyntax = Qt::darkYellow;
 };
 
 struct FuncMap

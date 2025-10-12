@@ -9,6 +9,7 @@ Item {
 
   property ZG.State state
   property string customErrorMsg: ''
+  property bool nanValue: false
 
   property alias expression: lineEdit.text
   property alias highlighter: mhighlighter
@@ -21,18 +22,28 @@ Item {
 
   onCustomErrorMsgChanged: refresh()
   onStateChanged: refresh()
+  onNanValueChanged: refresh()
 
   function refresh() {
     if (customErrorMsg.length !== 0)
       errorLbl.setErrorMsg(customErrorMsg);
-    else errorLbl.setErrorMsg(root.state.errorMsg);
+    else {
+      if (root.state.errorMsg.length === 0 && root.state.status !== ZG.State.NEUTRAL && nanValue)
+        errorLbl.setErrorMsg(qsTr("NaN"));
+      else errorLbl.setErrorMsg(root.state.errorMsg);
+    }
 
     if (customErrorMsg.length !== 0 || root.state.status === ZG.State.INVALID) {
       console.debug("ZcExprEdit: border color updated to invalid")
       lineEdit.border.color = Information.appSettings.invalidSyntax;
     } else if (root.state.status === ZG.State.VALID) {
-      console.debug("ZcExprEdit: border color updated to valid")
-      lineEdit.border.color = Information.appSettings.validSyntax;
+      if (nanValue) {
+        console.debug("ZcExprEdit: border color updated to warning")
+        lineEdit.border.color = Information.appSettings.warningSyntax;
+      } else {
+        console.debug("ZcExprEdit: border color updated to valid")
+        lineEdit.border.color = Information.appSettings.validSyntax;
+      }
     } else {
       console.debug("ZcExprEdit: border color updated to neutral")
       lineEdit.border.color = "grey";
