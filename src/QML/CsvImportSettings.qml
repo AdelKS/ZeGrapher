@@ -26,6 +26,27 @@ Item {
     csvHasHeaderRow: hasHeaderRow.checked
   }
 
+  Popup {
+    popupType: Popup.Item
+    visible: csvPreviewModel.loadingState !== CsvPreviewModel.FREE
+    anchors.centerIn: parent
+    closePolicy: Popup.NoAutoClose
+    modal: true
+
+    ColumnLayout {
+      anchors.fill: parent
+      Label {
+        text: csvPreviewModel.loadingState === CsvPreviewModel.READING_CSV_FILE ? qsTr("Reading CSV File") : qsTr("Loading data into world")
+      }
+      ProgressBar {
+        from: 0
+        to: 100
+        value: csvPreviewModel.progressPercentage
+      }
+    }
+  }
+
+
   ColumnLayout {
     id: layout
     spacing: 10
