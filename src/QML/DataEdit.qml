@@ -2,7 +2,7 @@
 
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
+import QtQuick.Controls.FluentWinUI3
 
 Item {
   id: root

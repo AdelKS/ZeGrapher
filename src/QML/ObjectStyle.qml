@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
+import QtQuick.Controls.FluentWinUI3
 
 // A line edit without borders, that follows its content
 

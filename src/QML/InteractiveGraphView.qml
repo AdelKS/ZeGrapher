@@ -1,4 +1,4 @@
-import QtQuick.Controls
+import QtQuick.Controls.FluentWinUI3
 
 ScrollView {
   id: scrollView
