@@ -19,7 +19,7 @@ Window {
     onAccepted: dataPane.loadCSV(selectedFile)
   }
 
-  Button {
+  IconButton {
     id: drawer_button
     checkable: true
     checked: true
@@ -29,11 +29,8 @@ Window {
     width: 25
     height: 25
     flat: true
-    icon.source: 'qrc:/icons/drawer.svg'
-    icon.width: width
-    icon.height: height
-    display: Button.IconOnly
-    padding: 0
+    lightThemeIcon: 'qrc:/icons/drawer.svg'
+    darkThemeIcon: 'qrc:/icons/drawer-light.svg'
   }
 
   Rectangle {
@@ -110,38 +107,29 @@ Window {
             Layout.fillWidth: true
           }
 
-          RoundButton {
+          IconRoundButton {
             id: importCSV
             z: 100
             Layout.preferredHeight: 35
             Layout.preferredWidth: 35
             Layout.alignment: Qt.AlignRight
 
-            icon.source: "qrc:/icons/csv-import.svg"
+            lightThemeIcon: "qrc:/icons/csv-import.svg"
+            darkThemeIcon: "qrc:/icons/csv-import-light.svg"
 
             onReleased: fileDialog.visible = true
-
-            icon.width: 2*width/3
-            icon.height: 2*width/3
-            display: Button.IconOnly
-            padding: 0
           }
 
-          RoundButton {
+          IconRoundButton {
             id: add
             z: 100
             Layout.preferredHeight: 35
             Layout.preferredWidth: 35
             Layout.alignment: Qt.AlignRight
-
-            icon.source: "qrc:/icons/add.svg"
+            darkThemeIcon: "qrc:/icons/add-light.svg"
+            lightThemeIcon: "qrc:/icons/add.svg"
 
             onReleased: userInput.addWidget()
-
-            icon.width: 2*width/3
-            icon.height: 2*width/3
-            display: Button.IconOnly
-            padding: 0
           }
         }
       }

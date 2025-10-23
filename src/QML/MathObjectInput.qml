@@ -126,7 +126,7 @@ Rectangle {
         Layout.fillWidth: true
       }
 
-      RoundButton {
+      IconRoundButton {
         id: displayButton
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
@@ -136,13 +136,11 @@ Rectangle {
         checkable: true
         checked: false
 
-        icon.source: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
-
-        display: Button.IconOnly
-        padding: 0
+        lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
+        darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
       }
 
-      RoundButton {
+      IconRoundButton {
         id: styleButton
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
@@ -152,9 +150,8 @@ Rectangle {
         checkable: true
         checked: false
 
-        icon.source: "qrc:/icons/brush.svg"
-        display: Button.IconOnly
-        padding: 0
+        lightThemeIcon: "qrc:/icons/brush.svg"
+        darkThemeIcon: "qrc:/icons/brush-light.svg"
       }
 
       ColorButton {
@@ -166,19 +163,17 @@ Rectangle {
         Layout.fillWidth: true
       }
 
-      RoundButton {
+      IconRoundButton {
         id: del
         Layout.minimumWidth: 20
         Layout.maximumWidth: 30
         Layout.preferredHeight: Layout.preferredWidth
         Layout.preferredWidth: 30
 
-        icon.source: "qrc:/icons/delete.svg"
+        lightThemeIcon: "qrc:/icons/delete.svg"
+        darkThemeIcon: "qrc:/icons/delete-light.svg"
 
         onReleased: removeObj()
-
-        display: Button.IconOnly
-        padding: 0
       }
 
       states: [

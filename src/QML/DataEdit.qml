@@ -62,7 +62,7 @@ Item {
       Layout.alignment: Qt.AlignVCenter
     }
 
-    RoundButton {
+    IconRoundButton {
       id: showInTable
       Layout.minimumWidth: 20
       Layout.maximumWidth: 30
@@ -71,7 +71,8 @@ Item {
 
       checkable: true
       checked: false
-      icon.source: "qrc:/icons/table.svg"
+      lightThemeIcon: "qrc:/icons/table.svg"
+      darkThemeIcon: "qrc:/icons/table-light.svg"
 
       onToggled: {
         if (showInTable.checked) {
@@ -80,9 +81,6 @@ Item {
           DataTableModel.deregisterTableColumn(backend);
         }
       }
-
-      display: Button.IconOnly
-      padding: 0
     }
   }
 
