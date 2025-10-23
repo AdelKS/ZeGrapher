@@ -66,6 +66,8 @@ qml_files = files(
   './QML/DataPane.qml',
   './QML/DataTable.qml',
   './QML/EquationEdit.qml',
+  './QML/IconButton.qml',
+  './QML/IconRoundButton.qml',
   './QML/ImageTumbler.qml',
   './QML/InteractiveGraphView.qml',
   './QML/LineEdit.qml',
