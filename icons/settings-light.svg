@@ -5,7 +5,7 @@
    viewBox="0 0 24 24"
    width="24"
    id="svg4269"
-   sodipodi:docname="settings.svg"
+   sodipodi:docname="settings-light.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -55,10 +55,12 @@
          style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1">
         <g
            id="g9580"
-           transform="matrix(0.9,0,0,0.9,1.8859827,1.4494553)">
+           transform="matrix(0.9,0,0,0.9,1.8859827,1.4494553)"
+           style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-opacity:1">
           <g
              id="g4857"
-             transform="matrix(0.57459529,0,0,0.57459529,-0.93486028,1.5035786)">
+             transform="matrix(0.57459529,0,0,0.57459529,-0.93486028,1.5035786)"
+             style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-opacity:1">
             <rect
                height="29.714285"
                id="Rectangle"
@@ -66,7 +68,7 @@
                width="3"
                x="3.2857144"
                y="0"
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
+               style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
             <rect
                height="12.066586"
                id="rect4260"
@@ -75,11 +77,12 @@
                width="3.1906776"
                x="6.4046607"
                y="-10.819007"
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
+               style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
           </g>
           <g
              id="g4861"
-             transform="matrix(0.57459529,0,0,-0.57459529,-2.4523902,17.928934)">
+             transform="matrix(0.57459529,0,0,-0.57459529,-2.4523902,17.928934)"
+             style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-opacity:1">
             <rect
                height="29.714285"
                id="Rectangle-3"
@@ -87,7 +90,7 @@
                width="3"
                x="18.076271"
                y="-1.1283289"
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
+               style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
             <rect
                height="12.066586"
                id="rect4260-6"
@@ -96,11 +99,12 @@
                width="3.1906776"
                x="5.2763319"
                y="-25.609564"
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
+               style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
           </g>
           <g
              id="g4865"
-             transform="matrix(0.57459529,0,0,0.57459529,-4.382432,1.9327858)">
+             transform="matrix(0.57459529,0,0,0.57459529,-4.382432,1.9327858)"
+             style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-opacity:1">
             <rect
                height="29.714285"
                id="Rectangle-7"
@@ -108,7 +112,7 @@
                width="3"
                x="33.584747"
                y="-0.74697298"
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
+               style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
             <rect
                height="12.066586"
                id="rect4260-5"
@@ -117,7 +121,7 @@
                width="3.1906776"
                x="5.6576886"
                y="-41.118038"
-               style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
+               style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:1.9;stroke-dasharray:none;stroke-opacity:1" />
           </g>
         </g>
       </g>

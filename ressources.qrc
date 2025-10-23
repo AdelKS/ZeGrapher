@@ -81,25 +81,33 @@
         <file>doc/data_help_zh.html</file>
         <file>doc/taiwan-icon.png</file>
         <file>icons/settings.svg</file>
+        <file>icons/settings-light.svg</file>
         <file>icons/math.svg</file>
         <file>icons/size.svg</file>
         <file>icons/graph.svg</file>
         <file>icons/misc.svg</file>
         <file>icons/BaseSelector.png</file>
         <file>icons/basePin.png</file>
-        <file>icons/add.png</file>
+        <file>icons/add.svg</file>
+        <file>icons/add-light.svg</file>
         <file>icons/axes.svg</file>
         <file>icons/drawer.svg</file>
-        <file>icons/add.svg</file>
+        <file>icons/drawer-light.svg</file>
         <file>icons/delete.svg</file>
+        <file>icons/delete-light.svg</file>
         <file>icons/noLine.png</file>
         <file>icons/noPoint.png</file>
         <file>icons/selector.svg</file>
         <file>icons/selectorFlipped.svg</file>
         <file>icons/brush.svg</file>
+        <file>icons/brush-light.svg</file>
         <file>icons/open-eye.svg</file>
+        <file>icons/open-eye-light.svg</file>
         <file>icons/closed-eye.svg</file>
+        <file>icons/closed-eye-light.svg</file>
         <file>icons/table.svg</file>
+        <file>icons/table-light.svg</file>
         <file>icons/csv-import.svg</file>
+        <file>icons/csv-import-light.svg</file>
     </qresource>
 </RCC>
