@@ -109,5 +109,13 @@
         <file>icons/table-light.svg</file>
         <file>icons/csv-import.svg</file>
         <file>icons/csv-import-light.svg</file>
+        <file>icons/dash-dot-line.svg</file>
+        <file>icons/dash-dot-line-light.svg</file>
+        <file>icons/dash-line.svg</file>
+        <file>icons/dash-line-light.svg</file>
+        <file>icons/dot-line.svg</file>
+        <file>icons/dot-line-light.svg</file>
+        <file>icons/solid-line.svg</file>
+        <file>icons/solid-line-light.svg</file>
     </qresource>
 </RCC>
