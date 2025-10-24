@@ -86,7 +86,9 @@ Item {
       ImageTumbler {
         id: lineStyleTumbler
         Layout.alignment: Qt.AlignHCenter
-        model: lineStyleModel
+        Layout.maximumWidth: 100
+        Layout.preferredHeight: 50
+        model: Application.styleHints.colorScheme === Qt.Light ? lineStyleModel : lineStyleModelLight
       }
       SpinBox {
         id: lineWidthSpinBox
@@ -265,19 +267,43 @@ Item {
   ListModel {
     id: lineStyleModel
     ListElement {
-      path: "qrc:/icons/solidLine.png"
+      path: "qrc:/icons/solid-line.svg"
       type: Qt.SolidLine
     }
     ListElement {
-      path: "qrc:/icons/dashLine.png"
+      path: "qrc:/icons/dash-line.svg"
       type: Qt.DashLine
     }
     ListElement {
-      path: "qrc:/icons/dashDotLine.png"
+      path: "qrc:/icons/dash-dot-line.svg"
       type: Qt.DashDotLine
     }
     ListElement {
-      path: "qrc:/icons/dotLine.png"
+      path: "qrc:/icons/dot-line.svg"
+      type: Qt.DotLine
+    }
+    ListElement {
+      path: "qrc:/icons/noLine.png"
+      type: Qt.NoPen
+    }
+  }
+
+  ListModel {
+    id: lineStyleModelLight
+    ListElement {
+      path: "qrc:/icons/solid-line-light.svg"
+      type: Qt.SolidLine
+    }
+    ListElement {
+      path: "qrc:/icons/dash-line-light.svg"
+      type: Qt.DashLine
+    }
+    ListElement {
+      path: "qrc:/icons/dash-dot-line-light.svg"
+      type: Qt.DashDotLine
+    }
+    ListElement {
+      path: "qrc:/icons/dot-line-light.svg"
       type: Qt.DotLine
     }
     ListElement {

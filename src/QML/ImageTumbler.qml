@@ -24,33 +24,16 @@ RowLayout {
     enabled: root.enabled
     wrap: true
 
-    Layout.minimumWidth: 0.5 * maxWidth
-    Layout.preferredWidth: maxWidth
-    Layout.maximumWidth: maxWidth
+    Layout.fillHeight: true
     Layout.fillWidth: true
 
-    Layout.minimumHeight: 1.5 * maxHeight
-    Layout.preferredHeight: 2.5 * maxHeight
-    Layout.maximumHeight: 3 * maxHeight
-    Layout.fillHeight: true
-
     visibleItemCount: 3
-
-    property int maxHeight: 0
-    property int maxWidth: 0
 
     delegate: Image {
       id: imgDelegate
       source: path
       opacity: 0.4 + Math.max(0, 1 - Math.abs(Tumbler.displacement)) * (0.1 + 0.5 * enabled)
       fillMode: root.fillMode
-
-      onSourceSizeChanged: {
-        if (tumbler.maxHeight < sourceSize.height)
-          tumbler.maxHeight = sourceSize.height
-        if (tumbler.maxWidth < sourceSize.width)
-          tumbler.maxWidth = sourceSize.width
-      }
     }
   }
 
