@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="15mm"
-   height="22.185677mm"
-   viewBox="0 0 15.000001 22.185677"
+   width="256"
+   height="378.63556"
+   viewBox="0 0 67.733338 100.18066"
    version="1.1"
    id="svg1"
-   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
-   sodipodi:docname="selectorFlipped.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="selector-light.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,11 +23,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="6.4706222"
-     inkscape:cx="25.422594"
-     inkscape:cy="42.499777"
-     inkscape:window-width="1536"
-     inkscape:window-height="888"
+     inkscape:zoom="1.6176556"
+     inkscape:cx="210.4898"
+     inkscape:cy="222.2352"
+     inkscape:window-width="2048"
+     inkscape:window-height="1080"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -39,8 +39,8 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;stroke:#000000;stroke-width:5.12326;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
-       d="M 12.438368,19.62404 2.5614963,11.092836 12.438368,2.561632"
+       style="fill:none;fill-opacity:1;stroke:#b2b2b2;stroke-width:29.2346;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 14.617295,83.344502 53.116808,50.090329 14.617295,16.836157"
        id="path2" />
   </g>
 </svg>

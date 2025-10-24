@@ -98,7 +98,9 @@
         <file>icons/noLine.png</file>
         <file>icons/noPoint.png</file>
         <file>icons/selector.svg</file>
-        <file>icons/selectorFlipped.svg</file>
+        <file>icons/selector-light.svg</file>
+        <file>icons/selector-flipped.svg</file>
+        <file>icons/selector-flipped-light.svg</file>
         <file>icons/brush.svg</file>
         <file>icons/brush-light.svg</file>
         <file>icons/open-eye.svg</file>

@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
-   sodipodi:docname="selector.svg"
+   sodipodi:docname="selector-flipped.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -39,8 +39,8 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;stroke:#000000;stroke-width:29.2346;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;fill-opacity:1"
-       d="M 14.617295,83.344502 53.116808,50.090329 14.617295,16.836157"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:29.2346;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 53.116034,83.344502 14.616521,50.090329 53.116034,16.836157"
        id="path2" />
   </g>
 </svg>

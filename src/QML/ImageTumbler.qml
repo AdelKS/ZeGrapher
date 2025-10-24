@@ -12,7 +12,7 @@ RowLayout {
   Image {
     id: selector1
     Layout.alignment: Layout.Center
-    source: "qrc:/icons/selector.svg"
+    source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/selector.svg" : "qrc:/icons/selector-light.svg"
     sourceSize.width: 8
     fillMode: Image.PreserveAspectFit
     enabled: root.enabled
@@ -40,7 +40,7 @@ RowLayout {
   Image {
     id: selector2
     Layout.alignment: Layout.Center
-    source: "qrc:/icons/selectorFlipped.svg"
+    source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/selector-flipped.svg" : "qrc:/icons/selector-flipped-light.svg"
     sourceSize.width: 8
     fillMode: Image.PreserveAspectFit
     enabled: root.enabled
