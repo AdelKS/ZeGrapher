@@ -99,6 +99,7 @@ Item {
         live: true
         value: 20
         stepSize: 10
+        Layout.maximumWidth: 100
 
         // workaround for value not being set on initialization
         Component.onCompleted: { value = 20 }
