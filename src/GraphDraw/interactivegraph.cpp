@@ -462,7 +462,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
   else
   {
     qDebug() << "################################";
-    qDebug() << random();
+    qDebug() << rand();
     qDebug() << "Mouse move event";
     qDebug() << "figure Rect before change: " << figureRect;
 

@@ -174,7 +174,7 @@ size_t MathObject::getRevision() const
       [](const mathobj::NamedRef* r) {
         if (const auto* o = r->getZcObject())
           return o->get_revision();
-        else return 0ul;
+        else return size_t(0);
       },
       [](const mathobj::Parametric* p) {
         size_t rev1 = 0, rev2 = 0;
@@ -184,7 +184,7 @@ size_t MathObject::getRevision() const
           rev2 = o2->get_revision();
         return rev1 + rev2;
       },
-      [](std::monostate) { return 0ul; },
+      [](std::monostate) { return size_t(0); },
     },
     backend
   );
