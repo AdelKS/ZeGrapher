@@ -34,6 +34,7 @@ namespace zg {
 class Information: public QObject
 {
   Q_OBJECT
+  QML_ELEMENT
 
   Q_PROPERTY(
     ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <QSyntaxHighlighter>
 #include <QQuickTextDocument>
+#include <QSyntaxHighlighter>
+#include <QtQml/qqmlregistration.h>
 
 #include "Utils/state.h"
 
