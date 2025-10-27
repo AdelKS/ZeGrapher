@@ -3,13 +3,16 @@
 set -e
 
 deploy_dir=$(greadlink -f $(dirname "$BASH_SOURCE"))
+version=$(bash "${deploy_dir}"/../version.sh get-vcs)
+arch=`uname -m`
+app_name="ZeGrapher-macOS-$arch-$version"
 
 meson setup \
   -D optimization=3 \
   -D debug=false \
   -D b_ndebug=true \
-  -D debug_logs=false \
-  --prefix="${deploy_dir}/ZeGrapher.app" \
+  -D loglevel=off \
+  --prefix="${deploy_dir}/$app_name" \
   --bindir="Contents/MacOS" \
   "${deploy_dir}/build-macos" \
   "${deploy_dir}/.."
@@ -19,5 +22,5 @@ meson compile
 meson install
 cd ..
 
-macdeployqt ZeGrapher.app -dmg -verbose=2 -executable=ZeGrapher.app/Contents/MacOS/ZeGrapher -qmldir="$deploy_dir/../src/" -fs=APFS
+macdeployqt $app_name -dmg -verbose=2 -executable="$app_name"/Contents/MacOS/ZeGrapher -qmldir="$deploy_dir/../src/" -fs=APFS
 # the "-executable=" bit rewrites library search paths with 'install_name_tool'
