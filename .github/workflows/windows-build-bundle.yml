@@ -1,0 +1,31 @@
+name: Windows build & bundle
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  build-bundle:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: git pactoys
+
+      - name: Build & Bundle
+        run: |
+          echo 'Running in MSYS2!'
+          ./deploy/windows-bundle-7z.sh
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: windows-artifact
+          path: deploy/ZeGrapher*.exe
