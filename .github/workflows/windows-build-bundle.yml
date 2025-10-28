@@ -1,8 +1,11 @@
 name: Windows build & bundle
+
 on:
-  workflow_dispatch:
-  push:
-  pull_request:
+  workflow_call:
+    inputs:
+      msystem:
+        required: true
+        type: string
 
 jobs:
   build-bundle:
@@ -12,10 +15,12 @@ jobs:
         shell: msys2 {0}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: ${{ inputs.msystem }}
           update: true
           install: git pactoys
 
@@ -27,5 +32,5 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v5
         with:
-          name: windows-artifact
+          name: windows-artifact-${{ inputs.msystem }}
           path: deploy/ZeGrapher*.exe

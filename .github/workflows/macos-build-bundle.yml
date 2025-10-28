@@ -1,20 +1,26 @@
 name: macOS build & bundle
 on:
-  workflow_dispatch:
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+
 
 jobs:
   build-bundle:
-    runs-on: macos-15-intel
+    runs-on: ${{ inputs.runner }}
     defaults:
       run:
         shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Install Dependencies
-        run: |
-          brew install boost coreutils qtbase qtsvg qtdeclarative qttools qttranslations meson
+        run: brew install boost coreutils qtbase qtsvg qtdeclarative qttools qttranslations meson
 
       - name: Select correct Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.4.app
@@ -25,5 +31,5 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v5
         with:
-          name: macos-artifact
+          name: macos-artifact-${{ inputs.runner }}
           path: deploy/ZeGrapher*dmg
