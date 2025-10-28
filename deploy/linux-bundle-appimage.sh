@@ -4,6 +4,8 @@ set -e
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
+version=$(bash "${deploy_dir}"/../version.sh get-vcs)
+
 [[ -d "${deploy_dir}/appdir-linux" ]] && rm -rf "${deploy_dir}/appdir-linux"
 
 meson setup \
@@ -34,3 +36,5 @@ export NO_STRIP=1
 
 # ./linuxdeploy-x86_64.AppImage --list-plugins
 ./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage
+
+mv ZeGrapher-x86_64.AppImage ZeGrapher-x86_64-$version.AppImage
