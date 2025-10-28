@@ -10,12 +10,12 @@ jobs:
         shell: bash
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.6.*'
+          version: '6.9.*'
 
       - name: Install Dependencies
         run: |
@@ -26,7 +26,7 @@ jobs:
         run: ./deploy/linux-bundle-appimage.sh
 
       - name: Upload binary artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: linux-artifact
           path: deploy/ZeGrapher*AppImage
