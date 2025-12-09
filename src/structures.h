@@ -18,11 +18,9 @@
 **
 ****************************************************************************/
 
-#ifndef STRUCTURES_H
-#define STRUCTURES_H
+#pragma once
 
 #include "zecalculator/parsing/types.h"
-#include <cmath>
 #include <cfloat>
 #include <QtWidgets>
 
@@ -31,13 +29,6 @@
 
 #define SOFTWARE_VERSION 3.5
 #define SOFTWARE_VERSION_STR "v3.5"
-
-// TODO put the following 3 defs into an enum
-#define FROM_CURRENT_GRAPHIC 0
-#define MANUAL_ENTRY 1
-#define PREDEFINED_ENTRY 2
-
-#define MAX_DOUBLE_PREC 13
 
 #define NORMAL 0
 #define ZOOMER 1
@@ -52,28 +43,11 @@
 #define NUM_PREC 7 // default precision while displaying decimal numbers
 #define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
-#define NUM_PREC_DEC 1E-7
 #define MAX_NUM_PREC_DEC 1E-8
-
-#define INIT_FREQ 30 //animation update frequency
-#define INIT_INCR_PERIOD 100 //animation incremental period
-#define PAR_DRAW_LIMIT 500
-
-#define INVALID_COLOR "#FF9980"
-#define VALID_COLOR "#B2FFB2"
-
-#define EPSILON 0.001
-#define MAX_SAVED_SEQ_VALS 1000000
 
 #define RELATIVE_MIN_SIZE 0.25 // How much the graph can be smaller than its container sheet/background
 
 #define CM_PER_INCH 2.54
-
-#define ROMBERG_MAX_STEPS 500
-
-// Maximum and minimum relative size between the abscissa text and the horizontal tick spacing
-#define MAX_REL_TICK_SPACING 0.8
-#define MIN_REL_TICK_SPACING 0.2
 
 /// @brief type of math objects to use in ZeCalculator
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
@@ -92,14 +66,6 @@ inline QString langToShortString(QLocale::Language lang)
 }
 
 enum struct ZeAxisName {X, Y};
-
-struct FastTree
-{
-    short type;
-    double *value;
-    FastTree *left;
-    FastTree *right;
-};
 
 enum struct ZeViewType
 {
@@ -264,12 +230,6 @@ public:
   QColor validSyntax = Qt::darkGreen, invalidSyntax = Qt::darkRed, warningSyntax = Qt::darkYellow;
 };
 
-struct FuncMap
-{
-    bool funcType;
-    short id;
-};
-
 struct Range
 {
     Range() : start(0), end(0), step(1) {}
@@ -292,30 +252,6 @@ struct Point
 };
 
 bool ptCompY(const Point &pt1, const Point &pt2);
-
-struct ParametricInfo
-{
-    bool isParametric;
-    Range range;
-    int originalDrawsNum, currentDrawsNum;
-};
-
-struct Color
-{
-    short r, g, b;
-};
-
-struct ValuesTableParameters
-{
-    short funcType, id, entryType, emptyCellsCount;
-    Range range;
-    QString name;
-};
-
-struct ParEqValues
-{
-    QList<double> tValues, xValues, yValues;
-};
 
 // N.B: enum values are used as indexes in a vector!
 enum struct PointStyle : unsigned int { Rhombus = 0, Disc, Square, Triangle, Cross };
@@ -340,15 +276,6 @@ struct UserData
     DataStyle style;
 };
 
-struct SelectorPos
-{
-    bool inbetween;
-    int index;
-};
-
-QPointF toQPointF(const Point &pt);
-
-Point operator*(Point &pt1, const Point &pt2);
 
 template<class Number>
 Number int_pow(Number a, int b)
@@ -369,5 +296,3 @@ Number int_pow(Number a, int b)
 }
 
 Point operator * (const Point &pt1, const Point &pt2);
-
-#endif // STRUCTURES_H
