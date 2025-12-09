@@ -12,7 +12,7 @@ Rectangle {
   border.width: 1.5
   radius: 4
 
-  implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 2*edit.textMargin + 2*border.width
+  implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 10 + 2*border.width
 
   color: palette.base
 
@@ -20,6 +20,8 @@ Rectangle {
     id: flick
 
     anchors.fill: parent
+    anchors.leftMargin: 4
+    anchors.rightMargin: 4
     contentWidth: Math.max(edit.contentWidth, parent.width)
     contentHeight: Math.max(edit.contentHeight, parent.height)
     clip: true
@@ -41,7 +43,6 @@ Rectangle {
       id: edit
       verticalAlignment: TextEdit.AlignVCenter
       anchors.fill: parent
-      textMargin: 5
       color: palette.text
       focus: true
       text: ""
