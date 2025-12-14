@@ -45,7 +45,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          latest_tag=$(gh release list --exclude-pre-releases -L 1 --json 'tagName' --jq '.[0].tagName')
+          latest_tag=$(git -C "$MESON_SOURCE_ROOT" tag --list --sort=-creatordate | grep -v continuous | head -n1)
           echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
 
           rev_count=$(git rev-list --count "${latest_tag}"..HEAD)
