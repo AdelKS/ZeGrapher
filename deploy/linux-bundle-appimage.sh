@@ -37,4 +37,4 @@ export NO_STRIP=1
 # ./linuxdeploy-x86_64.AppImage --list-plugins
 ./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage
 
-mv ZeGrapher-x86_64.AppImage ZeGrapher-x86_64-$version.AppImage
+mv ZeGrapher-x86_64.AppImage ZeGrapher-Linux-x86_64-$version.AppImage
