@@ -1,6 +1,8 @@
 name: Build & Release for all platforms
 on:
   push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
