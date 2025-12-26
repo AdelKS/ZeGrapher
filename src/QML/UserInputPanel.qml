@@ -48,65 +48,68 @@ Item {
       Layout.bottomMargin: 10
     }
 
-    ScrollView {
-      id: scrollView
+    SwipeView {
+      id: swipeView
+
       Layout.fillWidth: true
       Layout.fillHeight: true
 
-      contentWidth: Math.max(availableWidth, mathObjCol.implicitWidth)
-      contentHeight: mathObjCol.implicitHeight
+      ScrollView {
+        id: scrollView
 
-      implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
-      implicitHeight: mathObjCol.implicitHeight + ScrollBar.horizontal.height
+        contentWidth: Math.max(availableWidth, mathObjCol.implicitWidth)
+        contentHeight: mathObjCol.implicitHeight
 
-      onContentHeightChanged: {
-        console.debug("UserInputPanel: ScrollView: contentHeight=", contentHeight);
-      }
+        implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
+        implicitHeight: mathObjCol.implicitHeight + ScrollBar.horizontal.height
 
-      onHeightChanged: {
-        console.debug("UserInputPanel: ScrollView: height=", height);
-      }
+        onContentHeightChanged: {
+          console.debug("UserInputPanel: ScrollView: contentHeight=", contentHeight);
+        }
 
-      ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+        onHeightChanged: {
+          console.debug("UserInputPanel: ScrollView: height=", height);
+        }
 
-      onAvailableWidthChanged: {
-        console.debug("UserInputPanel: ScrollView, availableWidth: ", availableWidth);
-      }
+        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
-      onImplicitWidthChanged: {
-        console.debug("UserInputPanel: ScrollView: implicitWidth: ", implicitWidth)
-      }
-
-      ColumnLayout {
-        id: mathObjCol
-        spacing: 10
-        anchors.fill: parent
+        onAvailableWidthChanged: {
+          console.debug("UserInputPanel: ScrollView, availableWidth: ", availableWidth);
+        }
 
         onImplicitWidthChanged: {
-          console.debug("UserInputPanel: ColumnLayout: implicitWidth", implicitWidth);
+          console.debug("UserInputPanel: ScrollView: implicitWidth: ", implicitWidth)
         }
 
-        onImplicitHeightChanged: {
-          console.debug("UserInputPanel: ColumnLayout: implicitHeight", implicitHeight);
-        }
+        ColumnLayout {
+          id: mathObjCol
+          spacing: 10
+          anchors.fill: parent
 
-        Repeater {
-          model: MathWorld
-          delegate: MathObjectInput {
-            required property MathObject modelData
+          onImplicitWidthChanged: {
+            console.debug("UserInputPanel: ColumnLayout: implicitWidth", implicitWidth);
+          }
 
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignTop
-            mathObj: modelData
+          onImplicitHeightChanged: {
+            console.debug("UserInputPanel: ColumnLayout: implicitHeight", implicitHeight);
+          }
 
-            onDeleteMe: {
-              MathWorld.removeMathObject(modelData);
+          Repeater {
+            model: MathWorld
+            delegate: MathObjectInput {
+              required property MathObject modelData
+
+              Layout.fillWidth: true
+              Layout.alignment: Qt.AlignTop
+              mathObj: modelData
+
+              onDeleteMe: {
+                MathWorld.removeMathObject(modelData);
+              }
             }
           }
         }
       }
-
-
     }
   }
 
