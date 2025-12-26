@@ -48,11 +48,24 @@ Item {
       Layout.bottomMargin: 10
     }
 
+    TabBar {
+      id: bar
+      Layout.fillWidth: true
+
+      onCurrentIndexChanged: swipeView.setCurrentIndex(currentIndex)
+
+      TabButton {
+        text: qsTr("Math")
+      }
+    }
+
     SwipeView {
       id: swipeView
 
       Layout.fillWidth: true
       Layout.fillHeight: true
+
+      onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 
       ScrollView {
         id: scrollView
