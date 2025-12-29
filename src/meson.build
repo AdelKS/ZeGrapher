@@ -73,6 +73,7 @@ qml_files = files(
   './QML/LineEdit.qml',
   './QML/MainWindow.qml',
   './QML/MathObjectInput.qml',
+  './QML/MathObjects.qml',
   './QML/NumberEdit.qml',
   './QML/ObjectStyle.qml',
   './QML/ParametricEdit.qml',
