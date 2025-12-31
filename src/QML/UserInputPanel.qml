@@ -57,6 +57,10 @@ Item {
       TabButton {
         text: qsTr("Math")
       }
+
+      TabButton {
+        text: qsTr("App")
+      }
     }
 
     SwipeView {
@@ -68,6 +72,9 @@ Item {
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 
       MathObjects {}
+
+      AppSettings {}
+
     }
   }
 

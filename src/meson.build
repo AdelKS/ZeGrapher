@@ -59,6 +59,7 @@ moc_header_files = files(
 )
 
 qml_files = files(
+  './QML/AppSettings.qml',
   './QML/ColorButton.qml',
   './QML/ConstantEdit.qml',
   './QML/CsvImportSettings.qml',
