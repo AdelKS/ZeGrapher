@@ -58,9 +58,10 @@ Rectangle {
     }
   }
 
-  TextEdit {
+  ZeTextEdit {
     id: ymaxLbl
     text: "<b>y</b><sub>max</sub>"
+    font: Information.appFont
     readOnly: true
     selectByMouse: false
     activeFocusOnPress: false
@@ -83,7 +84,7 @@ Rectangle {
     backend: Information.range.y.max
   }
 
-  TextEdit {
+  ZeTextEdit {
     text: "<b>x</b><sub>min</sub>"
     readOnly: true
     selectByMouse: false
@@ -108,7 +109,7 @@ Rectangle {
   }
 
 
-  TextEdit {
+  ZeTextEdit {
     text: "<b>x</b><sub>max</sub>"
     readOnly: true
     selectByMouse: false
@@ -132,7 +133,7 @@ Rectangle {
     backend: Information.range.x.max
   }
 
-  TextEdit {
+  ZeTextEdit {
     text: "<b>y</b><sub>min</sub>"
     readOnly: true
     selectByMouse: false

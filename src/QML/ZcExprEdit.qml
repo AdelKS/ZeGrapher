@@ -81,7 +81,7 @@ Item {
     function setErrorMsg(msg: string) {
       console.debug("ZcExprEdit: new error message: ", msg);
       errorLbl.textEdit.text = msg;
-      height = msg ? textEdit.contentHeight + 4 : 0;
+      height = msg ? implicitHeight + 4 : 0;
     }
 
     Behavior on height { SmoothedAnimation { duration: 200 } }
@@ -90,7 +90,6 @@ Item {
     border.width: 0
     textEdit.textFormat: TextEdit.RichText
     textEdit.wrapMode: TextEdit.WordWrap
-    textEdit.font.pointSize: 8
     textEdit.readOnly: true
     anchors.left: parent.left
     anchors.right: parent.right

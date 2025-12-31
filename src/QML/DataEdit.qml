@@ -34,7 +34,7 @@ Item {
   RowLayout {
     anchors.fill: parent
 
-    Label {
+    ZeLabel {
       text: qsTr("Name: ")
       Layout.topMargin: 5
       Layout.alignment: Qt.AlignTop | Qt.AlignRight

@@ -25,7 +25,7 @@ Item {
   RowLayout {
     anchors.fill: parent
 
-    Label {
+    ZeLabel {
       Layout.alignment: Qt.AlignTop
       Layout.topMargin: 5
       id: ref1Label
@@ -49,7 +49,7 @@ Item {
       Layout.preferredHeight: 0
     }
 
-    Label {
+    ZeLabel {
       Layout.topMargin: 5
       Layout.alignment: Qt.AlignTop
 

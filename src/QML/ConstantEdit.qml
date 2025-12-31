@@ -36,7 +36,7 @@ Item {
       Layout.alignment: Qt.AlignVCenter
     }
 
-    Label {
+    ZeLabel {
       text: "="
       Layout.maximumWidth: 20
       Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter

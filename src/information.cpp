@@ -85,6 +85,18 @@ const ZeAppSettings& Information::getAppSettings() const
   return appSettings;
 }
 
+void Information::setAppFont(QFont font)
+{
+  if (font != appFont)
+  {
+    qDebug() << "Changing app font to: " << font.family();
+    qGuiApp->setFont(font);
+    appFont = font;
+
+    emit appFontChanged();
+  }
+}
+
 void Information::setGraphRangeMouseEdit(const zg::real_range2d& snapshot)
 {
   graph_range->update(snapshot);

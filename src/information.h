@@ -18,8 +18,7 @@
 **
 ****************************************************************************/
 
-#ifndef INFORMATION_H
-#define INFORMATION_H
+#pragma once
 
 #include <QtQml/qqmlregistration.h>
 
@@ -43,6 +42,7 @@ class Information: public QObject
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
+  Q_PROPERTY(QFont appFont WRITE setAppFont MEMBER appFont NOTIFY appFontChanged)
 
 public:
   Information(QObject* parent = nullptr);
@@ -55,6 +55,7 @@ public:
   const ZeGraphSettings& getEstheticSettings() const;
   const ZeAppSettings& getAppSettings() const;
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
+  Q_INVOKABLE void setAppFont(QFont);
 
   /// @brief graph range change from user mouse interaction
   void setGraphRangeMouseEdit(const zg::real_range2d&);
@@ -80,6 +81,7 @@ signals:
   void estheticSettingsChanged();
   void appSettingsChanged();
   void rangeChangedWithMouse();
+  void appFontChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -107,6 +109,5 @@ protected:
   ZeAppSettings appSettings;
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
+  QFont appFont;
 };
-
-#endif // INFORMATION_H

@@ -98,7 +98,7 @@ Item {
         enabled: root.interactive
       }
 
-      Label {
+      ZeLabel {
         anchors.fill: parent
         text: display
         verticalAlignment: Qt.AlignVCenter
@@ -147,7 +147,7 @@ Item {
         enabled: root.interactive
       }
 
-      Label {
+      ZeLabel {
         anchors.fill: parent
         text: display
         verticalAlignment: Qt.AlignVCenter

@@ -3,11 +3,12 @@ import QtQuick.Controls.FluentWinUI3
 import QtQuick.Dialogs
 import QtQuick.Layouts
 
-Window {
+ApplicationWindow {
   id: win
   width: 800
   height: 600
   visible: true
+  font: Information.appFont
 
   FileDialog {
     id: fileDialog

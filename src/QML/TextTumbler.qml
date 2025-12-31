@@ -55,7 +55,7 @@ RowLayout {
       id: textMetrics
     }
 
-    delegate: Label {
+    delegate: ZeLabel {
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
       height: contentHeight

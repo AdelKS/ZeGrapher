@@ -19,13 +19,19 @@
 ****************************************************************************/
 
 #include "structures.h"
+#include "globalvars.h"
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+
 int main(int argc, char *argv[])
 {
   QGuiApplication a(argc, argv);
+
+  // the information global var can't initialize the correct font until QGuiApplication is initialized.
+  // so we set it here
+  information.setAppFont(a.font());
 
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 

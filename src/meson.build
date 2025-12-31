@@ -83,6 +83,8 @@ qml_files = files(
   './QML/UserInputPanel.qml',
   './QML/ValueEdit.qml',
   './QML/ZcExprEdit.qml',
+  './QML/ZeLabel.qml',
+  './QML/ZeTextEdit.qml',
 )
 
 qmlcpp_files = files(

@@ -35,7 +35,7 @@ Item {
 
     ColumnLayout {
       anchors.fill: parent
-      Label {
+      ZeLabel {
         text: csvPreviewModel.loadingState === CsvPreviewModel.READING_CSV_FILE ? qsTr("Reading CSV File") : qsTr("Loading data into world")
       }
       ProgressBar {
@@ -58,7 +58,7 @@ Item {
       anchors.fill: parent
       spacing: 10
 
-      Label {
+      ZeLabel {
         Layout.leftMargin: 10
         text: qsTr("CSV file to load")
       }
@@ -79,7 +79,7 @@ Item {
           columns: 2
 
           RowLayout {
-            Label {
+            ZeLabel {
               text: qsTr("Separator:")
             }
             LineEdit {
@@ -90,7 +90,7 @@ Item {
             }
           }
           RowLayout {
-            Label {
+            ZeLabel {
               text: qsTr("Skip rows:")
             }
             SpinBox {
@@ -103,7 +103,7 @@ Item {
             text: "Header row"
           }
           RowLayout {
-            Label {
+            ZeLabel {
               text: qsTr("Preview rows:")
             }
             SpinBox {

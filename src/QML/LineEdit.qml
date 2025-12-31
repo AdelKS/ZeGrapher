@@ -39,7 +39,7 @@ Rectangle {
         contentY = r.y+r.height-height;
     }
 
-    TextEdit {
+    ZeTextEdit {
       id: edit
       verticalAlignment: TextEdit.AlignVCenter
       anchors.fill: parent
@@ -62,7 +62,7 @@ Rectangle {
 
     TextMetrics {
       id: textMetrics
-      text: "=+-*/_()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+      text: "=+-*/_()0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
       font: edit.font
     }
   }

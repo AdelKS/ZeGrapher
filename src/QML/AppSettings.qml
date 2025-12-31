@@ -43,6 +43,15 @@ Item {
         }
       }
 
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
+        text: qsTr('Font')
+      }
+      Button {
+        Layout.alignment: Qt.AlignHCenter
+        text: fontDialog.currentFont.family
+        onClicked: fontDialog.open()
+      }
     }
 
   }

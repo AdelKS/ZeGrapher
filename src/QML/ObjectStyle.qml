@@ -183,7 +183,7 @@ Item {
         }
       }
 
-      Label {
+      ZeLabel {
         Layout.topMargin: 5
         Layout.alignment: Qt.AlignTop | Qt.AlignRight
         Layout.preferredWidth: implicitWidth
@@ -215,7 +215,7 @@ Item {
         Layout.maximumWidth: 10
       }
 
-      Label {
+      ZeLabel {
         Layout.topMargin: 5
         Layout.alignment: Qt.AlignTop | Qt.AlignRight
         Layout.preferredWidth: implicitWidth
@@ -242,7 +242,7 @@ Item {
         Layout.maximumWidth: 10
       }
 
-      Label {
+      ZeLabel {
         Layout.topMargin: 5
         Layout.alignment: Qt.AlignTop | Qt.AlignRight
         Layout.preferredWidth: implicitWidth
