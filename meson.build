@@ -34,6 +34,8 @@ if (get_option('b_ndebug') == 'if-release' and get_option('buildtype') == 'relea
     add_project_arguments('-D QT_NO_DEBUG', language : 'cpp')
 endif
 
+add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', language : 'cpp')
+
 qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets'])
 boost_dep = dependency('boost')
 zecalculator_dep = dependency('zecalculator')

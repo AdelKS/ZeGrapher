@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="511.99997"
+   version="1.1"
+   viewBox="0 0 512.00002 511.99996"
+   width="512"
+   id="svg4269"
+   sodipodi:docname="loop.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.701172"
+     inkscape:cx="255.99998"
+     inkscape:cy="255.99998"
+     inkscape:window-width="2048"
+     inkscape:window-height="1080"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4269" />
+  <title
+     id="title4249" />
+  <desc
+     id="desc4251" />
+  <defs
+     id="defs4253">
+    <marker
+       style="overflow:visible"
+       id="ConcaveTriangle"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path7" />
+    </marker>
+  </defs>
+  <g
+     id="g1"
+     transform="translate(27.003861,31.564765)" />
+  <path
+     style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:36.325;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path1"
+     transform="rotate(45)"
+     d="M 228.85701,2.9612243 A 133.2146,133.21458 0 0 1 317.08763,-125.4015 133.2146,133.21458 0 0 1 466.77313,-82.321509 133.2146,133.21458 0 0 1 473.27087,73.304353 133.2146,133.21458 0 0 1 327.69745,128.71207" />
+  <g
+     id="path2"
+     style="opacity:1">
+    <path
+       style="baseline-shift:baseline;display:inline;overflow:visible;vector-effect:none;stroke-dashoffset:359.999;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+       d="m 175.91992,137.73242 -9.94726,11.88477 16.04882,13.42968 9.94532,-11.88476 z"
+       id="path4" />
+    <g
+       id="g3">
+      <path
+         d="M 237.73,171.46845 89.392768,257.42955 147.866,96.264646 c 7.37194,44.369114 44.77783,75.672694 89.864,75.203804 z"
+         style="baseline-shift:baseline;display:inline;overflow:visible;vector-effect:none;fill-rule:evenodd;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+         id="path3" />
+    </g>
+  </g>
+</svg>

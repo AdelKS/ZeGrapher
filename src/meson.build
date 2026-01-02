@@ -30,6 +30,7 @@ source_files = files(
   './Utils/highlighter.cpp',
   './Utils/plotstyle.cpp',
   './Utils/state.cpp',
+  './Utils/updatecheck.cpp',
   './Utils/zc-utils.cpp',
 )
 
@@ -56,6 +57,7 @@ moc_header_files = files(
   './Utils/graphrange.h',
   './Utils/highlighter.h',
   './Utils/plotstyle.h',
+  './Utils/updatecheck.h',
 )
 
 qml_files = files(
@@ -107,6 +109,7 @@ qmlcpp_files = files(
   './Utils/highlighter.h',
   './Utils/plotstyle.h',
   './Utils/state.h',
+  './Utils/updatecheck.h',
 )
 
 fs = import('fs')

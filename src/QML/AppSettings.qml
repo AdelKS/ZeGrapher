@@ -52,6 +52,81 @@ Item {
         text: fontDialog.currentFont.family
         onClicked: fontDialog.open()
       }
+
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
+        text: qsTr('Check for updates')
+      }
+
+      IconButton {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.maximumHeight: 25
+        Layout.maximumWidth: 25
+
+        lightThemeIcon: 'qrc:/icons/loop.svg'
+        darkThemeIcon: 'qrc:/icons/loop-light.svg'
+
+        onReleased: checker.refresh()
+      }
+
+      Label {
+        id: updateCheckText
+        property int m_height: 0
+
+        Layout.alignment: Qt.AlignHCenter
+        Layout.columnSpan: 2
+        Layout.maximumHeight: m_height
+        Layout.maximumWidth: 200
+
+        wrapMode: Text.WordWrap
+
+        Behavior on m_height { SmoothedAnimation { duration: 200 } }
+
+
+        UpdateCheck {
+          id: checker
+
+          onStatusChanged: {
+            switch(status) {
+              case UpdateCheck.IDLE:
+                updateCheckText.text = "";
+                break;
+              case UpdateCheck.CHECKING:
+                updateCheckText.text = qsTr("Checking...");
+                break;
+              case UpdateCheck.ERROR:
+                updateCheckText.text = qsTr("An error occurred.");
+                break;
+              case UpdateCheck.UPDATE_MAYBE_AVAILABLE:
+                updateCheckText.text = qsTr("Update maybe available, visit zegrapher.com to download it.");
+                break;
+              case UpdateCheck.UPDATE_AVAILABLE:
+                updateCheckText.text = qsTr("Update available, visit zegrapher.com to download it.");
+                break;
+              case UpdateCheck.UP_TO_DATE:
+                updateCheckText.text = qsTr("You have the latest version.");
+
+                break;
+              default:
+                updateCheckText.text = qsTr("Unhandled error, please report this issue.");
+                break;
+            }
+
+            updateCheckText.text = updateCheckText.text + "\n" + qsTr("Current version:") + " " + checker.currentVersion;
+
+            if ([UpdateCheck.UPDATE_MAYBE_AVAILABLE, UpdateCheck.UPDATE_AVAILABLE, UpdateCheck.UP_TO_DATE].includes(status)) {
+              updateCheckText.text = updateCheckText.text + "\n" + qsTr("Latest stable release:") + " " + checker.latestVersion;
+            }
+            if (status !== UpdateCheck.IDLE ) {
+              updateCheckText.m_height = updateCheckText.implicitHeight;
+            } else {
+              updateCheckText.m_height = 0;
+            }
+
+          }
+        }
+
+      }
     }
 
   }

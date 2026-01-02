@@ -72,7 +72,7 @@ void InteractiveGraph::exportPDF(QString fileName, SheetSizeType sizeType)
 {
   QPdfWriter *pdfWriter = new QPdfWriter(fileName);
 
-  pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION_STR);
+  pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
   pdfWriter->setTitle(tr("Exported graph"));
 
   int targetResolution = int(screenDPI / sizeSettings.scalingFactor);
@@ -118,7 +118,7 @@ void InteractiveGraph::exportSVG(QString fileName)
   svgGenerator.setFileName(fileName);
 
   svgGenerator.setTitle(tr("Exported graph"));
-  svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION_STR);
+  svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
   double targetResolution = screenDPI / sizeSettings.scalingFactor;
 

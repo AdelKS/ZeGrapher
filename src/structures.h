@@ -27,9 +27,6 @@
 #include <QMetaType>
 #include <QtQml/qqmlregistration.h>
 
-#define SOFTWARE_VERSION 3.5
-#define SOFTWARE_VERSION_STR "v3.5"
-
 #define NORMAL 0
 #define ZOOMER 1
 #define DEZOOMER 2
