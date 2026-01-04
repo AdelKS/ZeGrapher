@@ -18,9 +18,9 @@ void Highlighter::highlightBlock(const QString &text)
            << "Highlighter address: " << this;
 
   QTextCharFormat invalidFormat;
-  invalidFormat.setForeground(information.getAppSettings().invalidSyntax);
+  invalidFormat.setForeground(information.appSettings->invalidSyntax);
   invalidFormat.setFontUnderline(true);
-  invalidFormat.setUnderlineColor(information.getAppSettings().invalidSyntax);
+  invalidFormat.setUnderlineColor(information.appSettings->invalidSyntax);
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
   if (auto opt_err_tok = state.getErrToken(); opt_err_tok)

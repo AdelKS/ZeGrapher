@@ -208,18 +208,20 @@ struct ZeGraphSettings
     QFont graphFont = {};
 };
 
-struct ZeAppSettings
+struct ZeAppSettings: QObject
 {
-  Q_GADGET
+  Q_OBJECT
+  QML_ELEMENT
   Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
   Q_PROPERTY(QLocale::Language language MEMBER language)
   Q_PROPERTY(QFont font MEMBER font)
   Q_PROPERTY(QColor validSyntax MEMBER validSyntax)
   Q_PROPERTY(QColor invalidSyntax MEMBER invalidSyntax)
   Q_PROPERTY(QColor warningSyntax MEMBER warningSyntax)
-  QML_VALUE_TYPE(zeappsettings)
 
 public:
+
+  explicit ZeAppSettings(QObject *parent = nullptr): QObject(parent) {}
 
   bool startupUpdateCheck;
   QLocale::Language language;

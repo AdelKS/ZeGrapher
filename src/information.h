@@ -35,14 +35,14 @@ class Information: public QObject
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(
-    ZeAppSettings appSettings READ getAppSettings WRITE setAppSettings NOTIFY appSettingsChanged)
+  Q_PROPERTY(ZeAppSettings* appSettings MEMBER appSettings NOTIFY appSettingsChanged)
   Q_PROPERTY(zg::GraphRange* range READ getGraphRange)
   Q_PROPERTY(ZeZoomSettings graphZoomSettings READ getGraphZoomSettings WRITE setGraphZoomSettings
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
   Q_PROPERTY(QFont appFont WRITE setAppFont MEMBER appFont NOTIFY appFontChanged)
+
 
 public:
   Information(QObject* parent = nullptr);
@@ -60,9 +60,6 @@ public:
   /// @brief graph range change from user mouse interaction
   void setGraphRangeMouseEdit(const zg::real_range2d&);
 
-  QPalette getValidSyntaxPalette() const;
-  QPalette getInvalidSyntaxPalette() const;
-
   void setExportFileName(QString fileName);
   QString getExportFileName();
 
@@ -79,9 +76,9 @@ signals:
   void graphSizeSettingsChanged();
   void graphZoomSettingsChanged();
   void estheticSettingsChanged();
-  void appSettingsChanged();
   void rangeChangedWithMouse();
   void appFontChanged();
+  void appSettingsChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -95,10 +92,10 @@ public slots:
   void setAxesSettings(const ZeAxesSettings& axesSettings);
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
-  void setAppSettings(const ZeAppSettings& appSettings);
 
 public:
   zc::eval::Cache mathObjectCache;
+  ZeAppSettings* appSettings = nullptr;
 
 protected:
   ZeZoomSettings zoomSettings;
@@ -106,7 +103,6 @@ protected:
   ZeAxesSettings axesSettings;
   ZeGridSettings gridSettings;
   ZeGraphSettings graphSettings;
-  ZeAppSettings appSettings;
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
   QFont appFont;
