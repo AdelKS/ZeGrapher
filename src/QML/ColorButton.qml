@@ -5,7 +5,9 @@ import QtQuick.Dialogs
 Shape {
   id: disk
 
-  readonly property alias selectedColor: colorDialog.selectedColor
+  property color selectedColor: 'black'
+
+  onSelectedColorChanged: shape_path.set_color(selectedColor);
 
   horizontalAlignment: Shape.AlignHCenter
   verticalAlignment: Shape.AlignVCenter
@@ -82,8 +84,9 @@ Shape {
 
   ColorDialog {
     id: colorDialog
-    selectedColor: { selectedColor = shape_path.get_color() }
-    onAccepted: shape_path.set_color(selectedColor)
+    onAccepted: {
+      disk.selectedColor = selectedColor;
+    }
   }
 
   MouseArea {
@@ -107,5 +110,10 @@ Shape {
         shape_path.hovered = false
     }
     onReleased: colorDialog.open()
+  }
+
+  Component.onCompleted: {
+    shape_path.set_color(disk.selectedColor);
+    colorDialog.selectedColor = disk.selectedColor;
   }
 }
