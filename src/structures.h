@@ -215,18 +215,39 @@ struct ZeAppSettings: QObject
   Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
   Q_PROPERTY(QLocale::Language language MEMBER language)
   Q_PROPERTY(QFont font MEMBER font)
-  Q_PROPERTY(QColor validSyntax MEMBER validSyntax)
-  Q_PROPERTY(QColor invalidSyntax MEMBER invalidSyntax)
-  Q_PROPERTY(QColor warningSyntax MEMBER warningSyntax)
+  Q_PROPERTY(QColor validSyntax READ getValidSyntax WRITE setValidSyntax NOTIFY validSyntaxChanged)
+  Q_PROPERTY(QColor invalidSyntax READ getInvalidSyntax WRITE setInvalidSyntax NOTIFY invalidSyntaxChanged)
+  Q_PROPERTY(QColor warningSyntax READ getWarningSyntax WRITE setWarningSyntax NOTIFY warningSyntaxChanged)
 
 public:
 
-  explicit ZeAppSettings(QObject *parent = nullptr): QObject(parent) {}
+  explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent) {}
 
   bool startupUpdateCheck;
   QLocale::Language language;
   QFont font;
-  QColor validSyntax = Qt::darkGreen, invalidSyntax = Qt::darkRed, warningSyntax = Qt::darkYellow;
+
+  QColor validSyntaxDark = Qt::darkGreen;
+  QColor invalidSyntaxDark = Qt::darkRed;
+  QColor warningSyntaxDark = Qt::darkYellow;
+
+  QColor validSyntaxLight = Qt::darkGreen;
+  QColor invalidSyntaxLight = Qt::darkRed;
+  QColor warningSyntaxLight = Qt::darkYellow;
+
+  Q_INVOKABLE QColor getValidSyntax() const;
+  Q_INVOKABLE QColor getInvalidSyntax() const;
+  Q_INVOKABLE QColor getWarningSyntax() const;
+
+  Q_INVOKABLE void setValidSyntax(QColor);
+  Q_INVOKABLE void setInvalidSyntax(QColor);
+  Q_INVOKABLE void setWarningSyntax(QColor);
+
+signals:
+  void validSyntaxChanged();
+  void invalidSyntaxChanged();
+  void warningSyntaxChanged();
+
 };
 
 struct Range
