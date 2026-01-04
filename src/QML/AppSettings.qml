@@ -55,6 +55,53 @@ Item {
 
       ZeLabel {
         Layout.alignment: Qt.AlignRight
+        text: qsTr('Syntax coloring')
+      }
+      Frame {
+        GridLayout {
+          columns: 2
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Valid")
+          }
+          ColorButton {
+            id: validColorButton
+            Layout.alignment: Qt.AlignHCenter
+
+            selectedColor: Information.appSettings.validSyntax;
+
+            onSelectedColorChanged: Information.appSettings.validSyntax = selectedColor;
+          }
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Warning")
+          }
+          ColorButton {
+            Layout.alignment: Qt.AlignHCenter
+
+            selectedColor: Information.appSettings.warningSyntax;
+
+            onSelectedColorChanged: Information.appSettings.warningSyntax = selectedColor;
+          }
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Invalid")
+          }
+          ColorButton {
+            Layout.alignment: Qt.AlignHCenter
+
+            selectedColor: Information.appSettings.invalidSyntax;
+
+            onSelectedColorChanged: Information.appSettings.invalidSyntax = selectedColor;
+          }
+        }
+      }
+
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
         text: qsTr('Check for updates')
       }
 
