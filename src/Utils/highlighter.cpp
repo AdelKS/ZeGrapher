@@ -5,6 +5,7 @@
 
 Highlighter::Highlighter(QObject* parent): QSyntaxHighlighter(parent) {
   connect(information.appSettings, &ZeAppSettings::invalidSyntaxChanged, this, &Highlighter::rehighlight);
+  connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, &Highlighter::rehighlight);
 }
 
 void Highlighter::setState(zg::State s)

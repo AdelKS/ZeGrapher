@@ -66,12 +66,22 @@ Item {
             text: qsTr("Valid")
           }
           ColorButton {
-            id: validColorButton
+            id: validSyntaxColorButton
             Layout.alignment: Qt.AlignHCenter
 
-            selectedColor: Information.appSettings.validSyntax;
+            selectedColor: { selectedColor = Information.appSettings.validSyntax; }
 
             onSelectedColorChanged: Information.appSettings.validSyntax = selectedColor;
+
+            Connections {
+              target: Information.appSettings
+
+              function onWarningSyntaxChanged() {
+                if (validSyntaxColorButton.selectedColor !== Information.appSettings.validSyntax) {
+                  validSyntaxColorButton.selectedColor = Information.appSettings.validSyntax
+                }
+              }
+            }
           }
 
           Label {
@@ -79,11 +89,22 @@ Item {
             text: qsTr("Warning")
           }
           ColorButton {
+            id: warningSyntaxColorButton
             Layout.alignment: Qt.AlignHCenter
 
-            selectedColor: Information.appSettings.warningSyntax;
+            selectedColor: { selectedColor = Information.appSettings.warningSyntax; }
 
             onSelectedColorChanged: Information.appSettings.warningSyntax = selectedColor;
+
+            Connections {
+              target: Information.appSettings
+
+              function onWarningSyntaxChanged() {
+                if (warningSyntaxColorButton.selectedColor !== Information.appSettings.warningSyntax) {
+                  warningSyntaxColorButton.selectedColor = Information.appSettings.warningSyntax
+                }
+              }
+            }
           }
 
           Label {
@@ -91,11 +112,22 @@ Item {
             text: qsTr("Invalid")
           }
           ColorButton {
+            id: invalidSyntaxColorButton
             Layout.alignment: Qt.AlignHCenter
 
-            selectedColor: Information.appSettings.invalidSyntax;
+            selectedColor: { selectedColor = Information.appSettings.invalidSyntax; }
 
             onSelectedColorChanged: Information.appSettings.invalidSyntax = selectedColor;
+
+            Connections {
+              target: Information.appSettings
+
+              function onWarningSyntaxChanged() {
+                if (invalidSyntaxColorButton.selectedColor !== Information.appSettings.invalidSyntax) {
+                  invalidSyntaxColorButton.selectedColor = Information.appSettings.invalidSyntax
+                }
+              }
+            }
           }
         }
       }

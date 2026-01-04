@@ -22,6 +22,7 @@
 #include "globalvars.h"
 
 #include <QGuiApplication>
+#include <QObject>
 #include <QQmlApplicationEngine>
 
 
@@ -32,6 +33,9 @@ int main(int argc, char *argv[])
   // the information global var can't initialize the correct font until QGuiApplication is initialized.
   // so we set it here
   information.setAppFont(a.font());
+
+  // we do the connection here because only now the QGuiApplication instance is ready
+  QObject::connect(a.styleHints(), &QStyleHints::colorSchemeChanged, information.appSettings, &ZeAppSettings::colorSchemeChanged);
 
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 

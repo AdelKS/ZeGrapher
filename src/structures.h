@@ -248,6 +248,9 @@ signals:
   void invalidSyntaxChanged();
   void warningSyntaxChanged();
 
+public slots:
+  void colorSchemeChanged();
+
 };
 
 struct Range
