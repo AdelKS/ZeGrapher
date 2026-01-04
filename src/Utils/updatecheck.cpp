@@ -1,6 +1,8 @@
 #include "Utils/updatecheck.h"
 #include "Utils/versionparser.h"
 
+#include <QMetaEnum>
+
 const QString UpdateCheck::currentVersion = SOFTWARE_VERSION;
 
 UpdateCheck::UpdateCheck(QObject *parent) : QObject(parent)
