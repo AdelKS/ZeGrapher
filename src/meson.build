@@ -54,6 +54,7 @@ moc_header_files = files(
   './MathObjects/mathworld.h',
   './MathObjects/namedref.h',
   './MathObjects/parametric.h',
+  './structures.h',
   './Utils/graphrange.h',
   './Utils/highlighter.h',
   './Utils/plotstyle.h',

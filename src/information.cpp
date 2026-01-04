@@ -21,8 +21,10 @@
 #include "information.h"
 
 Information::Information(QObject* parent):
-  QObject(parent), graph_range(new zg::GraphRange(this))
-{}
+  QObject(parent), appSettings(new ZeAppSettings(this)), graph_range(new zg::GraphRange(this))
+{
+  emit appSettingsChanged();
+}
 
 void Information::emitDataUpdate()
 {
@@ -37,22 +39,6 @@ void Information::setGraphSettings(const ZeGraphSettings& graphSettings)
 void Information::emitAnimationUpdate()
 {
   emit animationUpdate();
-}
-
-QPalette Information::getValidSyntaxPalette() const
-{
-  QPalette validPalette;
-  validPalette.setColor(QPalette::Base, appSettings.validSyntax);
-  validPalette.setColor(QPalette::Text, Qt::black);
-  return validPalette;
-}
-
-QPalette Information::getInvalidSyntaxPalette() const
-{
-  QPalette invalidPalette;
-  invalidPalette.setColor(QPalette::Base, appSettings.invalidSyntax);
-  invalidPalette.setColor(QPalette::Text, Qt::black);
-  return invalidPalette;
 }
 
 const ZeSizeSettings& Information::getGraphSizeSettings() const
@@ -78,11 +64,6 @@ const ZeGridSettings& Information::getGridSettings() const
 const ZeAxesSettings& Information::getAxesSettings() const
 {
   return axesSettings;
-}
-
-const ZeAppSettings& Information::getAppSettings() const
-{
-  return appSettings;
 }
 
 void Information::setAppFont(QFont font)
@@ -137,12 +118,6 @@ void Information::setGridSettings(const ZeGridSettings& gridSettings)
 
     emit gridSettingsChanged();
   }
-}
-
-void Information::setAppSettings(const ZeAppSettings& appSettings)
-{
-  this->appSettings = appSettings;
-  emit appSettingsChanged();
 }
 
 void Information::setAxesSettings(const ZeAxesSettings& axesSettings)
