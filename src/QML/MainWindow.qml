@@ -94,45 +94,6 @@ ApplicationWindow {
         }
 
         Component.onCompleted: widthResetTimer.start()
-
-        RowLayout
-        {
-          anchors.left: parent.left
-          anchors.right: parent.right
-          anchors.bottom: parent.bottom
-          anchors.margins: 5
-          height: implicitHeight
-          spacing: 5
-
-          Item {
-            Layout.fillWidth: true
-          }
-
-          IconRoundButton {
-            id: importCSV
-            z: 100
-            Layout.preferredHeight: 35
-            Layout.preferredWidth: 35
-            Layout.alignment: Qt.AlignRight
-
-            lightThemeIcon: "qrc:/icons/csv-import.svg"
-            darkThemeIcon: "qrc:/icons/csv-import-light.svg"
-
-            onReleased: fileDialog.visible = true
-          }
-
-          IconRoundButton {
-            id: add
-            z: 100
-            Layout.preferredHeight: 35
-            Layout.preferredWidth: 35
-            Layout.alignment: Qt.AlignRight
-            darkThemeIcon: "qrc:/icons/add-light.svg"
-            lightThemeIcon: "qrc:/icons/add.svg"
-
-            onReleased: userInput.addWidget()
-          }
-        }
       }
 
       Item {

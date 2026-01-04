@@ -24,10 +24,6 @@ Item {
     console.debug("UserInputPanel: width: ", width);
   }
 
-  function addWidget() {
-    MathWorld.addMathObject();
-  }
-
   ColumnLayout {
     id: colLayout
     anchors.fill: parent
@@ -76,9 +72,5 @@ Item {
       AppSettings {}
 
     }
-  }
-
-  Component.onCompleted: {
-    addWidget();
   }
 }
