@@ -27,6 +27,16 @@ QColor ZeAppSettings::getValidSyntax() const
   else return validSyntaxLight;
 }
 
+void ZeAppSettings::colorSchemeChanged()
+{
+  if (invalidSyntaxDark != invalidSyntaxLight)
+    emit invalidSyntaxChanged();
+  if (validSyntaxDark != validSyntaxLight)
+    emit validSyntaxChanged();
+  if (warningSyntaxDark != warningSyntaxLight)
+    emit warningSyntaxChanged();
+}
+
 QColor ZeAppSettings::getInvalidSyntax() const
 {
   if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
