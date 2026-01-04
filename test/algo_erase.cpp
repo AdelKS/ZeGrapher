@@ -1,6 +1,6 @@
 #include "Utils/algos.h"
 
-#include <cassert>
+#include "utils.h"
 
 int main()
 {
@@ -8,7 +8,7 @@ int main()
 
   zg::utils::erase(vals, [](int x){ return x >= 2; });
 
-  assert(bool(vals == std::unordered_set<int>({0, 1})));
+  test(bool(vals == std::unordered_set<int>({0, 1})));
 
   return 0;
 }
