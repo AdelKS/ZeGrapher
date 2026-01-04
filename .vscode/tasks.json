@@ -6,12 +6,12 @@
         {
             "label": "setup-debug",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
+            "command": "[ -d \"${cwd}/build-zg-debug\" ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true"
         },
         {
             "label": "resetup-debug",
             "type": "shell",
-            "command": "rm -rf ${cwd}/build-zg-debug; meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug",
+            "command": "rm -rf ${cwd}/build-zg-debug; meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true",
             "problemMatcher": []
         },
         {
@@ -58,12 +58,12 @@
          {
             "label": "setup-debug-asan",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug-asan\" ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined"
+            "command": "[ -d \"${cwd}/build-zg-debug-asan\" ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true"
         },
         {
             "label": "resetup-debug-asan",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined",
+            "command": "meson setup --wipe build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true",
             "problemMatcher": []
         },
         {
@@ -113,7 +113,7 @@
         {
             "label": "setup-debug-clang",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-debug-clang\" ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
+            "command": "[ -d \"${cwd}/build-zg-debug-clang\" ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true"
         },
         {
             "label": "setup-clangd",
@@ -125,7 +125,7 @@
         {
             "label": "resetup-debug-clang",
             "type": "shell",
-            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug"
+            "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true"
         },
         {
             "label": "build-debug-clang",
