@@ -3,6 +3,10 @@
 
 #include <zecalculator/zecalculator.h>
 
+Highlighter::Highlighter(QObject* parent): QSyntaxHighlighter(parent) {
+  connect(information.appSettings, &ZeAppSettings::invalidSyntaxChanged, this, &Highlighter::rehighlight);
+}
+
 void Highlighter::setState(zg::State s)
 {
   if (state != s)
@@ -18,9 +22,9 @@ void Highlighter::highlightBlock(const QString &text)
            << "Highlighter address: " << this;
 
   QTextCharFormat invalidFormat;
-  invalidFormat.setForeground(information.appSettings->invalidSyntax);
+  invalidFormat.setForeground(information.appSettings->getInvalidSyntax());
   invalidFormat.setFontUnderline(true);
-  invalidFormat.setUnderlineColor(information.appSettings->invalidSyntax);
+  invalidFormat.setUnderlineColor(information.appSettings->getInvalidSyntax());
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
   if (auto opt_err_tok = state.getErrToken(); opt_err_tok)

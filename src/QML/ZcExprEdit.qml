@@ -24,6 +24,19 @@ Item {
   onStateChanged: refresh()
   onNanValueChanged: refresh()
 
+  Connections {
+    target: Information.appSettings
+    function onValidSyntaxChanged() {
+      root.refresh();
+    }
+    function onInvalidSyntaxChanged() {
+      root.refresh();
+    }
+    function onWarningSyntaxChanged() {
+      root.refresh();
+    }
+  }
+
   function refresh() {
     if (customErrorMsg.length !== 0)
       errorLbl.setErrorMsg(customErrorMsg);

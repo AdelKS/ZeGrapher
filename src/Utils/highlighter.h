@@ -17,7 +17,7 @@ class Highlighter: public QSyntaxHighlighter
 
 public:
 
-  Highlighter(QObject* parent = nullptr): QSyntaxHighlighter(parent) {}
+  Highlighter(QObject* parent = nullptr);
 
   void highlightBlock(const QString &text) override final;
 
