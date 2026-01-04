@@ -1,6 +1,6 @@
 #include "Utils/algos.h"
 
-#include <cassert>
+#include "utils.h"
 
 int main()
 {
@@ -8,7 +8,7 @@ int main()
 
   zg::utils::move_elements_right(vals, 2);
 
-  assert(bool(vals == std::vector<int>({0, 1, 0, 1, 2, 3, 4})));
+  test(bool(vals == std::vector<int>({0, 1, 0, 1, 2, 3, 4})));
 
   return 0;
 }
