@@ -25,14 +25,14 @@ Item {
       anchors.centerIn: parent
 
       columns: 2
-      columnSpacing: 5
+      columnSpacing: 10
 
       ZeLabel {
         Layout.alignment: Qt.AlignRight
         text: qsTr('Language')
       }
       ComboBox {
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignLeft
 
         implicitContentWidthPolicy: ComboBox.WidestText
         background.implicitWidth: implicitContentWidth
@@ -48,7 +48,7 @@ Item {
         text: qsTr('Font')
       }
       Button {
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignLeft
         text: fontDialog.currentFont.family
         onClicked: fontDialog.open()
       }
@@ -67,7 +67,7 @@ Item {
           }
           ColorButton {
             id: validSyntaxColorButton
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignLeft
 
             selectedColor: { selectedColor = Information.appSettings.validSyntax; }
 
@@ -90,7 +90,7 @@ Item {
           }
           ColorButton {
             id: warningSyntaxColorButton
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignLeft
 
             selectedColor: { selectedColor = Information.appSettings.warningSyntax; }
 
@@ -113,7 +113,7 @@ Item {
           }
           ColorButton {
             id: invalidSyntaxColorButton
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignLeft
 
             selectedColor: { selectedColor = Information.appSettings.invalidSyntax; }
 
@@ -138,7 +138,7 @@ Item {
       }
 
       IconButton {
-        Layout.alignment: Qt.AlignHCenter
+        Layout.alignment: Qt.AlignLeft
         Layout.maximumHeight: 25
         Layout.maximumWidth: 25
 
