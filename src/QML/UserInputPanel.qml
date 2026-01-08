@@ -55,6 +55,10 @@ Item {
       }
 
       TabButton {
+        text: qsTr("View")
+      }
+
+      TabButton {
         text: qsTr("App")
       }
     }
@@ -68,6 +72,8 @@ Item {
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 
       MathObjects {}
+
+      ViewSettings {}
 
       AppSettings {}
 

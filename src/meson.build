@@ -85,6 +85,7 @@ qml_files = files(
   './QML/TextTumbler.qml',
   './QML/UserInputPanel.qml',
   './QML/ValueEdit.qml',
+  './QML/ViewSettings.qml',
   './QML/ZcExprEdit.qml',
   './QML/ZeDoubleSpinBox.qml',
   './QML/ZeLabel.qml',
