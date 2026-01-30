@@ -33,8 +33,6 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 
   minRelSize = RELATIVE_MIN_SIZE;
 
-  screenDPI = qGuiApp->primaryScreen()->physicalDotsPerInch();
-
   relFigRect.setHeight(1);
   relFigRect.setWidth(1);
   relFigRect.moveTopLeft(QPointF(0, 0));
@@ -75,7 +73,7 @@ void InteractiveGraph::exportPDF(QString fileName, SheetSizeType sizeType)
   pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
   pdfWriter->setTitle(tr("Exported graph"));
 
-  int targetResolution = int(screenDPI / sizeSettings.scalingFactor);
+  int targetResolution = int(information.getScreenDpi() / sizeSettings.scalingFactor);
 
   pdfWriter->setResolution(targetResolution);
 
@@ -120,7 +118,7 @@ void InteractiveGraph::exportSVG(QString fileName)
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  double targetResolution = screenDPI / sizeSettings.scalingFactor;
+  double targetResolution = information.getScreenDpi() / sizeSettings.scalingFactor;
 
   svgGenerator.setResolution(int(targetResolution));
 
@@ -161,12 +159,12 @@ void InteractiveGraph::updateSizeValues()
   if (sizeSettings.sheetFillsWindow)
   {
     sizeSettings.pxSheetSize = size().toSize();
-    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDPI * CM_PER_INCH;
+    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / information.getScreenDpi() * CM_PER_INCH;
   }
 
   if (sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
   {
-    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * screenDPI / CM_PER_INCH).toSize();
+    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * information.getScreenDpi() / CM_PER_INCH).toSize();
   }
 
   disconnect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
@@ -242,7 +240,7 @@ QRect InteractiveGraph::getDrawableRect(const QRect &refSupportRect)
 
   if (information.getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
   {
-    pxMargins = int(sizeSettings.cmMargins / CM_PER_INCH * screenDPI);
+    pxMargins = int(sizeSettings.cmMargins / CM_PER_INCH * information.getScreenDpi());
   }
   else
   {

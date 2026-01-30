@@ -149,3 +149,17 @@ QString Information::getExportFileName()
 {
   return exportFileName;
 }
+
+void Information::setScreenDpi(double dpi)
+{
+  if (screenDpi != dpi)
+  {
+    screenDpi = dpi;
+    emit screenDpiChanged();
+  }
+}
+
+void Information::refreshScreenDpi()
+{
+  setScreenDpi(qGuiApp->primaryScreen()->physicalDotsPerInch());
+}

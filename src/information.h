@@ -42,7 +42,7 @@ class Information: public QObject
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
   Q_PROPERTY(QFont appFont WRITE setAppFont MEMBER appFont NOTIFY appFontChanged)
-
+  Q_PROPERTY(double screenDpi WRITE setScreenDpi MEMBER screenDpi NOTIFY screenDpiChanged)
 
 public:
   Information(QObject* parent = nullptr);
@@ -56,6 +56,7 @@ public:
   const ZeAppSettings& getAppSettings() const;
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
   Q_INVOKABLE void setAppFont(QFont);
+  double getScreenDpi() const { return screenDpi; }
 
   /// @brief graph range change from user mouse interaction
   void setGraphRangeMouseEdit(const zg::real_range2d&);
@@ -79,6 +80,7 @@ signals:
   void rangeChangedWithMouse();
   void appFontChanged();
   void appSettingsChanged();
+  void screenDpiChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -92,6 +94,8 @@ public slots:
   void setAxesSettings(const ZeAxesSettings& axesSettings);
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
+  void setScreenDpi(double);
+  void refreshScreenDpi();
 
 public:
   zc::eval::Cache mathObjectCache;
@@ -106,4 +110,5 @@ protected:
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
   QFont appFont;
+  double screenDpi;
 };
