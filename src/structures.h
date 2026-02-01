@@ -180,8 +180,8 @@ struct ZeZoomSettings
 
 public:
 
-  ZoomingType::Type zoomingType;
-  double zoom;
+  ZoomingType::Type zoomingType = ZoomingType::FITSHEET;
+  double zoom = 1.0;
 
   bool operator == (const ZeZoomSettings &other) const = default;
 };

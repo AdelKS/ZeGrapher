@@ -240,21 +240,28 @@ ApplicationWindow {
     }
   }
 
-  InteractiveGraphView {
-    id: interactiveGraph
+  ScrollView {
+    property bool anchorToDrawer: drawer_button.checked && win.width - drawer.width >= 400
+    id: graphScrollView
+
     x: anchorToDrawer ? drawer.width : 0
     y: 0
     height: win.height
     width: anchorToDrawer ? win.width - drawer.width : win.width
 
-    function sizeChanged() {
-      Information.setAvailableSheetSizePx( Qt.size(width, height));
+    onAvailableHeightChanged: {
+      Information.setAvailableSheetSizePx( Qt.size(availableWidth, availableHeight));
+      interactiveGraph.updateImplicitSize();
+      console.log("Graph available width: ", availableWidth);
+      console.log("Graph available height: ", availableHeight);
     }
 
-    onHeightChanged: sizeChanged()
-    onWidthChanged: sizeChanged()
-
-    property bool anchorToDrawer: drawer_button.checked && win.width - drawer.width >= 400
+    onAvailableWidthChanged: {
+      Information.setAvailableSheetSizePx( Qt.size(availableWidth, availableHeight));
+      interactiveGraph.updateImplicitSize();
+      console.log("Graph available width: ", availableWidth);
+      console.log("Graph available height: ", availableHeight);
+    }
 
     Behavior on x {
       NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
@@ -263,9 +270,33 @@ ApplicationWindow {
     Behavior on width {
       NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
     }
-  }
 
-  Component.onCompleted: {
-    Information.setAvailableSheetSizePx( Qt.size(interactiveGraph.width, interactiveGraph.height));
+    InteractiveGraphView {
+      id: interactiveGraph
+      anchors.fill: parent
+
+      width: implicitWidth
+      height: implicitHeight
+
+      onHeightChanged: {
+        console.log("Graph width: ", width);
+        console.log("Graph height: ", height);
+      }
+
+      onWidthChanged: {
+        console.log("Graph width: ", width);
+        console.log("Graph height: ", height);
+      }
+
+      function updateImplicitSize() {
+        if (Information.graphSizeSettings.sheetFillsWindow || Information.graphZoomSettings.zoomingType == ZoomingType.FITSHEET) {
+          implicitWidth = graphScrollView.availableWidth;
+          implicitHeight = graphScrollView.availableHeight;
+        } else {
+          implicitWidth = Information.graphSizeSettings.pxSheetSize.width * Information.graphZoomSettings.zoom;
+          implicitHeight = Information.graphSizeSettings.pxSheetSize.height * Information.graphZoomSettings.zoom;
+        }
+      }
+    }
   }
 }

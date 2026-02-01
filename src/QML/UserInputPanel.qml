@@ -28,7 +28,7 @@ Item {
     id: colLayout
     anchors.fill: parent
 
-    implicitWidth: Math.max(rangeAdjust.implicitWidth, scrollView.implicitContentWidth)
+    implicitWidth: rangeAdjust.implicitWidth
 
     RangeAdjust {
       id: rangeAdjust

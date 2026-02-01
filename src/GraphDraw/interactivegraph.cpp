@@ -47,20 +47,6 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
 }
 
-void InteractiveGraph::updateWidgetSize()
-{
-  QSizeF newSize;
-  if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZoomingType::FITSHEET)
-    newSize = parentItem()->size();
-  else
-    newSize = QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom;
-
-  setSize(newSize);
-  updateFigureSize();
-
-  emit widgetResized();
-}
-
 double InteractiveGraph::getMinFigureRelativeSize()
 {
   return minRelSize;
@@ -152,11 +138,13 @@ void InteractiveGraph::paint(QPainter *p)
   if (currentSize != size())
   {
     currentSize = size();
-    updateWidgetSize();
     onSizeSettingsChange();
   }
 
   painter = p;
+
+  pixelRatio = window()->effectiveDevicePixelRatio();
+  painter->scale(1.0 / pixelRatio, 1.0 / pixelRatio);
 
   drawSupport();
 
@@ -246,26 +234,26 @@ QRect InteractiveGraph::getFigureRect(const QRect &refSupportRect)
 
   figRect.moveTopLeft(topLeft);
 
-  // qDebug() << "Figure reconstruction call";
-  // qDebug() << "Figure is " << figRect;
-  // qDebug() << "marginless support is " << refSupportRectMarginless;
-  // qDebug() << "relative figure rect is " << relFigRect;
+  qDebug() << "Figure reconstruction call";
+  qDebug() << "Figure is " << figRect;
+  qDebug() << "marginless support is " << refSupportRectMarginless;
+  qDebug() << "relative figure rect is " << relFigRect;
 
   return figRect;
 }
 
-QRect InteractiveGraph::supportRectFromViewRect(QRect viewRect)
+QRectF InteractiveGraph::supportRectFromViewSize(QSizeF viewSize)
 {
-  QRect rect;
+  QRectF rect;
 
   if (sizeSettings.sheetFillsWindow)
   {
-    rect = viewRect;
+    rect.setSize(viewSize);
   }
   else if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
   {
     double ratio, targetRatio;
-    ratio = double(viewRect.height()) / double(viewRect.width());
+    ratio = viewSize.height() / viewSize.width();
 
     if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
       targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
@@ -275,24 +263,28 @@ QRect InteractiveGraph::supportRectFromViewRect(QRect viewRect)
 
     if (ratio <= targetRatio)
     {
-      rect.setHeight(viewRect.height());
-      rect.setWidth(int(double(viewRect.height()) / targetRatio));
+      rect.setHeight(viewSize.height());
+      rect.setWidth(viewSize.height() / targetRatio);
 
-      rect.moveTopLeft(QPoint((viewRect.width() - rect.width()) / 2, 0));
+      rect.moveTopLeft(QPointF((viewSize.width() - rect.width()) / 2, 0));
     }
     else
     {
-      rect.setHeight(int(double(viewRect.width()) * targetRatio));
-      rect.setWidth(viewRect.width());
+      rect.setHeight(viewSize.width() * targetRatio);
+      rect.setWidth(viewSize.width());
 
-      rect.moveTopLeft(QPoint(0, (viewRect.height() - rect.height()) / 2));
+      rect.moveTopLeft(QPoint(0, (viewSize.height() - rect.height()) / 2));
     }
   }
   else
   {
-    rect.setSize((QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom).toSize());
-    rect.translate(viewRect.center() - rect.center());
+    rect.setSize(sizeSettings.pxSheetSize * zoomSettings.zoom);
+    rect.translate(QPointF(viewSize.width()/2, viewSize.height()/2) - rect.center());
   }
+
+  qDebug() << "Available rect: " << information.getAvailableSheetSizePx();
+  qDebug() << "View rect: " << viewSize;
+  qDebug() << "Support rect: " << rect;
 
   return rect;
 }
@@ -301,7 +293,7 @@ void InteractiveGraph::drawSupport()
 { // draws the sheet on an untransformed view
   painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
 
-  supportRect = supportRectFromViewRect(painter->viewport());
+  supportRect = supportRectFromViewSize(painter->viewport().size().toSizeF()).toRect();
 
   painter->drawRect(supportRect);
 }
@@ -342,9 +334,6 @@ void InteractiveGraph::scaleView(const QRect &refSheetRect)
   qDebug() << "Painter window (before scaling): " << painter->window();
 
   pixelRatio = window()->effectiveDevicePixelRatio();
-
-  pixelRatioTransform.reset();
-  pixelRatioTransform.scale(pixelRatio, pixelRatio);
 
   inversePixelRatioTransform.reset();
   inversePixelRatioTransform.scale(1./pixelRatio, 1./pixelRatio);
@@ -559,7 +548,7 @@ void InteractiveGraph::onSizeSettingsChange()
 
 void InteractiveGraph::onZoomSettingsChange()
 {
-  updateWidgetSize();
+  updateFigureSize();
   update();
 }
 

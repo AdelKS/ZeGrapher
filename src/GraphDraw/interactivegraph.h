@@ -71,7 +71,6 @@ public slots:
   virtual void wheelEvent(QWheelEvent *event) override;
 
   Q_INVOKABLE void onSizeSettingsChange();
-  void updateWidgetSize();
 
   void exportPDF(QString fileName, SheetSizeType sizeType);
   void exportSVG(QString fileName);
@@ -83,7 +82,7 @@ protected:
 
   void drawSupport();
   void drawGraph();
-  QRect supportRectFromViewRect(QRect viewRect);
+  QRectF supportRectFromViewSize(QSizeF);
   void drawFigureRect();
   void assignMouseRects();
   void printCurves();
@@ -104,7 +103,7 @@ protected:
   ZeSizeSettings sizeSettings;
   ZeZoomSettings zoomSettings;
 
-  QTransform worldTransform, inverseWorldTransform, pixelRatioTransform, inversePixelRatioTransform;
+  QTransform worldTransform, inverseWorldTransform, inversePixelRatioTransform;
 
   QRectF relFigRect;
   QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;

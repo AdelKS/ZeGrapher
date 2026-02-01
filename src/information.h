@@ -60,6 +60,7 @@ public:
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
   Q_INVOKABLE void setAppFont(QFont);
   double getScreenDpi() const { return screenDpi; }
+  QSize getAvailableSheetSizePx() { return availableSheetSizePx; }
 
   /// @brief graph range change from user mouse interaction
   void setGraphRangeMouseEdit(const zg::real_range2d&);
