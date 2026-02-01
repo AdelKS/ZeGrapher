@@ -2,7 +2,7 @@
 
 set -e
 
-deploy_dir=$(greadlink -f $(dirname "$BASH_SOURCE"))
+deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 version=$(bash "${deploy_dir}"/../version.sh get-vcs)
 arch=`uname -m`
 app_name="ZeGrapher-macOS-$arch-$version"
