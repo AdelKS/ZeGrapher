@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [[ -z "$MESON_SOURCE_ROOT" ]]; then
   MESON_SOURCE_ROOT=$(readlink -f $(dirname "$BASH_SOURCE"))
 fi

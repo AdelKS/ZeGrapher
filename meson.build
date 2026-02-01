@@ -1,5 +1,5 @@
 project('ZeGrapher', 'cpp',
-    version : run_command('version.sh', 'get-vcs').stdout().strip(),
+    version : run_command('version.sh', 'get-vcs', check: true).stdout().strip(),
     default_options : [
         'cpp_std=c++20',
         'buildtype=release',
