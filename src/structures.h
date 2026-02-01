@@ -116,11 +116,23 @@ public:
     ZeViewType axisType = ZeViewType::LINEAR;
 };
 
+struct SizeUnit: QObject
+{
+  Q_OBJECT
+  QML_ELEMENT
+
+public:
+  SizeUnit(QObject *parent = nullptr): QObject(parent) {}
+
+  enum Unit {PIXEL, CENTIMETER};
+  Q_ENUM(Unit)
+};
+
 struct ZeSizeSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(SizeUnit sizeUnit MEMBER sizeUnit)
+  Q_PROPERTY(SizeUnit::Unit sizeUnit MEMBER sizeUnit)
   Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
   Q_PROPERTY(bool figureFillsSheet MEMBER figureFillsSheet)
   Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
@@ -131,13 +143,9 @@ struct ZeSizeSettings
   Q_PROPERTY(QSizeF cmSheetSize MEMBER cmSheetSize)
   Q_PROPERTY(double cmMargins MEMBER cmMargins)
 
-  QML_VALUE_TYPE(zesizesettings)
-
 public:
-  enum SizeUnit {PIXEL, CENTIMETER};
-  Q_ENUM(SizeUnit)
 
-  SizeUnit sizeUnit = PIXEL;
+  SizeUnit::Unit sizeUnit = SizeUnit::PIXEL;
   bool sheetFillsWindow = true, figureFillsSheet = true;
 
   double scalingFactor = 1.0;
@@ -151,18 +159,28 @@ public:
   bool operator == (const ZeSizeSettings &other) const = default;
 };
 
+struct ZoomingType: QObject
+{
+  Q_OBJECT
+  QML_ELEMENT
+
+public:
+  ZoomingType(QObject *parent = nullptr): QObject(parent) {}
+
+  enum Type {FITSHEET, CUSTOM};
+  Q_ENUM(Type)
+};
+
 struct ZeZoomSettings
 {
   Q_GADGET
-  Q_PROPERTY(ZoomingType zoomingType MEMBER zoomingType)
+  Q_PROPERTY(ZoomingType::Type zoomingType MEMBER zoomingType)
   Q_PROPERTY(double zoom MEMBER zoom)
   QML_VALUE_TYPE(ZeZoomSettings)
 
 public:
-  enum ZoomingType {FITSHEET, CUSTOM};
-  Q_ENUM(ZoomingType)
 
-  ZoomingType zoomingType;
+  ZoomingType::Type zoomingType;
   double zoom;
 
   bool operator == (const ZeZoomSettings &other) const = default;

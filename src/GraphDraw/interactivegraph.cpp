@@ -50,7 +50,7 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 void InteractiveGraph::updateWidgetSize()
 {
   QSizeF newSize;
-  if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
+  if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZoomingType::FITSHEET)
     newSize = parentItem()->size();
   else
     newSize = QSizeF(sizeSettings.pxSheetSize) * zoomSettings.zoom;
@@ -145,36 +145,9 @@ void InteractiveGraph::exportSVG(QString fileName)
   painter->end();
 }
 
-void InteractiveGraph::updateSizeValues()
-{
-  zoomSettings = information.getGraphZoomSettings();
-  sizeSettings = information.getGraphSizeSettings();
-
-  if (sizeSettings.figureFillsSheet)
-  {
-    sizeSettings.cmMargins = 0;
-    sizeSettings.pxMargins = 0;
-  }
-
-  if (sizeSettings.sheetFillsWindow)
-  {
-    sizeSettings.pxSheetSize = size().toSize();
-    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / information.getScreenDpi() * CM_PER_INCH;
-  }
-
-  if (sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
-  {
-    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * information.getScreenDpi() / CM_PER_INCH).toSize();
-  }
-
-  disconnect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-  information.setGraphSizeSettings(sizeSettings);
-  connect(&information, SIGNAL(graphSizeSettingsChanged()), this, SLOT(onSizeSettingsChange()));
-}
-
 void InteractiveGraph::paint(QPainter *p)
 {
-  updateSizeValues();
+  sizeSettings = information.getGraphSizeSettings();
 
   if (currentSize != size())
   {
@@ -238,7 +211,7 @@ QRect InteractiveGraph::getDrawableRect(const QRect &refSupportRect)
 
   int pxMargins = 0;
 
-  if (information.getGraphSizeSettings().sizeUnit == ZeSizeSettings::CENTIMETER)
+  if (information.getGraphSizeSettings().sizeUnit == SizeUnit::CENTIMETER)
   {
     pxMargins = int(sizeSettings.cmMargins / CM_PER_INCH * information.getScreenDpi());
   }
@@ -289,12 +262,12 @@ QRect InteractiveGraph::supportRectFromViewRect(QRect viewRect)
   {
     rect = viewRect;
   }
-  else if (zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
+  else if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
   {
     double ratio, targetRatio;
     ratio = double(viewRect.height()) / double(viewRect.width());
 
-    if (sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+    if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
       targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
     else
       targetRatio = double(sizeSettings.pxSheetSize.height())
@@ -350,7 +323,7 @@ void InteractiveGraph::drawFigureRect()
 
 void InteractiveGraph::scaleView(const QRect &refSheetRect)
 {
-  if (zoomSettings.zoomingType == ZeZoomSettings::FITSHEET)
+  if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
   {
     double newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
 
@@ -553,6 +526,7 @@ void InteractiveGraph::onSizeSettingsChange()
 
   // qDebug() << "OnSizeSettingsChange";
 
+  zoomSettings = information.getGraphZoomSettings();
   sizeSettings = information.getGraphSizeSettings();
 
   if (sizeSettings.figureFillsSheet)
@@ -563,7 +537,7 @@ void InteractiveGraph::onSizeSettingsChange()
   }
   else
   {
-    if (sizeSettings.sizeUnit == ZeSizeSettings::CENTIMETER)
+    if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
     {
       relFigRect.setWidth(sizeSettings.cmFigureSize.width() / (sizeSettings.cmSheetSize.width()));
       relFigRect.setHeight(sizeSettings.cmFigureSize.height() / (sizeSettings.cmSheetSize.height()));

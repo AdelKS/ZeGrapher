@@ -247,6 +247,13 @@ ApplicationWindow {
     height: win.height
     width: anchorToDrawer ? win.width - drawer.width : win.width
 
+    function sizeChanged() {
+      Information.setAvailableSheetSizePx( Qt.size(width, height));
+    }
+
+    onHeightChanged: sizeChanged()
+    onWidthChanged: sizeChanged()
+
     property bool anchorToDrawer: drawer_button.checked && win.width - drawer.width >= 400
 
     Behavior on x {
@@ -256,5 +263,9 @@ ApplicationWindow {
     Behavior on width {
       NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
     }
+  }
+
+  Component.onCompleted: {
+    Information.setAvailableSheetSizePx( Qt.size(interactiveGraph.width, interactiveGraph.height));
   }
 }

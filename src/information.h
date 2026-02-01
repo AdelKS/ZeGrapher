@@ -43,6 +43,9 @@ class Information: public QObject
                NOTIFY graphSizeSettingsChanged)
   Q_PROPERTY(QFont appFont WRITE setAppFont MEMBER appFont NOTIFY appFontChanged)
   Q_PROPERTY(double screenDpi WRITE setScreenDpi MEMBER screenDpi NOTIFY screenDpiChanged)
+  Q_PROPERTY(QSize  availableSheetSizePx WRITE setAvailableSheetSizePx MEMBER availableSheetSizePx NOTIFY availableSheetSizePxChanged)
+  Q_PROPERTY(QSizeF availableSheetSizeCm MEMBER availableSheetSizeCm NOTIFY availableSheetSizeCmChanged)
+
 
 public:
   Information(QObject* parent = nullptr);
@@ -81,6 +84,8 @@ signals:
   void appFontChanged();
   void appSettingsChanged();
   void screenDpiChanged();
+  void availableSheetSizePxChanged();
+  void availableSheetSizeCmChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -96,6 +101,8 @@ public slots:
   void setGraphSettings(const ZeGraphSettings& graphSettings);
   void setScreenDpi(double);
   void refreshScreenDpi();
+  void setAvailableSheetSizePx(QSize);
+  void updateSizes();
 
 public:
   zc::eval::Cache mathObjectCache;
@@ -111,4 +118,6 @@ protected:
   zg::GraphRange* graph_range = nullptr;
   QFont appFont;
   double screenDpi;
+  QSize availableSheetSizePx;
+  QSizeF availableSheetSizeCm;
 };

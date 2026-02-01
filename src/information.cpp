@@ -155,6 +155,7 @@ void Information::setScreenDpi(double dpi)
   if (screenDpi != dpi)
   {
     screenDpi = dpi;
+    updateSizes();
     emit screenDpiChanged();
   }
 }
@@ -162,4 +163,43 @@ void Information::setScreenDpi(double dpi)
 void Information::refreshScreenDpi()
 {
   setScreenDpi(qGuiApp->primaryScreen()->physicalDotsPerInch());
+}
+
+void Information::setAvailableSheetSizePx(QSize size)
+{
+  if (availableSheetSizePx != size)
+  {
+    availableSheetSizePx = size;
+    availableSheetSizeCm = size.toSizeF() / screenDpi * CM_PER_INCH;
+    updateSizes();
+    emit availableSheetSizePxChanged();
+  }
+}
+
+void Information::updateSizes()
+{
+  ZeSizeSettings old = sizeSettings;
+
+  if (sizeSettings.sheetFillsWindow)
+  {
+    sizeSettings.pxSheetSize = availableSheetSizePx;
+    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDpi * CM_PER_INCH;
+  }
+
+  if (sizeSettings.figureFillsSheet)
+  {
+    sizeSettings.cmMargins = 0;
+    sizeSettings.pxMargins = 0;
+
+    sizeSettings.pxFigureSize = sizeSettings.pxSheetSize;
+    sizeSettings.cmFigureSize = sizeSettings.cmSheetSize;
+  }
+
+  if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
+  {
+    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * screenDpi / CM_PER_INCH).toSize();
+  }
+
+  if (old != sizeSettings)
+    emit graphSizeSettingsChanged();
 }

@@ -80,7 +80,6 @@ public slots:
   Q_INVOKABLE void updateFigureSize();
 
 protected:
-  void updateSizeValues();
 
   void drawSupport();
   void drawGraph();
