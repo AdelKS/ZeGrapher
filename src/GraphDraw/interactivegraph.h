@@ -103,7 +103,7 @@ protected:
   ZeSizeSettings sizeSettings;
   ZeZoomSettings zoomSettings;
 
-  QTransform worldTransform, inverseWorldTransform, inversePixelRatioTransform;
+  QTransform worldTransform, inverseWorldTransform, inverseScaledTransform;
 
   QRectF relFigRect;
   QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
