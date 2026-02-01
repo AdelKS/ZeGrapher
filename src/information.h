@@ -101,7 +101,7 @@ public slots:
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
   void setScreenDpi(double);
-  void refreshScreenDpi();
+  void primaryScreenChanged();
   void setAvailableSheetSizePx(QSize);
   void updateSizes();
 

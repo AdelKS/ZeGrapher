@@ -135,6 +135,7 @@ struct ZeSizeSettings
   Q_PROPERTY(SizeUnit::Unit sizeUnit MEMBER sizeUnit)
   Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
   Q_PROPERTY(bool figureFillsSheet MEMBER figureFillsSheet)
+  Q_PROPERTY(bool defaultScaling MEMBER defaultScaling)
   Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
   Q_PROPERTY(QSize pxFigureSize MEMBER pxFigureSize)
   Q_PROPERTY(QSize pxSheetSize MEMBER pxSheetSize)
@@ -148,6 +149,7 @@ public:
   SizeUnit::Unit sizeUnit = SizeUnit::PIXEL;
   bool sheetFillsWindow = true, figureFillsSheet = true;
 
+  bool defaultScaling = true;
   double scalingFactor = 1.0;
 
   QSize pxFigureSize, pxSheetSize;

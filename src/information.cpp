@@ -160,8 +160,10 @@ void Information::setScreenDpi(double dpi)
   }
 }
 
-void Information::refreshScreenDpi()
+void Information::primaryScreenChanged()
 {
+  QObject::connect(qGuiApp->primaryScreen(), &QScreen::physicalDotsPerInchChanged, this, &Information::primaryScreenChanged);
+
   setScreenDpi(qGuiApp->primaryScreen()->physicalDotsPerInch());
 }
 

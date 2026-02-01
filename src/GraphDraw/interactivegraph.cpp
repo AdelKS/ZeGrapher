@@ -134,6 +134,11 @@ void InteractiveGraph::exportSVG(QString fileName)
 void InteractiveGraph::paint(QPainter *p)
 {
   sizeSettings = information.getGraphSizeSettings();
+  if (sizeSettings.defaultScaling)
+  {
+    sizeSettings.scalingFactor = window()->effectiveDevicePixelRatio();
+    information.setGraphSizeSettings(sizeSettings);
+  }
 
   if (currentSize != size())
   {
@@ -144,6 +149,7 @@ void InteractiveGraph::paint(QPainter *p)
   painter = p;
 
   pixelRatio = window()->effectiveDevicePixelRatio();
+
   painter->scale(1.0 / pixelRatio, 1.0 / pixelRatio);
 
   drawSupport();

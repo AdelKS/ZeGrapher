@@ -78,11 +78,13 @@ Item {
           }
           ZeDoubleSpinBox {
             from: 0.1
-            value: 1.0
+            value: Information.graphSizeSettings.scalingFactor
             step: 0.1
             to: 5.0
+            decimals: 2
 
             onValueModified: {
+              Information.graphSizeSettings.defaultScaling = false;
               Information.graphSizeSettings.scalingFactor = value;
               console.debug("global scale changed to: ", value);
             }
