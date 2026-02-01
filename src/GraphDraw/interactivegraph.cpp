@@ -335,11 +335,11 @@ void InteractiveGraph::scaleView(const QRect &refSheetRect)
 
   pixelRatio = window()->effectiveDevicePixelRatio();
 
-  inversePixelRatioTransform.reset();
-  inversePixelRatioTransform.scale(1./pixelRatio, 1./pixelRatio);
+  inverseScaledTransform.reset();
+  inverseScaledTransform.scale(1./totalScaleFactor*pixelRatio, 1./totalScaleFactor*pixelRatio);
 
   qDebug() << "Painter scaled back window (before scaling): "
-           << inversePixelRatioTransform.mapRect(painter->window());
+           << inverseScaledTransform.mapRect(painter->window());
 
   qDebug() << "Pixel ratio: " << pixelRatio;
 
@@ -395,7 +395,7 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 
   if (moveType != NOTHING)
   {
-    lastMousePos = inversePixelRatioTransform.map(event->pos());
+    lastMousePos = inverseScaledTransform.map(event->pos());
     event->accept();
   }
 }
@@ -417,7 +417,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
     else
       setCursor(Qt::ArrowCursor);
 
-    lastMousePos = inverseWorldTransform.map(event->pos());
+    lastMousePos = inverseScaledTransform.map(event->pos());
   }
   else
   {
@@ -449,7 +449,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
       update();
     };
 
-    QPoint pos = inversePixelRatioTransform.map(event->pos());
+    QPoint pos = inverseScaledTransform.map(event->pos());
 
     qDebug() << "Graph size: " << size();
     qDebug() << "Mouse position: " << pos;
