@@ -90,6 +90,7 @@ qml_files = files(
   './QML/ZeDoubleSpinBox.qml',
   './QML/ZeLabel.qml',
   './QML/ZeTextEdit.qml',
+  './QML/ZoomSettings.qml',
 )
 
 qmlcpp_files = files(

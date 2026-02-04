@@ -249,10 +249,20 @@ ApplicationWindow {
     height: win.height
     width: anchorToDrawer ? win.width - drawer.width : win.width
 
+    contentHeight: interactiveGraph.implicitHeight
+    contentWidth: interactiveGraph.implicitWidth
+
+    onContentHeightChanged: {
+      console.log("Graph scrollview content height: ", contentHeight);
+    }
+
+    onContentWidthChanged: {
+      console.log("Graph scrollview content width: ", contentWidth);
+    }
+
     onAvailableHeightChanged: {
       Information.setAvailableSheetSizePx( Qt.size(availableWidth, availableHeight));
       interactiveGraph.updateImplicitSize();
-      console.log("Graph available width: ", availableWidth);
       console.log("Graph available height: ", availableHeight);
     }
 
@@ -260,7 +270,6 @@ ApplicationWindow {
       Information.setAvailableSheetSizePx( Qt.size(availableWidth, availableHeight));
       interactiveGraph.updateImplicitSize();
       console.log("Graph available width: ", availableWidth);
-      console.log("Graph available height: ", availableHeight);
     }
 
     Behavior on x {
@@ -273,10 +282,24 @@ ApplicationWindow {
 
     InteractiveGraphView {
       id: interactiveGraph
-      anchors.fill: parent
+      anchors.centerIn: parent
 
       width: implicitWidth
       height: implicitHeight
+
+      hoverEnabled: true
+
+      Connections {
+        target: Information
+
+        function onGraphZoomSettingsChanged() {
+          interactiveGraph.updateImplicitSize();
+        }
+
+        function onGraphSizeSettingsChanged() {
+          interactiveGraph.updateImplicitSize();
+        }
+      }
 
       onHeightChanged: {
         console.log("Graph width: ", width);
@@ -289,12 +312,54 @@ ApplicationWindow {
       }
 
       function updateImplicitSize() {
+        console.log("Updating graph implicit size")
         if (Information.graphSizeSettings.sheetFillsWindow || Information.graphZoomSettings.zoomingType == ZoomingType.FITSHEET) {
           implicitWidth = graphScrollView.availableWidth;
           implicitHeight = graphScrollView.availableHeight;
         } else {
           implicitWidth = Information.graphSizeSettings.pxSheetSize.width * Information.graphZoomSettings.zoom;
           implicitHeight = Information.graphSizeSettings.pxSheetSize.height * Information.graphZoomSettings.zoom;
+        }
+      }
+    }
+  }
+
+  ZoomSettings {
+    id: zoomSettings
+    y: 0
+    anchors.horizontalCenter: graphScrollView.horizontalCenter
+
+    states: [
+      State {
+        name: "hidden";
+        when: Information.graphSizeSettings.sheetFillsWindow
+        PropertyChanges {
+          zoomSettings.y: -zoomSettings.height;
+          zoomSettings.visible: false;
+        }
+      },
+      State {
+        name: "shown";
+        when: !Information.graphSizeSettings.sheetFillsWindow
+        PropertyChanges {
+          zoomSettings.y: 0;
+          zoomSettings.visible: true;
+        }
+      }
+    ]
+
+    transitions: Transition {
+      reversible: true
+      from: "shown"
+      to: "hidden"
+      SequentialAnimation {
+        NumberAnimation {
+          easing.type: Easing.InOutQuad;
+          property: "y";
+          duration: 250;
+        }
+        PropertyAction {
+          property: "visible"
         }
       }
     }

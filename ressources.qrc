@@ -122,5 +122,9 @@
     <file>icons/solid-line-light.svg</file>
     <file>icons/loop-light.svg</file>
     <file>icons/loop.svg</file>
+    <file>icons/fit-sheet-light.svg</file>
+    <file>icons/zoom-in-icon-light.svg</file>
+    <file>icons/zoom-out-icon-light.svg</file>
+    <file>icons/size-light.svg</file>
   </qresource>
 </RCC>

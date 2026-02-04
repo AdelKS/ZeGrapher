@@ -25,6 +25,7 @@
 
 InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 {
+  setKeepMouseGrab(true);
   orientation = QPageLayout::Landscape;
   moveType = NOTHING;
   sizeSettings.scalingFactor = 1;
@@ -252,7 +253,7 @@ QRectF InteractiveGraph::supportRectFromViewSize(QSizeF viewSize)
 {
   QRectF rect;
 
-  if (sizeSettings.sheetFillsWindow)
+  if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZoomingType::CUSTOM)
   {
     rect.setSize(viewSize);
   }
@@ -281,11 +282,6 @@ QRectF InteractiveGraph::supportRectFromViewSize(QSizeF viewSize)
 
       rect.moveTopLeft(QPoint(0, (viewSize.height() - rect.height()) / 2));
     }
-  }
-  else
-  {
-    rect.setSize(sizeSettings.pxSheetSize * zoomSettings.zoom);
-    rect.translate(QPointF(viewSize.width()/2, viewSize.height()/2) - rect.center());
   }
 
   qDebug() << "Available rect: " << information.getAvailableSheetSizePx();
@@ -333,7 +329,9 @@ void InteractiveGraph::scaleView(const QRect &refSheetRect)
     }
   }
 
-  double totalScaleFactor = zoomSettings.zoom * sizeSettings.scalingFactor;
+  double totalScaleFactor = sizeSettings.scalingFactor;
+  if (not sizeSettings.figureFillsSheet)
+    totalScaleFactor *= zoomSettings.zoom;
 
   qDebug() << "Graph size: " << size();
   qDebug() << "Painter viewport (before scaling): " << painter->viewport();
@@ -408,6 +406,7 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 
 void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 {
+  qDebug() << "Mouse move event";
   if (moveType == NOTHING and not sizeSettings.figureFillsSheet)
   {
     if (topLeft.contains(event->pos()) || bottomRight.contains(event->pos()))
@@ -513,6 +512,8 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
       break;
     }
   }
+
+  event->accept();
 }
 
 void InteractiveGraph::onSizeSettingsChange()
