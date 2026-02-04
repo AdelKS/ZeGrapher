@@ -106,6 +106,8 @@ void Information::setGraphZoomSettings(const ZeZoomSettings& zoomSettings)
   {
     this->zoomSettings = zoomSettings;
 
+    qDebug() << "New zoom: " << zoomSettings.zoom;
+
     emit graphZoomSettingsChanged();
   }
 }
