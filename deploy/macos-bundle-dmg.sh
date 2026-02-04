@@ -24,3 +24,6 @@ cd ..
 
 macdeployqt $app_name -dmg -verbose=2 -executable="$app_name"/Contents/MacOS/ZeGrapher -qmldir="$deploy_dir/../src/" -fs=APFS
 # the "-executable=" bit rewrites library search paths with 'install_name_tool'
+
+# temporary fix
+mv ZeGrapher-macOS-*.dmg $app_name.dmg
