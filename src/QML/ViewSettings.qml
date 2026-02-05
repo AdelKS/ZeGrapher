@@ -66,11 +66,13 @@ Item {
 
       GroupBox {
         title: qsTr("Global settings")
+        Layout.fillWidth: true
 
         GridLayout {
           anchors.fill: parent
           columnSpacing: 10
           columns: 2
+          Layout.fillWidth: true
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
@@ -92,12 +94,13 @@ Item {
 
       GroupBox {
         title: qsTr("Sizes")
+        Layout.fillWidth: true
 
         GridLayout {
           anchors.fill: parent
           columnSpacing: 10
           columns: 2
-
+          Layout.fillWidth: true
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
