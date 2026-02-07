@@ -55,27 +55,34 @@ ZeGrapher is in a deep rework stage, the features described here may still not b
     - user set number of subdivisions
   - Activate/deactivate curves\' smoothing.
   - Plot the graph on an orthonormal basis.
+
 ------------------------------------------
+
 ### Download
+
 ZeGrapher is available in the official repositories of Debian, Fedora, Ubuntu, FreeBSD. In the Archlinux (AUR). An [AppImage](https://appimage.org/) is otherwise available, along with Windows and Mac versions in Zegrapher's [Github releases page](https://github.com/AdelKS/ZeGrapher/releases) or at [zegrapher.com](https://zegrapher.com/).
 
 ### Compile from sources
+
 To compile from sources, ZeGrapher needs the following tools and libraries:
+
 - C++ compiler: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
 - [boost](https://www.boost.org/)
 - [Qt](https://www.qt.io)
 - [meson](mesonbuild.com)
 
 To build
+
 ```shell
-$ meson setup build
-$ cd build
-$ meson compile
-$ cd ..
+meson setup build
+cd build
+meson compile
+cd ..
 ```
+
 This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can directly run.
 
-###### Packaging
+#### Packaging
 
 - Linux
   - `meson install` should now be fully XDG compliant. Issues and/PRs welcome if something is missing.
@@ -83,4 +90,4 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 - macOS
   - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
 - Windows
-  - _TODO_
+  - Use [deploy/windows-bundle-7s.sh](deploy/windows-bundle-7s.sh) (requires to be run from an [MSYS2](https://www.msys2.org/) terminal)
