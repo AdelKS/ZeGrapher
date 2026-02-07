@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Dialogs
 import QtQuick.Layouts
+import QtQuick.Window
 
 ApplicationWindow {
   id: win
@@ -9,6 +10,11 @@ ApplicationWindow {
   height: 600
   visible: true
   font: Information.appFont
+
+  onScreenChanged: {
+    console.log("Moved to screen:", screen.name);
+    Information.screenChanged(win); // converted from (px per mm) to (px per cm)
+  }
 
   FileDialog {
     id: fileDialog
@@ -293,10 +299,12 @@ ApplicationWindow {
         target: Information
 
         function onGraphZoomSettingsChanged() {
+          console.log("zoom settings change: updating implicit sizes");
           interactiveGraph.updateImplicitSize();
         }
 
         function onGraphSizeSettingsChanged() {
+          console.log("size settings change: updating implicit sizes");
           interactiveGraph.updateImplicitSize();
         }
       }
@@ -313,7 +321,7 @@ ApplicationWindow {
 
       function updateImplicitSize() {
         console.log("Updating graph implicit size")
-        if (Information.graphSizeSettings.sheetFillsWindow || Information.graphZoomSettings.zoomingType == ZoomingType.FITSHEET) {
+        if (Information.graphSizeSettings.sheetFillsWindow || Information.graphZoomSettings.zoomingType === ZoomingType.FITSHEET ) {
           implicitWidth = graphScrollView.availableWidth;
           implicitHeight = graphScrollView.availableHeight;
         } else {
@@ -363,5 +371,9 @@ ApplicationWindow {
         }
       }
     }
+  }
+
+  Component.onCompleted: {
+    Information.screenChanged(win);
   }
 }

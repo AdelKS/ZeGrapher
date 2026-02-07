@@ -152,19 +152,24 @@ QString Information::getExportFileName()
   return exportFileName;
 }
 
-void Information::setScreenDpi(double dpi)
+void Information::screenChanged(QWindow* win)
 {
-  if (screenDpi != dpi)
-  {
-    screenDpi = dpi;
-    updateSizes();
-    emit screenDpiChanged();
-  }
-}
 
-void Information::refreshScreenDpi()
-{
-  setScreenDpi(qGuiApp->primaryScreen()->physicalDotsPerInch());
+  QSizeF pixelSize = win->screen()->size().toSizeF();
+  QSizeF cmSize = win->screen()->physicalSize() / 10;
+
+  qDebug() << "Monitor pixel size: " << pixelSize;
+  qDebug() << "Monitor cm size: " << cmSize;
+
+  double cm_per_mm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
+
+  if (pixelDensity != cm_per_mm)
+  {
+    qDebug() << "pixel density " << cm_per_mm << "px per cm";
+    pixelDensity = cm_per_mm;
+    updateSizes();
+    emit pixelDensityChanged();
+  }
 }
 
 void Information::setAvailableSheetSizePx(QSize size)
@@ -172,8 +177,9 @@ void Information::setAvailableSheetSizePx(QSize size)
   if (availableSheetSizePx != size)
   {
     availableSheetSizePx = size;
-    availableSheetSizeCm = size.toSizeF() / screenDpi * CM_PER_INCH;
+    availableSheetSizeCm = size.toSizeF() / pixelDensity;
     updateSizes();
+    computeZoom();
     emit availableSheetSizePxChanged();
   }
 }
@@ -185,7 +191,7 @@ void Information::updateSizes()
   if (sizeSettings.sheetFillsWindow)
   {
     sizeSettings.pxSheetSize = availableSheetSizePx;
-    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize / screenDpi * CM_PER_INCH;
+    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize.toSizeF() / pixelDensity;
   }
 
   if (sizeSettings.figureFillsSheet)
@@ -198,10 +204,33 @@ void Information::updateSizes()
   }
 
   if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
-  {
-    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * screenDpi / CM_PER_INCH).toSize();
-  }
+    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * pixelDensity).toSize();
+  else sizeSettings.cmSheetSize = sizeSettings.pxSheetSize.toSizeF() / pixelDensity;
 
   if (old != sizeSettings)
     emit graphSizeSettingsChanged();
+}
+
+
+void Information::computeZoom()
+{
+  qDebug() << "Recomputing zoom";
+
+  if (zoomSettings.zoomingType != ZoomingType::FITSHEET)
+    return;
+
+  double ratio = availableSheetSizeCm.height() / availableSheetSizeCm.width();
+  double targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
+
+  double newZoom;
+  if (ratio <= targetRatio)
+    newZoom = availableSheetSizeCm.height() / sizeSettings.cmSheetSize.height();
+  else
+    newZoom = availableSheetSizeCm.width() / sizeSettings.cmSheetSize.width();
+
+  if (fabs(newZoom - zoomSettings.zoom) > 0.0001)
+  {
+    zoomSettings.zoom = newZoom;
+    emit graphZoomSettingsChanged();
+  }
 }

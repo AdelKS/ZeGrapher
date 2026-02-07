@@ -42,7 +42,7 @@ class Information: public QObject
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
   Q_PROPERTY(QFont appFont WRITE setAppFont MEMBER appFont NOTIFY appFontChanged)
-  Q_PROPERTY(double screenDpi WRITE setScreenDpi MEMBER screenDpi NOTIFY screenDpiChanged)
+  Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
   Q_PROPERTY(QSize  availableSheetSizePx WRITE setAvailableSheetSizePx MEMBER availableSheetSizePx NOTIFY availableSheetSizePxChanged)
   Q_PROPERTY(QSizeF availableSheetSizeCm MEMBER availableSheetSizeCm NOTIFY availableSheetSizeCmChanged)
 
@@ -59,7 +59,7 @@ public:
   const ZeAppSettings& getAppSettings() const;
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
   Q_INVOKABLE void setAppFont(QFont);
-  double getScreenDpi() const { return screenDpi; }
+  double getPixelDensity() const { return pixelDensity; }
   QSize getAvailableSheetSizePx() { return availableSheetSizePx; }
 
   /// @brief graph range change from user mouse interaction
@@ -84,7 +84,7 @@ signals:
   void rangeChangedWithMouse();
   void appFontChanged();
   void appSettingsChanged();
-  void screenDpiChanged();
+  void pixelDensityChanged();
   void availableSheetSizePxChanged();
   void availableSheetSizeCmChanged();
 
@@ -100,8 +100,7 @@ public slots:
   void setAxesSettings(const ZeAxesSettings& axesSettings);
   void setGridSettings(const ZeGridSettings& gridSettings);
   void setGraphSettings(const ZeGraphSettings& graphSettings);
-  void setScreenDpi(double);
-  void refreshScreenDpi();
+  void screenChanged(QWindow*);
   void setAvailableSheetSizePx(QSize);
   void updateSizes();
 
@@ -110,6 +109,8 @@ public:
   ZeAppSettings* appSettings = nullptr;
 
 protected:
+  void computeZoom();
+
   ZeZoomSettings zoomSettings;
   ZeSizeSettings sizeSettings;
   ZeAxesSettings axesSettings;
@@ -118,7 +119,10 @@ protected:
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
   QFont appFont;
-  double screenDpi;
+
+  /// @note in pixels per millimeter
+  double pixelDensity = 50;
+
   QSize availableSheetSizePx;
   QSizeF availableSheetSizeCm;
 };

@@ -7,7 +7,6 @@ import QtQuick.Controls.FluentWinUI3
 Item {
   id: root
 
-  readonly property double cm_per_inch: 2.54
   readonly property double cm_increment: 1;
   readonly property double px_increment: 50;
   readonly property double max_px_size: 10000
@@ -169,6 +168,11 @@ Item {
 
                 onCurrentValueChanged: {
                   Information.graphSizeSettings.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
+
+                  if (currentValue === ViewSettings.SizeType.Fill) {
+                    Information.graphZoomSettings.zoom = 1.0;
+                    Information.graphZoomSettings.zoomingType = ZoomingType.FITSHEET;
+                  }
                 }
               }
 
@@ -200,11 +204,12 @@ Item {
                 }
 
                 onValueModified: {
+                  console.log("Updating sheet size");
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxSheetSize.height = value;
-                    Information.graphSizeSettings.cmSheetSize.height = value / Information.screenDpi * cm_per_inch;
+                    Information.graphSizeSettings.cmSheetSize.height = value / Information.pixelDensity;
                   } else {
-                    Information.graphSizeSettings.pxSheetSize.height = value * Information.screenDpi / cm_per_inch;
+                    Information.graphSizeSettings.pxSheetSize.height = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmSheetSize.height = value;
                   }
                 }
@@ -239,9 +244,9 @@ Item {
                 onValueModified: {
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxSheetSize.width = value;
-                    Information.graphSizeSettings.cmSheetSize.width = value / Information.screenDpi * cm_per_inch;
+                    Information.graphSizeSettings.cmSheetSize.width = value / Information.pixelDensity;
                   } else {
-                    Information.graphSizeSettings.pxSheetSize.width = value * Information.screenDpi / cm_per_inch;
+                    Information.graphSizeSettings.pxSheetSize.width = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmSheetSize.width = value;
                   }
                 }
@@ -369,9 +374,9 @@ Item {
                 onValueModified: {
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxFigureSize.height = value;
-                    Information.graphSizeSettings.cmFigureSize.height = value / Information.screenDpi * cm_per_inch;
+                    Information.graphSizeSettings.cmFigureSize.height = value / Information.pixelDensity;
                   } else {
-                    Information.graphSizeSettings.pxFigureSize.height = value * Information.screenDpi / cm_per_inch;
+                    Information.graphSizeSettings.pxFigureSize.height = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmFigureSize.height = value;
                   }
                 }
@@ -402,9 +407,9 @@ Item {
                 onValueModified: {
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxFigureSize.width = value;
-                    Information.graphSizeSettings.cmFigureSize.width = value / Information.screenDpi * cm_per_inch;
+                    Information.graphSizeSettings.cmFigureSize.width = value / Information.pixelDensity;
                   } else {
-                    Information.graphSizeSettings.pxFigureSize.width = value * Information.screenDpi / cm_per_inch;
+                    Information.graphSizeSettings.pxFigureSize.width = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmFigureSize.width = value;
                   }
                 }

@@ -82,18 +82,19 @@ protected:
 
   void drawSupport();
   void drawGraph();
-  QRectF supportRectFromViewSize(QSizeF);
+  void computeSupportRect();
   void drawFigureRect();
   void assignMouseRects();
   void printCurves();
   void constrainFigureRectRel();
   QRect getFigureRect(const QRect &refSupportRect);
   QRect getDrawableRect(const QRect &refSupportRect);
-  void scaleView(const QRect &refSheetRect);
+  void scaleView();
   void setMaximalCanvas();
 
   QPageLayout::Orientation orientation;
   double minRelSize;
+  double totalScaleFactor;
   QSizeF currentSize;
   // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
   // the other margin is scaled accordingly
@@ -103,8 +104,7 @@ protected:
   ZeSizeSettings sizeSettings;
   ZeZoomSettings zoomSettings;
 
-  QTransform worldTransform, inverseWorldTransform, inverseScaledTransform;
-
+  QSizeF scaledSize;
   QRectF relFigRect;
   QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 

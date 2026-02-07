@@ -50,9 +50,8 @@ Rectangle {
 
         function onGraphZoomSettingsChanged() {
           zoom.value = Information.graphZoomSettings.zoom * 100;
+          fitSheet.checked = (Information.graphZoomSettings.zoomingType === ZoomingType.FITSHEET);
         }
-
-        enabled: !Information.graphSizeSettings.sheetFillsWindow
       }
 
       onValueModified: {

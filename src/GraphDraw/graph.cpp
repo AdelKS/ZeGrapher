@@ -133,6 +133,7 @@ void Graph::updateGraphRect()
   graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
   graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
   graphRectScaled.moveTopLeft(QPoint(0, 0)); // because painter is translated to its top-left corner
+  qDebug() << "Graph rect scaled " << graphRectScaled;
   viewMapper.setGraphRect(graphRectScaled);
 }
 

@@ -60,7 +60,7 @@ void InteractiveGraph::exportPDF(QString fileName, SheetSizeType sizeType)
   pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
   pdfWriter->setTitle(tr("Exported graph"));
 
-  int targetResolution = int(information.getScreenDpi() / sizeSettings.scalingFactor);
+  int targetResolution = int(information.getPixelDensity() / sizeSettings.scalingFactor);
 
   pdfWriter->setResolution(targetResolution);
 
@@ -86,7 +86,7 @@ void InteractiveGraph::exportPDF(QString fileName, SheetSizeType sizeType)
     painter->drawRect(painter->viewport());
   }
 
-  figureRectScaled = getFigureRect(painter->viewport());
+  figureRectScaled = getFigureRect(supportRect);
 
   painter->translate(figureRectScaled.topLeft());
 
@@ -105,7 +105,7 @@ void InteractiveGraph::exportSVG(QString fileName)
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  double targetResolution = information.getScreenDpi() / sizeSettings.scalingFactor;
+  double targetResolution = information.getPixelDensity() / sizeSettings.scalingFactor;
 
   svgGenerator.setResolution(int(targetResolution));
 
@@ -120,10 +120,10 @@ void InteractiveGraph::exportSVG(QString fileName)
   if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
   {
     painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
-    painter->drawRect(painter->viewport());
+    painter->drawRect(painter->window());
   }
 
-  figureRectScaled = getFigureRect(painter->viewport());
+  figureRectScaled = getFigureRect(painter->window());
 
   painter->translate(figureRectScaled.topLeft());
 
@@ -144,9 +144,10 @@ void InteractiveGraph::paint(QPainter *p)
 
   painter = p;
 
-  pixelRatio = window()->effectiveDevicePixelRatio();
-  painter->scale(1.0 / pixelRatio, 1.0 / pixelRatio);
 
+  scaledSize = size();
+
+  scaleView();
   drawSupport();
 
   if (not sizeSettings.figureFillsSheet)
@@ -202,7 +203,7 @@ QRect InteractiveGraph::getDrawableRect(const QRect &refSupportRect)
 
   if (information.getGraphSizeSettings().sizeUnit == SizeUnit::CENTIMETER)
   {
-    pxMargins = int(sizeSettings.cmMargins / CM_PER_INCH * information.getScreenDpi());
+    pxMargins = int(sizeSettings.cmMargins / information.getPixelDensity());
   }
   else
   {
@@ -243,18 +244,18 @@ QRect InteractiveGraph::getFigureRect(const QRect &refSupportRect)
   return figRect;
 }
 
-QRectF InteractiveGraph::supportRectFromViewSize(QSizeF viewSize)
+void InteractiveGraph::computeSupportRect()
 {
   QRectF rect;
 
   if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZoomingType::CUSTOM)
   {
-    rect.setSize(viewSize);
+    rect.setSize(scaledSize);
   }
   else if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
   {
     double ratio, targetRatio;
-    ratio = viewSize.height() / viewSize.width();
+    ratio = scaledSize.height() / scaledSize.width();
 
     if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
       targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
@@ -264,32 +265,32 @@ QRectF InteractiveGraph::supportRectFromViewSize(QSizeF viewSize)
 
     if (ratio <= targetRatio)
     {
-      rect.setHeight(viewSize.height());
-      rect.setWidth(viewSize.height() / targetRatio);
+      rect.setHeight(scaledSize.height());
+      rect.setWidth(scaledSize.height() / targetRatio);
 
-      rect.moveTopLeft(QPointF((viewSize.width() - rect.width()) / 2, 0));
+      rect.moveTopLeft(QPointF((scaledSize.width() - rect.width()) / 2, 0));
     }
     else
     {
-      rect.setHeight(viewSize.width() * targetRatio);
-      rect.setWidth(viewSize.width());
+      rect.setHeight(scaledSize.width() * targetRatio);
+      rect.setWidth(scaledSize.width());
 
-      rect.moveTopLeft(QPoint(0, (viewSize.height() - rect.height()) / 2));
+      rect.moveTopLeft(QPoint(0, (scaledSize.height() - rect.height()) / 2));
     }
   }
 
   qDebug() << "Available rect: " << information.getAvailableSheetSizePx();
-  qDebug() << "View rect: " << viewSize;
+  qDebug() << "Scaled size: " << scaledSize;
   qDebug() << "Support rect: " << rect;
 
-  return rect;
+  supportRect = rect.toRect();
 }
 
 void InteractiveGraph::drawSupport()
 { // draws the sheet on an untransformed view
   painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
 
-  supportRect = supportRectFromViewSize(painter->viewport().size().toSizeF()).toRect();
+  computeSupportRect();
 
   painter->drawRect(supportRect);
 }
@@ -309,54 +310,41 @@ void InteractiveGraph::drawFigureRect()
   painter->setPen(pen);
 }
 
-void InteractiveGraph::scaleView(const QRect &refSheetRect)
+void InteractiveGraph::scaleView()
 {
-  if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
-  {
-    double newZoom = double(refSheetRect.width()) / double(sizeSettings.pxSheetSize.width());
-
-    if (fabs(newZoom - zoomSettings.zoom) > 0.001)
-    {
-      zoomSettings.zoom = newZoom;
-
-      information.setGraphZoomSettings(zoomSettings);
-    }
-  }
-
-  double totalScaleFactor = sizeSettings.scalingFactor;
-  if (not sizeSettings.figureFillsSheet)
-    totalScaleFactor *= zoomSettings.zoom;
-
-  qDebug() << "Graph size: " << size();
-  qDebug() << "Painter viewport (before scaling): " << painter->viewport();
-  qDebug() << "Painter window (before scaling): " << painter->window();
-
   pixelRatio = window()->effectiveDevicePixelRatio();
 
-  inverseScaledTransform.reset();
-  inverseScaledTransform.scale(1./totalScaleFactor*pixelRatio, 1./totalScaleFactor*pixelRatio);
+  qDebug() << "Scaling: " << sizeSettings.scalingFactor;
+  qDebug() << "Zoom: " << zoomSettings.zoom;
 
-  qDebug() << "Painter scaled back window (before scaling): "
-           << inverseScaledTransform.mapRect(painter->window());
+  totalScaleFactor = sizeSettings.scalingFactor * zoomSettings.zoom;
+
+  // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
+  // this is just telling it to draw everything bigger and translate coordinates accordingly
+  painter->scale(totalScaleFactor, totalScaleFactor);
+
+  // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
+  scaledSize /= totalScaleFactor;
 
   qDebug() << "Pixel ratio: " << pixelRatio;
 
-  painter->scale(totalScaleFactor, totalScaleFactor);
-
-  worldTransform = painter->worldTransform();
-  inverseWorldTransform = painter->worldTransform().inverted();
-
-  qDebug() << "Painter viewport (after scaling): " << painter->viewport();
-  qDebug() << "Painter window (after scaling): " << painter->window();
+  qDebug() << "Available widget size: " << information.getAvailableSheetSizePx();
+  qDebug() << "Graph size: " << size();
+  qDebug() << "Painter viewport: " << painter->viewport();
+  qDebug() << "Painter window: " << painter->window();
 }
 
 void InteractiveGraph::drawGraph()
 {
-  scaleView(supportRect);
+  qDebug() << "Support rect " << supportRect;
 
-  sheetRectScaled = inverseWorldTransform.mapRect(supportRect);
+  sheetRectScaled = supportRect;
+
+  qDebug() << "Sheet rect scaled " << sheetRectScaled;
 
   figureRectScaled = getFigureRect(sheetRectScaled);
+
+  qDebug() << "Figure rect scaled " << figureRectScaled;
 
   painter->translate(figureRectScaled.topLeft());
 
@@ -393,7 +381,7 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 
   if (moveType != NOTHING)
   {
-    lastMousePos = inverseScaledTransform.map(event->pos());
+    lastMousePos = event->pos();
     event->accept();
   }
 }
@@ -416,7 +404,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
     else
       setCursor(Qt::ArrowCursor);
 
-    lastMousePos = inverseScaledTransform.map(event->pos());
+    lastMousePos = event->pos();
   }
   else
   {
@@ -448,7 +436,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
       update();
     };
 
-    QPoint pos = inverseScaledTransform.map(event->pos());
+    QPoint pos = event->pos();
 
     qDebug() << "Graph size: " << size();
     qDebug() << "Mouse position: " << pos;
@@ -461,8 +449,8 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
     case MOVE_VIEW:
       // the view goes in the opposite direction
       viewMapper.translateView({
-        .x = zg::pixel_unit{double(-dr.x())},
-        .y = zg::pixel_unit{double(-dr.y())},
+        .x = zg::pixel_unit{double(-dr.x() / totalScaleFactor)},
+        .y = zg::pixel_unit{double(-dr.y() / totalScaleFactor)},
       });
       information.setGraphRangeMouseEdit(viewMapper.getRange<zg::real>());
       break;
@@ -516,7 +504,6 @@ void InteractiveGraph::onSizeSettingsChange()
 
   // qDebug() << "OnSizeSettingsChange";
 
-  zoomSettings = information.getGraphZoomSettings();
   sizeSettings = information.getGraphSizeSettings();
 
   if (sizeSettings.figureFillsSheet)
@@ -549,6 +536,8 @@ void InteractiveGraph::onSizeSettingsChange()
 
 void InteractiveGraph::onZoomSettingsChange()
 {
+  qDebug() << "graph: updating cached zoom settings";
+  zoomSettings = information.getGraphZoomSettings();
   updateFigureSize();
   update();
 }
