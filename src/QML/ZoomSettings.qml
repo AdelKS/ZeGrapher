@@ -30,6 +30,10 @@ Rectangle {
       Layout.maximumHeight: root.iconSize
       Layout.maximumWidth: root.iconSize
 
+      onReleased: {
+        zoom.increase();
+      }
+
       lightThemeIcon: 'qrc:/icons/zoom-in-icon.svg'
       darkThemeIcon: 'qrc:/icons/zoom-in-icon-light.svg'
     }
@@ -41,7 +45,6 @@ Rectangle {
       suffix: " %"
       from: 5
       to: 1000
-      value: Information.graphZoomSettings.zoom * 100;
       step: 10
       decimals: 2
 
@@ -49,7 +52,8 @@ Rectangle {
         target: Information
 
         function onGraphZoomSettingsChanged() {
-          zoom.value = Information.graphZoomSettings.zoom * 100;
+          console.debug("Syncing zoom widget with backend");
+          zoom.setValue(Information.graphZoomSettings.zoom * 100);
           fitSheet.checked = (Information.graphZoomSettings.zoomingType === ZoomingType.FITSHEET);
         }
       }
@@ -58,11 +62,19 @@ Rectangle {
         fitSheet.checked = false;
         Information.graphZoomSettings.zoom = value / 100.0;
       }
+
+      Component.onCompleted: {
+        setValue(Information.graphZoomSettings.zoom * 100);
+      }
     }
 
     IconButton {
       Layout.maximumHeight: root.iconSize
       Layout.maximumWidth: root.iconSize
+
+      onReleased: {
+        zoom.decrease();
+      }
 
       lightThemeIcon: 'qrc:/icons/zoom-out-icon.svg'
       darkThemeIcon: 'qrc:/icons/zoom-out-icon-light.svg'
@@ -76,6 +88,7 @@ Rectangle {
 
       onCheckedChanged: {
         Information.graphZoomSettings.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
+        Information.computeZoom();
       }
 
       checkable: true

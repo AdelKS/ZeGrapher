@@ -10,11 +10,23 @@ Item {
   signal valueModified();
 
   property real from: 0.0
-  property real value: 1.0
+  readonly property real value: spinBox.value / spinBox.decimalFactor
   property real to: 1.0
   property real step: 0.1
 
-  onValueChanged: spinBox.set_value(value);
+  function increase() {
+    spinBox.increase();
+    root.valueModified();
+  }
+
+  function decrease() {
+    spinBox.decrease();
+    root.valueModified();
+  }
+
+  function setValue(val: real) {
+    spinBox.set_value(val);
+  }
 
   implicitHeight: spinBox.implicitHeight
   implicitWidth: spinBox.implicitWidth
@@ -36,13 +48,10 @@ Item {
       value = decimalToInt(val);
     }
 
-    onValueModified: {
-      root.value = value / decimalFactor;
-      root.valueModified();
-    }
+    onValueModified: root.valueModified();
 
     from: decimalToInt(root.from)
-    value: { value = decimalToInt(root.value); }
+    value: { value = from; }
     to: decimalToInt(root.to)
     stepSize: decimalToInt(root.step)
     editable: true

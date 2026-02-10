@@ -7,10 +7,12 @@ import QtQuick.Controls.FluentWinUI3
 Item {
   id: root
 
-  readonly property double cm_increment: 1;
+  readonly property double cm_increment: 1.0;
   readonly property double px_increment: 50;
   readonly property double max_px_size: 10000
   readonly property double max_cm_size: 1000
+
+  property bool pauseSync: false
 
   enum SizeType { Fill, Custom }
 
@@ -18,38 +20,38 @@ Item {
     if (Information.graphSizeSettings.sizeUnit === SizeUnit.PIXEL) {
       sheetHeight.suffix = qsTr(" px");
       sheetHeight.to = root.max_px_size;
-      sheetHeight.value = Information.graphSizeSettings.pxSheetSize.height;
+      sheetHeight.setValue(Information.graphSizeSettings.pxSheetSize.height);
       sheetHeight.step = root.px_increment;
 
       sheetWidth.suffix = qsTr(" px");
       sheetWidth.to = root.max_px_size;
-      sheetWidth.value = Information.graphSizeSettings.pxSheetSize.width;
+      sheetWidth.setValue(Information.graphSizeSettings.pxSheetSize.width);
       sheetWidth.step = root.px_increment;
 
       graphHeight.suffix = qsTr(" px");
-      graphHeight.value = Information.graphSizeSettings.pxFigureSize.height;
+      graphHeight.setValue(Information.graphSizeSettings.pxFigureSize.height);
       graphHeight.step = root.px_increment;
 
       graphWidth.suffix = qsTr(" px");
-      graphWidth.value = Information.graphSizeSettings.pxFigureSize.width;
+      graphWidth.setValue(Information.graphSizeSettings.pxFigureSize.width);
       graphWidth.step = root.px_increment;
     } else {
       sheetHeight.suffix = qsTr(" cm");
       sheetHeight.to = root.max_cm_size;
-      sheetHeight.value = Information.graphSizeSettings.cmSheetSize.height;
+      sheetHeight.setValue(Information.graphSizeSettings.cmSheetSize.height);
       sheetHeight.step = root.cm_increment;
 
       sheetWidth.suffix = qsTr(" cm");
       sheetWidth.to = root.max_cm_size;
-      sheetWidth.value = Information.graphSizeSettings.cmSheetSize.width;
+      sheetWidth.setValue(Information.graphSizeSettings.cmSheetSize.width);
       sheetWidth.step = root.cm_increment;
 
       graphHeight.suffix = qsTr(" cm");
-      graphHeight.value = Information.graphSizeSettings.cmFigureSize.height;
+      graphHeight.setValue(Information.graphSizeSettings.cmFigureSize.height);
       graphHeight.step = root.cm_increment;
 
       graphWidth.suffix = qsTr(" cm");
-      graphWidth.value = Information.graphSizeSettings.cmFigureSize.width;
+      graphWidth.setValue(Information.graphSizeSettings.cmFigureSize.width);
       graphWidth.step = root.cm_increment;
     }
   }
@@ -79,13 +81,18 @@ Item {
           }
           ZeDoubleSpinBox {
             from: 0.1
-            value: 1.0
             step: 0.1
             to: 5.0
 
             onValueModified: {
+              root.pauseSync = true;
               Information.graphSizeSettings.scalingFactor = value;
               console.debug("global scale changed to: ", value);
+              root.pauseSync = false;
+            }
+
+            Component.onCompleted: {
+              setValue(1.0);
             }
           }
         }
@@ -116,8 +123,10 @@ Item {
             valueRole: "value"
 
             onCurrentValueChanged: {
+              root.pauseSync = true;
               Information.graphSizeSettings.sizeUnit = currentValue;
               root.syncWithBackend();
+              root.pauseSync = false;
             }
 
             model: ListModel {
@@ -167,12 +176,14 @@ Item {
                 }
 
                 onCurrentValueChanged: {
+                  root.pauseSync = true;
                   Information.graphSizeSettings.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
 
                   if (currentValue === ViewSettings.SizeType.Fill) {
                     Information.graphZoomSettings.zoom = 1.0;
                     Information.graphZoomSettings.zoomingType = ZoomingType.FITSHEET;
                   }
+                  root.pauseSync = false;
                 }
               }
 
@@ -182,6 +193,7 @@ Item {
                 function onGraphSizeSettingsChanged() {
                   root.syncWithBackend()
                 }
+                enabled: !root.pauseSync
               }
 
               ZeLabel {
@@ -204,6 +216,7 @@ Item {
                 }
 
                 onValueModified: {
+                  root.pauseSync = true;
                   console.log("Updating sheet size");
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxSheetSize.height = value;
@@ -212,6 +225,7 @@ Item {
                     Information.graphSizeSettings.pxSheetSize.height = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmSheetSize.height = value;
                   }
+                  root.pauseSync = false;
                 }
               }
 
@@ -242,6 +256,7 @@ Item {
                 }
 
                 onValueModified: {
+                  root.pauseSync = true;
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxSheetSize.width = value;
                     Information.graphSizeSettings.cmSheetSize.width = value / Information.pixelDensity;
@@ -249,6 +264,7 @@ Item {
                     Information.graphSizeSettings.pxSheetSize.width = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmSheetSize.width = value;
                   }
+                  root.pauseSync = false;
                 }
               }
 
@@ -343,7 +359,9 @@ Item {
                 }
 
                 onCurrentValueChanged: {
+                  root.pauseSync = true;
                   Information.graphSizeSettings.figureFillsSheet = (currentValue === ViewSettings.SizeType.Fill)
+                  root.pauseSync = false;
                 }
               }
 
@@ -372,6 +390,7 @@ Item {
                 }
 
                 onValueModified: {
+                  root.pauseSync = true;
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxFigureSize.height = value;
                     Information.graphSizeSettings.cmFigureSize.height = value / Information.pixelDensity;
@@ -379,6 +398,7 @@ Item {
                     Information.graphSizeSettings.pxFigureSize.height = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmFigureSize.height = value;
                   }
+                  root.pauseSync = false;
                 }
               }
 
@@ -405,6 +425,7 @@ Item {
                 }
 
                 onValueModified: {
+                  root.pauseSync = true;
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     Information.graphSizeSettings.pxFigureSize.width = value;
                     Information.graphSizeSettings.cmFigureSize.width = value / Information.pixelDensity;
@@ -412,6 +433,7 @@ Item {
                     Information.graphSizeSettings.pxFigureSize.width = value * Information.pixelDensity;
                     Information.graphSizeSettings.cmFigureSize.width = value;
                   }
+                  root.pauseSync = false;
                 }
               }
 
