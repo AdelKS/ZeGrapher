@@ -59,18 +59,13 @@ public slots:
 protected slots:
   void updateSettingsVals();
   void onSizeSettingsChange();
-  void updateFigureSize();
-  void constrainFigureRectRel();
   void onZoomSettingsChange();
 
 protected:
-  QRect getFigureRect(const QRect &refSupportRect);
-
   void scaleView();
   void drawSupport();
   void drawGraph();
   void computeSupportRect();
-  void drawFigureRect();
   void updateCenterPosAndScaling();
   void drawBaseGraph();
   void drawGraphRect();

@@ -134,27 +134,20 @@ struct ZeSizeSettings
 
   Q_PROPERTY(SizeUnit::Unit sizeUnit MEMBER sizeUnit)
   Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
-  Q_PROPERTY(bool figureFillsSheet MEMBER figureFillsSheet)
   Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
-  Q_PROPERTY(QSize pxFigureSize MEMBER pxFigureSize)
   Q_PROPERTY(QSize pxSheetSize MEMBER pxSheetSize)
-  Q_PROPERTY(int pxMargins MEMBER pxMargins)
-  Q_PROPERTY(QSizeF cmFigureSize MEMBER cmFigureSize)
   Q_PROPERTY(QSizeF cmSheetSize MEMBER cmSheetSize)
-  Q_PROPERTY(double cmMargins MEMBER cmMargins)
+
 
 public:
 
   SizeUnit::Unit sizeUnit = SizeUnit::PIXEL;
-  bool sheetFillsWindow = true, figureFillsSheet = true;
+  bool sheetFillsWindow = true;
 
   double scalingFactor = 1.0;
 
-  QSize pxFigureSize, pxSheetSize;
-  int pxMargins;
-
-  QSizeF cmFigureSize, cmSheetSize;
-  double cmMargins;
+  QSize pxSheetSize;
+  QSizeF cmSheetSize;
 
   bool operator == (const ZeSizeSettings &other) const = default;
 };

@@ -194,15 +194,6 @@ void Information::updateSizes()
     sizeSettings.cmSheetSize = sizeSettings.pxSheetSize.toSizeF() / pixelDensity;
   }
 
-  if (sizeSettings.figureFillsSheet)
-  {
-    sizeSettings.cmMargins = 0;
-    sizeSettings.pxMargins = 0;
-
-    sizeSettings.pxFigureSize = sizeSettings.pxSheetSize;
-    sizeSettings.cmFigureSize = sizeSettings.cmSheetSize;
-  }
-
   if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
     sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * pixelDensity).toSize();
   else sizeSettings.cmSheetSize = sizeSettings.pxSheetSize.toSizeF() / pixelDensity;

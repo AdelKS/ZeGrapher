@@ -29,16 +29,7 @@
 enum MouseActionType
 {
   NOTHING,
-  MOVE_VIEW,
-  RESIZE_GRAPH_TOPLEFT_CORNER,
-  RESIZE_GRAPH_TOPRIGHT_CORNER,
-  RESIZE_GRAPH_BOTTOMLEFT_CORNER,
-  RESIZE_GRAPH_BOTTOMRIGHT_CORNER,
-  RESIZE_GRAPH_LEFT_SIDE,
-  RESIZE_GRAPH_TOP_SIDE,
-  RESIZE_GRAPH_RIGHT_SIDE,
-  RESIZE_GRAPH_BOTTOM_SIDE,
-  MOVE_GRAPH
+  MOVE_VIEW
 };
 
 class InteractiveGraph : public Graph
@@ -49,10 +40,6 @@ class InteractiveGraph : public Graph
 public:
   explicit InteractiveGraph(QQuickItem *parent = nullptr);
 
-signals:
-  void newZoomValue(double value);
-  void widgetResized();
-
 public slots:
   virtual void mousePressEvent(QMouseEvent *event) override;
   virtual void mouseMoveEvent(QMouseEvent *event) override;
@@ -60,12 +47,6 @@ public slots:
   virtual void wheelEvent(QWheelEvent *event) override;
 
 protected:
-
-  void assignMouseRects();
-  void printCurves();
-  void setMaximalCanvas();
-
-  QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 
   QPoint lastMousePos;
   MouseActionType moveType;

@@ -27,14 +27,6 @@ Item {
       sheetWidth.to = root.max_px_size;
       sheetWidth.setValue(Information.graphSizeSettings.pxSheetSize.width);
       sheetWidth.step = root.px_increment;
-
-      graphHeight.suffix = qsTr(" px");
-      graphHeight.setValue(Information.graphSizeSettings.pxFigureSize.height);
-      graphHeight.step = root.px_increment;
-
-      graphWidth.suffix = qsTr(" px");
-      graphWidth.setValue(Information.graphSizeSettings.pxFigureSize.width);
-      graphWidth.step = root.px_increment;
     } else {
       sheetHeight.suffix = qsTr(" cm");
       sheetHeight.to = root.max_cm_size;
@@ -45,14 +37,6 @@ Item {
       sheetWidth.to = root.max_cm_size;
       sheetWidth.setValue(Information.graphSizeSettings.cmSheetSize.width);
       sheetWidth.step = root.cm_increment;
-
-      graphHeight.suffix = qsTr(" cm");
-      graphHeight.setValue(Information.graphSizeSettings.cmFigureSize.height);
-      graphHeight.step = root.cm_increment;
-
-      graphWidth.suffix = qsTr(" cm");
-      graphWidth.setValue(Information.graphSizeSettings.cmFigureSize.width);
-      graphWidth.step = root.cm_increment;
     }
   }
 
@@ -61,52 +45,101 @@ Item {
     anchors.margins: 5
     leftPadding: Math.max((width - mainLayout.implicitWidth)/2, 0)
 
-    ColumnLayout {
+    GridLayout {
       id: mainLayout
-      // anchors.centerIn: parent
+      columnSpacing: 10
+      columns: 2
 
-      GroupBox {
-        title: qsTr("Global settings")
+      Behavior on implicitWidth {
+        NumberAnimation { duration: 500 }
+      }
+
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
+        text: qsTr('Scaling')
+      }
+      ZeDoubleSpinBox {
         Layout.fillWidth: true
 
-        GridLayout {
-          anchors.fill: parent
-          columnSpacing: 10
-          columns: 2
-          Layout.fillWidth: true
+        from: 0.1
+        step: 0.1
+        to: 5.0
 
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Scaling')
-          }
-          ZeDoubleSpinBox {
-            from: 0.1
-            step: 0.1
-            to: 5.0
+        onValueModified: {
+          root.pauseSync = true;
+          Information.graphSizeSettings.scalingFactor = value;
+          console.debug("global scale changed to: ", value);
+          root.pauseSync = false;
+        }
 
-            onValueModified: {
-              root.pauseSync = true;
-              Information.graphSizeSettings.scalingFactor = value;
-              console.debug("global scale changed to: ", value);
-              root.pauseSync = false;
-            }
-
-            Component.onCompleted: {
-              setValue(1.0);
-            }
-          }
+        Component.onCompleted: {
+          setValue(1.0);
         }
       }
 
-      GroupBox {
-        title: qsTr("Sizes")
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
+        text: qsTr('Graph size')
+      }
+      ComboBox {
+        Layout.alignment: Qt.AlignHCenter
         Layout.fillWidth: true
+
+        id: sheetSizeSettings
+
+        implicitContentWidthPolicy: ComboBox.WidestText
+        background.implicitWidth: implicitContentWidth
+        textRole: "text"
+        valueRole: "value"
+
+        model: ListModel {
+          ListElement {
+            text: qsTr("Fill Window")
+            value: ViewSettings.SizeType.Fill
+          }
+          ListElement {
+            text: qsTr("Custom")
+            value: ViewSettings.SizeType.Custom
+          }
+        }
+
+        onCurrentValueChanged: {
+          root.pauseSync = true;
+          Information.graphSizeSettings.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
+
+          if (currentValue === ViewSettings.SizeType.Fill) {
+            Information.graphZoomSettings.zoom = 1.0;
+            Information.graphZoomSettings.zoomingType = ZoomingType.FITSHEET;
+          }
+          root.pauseSync = false;
+        }
+      }
+
+      Item {}
+      Frame {
+        clip: true
+        Layout.topMargin: 0
+        Layout.fillWidth: true
+
+        Layout.maximumHeight: maxHeight
+
+        property int maxHeight: implicitHeight
+
+        id: customSizeGroupBox
 
         GridLayout {
           anchors.fill: parent
           columnSpacing: 10
           columns: 2
-          Layout.fillWidth: true
+
+          Connections {
+            target: Information
+
+            function onGraphSizeSettingsChanged() {
+              root.syncWithBackend()
+            }
+            enabled: !root.pauseSync
+          }
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
@@ -141,353 +174,109 @@ Item {
             }
           }
 
-          GroupBox {
-            Layout.columnSpan: 2
-            Layout.fillWidth: true
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            Layout.maximumHeight: maxHeight
+            property int maxHeight: implicitHeight
 
-            title: qsTr("Sheet")
+            id: sheetHeightLabel
 
-            GridLayout {
-              anchors.fill: parent
-              columnSpacing: 10
-              columns: 2
+            text: qsTr("Height")
+          }
+          ZeDoubleSpinBox {
+            Layout.maximumHeight: maxHeight
+            property int maxHeight: implicitHeight
 
-              ComboBox {
-                Layout.alignment: Qt.AlignHCenter
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
+            id: sheetHeight
 
-                id: sheetSizeSettings
+            onValueChanged: {
+              graphHeight.to = value;
+            }
 
-                implicitContentWidthPolicy: ComboBox.WidestText
-                background.implicitWidth: implicitContentWidth
-                textRole: "text"
-                valueRole: "value"
-
-                model: ListModel {
-                  ListElement {
-                    text: qsTr("Fill Window")
-                    value: ViewSettings.SizeType.Fill
-                  }
-                  ListElement {
-                    text: qsTr("Custom")
-                    value: ViewSettings.SizeType.Custom
-                  }
-                }
-
-                onCurrentValueChanged: {
-                  root.pauseSync = true;
-                  Information.graphSizeSettings.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
-
-                  if (currentValue === ViewSettings.SizeType.Fill) {
-                    Information.graphZoomSettings.zoom = 1.0;
-                    Information.graphZoomSettings.zoomingType = ZoomingType.FITSHEET;
-                  }
-                  root.pauseSync = false;
-                }
+            onValueModified: {
+              root.pauseSync = true;
+              console.log("Updating sheet size");
+              if (unitComboBox.currentValue === SizeUnit.PIXEL) {
+                Information.graphSizeSettings.pxSheetSize.height = value;
+                Information.graphSizeSettings.cmSheetSize.height = value / Information.pixelDensity;
+              } else {
+                Information.graphSizeSettings.pxSheetSize.height = value * Information.pixelDensity;
+                Information.graphSizeSettings.cmSheetSize.height = value;
               }
-
-              Connections {
-                target: Information
-
-                function onGraphSizeSettingsChanged() {
-                  root.syncWithBackend()
-                }
-                enabled: !root.pauseSync
-              }
-
-              ZeLabel {
-                Layout.alignment: Qt.AlignRight
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
-
-                id: sheetHeightLabel
-
-                text: qsTr("Height")
-              }
-              ZeDoubleSpinBox {
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
-
-                id: sheetHeight
-
-                onValueChanged: {
-                  graphHeight.to = value;
-                }
-
-                onValueModified: {
-                  root.pauseSync = true;
-                  console.log("Updating sheet size");
-                  if (unitComboBox.currentValue === SizeUnit.PIXEL) {
-                    Information.graphSizeSettings.pxSheetSize.height = value;
-                    Information.graphSizeSettings.cmSheetSize.height = value / Information.pixelDensity;
-                  } else {
-                    Information.graphSizeSettings.pxSheetSize.height = value * Information.pixelDensity;
-                    Information.graphSizeSettings.cmSheetSize.height = value;
-                  }
-                  root.pauseSync = false;
-                }
-              }
-
-              ZeLabel {
-                Layout.alignment: Qt.AlignRight
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
-
-                id: sheetWidthLabel
-                text: qsTr("Width")
-              }
-              ZeDoubleSpinBox {
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
-
-                id: sheetWidth
-                suffix: unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-
-                Connections {
-                  target: unitComboBox
-                  function onValueChanged() {
-                    suffix = unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-                  }
-                }
-
-                onValueChanged: {
-                  graphWidth.to = value;
-                }
-
-                onValueModified: {
-                  root.pauseSync = true;
-                  if (unitComboBox.currentValue === SizeUnit.PIXEL) {
-                    Information.graphSizeSettings.pxSheetSize.width = value;
-                    Information.graphSizeSettings.cmSheetSize.width = value / Information.pixelDensity;
-                  } else {
-                    Information.graphSizeSettings.pxSheetSize.width = value * Information.pixelDensity;
-                    Information.graphSizeSettings.cmSheetSize.width = value;
-                  }
-                  root.pauseSync = false;
-                }
-              }
-
-              states: [
-                State {
-                  name: "hidden";
-                  when: sheetSizeSettings.currentValue === ViewSettings.SizeType.Fill
-                  PropertyChanges {
-                    sheetWidthLabel.maxHeight: 0
-                    sheetWidthLabel.visible: false
-
-                    sheetWidth.maxHeight: 0
-                    sheetWidth.visible: false
-
-                    sheetHeightLabel.maxHeight: 0
-                    sheetHeightLabel.visible: false
-
-                    sheetHeight.maxHeight: 0
-                    sheetHeight.visible: false
-                  }
-                },
-                State {
-                  name: "shown";
-                  when: sheetSizeSettings.currentValue !== ViewSettings.SizeType.Fill
-                  PropertyChanges {
-                    sheetWidthLabel.maxHeight: sheetWidthLabel.implicitHeight
-                    sheetWidthLabel.visible: true
-
-                    sheetWidth.maxHeight: sheetWidth.implicitHeight
-                    sheetWidth.visible: true
-
-                    sheetHeightLabel.maxHeight: sheetHeightLabel.implicitHeight
-                    sheetHeightLabel.visible: true
-
-                    sheetHeight.maxHeight: sheetHeight.implicitHeight
-                    sheetHeight.visible: true
-                  }
-                }
-              ]
-
-              transitions: Transition {
-                reversible: true
-                from: "shown"
-                to: "hidden"
-                SequentialAnimation {
-                  NumberAnimation {
-                    easing.type: Easing.InOutQuad;
-                    property: "maxHeight";
-                    duration: 400;
-                  }
-                  PropertyAction {
-                    property: "visible"
-                  }
-                }
-              }
+              root.pauseSync = false;
             }
           }
 
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            Layout.maximumHeight: maxHeight
+            property int maxHeight: implicitHeight
 
-          GroupBox {
-            Layout.columnSpan: 2
-            Layout.fillWidth: true
+            id: sheetWidthLabel
+            text: qsTr("Width")
+          }
+          ZeDoubleSpinBox {
+            Layout.maximumHeight: maxHeight
+            property int maxHeight: implicitHeight
 
-            title: qsTr("Graph")
+            id: sheetWidth
+            suffix: unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
 
-            GridLayout {
-              anchors.fill: parent
-              columnSpacing: 10
-              columns: 2
-
-              ComboBox {
-                Layout.alignment: Qt.AlignHCenter
-                Layout.columnSpan: 2
-                Layout.fillWidth: true
-
-                id: graphSizeSettings
-
-                implicitContentWidthPolicy: ComboBox.WidestText
-                background.implicitWidth: implicitContentWidth
-                textRole: "text"
-                valueRole: "value"
-
-                model: ListModel {
-                  ListElement {
-                    text: qsTr("Fill Sheet")
-                    value: ViewSettings.SizeType.Fill
-                  }
-                  ListElement {
-                    text: qsTr("Custom")
-                    value: ViewSettings.SizeType.Custom
-                  }
-                }
-
-                onCurrentValueChanged: {
-                  root.pauseSync = true;
-                  Information.graphSizeSettings.figureFillsSheet = (currentValue === ViewSettings.SizeType.Fill)
-                  root.pauseSync = false;
-                }
+            Connections {
+              target: unitComboBox
+              function onValueChanged() {
+                suffix = unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
               }
+            }
 
-              ZeLabel {
-                Layout.alignment: Qt.AlignRight
-                Layout.maximumHeight: maxHeight
+            onValueChanged: {
+              graphWidth.to = value;
+            }
 
-                property int maxHeight: implicitHeight
-
-                id: graphHeightLabel
-
-                text: qsTr("Height")
+            onValueModified: {
+              root.pauseSync = true;
+              if (unitComboBox.currentValue === SizeUnit.PIXEL) {
+                Information.graphSizeSettings.pxSheetSize.width = value;
+                Information.graphSizeSettings.cmSheetSize.width = value / Information.pixelDensity;
+              } else {
+                Information.graphSizeSettings.pxSheetSize.width = value * Information.pixelDensity;
+                Information.graphSizeSettings.cmSheetSize.width = value;
               }
-              ZeDoubleSpinBox {
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
+              root.pauseSync = false;
+            }
+          }
 
-                id: graphHeight
-                suffix: unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-
-                Connections {
-                  target: unitComboBox
-                  function onValueChanged() {
-                    suffix = unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-                  }
-                }
-
-                onValueModified: {
-                  root.pauseSync = true;
-                  if (unitComboBox.currentValue === SizeUnit.PIXEL) {
-                    Information.graphSizeSettings.pxFigureSize.height = value;
-                    Information.graphSizeSettings.cmFigureSize.height = value / Information.pixelDensity;
-                  } else {
-                    Information.graphSizeSettings.pxFigureSize.height = value * Information.pixelDensity;
-                    Information.graphSizeSettings.cmFigureSize.height = value;
-                  }
-                  root.pauseSync = false;
-                }
+          states: [
+            State {
+              name: "hidden";
+              when: sheetSizeSettings.currentValue === ViewSettings.SizeType.Fill
+              PropertyChanges {
+                customSizeGroupBox.maxHeight: 0
+                customSizeGroupBox.visible: false
               }
-
-              ZeLabel {
-                Layout.alignment: Qt.AlignRight
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
-
-                id: graphWidthLabel
-                text: qsTr("Width")
+            },
+            State {
+              name: "shown";
+              when: sheetSizeSettings.currentValue !== ViewSettings.SizeType.Fill
+              PropertyChanges {
+                customSizeGroupBox.maxHeight: customSizeGroupBox.implicitHeight
+                customSizeGroupBox.visible: true
               }
-              ZeDoubleSpinBox {
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
+            }
+          ]
 
-                id: graphWidth
-                suffix: unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-
-                Connections {
-                  target: unitComboBox
-                  function onValueChanged() {
-                    suffix = unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-                  }
-                }
-
-                onValueModified: {
-                  root.pauseSync = true;
-                  if (unitComboBox.currentValue === SizeUnit.PIXEL) {
-                    Information.graphSizeSettings.pxFigureSize.width = value;
-                    Information.graphSizeSettings.cmFigureSize.width = value / Information.pixelDensity;
-                  } else {
-                    Information.graphSizeSettings.pxFigureSize.width = value * Information.pixelDensity;
-                    Information.graphSizeSettings.cmFigureSize.width = value;
-                  }
-                  root.pauseSync = false;
-                }
+          transitions: Transition {
+            reversible: true
+            from: "shown"
+            to: "hidden"
+            SequentialAnimation {
+              NumberAnimation {
+                easing.type: Easing.InOutQuad;
+                property: "maxHeight";
+                duration: 400;
               }
-
-              states: [
-                State {
-                  name: "hidden";
-                  when: graphSizeSettings.currentValue === ViewSettings.SizeType.Fill
-                  PropertyChanges {
-                    graphWidthLabel.maxHeight: 0
-                    graphWidthLabel.visible: false
-
-                    graphWidth.maxHeight: 0
-                    graphWidth.visible: false
-
-                    graphHeightLabel.maxHeight: 0
-                    graphHeightLabel.visible: false
-
-                    graphHeight.maxHeight: 0
-                    graphHeight.visible: false
-                  }
-                },
-                State {
-                  name: "shown";
-                  when: graphSizeSettings.currentValue !== ViewSettings.SizeType.Fill
-                  PropertyChanges {
-                    graphWidthLabel.maxHeight: graphWidthLabel.implicitHeight
-                    graphWidthLabel.visible: true
-
-                    graphWidth.maxHeight: graphWidth.implicitHeight
-                    graphWidth.visible: true
-
-                    graphHeightLabel.maxHeight: graphHeightLabel.implicitHeight
-                    graphHeightLabel.visible: true
-
-                    graphHeight.maxHeight: graphHeight.implicitHeight
-                    graphHeight.visible: true
-                  }
-                }
-              ]
-
-              transitions: Transition {
-                reversible: true
-                from: "shown"
-                to: "hidden"
-                SequentialAnimation {
-                  NumberAnimation {
-                    easing.type: Easing.InOutQuad;
-                    property: "maxHeight";
-                    duration: 400;
-                  }
-                  PropertyAction {
-                    property: "visible"
-                  }
-                }
+              PropertyAction {
+                property: "visible"
               }
             }
           }

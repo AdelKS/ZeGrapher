@@ -214,9 +214,6 @@ void Graph::paint(QPainter *p)
   scaleView();
   drawSupport();
 
-  if (not sizeSettings.figureFillsSheet)
-    drawFigureRect();
-
   drawGraph();
 
   painter = nullptr;
@@ -293,7 +290,7 @@ void Graph::drawGraph()
 
   qDebug() << "Sheet rect scaled " << sheetRectScaled;
 
-  figureRectScaled = getFigureRect(sheetRectScaled);
+  figureRectScaled = sheetRectScaled;
 
   qDebug() << "Figure rect scaled " << figureRectScaled;
 
@@ -446,32 +443,6 @@ QImage *Graph::drawImage()
   return image;
 }
 
-QRect Graph::getFigureRect(const QRect &refSupportRect)
-{
-  int margin = sizeSettings.pxMargins;
-  QMargins margins(margin, margin, margin, margin);
-
-  QRect refSupportRectMarginless = refSupportRect.marginsRemoved(margins);
-  QRect figRect;
-  figRect.setWidth(lround(relFigRect.width() * double(refSupportRectMarginless.width())));
-  figRect.setHeight(lround(relFigRect.height() * double(refSupportRectMarginless.height())));
-
-  QPoint topLeft;
-  topLeft.setX(lround(relFigRect.topLeft().x() * double(refSupportRectMarginless.width()))
-               + refSupportRectMarginless.topLeft().x());
-  topLeft.setY(lround(relFigRect.topLeft().y() * double(refSupportRectMarginless.height()))
-               + refSupportRectMarginless.topLeft().y());
-
-  figRect.moveTopLeft(topLeft);
-
-  qDebug() << "Figure reconstruction call";
-  qDebug() << "Figure is " << figRect;
-  qDebug() << "marginless support is " << refSupportRectMarginless;
-  qDebug() << "relative figure rect is " << relFigRect;
-
-  return figRect;
-}
-
 void Graph::drawSupport()
 { // draws the sheet on an untransformed view
   painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
@@ -479,21 +450,6 @@ void Graph::drawSupport()
   computeSupportRect();
 
   painter->drawRect(supportRect);
-}
-
-void Graph::drawFigureRect()
-{
-  figureRect = getFigureRect(supportRect);
-
-  painter->setBrush(Qt::NoBrush);
-  pen.setStyle(Qt::DashLine);
-  pen.setWidth(1);
-  pen.setColor(information.getAxesSettings().color);
-  painter->setPen(pen);
-  painter->drawRect(figureRect);
-
-  pen.setStyle(Qt::SolidLine);
-  painter->setPen(pen);
 }
 
 void Graph::computeSupportRect()
@@ -538,22 +494,10 @@ void Graph::computeSupportRect()
   supportRect = rect.toRect();
 }
 
-void Graph::updateFigureSize()
-{
-  sizeSettings.cmFigureSize.setWidth(relFigRect.width() * sizeSettings.cmSheetSize.width());
-  sizeSettings.cmFigureSize.setHeight(relFigRect.height() * sizeSettings.cmSheetSize.height());
-
-  sizeSettings.pxFigureSize.setWidth(
-    int(relFigRect.width() * double(sizeSettings.pxSheetSize.width())));
-  sizeSettings.pxFigureSize.setHeight(
-    int(relFigRect.height() * double(sizeSettings.pxSheetSize.height())));
-}
-
 void Graph::onZoomSettingsChange()
 {
   qDebug() << "graph: updating cached zoom settings";
   zoomSettings = information.getGraphZoomSettings();
-  updateFigureSize();
   update();
 }
 
@@ -564,63 +508,7 @@ void Graph::onSizeSettingsChange()
   // qDebug() << "OnSizeSettingsChange";
 
   sizeSettings = information.getGraphSizeSettings();
-
-  if (sizeSettings.figureFillsSheet)
-  {
-    relFigRect.setTopLeft(QPointF(0, 0));
-    relFigRect.setWidth(1);
-    relFigRect.setHeight(1);
-  }
-  else
-  {
-    if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
-    {
-      relFigRect.setWidth(sizeSettings.cmFigureSize.width() / (sizeSettings.cmSheetSize.width()));
-      relFigRect.setHeight(sizeSettings.cmFigureSize.height() / (sizeSettings.cmSheetSize.height()));
-    }
-    else
-    {
-      relFigRect.setWidth(double(sizeSettings.pxFigureSize.width())
-                          / double(sizeSettings.pxSheetSize.width()));
-      relFigRect.setHeight(double(sizeSettings.pxFigureSize.height())
-                           / (sizeSettings.pxSheetSize.height()));
-    }
-
-    constrainFigureRectRel();
-  }
-
-  updateFigureSize();
   update();
-}
-
-void Graph::constrainFigureRectRel()
-{
-  if (relFigRect.width() > 1)
-    relFigRect.setWidth(1);
-
-  if (relFigRect.height() > 1)
-    relFigRect.setHeight(1);
-  //------------------------------
-
-  if (relFigRect.width() < minRelSize)
-    relFigRect.setWidth(minRelSize);
-
-  if (relFigRect.height() < minRelSize)
-    relFigRect.setHeight(minRelSize);
-  //------------------------------
-
-  if (relFigRect.left() < 0)
-    relFigRect.moveLeft(0);
-
-  if (relFigRect.right() > 1)
-    relFigRect.moveRight(1);
-  //------------------------------
-
-  if (relFigRect.bottom() > 1)
-    relFigRect.moveBottom(1);
-
-  if (relFigRect.top() < 0)
-    relFigRect.moveTop(0);
 }
 
 void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
@@ -656,7 +544,7 @@ void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
     painter->drawRect(painter->viewport());
   }
 
-  figureRectScaled = getFigureRect(supportRect);
+  figureRectScaled = supportRect;
 
   painter->translate(figureRectScaled.topLeft());
 
@@ -693,7 +581,7 @@ void Graph::exportSVG(QString fileName)
     painter->drawRect(painter->window());
   }
 
-  figureRectScaled = getFigureRect(painter->window());
+  figureRectScaled = painter->window();
 
   painter->translate(figureRectScaled.topLeft());
 
