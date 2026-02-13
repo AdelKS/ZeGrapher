@@ -103,13 +103,13 @@ public slots:
   void screenChanged(QWindow*);
   void setAvailableSheetSizePx(QSize);
   void updateSizes();
+  void computeZoom();
 
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings* appSettings = nullptr;
 
 protected:
-  void computeZoom();
 
   ZeZoomSettings zoomSettings;
   ZeSizeSettings sizeSettings;

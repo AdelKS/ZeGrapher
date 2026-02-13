@@ -21,6 +21,9 @@
 #include "GraphDraw/graph.h"
 #include "globalvars.h"
 
+#include <QQuickWindow>
+#include <QSvgGenerator>
+
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent), MathObjectDraw(), gridCalculator(this),
     fontMetrics(information.getGraphSettings().graphFont)
@@ -39,11 +42,22 @@ Graph::Graph(QQuickItem *parent)
 
   viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
 
+  minRelSize = RELATIVE_MIN_SIZE;
+
+  relFigRect.setHeight(1);
+  relFigRect.setWidth(1);
+  relFigRect.moveTopLeft(QPointF(0, 0));
+
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
   connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 
+  connect(&information, &Information::graphSizeSettingsChanged, this, &Graph::onSizeSettingsChange);
+  connect(&information, &Information::graphZoomSettingsChanged, this, &Graph::onZoomSettingsChange);
+  connect(&information, &Information::axesSettingsChanged, this, [this]{ update(); });
+  connect(&information, &Information::gridSettingsChanged, this, [this]{ update(); });
+  connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
 }
 
@@ -185,8 +199,26 @@ void Graph::calculateTicksAndMargins()
 
 void Graph::paint(QPainter *p)
 {
+  sizeSettings = information.getGraphSizeSettings();
+
+  if (currentSize != size())
+  {
+    currentSize = size();
+    onSizeSettingsChange();
+  }
+
   painter = p;
-  drawAll();
+
+  scaledSize = size();
+
+  scaleView();
+  drawSupport();
+
+  if (not sizeSettings.figureFillsSheet)
+    drawFigureRect();
+
+  drawGraph();
+
   painter = nullptr;
 }
 
@@ -228,6 +260,48 @@ void Graph::drawAll()
 
   painter->translate(QPointF(centre.x, centre.y));
 }
+
+void Graph::scaleView()
+{
+  pixelRatio = window()->effectiveDevicePixelRatio();
+
+  qDebug() << "Scaling: " << sizeSettings.scalingFactor;
+  qDebug() << "Zoom: " << zoomSettings.zoom;
+
+  totalScaleFactor = sizeSettings.scalingFactor * zoomSettings.zoom;
+
+  // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
+  // this is just telling it to draw everything bigger and translate coordinates accordingly
+  painter->scale(totalScaleFactor, totalScaleFactor);
+
+  // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
+  scaledSize /= totalScaleFactor;
+
+  qDebug() << "Pixel ratio: " << pixelRatio;
+
+  qDebug() << "Available widget size: " << information.getAvailableSheetSizePx();
+  qDebug() << "Graph size: " << size();
+  qDebug() << "Painter viewport: " << painter->viewport();
+  qDebug() << "Painter window: " << painter->window();
+}
+
+void Graph::drawGraph()
+{
+  qDebug() << "Support rect " << supportRect;
+
+  sheetRectScaled = supportRect;
+
+  qDebug() << "Sheet rect scaled " << sheetRectScaled;
+
+  figureRectScaled = getFigureRect(sheetRectScaled);
+
+  qDebug() << "Figure rect scaled " << figureRectScaled;
+
+  painter->translate(figureRectScaled.topLeft());
+
+  drawAll();
+}
+
 
 void Graph::writeLegends()
 {
@@ -370,4 +444,260 @@ QImage *Graph::drawImage()
 
   //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
   return image;
+}
+
+QRect Graph::getFigureRect(const QRect &refSupportRect)
+{
+  int margin = sizeSettings.pxMargins;
+  QMargins margins(margin, margin, margin, margin);
+
+  QRect refSupportRectMarginless = refSupportRect.marginsRemoved(margins);
+  QRect figRect;
+  figRect.setWidth(lround(relFigRect.width() * double(refSupportRectMarginless.width())));
+  figRect.setHeight(lround(relFigRect.height() * double(refSupportRectMarginless.height())));
+
+  QPoint topLeft;
+  topLeft.setX(lround(relFigRect.topLeft().x() * double(refSupportRectMarginless.width()))
+               + refSupportRectMarginless.topLeft().x());
+  topLeft.setY(lround(relFigRect.topLeft().y() * double(refSupportRectMarginless.height()))
+               + refSupportRectMarginless.topLeft().y());
+
+  figRect.moveTopLeft(topLeft);
+
+  qDebug() << "Figure reconstruction call";
+  qDebug() << "Figure is " << figRect;
+  qDebug() << "marginless support is " << refSupportRectMarginless;
+  qDebug() << "relative figure rect is " << relFigRect;
+
+  return figRect;
+}
+
+void Graph::drawSupport()
+{ // draws the sheet on an untransformed view
+  painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+
+  computeSupportRect();
+
+  painter->drawRect(supportRect);
+}
+
+void Graph::drawFigureRect()
+{
+  figureRect = getFigureRect(supportRect);
+
+  painter->setBrush(Qt::NoBrush);
+  pen.setStyle(Qt::DashLine);
+  pen.setWidth(1);
+  pen.setColor(information.getAxesSettings().color);
+  painter->setPen(pen);
+  painter->drawRect(figureRect);
+
+  pen.setStyle(Qt::SolidLine);
+  painter->setPen(pen);
+}
+
+void Graph::computeSupportRect()
+{
+  QRectF rect;
+
+  if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZoomingType::CUSTOM)
+  {
+    rect.setSize(scaledSize);
+  }
+  else if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
+  {
+    double ratio, targetRatio;
+    ratio = scaledSize.height() / scaledSize.width();
+
+    if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
+      targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
+    else
+      targetRatio = double(sizeSettings.pxSheetSize.height())
+                    / double(sizeSettings.pxSheetSize.width());
+
+    if (ratio <= targetRatio)
+    {
+      rect.setHeight(scaledSize.height());
+      rect.setWidth(scaledSize.height() / targetRatio);
+
+      rect.moveTopLeft(QPointF((scaledSize.width() - rect.width()) / 2, 0));
+    }
+    else
+    {
+      rect.setHeight(scaledSize.width() * targetRatio);
+      rect.setWidth(scaledSize.width());
+
+      rect.moveTopLeft(QPoint(0, (scaledSize.height() - rect.height()) / 2));
+    }
+  }
+
+  qDebug() << "Available rect: " << information.getAvailableSheetSizePx();
+  qDebug() << "Scaled size: " << scaledSize;
+  qDebug() << "Support rect: " << rect;
+
+  supportRect = rect.toRect();
+}
+
+void Graph::updateFigureSize()
+{
+  sizeSettings.cmFigureSize.setWidth(relFigRect.width() * sizeSettings.cmSheetSize.width());
+  sizeSettings.cmFigureSize.setHeight(relFigRect.height() * sizeSettings.cmSheetSize.height());
+
+  sizeSettings.pxFigureSize.setWidth(
+    int(relFigRect.width() * double(sizeSettings.pxSheetSize.width())));
+  sizeSettings.pxFigureSize.setHeight(
+    int(relFigRect.height() * double(sizeSettings.pxSheetSize.height())));
+}
+
+void Graph::onZoomSettingsChange()
+{
+  qDebug() << "graph: updating cached zoom settings";
+  zoomSettings = information.getGraphZoomSettings();
+  updateFigureSize();
+  update();
+}
+
+void Graph::onSizeSettingsChange()
+{
+  // Add function here that calcualtes the needed widget size
+
+  // qDebug() << "OnSizeSettingsChange";
+
+  sizeSettings = information.getGraphSizeSettings();
+
+  if (sizeSettings.figureFillsSheet)
+  {
+    relFigRect.setTopLeft(QPointF(0, 0));
+    relFigRect.setWidth(1);
+    relFigRect.setHeight(1);
+  }
+  else
+  {
+    if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
+    {
+      relFigRect.setWidth(sizeSettings.cmFigureSize.width() / (sizeSettings.cmSheetSize.width()));
+      relFigRect.setHeight(sizeSettings.cmFigureSize.height() / (sizeSettings.cmSheetSize.height()));
+    }
+    else
+    {
+      relFigRect.setWidth(double(sizeSettings.pxFigureSize.width())
+                          / double(sizeSettings.pxSheetSize.width()));
+      relFigRect.setHeight(double(sizeSettings.pxFigureSize.height())
+                           / (sizeSettings.pxSheetSize.height()));
+    }
+
+    constrainFigureRectRel();
+  }
+
+  updateFigureSize();
+  update();
+}
+
+void Graph::constrainFigureRectRel()
+{
+  if (relFigRect.width() > 1)
+    relFigRect.setWidth(1);
+
+  if (relFigRect.height() > 1)
+    relFigRect.setHeight(1);
+  //------------------------------
+
+  if (relFigRect.width() < minRelSize)
+    relFigRect.setWidth(minRelSize);
+
+  if (relFigRect.height() < minRelSize)
+    relFigRect.setHeight(minRelSize);
+  //------------------------------
+
+  if (relFigRect.left() < 0)
+    relFigRect.moveLeft(0);
+
+  if (relFigRect.right() > 1)
+    relFigRect.moveRight(1);
+  //------------------------------
+
+  if (relFigRect.bottom() > 1)
+    relFigRect.moveBottom(1);
+
+  if (relFigRect.top() < 0)
+    relFigRect.moveTop(0);
+}
+
+void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
+{
+  QPdfWriter *pdfWriter = new QPdfWriter(fileName);
+
+  pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
+  pdfWriter->setTitle(tr("Exported graph"));
+
+  int targetResolution = int(information.getPixelDensity() / sizeSettings.scalingFactor);
+
+  pdfWriter->setResolution(targetResolution);
+
+  QPageLayout layout;
+  layout.setUnits(QPageLayout::Millimeter);
+
+  QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
+  layout.setPageSize(
+    QPageSize(sheetSizeMm, QPageSize::Millimeter, "", QPageSize::FuzzyOrientationMatch));
+
+  if (sizeType == SheetSizeType::NORMALISED)
+    layout.setOrientation(orientation);
+  else
+    layout.setOrientation(QPageLayout::Portrait);
+
+  pdfWriter->setPageLayout(layout);
+
+  painter->begin(pdfWriter);
+
+  if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
+  {
+    painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+    painter->drawRect(painter->viewport());
+  }
+
+  figureRectScaled = getFigureRect(supportRect);
+
+  painter->translate(figureRectScaled.topLeft());
+
+  drawAll();
+
+  painter->end();
+
+  delete pdfWriter;
+}
+
+void Graph::exportSVG(QString fileName)
+{
+  QSvgGenerator svgGenerator;
+  svgGenerator.setFileName(fileName);
+
+  svgGenerator.setTitle(tr("Exported graph"));
+  svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
+
+  double targetResolution = information.getPixelDensity() / sizeSettings.scalingFactor;
+
+  svgGenerator.setResolution(int(targetResolution));
+
+  QSize sizePx(int(sizeSettings.cmSheetSize.width() * 0.393701 * targetResolution),
+               int(sizeSettings.cmSheetSize.height() * 0.393701 * targetResolution));
+
+  svgGenerator.setSize(sizePx);
+  svgGenerator.setViewBox(QRect(QPoint(0, 0), sizePx));
+
+  painter->begin(&svgGenerator);
+
+  if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
+  {
+    painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+    painter->drawRect(painter->window());
+  }
+
+  figureRectScaled = getFigureRect(painter->window());
+
+  painter->translate(figureRectScaled.topLeft());
+
+  drawAll();
+
+  painter->end();
 }

@@ -26,6 +26,12 @@
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
 
+enum SheetSizeType
+{
+  NORMALISED,
+  CUSTOM
+};
+
 class Graph : public QQuickPaintedItem, public MathObjectDraw
 {
   Q_OBJECT
@@ -45,12 +51,26 @@ public slots:
   void setItalic(bool state);
   void setNumPrec(int prec);
 
+  void exportPDF(QString fileName, SheetSizeType sizeType);
+  void exportSVG(QString fileName);
+
   virtual void paint(QPainter *p) override;
 
 protected slots:
   void updateSettingsVals();
+  void onSizeSettingsChange();
+  void updateFigureSize();
+  void constrainFigureRectRel();
+  void onZoomSettingsChange();
 
 protected:
+  QRect getFigureRect(const QRect &refSupportRect);
+
+  void scaleView();
+  void drawSupport();
+  void drawGraph();
+  void computeSupportRect();
+  void drawFigureRect();
   void updateCenterPosAndScaling();
   void drawBaseGraph();
   void drawGraphRect();
@@ -89,6 +109,10 @@ protected:
 
   void calculateTicksAndMargins();
 
+  ZeSizeSettings sizeSettings;
+  ZeZoomSettings zoomSettings;
+  QSizeF currentSize;
+
   GridCalculator gridCalculator;
   QFontMetrics fontMetrics;
   ZeLinAxisTicks xAxisTicks, yAxisTicks;
@@ -97,6 +121,19 @@ protected:
   QRect figureRectScaled, graphRectScaled;
   QString xLegend, yLegend;
   bool legendState, bold, italic, underline;
+
+  double minRelSize;
+  double totalScaleFactor;
+
+  // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
+  // the other margin is scaled accordingly
+  double pixelRatio;
+  QRect figureRect, supportRect, sheetRectScaled;
+
+  QSizeF scaledSize;
+  QRectF relFigRect;
+
+  QPageLayout::Orientation orientation;
 };
 
 template <ZeAxisName axis>

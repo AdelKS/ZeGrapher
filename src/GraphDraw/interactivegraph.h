@@ -41,12 +41,6 @@ enum MouseActionType
   MOVE_GRAPH
 };
 
-enum SheetSizeType
-{
-  NORMALISED,
-  CUSTOM
-};
-
 class InteractiveGraph : public Graph
 {
   Q_OBJECT
@@ -54,11 +48,6 @@ class InteractiveGraph : public Graph
 
 public:
   explicit InteractiveGraph(QQuickItem *parent = nullptr);
-
-  void onSizeUnitChange();
-  double getMinFigureRelativeSize();
-
-  virtual void paint(QPainter *p) override;
 
 signals:
   void newZoomValue(double value);
@@ -70,47 +59,16 @@ public slots:
   virtual void mouseReleaseEvent(QMouseEvent *event) override;
   virtual void wheelEvent(QWheelEvent *event) override;
 
-  Q_INVOKABLE void onSizeSettingsChange();
-
-  void exportPDF(QString fileName, SheetSizeType sizeType);
-  void exportSVG(QString fileName);
-  void onZoomSettingsChange();
-
-  Q_INVOKABLE void updateFigureSize();
-
 protected:
 
-  void drawSupport();
-  void drawGraph();
-  void computeSupportRect();
-  void drawFigureRect();
   void assignMouseRects();
   void printCurves();
-  void constrainFigureRectRel();
-  QRect getFigureRect(const QRect &refSupportRect);
-  QRect getDrawableRect(const QRect &refSupportRect);
-  void scaleView();
   void setMaximalCanvas();
 
-  QPageLayout::Orientation orientation;
-  double minRelSize;
-  double totalScaleFactor;
-  QSizeF currentSize;
-  // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
-  // the other margin is scaled accordingly
-  double pixelRatio;
-  QRect figureRect, supportRect, sheetRectScaled;
-
-  ZeSizeSettings sizeSettings;
-  ZeZoomSettings zoomSettings;
-
-  QSizeF scaledSize;
-  QRectF relFigRect;
   QRect topLeft, topRight, top, left, right, bottom, bottomLeft, bottomRight;
 
   QPoint lastMousePos;
   MouseActionType moveType;
-  QString fileName;
 };
 
 #endif // MAINVIEW_H
