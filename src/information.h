@@ -25,6 +25,7 @@
 #include <zecalculator/zecalculator.h>
 
 #include "Utils/graphrange.h"
+#include "Utils/appsettings.h"
 
 namespace zg {
   struct PlotStyle;

@@ -219,51 +219,6 @@ struct ZeGraphSettings
     QFont graphFont = {};
 };
 
-struct ZeAppSettings: QObject
-{
-  Q_OBJECT
-  QML_ELEMENT
-  Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
-  Q_PROPERTY(QLocale::Language language MEMBER language)
-  Q_PROPERTY(QFont font MEMBER font)
-  Q_PROPERTY(QColor validSyntax READ getValidSyntax WRITE setValidSyntax NOTIFY validSyntaxChanged)
-  Q_PROPERTY(QColor invalidSyntax READ getInvalidSyntax WRITE setInvalidSyntax NOTIFY invalidSyntaxChanged)
-  Q_PROPERTY(QColor warningSyntax READ getWarningSyntax WRITE setWarningSyntax NOTIFY warningSyntaxChanged)
-
-public:
-
-  explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent) {}
-
-  bool startupUpdateCheck;
-  QLocale::Language language;
-  QFont font;
-
-  QColor validSyntaxDark = Qt::darkGreen;
-  QColor invalidSyntaxDark = Qt::darkRed;
-  QColor warningSyntaxDark = Qt::darkYellow;
-
-  QColor validSyntaxLight = Qt::darkGreen;
-  QColor invalidSyntaxLight = Qt::darkRed;
-  QColor warningSyntaxLight = Qt::darkYellow;
-
-  Q_INVOKABLE QColor getValidSyntax() const;
-  Q_INVOKABLE QColor getInvalidSyntax() const;
-  Q_INVOKABLE QColor getWarningSyntax() const;
-
-  Q_INVOKABLE void setValidSyntax(QColor);
-  Q_INVOKABLE void setInvalidSyntax(QColor);
-  Q_INVOKABLE void setWarningSyntax(QColor);
-
-signals:
-  void validSyntaxChanged();
-  void invalidSyntaxChanged();
-  void warningSyntaxChanged();
-
-public slots:
-  void colorSchemeChanged();
-
-};
-
 struct Range
 {
     Range() : start(0), end(0), step(1) {}
