@@ -2,6 +2,7 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Dialogs
 import QtQuick.Controls.FluentWinUI3
 
 Item {
@@ -15,6 +16,15 @@ Item {
   property bool pauseSync: false
 
   enum SizeType { Fill, Custom }
+
+  FontDialog {
+    id: graphFontDialog
+    currentFont: Information.graphSettings.font
+
+    onAccepted: {
+      Information.graphSettings.font = selectedFont;
+    }
+  }
 
   function syncWithBackend() {
     if (Information.graphSizeSettings.sizeUnit === SizeUnit.PIXEL) {
@@ -115,7 +125,9 @@ Item {
         }
       }
 
-      Item {}
+      Item {
+        id: emptyItem
+      }
       Frame {
         clip: true
         Layout.topMargin: 0
@@ -253,6 +265,7 @@ Item {
               PropertyChanges {
                 customSizeGroupBox.maxHeight: 0
                 customSizeGroupBox.visible: false
+                emptyItem.visible: false
               }
             },
             State {
@@ -261,6 +274,7 @@ Item {
               PropertyChanges {
                 customSizeGroupBox.maxHeight: customSizeGroupBox.implicitHeight
                 customSizeGroupBox.visible: true
+                emptyItem.visible: true
               }
             }
           ]
@@ -281,6 +295,17 @@ Item {
             }
           }
         }
+      }
+
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
+        text: qsTr('Font')
+      }
+      Button {
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignLeft
+        text: graphFontDialog.currentFont.family
+        onClicked: graphFontDialog.open()
       }
     }
   }

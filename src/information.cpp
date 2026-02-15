@@ -21,7 +21,7 @@
 #include "information.h"
 
 Information::Information(QObject* parent):
-  QObject(parent), appSettings(new ZeAppSettings(this)), graph_range(new zg::GraphRange(this))
+  QObject(parent), appSettings(new ZeAppSettings(this)), graphSettings(new ZeGraphSettings(this)), graph_range(new zg::GraphRange(this))
 {
   emit appSettingsChanged();
 }
@@ -29,11 +29,6 @@ Information::Information(QObject* parent):
 void Information::emitDataUpdate()
 {
   emit dataUpdated();
-}
-
-void Information::setGraphSettings(const ZeGraphSettings& graphSettings)
-{
-  this->graphSettings = graphSettings;
 }
 
 void Information::emitAnimationUpdate()
@@ -53,7 +48,7 @@ const ZeZoomSettings& Information::getGraphZoomSettings() const
 
 const ZeGraphSettings& Information::getGraphSettings() const
 {
-  return graphSettings;
+  return *graphSettings;
 }
 
 const ZeGridSettings& Information::getGridSettings() const
@@ -69,6 +64,7 @@ const ZeAxesSettings& Information::getAxesSettings() const
 void Information::setFont(QFont font)
 {
   appSettings->setFont(font);
+  graphSettings->setFont(font);
 }
 
 void Information::setGraphRangeMouseEdit(const zg::real_range2d& snapshot)

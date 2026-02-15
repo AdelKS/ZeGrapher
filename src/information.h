@@ -26,6 +26,7 @@
 
 #include "Utils/graphrange.h"
 #include "Utils/appsettings.h"
+#include "Utils/graphsettings.h"
 
 namespace zg {
   struct PlotStyle;
@@ -42,6 +43,7 @@ class Information: public QObject
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
+  Q_PROPERTY(ZeGraphSettings* graphSettings MEMBER graphSettings NOTIFY graphSettingsChanged)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
   Q_PROPERTY(QSize  availableSheetSizePx WRITE setAvailableSheetSizePx MEMBER availableSheetSizePx NOTIFY availableSheetSizePxChanged)
   Q_PROPERTY(QSizeF availableSheetSizeCm MEMBER availableSheetSizeCm NOTIFY availableSheetSizeCmChanged)
@@ -87,6 +89,7 @@ signals:
   void pixelDensityChanged();
   void availableSheetSizePxChanged();
   void availableSheetSizeCmChanged();
+  void graphSettingsChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -99,7 +102,6 @@ public slots:
   void setGraphZoomSettings(const ZeZoomSettings& zoomSettings);
   void setAxesSettings(const ZeAxesSettings& axesSettings);
   void setGridSettings(const ZeGridSettings& gridSettings);
-  void setGraphSettings(const ZeGraphSettings& graphSettings);
   void screenChanged(QWindow*);
   void setAvailableSheetSizePx(QSize);
   void updateSizes();
@@ -115,7 +117,7 @@ protected:
   ZeSizeSettings sizeSettings;
   ZeAxesSettings axesSettings;
   ZeGridSettings gridSettings;
-  ZeGraphSettings graphSettings;
+  ZeGraphSettings* graphSettings = nullptr;
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
 

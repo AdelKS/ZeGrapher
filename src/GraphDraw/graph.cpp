@@ -26,7 +26,7 @@
 
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent), MathObjectDraw(), gridCalculator(this),
-    fontMetrics(information.getGraphSettings().graphFont)
+    fontMetrics(information.getGraphSettings().getFont())
 {
   leftMargin = 30;
   rightMargin = 30;
@@ -57,6 +57,7 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, &Information::graphZoomSettingsChanged, this, &Graph::onZoomSettingsChange);
   connect(&information, &Information::axesSettingsChanged, this, [this]{ update(); });
   connect(&information, &Information::gridSettingsChanged, this, [this]{ update(); });
+  connect(&information.getGraphSettings(), &ZeGraphSettings::fontChanged, this, [this]{ update(); });
   connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
 }
@@ -221,7 +222,7 @@ void Graph::paint(QPainter *p)
 
 void Graph::drawAll()
 {
-  painter->setFont(information.getGraphSettings().graphFont);
+  painter->setFont(information.getGraphSettings().getFont());
   fontMetrics = painter->fontMetrics();
   viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
 
@@ -302,7 +303,7 @@ void Graph::drawGraph()
 
 void Graph::writeLegends()
 {
-  QFont font = information.getGraphSettings().graphFont;
+  QFont font = information.getGraphSettings().getFont();
   font.setPixelSize(legendFontSize);
   font.setItalic(italic);
   font.setBold(bold);

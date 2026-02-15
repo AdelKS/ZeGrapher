@@ -207,18 +207,6 @@ struct ZeAxesSettings
     bool operator == (const ZeAxesSettings &other) const = default;
 };
 
-struct ZeGraphSettings
-{
-    bool operator == (const ZeGraphSettings &other) const = default;
-
-    QColor backgroundColor = Qt::white;
-    QColor defaultColor = Qt::black;
-    int curvesThickness = 3;
-    double distanceBetweenPoints = 1;
-    bool smoothing = true;
-    QFont graphFont = {};
-};
-
 struct Range
 {
     Range() : start(0), end(0), step(1) {}

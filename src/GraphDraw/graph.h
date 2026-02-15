@@ -171,7 +171,7 @@ void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
 template <ZeAxisName axis>
 void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
-  painter->setFont(information.getGraphSettings().graphFont);
+  painter->setFont(information.getGraphSettings().getFont());
   pen.setColor(information.getAxesSettings().color);
   painter->setPen(pen);
 
@@ -198,7 +198,7 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 template <ZeAxisName axis>
 void Graph::drawLinAxisGridTicks()
 {
-  painter->setFont(information.getGraphSettings().graphFont);
+  painter->setFont(information.getGraphSettings().getFont());
   QFontMetrics fontMetrics = painter->fontMetrics();
 
   const ZeAxesSettings &axesSettings = information.getAxesSettings();
