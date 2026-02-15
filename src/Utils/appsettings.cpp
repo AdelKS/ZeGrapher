@@ -83,3 +83,12 @@ void ZeAppSettings::setWarningSyntax(QColor c)
 
   emit warningSyntaxChanged();
 }
+
+void ZeAppSettings::setFont(QFont font)
+{
+  if (font != this->font)
+  {
+    this->font = font;
+    emit fontChanged();
+  }
+}

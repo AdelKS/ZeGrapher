@@ -42,7 +42,6 @@ class Information: public QObject
                NOTIFY graphZoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
                NOTIFY graphSizeSettingsChanged)
-  Q_PROPERTY(QFont appFont WRITE setAppFont MEMBER appFont NOTIFY appFontChanged)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
   Q_PROPERTY(QSize  availableSheetSizePx WRITE setAvailableSheetSizePx MEMBER availableSheetSizePx NOTIFY availableSheetSizePxChanged)
   Q_PROPERTY(QSizeF availableSheetSizeCm MEMBER availableSheetSizeCm NOTIFY availableSheetSizeCmChanged)
@@ -59,7 +58,7 @@ public:
   const ZeGraphSettings& getEstheticSettings() const;
   const ZeAppSettings& getAppSettings() const;
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
-  Q_INVOKABLE void setAppFont(QFont);
+  Q_INVOKABLE void setFont(QFont);
   double getPixelDensity() const { return pixelDensity; }
   QSize getAvailableSheetSizePx() { return availableSheetSizePx; }
 
@@ -119,7 +118,6 @@ protected:
   ZeGraphSettings graphSettings;
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
-  QFont appFont;
 
   /// @note in pixels per millimeter
   double pixelDensity = 50;

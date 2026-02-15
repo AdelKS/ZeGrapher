@@ -31,7 +31,7 @@ struct ZeAppSettings: QObject
   QML_ELEMENT
   Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
   Q_PROPERTY(QLocale::Language language MEMBER language)
-  Q_PROPERTY(QFont font MEMBER font)
+  Q_PROPERTY(QFont font MEMBER font WRITE setFont NOTIFY fontChanged)
   Q_PROPERTY(QColor validSyntax READ getValidSyntax WRITE setValidSyntax NOTIFY validSyntaxChanged)
   Q_PROPERTY(QColor invalidSyntax READ getInvalidSyntax WRITE setInvalidSyntax NOTIFY invalidSyntaxChanged)
   Q_PROPERTY(QColor warningSyntax READ getWarningSyntax WRITE setWarningSyntax NOTIFY warningSyntaxChanged)
@@ -59,12 +59,14 @@ public:
   Q_INVOKABLE void setValidSyntax(QColor);
   Q_INVOKABLE void setInvalidSyntax(QColor);
   Q_INVOKABLE void setWarningSyntax(QColor);
+  Q_INVOKABLE void setFont(QFont);
 
 
 signals:
   void validSyntaxChanged();
   void invalidSyntaxChanged();
   void warningSyntaxChanged();
+  void fontChanged();
 
 public slots:
   void colorSchemeChanged();

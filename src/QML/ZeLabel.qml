@@ -1,5 +1,5 @@
 import QtQuick.Controls
 
 Label {
-  font: Information.appFont
+  font: Information.appSettings.font
 }

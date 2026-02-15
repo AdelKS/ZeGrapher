@@ -10,9 +10,11 @@ Item {
 
   FontDialog {
     id: fontDialog
-    currentFont: Information.appFont
+    currentFont: Information.appSettings.font
 
-    onAccepted: Information.setAppFont(selectedFont)
+    onAccepted: {
+      Information.appSettings.font = selectedFont;
+    }
   }
 
   ScrollView {

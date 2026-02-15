@@ -9,7 +9,7 @@ ApplicationWindow {
   width: 800
   height: 600
   visible: true
-  font: Information.appFont
+  font: Information.appSettings.font
 
   onScreenChanged: {
     console.log("Moved to screen:", screen.name);

@@ -1,5 +1,5 @@
 import QtQuick
 
 TextEdit {
-  font: Information.appFont
+  font: Information.appSettings.font
 }
