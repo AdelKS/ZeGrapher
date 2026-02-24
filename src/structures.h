@@ -64,13 +64,6 @@ inline QString langToShortString(QLocale::Language lang)
 
 enum struct ZeAxisName {X, Y};
 
-enum struct ZeViewType
-{
-    LINEAR, LOG
-};
-
-Q_DECLARE_METATYPE(ZeViewType);
-
 struct ZeCoordinateDisplayFormat
 {
     bool decimalGlobalConstant, decimalBase;
@@ -82,39 +75,6 @@ struct ZeCoordinateDisplayFormat
     }
 };
 
-struct ZeLogAxisSettings
-{
-    ZeLogAxisSettings() = default;
-
-    double constantMultiplier = 1, base = 10;
-    QString constantMultiplierStr, baseStr = "10";
-
-    bool operator == (const ZeLogAxisSettings &other) const = default;
-};
-
-struct ZeLinAxisSettings
-{
-    ZeLinAxisSettings() = default;
-
-    bool operator == (const ZeLinAxisSettings &other) const = default;
-
-    double constantMultiplier = 1;
-    QString constantMultiplierStr;
-    int maxDigitsNum = 3;
-};
-
-class ZeAxisSettings
-{
-public:
-    ZeAxisSettings() = default;
-
-    bool operator == (const ZeAxisSettings &other) const = default;
-
-    int tickRelSpacing = 0;
-    ZeLinAxisSettings linSettings;
-    ZeLogAxisSettings logSettings;
-    ZeViewType axisType = ZeViewType::LINEAR;
-};
 
 struct SizeUnit: QObject
 {
@@ -195,16 +155,6 @@ struct ZeGridSettings
     Ze1DGridSettings x, y;
 
     bool operator == (const ZeGridSettings &other) const = default;
-};
-
-struct ZeAxesSettings
-{
-    ZeAxisSettings x, y;
-    bool orthonormal = false;
-    QColor color = Qt::black;
-    double lineWidth = 2;
-
-    bool operator == (const ZeAxesSettings &other) const = default;
 };
 
 struct Range

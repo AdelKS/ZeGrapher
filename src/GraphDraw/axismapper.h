@@ -20,8 +20,9 @@
 
 #pragma once
 
-#include "structures.h"
+#include "Utils/axissettings.h"
 #include "Utils/unit.h"
+#include "structures.h"
 #include <zecalculator/utils/utils.h>
 
 namespace zg {
