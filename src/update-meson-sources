@@ -1,0 +1,20 @@
+#!/bin/bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+pushd "$SCRIPT_DIR"
+
+awk '
+/# BEGIN AUTOGEN SRC-LIST/ {
+    system("./print-dev-files")
+    skip=1
+    next
+}
+/# END AUTOGEN SRC-LIST/ {
+    skip=0
+    next
+}
+!skip
+' meson.build > meson.build.new && mv meson.build.new meson.build
+
+popd

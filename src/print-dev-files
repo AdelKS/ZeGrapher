@@ -2,14 +2,9 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-pushd "$SCRIPT_DIR"
+pushd "$SCRIPT_DIR" > /dev/null
 
-# outputs the source files that meson should handle
-echo "ui_files = files("
-for f in $(find . -type f -name "*.ui" | sort); do
-    echo "  '$f',"
-done
-echo ")"
+echo "# BEGIN AUTOGEN SRC-LIST"
 echo
 
 echo "source_files = files("
@@ -38,5 +33,8 @@ for f in $(grep -E -lir --include=*.h "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)"
     echo "  '$f',"
 done
 echo ")"
+echo
 
-popd
+echo "# END AUTOGEN SRC-LIST"
+
+popd > /dev/null

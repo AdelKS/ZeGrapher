@@ -1,5 +1,10 @@
 inc = include_directories('.')
 
+# the block between BEGIN and END comments bellow is generated with
+# `update-meson-sources` script in the same directory
+
+# BEGIN AUTOGEN SRC-LIST
+
 source_files = files(
   './Calculus/polynomial.cpp',
   './Calculus/polynomialregression.cpp',
@@ -121,6 +126,8 @@ qmlcpp_files = files(
   './Utils/state.h',
   './Utils/updatecheck.h',
 )
+
+# END AUTOGEN SRC-LIST
 
 fs = import('fs')
 
