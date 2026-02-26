@@ -70,7 +70,7 @@ public:
   /// @brief sets the type of mapping
   /// @param type: LINEAR or LOG
   /// @param base: LOG base, only used in LOG type
-  void setAxisSettings(ZeViewType type, double base);
+  void setAxisSettings(ZeAxisSettings::ViewType type, double base);
 
   template <plane p>
   const Range1D<u<p>>& getRange() const;
@@ -110,7 +110,7 @@ protected:
   Range1D<u<plane::pixel>> pixel_range;
 
   double base = 0;
-  ZeViewType view_type = ZeViewType::LINEAR;
+  ZeAxisSettings::ViewType view_type = ZeAxisSettings::LINEAR;
 };
 
 template <ZeAxisName axis>
@@ -163,12 +163,12 @@ void ZeAxisMapper<axis>::setRange(const Range1D<u<p>>& range)
     constexpr plane q = p == plane::real ? plane::view : plane::real;
     switch (view_type)
     {
-      case ZeViewType::LINEAR:
+      case ZeAxisSettings::LINEAR:
         getRange<q>().min.v = range.min.v;
         getRange<q>().max.v = range.max.v;
         break;
 
-      case ZeViewType::LOG:
+      case ZeAxisSettings::LOG:
         getRange<q>().min = to<q>(range.min);
         getRange<q>().max = to<q>(range.max);
         break;
@@ -227,11 +227,11 @@ unit<u<q>> ZeAxisMapper<axis>::to(unit<u<p>> x) const
     unit<u<q>> result;
     switch (view_type)
     {
-      case ZeViewType::LINEAR:
+      case ZeAxisSettings::LINEAR:
         result = unit<u<q>>{x.v}; // no scaling
         break;
 
-      case ZeViewType::LOG:
+      case ZeAxisSettings::LOG:
         if constexpr (p == plane::real)
         {
           Q_ASSERT(x.v > 0);
@@ -283,7 +283,7 @@ void ZeAxisMapper<axis>::translateView(unit<u<plane::pixel>> vec)
 }
 
 template <ZeAxisName axis>
-void ZeAxisMapper<axis>::setAxisSettings(ZeViewType type, double base)
+void ZeAxisMapper<axis>::setAxisSettings(ZeAxisSettings::ViewType type, double base)
 {
   view_type = type;
   this->base = base;

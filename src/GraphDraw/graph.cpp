@@ -236,13 +236,13 @@ void Graph::drawAll()
 
   drawGraphRect();
 
-  if(information.getAxesSettings().x.axisType == ZeViewType::LINEAR)
+  if(information.getAxesSettings().x.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetX();
     drawLinAxisGridTicks<ZeAxisName::X>();
   }
 
-  if(information.getAxesSettings().y.axisType == ZeViewType::LINEAR)
+  if(information.getAxesSettings().y.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetY();
     drawLinAxisGridTicks<ZeAxisName::Y>();

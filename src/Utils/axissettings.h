@@ -22,19 +22,36 @@
 
 #include <QString>
 #include <QColor>
+#include <QMetaType>
+#include <QtQml/qqmlregistration.h>
 
 struct ZeLogAxisSettings
 {
-    ZeLogAxisSettings() = default;
+  Q_GADGET
 
-    double constantMultiplier = 1, base = 10;
-    QString constantMultiplierStr, baseStr = "10";
+  Q_PROPERTY(double constantMultiplier MEMBER constantMultiplier)
+  Q_PROPERTY(double base MEMBER base)
+  Q_PROPERTY(QString constantMultiplierStr MEMBER constantMultiplierStr)
+  Q_PROPERTY(QString baseStr MEMBER baseStr)
 
-    bool operator == (const ZeLogAxisSettings &other) const = default;
+public:
+  ZeLogAxisSettings() = default;
+
+  double constantMultiplier = 1, base = 10;
+  QString constantMultiplierStr, baseStr = "10";
+
+  bool operator == (const ZeLogAxisSettings &other) const = default;
 };
 
 struct ZeLinAxisSettings
 {
+  Q_GADGET
+
+  Q_PROPERTY(double constantMultiplier MEMBER constantMultiplier)
+  Q_PROPERTY(QString constantMultiplierStr MEMBER constantMultiplierStr)
+  Q_PROPERTY(int maxDigitsNum MEMBER maxDigitsNum)
+
+public:
     ZeLinAxisSettings() = default;
 
     bool operator == (const ZeLinAxisSettings &other) const = default;
@@ -44,26 +61,40 @@ struct ZeLinAxisSettings
     int maxDigitsNum = 3;
 };
 
-enum struct ZeViewType
+struct ZeAxisSettings
 {
-    LINEAR, LOG
-};
+  enum ViewType
+  {
+      LINEAR, LOG
+  };
 
-class ZeAxisSettings
-{
+  Q_GADGET
+
+  Q_PROPERTY(ZeLinAxisSettings linear MEMBER linSettings)
+  Q_PROPERTY(ZeLogAxisSettings log MEMBER logSettings)
+  Q_PROPERTY(ViewType axisType MEMBER axisType)
+
 public:
-    ZeAxisSettings() = default;
 
-    bool operator == (const ZeAxisSettings &other) const = default;
+  ZeAxisSettings() = default;
 
-    int tickRelSpacing = 0;
-    ZeLinAxisSettings linSettings;
-    ZeLogAxisSettings logSettings;
-    ZeViewType axisType = ZeViewType::LINEAR;
+  bool operator == (const ZeAxisSettings &other) const = default;
+   int tickRelSpacing = 0;
+  ZeLinAxisSettings linSettings;
+  ZeLogAxisSettings logSettings;
+  ViewType axisType = LINEAR;
 };
 
 struct ZeAxesSettings
 {
+  Q_GADGET
+
+  Q_PROPERTY(ZeAxisSettings x MEMBER x)
+  Q_PROPERTY(ZeAxisSettings y MEMBER y)
+  Q_PROPERTY(QColor color MEMBER color)
+  Q_PROPERTY(double lineWidth MEMBER lineWidth)
+
+public:
     ZeAxisSettings x, y;
     bool orthonormal = false;
     QColor color = Qt::black;

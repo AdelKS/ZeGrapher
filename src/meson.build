@@ -119,6 +119,7 @@ qmlcpp_files = files(
   './MathObjects/parametric.h',
   './structures.h',
   './Utils/appsettings.h',
+  './Utils/axissettings.h',
   './Utils/graphrange.h',
   './Utils/graphsettings.h',
   './Utils/highlighter.h',
