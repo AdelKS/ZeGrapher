@@ -342,6 +342,29 @@ Item {
               setValue(graphSettings.axes.lineWidth);
             }
           }
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Color")
+          }
+          ColorButton {
+            id: axesColor
+            Layout.alignment: Qt.AlignLeft
+
+            selectedColor: { selectedColor = root.graphSettings.axes.color; }
+
+            onSelectedColorChanged: root.graphSettings.axes.color = selectedColor;
+
+            Connections {
+              target: root.graphSettings
+
+              function onAxesChanged() {
+                if (axesColor.selectedColor !== root.graphSettings.axes.color) {
+                  axesColor.selectedColor = root.graphSettings.axes.color
+                }
+              }
+            }
+          }
         }
       }
     }
