@@ -311,6 +311,39 @@ Item {
           }
         }
       }
+
+      GroupBox {
+        Layout.fillWidth: true
+        title: qsTr("Axes")
+
+        GridLayout {
+          columnSpacing: 10
+          columns: 2
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Line width')
+          }
+          ZeDoubleSpinBox {
+            Layout.fillWidth: true
+
+            from: 0.1
+            step: 0.5
+            to: 5.0
+
+            onValueModified: {
+              root.pauseSync = true;
+              root.graphSettings.axes.lineWidth = value;
+              console.debug("Axes line width changed: ", value);
+              root.pauseSync = false;
+            }
+
+            Component.onCompleted: {
+              setValue(graphSettings.axes.lineWidth);
+            }
+          }
+        }
+      }
     }
   }
 }

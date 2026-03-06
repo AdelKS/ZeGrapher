@@ -98,7 +98,7 @@ public:
     ZeAxisSettings x, y;
     bool orthonormal = false;
     QColor color = Qt::black;
-    double lineWidth = 2;
+    double lineWidth = 2.0;
 
     bool operator == (const ZeAxesSettings &other) const = default;
 };
