@@ -337,7 +337,7 @@ void Graph::writeLegends()
 
 void Graph::writeAxisOffsetX()
 {
-  pen.setColor(settings.getAxes().color);
+  pen.setColor(settings.getAxes().getColor());
   pen.setWidthF(settings.getAxes().lineWidth);
   painter->setPen(pen);
   painter->setRenderHint(QPainter::Antialiasing, true);
@@ -401,7 +401,7 @@ void Graph::drawGraphRect()
   painter->setBrush(QBrush(Qt::NoBrush));
 
   pen.setWidth(axesSettings.lineWidth);
-  pen.setColor(axesSettings.color);
+  pen.setColor(axesSettings.getColor());
   pen.setStyle(Qt::SolidLine);
   painter->setPen(pen);
 

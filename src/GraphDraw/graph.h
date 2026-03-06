@@ -178,7 +178,7 @@ template <ZeAxisName axis>
 void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
   painter->setFont(settings.getFont());
-  pen.setColor(settings.getAxes().color);
+  pen.setColor(settings.getAxes().getColor());
   painter->setPen(pen);
 
   int txtWidth = fontMetrics.horizontalAdvance(txt);
@@ -236,12 +236,12 @@ void Graph::drawLinAxisGridTicks()
       if (gridSettings.showGrid)
         drawLine<axis>(px_pos, gridSettings.gridColor, gridSettings.gridLineWidth);
 
-      drawTick<axis>(px_pos, axesSettings.color, axesSettings.lineWidth);
+      drawTick<axis>(px_pos, axesSettings.getColor(), axesSettings.lineWidth);
       writeCoordinate<axis>(px_pos, axisTick.posStr);
     }
     else
     {
-      drawLine<axis>(zero_pt, axesSettings.color, axesSettings.lineWidth);
+      drawLine<axis>(zero_pt, axesSettings.getColor(), axesSettings.lineWidth);
       writeCoordinate<axis>(zero_pt, "0");
     }
 

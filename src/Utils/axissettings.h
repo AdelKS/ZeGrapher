@@ -91,14 +91,20 @@ struct ZeAxesSettings
 
   Q_PROPERTY(ZeAxisSettings x MEMBER x)
   Q_PROPERTY(ZeAxisSettings y MEMBER y)
-  Q_PROPERTY(QColor color MEMBER color)
+  Q_PROPERTY(QColor color READ getColor WRITE setColor)
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
 
 public:
     ZeAxisSettings x, y;
     bool orthonormal = false;
-    QColor color = Qt::black;
+
+    QColor colorLight = Qt::black;
+    QColor colorDark = "#dfdfdf";
+
     double lineWidth = 2.0;
+
+    const QColor& getColor() const;
+    void setColor(QColor);
 
     bool operator == (const ZeAxesSettings &other) const = default;
 };
