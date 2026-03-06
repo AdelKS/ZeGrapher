@@ -61,6 +61,7 @@ Graph::Graph(QQuickItem *parent)
   connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
   connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });

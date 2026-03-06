@@ -57,7 +57,7 @@ Item {
       }
 
       TabButton {
-        text: qsTr("View")
+        text: qsTr("Graph")
       }
 
       TabButton {

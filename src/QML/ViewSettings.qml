@@ -309,6 +309,29 @@ Item {
             text: graphFontDialog.currentFont.family
             onClicked: graphFontDialog.open()
           }
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Background")
+          }
+          ColorButton {
+            id: backgroundColor
+            Layout.alignment: Qt.AlignLeft
+
+            selectedColor: { selectedColor = root.graphSettings.backgroundColor; }
+
+            onSelectedColorChanged: root.graphSettings.backgroundColor = selectedColor;
+
+            Connections {
+              target: root.graphSettings
+
+              function onBackgroundColorChanged() {
+                if (backgroundColor.selectedColor !== root.graphSettings.backgroundColor) {
+                  backgroundColor.selectedColor = root.graphSettings.backgroundColor
+                }
+              }
+            }
+          }
         }
       }
 
