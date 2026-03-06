@@ -1,3 +1,4 @@
 leak:libfontconfig.so.1
 leak:libKirigamiPrimitives.so.6
 leak:libxkbcommon.so.0
+leak:libQt6Gui.so
