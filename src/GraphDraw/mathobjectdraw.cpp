@@ -25,7 +25,7 @@
 using namespace std;
 
 MathObjectDraw::MathObjectDraw()
-  : sampler(viewMapper, information.getGraphSettings().distanceBetweenPoints)
+  : sampler(viewMapper, information.graphSettings->getTargetSamplingDistancePx())
 {
   coef = sqrt(3) / 2;
 

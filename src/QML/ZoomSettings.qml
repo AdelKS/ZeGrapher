@@ -49,22 +49,22 @@ Rectangle {
       decimals: 2
 
       Connections {
-        target: Information
+        target: Information.graphSettings
 
-        function onGraphZoomSettingsChanged() {
+        function onZoomChanged() {
           console.debug("Syncing zoom widget with backend");
-          zoom.setValue(Information.graphZoomSettings.zoom * 100);
-          fitSheet.checked = (Information.graphZoomSettings.zoomingType === ZoomingType.FITSHEET);
+          zoom.setValue(Information.graphSettings.zoom.zoom * 100);
+          fitSheet.checked = (Information.graphSettings.zoom.zoomingType === ZoomingType.FITSHEET);
         }
       }
 
       onValueModified: {
         fitSheet.checked = false;
-        Information.graphZoomSettings.zoom = value / 100.0;
+        Information.graphSettings.zoom.zoom = value / 100.0;
       }
 
       Component.onCompleted: {
-        setValue(Information.graphZoomSettings.zoom * 100);
+        setValue(Information.graphSettings.zoom.zoom * 100);
       }
     }
 
@@ -87,7 +87,7 @@ Rectangle {
       id: fitSheet
 
       onCheckedChanged: {
-        Information.graphZoomSettings.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
+        Information.graphSettings.zoom.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
         Information.computeZoom();
       }
 

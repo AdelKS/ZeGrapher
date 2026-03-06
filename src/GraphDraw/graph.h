@@ -58,8 +58,6 @@ public slots:
 
 protected slots:
   void updateSettingsVals();
-  void onSizeSettingsChange();
-  void onZoomSettingsChange();
 
 protected:
   void scaleView();
@@ -106,7 +104,6 @@ protected:
 
   ZeSizeSettings sizeSettings;
   ZeZoomSettings zoomSettings;
-  QSizeF currentSize;
 
   GridCalculator gridCalculator;
   QFontMetrics fontMetrics;
@@ -171,8 +168,8 @@ void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
 template <ZeAxisName axis>
 void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
-  painter->setFont(information.getGraphSettings().getFont());
-  pen.setColor(information.getAxesSettings().color);
+  painter->setFont(information.graphSettings->getFont());
+  pen.setColor(information.graphSettings->getAxes().color);
   painter->setPen(pen);
 
   int txtWidth = fontMetrics.horizontalAdvance(txt);
@@ -201,7 +198,7 @@ void Graph::drawLinAxisGridTicks()
   painter->setFont(information.getGraphSettings().getFont());
   QFontMetrics fontMetrics = painter->fontMetrics();
 
-  const ZeAxesSettings &axesSettings = information.getAxesSettings();
+  const ZeAxesSettings &axesSettings = information.graphSettings->getAxes();
 
   pen.setCapStyle(Qt::FlatCap);
   bool first_tick = true;
@@ -210,8 +207,8 @@ void Graph::drawLinAxisGridTicks()
   auto getAxisData = [&]()
   {
     if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, information.getGridSettings().x);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, information.getGridSettings().y);
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, information.graphSettings->getGrid().x);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, information.graphSettings->getGrid().y);
   };
   const auto& [axisMapper, axisTicks, gridSettings] = getAxisData();
 

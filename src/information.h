@@ -39,30 +39,18 @@ class Information: public QObject
 
   Q_PROPERTY(ZeAppSettings* appSettings MEMBER appSettings NOTIFY appSettingsChanged)
   Q_PROPERTY(zg::GraphRange* range READ getGraphRange)
-  Q_PROPERTY(ZeZoomSettings graphZoomSettings READ getGraphZoomSettings WRITE setGraphZoomSettings
-               NOTIFY graphZoomSettingsChanged)
-  Q_PROPERTY(ZeSizeSettings graphSizeSettings READ getGraphSizeSettings WRITE setGraphSizeSettings
-               NOTIFY graphSizeSettingsChanged)
   Q_PROPERTY(ZeGraphSettings* graphSettings MEMBER graphSettings NOTIFY graphSettingsChanged)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
-  Q_PROPERTY(QSize  availableSheetSizePx WRITE setAvailableSheetSizePx MEMBER availableSheetSizePx NOTIFY availableSheetSizePxChanged)
-  Q_PROPERTY(QSizeF availableSheetSizeCm MEMBER availableSheetSizeCm NOTIFY availableSheetSizeCmChanged)
-
 
 public:
   Information(QObject* parent = nullptr);
 
-  const ZeZoomSettings& getGraphZoomSettings() const;
-  const ZeSizeSettings& getGraphSizeSettings() const;
   const ZeGraphSettings& getGraphSettings() const;
-  const ZeGridSettings& getGridSettings() const;
-  const ZeAxesSettings& getAxesSettings() const;
   const ZeGraphSettings& getEstheticSettings() const;
   const ZeAppSettings& getAppSettings() const;
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
   Q_INVOKABLE void setFont(QFont);
   double getPixelDensity() const { return pixelDensity; }
-  QSize getAvailableSheetSizePx() { return availableSheetSizePx; }
 
   /// @brief graph range change from user mouse interaction
   void setGraphRangeMouseEdit(const zg::real_range2d&);
@@ -77,12 +65,6 @@ signals:
   void updateOccured();
   void drawStateUpdateOccured();
   void animationUpdate();
-  void viewSettingsChanged();
-  void axesSettingsChanged();
-  void gridSettingsChanged();
-  void graphSizeSettingsChanged();
-  void graphZoomSettingsChanged();
-  void estheticSettingsChanged();
   void rangeChangedWithMouse();
   void appFontChanged();
   void appSettingsChanged();
@@ -98,26 +80,14 @@ public slots:
   void emitAnimationUpdate();
 
   void setOrthonormal(bool state);
-  void setGraphSizeSettings(const ZeSizeSettings& graphSizeSettings);
-  void setGraphZoomSettings(const ZeZoomSettings& zoomSettings);
-  void setAxesSettings(const ZeAxesSettings& axesSettings);
-  void setGridSettings(const ZeGridSettings& gridSettings);
   void screenChanged(QWindow*);
-  void setAvailableSheetSizePx(QSize);
-  void updateSizes();
-  void computeZoom();
 
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings* appSettings = nullptr;
+  ZeGraphSettings* graphSettings = nullptr;
 
 protected:
-
-  ZeZoomSettings zoomSettings;
-  ZeSizeSettings sizeSettings;
-  ZeAxesSettings axesSettings;
-  ZeGridSettings gridSettings;
-  ZeGraphSettings* graphSettings = nullptr;
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
 

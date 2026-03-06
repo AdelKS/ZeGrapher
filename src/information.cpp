@@ -24,6 +24,7 @@ Information::Information(QObject* parent):
   QObject(parent), appSettings(new ZeAppSettings(this)), graphSettings(new ZeGraphSettings(this)), graph_range(new zg::GraphRange(this))
 {
   emit appSettingsChanged();
+  emit graphSettingsChanged();
 }
 
 void Information::emitDataUpdate()
@@ -36,29 +37,9 @@ void Information::emitAnimationUpdate()
   emit animationUpdate();
 }
 
-const ZeSizeSettings& Information::getGraphSizeSettings() const
-{
-  return sizeSettings;
-}
-
-const ZeZoomSettings& Information::getGraphZoomSettings() const
-{
-  return zoomSettings;
-}
-
 const ZeGraphSettings& Information::getGraphSettings() const
 {
   return *graphSettings;
-}
-
-const ZeGridSettings& Information::getGridSettings() const
-{
-  return gridSettings;
-}
-
-const ZeAxesSettings& Information::getAxesSettings() const
-{
-  return axesSettings;
 }
 
 void Information::setFont(QFont font)
@@ -77,48 +58,6 @@ void Information::setOrthonormal([[maybe_unused]] bool state)
 {
   // TODO
   emit updateOccured();
-}
-
-void Information::setGraphSizeSettings(const ZeSizeSettings& graphSizeSettings)
-{
-  if (sizeSettings != graphSizeSettings)
-  {
-    sizeSettings = graphSizeSettings;
-
-    emit graphSizeSettingsChanged();
-  }
-}
-
-void Information::setGraphZoomSettings(const ZeZoomSettings& zoomSettings)
-{
-  if (this->zoomSettings != zoomSettings)
-  {
-    this->zoomSettings = zoomSettings;
-
-    qDebug() << "New zoom: " << zoomSettings.zoom;
-
-    emit graphZoomSettingsChanged();
-  }
-}
-
-void Information::setGridSettings(const ZeGridSettings& gridSettings)
-{
-  if (this->gridSettings != gridSettings)
-  {
-    this->gridSettings = gridSettings;
-
-    emit gridSettingsChanged();
-  }
-}
-
-void Information::setAxesSettings(const ZeAxesSettings& axesSettings)
-{
-  if (this->axesSettings != axesSettings)
-  {
-    this->axesSettings = axesSettings;
-
-    emit axesSettingsChanged();
-  }
 }
 
 void Information::emitUpdateSignal()
@@ -156,61 +95,6 @@ void Information::screenChanged(QWindow* win)
   {
     qDebug() << "pixel density " << cm_per_mm << "px per cm";
     pixelDensity = cm_per_mm;
-    updateSizes();
     emit pixelDensityChanged();
-  }
-}
-
-void Information::setAvailableSheetSizePx(QSize size)
-{
-  if (availableSheetSizePx != size)
-  {
-    availableSheetSizePx = size;
-    availableSheetSizeCm = size.toSizeF() / pixelDensity;
-    updateSizes();
-    computeZoom();
-    emit availableSheetSizePxChanged();
-  }
-}
-
-void Information::updateSizes()
-{
-  ZeSizeSettings old = sizeSettings;
-
-  if (sizeSettings.sheetFillsWindow)
-  {
-    sizeSettings.pxSheetSize = availableSheetSizePx;
-    sizeSettings.cmSheetSize = sizeSettings.pxSheetSize.toSizeF() / pixelDensity;
-  }
-
-  if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
-    sizeSettings.pxSheetSize = (sizeSettings.cmSheetSize * pixelDensity).toSize();
-  else sizeSettings.cmSheetSize = sizeSettings.pxSheetSize.toSizeF() / pixelDensity;
-
-  if (old != sizeSettings)
-    emit graphSizeSettingsChanged();
-}
-
-
-void Information::computeZoom()
-{
-  qDebug() << "Recomputing zoom";
-
-  if (zoomSettings.zoomingType != ZoomingType::FITSHEET)
-    return;
-
-  double ratio = availableSheetSizeCm.height() / availableSheetSizeCm.width();
-  double targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
-
-  double newZoom;
-  if (ratio <= targetRatio)
-    newZoom = availableSheetSizeCm.height() / sizeSettings.cmSheetSize.height();
-  else
-    newZoom = availableSheetSizeCm.width() / sizeSettings.cmSheetSize.width();
-
-  if (fabs(newZoom - zoomSettings.zoom) > 0.0001)
-  {
-    zoomSettings.zoom = newZoom;
-    emit graphZoomSettingsChanged();
   }
 }

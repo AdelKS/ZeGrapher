@@ -53,18 +53,18 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
   connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 
-  connect(&information, &Information::graphSizeSettingsChanged, this, &Graph::onSizeSettingsChange);
-  connect(&information, &Information::graphZoomSettingsChanged, this, &Graph::onZoomSettingsChange);
-  connect(&information, &Information::axesSettingsChanged, this, [this]{ update(); });
-  connect(&information, &Information::gridSettingsChanged, this, [this]{ update(); });
-  connect(&information.getGraphSettings(), &ZeGraphSettings::fontChanged, this, [this]{ update(); });
+  connect(information.graphSettings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
+  connect(information.graphSettings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
+  connect(information.graphSettings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ update(); });
+  connect(information.graphSettings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ update(); });
+  connect(information.graphSettings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
   connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
 }
 
 void Graph::updateSettingsVals()
 {
-  sampler.setPixelStep(information.getGraphSettings().distanceBetweenPoints);
+  sampler.setPixelStep(information.getGraphSettings().getTargetSamplingDistancePx());
 }
 
 void Graph::setNumPrec(int prec)
@@ -200,13 +200,8 @@ void Graph::calculateTicksAndMargins()
 
 void Graph::paint(QPainter *p)
 {
-  sizeSettings = information.getGraphSizeSettings();
-
-  if (currentSize != size())
-  {
-    currentSize = size();
-    onSizeSettingsChange();
-  }
+  zoomSettings = information.graphSettings->getZoom();
+  sizeSettings = information.graphSettings->getSize();
 
   painter = p;
 
@@ -236,13 +231,13 @@ void Graph::drawAll()
 
   drawGraphRect();
 
-  if(information.getAxesSettings().x.axisType == ZeAxisSettings::LINEAR)
+  if(information.graphSettings->getAxes().x.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetX();
     drawLinAxisGridTicks<ZeAxisName::X>();
   }
 
-  if(information.getAxesSettings().y.axisType == ZeAxisSettings::LINEAR)
+  if(information.graphSettings->getAxes().y.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetY();
     drawLinAxisGridTicks<ZeAxisName::Y>();
@@ -277,7 +272,7 @@ void Graph::scaleView()
 
   qDebug() << "Pixel ratio: " << pixelRatio;
 
-  qDebug() << "Available widget size: " << information.getAvailableSheetSizePx();
+  qDebug() << "Available widget size: " << information.graphSettings->getAvailableSizePx();
   qDebug() << "Graph size: " << size();
   qDebug() << "Painter viewport: " << painter->viewport();
   qDebug() << "Painter window: " << painter->window();
@@ -339,8 +334,8 @@ void Graph::writeLegends()
 
 void Graph::writeAxisOffsetX()
 {
-  pen.setColor(information.getAxesSettings().color);
-  pen.setWidthF(information.getAxesSettings().lineWidth);
+  pen.setColor(information.graphSettings->getAxes().color);
+  pen.setWidthF(information.graphSettings->getAxes().lineWidth);
   painter->setPen(pen);
   painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -397,7 +392,7 @@ void Graph::writeAxisOffsetY()
 
 void Graph::drawGraphRect()
 {
-  const auto &axesSettings = information.getAxesSettings();
+  const auto &axesSettings = information.graphSettings->getAxes();
 
   painter->setRenderHint(QPainter::Antialiasing, false);
   painter->setBrush(QBrush(Qt::NoBrush));
@@ -419,7 +414,7 @@ void Graph::updateCenterPosAndScaling()
   pxPerUnit.x = double(graphRectScaled.width())
                 / fabs(std::as_const(viewMapper).x.getRange<zg::plane::view>().amplitude().v);
 
-  if (information.getAxesSettings().orthonormal)
+  if (information.graphSettings->getAxes().orthonormal)
   {
     // TODO
   }
@@ -431,7 +426,7 @@ void Graph::updateCenterPosAndScaling()
 QImage *Graph::drawImage()
 {
   QImage *image = new QImage(size().toSize(), QImage::Format_RGB32);
-  image->fill(information.getGraphSettings().backgroundColor.rgb());
+  image->fill(information.graphSettings->getBackgroundColor().rgb());
 
   QPainter p(image);
   painter = &p;
@@ -446,7 +441,7 @@ QImage *Graph::drawImage()
 
 void Graph::drawSupport()
 { // draws the sheet on an untransformed view
-  painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+  painter->setBrush(QBrush(information.graphSettings->getBackgroundColor()));
 
   computeSupportRect();
 
@@ -488,28 +483,11 @@ void Graph::computeSupportRect()
     }
   }
 
-  qDebug() << "Available rect: " << information.getAvailableSheetSizePx();
+  qDebug() << "Available rect: " << information.graphSettings->getAvailableSizePx();
   qDebug() << "Scaled size: " << scaledSize;
   qDebug() << "Support rect: " << rect;
 
   supportRect = rect.toRect();
-}
-
-void Graph::onZoomSettingsChange()
-{
-  qDebug() << "graph: updating cached zoom settings";
-  zoomSettings = information.getGraphZoomSettings();
-  update();
-}
-
-void Graph::onSizeSettingsChange()
-{
-  // Add function here that calcualtes the needed widget size
-
-  // qDebug() << "OnSizeSettingsChange";
-
-  sizeSettings = information.getGraphSizeSettings();
-  update();
 }
 
 void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
@@ -539,9 +517,9 @@ void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
 
   painter->begin(pdfWriter);
 
-  if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
+  if (information.graphSettings->getBackgroundColor() != QColor(Qt::white))
   {
-    painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+    painter->setBrush(QBrush(information.graphSettings->getBackgroundColor()));
     painter->drawRect(painter->viewport());
   }
 
@@ -576,9 +554,9 @@ void Graph::exportSVG(QString fileName)
 
   painter->begin(&svgGenerator);
 
-  if (information.getGraphSettings().backgroundColor != QColor(Qt::white))
+  if (information.graphSettings->getBackgroundColor() != QColor(Qt::white))
   {
-    painter->setBrush(QBrush(information.getGraphSettings().backgroundColor));
+    painter->setBrush(QBrush(information.graphSettings->getBackgroundColor()));
     painter->drawRect(painter->window());
   }
 

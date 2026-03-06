@@ -19,12 +19,131 @@
 ****************************************************************************/
 
 #include "graphsettings.h"
+#include "globalvars.h"
+
+ZeGraphSettings::ZeGraphSettings(QObject* parent)
+  : QObject(parent)
+{
+  connect(&information, &Information::pixelDensityChanged, this, &ZeGraphSettings::updateSizes);
+}
+
+void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
+{
+  if (zoom == s)
+    return;
+
+  zoom = s;
+  emit zoomSettingsChanged();
+};
+
+void ZeGraphSettings::setSizeSettings(ZeSizeSettings s)
+{
+  if (size == s)
+    return;
+
+  size = s;
+
+  emit sizeSettingsChanged();
+
+  updateSizes();
+  computeZoom();
+};
+
+void ZeGraphSettings::setAxesSettings(ZeAxesSettings s)
+{
+  if (axes == s)
+    return;
+
+  axes = s;
+  emit axesSettingsChanged();
+};
+
+void ZeGraphSettings::setGridSettings(ZeGridSettings s)
+{
+  if (grid == s)
+    return;
+
+  grid = s;
+  emit gridSettingsChanged();
+};
 
 void ZeGraphSettings::setFont(QFont f)
 {
-  if (f != font)
+  if (font == f)
+    return;
+
+  font = f;
+  emit fontChanged();
+};
+
+void ZeGraphSettings::setBackgroundColor(QColor c)
+{
+  if (backgroundColor == c)
+    return;
+
+  backgroundColor = c;
+  emit backgroundColorChanged();
+}
+
+void ZeGraphSettings::updateSizes()
+{
+  ZeSizeSettings oldSize = size;
+
+  if (size.sheetFillsWindow)
   {
-    font = f;
-    emit fontChanged();
+    size.pxSheetSize = availableSizePx;
+    size.cmSheetSize = availableSizePx.toSizeF() / information.getPixelDensity();
+  }
+
+  if (size.sizeUnit == SizeUnit::CENTIMETER)
+    size.pxSheetSize = (size.cmSheetSize * information.getPixelDensity()).toSize();
+  else size.cmSheetSize = size.pxSheetSize.toSizeF() / information.getPixelDensity();
+
+  if (size != oldSize)
+    emit sizeSettingsChanged();
+}
+
+
+void ZeGraphSettings::computeZoom()
+{
+  qDebug() << "Recomputing zoom";
+
+  if (zoom.zoomingType != ZoomingType::FITSHEET)
+    return;
+
+  double ratio = availableSizeCm.height() / availableSizeCm.width();
+  double targetRatio = size.cmSheetSize.height() / size.cmSheetSize.width();
+
+  double newZoom;
+  if (ratio <= targetRatio)
+    newZoom = availableSizeCm.height() / size.cmSheetSize.height();
+  else
+    newZoom = availableSizeCm.width() / size.cmSheetSize.width();
+
+  if (fabs(newZoom - zoom.zoom) > 0.0001)
+  {
+    zoom.zoom = newZoom;
+    emit zoomSettingsChanged();
+  }
+}
+
+void ZeGraphSettings::setTargetSamplingDistancePx(double target)
+{
+  if (targetSamplingDistancePx == target)
+    return;
+
+  targetSamplingDistancePx = target;
+  emit targetSamplingDistanceChanged();
+}
+
+void ZeGraphSettings::setAvailableSizePx(QSize s)
+{
+  if (availableSizePx != s)
+  {
+    availableSizePx = s;
+    availableSizeCm = s.toSizeF() / information.getPixelDensity();
+    updateSizes();
+    computeZoom();
+    emit availableSizePxChanged();
   }
 }

@@ -121,12 +121,12 @@ int GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
   {
     if constexpr (axis == ZeAxisName::X)
     {
-      posStr = get_coordinate_string(information.getAxesSettings().x.linSettings, multiplier);
+      posStr = get_coordinate_string(information.getGraphSettings().getAxes().x.linSettings, multiplier);
       currentStrPxSize = metrics.boundingRect(posStr).width();
     }
     else
     {
-      posStr = get_coordinate_string(information.getAxesSettings().y.linSettings, multiplier);
+      posStr = get_coordinate_string(information.getGraphSettings().getAxes().y.linSettings, multiplier);
       currentStrPxSize = metrics.boundingRect(posStr).height();
     }
 
@@ -188,8 +188,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   ZeLinAxisTicks axisTicks;
 
   const ZeLinAxisSettings &axisSettings = axis == ZeAxisName::X
-                                            ? information.getAxesSettings().x.linSettings
-                                            : information.getAxesSettings().y.linSettings;
+                                            ? information.graphSettings->getAxes().x.linSettings
+                                            : information.graphSettings->getAxes().y.linSettings;
 
   const double &constantMultiplier = axisSettings.constantMultiplier;
 
@@ -269,8 +269,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
       goodSpacing = true;
   }
 
-  int relTickSpacing = axis == ZeAxisName::X ? information.getAxesSettings().x.tickRelSpacing
-                                             : information.getAxesSettings().y.tickRelSpacing;
+  int relTickSpacing = axis == ZeAxisName::X ? information.graphSettings->getAxes().x.tickRelSpacing
+                                             : information.graphSettings->getAxes().y.tickRelSpacing;
 
   if (relTickSpacing > 0)
   {

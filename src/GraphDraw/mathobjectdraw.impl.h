@@ -9,8 +9,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve<t>& f_curve)
   if (not f_curve.style.visible)
     return;
 
-  painter->setRenderHint(QPainter::Antialiasing,
-                         information.getGraphSettings().smoothing && !moving);
+  painter->setRenderHint(QPainter::Antialiasing);
 
   pen.setColor(Qt::red);
   painter->setPen(pen);
