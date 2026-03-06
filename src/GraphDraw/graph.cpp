@@ -25,14 +25,18 @@
 #include <QSvgGenerator>
 
 Graph::Graph(QQuickItem *parent)
-  : QQuickPaintedItem(parent), MathObjectDraw(), gridCalculator(this),
-    fontMetrics(information.getGraphSettings().getFont())
+  : QQuickPaintedItem(parent),
+    MathObjectDraw(),
+    settings(this),
+    gridCalculator(settings.getAxes(), this),
+    fontMetrics(settings.getFont())
 {
   leftMargin = 30;
   rightMargin = 30;
   topMargin = 20;
   bottomMargin = 30;
   pen.setCapStyle(Qt::RoundCap);
+  settings.setFont(information.appSettings->font);
 
   legendFontSize = 12;
   legendState = false;
@@ -53,18 +57,20 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
   connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 
-  connect(information.graphSettings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
-  connect(information.graphSettings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
-  connect(information.graphSettings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ update(); });
-  connect(information.graphSettings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ update(); });
-  connect(information.graphSettings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
   connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
+
+  emit settingsChanged();
 }
 
 void Graph::updateSettingsVals()
 {
-  sampler.setPixelStep(information.getGraphSettings().getTargetSamplingDistancePx());
+  sampler.setPixelStep(settings.getTargetSamplingDistancePx());
 }
 
 void Graph::setNumPrec(int prec)
@@ -200,9 +206,6 @@ void Graph::calculateTicksAndMargins()
 
 void Graph::paint(QPainter *p)
 {
-  zoomSettings = information.graphSettings->getZoom();
-  sizeSettings = information.graphSettings->getSize();
-
   painter = p;
 
   scaledSize = size();
@@ -217,7 +220,7 @@ void Graph::paint(QPainter *p)
 
 void Graph::drawAll()
 {
-  painter->setFont(information.getGraphSettings().getFont());
+  painter->setFont(settings.getFont());
   fontMetrics = painter->fontMetrics();
   viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
 
@@ -231,13 +234,13 @@ void Graph::drawAll()
 
   drawGraphRect();
 
-  if(information.graphSettings->getAxes().x.axisType == ZeAxisSettings::LINEAR)
+  if(settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetX();
     drawLinAxisGridTicks<ZeAxisName::X>();
   }
 
-  if(information.graphSettings->getAxes().y.axisType == ZeAxisSettings::LINEAR)
+  if(settings.getAxes().y.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetY();
     drawLinAxisGridTicks<ZeAxisName::Y>();
@@ -258,10 +261,10 @@ void Graph::scaleView()
 {
   pixelRatio = window()->effectiveDevicePixelRatio();
 
-  qDebug() << "Scaling: " << sizeSettings.scalingFactor;
-  qDebug() << "Zoom: " << zoomSettings.zoom;
+  qDebug() << "Scaling: " << settings.getSize().scalingFactor;
+  qDebug() << "Zoom: " << settings.getZoom().zoom;
 
-  totalScaleFactor = sizeSettings.scalingFactor * zoomSettings.zoom;
+  totalScaleFactor = settings.getSize().scalingFactor * settings.getZoom().zoom;
 
   // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
   // this is just telling it to draw everything bigger and translate coordinates accordingly
@@ -272,7 +275,7 @@ void Graph::scaleView()
 
   qDebug() << "Pixel ratio: " << pixelRatio;
 
-  qDebug() << "Available widget size: " << information.graphSettings->getAvailableSizePx();
+  qDebug() << "Available widget size: " << settings.getAvailableSizePx();
   qDebug() << "Graph size: " << size();
   qDebug() << "Painter viewport: " << painter->viewport();
   qDebug() << "Painter window: " << painter->window();
@@ -298,7 +301,7 @@ void Graph::drawGraph()
 
 void Graph::writeLegends()
 {
-  QFont font = information.getGraphSettings().getFont();
+  QFont font = settings.getFont();
   font.setPixelSize(legendFontSize);
   font.setItalic(italic);
   font.setBold(bold);
@@ -334,8 +337,8 @@ void Graph::writeLegends()
 
 void Graph::writeAxisOffsetX()
 {
-  pen.setColor(information.graphSettings->getAxes().color);
-  pen.setWidthF(information.graphSettings->getAxes().lineWidth);
+  pen.setColor(settings.getAxes().color);
+  pen.setWidthF(settings.getAxes().lineWidth);
   painter->setPen(pen);
   painter->setRenderHint(QPainter::Antialiasing, true);
 
@@ -392,7 +395,7 @@ void Graph::writeAxisOffsetY()
 
 void Graph::drawGraphRect()
 {
-  const auto &axesSettings = information.graphSettings->getAxes();
+  const auto &axesSettings = settings.getAxes();
 
   painter->setRenderHint(QPainter::Antialiasing, false);
   painter->setBrush(QBrush(Qt::NoBrush));
@@ -414,7 +417,7 @@ void Graph::updateCenterPosAndScaling()
   pxPerUnit.x = double(graphRectScaled.width())
                 / fabs(std::as_const(viewMapper).x.getRange<zg::plane::view>().amplitude().v);
 
-  if (information.graphSettings->getAxes().orthonormal)
+  if (settings.getAxes().orthonormal)
   {
     // TODO
   }
@@ -426,7 +429,7 @@ void Graph::updateCenterPosAndScaling()
 QImage *Graph::drawImage()
 {
   QImage *image = new QImage(size().toSize(), QImage::Format_RGB32);
-  image->fill(information.graphSettings->getBackgroundColor().rgb());
+  image->fill(settings.getBackgroundColor().rgb());
 
   QPainter p(image);
   painter = &p;
@@ -441,7 +444,7 @@ QImage *Graph::drawImage()
 
 void Graph::drawSupport()
 { // draws the sheet on an untransformed view
-  painter->setBrush(QBrush(information.graphSettings->getBackgroundColor()));
+  painter->setBrush(QBrush(settings.getBackgroundColor()));
 
   computeSupportRect();
 
@@ -452,20 +455,20 @@ void Graph::computeSupportRect()
 {
   QRectF rect;
 
-  if (sizeSettings.sheetFillsWindow or zoomSettings.zoomingType == ZoomingType::CUSTOM)
+  if (settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
   {
     rect.setSize(scaledSize);
   }
-  else if (zoomSettings.zoomingType == ZoomingType::FITSHEET)
+  else if (settings.getZoom().zoomingType == ZoomingType::FITSHEET)
   {
     double ratio, targetRatio;
     ratio = scaledSize.height() / scaledSize.width();
 
-    if (sizeSettings.sizeUnit == SizeUnit::CENTIMETER)
-      targetRatio = sizeSettings.cmSheetSize.height() / sizeSettings.cmSheetSize.width();
+    if (settings.getSize().sizeUnit == SizeUnit::CENTIMETER)
+      targetRatio = settings.getSize().cmSheetSize.height() / settings.getSize().cmSheetSize.width();
     else
-      targetRatio = double(sizeSettings.pxSheetSize.height())
-                    / double(sizeSettings.pxSheetSize.width());
+      targetRatio = double(settings.getSize().pxSheetSize.height())
+                    / double(settings.getSize().pxSheetSize.width());
 
     if (ratio <= targetRatio)
     {
@@ -483,7 +486,7 @@ void Graph::computeSupportRect()
     }
   }
 
-  qDebug() << "Available rect: " << information.graphSettings->getAvailableSizePx();
+  qDebug() << "Available rect: " << settings.getAvailableSizePx();
   qDebug() << "Scaled size: " << scaledSize;
   qDebug() << "Support rect: " << rect;
 
@@ -497,14 +500,14 @@ void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
   pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
   pdfWriter->setTitle(tr("Exported graph"));
 
-  int targetResolution = int(information.getPixelDensity() / sizeSettings.scalingFactor);
+  int targetResolution = int(information.getPixelDensity() / settings.getSize().scalingFactor);
 
   pdfWriter->setResolution(targetResolution);
 
   QPageLayout layout;
   layout.setUnits(QPageLayout::Millimeter);
 
-  QSizeF sheetSizeMm(sizeSettings.cmSheetSize.width() * 10, sizeSettings.cmSheetSize.height() * 10);
+  QSizeF sheetSizeMm(settings.getSize().cmSheetSize.width() * 10, settings.getSize().cmSheetSize.height() * 10);
   layout.setPageSize(
     QPageSize(sheetSizeMm, QPageSize::Millimeter, "", QPageSize::FuzzyOrientationMatch));
 
@@ -517,9 +520,9 @@ void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
 
   painter->begin(pdfWriter);
 
-  if (information.graphSettings->getBackgroundColor() != QColor(Qt::white))
+  if (settings.getBackgroundColor() != QColor(Qt::white))
   {
-    painter->setBrush(QBrush(information.graphSettings->getBackgroundColor()));
+    painter->setBrush(QBrush(settings.getBackgroundColor()));
     painter->drawRect(painter->viewport());
   }
 
@@ -542,21 +545,21 @@ void Graph::exportSVG(QString fileName)
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  double targetResolution = information.getPixelDensity() / sizeSettings.scalingFactor;
+  double targetResolution = information.getPixelDensity() / settings.getSize().scalingFactor;
 
   svgGenerator.setResolution(int(targetResolution));
 
-  QSize sizePx(int(sizeSettings.cmSheetSize.width() * 0.393701 * targetResolution),
-               int(sizeSettings.cmSheetSize.height() * 0.393701 * targetResolution));
+  QSize sizePx(int(settings.getSize().cmSheetSize.width() * 0.393701 * targetResolution),
+               int(settings.getSize().cmSheetSize.height() * 0.393701 * targetResolution));
 
   svgGenerator.setSize(sizePx);
   svgGenerator.setViewBox(QRect(QPoint(0, 0), sizePx));
 
   painter->begin(&svgGenerator);
 
-  if (information.graphSettings->getBackgroundColor() != QColor(Qt::white))
+  if (settings.getBackgroundColor() != QColor(Qt::white))
   {
-    painter->setBrush(QBrush(information.graphSettings->getBackgroundColor()));
+    painter->setBrush(QBrush(settings.getBackgroundColor()));
     painter->drawRect(painter->window());
   }
 

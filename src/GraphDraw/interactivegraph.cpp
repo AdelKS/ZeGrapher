@@ -26,7 +26,6 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
   setKeepMouseGrab(true);
   orientation = QPageLayout::Landscape;
   moveType = NOTHING;
-  sizeSettings.scalingFactor = 1;
   setAcceptHoverEvents(true);
   setAcceptedMouseButtons(Qt::LeftButton);
 }

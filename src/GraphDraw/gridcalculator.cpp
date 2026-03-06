@@ -2,7 +2,9 @@
 
 using namespace std;
 
-GridCalculator::GridCalculator(QObject *parent) : QObject(parent)
+GridCalculator::GridCalculator(const ZeAxesSettings& axesSettings, QObject *parent)
+  : QObject(parent),
+    axesSettings(axesSettings)
 {
   targetTicksNum = TARGET_TICKS_NUM;
 }

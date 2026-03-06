@@ -32,7 +32,8 @@ int main(int argc, char *argv[])
 
   // the information global var can't initialize the correct font until QGuiApplication is initialized.
   // so we set it here
-  information.setFont(a.font());
+  qDebug() << "Setting app font: " << a.font();
+  information.setAppFont(a.font());
 
   // we do the connection here because only now the QGuiApplication instance is ready
   QObject::connect(a.styleHints(), &QStyleHints::colorSchemeChanged, information.appSettings, &ZeAppSettings::colorSchemeChanged);

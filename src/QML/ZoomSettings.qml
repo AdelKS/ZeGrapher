@@ -7,6 +7,8 @@ import QtQuick.Controls.FluentWinUI3
 Rectangle {
   id: root
 
+  required property ZeGraphSettings graphSettings
+
   readonly property int margin: 10
   readonly property int iconSize: Math.max(30, zoom.implicitHeight)
 
@@ -49,22 +51,22 @@ Rectangle {
       decimals: 2
 
       Connections {
-        target: Information.graphSettings
+        target: root.graphSettings
 
         function onZoomChanged() {
           console.debug("Syncing zoom widget with backend");
-          zoom.setValue(Information.graphSettings.zoom.zoom * 100);
-          fitSheet.checked = (Information.graphSettings.zoom.zoomingType === ZoomingType.FITSHEET);
+          zoom.setValue(root.graphSettings.zoom.zoom * 100);
+          fitSheet.checked = (root.graphSettings.zoom.zoomingType === ZoomingType.FITSHEET);
         }
       }
 
       onValueModified: {
         fitSheet.checked = false;
-        Information.graphSettings.zoom.zoom = value / 100.0;
+        graphSettings.zoom.zoom = value / 100.0;
       }
 
       Component.onCompleted: {
-        setValue(Information.graphSettings.zoom.zoom * 100);
+        setValue(graphSettings.zoom.zoom * 100);
       }
     }
 
@@ -87,7 +89,7 @@ Rectangle {
       id: fitSheet
 
       onCheckedChanged: {
-        Information.graphSettings.zoom.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
+        graphSettings.zoom.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
         Information.computeZoom();
       }
 

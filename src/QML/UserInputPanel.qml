@@ -6,6 +6,8 @@ Item {
   id: userInputPanel
   clip: true
 
+  required property ZeGraphSettings graphSettings
+
   implicitWidth: colLayout.implicitWidth
 
   onImplicitWidthChanged: {
@@ -73,7 +75,9 @@ Item {
 
       MathObjects {}
 
-      ViewSettings {}
+      ViewSettings {
+        graphSettings: userInputPanel.graphSettings
+      }
 
       AppSettings {}
 

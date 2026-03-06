@@ -25,6 +25,7 @@
 
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
+#include "Utils/graphsettings.h"
 
 enum SheetSizeType
 {
@@ -35,9 +36,15 @@ enum SheetSizeType
 class Graph : public QQuickPaintedItem, public MathObjectDraw
 {
   Q_OBJECT
+  QML_ELEMENT
+
+  Q_PROPERTY(ZeGraphSettings* settings READ getGraphSettings NOTIFY settingsChanged)
+
 public:
   explicit Graph(QQuickItem* parent = nullptr);
   QImage* drawImage();
+
+  Q_INVOKABLE ZeGraphSettings* getGraphSettings() { return &settings; }
 
 public slots:
   void setlegendFontSize(int size);
@@ -55,6 +62,9 @@ public slots:
   void exportSVG(QString fileName);
 
   virtual void paint(QPainter *p) override;
+
+signals:
+  void settingsChanged();
 
 protected slots:
   void updateSettingsVals();
@@ -102,8 +112,7 @@ protected:
 
   void calculateTicksAndMargins();
 
-  ZeSizeSettings sizeSettings;
-  ZeZoomSettings zoomSettings;
+  ZeGraphSettings settings;
 
   GridCalculator gridCalculator;
   QFontMetrics fontMetrics;
@@ -168,8 +177,8 @@ void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
 template <ZeAxisName axis>
 void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
-  painter->setFont(information.graphSettings->getFont());
-  pen.setColor(information.graphSettings->getAxes().color);
+  painter->setFont(settings.getFont());
+  pen.setColor(settings.getAxes().color);
   painter->setPen(pen);
 
   int txtWidth = fontMetrics.horizontalAdvance(txt);
@@ -195,10 +204,10 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 template <ZeAxisName axis>
 void Graph::drawLinAxisGridTicks()
 {
-  painter->setFont(information.getGraphSettings().getFont());
+  painter->setFont(settings.getFont());
   QFontMetrics fontMetrics = painter->fontMetrics();
 
-  const ZeAxesSettings &axesSettings = information.graphSettings->getAxes();
+  const ZeAxesSettings &axesSettings = settings.getAxes();
 
   pen.setCapStyle(Qt::FlatCap);
   bool first_tick = true;
@@ -207,8 +216,8 @@ void Graph::drawLinAxisGridTicks()
   auto getAxisData = [&]()
   {
     if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, information.graphSettings->getGrid().x);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, information.graphSettings->getGrid().y);
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getGrid().x);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getGrid().y);
   };
   const auto& [axisMapper, axisTicks, gridSettings] = getAxisData();
 

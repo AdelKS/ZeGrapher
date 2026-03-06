@@ -93,7 +93,7 @@ class GridCalculator : public QObject
 {
   Q_OBJECT
 public:
-  explicit GridCalculator(QObject *parent = nullptr);
+  explicit GridCalculator(const ZeAxesSettings& axesSettings, QObject *parent = nullptr);
 
   template <ZeAxisName axis>
   ZeLinAxisTicks getLinearAxisTicks(const zg::ZeAxisMapper<axis> &mapper,
@@ -106,6 +106,7 @@ protected:
   QString get_coordinate_string(const ZeLinAxisSettings &axisSettings, double multiplier);
 
   double targetTicksNum;
+  const ZeAxesSettings& axesSettings;
 };
 
 template <ZeAxisName axis>
@@ -121,12 +122,12 @@ int GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
   {
     if constexpr (axis == ZeAxisName::X)
     {
-      posStr = get_coordinate_string(information.getGraphSettings().getAxes().x.linSettings, multiplier);
+      posStr = get_coordinate_string(axesSettings.x.linSettings, multiplier);
       currentStrPxSize = metrics.boundingRect(posStr).width();
     }
     else
     {
-      posStr = get_coordinate_string(information.getGraphSettings().getAxes().y.linSettings, multiplier);
+      posStr = get_coordinate_string(axesSettings.y.linSettings, multiplier);
       currentStrPxSize = metrics.boundingRect(posStr).height();
     }
 
@@ -188,8 +189,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   ZeLinAxisTicks axisTicks;
 
   const ZeLinAxisSettings &axisSettings = axis == ZeAxisName::X
-                                            ? information.graphSettings->getAxes().x.linSettings
-                                            : information.graphSettings->getAxes().y.linSettings;
+                                            ? axesSettings.x.linSettings
+                                            : axesSettings.y.linSettings;
 
   const double &constantMultiplier = axisSettings.constantMultiplier;
 
@@ -269,8 +270,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
       goodSpacing = true;
   }
 
-  int relTickSpacing = axis == ZeAxisName::X ? information.graphSettings->getAxes().x.tickRelSpacing
-                                             : information.graphSettings->getAxes().y.tickRelSpacing;
+  int relTickSpacing = axis == ZeAxisName::X ? axesSettings.x.tickRelSpacing
+                                             : axesSettings.y.tickRelSpacing;
 
   if (relTickSpacing > 0)
   {

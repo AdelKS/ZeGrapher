@@ -15,38 +15,40 @@ Item {
 
   property bool pauseSync: false
 
+  required property ZeGraphSettings graphSettings
+
   enum SizeType { Fill, Custom }
 
   FontDialog {
     id: graphFontDialog
-    currentFont: Information.graphSettings.font
+    currentFont: root.graphSettings.font
 
     onAccepted: {
-      Information.graphSettings.font = selectedFont;
+      root.graphSettings.font = selectedFont;
     }
   }
 
   function syncWithBackend() {
     console.log("Syncing size settings with backend")
-    if (Information.graphSettings.size.sizeUnit === SizeUnit.PIXEL) {
+    if (root.graphSettings.size.sizeUnit === SizeUnit.PIXEL) {
       sheetHeight.suffix = qsTr(" px");
       sheetHeight.to = root.max_px_size;
-      sheetHeight.setValue(Information.graphSettings.size.pxSheetSize.height);
+      sheetHeight.setValue(root.graphSettings.size.pxSheetSize.height);
       sheetHeight.step = root.px_increment;
 
       sheetWidth.suffix = qsTr(" px");
       sheetWidth.to = root.max_px_size;
-      sheetWidth.setValue(Information.graphSettings.size.pxSheetSize.width);
+      sheetWidth.setValue(root.graphSettings.size.pxSheetSize.width);
       sheetWidth.step = root.px_increment;
     } else {
       sheetHeight.suffix = qsTr(" cm");
       sheetHeight.to = root.max_cm_size;
-      sheetHeight.setValue(Information.graphSettings.size.cmSheetSize.height);
+      sheetHeight.setValue(root.graphSettings.size.cmSheetSize.height);
       sheetHeight.step = root.cm_increment;
 
       sheetWidth.suffix = qsTr(" cm");
       sheetWidth.to = root.max_cm_size;
-      sheetWidth.setValue(Information.graphSettings.size.cmSheetSize.width);
+      sheetWidth.setValue(root.graphSettings.size.cmSheetSize.width);
       sheetWidth.step = root.cm_increment;
     }
   }
@@ -85,7 +87,7 @@ Item {
 
             onValueModified: {
               root.pauseSync = true;
-              Information.graphSettings.size.scalingFactor = value;
+              root.graphSettings.size.scalingFactor = value;
               console.debug("global scale changed to: ", value);
               root.pauseSync = false;
             }
@@ -123,11 +125,11 @@ Item {
 
             onCurrentValueChanged: {
               root.pauseSync = true;
-              Information.graphSettings.size.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
+              root.graphSettings.size.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
 
               if (currentValue === ViewSettings.SizeType.Fill) {
-                Information.graphSettings.zoom.zoom = 1.0;
-                Information.graphSettings.zoom.zoomingType = ZoomingType.FITSHEET;
+                root.graphSettings.zoom.zoom = 1.0;
+                root.graphSettings.zoom.zoomingType = ZoomingType.FITSHEET;
               }
               root.pauseSync = false;
             }
@@ -153,7 +155,7 @@ Item {
               columns: 2
 
               Connections {
-                target: Information.graphSettings
+                target: root.graphSettings
 
                 function onSizeChanged() {
                   root.syncWithBackend()
@@ -177,7 +179,7 @@ Item {
 
                 onCurrentValueChanged: {
                   root.pauseSync = true;
-                  Information.graphSettings.size.sizeUnit = currentValue;
+                  root.graphSettings.size.sizeUnit = currentValue;
                   root.syncWithBackend();
                   root.pauseSync = false;
                 }
@@ -213,11 +215,11 @@ Item {
                   root.pauseSync = true;
                   console.log("Updating sheet size");
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
-                    Information.graphSettings.size.pxSheetSize.height = value;
-                    Information.graphSettings.size.cmSheetSize.height = value / Information.pixelDensity;
+                    root.graphSettings.size.pxSheetSize.height = value;
+                    root.graphSettings.size.cmSheetSize.height = value / Information.pixelDensity;
                   } else {
-                    Information.graphSettings.size.pxSheetSize.height = value * Information.pixelDensity;
-                    Information.graphSettings.size.cmSheetSize.height = value;
+                    root.graphSettings.size.pxSheetSize.height = value * Information.pixelDensity;
+                    root.graphSettings.size.cmSheetSize.height = value;
                   }
                   root.pauseSync = false;
                 }
@@ -248,11 +250,11 @@ Item {
                 onValueModified: {
                   root.pauseSync = true;
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
-                    Information.graphSettings.size.pxSheetSize.width = value;
-                    Information.graphSettings.size.cmSheetSize.width = value / Information.pixelDensity;
+                    root.graphSettings.size.pxSheetSize.width = value;
+                    root.graphSettings.size.cmSheetSize.width = value / Information.pixelDensity;
                   } else {
-                    Information.graphSettings.size.pxSheetSize.width = value * Information.pixelDensity;
-                    Information.graphSettings.size.cmSheetSize.width = value;
+                    root.graphSettings.size.pxSheetSize.width = value * Information.pixelDensity;
+                    root.graphSettings.size.cmSheetSize.width = value;
                   }
                   root.pauseSync = false;
                 }

@@ -30,7 +30,7 @@
 class MathObjectDraw
 {
 public:
-  explicit MathObjectDraw();
+  explicit MathObjectDraw(double targetSamplingDistance = 1.0);
 
 protected:
   void drawDataPoint(const QPointF& pt, const zg::PlotStyle& style);

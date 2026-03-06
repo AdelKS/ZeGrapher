@@ -39,17 +39,15 @@ class Information: public QObject
 
   Q_PROPERTY(ZeAppSettings* appSettings MEMBER appSettings NOTIFY appSettingsChanged)
   Q_PROPERTY(zg::GraphRange* range READ getGraphRange)
-  Q_PROPERTY(ZeGraphSettings* graphSettings MEMBER graphSettings NOTIFY graphSettingsChanged)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
 
 public:
   Information(QObject* parent = nullptr);
 
-  const ZeGraphSettings& getGraphSettings() const;
   const ZeGraphSettings& getEstheticSettings() const;
   const ZeAppSettings& getAppSettings() const;
   Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
-  Q_INVOKABLE void setFont(QFont);
+  Q_INVOKABLE void setAppFont(QFont);
   double getPixelDensity() const { return pixelDensity; }
 
   /// @brief graph range change from user mouse interaction
@@ -71,7 +69,6 @@ signals:
   void pixelDensityChanged();
   void availableSheetSizePxChanged();
   void availableSheetSizeCmChanged();
-  void graphSettingsChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -85,7 +82,6 @@ public slots:
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings* appSettings = nullptr;
-  ZeGraphSettings* graphSettings = nullptr;
 
 protected:
   QString exportFileName;
