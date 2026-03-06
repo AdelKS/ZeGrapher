@@ -21,6 +21,9 @@
 #include "graphsettings.h"
 #include "globalvars.h"
 
+#include <QGuiApplication>
+#include <QStyleHints>
+
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
   : QObject(parent)
 {
@@ -78,11 +81,23 @@ void ZeGraphSettings::setFont(QFont f)
 
 void ZeGraphSettings::setBackgroundColor(QColor c)
 {
-  if (backgroundColor == c)
+  QColor& bg = [this] {
+    if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+      return std::ref(backgroundColorDark);
+    else return std::ref(backgroundColorLight);
+  }();
+
+  if (bg == c)
     return;
 
-  backgroundColor = c;
+  bg = c;
   emit backgroundColorChanged();
+}
+
+QColor ZeGraphSettings::getBackgroundColor() const {
+  if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+    return backgroundColorDark;
+  else return backgroundColorLight;
 }
 
 void ZeGraphSettings::updateSizes()

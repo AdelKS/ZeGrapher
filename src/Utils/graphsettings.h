@@ -32,7 +32,7 @@ struct ZeGraphSettings: QObject
   Q_OBJECT
   QML_ELEMENT
   Q_PROPERTY(QFont font WRITE setFont MEMBER font NOTIFY fontChanged)
-  Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor MEMBER backgroundColor NOTIFY backgroundColorChanged)
+  Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ getBackgroundColor NOTIFY backgroundColorChanged)
   Q_PROPERTY(ZeZoomSettings zoom WRITE setZoomSettings MEMBER zoom NOTIFY zoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings size WRITE setSizeSettings MEMBER size NOTIFY sizeSettingsChanged)
   Q_PROPERTY(ZeAxesSettings axes WRITE setAxesSettings MEMBER axes NOTIFY axesSettingsChanged)
@@ -53,7 +53,7 @@ public:
   const ZeAxesSettings& getAxes() const { return axes; };
   const ZeGridSettings& getGrid() const { return grid; };
   QFont getFont() const { return font; };
-  QColor getBackgroundColor() const { return backgroundColor; }
+  QColor getBackgroundColor() const;
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
   double getTargetSamplingDistancePx() const { return targetSamplingDistancePx; }
@@ -88,7 +88,10 @@ protected:
   ZeGridSettings grid;
 
   QFont font;
-  QColor backgroundColor = Qt::white;
+
+  QColor backgroundColorLight = Qt::white;
+  QColor backgroundColorDark = "#202326";
+
   QSize availableSizePx;
   QSizeF availableSizeCm;
 
