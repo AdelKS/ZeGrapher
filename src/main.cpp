@@ -35,6 +35,8 @@ int main(int argc, char *argv[])
   qDebug() << "Setting app font: " << a.font();
   information.setAppFont(a.font());
 
+  a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
+
   // we do the connection here because only now the QGuiApplication instance is ready
   QObject::connect(a.styleHints(), &QStyleHints::colorSchemeChanged, information.appSettings, &ZeAppSettings::colorSchemeChanged);
 
