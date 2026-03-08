@@ -112,12 +112,15 @@ Item {
       ImageTumbler {
         id: pointStyleTumbler
         Layout.alignment: Qt.AlignHCenter
+        Layout.maximumWidth: 60
+        Layout.preferredHeight: 50
         model: pointStyleModel
         fillMode: Image.PreserveAspectFit
       }
       SpinBox {
         id: pointWidthSpinBox
         Layout.alignment: Qt.AlignHCenter
+        Layout.maximumWidth: 100
         editable: true
         from: 1
         to: 100
