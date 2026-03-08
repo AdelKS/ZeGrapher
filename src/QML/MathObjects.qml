@@ -3,6 +3,13 @@ import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
 
 Item {
+
+  onImplicitWidthChanged: {
+    console.debug("MathObjects: implicitWidth: ", implicitWidth)
+  }
+
+  implicitWidth: scrollView.implicitWidth
+
   ScrollView {
     id: scrollView
     anchors.fill: parent
@@ -13,37 +20,13 @@ Item {
     implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
     implicitHeight: mathObjCol.implicitHeight + ScrollBar.horizontal.height
 
-    onContentHeightChanged: {
-      console.debug("UserInputPanel: ScrollView: contentHeight=", contentHeight);
-    }
-
-    onHeightChanged: {
-      console.debug("UserInputPanel: ScrollView: height=", height);
-    }
-
     ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-
-    onAvailableWidthChanged: {
-      console.debug("UserInputPanel: ScrollView, availableWidth: ", availableWidth);
-    }
-
-    onImplicitWidthChanged: {
-      console.debug("UserInputPanel: ScrollView: implicitWidth: ", implicitWidth)
-    }
 
     ColumnLayout {
       id: mathObjCol
       spacing: 10
       anchors.fill: parent
       anchors.margins: 5
-
-      onImplicitWidthChanged: {
-        console.debug("UserInputPanel: ColumnLayout: implicitWidth", implicitWidth);
-      }
-
-      onImplicitHeightChanged: {
-        console.debug("UserInputPanel: ColumnLayout: implicitHeight", implicitHeight);
-      }
 
       Repeater {
         model: MathWorld

@@ -6,7 +6,7 @@ import QtQuick.Window
 
 ApplicationWindow {
   id: win
-  width: 800
+  width: 900
   height: 600
   visible: true
   font: Information.appSettings.font

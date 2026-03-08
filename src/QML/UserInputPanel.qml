@@ -18,19 +18,9 @@ Item {
     console.debug("UserInputPanel: implicitHeight: ", implicitHeight);
   }
 
-  onHeightChanged: {
-    console.debug("UserInputPanel: height: ", height);
-  }
-
-  onWidthChanged: {
-    console.debug("UserInputPanel: width: ", width);
-  }
-
   ColumnLayout {
     id: colLayout
     anchors.fill: parent
-
-    implicitWidth: rangeAdjust.implicitWidth
 
     RangeAdjust {
       id: rangeAdjust
@@ -52,15 +42,24 @@ Item {
 
       onCurrentIndexChanged: swipeView.setCurrentIndex(currentIndex)
 
+      implicitWidth: mathTabButton.implicitWidth + graphTabButton.implicitWidth + appTabButton.implicitWidth
+
+      onImplicitWidthChanged: {
+        console.log("UserInputPanel: TabBar: implicitWidth: ", implicitWidth);
+      }
+
       TabButton {
+        id: mathTabButton
         text: qsTr("Math")
       }
 
       TabButton {
+        id: graphTabButton
         text: qsTr("Graph")
       }
 
       TabButton {
+        id: appTabButton
         text: qsTr("App")
       }
     }
@@ -72,6 +71,10 @@ Item {
       Layout.fillHeight: true
 
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
+
+      onImplicitWidthChanged: {
+        console.log("UserInputPanel: SwipeView: implicitWidth: ", implicitWidth);
+      }
 
       MathObjects {}
 
