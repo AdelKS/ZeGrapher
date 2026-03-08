@@ -35,6 +35,7 @@ Item {
       }
       ComboBox {
         Layout.alignment: Qt.AlignLeft
+        Layout.fillWidth: true
 
         implicitContentWidthPolicy: ComboBox.WidestText
         background.implicitWidth: implicitContentWidth
@@ -51,6 +52,8 @@ Item {
       }
       Button {
         Layout.alignment: Qt.AlignLeft
+        Layout.fillWidth: true
+
         text: fontDialog.currentFont.family
         onClicked: fontDialog.open()
       }
@@ -60,6 +63,7 @@ Item {
         text: qsTr('Syntax coloring')
       }
       Frame {
+        Layout.fillWidth: true
         GridLayout {
           columns: 2
 
