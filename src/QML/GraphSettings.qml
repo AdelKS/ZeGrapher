@@ -242,7 +242,7 @@ Item {
 
                 Connections {
                   target: unitComboBox
-                  function onValueChanged() {
+                  function onCurrentValueChanged() {
                     suffix = unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
                   }
                 }
