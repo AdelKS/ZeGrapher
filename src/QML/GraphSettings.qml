@@ -115,19 +115,19 @@ Item {
             model: ListModel {
               ListElement {
                 text: qsTr("Fill Window")
-                value: ViewSettings.SizeType.Fill
+                value: GraphSettings.SizeType.Fill
               }
               ListElement {
                 text: qsTr("Custom")
-                value: ViewSettings.SizeType.Custom
+                value: GraphSettings.SizeType.Custom
               }
             }
 
             onCurrentValueChanged: {
               root.pauseSync = true;
-              root.graphSettings.size.sheetFillsWindow = (currentValue === ViewSettings.SizeType.Fill)
+              root.graphSettings.size.sheetFillsWindow = (currentValue === GraphSettings.SizeType.Fill)
 
-              if (currentValue === ViewSettings.SizeType.Fill) {
+              if (currentValue === GraphSettings.SizeType.Fill) {
                 root.graphSettings.zoom.zoom = 1.0;
                 root.graphSettings.zoom.zoomingType = ZoomingType.FITSHEET;
               }
@@ -263,7 +263,7 @@ Item {
               states: [
                 State {
                   name: "hidden";
-                  when: sheetSizeSettings.currentValue === ViewSettings.SizeType.Fill
+                  when: sheetSizeSettings.currentValue === GraphSettings.SizeType.Fill
                   PropertyChanges {
                     customSizeGroupBox.maxHeight: 0
                     customSizeGroupBox.visible: false
@@ -272,7 +272,7 @@ Item {
                 },
                 State {
                   name: "shown";
-                  when: sheetSizeSettings.currentValue !== ViewSettings.SizeType.Fill
+                  when: sheetSizeSettings.currentValue !== GraphSettings.SizeType.Fill
                   PropertyChanges {
                     customSizeGroupBox.maxHeight: customSizeGroupBox.implicitHeight
                     customSizeGroupBox.visible: true

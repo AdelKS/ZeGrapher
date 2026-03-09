@@ -78,7 +78,7 @@ Item {
 
       MathObjects {}
 
-      ViewSettings {
+      GraphSettings {
         graphSettings: userInputPanel.graphSettings
       }
 
