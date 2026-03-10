@@ -1,5 +1,5 @@
 import QtQuick.Controls.FluentWinUI3
 
-Label {
+SpinBox {
   font: Information.appSettings.font
 }

@@ -1,5 +1,6 @@
 import QtQuick.Controls.FluentWinUI3
 
-Label {
+RadioButton {
   font: Information.appSettings.font
+  background: {}
 }

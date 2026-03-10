@@ -97,8 +97,11 @@ qml_files = files(
   './QML/UserInputPanel.qml',
   './QML/ValueEdit.qml',
   './QML/ZcExprEdit.qml',
+  './QML/ZeCheckBox.qml',
   './QML/ZeDoubleSpinBox.qml',
   './QML/ZeLabel.qml',
+  './QML/ZeRadioButton.qml',
+  './QML/ZeSpinBox.qml',
   './QML/ZeTextEdit.qml',
   './QML/ZoomSettings.qml',
 )
