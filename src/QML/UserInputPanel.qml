@@ -54,6 +54,11 @@ Item {
       }
 
       TabButton {
+        id: gridTabButton
+        text: qsTr("Grid")
+      }
+
+      TabButton {
         id: graphTabButton
         text: qsTr("Graph")
       }
@@ -77,6 +82,10 @@ Item {
       }
 
       MathObjects {}
+
+      GridSettings {
+        graphSettings: userInputPanel.graphSettings
+      }
 
       GraphSettings {
         graphSettings: userInputPanel.graphSettings

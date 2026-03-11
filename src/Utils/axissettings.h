@@ -73,13 +73,14 @@ struct ZeAxisSettings
   Q_PROPERTY(ZeLinAxisSettings linear MEMBER linSettings)
   Q_PROPERTY(ZeLogAxisSettings log MEMBER logSettings)
   Q_PROPERTY(ViewType axisType MEMBER axisType)
+  Q_PROPERTY(int tickSpacing MEMBER tickRelSpacing)
 
 public:
 
   ZeAxisSettings() = default;
 
   bool operator == (const ZeAxisSettings &other) const = default;
-   int tickRelSpacing = 0;
+  int tickRelSpacing = 0;
   ZeLinAxisSettings linSettings;
   ZeLogAxisSettings logSettings;
   ViewType axisType = LINEAR;
