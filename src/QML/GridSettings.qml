@@ -26,6 +26,76 @@ Item {
     ColumnLayout {
       id: mainLayout
       anchors.fill: parent
+
+      GroupBox {
+        Layout.columnSpan: 2
+        Layout.fillWidth: true
+        spacing: 0
+
+        title: qsTr("Coordinates")
+
+        GridLayout {
+          anchors.fill: parent
+          columnSpacing: 10
+          columns: 3
+
+          Behavior on implicitWidth {
+            NumberAnimation { duration: 500 }
+          }
+
+          Item {}
+          ZeLabel {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr('X')
+          }
+          ZeLabel {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr('Y')
+          }
+
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Spacing')
+          }
+          ZeSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 85
+            implicitWidth: 85
+
+            from: 0
+            value: 0
+            stepSize: 1
+            to: 5
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.axes.x.tickSpacing = value;
+              console.info("x axis tick spacing: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+          }
+         ZeSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 85
+            implicitWidth: 85
+
+            from: 0
+            value: 0
+            stepSize: 1
+            to: 5
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.axes.y.tickSpacing = value;
+              console.info("y axis tick spacing: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+          }
+        }
+      }
     }
   }
 }
