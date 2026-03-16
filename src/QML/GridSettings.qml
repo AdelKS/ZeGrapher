@@ -94,6 +94,47 @@ Item {
             }
             onValueModified: updateBackend()
           }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Max digits')
+          }
+          ZeSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 85
+            implicitWidth: 85
+
+            from: 2
+            value: 4
+            stepSize: 1
+            to: 10
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.axes.x.linear.maxDigitsNum = value;
+              console.info("x axis max digit num: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+          }
+         ZeSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 85
+            implicitWidth: 85
+
+            from: 2
+            value: 4
+            stepSize: 1
+            to: 10
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.axes.y.linear.maxDigitsNum = value;
+              console.info("y axis max digit num: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+          }
         }
       }
     }
