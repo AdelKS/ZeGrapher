@@ -95,7 +95,7 @@ ApplicationWindow {
 
         Timer {
           id: widthResetTimer
-          interval: 1000
+          interval: 4000
           repeat: false
           onTriggered: userInput.width = userInput.implicitWidth;
         }
