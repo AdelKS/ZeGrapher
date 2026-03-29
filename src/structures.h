@@ -139,24 +139,6 @@ public:
   bool operator == (const ZeZoomSettings &other) const = default;
 };
 
-struct Ze1DGridSettings
-{
-    bool showGrid = true, showSubGrid = false;
-    double gridLineWidth = 0.6, subgridLineWidth = 0.4;
-    QColor gridColor = Qt::gray, subgridColor = Qt::gray;
-    unsigned int subgridSubDivs = 2;
-    bool showSubgridRelativeCoordinates = false;
-
-    bool operator ==(const Ze1DGridSettings &other) const = default;
-};
-
-struct ZeGridSettings
-{
-    Ze1DGridSettings x, y;
-
-    bool operator == (const ZeGridSettings &other) const = default;
-};
-
 struct Range
 {
     Range() : start(0), end(0), step(1) {}

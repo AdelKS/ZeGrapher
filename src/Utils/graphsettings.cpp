@@ -64,6 +64,15 @@ void ZeGraphSettings::setGridSettings(ZeGridSettings s)
   emit gridSettingsChanged();
 };
 
+void ZeGraphSettings::setSubgridSettings(ZeSubgridSettings s)
+{
+  if (subgrid == s)
+    return;
+
+  subgrid = s;
+  emit subgridSettingsChanged();
+};
+
 void ZeGraphSettings::setFont(QFont f)
 {
   if (font == f)

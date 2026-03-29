@@ -25,6 +25,7 @@
 #include <QColor>
 
 #include "Utils/axissettings.h"
+#include "Utils/gridsettings.h"
 #include "structures.h"
 
 struct ZeGraphSettings: QObject
@@ -37,6 +38,7 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(ZeSizeSettings size WRITE setSizeSettings MEMBER size NOTIFY sizeSettingsChanged)
   Q_PROPERTY(ZeAxesSettings axes WRITE setAxesSettings MEMBER axes NOTIFY axesSettingsChanged)
   Q_PROPERTY(ZeGridSettings grid WRITE setGridSettings MEMBER grid NOTIFY gridSettingsChanged)
+  Q_PROPERTY(ZeSubgridSettings subgrid WRITE setSubgridSettings MEMBER subgrid NOTIFY subgridSettingsChanged)
 
   Q_PROPERTY(QSize availableSizePx WRITE setAvailableSizePx MEMBER availableSizePx NOTIFY availableSizePxChanged)
   Q_PROPERTY(QSizeF availableSizeCm READ getAvailableSizeCm NOTIFY availableSizeCmChanged)
@@ -52,6 +54,7 @@ public:
   const ZeSizeSettings& getSize() const { return size; };
   const ZeAxesSettings& getAxes() const { return axes; };
   const ZeGridSettings& getGrid() const { return grid; };
+  const ZeSubgridSettings& getSubgrid() const { return subgrid; };
   QFont getFont() const { return font; };
   QColor getBackgroundColor() const;
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
@@ -63,6 +66,7 @@ public slots:
   void setSizeSettings(ZeSizeSettings);
   void setAxesSettings(ZeAxesSettings);
   void setGridSettings(ZeGridSettings);
+  void setSubgridSettings(ZeSubgridSettings);
   void setFont(QFont);
   void setBackgroundColor(QColor);
   void updateSizes();
@@ -75,6 +79,7 @@ signals:
   void sizeSettingsChanged();
   void axesSettingsChanged();
   void gridSettingsChanged();
+  void subgridSettingsChanged();
   void fontChanged();
   void backgroundColorChanged();
   void availableSizePxChanged();
@@ -86,6 +91,7 @@ protected:
   ZeSizeSettings size;
   ZeAxesSettings axes;
   ZeGridSettings grid;
+  ZeSubgridSettings subgrid;
 
   QFont font;
 

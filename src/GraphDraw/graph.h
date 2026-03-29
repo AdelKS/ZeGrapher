@@ -216,10 +216,10 @@ void Graph::drawLinAxisGridTicks()
   auto getAxisData = [&]()
   {
     if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getGrid().x);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getGrid().y);
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getGrid().x, settings.getSubgrid().x);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getGrid().y, settings.getSubgrid().y);
   };
-  const auto& [axisMapper, axisTicks, gridSettings] = getAxisData();
+  const auto& [axisMapper, axisTicks, gridSettings, subgridSettings] = getAxisData();
 
   const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
 
@@ -233,8 +233,8 @@ void Graph::drawLinAxisGridTicks()
 
     if (fabs(px_pos.v - zero_pt.v) > 1.)
     {
-      if (gridSettings.showGrid)
-        drawLine<axis>(px_pos, gridSettings.gridColor, gridSettings.gridLineWidth);
+      if (gridSettings.show)
+        drawLine<axis>(px_pos, gridSettings.color, gridSettings.lineWidth);
 
       drawTick<axis>(px_pos, axesSettings.getColor(), axesSettings.lineWidth);
       writeCoordinate<axis>(px_pos, axisTick.posStr);
@@ -245,17 +245,17 @@ void Graph::drawLinAxisGridTicks()
       writeCoordinate<axis>(zero_pt, "0");
     }
 
-    if (gridSettings.showSubGrid && !first_tick)
+    if (subgridSettings.show && !first_tick)
     {
-      for (uint mul = 1; mul <= gridSettings.subgridSubDivs; mul++)
+      for (uint mul = 1; mul <= subgridSettings.subdivs; mul++)
       {
-        const zg::pixel_unit cur_pos = double(mul) / double(gridSettings.subgridSubDivs + 1)
+        const zg::pixel_unit cur_pos = double(mul) / double(subgridSettings.subdivs + 1)
                                          * previous_pos
-                                       + double(gridSettings.subgridSubDivs + 1 - mul)
-                                           / double(gridSettings.subgridSubDivs + 1) * px_pos;
+                                       + double(subgridSettings.subdivs + 1 - mul)
+                                           / double(subgridSettings.subdivs + 1) * px_pos;
 
         if ( 0 < cur_pos.v && cur_pos.v < graphRectScaled.width())
-          drawLine<axis>(cur_pos, gridSettings.subgridColor, gridSettings.subgridLineWidth);
+          drawLine<axis>(cur_pos, subgridSettings.color, subgridSettings.lineWidth);
       }
     }
 
