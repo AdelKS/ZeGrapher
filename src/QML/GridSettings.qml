@@ -164,6 +164,289 @@ Item {
           }
         }
       }
+
+
+      GroupBox {
+        Layout.columnSpan: 2
+        Layout.fillWidth: true
+        spacing: 0
+
+        title: qsTr("Grid")
+
+        GridLayout {
+          anchors.fill: parent
+          columnSpacing: 10
+          columns: 3
+
+          Behavior on implicitWidth {
+            NumberAnimation { duration: 500 }
+          }
+
+          Item {}
+          ZeLabel {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr('X')
+          }
+          ZeLabel {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr('Y')
+          }
+
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Enabled')
+          }
+          ZeCheckBox {
+            Layout.alignment: Qt.AlignCenter
+            display: AbstractButton.IconOnly
+            checked: root.graphSettings.grid.x.show
+
+            onCheckedChanged: {
+              root.graphSettings.grid.x.show = checked;
+            }
+          }
+          ZeCheckBox {
+            Layout.alignment: Qt.AlignCenter
+            display: AbstractButton.IconOnly
+            checked: root.graphSettings.grid.y.show
+
+            onCheckedChanged: {
+              root.graphSettings.grid.y.show = checked;
+            }
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Color')
+          }
+          ColorButton {
+            Layout.alignment: Qt.AlignCenter
+            selectedColor: root.graphSettings.grid.x.color
+
+            onSelectedColorChanged: {
+              root.graphSettings.grid.x.color = selectedColor;
+            }
+          }
+          ColorButton {
+            Layout.alignment: Qt.AlignCenter
+            selectedColor: root.graphSettings.grid.y.color
+
+            onSelectedColorChanged: {
+              root.graphSettings.grid.y.color = selectedColor;
+            }
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Line width')
+          }
+          ZeDoubleSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 95
+            implicitWidth: 95
+            decimals: 1
+
+            from: 0.1
+            step: 0.1
+            to: 2.0
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.grid.x.lineWidth = value;
+              console.info("x grid line width: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+            Component.onCompleted: {
+              setValue(root.graphSettings.grid.x.lineWidth);
+            }
+          }
+          ZeDoubleSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 95
+            implicitWidth: 95
+
+            from: 0.1
+            step: 0.1
+            to: 2.0
+            decimals: 1
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.grid.y.lineWidth = value;
+              console.info("y grid line width: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+            Component.onCompleted: {
+              setValue(root.graphSettings.grid.y.lineWidth);
+            }
+          }
+
+        }
+      }
+
+      GroupBox {
+        Layout.columnSpan: 2
+        Layout.fillWidth: true
+        spacing: 0
+
+        title: qsTr("Sub-grid")
+
+        GridLayout {
+          anchors.fill: parent
+          columnSpacing: 10
+          columns: 3
+
+          Behavior on implicitWidth {
+            NumberAnimation { duration: 500 }
+          }
+
+          Item {}
+          ZeLabel {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr('X')
+          }
+          ZeLabel {
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr('Y')
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Enabled')
+          }
+          ZeCheckBox {
+            Layout.alignment: Qt.AlignCenter
+            display: AbstractButton.IconOnly
+            checked: root.graphSettings.subgrid.x.show
+
+            onCheckedChanged: {
+              root.graphSettings.subgrid.x.show = checked;
+            }
+          }
+          ZeCheckBox {
+            Layout.alignment: Qt.AlignCenter
+            display: AbstractButton.IconOnly
+            checked: root.graphSettings.subgrid.y.show
+
+            onCheckedChanged: {
+              root.graphSettings.subgrid.y.show = checked;
+            }
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Color')
+          }
+          ColorButton {
+            Layout.alignment: Qt.AlignCenter
+            selectedColor: root.graphSettings.subgrid.x.color
+
+            onSelectedColorChanged: {
+              root.graphSettings.subgrid.x.color = selectedColor;
+            }
+          }
+          ColorButton {
+            Layout.alignment: Qt.AlignCenter
+            selectedColor: root.graphSettings.subgrid.y.color
+
+            onSelectedColorChanged: {
+              root.graphSettings.subgrid.y.color = selectedColor;
+            }
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Subdivisions')
+          }
+          ZeSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 85
+            implicitWidth: 85
+
+            from: 1
+            value: root.graphSettings.subgrid.x.subdivs
+            stepSize: 1
+            to: 20
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.subgrid.x.subdivs = value;
+              console.info("x subgrid subdivs: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+          }
+          ZeSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 85
+            implicitWidth: 85
+
+            from: 1
+            value: root.graphSettings.subgrid.y.subdivs
+            stepSize: 1
+            to: 20
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.subgrid.y.subdivs = value;
+              console.info("y subgrid subdivs: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Line width')
+          }
+          ZeDoubleSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 95
+            implicitWidth: 95
+            decimals: 1
+
+            from: 0.1
+            step: 0.1
+            to: 2.0
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.subgrid.x.lineWidth = value;
+              console.info("x grid line width: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+            Component.onCompleted: {
+              setValue(root.graphSettings.subgrid.x.lineWidth);
+            }
+          }
+          ZeDoubleSpinBox {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 95
+            implicitWidth: 95
+
+            from: 0.1
+            step: 0.1
+            to: 2.0
+            decimals: 1
+
+            function updateBackend() {
+              root.pauseSync = true;
+              root.graphSettings.subgrid.y.lineWidth = value;
+              console.info("y grid line width: ", value);
+              root.pauseSync = false;
+            }
+            onValueModified: updateBackend()
+            Component.onCompleted: {
+              setValue(root.graphSettings.subgrid.y.lineWidth);
+            }
+          }
+
+        }
+      }
     }
   }
 }
