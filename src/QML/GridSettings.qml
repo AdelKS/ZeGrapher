@@ -135,6 +135,33 @@ Item {
             }
             onValueModified: updateBackend()
           }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Multiplier')
+          }
+          ValueEdit {
+            Layout.fillWidth: true
+
+            backend: MathWorld.addAltExprObject()
+
+            Component.onCompleted: {
+              backend.setImplicitName("xMultiplier");
+              root.graphSettings.axes.x.linear.constantMultiplier = backend;
+            }
+            Component.onDestruction: MathWorld.removeAltExprObject(backend)
+          }
+         ValueEdit {
+            Layout.fillWidth: true
+
+           backend: MathWorld.addAltExprObject()
+
+            Component.onCompleted: {
+              backend.setImplicitName("yMultiplier");
+              root.graphSettings.axes.y.linear.constantMultiplier = backend;
+            }
+            Component.onDestruction: MathWorld.removeAltExprObject(backend)
+          }
         }
       }
     }
