@@ -24,12 +24,6 @@
 #include <QGuiApplication>
 #include <QStyleHints>
 
-ZeGraphSettings::ZeGraphSettings(QObject* parent)
-  : QObject(parent)
-{
-  connect(&information, &Information::pixelDensityChanged, this, &ZeGraphSettings::updateSizes);
-}
-
 void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
 {
   if (zoom == s)

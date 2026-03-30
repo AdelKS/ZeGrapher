@@ -192,7 +192,9 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
                                             ? axesSettings.x.linSettings
                                             : axesSettings.y.linSettings;
 
-  const double &constantMultiplier = axisSettings.constantMultiplier;
+  double constantMultiplier = axisSettings.constantMultiplier->getValue();;
+  if (std::isnan(constantMultiplier) or constantMultiplier == 0)
+    constantMultiplier = 1.0;
 
   zg::real_range1d scaledOffsetRange(range), offsetRange(range);
   scaledOffsetRange /= constantMultiplier;

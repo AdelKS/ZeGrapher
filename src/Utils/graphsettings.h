@@ -46,7 +46,7 @@ struct ZeGraphSettings: QObject
   QML_VALUE_TYPE(ZeGraphSettings)
 
 public:
-  explicit ZeGraphSettings(QObject* parent = nullptr);
+  explicit ZeGraphSettings(QObject* parent = nullptr): QObject(parent) {};
 
   const ZeZoomSettings& getZoom() const { return zoom; };
   const ZeSizeSettings& getSize() const { return size; };

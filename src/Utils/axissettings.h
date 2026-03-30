@@ -20,25 +20,25 @@
 
 #pragma once
 
-#include <QString>
 #include <QColor>
 #include <QMetaType>
+#include <QObject>
+#include <QString>
 #include <QtQml/qqmlregistration.h>
+
+#include "MathObjects/expr.h"
 
 struct ZeLogAxisSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(double constantMultiplier MEMBER constantMultiplier)
   Q_PROPERTY(double base MEMBER base)
-  Q_PROPERTY(QString constantMultiplierStr MEMBER constantMultiplierStr)
   Q_PROPERTY(QString baseStr MEMBER baseStr)
 
 public:
-  ZeLogAxisSettings() = default;
 
-  double constantMultiplier = 1, base = 10;
-  QString constantMultiplierStr, baseStr = "10";
+  double base = 10;
+  QString baseStr = "10";
 
   bool operator == (const ZeLogAxisSettings &other) const = default;
 };
@@ -47,27 +47,23 @@ struct ZeLinAxisSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(double constantMultiplier MEMBER constantMultiplier)
-  Q_PROPERTY(QString constantMultiplierStr MEMBER constantMultiplierStr)
+  Q_PROPERTY(zg::mathobj::Expr* constantMultiplier MEMBER constantMultiplier)
   Q_PROPERTY(int maxDigitsNum MEMBER maxDigitsNum)
 
 public:
-    ZeLinAxisSettings() = default;
 
-    bool operator == (const ZeLinAxisSettings &other) const = default;
+  /// @brief arbitrary expression that will be used a multiplier to the coordinates
+  /// @example if it's "π", then the coordinates will be multiples of π
+  /// @note non-owning pointer: needs to be instantiated and owned in QML then assigned here
+  zg::mathobj::Expr* constantMultiplier = nullptr;
 
-    double constantMultiplier = 1;
-    QString constantMultiplierStr;
-    int maxDigitsNum = 3;
+  int maxDigitsNum = 3;
+
+  bool operator == (const ZeLinAxisSettings &other) const = default;
 };
 
 struct ZeAxisSettings
 {
-  enum ViewType
-  {
-      LINEAR, LOG
-  };
-
   Q_GADGET
 
   Q_PROPERTY(ZeLinAxisSettings linear MEMBER linSettings)
@@ -76,14 +72,17 @@ struct ZeAxisSettings
   Q_PROPERTY(int tickSpacing MEMBER tickRelSpacing)
 
 public:
+  enum ViewType
+  {
+      LINEAR, LOG
+  };
 
-  ZeAxisSettings() = default;
-
-  bool operator == (const ZeAxisSettings &other) const = default;
   int tickRelSpacing = 0;
   ZeLinAxisSettings linSettings;
   ZeLogAxisSettings logSettings;
   ViewType axisType = LINEAR;
+
+  bool operator == (const ZeAxisSettings &other) const = default;
 };
 
 struct ZeAxesSettings
@@ -96,16 +95,19 @@ struct ZeAxesSettings
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
 
 public:
-    ZeAxisSettings x, y;
-    bool orthonormal = false;
+  ZeAxisSettings x, y;
+  bool orthonormal = false;
 
-    QColor colorLight = Qt::black;
-    QColor colorDark = "#dfdfdf";
+  QColor colorLight = Qt::black;
+  QColor colorDark = "#dfdfdf";
 
-    double lineWidth = 2.0;
+  double lineWidth = 2.0;
 
-    const QColor& getColor() const;
-    void setColor(QColor);
+  /// @brief returns the color that fits with current dark/light theme of the system
+  const QColor& getColor() const;
 
-    bool operator == (const ZeAxesSettings &other) const = default;
+  /// @brief sets the color that fits with current dark/light theme of the system
+  void setColor(QColor);
+
+  bool operator == (const ZeAxesSettings &other) const = default;
 };

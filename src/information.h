@@ -52,7 +52,6 @@ public:
 
   /// @brief graph range change from user mouse interaction
   void setGraphRangeMouseEdit(const zg::real_range2d&);
-
   void setExportFileName(QString fileName);
   QString getExportFileName();
 

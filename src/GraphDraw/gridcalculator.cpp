@@ -14,18 +14,19 @@ QString GridCalculator::get_coordinate_string(const ZeLinAxisSettings &axisSetti
 {
   QString posStr;
 
-  if (!axisSettings.constantMultiplierStr.isEmpty())
+  if (axisSettings.constantMultiplier->isValid())
   {
+    QString expr = axisSettings.constantMultiplier->getExpression();
     if (fabs(multiplier + 1.0) <= MAX_NUM_PREC_DEC)
-      posStr = "-" + axisSettings.constantMultiplierStr;
+      posStr = "-" + expr;
     else if (fabs(multiplier - 1.0) <= MAX_NUM_PREC_DEC)
-      posStr = axisSettings.constantMultiplierStr;
+      posStr = expr;
     else
     {
       posStr.setNum(multiplier, 'g', axisSettings.maxDigitsNum + 1);
-      if (axisSettings.constantMultiplierStr[0].isDigit())
+      if (expr[0].isDigit())
         posStr += "×";
-      posStr += axisSettings.constantMultiplierStr;
+      posStr += expr;
     }
   }
   else
