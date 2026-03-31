@@ -38,6 +38,7 @@ source_files = files(
   './Utils/highlighter.cpp',
   './Utils/plotstyle.cpp',
   './Utils/state.cpp',
+  './Utils/themedcolor.cpp',
   './Utils/updatecheck.cpp',
   './Utils/zc-utils.cpp',
 )
@@ -133,6 +134,7 @@ qmlcpp_files = files(
   './Utils/highlighter.h',
   './Utils/plotstyle.h',
   './Utils/state.h',
+  './Utils/themedcolor.h',
   './Utils/updatecheck.h',
 )
 
