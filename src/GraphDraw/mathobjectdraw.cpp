@@ -39,9 +39,9 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style
 {
   double w = style.pointWidth;
 
-  pen.setColor(style.color);
+  pen.setColor(style.color.getCurrent());
   pen.setWidth(w);
-  brush.setColor(style.color);
+  brush.setColor(style.color.getCurrent());
   painter->setBrush(brush);
   painter->setPen(pen);
 

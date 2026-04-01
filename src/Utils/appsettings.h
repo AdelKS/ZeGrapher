@@ -25,6 +25,8 @@
 #include <QFont>
 #include <QColor>
 
+#include "themedcolor.h"
+
 struct ZeAppSettings: QObject
 {
   Q_OBJECT
@@ -32,43 +34,31 @@ struct ZeAppSettings: QObject
   Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
   Q_PROPERTY(QLocale::Language language MEMBER language)
   Q_PROPERTY(QFont font MEMBER font WRITE setFont NOTIFY fontChanged)
-  Q_PROPERTY(QColor validSyntax READ getValidSyntax WRITE setValidSyntax NOTIFY validSyntaxChanged)
-  Q_PROPERTY(QColor invalidSyntax READ getInvalidSyntax WRITE setInvalidSyntax NOTIFY invalidSyntaxChanged)
-  Q_PROPERTY(QColor warningSyntax READ getWarningSyntax WRITE setWarningSyntax NOTIFY warningSyntaxChanged)
+  Q_PROPERTY(ThemedColor validSyntax MEMBER validSyntax NOTIFY validSyntaxChanged)
+  Q_PROPERTY(ThemedColor invalidSyntax MEMBER invalidSyntax NOTIFY invalidSyntaxChanged)
+  Q_PROPERTY(ThemedColor warningSyntax MEMBER warningSyntax NOTIFY warningSyntaxChanged)
 
 public:
 
-  explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent) {}
+  explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent)
+  {
+    qDebug() << "merde";
+  }
 
   bool startupUpdateCheck;
   QLocale::Language language;
   QFont font;
 
-  QColor validSyntaxDark = Qt::darkGreen;
-  QColor invalidSyntaxDark = Qt::darkRed;
-  QColor warningSyntaxDark = Qt::darkYellow;
+  ThemedColor validSyntax = {.dark = Qt::darkGreen, .light = Qt::darkGreen};
+  ThemedColor invalidSyntax = {.dark = Qt::darkRed, .light = Qt::darkRed};
+  ThemedColor warningSyntax = {.dark = Qt::darkYellow, .light = Qt::darkYellow};
 
-  QColor validSyntaxLight = Qt::darkGreen;
-  QColor invalidSyntaxLight = Qt::darkRed;
-  QColor warningSyntaxLight = Qt::darkYellow;
-
-  Q_INVOKABLE QColor getValidSyntax() const;
-  Q_INVOKABLE QColor getInvalidSyntax() const;
-  Q_INVOKABLE QColor getWarningSyntax() const;
-
-  Q_INVOKABLE void setValidSyntax(QColor);
-  Q_INVOKABLE void setInvalidSyntax(QColor);
-  Q_INVOKABLE void setWarningSyntax(QColor);
   Q_INVOKABLE void setFont(QFont);
-
 
 signals:
   void validSyntaxChanged();
   void invalidSyntaxChanged();
   void warningSyntaxChanged();
   void fontChanged();
-
-public slots:
-  void colorSchemeChanged();
 
 };

@@ -32,7 +32,6 @@ source_files = files(
   './MathObjects/parametric.cpp',
   './structures.cpp',
   './Utils/appsettings.cpp',
-  './Utils/axissettings.cpp',
   './Utils/graphrange.cpp',
   './Utils/graphsettings.cpp',
   './Utils/highlighter.cpp',

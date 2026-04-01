@@ -26,6 +26,7 @@
 
 #include "Utils/axissettings.h"
 #include "Utils/gridsettings.h"
+#include "Utils/themedcolor.h"
 #include "structures.h"
 
 struct ZeGraphSettings: QObject
@@ -33,7 +34,7 @@ struct ZeGraphSettings: QObject
   Q_OBJECT
   QML_ELEMENT
   Q_PROPERTY(QFont font WRITE setFont MEMBER font NOTIFY fontChanged)
-  Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ getBackgroundColor NOTIFY backgroundColorChanged)
+  Q_PROPERTY(ThemedColor backgroundColor WRITE setBackgroundColor READ getBackgroundColor NOTIFY backgroundColorChanged)
   Q_PROPERTY(ZeZoomSettings zoom WRITE setZoomSettings MEMBER zoom NOTIFY zoomSettingsChanged)
   Q_PROPERTY(ZeSizeSettings size WRITE setSizeSettings MEMBER size NOTIFY sizeSettingsChanged)
   Q_PROPERTY(ZeAxesSettings axes WRITE setAxesSettings MEMBER axes NOTIFY axesSettingsChanged)
@@ -56,7 +57,7 @@ public:
   const ZeGridSettings& getGrid() const { return grid; };
   const ZeSubgridSettings& getSubgrid() const { return subgrid; };
   QFont getFont() const { return font; };
-  QColor getBackgroundColor() const;
+  const ThemedColor& getBackgroundColor() const { return backgroundColor; };
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
   double getTargetSamplingDistancePx() const { return targetSamplingDistancePx; }
@@ -68,7 +69,7 @@ public slots:
   void setGridSettings(ZeGridSettings);
   void setSubgridSettings(ZeSubgridSettings);
   void setFont(QFont);
-  void setBackgroundColor(QColor);
+  void setBackgroundColor(ThemedColor);
   void updateSizes();
   void computeZoom();
   void setAvailableSizePx(QSize);
@@ -95,8 +96,7 @@ protected:
 
   QFont font;
 
-  QColor backgroundColorLight = Qt::white;
-  QColor backgroundColorDark = "#202326";
+  ThemedColor backgroundColor = {.dark = "#202326", .light = Qt::white};
 
   QSize availableSizePx;
   QSizeF availableSizeCm;

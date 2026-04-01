@@ -27,6 +27,7 @@
 #include <QtQml/qqmlregistration.h>
 
 #include "MathObjects/expr.h"
+#include "Utils/themedcolor.h"
 
 struct ZeLogAxisSettings
 {
@@ -91,23 +92,16 @@ struct ZeAxesSettings
 
   Q_PROPERTY(ZeAxisSettings x MEMBER x)
   Q_PROPERTY(ZeAxisSettings y MEMBER y)
-  Q_PROPERTY(QColor color READ getColor WRITE setColor)
+  Q_PROPERTY(ThemedColor color MEMBER color)
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
 
 public:
   ZeAxisSettings x, y;
   bool orthonormal = false;
 
-  QColor colorLight = Qt::black;
-  QColor colorDark = "#dfdfdf";
+  ThemedColor color = {.dark = "#dfdfdf", .light = Qt::black};
 
   double lineWidth = 2.0;
-
-  /// @brief returns the color that fits with current dark/light theme of the system
-  const QColor& getColor() const;
-
-  /// @brief sets the color that fits with current dark/light theme of the system
-  void setColor(QColor);
 
   bool operator == (const ZeAxesSettings &other) const = default;
 };

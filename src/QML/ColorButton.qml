@@ -5,9 +5,17 @@ import QtQuick.Dialogs
 Shape {
   id: disk
 
-  property color selectedColor: 'black'
+  property themedColor selectedColor
 
-  onSelectedColorChanged: shape_path.set_color(selectedColor);
+  property bool darkMode: Application.styleHints.colorScheme === Qt.ColorScheme.Dark
+
+  onDarkModeChanged: {
+    console.info("ColorButton: theme changed, current color: ", disk.selectedColor.current)
+    shape_path.set_color(disk.selectedColor.current)
+    colorDialog.selectedColor = disk.selectedColor.current
+  }
+
+  onSelectedColorChanged: shape_path.set_color(selectedColor.current);
 
   horizontalAlignment: Shape.AlignHCenter
   verticalAlignment: Shape.AlignVCenter
@@ -85,7 +93,8 @@ Shape {
   ColorDialog {
     id: colorDialog
     onAccepted: {
-      disk.selectedColor = selectedColor;
+      disk.selectedColor.setCurrent(selectedColor);
+      disk.selectedColorChanged();
     }
   }
 
@@ -113,7 +122,7 @@ Shape {
   }
 
   Component.onCompleted: {
-    shape_path.set_color(disk.selectedColor);
-    colorDialog.selectedColor = disk.selectedColor;
+    shape_path.set_color(disk.selectedColor.current);
+    colorDialog.selectedColor = disk.selectedColor.current;
   }
 }

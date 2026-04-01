@@ -20,12 +20,12 @@
 **
 ****************************************************************************/
 
-#include <QColor>
 #include <QObject>
 #include <QtQmlIntegration>
 
-#include "MathObjects/expr.h"
 #include "GraphDraw/axismapper.h"
+#include "MathObjects/expr.h"
+#include "Utils/themedcolor.h"
 
 namespace zg {
 
@@ -35,7 +35,7 @@ struct PlotStyle: QObject {
   QML_ELEMENT
 
   Q_PROPERTY(bool visible MEMBER visible NOTIFY visibleChanged)
-  Q_PROPERTY(QColor color MEMBER color NOTIFY colorChanged)
+  Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
   Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
   Q_PROPERTY(Qt::PenStyle lineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
@@ -71,7 +71,7 @@ public:
   zg::real_range1d getRange() const;
 
   bool visible = true;
-  QColor color = Qt::black;
+  ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
   double lineWidth = 1.0;
   Qt::PenStyle lineStyle = Qt::SolidLine;
   double pointWidth = 1.0;

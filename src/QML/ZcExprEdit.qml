@@ -37,6 +37,14 @@ Item {
     }
   }
 
+  Connections {
+    target: Application.styleHints
+
+    function onColorSchemeChanged() {
+      root.refresh();
+    }
+  }
+
   function refresh() {
     if (customErrorMsg.length !== 0)
       errorLbl.setErrorMsg(customErrorMsg);
@@ -48,14 +56,14 @@ Item {
 
     if (customErrorMsg.length !== 0 || root.state.status === ZG.State.INVALID) {
       console.debug("ZcExprEdit: border color updated to invalid")
-      lineEdit.border.color = Information.appSettings.invalidSyntax;
+      lineEdit.border.color = Information.appSettings.invalidSyntax.current;
     } else if (root.state.status === ZG.State.VALID) {
       if (nanValue) {
         console.debug("ZcExprEdit: border color updated to warning")
-        lineEdit.border.color = Information.appSettings.warningSyntax;
+        lineEdit.border.color = Information.appSettings.warningSyntax.current;
       } else {
         console.debug("ZcExprEdit: border color updated to valid")
-        lineEdit.border.color = Information.appSettings.validSyntax;
+        lineEdit.border.color = Information.appSettings.validSyntax.current;
       }
     } else {
       console.debug("ZcExprEdit: border color updated to neutral")

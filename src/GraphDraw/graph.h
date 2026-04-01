@@ -178,7 +178,7 @@ template <ZeAxisName axis>
 void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
   painter->setFont(settings.getFont());
-  pen.setColor(settings.getAxes().getColor());
+  pen.setColor(settings.getAxes().color.getCurrent());
   painter->setPen(pen);
 
   int txtWidth = fontMetrics.horizontalAdvance(txt);
@@ -234,14 +234,14 @@ void Graph::drawLinAxisGridTicks()
     if (fabs(px_pos.v - zero_pt.v) > 1.)
     {
       if (gridSettings.show)
-        drawLine<axis>(px_pos, gridSettings.color, gridSettings.lineWidth);
+        drawLine<axis>(px_pos, gridSettings.color.getCurrent(), gridSettings.lineWidth);
 
-      drawTick<axis>(px_pos, axesSettings.getColor(), axesSettings.lineWidth);
+      drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
       writeCoordinate<axis>(px_pos, axisTick.posStr);
     }
     else
     {
-      drawLine<axis>(zero_pt, axesSettings.getColor(), axesSettings.lineWidth);
+      drawLine<axis>(zero_pt, axesSettings.color.getCurrent(), axesSettings.lineWidth);
       writeCoordinate<axis>(zero_pt, "0");
     }
 
@@ -255,7 +255,7 @@ void Graph::drawLinAxisGridTicks()
                                            / double(subgridSettings.subdivs + 1) * px_pos;
 
         if ( 0 < cur_pos.v && cur_pos.v < graphRectScaled.width())
-          drawLine<axis>(cur_pos, subgridSettings.color, subgridSettings.lineWidth);
+          drawLine<axis>(cur_pos, subgridSettings.color.getCurrent(), subgridSettings.lineWidth);
       }
     }
 

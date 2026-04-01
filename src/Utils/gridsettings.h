@@ -20,11 +20,12 @@
 
 #pragma once
 
-#include <QColor>
 #include <QMetaType>
 #include <QObject>
 #include <QString>
 #include <QtQml/qqmlregistration.h>
+
+#include "Utils/themedcolor.h"
 
 struct Ze1DGridCommonSettings
 {
@@ -32,12 +33,12 @@ struct Ze1DGridCommonSettings
 
   Q_PROPERTY(bool show MEMBER show)
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
-  Q_PROPERTY(QColor color MEMBER color)
+  Q_PROPERTY(ThemedColor color MEMBER color)
 
 public:
   bool show = true;
   double lineWidth = 0.6;
-  QColor color = Qt::gray;
+  ThemedColor color = {.dark = Qt::lightGray, .light = Qt::gray};
 
   bool operator == (const Ze1DGridCommonSettings&) const = default;
 };

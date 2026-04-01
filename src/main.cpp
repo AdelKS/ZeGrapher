@@ -37,9 +37,6 @@ int main(int argc, char *argv[])
 
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
 
-  // we do the connection here because only now the QGuiApplication instance is ready
-  QObject::connect(a.styleHints(), &QStyleHints::colorSchemeChanged, information.appSettings, &ZeAppSettings::colorSchemeChanged);
-
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
   QCoreApplication::setOrganizationName("ZeGrapher Project");

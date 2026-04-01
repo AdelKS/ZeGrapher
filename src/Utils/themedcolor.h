@@ -41,7 +41,7 @@ public:
   QColor light;
 
   /// @brief returns the color according to current system theme
-  Q_INVOKABLE const QColor& getCurrent();
+  Q_INVOKABLE const QColor& getCurrent() const;
 
   /// @brief sets the color for the current system theme
   /// @note  the color for the other theme is also updated using HSV

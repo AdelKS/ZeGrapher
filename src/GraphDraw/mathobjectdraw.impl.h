@@ -22,7 +22,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve<t>& f_curve)
     if (not mapped_curve.empty() and style.lineStyle != Qt::PenStyle::NoPen)
     {
       pen.setWidth(style.lineWidth);
-      pen.setColor(style.color);
+      pen.setColor(style.color.getCurrent());
       pen.setStyle(style.lineStyle);
       painter->setPen(pen);
       painter->drawPolyline(mapped_curve.data(), mapped_curve.size());

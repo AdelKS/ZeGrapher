@@ -75,7 +75,7 @@ Item {
             id: validSyntaxColorButton
             Layout.alignment: Qt.AlignLeft
 
-            selectedColor: { selectedColor = Information.appSettings.validSyntax; }
+            selectedColor: Information.appSettings.validSyntax
 
             onSelectedColorChanged: Information.appSettings.validSyntax = selectedColor;
 
@@ -98,7 +98,7 @@ Item {
             id: warningSyntaxColorButton
             Layout.alignment: Qt.AlignLeft
 
-            selectedColor: { selectedColor = Information.appSettings.warningSyntax; }
+            selectedColor: Information.appSettings.warningSyntax
 
             onSelectedColorChanged: Information.appSettings.warningSyntax = selectedColor;
 
@@ -121,7 +121,7 @@ Item {
             id: invalidSyntaxColorButton
             Layout.alignment: Qt.AlignLeft
 
-            selectedColor: { selectedColor = Information.appSettings.invalidSyntax; }
+            selectedColor: Information.appSettings.invalidSyntax
 
             onSelectedColorChanged: Information.appSettings.invalidSyntax = selectedColor;
 

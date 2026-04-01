@@ -82,25 +82,13 @@ void ZeGraphSettings::setFont(QFont f)
   emit fontChanged();
 };
 
-void ZeGraphSettings::setBackgroundColor(QColor c)
+void ZeGraphSettings::setBackgroundColor(ThemedColor c)
 {
-  QColor& bg = [this] {
-    if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
-      return std::ref(backgroundColorDark);
-    else return std::ref(backgroundColorLight);
-  }();
-
-  if (bg == c)
+  if (backgroundColor == c)
     return;
 
-  bg = c;
+  backgroundColor = c;
   emit backgroundColorChanged();
-}
-
-QColor ZeGraphSettings::getBackgroundColor() const {
-  if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
-    return backgroundColorDark;
-  else return backgroundColorLight;
 }
 
 void ZeGraphSettings::updateSizes()

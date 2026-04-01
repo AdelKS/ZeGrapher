@@ -318,7 +318,7 @@ Item {
             id: backgroundColor
             Layout.alignment: Qt.AlignLeft
 
-            selectedColor: { selectedColor = root.graphSettings.backgroundColor; }
+            selectedColor: root.graphSettings.backgroundColor
 
             onSelectedColorChanged: root.graphSettings.backgroundColor = selectedColor;
 
@@ -374,7 +374,7 @@ Item {
             id: axesColor
             Layout.alignment: Qt.AlignLeft
 
-            selectedColor: { selectedColor = root.graphSettings.axes.color; }
+            selectedColor: root.graphSettings.axes.color
 
             onSelectedColorChanged: root.graphSettings.axes.color = selectedColor;
 

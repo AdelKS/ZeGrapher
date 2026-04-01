@@ -157,6 +157,11 @@ Rectangle {
       ColorButton {
         id: colorButton
         radius: 12
+        selectedColor: styleWidget.dataBackend.color
+
+        onSelectedColorChanged: {
+          styleWidget.dataBackend.color = selectedColor;
+        }
       }
 
       Item {
@@ -226,7 +231,6 @@ Rectangle {
       Layout.preferredHeight: preferredHeight
       clip: true
       discrete: mathObj.discrete
-      dataBackend.color: colorButton.selectedColor
       dataBackend.visible: !displayButton.checked
 
       property int preferredHeight: 0

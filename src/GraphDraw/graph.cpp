@@ -66,6 +66,7 @@ Graph::Graph(QQuickItem *parent)
   connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
   connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
+  connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
 
   emit settingsChanged();
 }
@@ -339,7 +340,7 @@ void Graph::writeLegends()
 
 void Graph::writeAxisOffsetX()
 {
-  pen.setColor(settings.getAxes().getColor());
+  pen.setColor(settings.getAxes().color.getCurrent());
   pen.setWidthF(settings.getAxes().lineWidth);
   painter->setPen(pen);
   painter->setRenderHint(QPainter::Antialiasing, true);
@@ -403,7 +404,7 @@ void Graph::drawGraphRect()
   painter->setBrush(QBrush(Qt::NoBrush));
 
   pen.setWidth(axesSettings.lineWidth);
-  pen.setColor(axesSettings.getColor());
+  pen.setColor(axesSettings.color.getCurrent());
   pen.setStyle(Qt::SolidLine);
   painter->setPen(pen);
 
@@ -431,7 +432,7 @@ void Graph::updateCenterPosAndScaling()
 QImage *Graph::drawImage()
 {
   QImage *image = new QImage(size().toSize(), QImage::Format_RGB32);
-  image->fill(settings.getBackgroundColor().rgb());
+  image->fill(settings.getBackgroundColor().getCurrent().rgb());
 
   QPainter p(image);
   painter = &p;
@@ -446,7 +447,7 @@ QImage *Graph::drawImage()
 
 void Graph::drawSupport()
 { // draws the sheet on an untransformed view
-  painter->setBrush(QBrush(settings.getBackgroundColor()));
+  painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
 
   computeSupportRect();
 
@@ -522,9 +523,9 @@ void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
 
   painter->begin(pdfWriter);
 
-  if (settings.getBackgroundColor() != QColor(Qt::white))
+  if (settings.getBackgroundColor().getCurrent() != QColor(Qt::white))
   {
-    painter->setBrush(QBrush(settings.getBackgroundColor()));
+    painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
     painter->drawRect(painter->viewport());
   }
 
@@ -559,9 +560,9 @@ void Graph::exportSVG(QString fileName)
 
   painter->begin(&svgGenerator);
 
-  if (settings.getBackgroundColor() != QColor(Qt::white))
+  if (settings.getBackgroundColor().getCurrent() != QColor(Qt::white))
   {
-    painter->setBrush(QBrush(settings.getBackgroundColor()));
+    painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
     painter->drawRect(painter->window());
   }
 
