@@ -235,19 +235,26 @@ void Graph::drawAll()
 
   painter->translate(leftMargin, topMargin);
 
-  drawGraphRect();
-
-  if(settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
-  {
-    writeAxisOffsetX();
-    drawLinAxisGridTicks<ZeAxisName::X>();
-  }
-
-  if(settings.getAxes().y.axisType == ZeAxisSettings::LINEAR)
+  if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
+      and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
   {
     writeAxisOffsetY();
-    drawLinAxisGridTicks<ZeAxisName::Y>();
+    writeAxisOffsetX();
+
+    drawLinSubgrid<ZeAxisName::Y>();
+    drawLinSubgrid<ZeAxisName::X>();
+
+    drawLinGrid<ZeAxisName::Y>();
+    drawLinGrid<ZeAxisName::X>();
+
+    drawLinAxis<ZeAxisName::Y>();
+    drawLinAxis<ZeAxisName::X>();
+
+    drawLinCoordinateTicks<ZeAxisName::Y>();
+    drawLinCoordinateTicks<ZeAxisName::X>();
   }
+
+  drawGraphRect();
 
   if(legendState)
       writeLegends();

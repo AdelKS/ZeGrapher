@@ -104,7 +104,16 @@ protected:
   void writeAxisOffsetX();
 
   template <ZeAxisName axis>
-  void drawLinAxisGridTicks();
+  void drawLinCoordinateTicks();
+
+  template <ZeAxisName axis>
+  void drawLinAxis();
+
+  template <ZeAxisName axis>
+  void drawLinSubgrid();
+
+  template <ZeAxisName axis>
+  void drawLinGrid();
 
   void updateMarginsForAxisOffsetY();
   void writeAxisOffsetY();
@@ -202,7 +211,7 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 };
 
 template <ZeAxisName axis>
-void Graph::drawLinAxisGridTicks()
+void Graph::drawLinCoordinateTicks()
 {
   painter->setFont(settings.getFont());
   QFontMetrics fontMetrics = painter->fontMetrics();
@@ -210,16 +219,12 @@ void Graph::drawLinAxisGridTicks()
   const ZeAxesSettings &axesSettings = settings.getAxes();
 
   pen.setCapStyle(Qt::FlatCap);
-  bool first_tick = true;
-  zg::pixel_unit previous_pos;
 
-  auto getAxisData = [&]()
-  {
+  const auto& [axisMapper, axisTicks] = [this]{
     if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getGrid().x, settings.getSubgrid().x);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getGrid().y, settings.getSubgrid().y);
-  };
-  const auto& [axisMapper, axisTicks, gridSettings, subgridSettings] = getAxisData();
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
+  }();
 
   const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
 
@@ -233,19 +238,71 @@ void Graph::drawLinAxisGridTicks()
 
     if (fabs(px_pos.v - zero_pt.v) > 1.)
     {
-      if (gridSettings.show)
-        drawLine<axis>(px_pos, gridSettings.color.getCurrent(), gridSettings.lineWidth);
-
       drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
       writeCoordinate<axis>(px_pos, axisTick.posStr);
     }
-    else
+  }
+}
+
+template <ZeAxisName axis>
+void Graph::drawLinAxis()
+{
+  painter->setFont(settings.getFont());
+  QFontMetrics fontMetrics = painter->fontMetrics();
+
+  const ZeAxesSettings &axesSettings = settings.getAxes();
+
+  pen.setCapStyle(Qt::FlatCap);
+
+  const auto& [axisMapper, axisTicks] = [this]{
+    if constexpr (axis == ZeAxisName::X)
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
+  }();
+
+  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
+
+  for (const ZeLinAxisTick &axisTick : axisTicks)
+  {
+    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
+            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
+      continue;
+
+    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
+
+    if (fabs(px_pos.v - zero_pt.v) <= 1.)
     {
       drawLine<axis>(zero_pt, axesSettings.color.getCurrent(), axesSettings.lineWidth);
       writeCoordinate<axis>(zero_pt, "0");
     }
+  }
+}
 
-    if (subgridSettings.show && !first_tick)
+template <ZeAxisName axis>
+void Graph::drawLinSubgrid()
+{
+  const auto& [axisMapper, axisTicks, subgridSettings] = [&]()
+  {
+    if constexpr (axis == ZeAxisName::X)
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getSubgrid().x);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getSubgrid().y);
+  }();
+
+  if (not subgridSettings.show)
+    return;
+
+  painter->setFont(settings.getFont());
+  QFontMetrics fontMetrics = painter->fontMetrics();
+
+  pen.setCapStyle(Qt::FlatCap);
+  bool first_tick = true;
+  zg::pixel_unit previous_pos;
+
+  for (const ZeLinAxisTick &axisTick : axisTicks)
+  {
+    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
+
+    if (not first_tick)
     {
       for (uint mul = 1; mul <= subgridSettings.subdivs; mul++)
       {
@@ -261,5 +318,39 @@ void Graph::drawLinAxisGridTicks()
 
     previous_pos = px_pos;
     first_tick = false;
+  }
+}
+
+template <ZeAxisName axis>
+void Graph::drawLinGrid()
+{
+  auto getAxisData = [&]()
+  {
+    if constexpr (axis == ZeAxisName::X)
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getGrid().x, settings.getSubgrid().x);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getGrid().y, settings.getSubgrid().y);
+  };
+  const auto& [axisMapper, axisTicks, gridSettings, subgridSettings] = getAxisData();
+
+  if (not gridSettings.show)
+    return;
+
+  painter->setFont(settings.getFont());
+  QFontMetrics fontMetrics = painter->fontMetrics();
+
+  pen.setCapStyle(Qt::FlatCap);
+
+  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
+
+  for (const ZeLinAxisTick &axisTick : axisTicks)
+  {
+    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
+            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
+      continue;
+
+    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
+
+    if (fabs(px_pos.v - zero_pt.v) > 1.)
+      drawLine<axis>(px_pos, gridSettings.color.getCurrent(), gridSettings.lineWidth);
   }
 }
