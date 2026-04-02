@@ -296,27 +296,30 @@ void Graph::drawLinSubgrid()
 
   pen.setCapStyle(Qt::FlatCap);
   bool first_tick = true;
-  zg::pixel_unit previous_pos;
+  zg::real_unit previous_pos;
 
   for (const ZeLinAxisTick &axisTick : axisTicks)
   {
-    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
-
     if (not first_tick)
     {
       for (uint mul = 1; mul <= subgridSettings.subdivs; mul++)
       {
-        const zg::pixel_unit cur_pos = double(mul) / double(subgridSettings.subdivs + 1)
+        const zg::real_unit cur_pos = double(mul) / double(subgridSettings.subdivs + 1)
                                          * previous_pos
                                        + double(subgridSettings.subdivs + 1 - mul)
-                                           / double(subgridSettings.subdivs + 1) * px_pos;
+                                           / double(subgridSettings.subdivs + 1) * axisTick.pos;
 
-        if ( 0 < cur_pos.v && cur_pos.v < graphRectScaled.width())
-          drawLine<axis>(cur_pos, subgridSettings.color.getCurrent(), subgridSettings.lineWidth);
+        if (not(axisMapper.template getRange<zg::real>().min < cur_pos
+                && cur_pos < axisMapper.template getRange<zg::real>().max))
+          continue;
+
+        drawLine<axis>(axisMapper.template to<zg::pixel>(cur_pos),
+                       subgridSettings.color.getCurrent(),
+                       subgridSettings.lineWidth);
       }
     }
 
-    previous_pos = px_pos;
+    previous_pos = axisTick.pos;
     first_tick = false;
   }
 }
