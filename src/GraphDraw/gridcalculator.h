@@ -42,12 +42,6 @@ struct ZeLinAxisTick
   QString posStr;
 };
 
-struct ZeAxisSubTick
-{
-  double pos;
-  int numerator, denominator;
-};
-
 struct ZeOffset
 {
   QString sumOffsetStr() const
@@ -77,7 +71,6 @@ struct ZeOffset
 struct ZeLogAxisTicks
 {
   QList<ZeLogAxisTick> ticks;
-  QList<ZeAxisSubTick> axisSubticks;
 };
 
 struct ZeLinAxisTicks
@@ -86,7 +79,6 @@ struct ZeLinAxisTicks
   int maxPxWidth = 0;
   int maxPxHeight = 0;
   std::vector<ZeLinAxisTick> ticks;
-  std::vector<ZeAxisSubTick> axisSubticks;
 };
 
 class GridCalculator : public QObject
