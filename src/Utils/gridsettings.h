@@ -38,7 +38,7 @@ struct Ze1DGridCommonSettings
 public:
   bool show = true;
   double lineWidth = 0.6;
-  ThemedColor color = {.dark = Qt::lightGray, .light = Qt::gray};
+  ThemedColor color = {.dark = "#6f6f6f", .light = "#717171"};
 
   bool operator == (const Ze1DGridCommonSettings&) const = default;
 };
@@ -51,7 +51,7 @@ struct Ze1DSubgridSettings: Ze1DGridCommonSettings
   Q_PROPERTY(bool showCoordinates MEMBER showCoordinates)
 
 public:
-  Ze1DSubgridSettings(): Ze1DGridCommonSettings({.show = false}) {}
+  Ze1DSubgridSettings(): Ze1DGridCommonSettings({.show = false, .color = {.dark = "#434343", .light = "#d1d1d1"}}) {}
 
   unsigned int subdivs = 2;
   bool showCoordinates = false;
