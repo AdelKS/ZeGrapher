@@ -18,6 +18,7 @@ meson setup \
   -D debug=false \
   -D b_ndebug=true \
   -D loglevel=off \
+  -D b_lto=true \
   "${deploy_script_dir}/build-windows" \
   "${deploy_script_dir}/.."
 

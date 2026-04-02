@@ -13,6 +13,7 @@ meson setup \
   -D debug=false \
   -D b_ndebug=true \
   -D loglevel=off \
+  -D b_lto=true \
   -D prefix="${deploy_dir}/appdir-linux/usr" \
   "${deploy_dir}/build-linux" \
   "${deploy_dir}/.."

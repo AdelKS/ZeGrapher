@@ -50,12 +50,12 @@
             "type": "shell",
             "command": "./src/ZeGrapher",
             "options": {
-                "cwd": "${cwd}/build-zg-debug",
+                "cwd": "${cwd}/build-zg-debug"
             },
             "dependsOn": "build-debug",
             "problemMatcher": []
         },
-         {
+        {
             "label": "setup-debug-asan",
             "type": "shell",
             "command": "[ -d \"${cwd}/build-zg-debug-asan\" ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true"
@@ -171,12 +171,13 @@
         {
             "label": "setup-release",
             "type": "shell",
-            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off"
+            "command": "[ -d \"${cwd}/build-zg-release\" ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true"
         },
         {
             "label": "resetup-release",
             "type": "shell",
-            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off"
+            "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true",
+            "problemMatcher": []
         },
         {
             "label": "build-release",
