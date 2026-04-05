@@ -173,4 +173,5 @@ executable('ZeGrapher',
   link_with: zg_static_lib,
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
+  win_subsystem: 'windows',
   install: true)
