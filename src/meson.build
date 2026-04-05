@@ -104,6 +104,7 @@ qml_files = files(
   './QML/ZeLabel.qml',
   './QML/ZeRadioButton.qml',
   './QML/ZeSpinBox.qml',
+  './QML/ZeTabButton.qml',
   './QML/ZeTextEdit.qml',
   './QML/ZoomSettings.qml',
 )

@@ -48,22 +48,22 @@ Item {
         console.log("UserInputPanel: TabBar: implicitWidth: ", implicitWidth);
       }
 
-      TabButton {
+      ZeTabButton {
         id: mathTabButton
         text: qsTr("Math")
       }
 
-      TabButton {
+      ZeTabButton {
         id: gridTabButton
         text: qsTr("Grid")
       }
 
-      TabButton {
+      ZeTabButton {
         id: graphTabButton
         text: qsTr("Graph")
       }
 
-      TabButton {
+      ZeTabButton {
         id: appTabButton
         text: qsTr("App")
       }
