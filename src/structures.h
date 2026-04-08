@@ -25,7 +25,7 @@
 #include <QtWidgets>
 
 #include <QMetaType>
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #define NORMAL 0
 #define ZOOMER 1
