@@ -1,4 +1,7 @@
 *.user
 deploy/*
+!deploy/*.sh
+!deploy/*.yml
+!deploy/dmg-resources/
 build*
 clangd-compile-db

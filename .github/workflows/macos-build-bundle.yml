@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Dependencies
-        run: brew install boost coreutils qtbase qtsvg qtdeclarative qttools qttranslations meson
+        run: brew install boost coreutils qtbase qtsvg qtdeclarative qttools qttranslations meson create-dmg
 
       - name: Select correct Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.4.app
