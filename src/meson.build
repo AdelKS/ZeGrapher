@@ -134,11 +134,6 @@ moc_files = qt6.compile_moc(
   dependencies: qt6_dep
 )
 
-zg_static_lib = static_library('ZeGrapherLib',
-  source_files, compiled_ressources, moc_files,
-  include_directories: inc,
-  dependencies: [qt6_dep, boost_dep, zecalculator_dep])
-
 qml_mods = qt6.qml_module(
   'ZeGrapher',
   qml_sources: qml_files,
@@ -148,8 +143,7 @@ qml_mods = qt6.qml_module(
 )
 
 executable('ZeGrapher',
-  sources: ['main.cpp', compiled_ressources, qml_mods],
-  link_with: zg_static_lib,
+  sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
   win_subsystem: 'windows',
