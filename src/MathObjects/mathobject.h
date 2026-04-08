@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include <QtQmlIntegration>
+#include <QtQmlIntegration/qqmlintegration.h>
 #include <QObject>
 #include <QSyntaxHighlighter>
 

@@ -127,10 +127,13 @@ endforeach
 
 qt6 = import('qt6')
 
+# Add QtQmlIntegration include directory for QML_ELEMENT macros
+qt_qmlintegration_inc = include_directories('/opt/homebrew/Cellar/qtdeclarative/6.11.0/include')
+
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
 moc_files = qt6.compile_moc(
   headers : moc_header_files,
-  include_directories: inc,
+  include_directories: [inc, qt_qmlintegration_inc],
   dependencies: qt6_dep
 )
 
@@ -138,13 +141,13 @@ qml_mods = qt6.qml_module(
   'ZeGrapher',
   qml_sources: qml_files,
   moc_headers: qmlcpp_files,
-  include_directories: qmlcpp_inc_dirs,
+  include_directories: [qmlcpp_inc_dirs, qt_qmlintegration_inc],
   dependencies: [qt6_dep],
 )
 
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
-  include_directories: [inc] + qmlcpp_inc_dirs,
+  include_directories: [inc] + qmlcpp_inc_dirs + [qt_qmlintegration_inc],
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
   win_subsystem: 'windows',
   install: true)
