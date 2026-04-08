@@ -15,8 +15,10 @@ echo ")"
 echo
 
 echo "moc_header_files = files("
-for f in $(grep -E -lir --include=*.h "Q_OBJECT" . | grep -E -v "(Q_GADGET|QML_ELEMENT)" | sort); do
-    echo "  '$f',"
+for f in $(grep -E -lir --include=*.h "Q_OBJECT" . | sort -u ); do
+    if ! grep -E "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)" "$f" &> /dev/null; then
+        echo "  '$f',"
+    fi
 done
 echo ")"
 echo
