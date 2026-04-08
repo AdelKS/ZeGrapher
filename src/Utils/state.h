@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include <zecalculator/error.h>
 #include <zecalculator/parsing/data_structures/token.h>

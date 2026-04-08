@@ -23,6 +23,7 @@
 #include <QColor>
 #include <QMetaType>
 #include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 struct ThemedColor
 {
