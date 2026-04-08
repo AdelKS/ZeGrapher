@@ -2,3 +2,4 @@
 deploy/*
 build*
 clangd-compile-db
+.DS_Store
