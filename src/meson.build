@@ -128,7 +128,10 @@ endforeach
 qt6 = import('qt6')
 
 # Add QtQmlIntegration include directory for QML_ELEMENT macros
-qt_qmlintegration_inc = include_directories('/opt/homebrew/Cellar/qtdeclarative/6.11.0/include')
+# Get Qt installation prefix from qmake and construct the include path dynamically
+qt_qmake = find_program('qmake6', 'qmake')
+qt_prefix = run_command(qt_qmake, '-query', 'QT_INSTALL_HEADERS', check: true).stdout().strip()
+qt_qmlintegration_inc = include_directories(qt_prefix)
 
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
 moc_files = qt6.compile_moc(
