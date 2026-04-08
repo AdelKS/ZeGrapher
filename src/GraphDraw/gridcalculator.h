@@ -98,6 +98,7 @@ protected:
   QString get_coordinate_string(const ZeLinAxisSettings &axisSettings, double multiplier);
 
   double targetTicksNum;
+  static constexpr int minDistBetweenCoordinates = 5;
   const ZeAxesSettings& axesSettings;
 };
 
@@ -106,7 +107,8 @@ int GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
                                     double realStep,
                                     const QFontMetrics &metrics)
 {
-  double multiplier = floor(scaled_range.min.v / realStep) * realStep;
+  // get the next tick value _within_ the range
+  double multiplier = std::ceil(scaled_range.min.v / realStep) * realStep;
   int maxStrPxSize = 0, currentStrPxSize = 0;
   QString posStr;
 
@@ -176,8 +178,6 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
   const double windowWidth = axis_mapper.template getRange<zg::pixel>().amplitude().v;
 
-  double pxPerUnit = windowWidth / range.amplitude().v;
-
   ZeLinAxisTicks axisTicks;
 
   const ZeLinAxisSettings &axisSettings = axis == ZeAxisName::X
@@ -188,9 +188,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   if (std::isnan(constantMultiplier) or constantMultiplier == 0)
     constantMultiplier = 1.0;
 
-  zg::real_range1d scaledOffsetRange(range), offsetRange(range);
+  zg::real_range1d scaledOffsetRange(range);
   scaledOffsetRange /= constantMultiplier;
-  offsetRange /= constantMultiplier;
 
   double baseStep;
   double realStep;
@@ -199,10 +198,6 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   axisTicks.offset.sumOffset = 0;
   axisTicks.offset.sumPowerOffset = 0;
   axisTicks.offset.basePowerOffset = 0;
-
-  bool goodSpacing = false;
-
-  bool previously_increased = false;
 
   // TODO: start from biggest step, which is lround(log10(scaledRange.amplitude())) then go down and down till
   // there's no more space for writing numbers
@@ -220,26 +215,29 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   {
     axisTicks.offset.sumOffset = trunc(scaledOffsetRange.min.v * int_pow(10.0, -amplitudePower))
                                  / int_pow(10.0, -amplitudePower);
-    offsetRange -= zg::real_unit{axisTicks.offset.sumOffset};
+    scaledOffsetRange -= zg::real_unit{axisTicks.offset.sumOffset};
 
     int sumOffsetPow = lround(log10(axisTicks.offset.sumOffset));
     if (-sumOffsetPow >= axisSettings.maxDigitsNum)
       axisTicks.offset.sumPowerOffset = sumOffsetPow;
   }
 
-  scaledOffsetRange = offsetRange;
   int targetPower = lround(log10(scaledOffsetRange.amplitude().v / targetTicksNum));
+
+  bool goodSpacing = false;
+  bool previously_increased = false;
+  double pxPerUnit = windowWidth / scaledOffsetRange.amplitude().v;
 
   while (not goodSpacing)
   {
     if (abs(targetPower) >= axisSettings.maxDigitsNum)
     {
-      scaledOffsetRange = offsetRange;
       scaledOffsetRange *= int_pow(10.0, -targetPower);
       pxPerUnit = windowWidth / scaledOffsetRange.amplitude().v;
 
-      axisTicks.offset.basePowerOffset = targetPower;
+      axisTicks.offset.basePowerOffset += targetPower;
       targetPower = 0;
+      previously_increased = false;
     }
 
     baseStep = int_pow(10.0, targetPower);
@@ -247,15 +245,13 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
     int maxStrPxSize = getMaxStrPxSize<axis>(scaledOffsetRange, realStep, metrics);
 
-    if (double(maxStrPxSize) - constantMultiplier * realStep * pxPerUnit > 0)
+    if (double(maxStrPxSize) + minDistBetweenCoordinates >= realStep * pxPerUnit)
     {
       base10Inc(targetPower, baseMultiplier);
       previously_increased = true;
     }
-    else if (realStep * pxPerUnit * constantMultiplier / previousMultiplier(baseMultiplier)
-                 - double(maxStrPxSize)
-               > 0
-             && !previously_increased)
+    else if (!previously_increased
+             and double(maxStrPxSize) + minDistBetweenCoordinates <= baseStep * previousMultiplier(baseMultiplier) * pxPerUnit)
     {
       base10Dec(targetPower, baseMultiplier);
       previously_increased = false;
