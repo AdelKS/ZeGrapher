@@ -36,7 +36,7 @@ endif
 
 add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', language : 'cpp')
 
-qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets'])
+qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets', 'QmlIntegration'])
 boost_dep = dependency('boost')
 zecalculator_dep = dependency('zecalculator')
 
