@@ -21,7 +21,7 @@
 ****************************************************************************/
 
 #include <QObject>
-#include <QtQmlIntegration>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include "GraphDraw/axismapper.h"
 #include "MathObjects/expr.h"

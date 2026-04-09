@@ -2,7 +2,7 @@
 
 #include <QQuickTextDocument>
 #include <QSyntaxHighlighter>
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/state.h"
 

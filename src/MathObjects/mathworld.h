@@ -24,7 +24,7 @@
 
 #include <QAbstractListModel>
 
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 namespace zc {
   /// @note we need this declaration of global variable be before the ZG one

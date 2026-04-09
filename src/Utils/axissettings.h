@@ -24,7 +24,7 @@
 #include <QMetaType>
 #include <QObject>
 #include <QString>
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include "MathObjects/expr.h"
 #include "Utils/themedcolor.h"

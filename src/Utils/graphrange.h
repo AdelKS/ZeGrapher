@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include "GraphDraw/axismapper.h"
 #include "MathObjects/expr.h"

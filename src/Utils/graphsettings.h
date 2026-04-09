@@ -19,7 +19,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 #include <QObject>
 #include <QFont>
 #include <QColor>
