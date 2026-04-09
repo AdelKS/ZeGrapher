@@ -24,7 +24,7 @@
 
 #include <QAbstractTableModel>
 
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 #include <vector>
 
 namespace zg {

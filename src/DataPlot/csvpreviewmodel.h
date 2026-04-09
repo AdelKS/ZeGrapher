@@ -23,7 +23,7 @@
 #include <QAbstractTableModel>
 #include <QUrl>
 
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 namespace zg {
 

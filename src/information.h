@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include <zecalculator/zecalculator.h>
 

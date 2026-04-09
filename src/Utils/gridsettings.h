@@ -23,7 +23,7 @@
 #include <QMetaType>
 #include <QObject>
 #include <QString>
-#include <QtQml/qqmlregistration.h>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/themedcolor.h"
 
