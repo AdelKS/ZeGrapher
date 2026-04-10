@@ -20,8 +20,8 @@ Rectangle {
     id: flick
 
     anchors.fill: parent
-    anchors.leftMargin: 4
-    anchors.rightMargin: 4
+    anchors.leftMargin: 6
+    anchors.rightMargin: 6
     contentWidth: Math.max(edit.contentWidth, parent.width)
     contentHeight: Math.max(edit.contentHeight, parent.height)
     clip: true
