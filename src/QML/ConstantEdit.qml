@@ -47,7 +47,7 @@ Item {
       id: constant
 
       Layout.fillWidth: true
-      Layout.alignment: Qt.AlignVCenter
+      Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
 
       focus: true
       textInput.validator: DoubleValidator{}
