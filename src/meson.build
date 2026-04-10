@@ -6,6 +6,7 @@ inc = include_directories('.')
 # BEGIN AUTOGEN SRC-LIST
 
 source_files = [
+  'main.cpp',
   'Calculus/polynomial.cpp',
   'Calculus/polynomialregression.cpp',
   'Calculus/regression.cpp',
@@ -126,6 +127,9 @@ foreach qmlcpp_file: qmlcpp_files
 endforeach
 
 qt6 = import('qt6')
+qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets', 'QmlIntegration'])
+boost_dep = dependency('boost')
+zecalculator_dep = dependency('zecalculator')
 
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
 moc_files = qt6.compile_moc(
@@ -143,8 +147,9 @@ qml_mods = qt6.qml_module(
 )
 
 executable('ZeGrapher',
-  sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
+  sources: [source_files, compiled_ressources, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
-  win_subsystem: 'windows',
+  win_subsystem: 'windows', # useful for Windows: displays the app without spawning
+                            # a console alongside it, no-op on other platforms.
   install: true)
