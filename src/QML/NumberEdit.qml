@@ -5,7 +5,6 @@ import QtQuick
 Rectangle {
   id: rec
   property alias textInput: edit
-  property int textMargin: 5
 
   clip: true
 
@@ -16,8 +15,7 @@ Rectangle {
 
   border.color: edit.text === "" ? "grey" : Information.appSettings.validSyntax;
 
-  height: Math.max(textMetrics.height, edit.font.pixelSize) + 2*rec.textMargin + border.width
-
+  implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 10 + 2*border.width
 
   color: myPalette.base
 
@@ -25,16 +23,19 @@ Rectangle {
     id: edit
     verticalAlignment: TextInput.AlignVCenter
     anchors.fill: parent
-    anchors.margins: rec.textMargin
+    anchors.leftMargin: 4
+    anchors.rightMargin: 4
     color: myPalette.text
     focus: true
+    font: Information.appSettings.font
     text: ""
     validator: DoubleValidator{}
   }
 
   TextMetrics {
     id: textMetrics
-    text: edit.text
+    text: "=+-*/_()0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    font: edit.font
   }
 
 }
