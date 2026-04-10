@@ -75,23 +75,31 @@ Item {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
+      implicitWidth: Math.max(mathObjects.implicitWidth, gridSettings.implicitWidth, graphSettings.implicitWidth, appSettings.implicitWidth)
+
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 
       onImplicitWidthChanged: {
         console.log("UserInputPanel: SwipeView: implicitWidth: ", implicitWidth);
       }
 
-      MathObjects {}
+      MathObjects {
+        id: mathObjects
+      }
 
       GridSettings {
+        id: gridSettings
         graphSettings: userInputPanel.graphSettings
       }
 
       GraphSettings {
+        id: graphSettings
         graphSettings: userInputPanel.graphSettings
       }
 
-      AppSettings {}
+      AppSettings {
+        id: appSettings
+      }
 
     }
   }
