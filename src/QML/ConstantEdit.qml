@@ -13,7 +13,7 @@ Item {
   property alias exprEdit: zcExprEdit
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
-  implicitHeight: zcExprEdit.implicitHeight
+  implicitHeight: mainLayout.implicitHeight
 
   Behavior on height { SmoothedAnimation { duration: 200 } }
 
@@ -23,41 +23,105 @@ Item {
     root.destroy(200);
   }
 
-  RowLayout {
+  ColumnLayout {
+    id: mainLayout
     anchors.fill: parent
 
-    ZcExprEdit {
-      id: zcExprEdit
+    RowLayout {
 
-      state: root.backend.state
-      onTextEdited: root.backend.setName(expression)
+      ZcExprEdit {
+        id: zcExprEdit
 
-      Layout.fillWidth: true
-      Layout.alignment: Qt.AlignVCenter
+        state: root.backend.state
+        onTextEdited: root.backend.setName(expression)
+
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignVCenter
+      }
+
+      ZeLabel {
+        text: "="
+        Layout.maximumWidth: 20
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+      }
+
+      NumberEdit
+      {
+        id: constant
+
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+
+        focus: true
+        textInput.validator: DoubleValidator{}
+      }
     }
 
-    ZeLabel {
-      text: "="
-      Layout.maximumWidth: 20
-      Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-    }
+    RowLayout {
+      id: sliderLayout
+      spacing: 0
 
-    NumberEdit
-    {
-      id: constant
+      Layout.maximumHeight: maxHeight
 
-      Layout.fillWidth: true
-      Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+      property int maxHeight: implicitHeight
 
-      focus: true
-      textInput.validator: DoubleValidator{}
+      NumberEdit {
+        id: sliderLowerBound
+        implicitWidth: 70
+      }
 
-      Connections {
-        target: constant.textInput
-        function onTextEdited() {
-          console.debug("new double value: ", constant.textInput.text);
-          backend.set_value(parseFloat(constant.textInput.text));
+      Slider {
+        id: slider
+        Layout.fillWidth: true
+
+        onMoved: {
+
         }
+
+        from: 0.
+        stepSize: 0.01
+        value: 0.5
+        to: 1.
+      }
+
+      NumberEdit {
+        id: sliderUpperBound
+        implicitWidth: 70
+      }
+    }
+  }
+
+  states: [
+    State {
+      name: "hidden";
+      when: constant.textInput.text.length === 0
+      PropertyChanges {
+        sliderLayout.maxHeight: 0
+        sliderLayout.visible: false
+      }
+    },
+    State {
+      name: "shown";
+      when: constant.textInput.text.length !== 0
+      PropertyChanges {
+        sliderLayout.maxHeight: sliderLayout.implicitHeight
+        sliderLayout.visible: true
+      }
+    }
+  ]
+
+  transitions: Transition {
+    reversible: true
+    from: "shown"
+    to: "hidden"
+    SequentialAnimation {
+      NumberAnimation {
+        easing.type: Easing.InOutQuad;
+        property: "maxHeight";
+        duration: 400;
+      }
+      PropertyAction {
+        property: "visible"
       }
     }
   }
