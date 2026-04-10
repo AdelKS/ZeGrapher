@@ -13,7 +13,7 @@ Rectangle {
   border.width: 1.5
   radius: 4
 
-  border.color: edit.text === "" ? "grey" : Information.appSettings.validSyntax;
+  border.color: edit.text === "" ? "grey" : Information.appSettings.validSyntax.current;
 
   implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 10 + 2*border.width
 
