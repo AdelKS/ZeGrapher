@@ -7,34 +7,34 @@ pushd "$SCRIPT_DIR" > /dev/null
 echo "# BEGIN AUTOGEN SRC-LIST"
 echo
 
-echo "source_files = files("
+echo "source_files = ["
 for f in $(find . -type f -name "*.cpp" -and -not -name "main.cpp" | sort); do
     echo "  '$f',"
 done
-echo ")"
+echo "]"
 echo
 
-echo "moc_header_files = files("
+echo "moc_header_files = ["
 for f in $(grep -E -lir --include=*.h "Q_OBJECT" . | sort -u ); do
     if ! grep -E "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)" "$f" &> /dev/null; then
         echo "  '$f',"
     fi
 done
-echo ")"
+echo "]"
 echo
 
-echo "qml_files = files("
+echo "qml_files = ["
 for f in $(find . -type f -name "*.qml" | sort); do
     echo "  '$f',"
 done
-echo ")"
+echo "]"
 echo
 
-echo "qmlcpp_files = files("
+echo "qmlcpp_files = ["
 for f in $(grep -E -lir --include=*.h "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)" . | sort); do
     echo "  '$f',"
 done
-echo ")"
+echo "]"
 echo
 
 echo "# END AUTOGEN SRC-LIST"
