@@ -56,6 +56,8 @@ void Sampler::refresh_valid_objects()
         or std::isnan(style->getEnd().v)
         or (f->isDiscrete() and std::isnan(style->getStep().v))
         or style->getStart() >= style->getEnd()
+        or f->getType() == zg::MathObject::CONSTANT
+        or f->getType() == zg::MathObject::EXPR
         )
       continue;
 
