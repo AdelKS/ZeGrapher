@@ -5,6 +5,17 @@ import QtQuick
 Rectangle {
   id: rec
   property alias textInput: edit
+  property double value: NaN
+
+  signal numberEdited();
+
+  function setValue(val: double) {
+    if (!isNaN(val))
+      edit.text = val.toString();
+    else edit.text = "";
+
+    value = val;
+  }
 
   clip: true
 
@@ -30,6 +41,11 @@ Rectangle {
     font: Information.appSettings.font
     text: ""
     validator: DoubleValidator{}
+
+    onTextEdited: {
+      rec.value = parseFloat(text);
+      rec.numberEdited();
+    }
   }
 
   TextMetrics {
