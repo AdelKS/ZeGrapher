@@ -4,13 +4,6 @@
 #include "information.h"
 #include "sampler.h"
 
-/// @brief returns the square distance between B and the segment [AB]
-inline double sq_dist_to_segment(const zg::pixel_pt& A, const zg::pixel_pt& P, const zg::pixel_pt& B) {
-  const zg::pixel_pt AB = B - A;
-  const zg::pixel_pt AP = P - A;
-  const double t = std::max(0., std::min(AP.dot(AB) / AB.square_length(), 1.));
-  return (AP - t * AB).square_length();
-};
 
 template <zg::PlotStyle::CoordinateSystem coordinates, zg::CurveType t>
 void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
@@ -76,6 +69,7 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
 
   auto& input_vals = data.input;
   auto& curve = data.curve;
+  auto& px_curve = data.px_curve;
 
   const auto range = data.style.getRange();
 
@@ -97,6 +91,10 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
     data.pop_front(vals_to_pop);
   }
 
+  px_curve.resize(curve.size());
+  std::ranges::transform(curve, px_curve.begin(),
+                         [&](const auto& pt) { return QPointF(mapper.to<zg::pixel>(pt)); });
+
   std::string obj_name = zc::utils::overloaded{
     [&](const zc::DynMathObject<zc_t>* f)
     {
@@ -116,6 +114,7 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
   const zg::real_unit max_step = data.get_biggest_allowed_step();
 
   auto uniform_sample = [&](zg::real_unit start, zg::real_unit end) {
+    std::vector<QPointF> px_points;
     std::vector<zg::real_pt> points;
     std::vector<zg::real_unit> input;
 
@@ -123,19 +122,21 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
     const size_t reserve = std::max((end - start) / max_step, 0.0);
     points.reserve(reserve);
     input.reserve(reserve);
+    px_points.reserve(reserve);
 
     for (auto pos = start ; pos <= end; pos += max_step)
     {
       input.push_back(pos);
       points.push_back(get_f_pt(pos));
+      px_points.push_back(QPointF(mapper.to<zg::pixel>(points.back())));
     }
 
-    return std::make_pair(input, points);
+    return std::make_tuple(input, points, px_points);
   };
 
   if (curve.empty())
   {
-    std::tie(input_vals, curve) = uniform_sample(get_acceptable_input(range.min), range.max);
+    std::tie(input_vals, curve, px_curve) = uniform_sample(get_acceptable_input(range.min), range.max);
   }
   else
   {
@@ -145,8 +146,8 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
         or is_nan_pt(min_pt) or is_nan_pt(curve.front())
         or (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front())).square_length() > sq_px_step)
     {
-      auto&& [x, f_x] = uniform_sample(min, input_vals.front());
-      data.insert_chunk(0, x, f_x);
+      auto&& [x, f_x, px_f_x] = uniform_sample(min, input_vals.front());
+      data.insert_chunk(0, x, f_x, px_f_x);
     }
 
     const auto max = get_acceptable_input(range.max);
@@ -155,8 +156,8 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
         or is_nan_pt(max_pt) or is_nan_pt(curve.back())
         or (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back())).square_length() > sq_px_step)
     {
-      auto&& [x, f_x] = uniform_sample(input_vals.back(), max);
-      data.insert_chunk(input_vals.size(), x, f_x);
+      auto&& [x, f_x, px_f_x] = uniform_sample(input_vals.back(), max);
+      data.insert_chunk(input_vals.size(), x, f_x, px_f_x);
     }
   }
 
@@ -171,27 +172,31 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
   static std::vector<zg::real_pt> f_x;
   f_x.reserve(data.max_size/2);
 
+  static std::vector<QPointF> px_f_x;
+  px_f_x.reserve(data.max_size/2);
+
   do
   {
     indices.clear();
     x.clear();
     f_x.clear();
+    px_f_x.clear();
 
     for (size_t i = 0 ; i + 1 < input_vals.size() ; i++)
     {
       const size_t i_b = i;
       const zg::real_unit& b = input_vals[i_b];
       const zg::real_pt& B = curve[i_b];
-      const zg::pixel_pt px_B = mapper.to<zg::pixel>(B);
+      const QPointF& px_B = px_curve[i_b];
 
       const size_t i_c = i+1;
       const zg::real_unit& c = input_vals[i_c];
       const zg::real_pt& C = curve[i_c];
-      const zg::pixel_pt px_C = mapper.to<zg::pixel>(C);
+      const QPointF& px_C = px_curve[i_c];
 
       const zg::real_unit bc = c - b;
-      const zg::pixel_pt px_BC = px_C - px_B;
-      const double px_sq_BC = px_BC.square_length();
+      const QPointF px_BC = px_C - px_B;
+      const double px_sq_BC = QPointF::dotProduct(px_BC, px_BC);
 
       const bool nan_pt = is_nan_pt(B) or is_nan_pt(C);
 
@@ -205,15 +210,17 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
             if (not (b < mid_input and mid_input < c))
               continue;
           }
+          const auto new_pt = get_f_pt(mid_input);
           indices.push_back(i_c);
           x.push_back(mid_input);
-          f_x.push_back(get_f_pt(mid_input));
+          f_x.push_back(new_pt);
+          px_f_x.push_back(QPointF(mapper.to<zg::pixel>(new_pt)));
         }
       }
     }
 
     if (not indices.empty())
-      data.sparse_insert(indices, x, f_x);
+      data.sparse_insert(indices, x, f_x, px_f_x);
 
   } while(not indices.empty());
 

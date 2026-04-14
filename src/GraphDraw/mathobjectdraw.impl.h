@@ -48,7 +48,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve<t>& f_curve)
           draw_mapped_curve();
       }
 
-      auto px_pt = QPointF(viewMapper.to<zg::pixel>(pt));
+      auto px_pt = QPointF(f_curve.px_curve[i]);
       if (style.lineStyle != Qt::PenStyle::NoPen)
         mapped_curve.push_back(px_pt);
 

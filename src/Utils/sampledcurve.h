@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <QPointF>
+
 #include "GraphDraw/axismapper.h"
 #include "plotstyle.h"
 
@@ -40,9 +42,13 @@ struct SampledCurve {
   /// @param index: at which index to insert before
   /// @param x: the input values to the function
   /// @param f_x: the points to insert, image of 'input' by the function
+  /// @param px_f_x: to points to insert in pixel units
   /// @note old index is moved by input.size() positions
   /// @note input.size() == pts.size() is required
-  void insert_chunk(size_t index, const std::vector<real_unit>& x, const std::vector<real_pt>& f_x);
+  void insert_chunk(size_t index,
+                    const std::vector<real_unit>& x,
+                    const std::vector<real_pt>& f_x,
+                    const std::vector<QPointF>& px_f_x);
 
   /// @brief inserts a set of points into the existing dataset
   /// @param indices: at what indices to insert before, relative to _current_ curve state before any insertion happens
@@ -50,7 +56,10 @@ struct SampledCurve {
   ///                 e.g. if curve.size() == 2, one can only insert 3 points, at indices [0,1,2]
   /// @param x: the input value that was used to compute each point at the same index in 'pts'
   /// @param f_x: the points to insert, image of 'input' by the function
-  void sparse_insert(std::vector<size_t> indices, std::vector<real_unit> x, std::vector<real_pt> f_x);
+  void sparse_insert(const std::vector<size_t>& indices,
+                     const std::vector<real_unit>& x,
+                     const std::vector<real_pt>& f_x,
+                     const std::vector<QPointF>& px_f_x);
 
   void pop_back(size_t pop_num);
 
@@ -74,6 +83,9 @@ struct SampledCurve {
 
   /// @brief the computed points of this object's curve
   std::vector<real_pt> curve = {};
+
+  /// @brief pixel coordinates of 'curve', updated by the Sampler after each sampling pass
+  std::vector<QPointF> px_curve = {};
 };
 
 } // namespace zg

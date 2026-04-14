@@ -155,14 +155,14 @@ void Sampler::update_discontinuities(zg::SampledCurveContinuous& data)
   for (size_t i = 0; i + 1 < input_vals.size(); i++)
   {
     const zg::real_pt& B = curve[i];
-    const zg::pixel_pt px_B = mapper.to<zg::pixel>(B);
+    const QPointF& px_B = data.px_curve[i];
 
     const zg::real_pt& C = curve[i+1];
-    const zg::pixel_pt px_C = mapper.to<zg::pixel>(C);
+    const QPointF& px_C = data.px_curve[i+1];
 
     const zg::real_unit bc = input_vals[i+1] - input_vals[i];
-    const zg::pixel_pt px_BC = px_C - px_B;
-    const double px_sq_BC = px_BC.square_length();
+    const QPointF px_BC = px_C - px_B;
+    const double px_sq_BC = QPointF::dotProduct(px_BC, px_BC);
 
     if (is_nan_pt(B) or is_nan_pt(C))
       continue;
@@ -173,22 +173,20 @@ void Sampler::update_discontinuities(zg::SampledCurveContinuous& data)
     bool is_discontinuity = true;
     if (i > 0)
     {
-      const zg::real_pt& A = curve[i-1];
-      const zg::pixel_pt px_A = mapper.to<zg::pixel>(A);
-      const zg::pixel_pt px_AB = px_B - px_A;
-      const double dot = px_AB.dot(px_BC);
+      const QPointF& px_A = data.px_curve[i-1];
+      const QPointF px_AB = px_B - px_A;
+      const double dot = QPointF::dotProduct(px_AB, px_BC);
       if (sq_dist_to_segment(px_A, px_B, px_C) < 4 * sq_px_step and dot > 0
-          and dot * dot > 0.9 * px_AB.square_length() * px_BC.square_length())
+          and dot * dot > 0.9 * QPointF::dotProduct(px_AB, px_AB) * px_sq_BC)
         is_discontinuity = false;
     }
     if (is_discontinuity and i + 2 < input_vals.size())
     {
-      const zg::real_pt& D = curve[i+2];
-      const zg::pixel_pt px_D = mapper.to<zg::pixel>(D);
-      const zg::pixel_pt px_CD = px_D - px_C;
-      const double dot = px_BC.dot(px_CD);
+      const QPointF& px_D = data.px_curve[i+2];
+      const QPointF px_CD = px_D - px_C;
+      const double dot = QPointF::dotProduct(px_BC, px_CD);
       if (sq_dist_to_segment(px_B, px_C, px_D) < 4 * sq_px_step and dot > 0
-          and dot * dot > 0.9 * px_BC.square_length() * px_CD.square_length())
+          and dot * dot > 0.9 * px_sq_BC * QPointF::dotProduct(px_CD, px_CD))
         is_discontinuity = false;
     }
 
