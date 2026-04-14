@@ -41,31 +41,6 @@ void SampledCurve<t>::erase_chunk(size_t from, size_t size)
 
   const size_t to = from + size;
 
-  if constexpr (t == CurveType::CONTINUOUS)
-  {
-    auto handle_container = [&](auto& container)
-    {
-      std::vector<size_t> to_reinsert;
-      for (auto it = container.begin(); it != container.end();)
-      {
-        if (from <= *it and *it < to)
-          it = container.erase(it);
-        else if (to <= *it)
-        {
-          to_reinsert.push_back((*it) - size);
-          it = container.erase(it);
-        }
-        else ++it;
-      }
-
-      for (size_t i: to_reinsert) container.insert(i);
-    };
-
-    handle_container(discontinuities);
-  }
-
-  Q_ASSERT(input.size() == curve.size());
-
   input.erase(input.begin() + from, input.begin() + to);
   curve.erase(curve.begin() + from, curve.begin() + to);
 }
@@ -87,27 +62,51 @@ zg::real_unit SampledCurve<t>::get_smallest_allowed_step() const
 };
 
 template <CurveType t>
-void SampledCurve<t>::insert_pt(size_t index, zg::real_unit x, zg::real_pt pt)
+void SampledCurve<t>::insert_chunk(size_t index, const std::vector<real_unit>& x, const std::vector<real_pt>& f_x)
 {
-  curve.insert(curve.begin() + index, pt);
-  input.insert(input.begin() + index, x);
+  assert(x.size() == f_x.size());
 
+  input.insert(input.begin() + index, x.begin(), x.end());
+  curve.insert(curve.begin() + index, f_x.begin(), f_x.end());
   if constexpr (t == CurveType::CONTINUOUS)
-  {
-    std::vector<size_t> to_reinsert;
-    to_reinsert.reserve(curve.size()/2);
-    for (auto it = discontinuities.begin(); it != discontinuities.end();)
-    {
-      if (index <= *it)
-      {
-        to_reinsert.push_back((*it) + 1);
-        it = discontinuities.erase(it);
-      }
-      else ++it;
-    }
+    discontinuities.clear();
+}
 
-    for (size_t i: to_reinsert) discontinuities.insert(i);
+template <CurveType t>
+void SampledCurve<t>::sparse_insert(std::vector<size_t> indices, std::vector<real_unit> x, std::vector<real_pt> f_x)
+{
+  assert(indices.size() <= curve.size()); // can only insert as many points as there are originally in  'curve'
+  assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
+  assert(indices.size() == x.size() and x.size() == f_x.size());
+
+  std::vector<real_pt> new_curve;
+  new_curve.reserve(curve.size() + indices.size());
+
+  std::vector<real_unit> new_input;
+  new_input.reserve(curve.size() + indices.size());
+
+  size_t curve_index = 0, indices_metaindex = 0;
+  while (curve_index != curve.size() and indices_metaindex != indices.size())
+  {
+    if (indices[indices_metaindex] <= curve_index)
+    {
+      new_input.push_back(x[indices_metaindex]);
+      new_curve.push_back(f_x[indices_metaindex]);
+      indices_metaindex++;
+    }
+    else
+    {
+      new_input.push_back(input[curve_index]);
+      new_curve.push_back(curve[curve_index]);
+      curve_index++;
+    }
   }
+
+  new_input.insert(new_input.end(), input.begin() + curve_index, input.end());
+  new_curve.insert(new_curve.end(), curve.begin() + curve_index, curve.end());
+
+  curve = std::move(new_curve);
+  input = std::move(new_input);
 }
 
 } // namespace zg

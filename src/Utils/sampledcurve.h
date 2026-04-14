@@ -33,10 +33,24 @@ struct SampledCurve {
 
   void clear();
 
-  /// @brief remove curve 'size' points from 'from' (included)
+  /// @brief remove curve 'size' points starting from 'from' (included)
   void erase_chunk(size_t from, size_t size);
 
-  void insert_pt(size_t index, real_unit input, real_pt pt);
+  /// @brief inserts a chunk of points before 'index'
+  /// @param index: at which index to insert before
+  /// @param x: the input values to the function
+  /// @param f_x: the points to insert, image of 'input' by the function
+  /// @note old index is moved by input.size() positions
+  /// @note input.size() == pts.size() is required
+  void insert_chunk(size_t index, const std::vector<real_unit>& x, const std::vector<real_pt>& f_x);
+
+  /// @brief inserts a set of points into the existing dataset
+  /// @param indices: at what indices to insert before, relative to _current_ curve state before any insertion happens
+  ///                 **MUST** be sorted in increasing order, can only insert once at _any_ index
+  ///                 e.g. if curve.size() == 2, one can only insert 3 points, at indices [0,1,2]
+  /// @param x: the input value that was used to compute each point at the same index in 'pts'
+  /// @param f_x: the points to insert, image of 'input' by the function
+  void sparse_insert(std::vector<size_t> indices, std::vector<real_unit> x, std::vector<real_pt> f_x);
 
   void pop_back(size_t pop_num);
 
@@ -56,7 +70,6 @@ struct SampledCurve {
                                            std::unordered_set<size_t>,
                                            std::monostate> discontinuities = {};
 
-protected:
   std::vector<real_unit> input;
 
   /// @brief the computed points of this object's curve

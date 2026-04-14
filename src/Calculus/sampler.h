@@ -54,6 +54,9 @@ protected:
   template <zg::PlotStyle::CoordinateSystem c, zg::CurveType t>
   void sample(auto, zg::SampledCurve<t>&);
 
+  /// @brief detects and records discontinuities in a fully sampled continuous curve
+  void update_discontinuities(zg::SampledCurveContinuous& data);
+
   const zg::ZeViewMapper& mapper;
 
   std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> continuous_curves;
