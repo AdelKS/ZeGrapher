@@ -57,6 +57,7 @@ qml_files = [
   'QML/ColorButton.qml',
   'QML/ConstantEdit.qml',
   'QML/CsvImportSettings.qml',
+  'QML/CurvesOverlay.qml',
   'QML/DataEdit.qml',
   'QML/DataPane.qml',
   'QML/DataTable.qml',
@@ -158,7 +159,7 @@ if compiler.get_id() == 'clang'
 endif
 
 executable('ZeGrapher',
-  sources: [source_files, compiled_ressources, moc_files, qml_mods],
+  sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
   win_subsystem: 'windows', # useful for Windows: displays the app without spawning

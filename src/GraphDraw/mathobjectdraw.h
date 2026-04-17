@@ -38,8 +38,9 @@ protected:
   void drawDataPoint(const QPointF& pt, const zg::CurveStyle& style);
 
   void drawObjects();
+  void drawMarkers();
 
-  void drawSampledCurve(const zg::SampledCurve&);
+  void drawSampledCurve(const zg::SampledCurve&, bool markersOnly = false);
 
   QPainter* painter = nullptr;
 
