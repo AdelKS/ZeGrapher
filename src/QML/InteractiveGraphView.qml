@@ -11,5 +11,13 @@ ScrollView {
 
     id: interactiveGraph
     anchors.centerIn: parent
+
+    CurvesOverlay {
+      x: interactiveGraph.graphRect.x
+      y: interactiveGraph.graphRect.y
+      width: interactiveGraph.graphRect.width
+      height: interactiveGraph.graphRect.height
+      qmlData: interactiveGraph.qmlData
+    }
   }
 }
