@@ -94,9 +94,15 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style
 
 void MathObjectDraw::drawObjects()
 {
+  const auto start = std::chrono::high_resolution_clock::now();
+
   for (const auto& [_, f_curve]: sampler.getContinuousCurves())
     drawSampledCurve(f_curve);
 
   for (const auto& [_, f_curve]: sampler.getDiscreteCurves())
     drawSampledCurve(f_curve);
+
+  const auto end = std::chrono::high_resolution_clock::now();
+
+  qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 }

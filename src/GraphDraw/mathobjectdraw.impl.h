@@ -1,7 +1,72 @@
 #pragma once
 
+#include "Utils/sampledcurve.impl.h"
 #include "globalvars.h"
 #include "mathobjectdraw.h"
+#include "viewmapper.h"
+
+/// @brief reduces the amount of points of sampledCurve and splits on discontinuities and NaN points
+inline QList<QPolygonF> buildFinalCurve(const zg::SampledCurve<zg::CurveType::CONTINUOUS>& sampledCurve,
+                                 double scale = 1.0)
+{
+  QList<QPolygonF> finalCurve;
+  const auto& curve = sampledCurve.px_curve;
+
+  if (curve.empty())
+    return finalCurve;
+
+  /// curve in-between a pair of any of the following:
+  // - discontinuity
+  // - NaNs
+  // - beginning or end of the curve
+  QPolygonF currentSection;
+  currentSection.reserve(sampledCurve.size());
+
+  auto flush = [&](size_t remainingNumPoints)
+  {
+    if (not currentSection.empty())
+      finalCurve.append(std::move(currentSection));
+
+    currentSection.reserve(remainingNumPoints);
+  };
+
+  auto causes_flush = [&](size_t i) {
+    const auto& pt = curve[i];
+    return std::isnan(pt.x()) or std::isnan(pt.y()) or sampledCurve.discontinuities.contains(i);
+  };
+
+  for (size_t i = 0; i != curve.size(); i++)
+  {
+    const auto& pt = curve[i];
+
+    if (std::isnan(pt.x()) or std::isnan(pt.y()))
+    {
+      flush(curve.size() - i);
+      continue;
+    }
+
+    if (sampledCurve.discontinuities.contains(i))
+      flush(curve.size() - i);
+
+    const QPointF P = curve[i] * scale;
+
+    if (currentSection.size() >= 2 and i + 1 < curve.size() and not causes_flush(i+1))
+    {
+      const QPointF& A = currentSection[currentSection.size() - 2];
+      const QPointF& B = currentSection.back();
+
+      if (sq_dist_to_line(A, P, B) >= 0.125)
+        currentSection.append(P);
+    }
+    else
+      currentSection.append(P);
+  }
+
+  flush(0);
+
+  return finalCurve;
+}
+
 
 template <zg::CurveType t>
 void MathObjectDraw::drawSampledCurve(const zg::SampledCurve<t>& f_curve)
@@ -11,52 +76,41 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve<t>& f_curve)
 
   painter->setRenderHint(QPainter::Antialiasing);
 
-  pen.setColor(Qt::red);
-  painter->setPen(pen);
-
   const auto& style = f_curve.style;
 
-  std::vector<QPointF> mapped_curve;
-  auto draw_mapped_curve = [&]()
+  if (style.lineStyle != Qt::NoPen)
   {
-    if (not mapped_curve.empty() and style.lineStyle != Qt::PenStyle::NoPen)
-    {
-      pen.setWidth(style.lineWidth);
-      pen.setColor(style.color.getCurrent());
-      pen.setStyle(style.lineStyle);
-      painter->setPen(pen);
-      painter->drawPolyline(mapped_curve.data(), mapped_curve.size());
-      mapped_curve.clear();
-    }
-  };
+    pen.setWidth(style.lineWidth);
+    pen.setColor(style.color.getCurrent());
+    pen.setStyle(style.lineStyle);
+    painter->setPen(pen);
 
-  const auto& curve = f_curve.get_curve();
-
-  for (size_t i = 0; i != curve.size(); i++)
-  {
-    const auto& pt = curve[i];
-
-    if (std::isnan(pt.y.v) or std::isnan(pt.x.v))
-    {
-      draw_mapped_curve();
-    }
+    if constexpr (t == zg::CurveType::DISCRETE)
+      painter->drawPolyline(f_curve.px_curve.data(), f_curve.px_curve.size());
     else
     {
-      if constexpr (t == zg::CurveType::CONTINUOUS)
+      const QList<QPolygonF> curve = buildFinalCurve(f_curve);
+
+      size_t plotted_points = 0;
+      for (const QPolygonF& seg : curve)
       {
-        if (f_curve.discontinuities.contains(i))
-          draw_mapped_curve();
+        painter->drawPolyline(seg);
+        plotted_points += seg.size();
       }
 
-      auto px_pt = QPointF(f_curve.px_curve[i]);
-      if (style.lineStyle != Qt::PenStyle::NoPen)
-        mapped_curve.push_back(px_pt);
-
-      if constexpr (t == zg::CurveType::DISCRETE)
-        drawDataPoint(px_pt, style);
+      qDebug() << "Plotted continuous curve with" << plotted_points << "points.";
     }
   }
 
-  draw_mapped_curve();
+  if constexpr (t == zg::CurveType::DISCRETE)
+  {
+    if (style.pointStyle == zg::PlotStyle::PointStyle::None)
+      return;
 
+    for (const QPointF& P: f_curve.px_curve)
+    {
+      if (not std::isnan(P.x()) and not std::isnan(P.y()))
+        drawDataPoint(P, style);
+    }
+  }
 }
