@@ -262,7 +262,16 @@ void Graph::drawAll()
   painter->setClipRect(graphRectScaled);
 
   sampler.update();
-  drawObjects();
+
+  const auto start = std::chrono::high_resolution_clock::now();
+
+  if (not exporting)
+    updateQmlData();
+  else drawObjects();
+
+  const auto end = std::chrono::high_resolution_clock::now();
+
+  qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
   painter->translate(QPointF(centre.x, centre.y));
 }
@@ -305,6 +314,7 @@ void Graph::drawGraph()
 
   painter->translate(figureRectScaled.topLeft());
 
+  exporting = false;
   drawAll();
 }
 
@@ -444,6 +454,7 @@ QImage *Graph::drawImage()
   QPainter p(image);
   painter = &p;
 
+  exporting = true;
   drawAll();
 
   painter = nullptr;
@@ -503,6 +514,38 @@ void Graph::computeSupportRect()
   supportRect = rect.toRect();
 }
 
+void Graph::updateQmlData()
+{
+  qmlData.clear();
+
+  for (const auto& [_, f_curve] : sampler.getCurves())
+  {
+    if (f_curve.discrete) continue;
+    if (not f_curve.style.visible) continue;
+    if (not f_curve.style.drawLine) continue;
+    if (f_curve.curve.empty()) continue;
+
+    const QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
+
+    if (segments.isEmpty()) continue;
+
+    QVariantMap curve;
+    curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
+    curve[QStringLiteral("style")]    = QVariant::fromValue(f_curve.style);
+
+    qmlData.append(std::move(curve));
+  }
+
+  // Graph rect position in item pixel coordinates
+  graphRect = QRect((figureRectScaled.x() + leftMargin) * totalScaleFactor,
+                      (figureRectScaled.y() + topMargin)  * totalScaleFactor,
+                       graphRectScaled.width()             * totalScaleFactor,
+                       graphRectScaled.height()            * totalScaleFactor);
+
+  emit qmlDataChanged();
+  emit graphRectChanged();
+}
+
 void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
 {
   QPdfWriter *pdfWriter = new QPdfWriter(fileName);
@@ -540,6 +583,7 @@ void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
 
   painter->translate(figureRectScaled.topLeft());
 
+  exporting = true;
   drawAll();
 
   painter->end();
@@ -577,6 +621,7 @@ void Graph::exportSVG(QString fileName)
 
   painter->translate(figureRectScaled.topLeft());
 
+  exporting = true;
   drawAll();
 
   painter->end();

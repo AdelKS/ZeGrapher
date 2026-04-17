@@ -22,6 +22,7 @@
 
 #include <QQuickPaintedItem>
 #include <QImage>
+#include <QVariantList>
 
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
@@ -40,11 +41,17 @@ class Graph : public QQuickPaintedItem, public MathObjectDraw
 
   Q_PROPERTY(ZeGraphSettings* settings READ getGraphSettings NOTIFY settingsChanged)
 
+  Q_PROPERTY(QVariantList qmlData READ getQmlData NOTIFY qmlDataChanged)
+  Q_PROPERTY(QRect graphRect READ getGraphRect NOTIFY graphRectChanged)
+
 public:
   explicit Graph(QQuickItem* parent = nullptr);
   QImage* drawImage();
 
   Q_INVOKABLE ZeGraphSettings* getGraphSettings() { return &settings; }
+
+  QVariantList getQmlData() const { return qmlData; }
+  QRect getGraphRect() const { return graphRect; }
 
 public slots:
   void setlegendFontSize(int size);
@@ -65,6 +72,8 @@ public slots:
 
 signals:
   void settingsChanged();
+  void qmlDataChanged();
+  void graphRectChanged();
 
 protected slots:
   void updateSettingsVals();
@@ -118,8 +127,9 @@ protected:
   void updateMarginsForAxisOffsetY();
   void writeAxisOffsetY();
 
-
   void calculateTicksAndMargins();
+
+  void updateQmlData();
 
   ZeGraphSettings settings;
 
@@ -144,6 +154,16 @@ protected:
   QRectF relFigRect;
 
   QPageLayout::Orientation orientation;
+
+  /// @brief are we painting into SVG or images ?
+  bool exporting = false;
+
+  /// @note we draw continuous curves from QML to avoid a bottleneck
+  ///       in using drawPolyline() that's very slow in QQuickPaintedItem
+  QVariantList qmlData;
+
+  /// @note we need to tell QML exactly where to draw the curves
+  QRect graphRect;
 };
 
 template <ZeAxisName axis>
