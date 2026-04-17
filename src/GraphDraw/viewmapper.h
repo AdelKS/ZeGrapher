@@ -104,6 +104,17 @@ point<u<q>> ZeViewMapper::to(unit<u<p>> x_val, unit<u<r>> y_val) const
 
 } // namespace zg
 
+/// @brief returns the squared perpendicular distance from P to the infinite straight line through A and B
+inline double sq_dist_to_line(const QPointF& A, const QPointF& P, const QPointF& B)
+{
+  // expression taken from wikipedia :P
+  // https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
+  const double sqrt_num = (B.y() - A.y())*P.x() - (B.x() - A.x())*P.y() + B.x()*A.y() - B.y()*A.x();
+  const double denom = QPointF::dotProduct(B-A, B-A);
+
+  return sqrt_num * sqrt_num / denom;
+}
+
 /// @brief returns the squared distance from P to the segment [AB] in pixel space
 inline double sq_dist_to_segment(const QPointF& A, const QPointF& P, const QPointF& B)
 {
