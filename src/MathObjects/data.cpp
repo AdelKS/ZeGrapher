@@ -48,7 +48,7 @@ bool Data::isValid()
 }
 
 State Data::sync() {
-  setState(State().update(zcMathObj.name_status()));
+  setState(State::from(zcMathObj.name_status()));
 
   return getState();
 };

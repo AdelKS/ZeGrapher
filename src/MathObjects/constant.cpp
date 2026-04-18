@@ -29,7 +29,7 @@ bool Constant::isValid()
 }
 
 State Constant::sync() {
-  setState(State().update(zcMathObj.name_status()));
+  setState(State::from(zcMathObj.name_status()));
 
   return getState();
 };

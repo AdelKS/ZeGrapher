@@ -4,30 +4,31 @@
 
 namespace zg {
 
-State& State::update(const std::optional<zc::Error>& err)
+State State::from(const std::optional<zc::Error>& err)
 {
-  opt_zc_error = err;
+  State state;
+  state.opt_zc_error = err;
 
   if (err)
   {
     if (err->type == zc::Error::EMPTY_EXPRESSION)
     {
-      status = State::NEUTRAL;
-      errorMsg.clear();
+      state.status = State::NEUTRAL;
+      state.errorMsg.clear();
     }
     else
     {
-      status = State::INVALID;
-      errorMsg = zcErrorToStr(*err);
+      state.status = State::INVALID;
+      state.errorMsg = zcErrorToStr(*err);
     }
   }
   else
   {
-    status = State::VALID;
-    errorMsg.clear();
+    state.status = State::VALID;
+    state.errorMsg.clear();
   }
 
-  return *this;
+  return state;
 }
 
 

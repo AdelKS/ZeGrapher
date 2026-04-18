@@ -85,7 +85,7 @@ State Expr::setExpression(QString expr)
 
 State Expr::sync()
 {
-  setState(State().update(zcMathObj.status()));
+  setState(State::from(zcMathObj.status()));
 
   updateValue();
 

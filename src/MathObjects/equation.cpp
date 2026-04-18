@@ -36,7 +36,7 @@ QString Equation::getName() const
 
 State Equation::sync()
 {
-  setState(State().update(zcMathObj.status()));
+  setState(State::from(zcMathObj.status()));
 
   return getState();
 };

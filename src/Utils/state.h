@@ -45,9 +45,9 @@ public:
 
   /// @brief update state using this expected
   template <class T>
-  State& update(const tl::expected<T, zc::Error>& exp);
+  static State from(const tl::expected<T, zc::Error>& exp);
 
-  State& update(const std::optional<zc::Error>& err);
+  static State from(const std::optional<zc::Error>& err);
 
   Q_INVOKABLE Status getStatus() const;
   Q_INVOKABLE QString getErrorMsg() const;
@@ -73,9 +73,9 @@ protected:
 };
 
 template <class T>
-State& State::update(const tl::expected<T, zc::Error>& exp)
+State State::from(const tl::expected<T, zc::Error>& exp)
 {
-  return update(exp.has_value() ? std::optional<zc::Error>{} : exp.error());
+  return from(exp.has_value() ? std::optional<zc::Error>{} : exp.error());
 }
 
 }
