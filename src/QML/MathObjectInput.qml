@@ -15,7 +15,6 @@ Rectangle {
   color: myPalette.window
 
   Behavior on height { SmoothedAnimation { duration: root.deleteDuration } }
-  Behavior on implicitHeight { SmoothedAnimation { duration: root.deleteDuration } }
   Behavior on opacity { SmoothedAnimation { duration: root.deleteDuration } }
 
   implicitWidth: layout.implicitWidth
@@ -55,9 +54,6 @@ Rectangle {
     id: layout
     anchors.fill: parent
     spacing: 5
-
-    implicitWidth: Math.max(firstRow.implicitWidth, loader.implicitWidth)
-    implicitHeight: firstRow.implicitHeight + loader.implicitHeight
 
     RowLayout {
       id: firstRow
