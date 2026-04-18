@@ -15,8 +15,6 @@ Item {
 
   implicitHeight: mainLayout.implicitHeight
 
-  Behavior on height { SmoothedAnimation { duration: 200 } }
-
   function removeObj() {
     root.opacity = 0;
     root.height = 0;
@@ -60,10 +58,11 @@ Item {
     RowLayout {
       id: sliderLayout
       spacing: 0
+      clip: true
 
-      Layout.maximumHeight: maxHeight
+      Layout.maximumHeight: sliderMaxHeight
 
-      property int maxHeight: implicitHeight
+      property int sliderMaxHeight: implicitHeight
 
       NumberEdit {
         id: sliderLowerBound
@@ -89,6 +88,69 @@ Item {
         implicitWidth: 70
       }
     }
+
+    RowLayout {
+      id: animationLayout
+      spacing: 5
+      clip: true
+
+      Layout.alignment: Qt.AlignHCenter
+      Layout.maximumHeight: animationMaxHeight
+
+      property int animationMaxHeight: implicitHeight
+
+      IconButton {
+        Layout.maximumHeight: 30
+        Layout.maximumWidth: 30
+
+        id: animateButton
+        lightThemeIcon: checked ? "qrc:/icons/pause-dark.svg" : "qrc:/icons/play-dark.svg"
+        darkThemeIcon: checked ? "qrc:/icons/pause-light.svg" : "qrc:/icons/play-light.svg"
+        checkable: true
+      }
+
+      IconButton {
+        Layout.maximumHeight: 30
+        Layout.maximumWidth: 30
+
+        id: loopButton
+        lightThemeIcon: checked ? "qrc:/icons/loop-dark.svg" : "qrc:/icons/loop-dark.svg"
+        darkThemeIcon: checked ? "qrc:/icons/loop-light.svg" : "qrc:/icons/loop-light.svg"
+        checkable: true
+
+        onCheckedChanged: {
+          if (checked && pingPongButton.checked)
+            pingPongButton.checked = false;
+        }
+      }
+
+      IconButton {
+        Layout.maximumHeight: 30
+        Layout.maximumWidth: 30
+
+        id: pingPongButton
+        lightThemeIcon: checked ? "qrc:/icons/ping-pong-dark.svg" : "qrc:/icons/ping-pong-dark.svg"
+        darkThemeIcon: checked ? "qrc:/icons/ping-pong-light.svg" : "qrc:/icons/ping-pong-light.svg"
+        checkable: true
+
+        onCheckedChanged: {
+          if (checked && loopButton.checked)
+            loopButton.checked = false;
+        }
+      }
+
+      ZeDoubleSpinBox {
+
+        id: animationPeriod
+        suffix: qsTr('s') // seconds
+        decimals: 2
+        from: 0.1
+        to: 500.
+        step: 1.
+
+        Component.onCompleted: setValue(5.0)
+      }
+    }
   }
 
   states: [
@@ -96,16 +158,22 @@ Item {
       name: "hidden";
       when: constant.textInput.text.length === 0
       PropertyChanges {
-        sliderLayout.maxHeight: 0
+        sliderLayout.sliderMaxHeight: 0
         sliderLayout.visible: false
+
+        animationLayout.animationMaxHeight: 0
+        animationLayout.visible: false
       }
     },
     State {
       name: "shown";
       when: constant.textInput.text.length !== 0
       PropertyChanges {
-        sliderLayout.maxHeight: sliderLayout.implicitHeight
+        sliderLayout.sliderMaxHeight: sliderLayout.implicitHeight
         sliderLayout.visible: true
+
+        animationLayout.animationMaxHeight: animationLayout.implicitHeight
+        animationLayout.visible: true
       }
     }
   ]
@@ -117,8 +185,13 @@ Item {
     SequentialAnimation {
       NumberAnimation {
         easing.type: Easing.InOutQuad;
-        property: "maxHeight";
-        duration: 400;
+        property: "animationMaxHeight";
+        duration: 200;
+      }
+      NumberAnimation {
+        easing.type: Easing.InOutQuad;
+        property: "sliderMaxHeight";
+        duration: 200;
       }
       PropertyAction {
         property: "visible"
