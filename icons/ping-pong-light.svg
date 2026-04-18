@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="511.99997"
+   version="1.1"
+   viewBox="0 0 512.00002 511.99996"
+   width="512"
+   id="svg4269"
+   sodipodi:docname="ping-pong-light.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.1757814"
+     inkscape:cx="256.22979"
+     inkscape:cy="255.99998"
+     inkscape:window-width="2400"
+     inkscape:window-height="1323"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g2-2" />
+  <title
+     id="title4249" />
+  <desc
+     id="desc4251" />
+  <defs
+     id="defs4253">
+    <marker
+       style="overflow:visible"
+       id="ConcaveTriangle"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path7" />
+    </marker>
+  </defs>
+  <g
+     id="g1"
+     transform="translate(27.003861,31.564765)" />
+  <g
+     id="g3"
+     transform="translate(3.180287,19.100743)">
+    <g
+       id="g2"
+       transform="translate(31.346566,32.967424)">
+      <path
+         style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:27.2971;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+         d="M 177.62095,58.316551 69.165839,121.65019 184.18412,168.53381 c -23.4853,-41.87371 -27.70013,-66.3269 -6.56317,-110.217259 z"
+         id="path2" />
+      <path
+         style="fill:none;stroke:#b2b2b2;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+         d="m 153.34551,115.16697 c 0,0 141.64435,-12.67466 181.1955,10.16021 39.55115,22.83487 53.68411,88.32134 53.68411,88.32134"
+         id="path1" />
+    </g>
+    <g
+       id="g2-2"
+       transform="rotate(180,237.14643,220.41553)">
+      <path
+         style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:27.2971;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+         d="M 177.62095,58.316551 69.165839,121.65019 184.18412,168.53381 c -23.4853,-41.87371 -27.70013,-66.3269 -6.56317,-110.217259 z"
+         id="path2-9" />
+      <path
+         style="fill:none;stroke:#b2b2b2;stroke-width:40;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+         d="m 153.34551,115.16697 c 0,0 141.64435,-12.67466 181.1955,10.16021 39.55115,22.83487 53.68411,88.32134 53.68411,88.32134"
+         id="path1-1" />
+    </g>
+  </g>
+</svg>
