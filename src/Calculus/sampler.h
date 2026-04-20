@@ -38,8 +38,7 @@ public:
   void setPixelStep(double pxStep);
   void update();
 
-  const auto& getContinuousCurves() { return continuous_curves; }
-  const auto& getDiscreteCurves() { return discrete_curves; }
+  const auto& getCurves() { return curves; }
 
   /// @brief clears the saved points of functions whose name is in 'objectNames'
   void clearCache(QStringList objectNames);
@@ -51,20 +50,18 @@ protected:
 
   /// @brief samples an object given the current range and graph size
   /// @tparam continuous: whether the object is continuous or discrete
-  template <zg::PlotStyle::CoordinateSystem c, zg::CurveType t>
-  void sample(auto, zg::SampledCurve<t>&);
+  template <zg::PlotStyle::CoordinateSystem coordinates>
+  void sample(auto, zg::SampledCurve&);
 
   /// @brief detects and records discontinuities in a fully sampled continuous curve
-  void update_discontinuities(zg::SampledCurveContinuous& data);
+  void update_discontinuities(zg::SampledCurve& data);
 
   const zg::ZeViewMapper& mapper;
 
-  std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> continuous_curves;
-  std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> discrete_curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
 
   /// @brief settings that affect the resulting sampled values
   struct SamplingSettings {
-
     explicit SamplingSettings(const zg::MathObject&, const zg::PlotStyle&);
 
     zg::real_unit step = {0.};

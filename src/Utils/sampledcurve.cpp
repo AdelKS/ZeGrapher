@@ -1,41 +1,32 @@
-#pragma once
-
 #include "sampledcurve.h"
 
 namespace zg {
 
-template <CurveType t>
-void SampledCurve<t>::clear()
+void SampledCurve::clear()
 {
   input.clear();
   curve.clear();
   px_curve.clear();
-
-  if constexpr (t == CurveType::CONTINUOUS)
-    discontinuities.clear();
+  discontinuities.clear();
 }
 
-template <CurveType t>
-size_t SampledCurve<t>::size() const
+size_t SampledCurve::size() const
 {
   assert(input.size() == curve.size());
   return curve.size();
 }
 
-template <CurveType t>
-void SampledCurve<t>::pop_back(size_t pop_num)
+void SampledCurve::pop_back(size_t pop_num)
 {
   erase_chunk(curve.size() - pop_num, pop_num);
 }
 
-template <CurveType t>
-void SampledCurve<t>::pop_front(size_t pop_num)
+void SampledCurve::pop_front(size_t pop_num)
 {
   erase_chunk(0, pop_num);
 }
 
-template <CurveType t>
-void SampledCurve<t>::erase_chunk(size_t from, size_t size)
+void SampledCurve::erase_chunk(size_t from, size_t size)
 {
   assert(input.size() == curve.size());
   assert(px_curve.size() == input.size());
@@ -51,42 +42,37 @@ void SampledCurve<t>::erase_chunk(size_t from, size_t size)
   px_curve.erase(px_curve.begin() + from, px_curve.begin() + to);
 }
 
-template <CurveType t>
-zg::real_unit SampledCurve<t>::get_biggest_allowed_step() const
+zg::real_unit SampledCurve::get_biggest_allowed_step() const
 {
-  if constexpr (t == CurveType::DISCRETE)
+  if (discrete)
     return std::max(std::round(style.getRange().amplitude() / double(min_size) / style.getStep()) * style.getStep(), style.getStep());
   else return style.getRange().amplitude() / double(min_size);
 };
 
-template <CurveType t>
-zg::real_unit SampledCurve<t>::get_smallest_allowed_step() const
+zg::real_unit SampledCurve::get_smallest_allowed_step() const
 {
-  if constexpr (t == CurveType::DISCRETE)
+  if (discrete)
     return std::max(std::round(style.getRange().amplitude() / double(max_size) / style.getStep()) * style.getStep(), style.getStep());
   else return style.getRange().amplitude() / double(max_size);
 };
 
-template <CurveType t>
-void SampledCurve<t>::insert_chunk(size_t index,
-                                   const std::vector<real_unit>& x,
-                                   const std::vector<real_pt>& f_x,
-                                   const std::vector<QPointF>& px_f_x)
+void SampledCurve::insert_chunk(size_t index,
+                                const std::vector<real_unit>& x,
+                                const std::vector<real_pt>& f_x,
+                                const std::vector<QPointF>& px_f_x)
 {
   assert(x.size() == f_x.size());
 
   input.insert(input.begin() + index, x.begin(), x.end());
   curve.insert(curve.begin() + index, f_x.begin(), f_x.end());
   px_curve.insert(px_curve.begin() + index, px_f_x.begin(), px_f_x.end());
-  if constexpr (t == CurveType::CONTINUOUS)
-    discontinuities.clear();
+  discontinuities.clear();
 }
 
-template <CurveType t>
-void SampledCurve<t>::sparse_insert(const std::vector<size_t>& indices,
-                                    const std::vector<real_unit>& x,
-                                    const std::vector<real_pt>& f_x,
-                                    const std::vector<QPointF>& px_f_x)
+void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
+                                 const std::vector<real_unit>& x,
+                                 const std::vector<real_pt>& f_x,
+                                 const std::vector<QPointF>& px_f_x)
 {
   assert(indices.size() <= curve.size()); // can only insert as many points as there are originally in  'curve'
   assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)

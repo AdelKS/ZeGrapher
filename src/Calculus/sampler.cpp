@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 #include "Calculus/sampler.h"
-#include "Utils/sampledcurve.impl.h"
 #include "globalvars.h"
 #include "sampler.impl.h"
 
@@ -41,15 +40,13 @@ void Sampler::setPixelStep(double pxStep)
 
 void Sampler::refresh_valid_objects()
 {
-  std::unordered_map<const zg::MathObject*, zg::SampledCurveContinuous> refreshed_continuous_curves;
-  std::unordered_map<const zg::MathObject*, zg::SampledCurveDiscrete> refreshed_discrete_curves;
+  std::unordered_map<const zg::MathObject*, zg::SampledCurve> refreshed_curves;
 
   [[maybe_unused]] const auto& objs = zg::mathWorld.getMathObjects();
   for (auto&& [f, style] : zg::mathWorld.getMathObjects())
   {
     auto sampled_settings_node = sampled_settings.extract(f);
-    auto discrete_curve_node = discrete_curves.extract(f);
-    auto continuous_curve_node = continuous_curves.extract(f);
+    auto curve_node = curves.extract(f);
 
     if (not style or not f->isValid()
         or std::isnan(style->getStart().v)
@@ -63,36 +60,23 @@ void Sampler::refresh_valid_objects()
 
     const auto sampling_settings = SamplingSettings(*f, *style);
 
-    if (f->isContinuous())
+    assert((sampled_settings_node and curve_node)
+            or (not sampled_settings_node and not curve_node));
+
+    if (curve_node
+        and sampled_settings_node.mapped() == sampling_settings)
+      refreshed_curves.insert(std::move(curve_node));
+    else
     {
-      assert((sampled_settings_node and continuous_curve_node)
-             or (not sampled_settings_node and not continuous_curve_node));
-
-      if (continuous_curve_node
-          and sampled_settings_node.mapped() == sampling_settings)
-        refreshed_continuous_curves.insert(std::move(continuous_curve_node));
-      else
-        refreshed_continuous_curves.emplace(f, zg::SampledCurveContinuous(*style));
-
-      sampled_settings.emplace(f, std::move(sampling_settings));
+      zg::SampledCurve curve(*style);
+      curve.discrete = f->isDiscrete();
+      refreshed_curves.emplace(f, std::move(curve));
     }
-    else if (f->isDiscrete())
-    {
-      assert((sampled_settings_node and discrete_curve_node)
-             or (not sampled_settings_node and not discrete_curve_node));
 
-      if (discrete_curve_node
-          and sampled_settings_node.mapped() == sampling_settings)
-        refreshed_discrete_curves.insert(std::move(discrete_curve_node));
-      else
-        refreshed_discrete_curves.emplace(f, zg::SampledCurveDiscrete(*style));
-
-      sampled_settings.emplace(f, std::move(sampling_settings));
-    }
+    sampled_settings.emplace(f, std::move(sampling_settings));
   }
 
-  continuous_curves = std::move(refreshed_continuous_curves);
-  discrete_curves = std::move(refreshed_discrete_curves);
+  curves = std::move(refreshed_curves);
 }
 
 void Sampler::update()
@@ -118,15 +102,12 @@ void Sampler::update()
 
   const auto start = std::chrono::high_resolution_clock::now();
 
-  for (auto& [f, data]: continuous_curves)
+  for (auto& [f, data]: curves)
   {
     dispatch(f->getZcObject(), data);
-    update_discontinuities(data);
+    if (f->isContinuous())
+      update_discontinuities(data);
   }
-
-
-  for (auto& [f, data]: discrete_curves)
-    dispatch(f->getZcObject(), data);
 
   const auto end = std::chrono::high_resolution_clock::now();
 
@@ -134,7 +115,7 @@ void Sampler::update()
 
 }
 
-void Sampler::update_discontinuities(zg::SampledCurveContinuous& data)
+void Sampler::update_discontinuities(zg::SampledCurve& data)
 {
   data.discontinuities.clear();
 
@@ -205,7 +186,7 @@ void Sampler::clearCache(QStringList objectNames)
 {
   refresh_valid_objects();
 
-  for (auto& [f, curve]: continuous_curves)
+  for (auto& [f, curve]: curves)
     if (objectNames.contains(f->getName()))
       curve.clear();
 }

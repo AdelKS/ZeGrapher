@@ -5,12 +5,12 @@
 #include "sampler.h"
 
 
-template <zg::PlotStyle::CoordinateSystem coordinates, zg::CurveType t>
-void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
+template <zg::PlotStyle::CoordinateSystem coordinates>
+void Sampler::sample(auto handle, zg::SampledCurve& data)
 {
   auto get_acceptable_input = [&](zg::real_unit x)
   {
-    if constexpr (t == zg::CurveType::DISCRETE)
+    if (data.discrete)
       return std::round(std::max(0., x.v) / data.style.getStep().v) * data.style.getStep();
     else return x;
   };
@@ -63,7 +63,7 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
     return std::isnan(pt.x.v) or std::isnan(pt.y.v);
   };
 
-  const double sq_px_step = t == zg::CurveType::CONTINUOUS
+  const double sq_px_step = not data.discrete
                               ? pixelStep.v * pixelStep.v
                               : data.style.pointWidth * data.style.pointWidth;
 
@@ -205,11 +205,9 @@ void Sampler::sample(auto handle, zg::SampledCurve<t>& data)
         if (bc >= 2*min_step)
         {
           const zg::real_unit mid_input = get_acceptable_input((c + b) / 2.);
-          if constexpr (t == zg::CurveType::DISCRETE)
-          {
-            if (not (b < mid_input and mid_input < c))
+          if (data.discrete and not (b < mid_input and mid_input < c))
               continue;
-          }
+
           const auto new_pt = get_f_pt(mid_input);
           indices.push_back(i_c);
           x.push_back(mid_input);

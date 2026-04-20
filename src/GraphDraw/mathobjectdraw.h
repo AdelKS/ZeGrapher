@@ -27,6 +27,8 @@
 #include "GraphDraw/viewmapper.h"
 #include "Utils/plotstyle.h"
 
+QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale = 1.0);
+
 class MathObjectDraw
 {
 public:
@@ -37,8 +39,7 @@ protected:
 
   void drawObjects();
 
-  template <zg::CurveType t>
-  void drawSampledCurve(const zg::SampledCurve<t>&);
+  void drawSampledCurve(const zg::SampledCurve&);
 
   QPainter* painter = nullptr;
 

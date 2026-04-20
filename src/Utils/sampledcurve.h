@@ -11,15 +11,6 @@
 
 namespace zg {
 
-enum struct CurveType {DISCRETE, CONTINUOUS};
-
-template <CurveType t>
-struct SampledCurve;
-
-using SampledCurveContinuous = SampledCurve<CurveType::CONTINUOUS>;
-using SampledCurveDiscrete = SampledCurve<CurveType::DISCRETE>;
-
-template <CurveType t>
 struct SampledCurve {
 
   static constexpr size_t min_size = 1024;
@@ -73,11 +64,9 @@ struct SampledCurve {
 
   const PlotStyle& style;
 
-  /// @brief the indices in 'curve' before which a discontinuity happened
-  /// @note only exists in continuous curves
-  [[no_unique_address]] std::conditional_t<t == CurveType::CONTINUOUS,
-                                           std::unordered_set<size_t>,
-                                           std::monostate> discontinuities = {};
+  bool discrete = false;
+
+  std::unordered_set<size_t> discontinuities;
 
   std::vector<real_unit> input;
 
