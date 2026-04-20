@@ -37,7 +37,8 @@ struct PlotStyle: QObject {
   Q_PROPERTY(bool visible MEMBER visible NOTIFY visibleChanged)
   Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
   Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
-  Q_PROPERTY(Qt::PenStyle lineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
+  Q_PROPERTY(QList<qreal> dashPattern MEMBER dashPattern NOTIFY dashPatternChanged)
+  Q_PROPERTY(bool drawLine MEMBER drawLine NOTIFY drawLineChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
@@ -73,7 +74,8 @@ public:
   bool visible = true;
   ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
   double lineWidth = 1.0;
-  Qt::PenStyle lineStyle = Qt::SolidLine;
+  QList<qreal> dashPattern;
+  bool drawLine = true;
   double pointWidth = 1.0;
   PointStyle pointStyle = None;
   CoordinateSystem coordinateSystem = Cartesian;
@@ -90,7 +92,8 @@ signals:
   void lineWidthChanged();
   void pointStyleChanged();
   void pointWidthChanged();
-  void lineStyleChanged();
+  void dashPatternChanged();
+  void drawLineChanged();
   void backendChanged();
   void coordinateSystemChanged();
   void rangeChanged();

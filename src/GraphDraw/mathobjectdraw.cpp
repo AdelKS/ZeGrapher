@@ -172,11 +172,15 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
   const auto& style = f_curve.style;
 
-  if (style.lineStyle != Qt::NoPen)
+  if (style.drawLine)
   {
     pen.setWidth(style.lineWidth);
     pen.setColor(style.color.getCurrent());
-    pen.setStyle(style.lineStyle);
+    if (style.dashPattern.isEmpty())
+      pen.setStyle(Qt::SolidLine);
+    else
+      pen.setDashPattern(style.dashPattern);
+
     painter->setPen(pen);
 
     const QList<QPolygonF> curve = buildFinalCurve(f_curve);
@@ -194,13 +198,11 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
   if (f_curve.discrete)
   {
-    if (style.pointStyle == zg::PlotStyle::PointStyle::None)
-      return;
-
-    for (const QPointF& P: f_curve.px_curve)
-    {
-      if (not std::isnan(P.x()) and not std::isnan(P.y()))
-        drawDataPoint(P, style);
-    }
+    if (style.pointStyle != zg::PlotStyle::PointStyle::None)
+      for (const QPointF& P: f_curve.px_curve)
+      {
+        if (not std::isnan(P.x()) and not std::isnan(P.y()))
+          drawDataPoint(P, style);
+      }
   }
 }
