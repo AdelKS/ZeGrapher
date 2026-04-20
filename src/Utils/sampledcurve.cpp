@@ -117,4 +117,19 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
   px_curve = std::move(new_px_curve);
 }
 
+void SampledCurve::update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& style)
+{
+  SamplingSettings newSettings = {
+    .step = style.getStep(),
+    .coordinateSystem = style.coordinateSystem,
+    .revision = obj.getRevision()
+  };
+
+  if (newSettings != settings)
+  {
+    clear();
+    settings = newSettings;
+  }
+}
+
 } // namespace zg
