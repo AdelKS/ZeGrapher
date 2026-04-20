@@ -11,19 +11,22 @@ Item {
 
   property int implicitHeight: mainLayout.implicitHeight
 
+  readonly property var dashPatterns: [
+    [],            // solid
+    [4., 2.],        // dash
+    [4., 2., 2., 2.],  // dash-dot
+    [1., 2.],        // dot
+    []             // no line (drawLine: false)
+  ]
+
   onDiscreteChanged: {
-    console.debug('ObjectStyle: discrete changed: ', discrete);
-    if (discrete) {
-      // last element of the lineStyleModel is no line
-      lineStyleTumbler.currentIndex = lineStyleModel.count  - 1;
-    } else {
-      lineStyleTumbler.currentIndex = 0;
-    }
+    dashPatternTumbler.currentIndex = discrete ? dashPatterns.length - 1 : 0
   }
 
   PlotStyle {
     id: backend
-    lineStyle: lineStyleModel.get(lineStyleTumbler.currentIndex).type
+    dashPattern: root.dashPatterns[dashPatternTumbler.currentIndex]
+    drawLine: dashPatternTumbler.currentIndex !== root.dashPatterns.length - 1
     lineWidth: Number(lineWidthSpinBox.value) / 10.0
     pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
     pointWidth: Number(pointWidthSpinBox.value) / 10.0
@@ -84,11 +87,11 @@ Item {
       Layout.alignment: Qt.AlignHCenter
 
       ImageTumbler {
-        id: lineStyleTumbler
+        id: dashPatternTumbler
         Layout.alignment: Qt.AlignHCenter
         Layout.maximumWidth: 100
         Layout.preferredHeight: 50
-        model: Application.styleHints.colorScheme === Qt.Light ? lineStyleModel : lineStyleModelLight
+        model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
       }
       SpinBox {
         id: lineWidthSpinBox
@@ -269,51 +272,21 @@ Item {
   }
 
   ListModel {
-    id: lineStyleModel
-    ListElement {
-      path: "qrc:/icons/solid-line.svg"
-      type: Qt.SolidLine
-    }
-    ListElement {
-      path: "qrc:/icons/dash-line.svg"
-      type: Qt.DashLine
-    }
-    ListElement {
-      path: "qrc:/icons/dash-dot-line.svg"
-      type: Qt.DashDotLine
-    }
-    ListElement {
-      path: "qrc:/icons/dot-line.svg"
-      type: Qt.DotLine
-    }
-    ListElement {
-      path: "qrc:/icons/noLine.png"
-      type: Qt.NoPen
-    }
+    id: dashPatternModel
+    ListElement { path: "qrc:/icons/solid-line.svg" }
+    ListElement { path: "qrc:/icons/dash-line.svg" }
+    ListElement { path: "qrc:/icons/dash-dot-line.svg" }
+    ListElement { path: "qrc:/icons/dot-line.svg" }
+    ListElement { path: "qrc:/icons/noLine.png" }
   }
 
   ListModel {
-    id: lineStyleModelLight
-    ListElement {
-      path: "qrc:/icons/solid-line-light.svg"
-      type: Qt.SolidLine
-    }
-    ListElement {
-      path: "qrc:/icons/dash-line-light.svg"
-      type: Qt.DashLine
-    }
-    ListElement {
-      path: "qrc:/icons/dash-dot-line-light.svg"
-      type: Qt.DashDotLine
-    }
-    ListElement {
-      path: "qrc:/icons/dot-line-light.svg"
-      type: Qt.DotLine
-    }
-    ListElement {
-      path: "qrc:/icons/noLine.png"
-      type: Qt.NoPen
-    }
+    id: dashPatternModelLight
+    ListElement { path: "qrc:/icons/solid-line-light.svg" }
+    ListElement { path: "qrc:/icons/dash-line-light.svg" }
+    ListElement { path: "qrc:/icons/dash-dot-line-light.svg" }
+    ListElement { path: "qrc:/icons/dot-line-light.svg" }
+    ListElement { path: "qrc:/icons/noLine.png" }
   }
 
   ListModel {
