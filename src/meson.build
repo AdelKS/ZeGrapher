@@ -37,6 +37,7 @@ source_files = [
   'Utils/graphsettings.cpp',
   'Utils/highlighter.cpp',
   'Utils/plotstyle.cpp',
+  'Utils/sampledcurve.cpp',
   'Utils/state.cpp',
   'Utils/themedcolor.cpp',
   'Utils/updatecheck.cpp',
