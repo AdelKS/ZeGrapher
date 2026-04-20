@@ -26,13 +26,6 @@ Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
   : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
 {}
 
-Sampler::SamplingSettings::SamplingSettings(const zg::MathObject& obj, const zg::PlotStyle& style)
-{
-  step = style.getStep();
-  coordinateSystem = style.coordinateSystem;
-  revision = obj.getRevision();
-}
-
 void Sampler::setPixelStep(double pxStep)
 {
   pixelStep = zg::pixel_unit{pxStep};
@@ -45,7 +38,6 @@ void Sampler::refresh_valid_objects()
   [[maybe_unused]] const auto& objs = zg::mathWorld.getMathObjects();
   for (auto&& [f, style] : zg::mathWorld.getMathObjects())
   {
-    auto sampled_settings_node = sampled_settings.extract(f);
     auto curve_node = curves.extract(f);
 
     if (not style or not f->isValid()
@@ -58,13 +50,7 @@ void Sampler::refresh_valid_objects()
         )
       continue;
 
-    const auto sampling_settings = SamplingSettings(*f, *style);
-
-    assert((sampled_settings_node and curve_node)
-            or (not sampled_settings_node and not curve_node));
-
-    if (curve_node
-        and sampled_settings_node.mapped() == sampling_settings)
+    if (curve_node)
       refreshed_curves.insert(std::move(curve_node));
     else
     {
@@ -72,16 +58,21 @@ void Sampler::refresh_valid_objects()
       curve.discrete = f->isDiscrete();
       refreshed_curves.emplace(f, std::move(curve));
     }
-
-    sampled_settings.emplace(f, std::move(sampling_settings));
   }
 
   curves = std::move(refreshed_curves);
 }
 
+void Sampler::refresh_curve_settings()
+{
+  for (auto&& [f, curve]: curves)
+    curve.update_sampling_settings(*f, curve.style);
+}
+
 void Sampler::update()
 {
   refresh_valid_objects();
+  refresh_curve_settings();
 
   auto dispatch = [this](zg::MathObject::EvalHandle var_handle, auto& data)
   {

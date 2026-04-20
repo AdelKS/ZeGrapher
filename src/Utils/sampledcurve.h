@@ -7,6 +7,7 @@
 #include <QPointF>
 
 #include "GraphDraw/axismapper.h"
+#include "MathObjects/mathobject.h"
 #include "plotstyle.h"
 
 namespace zg {
@@ -62,6 +63,9 @@ struct SampledCurve {
   /// @brief returns the smallest step that can be made between two computed points before giving up and looking for
   real_unit get_smallest_allowed_step() const;
 
+  /// @brief
+  void update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& style);
+
   const PlotStyle& style;
 
   bool discrete = false;
@@ -75,6 +79,16 @@ struct SampledCurve {
 
   /// @brief pixel coordinates of 'curve', updated by the Sampler after each sampling pass
   std::vector<QPointF> px_curve = {};
+
+protected:
+  /// @brief settings that affect the resulting sampled values
+  struct SamplingSettings {
+    zg::real_unit step = {0.};
+    zg::PlotStyle::CoordinateSystem coordinateSystem = zg::PlotStyle::Cartesian;
+    size_t revision = 0;
+
+    bool operator == (const SamplingSettings&) const = default;
+  } settings;
 };
 
 } // namespace zg
