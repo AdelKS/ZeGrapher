@@ -118,7 +118,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     std::vector<zg::real_pt> points;
     std::vector<zg::real_unit> input;
 
-    assert(start <= end);
+    assert(backwards ? end <= start : start <= end);
     const size_t reserve = std::max((end - start) / max_step, 0.0);
     points.reserve(reserve);
     input.reserve(reserve);
