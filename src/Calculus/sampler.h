@@ -46,6 +46,9 @@ public:
   /// @brief refreshes 'curves' for the currently valid objects
   void refresh_valid_objects();
 
+  /// @brief refreshes the sampling settings of every curve: clears the data if it changed
+  void refresh_curve_settings();
+
 protected:
 
   /// @brief samples an object given the current range and graph size
@@ -59,20 +62,6 @@ protected:
   const zg::ZeViewMapper& mapper;
 
   std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
-
-  /// @brief settings that affect the resulting sampled values
-  struct SamplingSettings {
-    explicit SamplingSettings(const zg::MathObject&, const zg::PlotStyle&);
-
-    zg::real_unit step = {0.};
-    zg::PlotStyle::CoordinateSystem coordinateSystem = zg::PlotStyle::Cartesian;
-    size_t revision = 0;
-
-    bool operator == (const SamplingSettings&) const = default;
-  };
-
-  /// @brief settings with which the current curves have been sampled with
-  std::unordered_map<const zg::MathObject*, SamplingSettings> sampled_settings;
 
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;
