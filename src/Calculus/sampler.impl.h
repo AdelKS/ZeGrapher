@@ -113,18 +113,19 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   const zg::real_unit min_step = data.get_smallest_allowed_step();
   const zg::real_unit max_step = data.get_biggest_allowed_step();
 
+  // add uniformly sampled points
   auto uniform_sample = [&](zg::real_unit start, zg::real_unit end) {
     std::vector<QPointF> px_points;
     std::vector<zg::real_pt> points;
     std::vector<zg::real_unit> input;
 
-    assert(start < end);
+    assert(start <= end);
     const size_t reserve = std::max((end - start) / max_step, 0.0);
     points.reserve(reserve);
     input.reserve(reserve);
     px_points.reserve(reserve);
 
-    for (auto pos = start ; pos <= end; pos += max_step)
+    for (auto pos = start; pos <= end; pos += max_step)
     {
       input.push_back(pos);
       points.push_back(get_f_pt(pos));
@@ -136,32 +137,29 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   if (curve.empty())
   {
-    std::tie(input_vals, curve, px_curve) = uniform_sample(get_acceptable_input(range.min), range.max);
+    std::tie(input_vals, curve, px_curve) = uniform_sample(get_acceptable_input(range.min - max_step), range.max + max_step);
   }
   else
   {
     const auto min = get_acceptable_input(range.min);
-    const auto min_pt = get_f_pt(min);
-    if (input_vals.front() - min >= max_step
-        or is_nan_pt(min_pt) or is_nan_pt(curve.front())
-        or (mapper.to<zg::pixel>(min_pt) - mapper.to<zg::pixel>(curve.front())).square_length() > sq_px_step)
+    if (input_vals.front() - min >= max_step)
     {
-      auto&& [x, f_x, px_f_x] = uniform_sample(min, input_vals.front());
+      auto&& [x, f_x, px_f_x] = uniform_sample(min - max_step, input_vals.front() - max_step);
       data.insert_chunk(0, x, f_x, px_f_x);
+      assert(std::ranges::is_sorted(input_vals));
+      assert(is_unique(input_vals));
     }
 
     const auto max = get_acceptable_input(range.max);
-    const auto max_pt = get_f_pt(max);
-    if (max - input_vals.back() >= max_step
-        or is_nan_pt(max_pt) or is_nan_pt(curve.back())
-        or (mapper.to<zg::pixel>(max_pt) - mapper.to<zg::pixel>(curve.back())).square_length() > sq_px_step)
+    if (max - input_vals.back() >= max_step)
     {
-      auto&& [x, f_x, px_f_x] = uniform_sample(input_vals.back(), max);
+      auto&& [x, f_x, px_f_x] = uniform_sample(input_vals.back() + max_step, max + max_step);
       data.insert_chunk(input_vals.size(), x, f_x, px_f_x);
+      assert(std::ranges::is_sorted(input_vals));
+      assert(is_unique(input_vals));
     }
   }
-
-  assert(curve.size() >= 2);
+  // ######################################
 
   static std::vector<size_t> indices;
   indices.reserve(data.max_size/2);
