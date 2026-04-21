@@ -11,7 +11,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   auto get_acceptable_input = [&](zg::real_unit x)
   {
     if (data.discrete)
-      return std::round(std::max(0., x.v) / data.style.getStep().v) * data.style.getStep();
+      return std::round(std::max(0., x.v) / data.settings.step.v) * data.settings.step;
     else return x;
   };
   auto dispatcher = zc::utils::overloaded{
@@ -63,7 +63,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     return std::isnan(pt.x.v) or std::isnan(pt.y.v);
   };
 
-  const auto range = data.style.getRange();
+  const auto range = data.settings.range;
   const auto min = get_acceptable_input(range.min);
   const auto max = get_acceptable_input(range.max);
 
