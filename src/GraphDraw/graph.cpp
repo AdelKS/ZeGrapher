@@ -21,6 +21,9 @@
 #include "GraphDraw/graph.h"
 #include "globalvars.h"
 
+#include <cmath>
+#include <numbers>
+
 #include <QQuickWindow>
 #include <QSvgGenerator>
 
@@ -514,25 +517,97 @@ void Graph::computeSupportRect()
   supportRect = rect.toRect();
 }
 
+QList<QPolygonF> buildMarkerPaths(const zg::CurveStyle& style,
+                                  const std::vector<QPointF>& px_curve,
+                                  double scale)
+{
+  QList<QPolygonF> markers;
+  if (style.pointStyle == zg::CurveStyle::None)
+    return markers;
+
+  const double w = style.pointWidth;
+  markers.reserve(style.pointStyle == zg::CurveStyle::Cross ? px_curve.size() * 2
+                                                            : px_curve.size());
+
+  for (const QPointF& raw : px_curve)
+  {
+    if (std::isnan(raw.x()) or std::isnan(raw.y()))
+      continue;
+    const QPointF p = raw * scale;
+
+    switch (style.pointStyle)
+    {
+    case zg::CurveStyle::Cross:
+      markers.append(QPolygonF({p + QPointF(-2 * w, 0), p + QPointF(2 * w, 0)}));
+      markers.append(QPolygonF({p + QPointF(0, -2 * w), p + QPointF(0, 2 * w)}));
+      break;
+    case zg::CurveStyle::Disc:
+    {
+      constexpr int N = 16;
+      QPolygonF poly;
+      poly.reserve(N + 1);
+      for (int i = 0; i <= N; ++i)
+      {
+        const double a = 2. * std::numbers::pi * i / N;
+        poly << p + QPointF(w * std::cos(a), w * std::sin(a));
+      }
+      markers.append(std::move(poly));
+      break;
+    }
+    case zg::CurveStyle::Rhombus:
+      markers.append(QPolygonF({p + QPointF(-w, 0), p + QPointF(0, w),
+                                p + QPointF(w, 0),  p + QPointF(0, -w),
+                                p + QPointF(-w, 0)}));
+      break;
+    case zg::CurveStyle::Square:
+      markers.append(QPolygonF({p + QPointF(-w, -w), p + QPointF(w, -w),
+                                p + QPointF(w, w),   p + QPointF(-w, w),
+                                p + QPointF(-w, -w)}));
+      break;
+    case zg::CurveStyle::Triangle:
+    {
+      const double W = 2 * w;
+      const double d = W * std::numbers::sqrt3 / 2.;
+      const double b = W / 2;
+      markers.append(QPolygonF({p + QPointF(0, -W), p + QPointF(d, b),
+                                p + QPointF(-d, b), p + QPointF(0, -W)}));
+      break;
+    }
+    case zg::CurveStyle::None:
+      break;
+    }
+  }
+  return markers;
+}
+
 void Graph::updateQmlData()
 {
   qmlData.clear();
 
   for (const auto& [_, f_curve] : sampler.getCurves())
   {
-    if (f_curve.discrete) continue;
     if (not f_curve.style.visible) continue;
-    if (not f_curve.style.drawLine) continue;
     if (f_curve.curve.empty()) continue;
 
-    const QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
-
-    if (segments.isEmpty()) continue;
-
     QVariantMap curve;
-    curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
-    curve[QStringLiteral("style")]    = QVariant::fromValue(f_curve.style);
 
+    if (f_curve.style.drawLine)
+    {
+      QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
+      if (not segments.isEmpty())
+        curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
+    }
+
+    if (f_curve.discrete and f_curve.style.pointStyle != zg::CurveStyle::None)
+    {
+      QList<QPolygonF> markers = buildMarkerPaths(f_curve.style, f_curve.px_curve, totalScaleFactor);
+      if (not markers.isEmpty())
+        curve[QStringLiteral("markerPaths")] = QVariant::fromValue(std::move(markers));
+    }
+
+    if (curve.isEmpty()) continue;
+
+    curve[QStringLiteral("style")] = QVariant::fromValue(f_curve.style);
     qmlData.append(std::move(curve));
   }
 
