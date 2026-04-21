@@ -63,6 +63,34 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     return std::isnan(pt.x.v) or std::isnan(pt.y.v);
   };
 
+  const auto range = data.style.getRange();
+  const auto min = get_acceptable_input(range.min);
+  const auto max = get_acceptable_input(range.max);
+
+  // increase cache size for sequences to max 1M values so we can
+  // pan anywhere with recursive sequences, but if the cache gets
+  // invalidated we're back to square 1
+  auto increase_seq_cache = [&](const zc::DynMathObject<zc_t>* f){
+    if (f->holds(zc::ObjectType::SEQUENCE))
+    {
+      auto& objectCache = information.mathObjectCache[f->get_slot()];
+      size_t current_max = std::max(0., max.v);
+      objectCache.set_buffer_size(std::min(std::max(current_max, objectCache.get_buffer_size()), 1'000'000UL));
+    }
+  };
+
+  zc::utils::overloaded{
+    [&](const zc::DynMathObject<zc_t>* f)
+    {
+      increase_seq_cache(f);
+    },
+    [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f)
+    {
+      increase_seq_cache(f.first);
+      increase_seq_cache(f.second);
+    },
+  }(handle);
+
   const double sq_px_step = not data.discrete
                               ? pixelStep.v * pixelStep.v
                               : data.style.pointWidth * data.style.pointWidth;
@@ -71,20 +99,17 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   auto& curve = data.curve;
   auto& px_curve = data.px_curve;
 
-  const auto range = data.style.getRange();
-
   // clear from the right
   if (not input_vals.empty())
   {
     size_t vals_to_pop = 0;
-    const auto max = get_acceptable_input(range.max);
+
     while (vals_to_pop < input_vals.size() and input_vals[input_vals.size() - vals_to_pop - 1] > max)
       vals_to_pop++;
 
     data.pop_back(vals_to_pop);
 
     vals_to_pop = 0;
-    const auto min = get_acceptable_input(range.min);
     while (vals_to_pop < input_vals.size() and input_vals[vals_to_pop] < min)
       vals_to_pop++;
 
