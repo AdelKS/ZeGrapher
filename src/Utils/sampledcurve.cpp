@@ -45,15 +45,15 @@ void SampledCurve::erase_chunk(size_t from, size_t size)
 zg::real_unit SampledCurve::get_biggest_allowed_step() const
 {
   if (discrete)
-    return std::max(std::round(style.getRange().amplitude() / double(min_size) / style.getStep()) * style.getStep(), style.getStep());
-  else return style.getRange().amplitude() / double(min_size);
+    return std::max(std::round(settings.range.amplitude() / double(min_size) / settings.step) * settings.step, settings.step);
+  else return settings.range.amplitude() / double(min_size);
 };
 
 zg::real_unit SampledCurve::get_smallest_allowed_step() const
 {
   if (discrete)
-    return std::max(std::round(style.getRange().amplitude() / double(max_size) / style.getStep()) * style.getStep(), style.getStep());
-  else return style.getRange().amplitude() / double(max_size);
+    return std::max(std::round(settings.range.amplitude() / double(max_size) / settings.step) * settings.step, settings.step);
+  else return settings.range.amplitude() / double(max_size);
 };
 
 void SampledCurve::insert_chunk(size_t index,
@@ -117,11 +117,12 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
   px_curve = std::move(new_px_curve);
 }
 
-void SampledCurve::update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& style)
+void SampledCurve::update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& plotStyle)
 {
   SamplingSettings newSettings = {
-    .step = style.getStep(),
-    .coordinateSystem = style.coordinateSystem,
+    .range = plotStyle.getRange(),
+    .step = plotStyle.getStep(),
+    .coordinateSystem = plotStyle.coordinateSystem,
     .revision = obj.getRevision()
   };
 

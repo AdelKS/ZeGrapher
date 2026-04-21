@@ -25,7 +25,7 @@
 
 #include "Calculus/sampler.h"
 #include "GraphDraw/viewmapper.h"
-#include "Utils/plotstyle.h"
+#include "Utils/curvestyle.h"
 
 QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale = 1.0);
 
@@ -35,7 +35,7 @@ public:
   explicit MathObjectDraw(double targetSamplingDistance = 1.0);
 
 protected:
-  void drawDataPoint(const QPointF& pt, const zg::PlotStyle& style);
+  void drawDataPoint(const QPointF& pt, const zg::CurveStyle& style);
 
   void drawObjects();
 

@@ -34,13 +34,13 @@ MathObjectDraw::MathObjectDraw(double targetSamplingDistance)
   moving = false;
 }
 
-void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style)
+void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& style)
 {
   double w = style.pointWidth;
 
-  pen.setColor(style.color.getCurrent());
+  pen.setColor(style.color);
   pen.setWidth(w);
-  brush.setColor(style.color.getCurrent());
+  brush.setColor(style.color);
   painter->setBrush(brush);
   painter->setPen(pen);
 
@@ -48,16 +48,16 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style
 
   switch (style.pointStyle)
   {
-  case zg::PlotStyle::Cross:
+  case zg::CurveStyle::Cross:
   {
     painter->drawLine(pt + QPointF(0, 2 * w), pt + QPointF(0, -2 * w));
     painter->drawLine(pt + QPointF(-2 * w, 0), pt + QPointF(2 * w, 0));
     break;
   }
-  case zg::PlotStyle::Disc:
+  case zg::CurveStyle::Disc:
     painter->drawEllipse(pt, w, w);
     break;
-  case zg::PlotStyle::Rhombus:
+  case zg::CurveStyle::Rhombus:
   {
     QPolygonF polygon(
       {pt + QPointF(-w, 0), pt + QPointF(0, w), pt + QPointF(w, 0), pt + QPointF(0, -w)});
@@ -65,7 +65,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style
     painter->drawPolygon(polygon);
     break;
   }
-  case zg::PlotStyle::Square:
+  case zg::CurveStyle::Square:
   {
     QRectF rect;
     rect.setTopLeft(pt + QPointF(-w, -w));
@@ -74,7 +74,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style
     painter->drawRect(rect);
     break;
   }
-  case zg::PlotStyle::Triangle:
+  case zg::CurveStyle::Triangle:
   {
     w *= 2;
     QPolygonF polygon;
@@ -86,7 +86,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::PlotStyle& style
     painter->drawPolygon(polygon);
     break;
   }
-  case zg::PlotStyle::None:
+  case zg::CurveStyle::None:
     break;
   }
 }
@@ -175,7 +175,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
   if (style.drawLine)
   {
     pen.setWidth(style.lineWidth);
-    pen.setColor(style.color.getCurrent());
+    pen.setColor(style.color);
     if (style.dashPattern.isEmpty())
       pen.setStyle(Qt::SolidLine);
     else
@@ -198,7 +198,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
   if (f_curve.discrete)
   {
-    if (style.pointStyle != zg::PlotStyle::PointStyle::None)
+    if (style.pointStyle != zg::CurveStyle::PointStyle::None)
       for (const QPointF& P: f_curve.px_curve)
       {
         if (not std::isnan(P.x()) and not std::isnan(P.y()))
