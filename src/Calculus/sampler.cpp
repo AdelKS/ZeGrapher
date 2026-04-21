@@ -31,11 +31,23 @@ void Sampler::setPixelStep(double pxStep)
   pixelStep = zg::pixel_unit{pxStep};
 }
 
+static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
+{
+  return zg::CurveStyle{
+    .visible = ps.visible,
+    .color = ps.color.getCurrent(),
+    .lineWidth = ps.lineWidth,
+    .dashPattern = ps.dashPattern,
+    .drawLine = ps.drawLine,
+    .pointWidth = ps.pointWidth,
+    .pointStyle = static_cast<zg::CurveStyle::PointStyle>(ps.pointStyle),
+  };
+}
+
 void Sampler::refresh_valid_objects()
 {
   std::unordered_map<const zg::MathObject*, zg::SampledCurve> refreshed_curves;
 
-  [[maybe_unused]] const auto& objs = zg::mathWorld.getMathObjects();
   for (auto&& [f, style] : zg::mathWorld.getMathObjects())
   {
     auto curve_node = curves.extract(f);
@@ -50,28 +62,44 @@ void Sampler::refresh_valid_objects()
         )
       continue;
 
+    zg::SampledCurve& curve = curve_node
+                                ? curve_node.mapped()
+                                : refreshed_curves[f];
+    curve.discrete = f->isDiscrete();
+
     if (curve_node)
       refreshed_curves.insert(std::move(curve_node));
-    else
-    {
-      zg::SampledCurve curve(*style);
-      curve.discrete = f->isDiscrete();
-      refreshed_curves.emplace(f, std::move(curve));
-    }
   }
 
   curves = std::move(refreshed_curves);
 }
 
+void Sampler::refresh_curve_styles()
+{
+  for (auto&& [f, style] : zg::mathWorld.getMathObjects())
+  {
+    auto it = curves.find(f);
+    if (it == curves.end() or not style)
+      continue;
+    it->second.style = make_curve_style(*style);
+  }
+}
+
 void Sampler::refresh_curve_settings()
 {
-  for (auto&& [f, curve]: curves)
-    curve.update_sampling_settings(*f, curve.style);
+  for (auto&& [f, style] : zg::mathWorld.getMathObjects())
+  {
+    auto it = curves.find(f);
+    if (it == curves.end() or not style)
+      continue;
+    it->second.update_sampling_settings(*f, *style);
+  }
 }
 
 void Sampler::update()
 {
   refresh_valid_objects();
+  refresh_curve_styles();
   refresh_curve_settings();
 
   auto dispatch = [this](zg::MathObject::EvalHandle var_handle, auto& data)
@@ -79,9 +107,9 @@ void Sampler::update()
     std::visit(zc::utils::overloaded{
       [](std::monostate){},
       [&](auto handle){
-        if (data.style.coordinateSystem == zg::PlotStyle::Cartesian)
+        if (data.settings.coordinateSystem == zg::PlotStyle::Cartesian)
           sample<zg::PlotStyle::Cartesian>(handle, data);
-        else if (data.style.coordinateSystem == zg::PlotStyle::Polar)
+        else if (data.settings.coordinateSystem == zg::PlotStyle::Polar)
           sample<zg::PlotStyle::Polar>(handle, data);
         else qCritical() << "Case not handled, aborting program";
       }

@@ -8,6 +8,7 @@
 
 #include "GraphDraw/axismapper.h"
 #include "MathObjects/mathobject.h"
+#include "curvestyle.h"
 #include "plotstyle.h"
 
 namespace zg {
@@ -17,7 +18,7 @@ struct SampledCurve {
   static constexpr size_t min_size = 1024;
   static constexpr size_t max_size = 16384;
 
-  explicit SampledCurve(const PlotStyle& _st): style(_st) {}
+  SampledCurve() = default;
 
   const std::vector<real_unit>& get_input() const { return input; };
 
@@ -64,9 +65,9 @@ struct SampledCurve {
   real_unit get_smallest_allowed_step() const;
 
   /// @brief
-  void update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& style);
+  void update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& plotStyle);
 
-  const PlotStyle& style;
+  CurveStyle style;
 
   bool discrete = false;
 
@@ -80,9 +81,9 @@ struct SampledCurve {
   /// @brief pixel coordinates of 'curve', updated by the Sampler after each sampling pass
   std::vector<QPointF> px_curve = {};
 
-protected:
   /// @brief settings that affect the resulting sampled values
   struct SamplingSettings {
+    zg::real_range1d range = {.min = {0.}, .max = {0.}};
     zg::real_unit step = {0.};
     zg::PlotStyle::CoordinateSystem coordinateSystem = zg::PlotStyle::Cartesian;
     size_t revision = 0;

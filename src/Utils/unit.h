@@ -84,6 +84,8 @@ struct Range1D
   }
 
   bool is_valid() const { return not std::isnan(min.v) and not std::isnan(max.v) and min < max; }
+
+  bool operator == (const Range1D&) const = default;
 };
 
 template <UnitType U>

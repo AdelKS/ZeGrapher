@@ -46,6 +46,9 @@ public:
   /// @brief refreshes 'curves' for the currently valid objects
   void refresh_valid_objects();
 
+  /// @brief refreshes the style of the currently valid objects
+  void refresh_curve_styles();
+
   /// @brief refreshes the sampling settings of every curve: clears the data if it changed
   void refresh_curve_settings();
 
