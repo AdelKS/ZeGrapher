@@ -29,7 +29,7 @@ Item {
     drawLine: dashPatternTumbler.currentIndex !== root.dashPatterns.length - 1
     lineWidth: Number(lineWidthSpinBox.value) / 10.0
     pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
-    pointWidth: Number(pointWidthSpinBox.value) / 10.0
+    pointWidth: Number(pointWidthSpinBox.value) / 4.
     coordinateSystem: coordinates.currentValue
 
     onCoordinateSystemChanged: {

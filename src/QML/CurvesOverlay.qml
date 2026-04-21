@@ -5,7 +5,9 @@ import QtQuick.Shapes
 // Positioned at the graph rect within its parent InteractiveGraph item.
 //
 // 'qmlData' is a list of per-curve maps:
-//   { color, lineWidth, dashPattern, segments: [QPolygonF, ...] }
+//   { style: CurveStyle,
+//     segments:    [QPolygonF, ...],    // present when a line is drawn
+//     markerPaths: [QPolygonF, ...] }   // present when pointStyle != None
 // built by Graph::updateQmlData() after each sampler pass.
 Item {
     id: root
@@ -48,6 +50,30 @@ Item {
                         PathPolyline {
                             path: modelData
                         }
+                    }
+                }
+            }
+
+            // Markers (Rhombus, Disc, Square, Triangle, Cross)
+            Shape {
+                anchors.fill: parent
+                preferredRendererType: Shape.CurveRenderer
+                visible: curveDelegate.modelData.markerPaths !== undefined
+                         && curveDelegate.modelData.markerPaths.length > 0
+
+                ShapePath {
+                    readonly property var style: curveDelegate.modelData.style
+                    // CurveStyle::PointStyle: None=0, Rhombus=1, Disc=2, Square=3, Triangle=4, Cross=5
+                    readonly property bool crossMarker: style.pointStyle === 5
+
+                    strokeColor: style.color
+                    strokeWidth: crossMarker ? 2.*style.lineWidth : style.pointWidth
+                    fillColor:   crossMarker ? "transparent" : style.color
+                    capStyle:    ShapePath.RoundCap
+                    joinStyle:   ShapePath.RoundJoin
+
+                    PathMultiline {
+                        paths: curveDelegate.modelData.markerPaths ?? []
                     }
                 }
             }

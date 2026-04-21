@@ -28,6 +28,7 @@
 #include "Utils/curvestyle.h"
 
 QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale = 1.0);
+QList<QPolygonF> buildMarkerPaths(const zg::SampledCurve& sampledCurve, double scale = 1.0);
 
 class MathObjectDraw
 {
@@ -35,8 +36,6 @@ public:
   explicit MathObjectDraw(double targetSamplingDistance = 1.0);
 
 protected:
-  void drawDataPoint(const QPointF& pt, const zg::CurveStyle& style);
-
   void drawObjects();
 
   void drawSampledCurve(const zg::SampledCurve&);

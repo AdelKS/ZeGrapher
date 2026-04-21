@@ -21,6 +21,9 @@
 #include "GraphDraw/graph.h"
 #include "globalvars.h"
 
+#include <cmath>
+#include <numbers>
+
 #include <QQuickWindow>
 #include <QSvgGenerator>
 
@@ -520,19 +523,28 @@ void Graph::updateQmlData()
 
   for (const auto& [_, f_curve] : sampler.getCurves())
   {
-    if (f_curve.discrete) continue;
     if (not f_curve.style.visible) continue;
-    if (not f_curve.style.drawLine) continue;
     if (f_curve.curve.empty()) continue;
 
-    const QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
-
-    if (segments.isEmpty()) continue;
-
     QVariantMap curve;
-    curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
-    curve[QStringLiteral("style")]    = QVariant::fromValue(f_curve.style);
 
+    if (f_curve.style.drawLine)
+    {
+      QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
+      if (not segments.isEmpty())
+        curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
+    }
+
+    if (f_curve.discrete and f_curve.style.pointStyle != zg::CurveStyle::None)
+    {
+      QList<QPolygonF> markers = buildMarkerPaths(f_curve, totalScaleFactor);
+      if (not markers.isEmpty())
+        curve[QStringLiteral("markerPaths")] = QVariant::fromValue(std::move(markers));
+    }
+
+    if (curve.isEmpty()) continue;
+
+    curve[QStringLiteral("style")] = QVariant::fromValue(f_curve.style);
     qmlData.append(std::move(curve));
   }
 

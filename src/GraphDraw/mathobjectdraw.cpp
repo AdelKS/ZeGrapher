@@ -34,63 +34,6 @@ MathObjectDraw::MathObjectDraw(double targetSamplingDistance)
   moving = false;
 }
 
-void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& style)
-{
-  double w = style.pointWidth;
-
-  pen.setColor(style.color);
-  pen.setWidth(w);
-  brush.setColor(style.color);
-  painter->setBrush(brush);
-  painter->setPen(pen);
-
-  painter->setRenderHint(QPainter::Antialiasing, true);
-
-  switch (style.pointStyle)
-  {
-  case zg::CurveStyle::Cross:
-  {
-    painter->drawLine(pt + QPointF(0, 2 * w), pt + QPointF(0, -2 * w));
-    painter->drawLine(pt + QPointF(-2 * w, 0), pt + QPointF(2 * w, 0));
-    break;
-  }
-  case zg::CurveStyle::Disc:
-    painter->drawEllipse(pt, w, w);
-    break;
-  case zg::CurveStyle::Rhombus:
-  {
-    QPolygonF polygon(
-      {pt + QPointF(-w, 0), pt + QPointF(0, w), pt + QPointF(w, 0), pt + QPointF(0, -w)});
-
-    painter->drawPolygon(polygon);
-    break;
-  }
-  case zg::CurveStyle::Square:
-  {
-    QRectF rect;
-    rect.setTopLeft(pt + QPointF(-w, -w));
-    rect.setBottomRight(pt + QPointF(w, w));
-
-    painter->drawRect(rect);
-    break;
-  }
-  case zg::CurveStyle::Triangle:
-  {
-    w *= 2;
-    QPolygonF polygon;
-    double d = w * coef;
-    double b = w / 2;
-
-    polygon << pt + QPointF(0, -w) << pt + QPointF(d, b) << pt + QPointF(-d, b);
-
-    painter->drawPolygon(polygon);
-    break;
-  }
-  case zg::CurveStyle::None:
-    break;
-  }
-}
-
 void MathObjectDraw::drawObjects()
 {
   const auto start = std::chrono::high_resolution_clock::now();
@@ -163,6 +106,71 @@ QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double sc
   return finalCurve;
 }
 
+QList<QPolygonF> buildMarkerPaths(const zg::SampledCurve& curve, double scale)
+{
+  QList<QPolygonF> markers;
+
+  if (curve.style.pointStyle == zg::CurveStyle::None)
+    return markers;
+
+  const double w = curve.style.pointWidth / 2;
+  markers.reserve(curve.style.pointStyle == zg::CurveStyle::Cross ? curve.size() * 2 : curve.size());
+
+  for (const QPointF& raw : curve.px_curve)
+  {
+    if (std::isnan(raw.x()) or std::isnan(raw.y()))
+      continue;
+    const QPointF p = raw * scale;
+
+    switch (curve.style.pointStyle)
+    {
+    case zg::CurveStyle::Cross:
+      markers.append(QPolygonF({p + QPointF(-2 * w, 0), p + QPointF(2 * w, 0)}));
+      markers.append(QPolygonF({p + QPointF(0, -2 * w), p + QPointF(0, 2 * w)}));
+      break;
+    case zg::CurveStyle::Disc:
+    {
+      constexpr int N = 16;
+      QPolygonF poly;
+      poly.reserve(N + 1);
+      for (int i = 0; i <= N; ++i)
+      {
+        const double a = 2. * std::numbers::pi * i / N;
+        poly << p + QPointF(w * std::cos(a), w * std::sin(a));
+      }
+      markers.append(std::move(poly));
+      break;
+    }
+    case zg::CurveStyle::Rhombus:
+    {
+      double W = 1.5*w;
+      markers.append(QPolygonF({p + QPointF(-W, 0), p + QPointF(0, W),
+                                p + QPointF(W, 0),  p + QPointF(0, -W),
+                                p + QPointF(-W, 0)}));
+      break;
+    }
+    case zg::CurveStyle::Square:
+      markers.append(QPolygonF({p + QPointF(-w, -w), p + QPointF(w, -w),
+                                p + QPointF(w, w),   p + QPointF(-w, w),
+                                p + QPointF(-w, -w)}));
+      break;
+    case zg::CurveStyle::Triangle:
+    {
+      const double W = 1.5 * w;
+      const double d = W * std::numbers::sqrt3 / 2.;
+      const double b = W / 2;
+      markers.append(QPolygonF({p + QPointF(0, -W), p + QPointF(d, b),
+                                p + QPointF(-d, b), p + QPointF(0, -W)}));
+      break;
+    }
+    case zg::CurveStyle::None:
+      break;
+    }
+  }
+  return markers;
+}
+
+
 void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 {
   if (not f_curve.style.visible)
@@ -196,13 +204,34 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
   }
 
-  if (f_curve.discrete)
+  if (f_curve.discrete and style.pointStyle != zg::CurveStyle::PointStyle::None)
   {
-    if (style.pointStyle != zg::CurveStyle::PointStyle::None)
-      for (const QPointF& P: f_curve.px_curve)
-      {
-        if (not std::isnan(P.x()) and not std::isnan(P.y()))
-          drawDataPoint(P, style);
-      }
+    const bool crossMarker = (style.pointStyle == zg::CurveStyle::Cross);
+
+    pen.setColor(style.color);
+    pen.setWidth(crossMarker ? style.lineWidth : style.pointWidth);
+    pen.setStyle(Qt::SolidLine);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+
+    if (crossMarker)
+      brush.setStyle(Qt::NoBrush);
+    else
+    {
+      brush.setColor(style.color);
+      brush.setStyle(Qt::SolidPattern);
+    }
+
+    painter->setPen(pen);
+    painter->setBrush(brush);
+
+    QList<QPolygonF> markers = buildMarkerPaths(f_curve);
+    for (const QPolygonF& poly: markers)
+    {
+      if (crossMarker)
+        painter->drawPolyline(poly);
+      else
+        painter->drawPolygon(poly);
+    }
   }
 }
