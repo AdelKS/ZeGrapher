@@ -70,6 +70,7 @@ Graph::Graph(QQuickItem *parent)
   connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
+  connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });
 
   emit settingsChanged();
 }
