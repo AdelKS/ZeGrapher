@@ -6,7 +6,7 @@ inc = include_directories('.')
 # BEGIN AUTOGEN SRC-LIST
 
 source_files = [
-  'main.cpp',
+  'Animation/animatedconstant.cpp',
   'Calculus/polynomial.cpp',
   'Calculus/polynomialregression.cpp',
   'Calculus/regression.cpp',
@@ -91,6 +91,7 @@ qml_files = [
 ]
 
 qmlcpp_files = [
+  'Animation/animatedconstant.h',
   'DataPlot/csvpreviewmodel.h',
   'DataPlot/datatablemodel.h',
   'globalvars.h',

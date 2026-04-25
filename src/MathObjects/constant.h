@@ -25,6 +25,9 @@
 #include "Utils/state.h"
 
 namespace zg {
+
+class AnimatedConstant;
+
 namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
@@ -58,6 +61,10 @@ protected:
   double value = std::nan("");
 
   QString input_name;
+
+  /// @brief so value can be changed without triggering signals
+  ///        used in animations
+  friend class zg::AnimatedConstant;
 };
 
 }
