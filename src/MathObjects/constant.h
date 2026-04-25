@@ -34,6 +34,7 @@ struct Constant: Stateful, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER input_name)
+  Q_PROPERTY(double value WRITE set_value MEMBER value NOTIFY valueChanged)
 
 public:
 
@@ -47,10 +48,15 @@ public:
 
   Q_INVOKABLE bool isValid();
 
+  double get_value() const { return value; }
+
 signals:
   void updated();
+  void valueChanged();
 
 protected:
+  double value = std::nan("");
+
   QString input_name;
 };
 
