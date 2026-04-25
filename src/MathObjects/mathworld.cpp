@@ -86,12 +86,54 @@ void MathWorld::objectUpdated()
 
   syncing = false;
 
+  updateSchrodingerStatus();
+
   emit updated();
 }
 
 QHash<int, QByteArray> MathWorld::roleNames() const
 {
   return { {Qt::DisplayRole, "mathObjPtr"} };
+}
+
+void MathWorld::setSchrodingerConstant(MathObject* c)
+{
+  if (schrodingerConstant == c)
+    return;
+
+  schrodingerConstant = c;
+
+  updateSchrodingerStatus();
+
+  emit schrodingerConstantChanged();
+}
+
+void MathWorld::unsetSchrodingerConstant(MathObject* c)
+{
+  if (schrodingerConstant != c or c == nullptr)
+    return;
+
+  schrodingerConstant = nullptr;
+
+  updateSchrodingerStatus();
+
+  emit schrodingerConstantChanged();
+}
+
+void MathWorld::updateSchrodingerStatus()
+{
+  std::unordered_set<MathObject*> schrodingerObjects;
+  if (schrodingerConstant)
+  {
+    schrodingerObjects = revdeps(*schrodingerConstant);
+    schrodingerObjects.insert(schrodingerConstant);
+  }
+
+  for (auto&& [r, _]: mathObjects)
+    r->setSchrodinger(schrodingerObjects.contains(r));
+
+  for (MathObject* r: altMathObjects)
+    r->setSchrodinger(schrodingerObjects.contains(r));
 }
 
 std::unordered_set<MathObject*> MathWorld::direct_revdeps(MathObject& c) const

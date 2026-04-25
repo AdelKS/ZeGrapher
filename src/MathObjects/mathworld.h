@@ -40,6 +40,8 @@ class MathWorld: public QAbstractListModel
   Q_OBJECT
   QML_ELEMENT
 
+  Q_PROPERTY(zg::MathObject* schrodingerConstant READ getSchrodingerConstant NOTIFY schrodingerConstantChanged)
+
 public:
   MathWorld(QObject *parent = nullptr): QAbstractListModel(parent) {}
 
@@ -50,6 +52,10 @@ public:
   const auto& getMathObjects() const { return mathObjects; }
   Q_INVOKABLE void removeMathObject(MathObject*);
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
+
+  Q_INVOKABLE void setSchrodingerConstant(zg::MathObject* c);
+  Q_INVOKABLE void unsetSchrodingerConstant(zg::MathObject* c);
+  zg::MathObject* getSchrodingerConstant() { return schrodingerConstant; }
 
   /// @brief attaches the plotstyle to the given mathobject
   Q_INVOKABLE void attachStyle(MathObject*, PlotStyle*);
@@ -65,12 +71,17 @@ public:
 
 signals:
   void updated();
+  void schrodingerConstantChanged();
 
 protected slots:
   void objectUpdated();
+  void updateSchrodingerStatus();
 
 protected:
   std::vector<std::pair<zg::MathObject*, PlotStyle*>> mathObjects;
+
+  /// @brief the single constant currently driving simultaneous plotting, or nullptr
+  zg::MathObject* schrodingerConstant = nullptr;
 
   /// @brief math objects that aren't part of the model (that the view represents)
   std::vector<zg::MathObject*> altMathObjects;
