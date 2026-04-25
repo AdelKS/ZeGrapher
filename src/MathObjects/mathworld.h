@@ -58,6 +58,9 @@ public:
   Q_INVOKABLE mathobj::Expr* addAltExprObject();
   Q_INVOKABLE void removeAltExprObject(mathobj::Expr*);
 
+  std::unordered_set<MathObject*> direct_revdeps(MathObject&) const;
+  std::unordered_set<MathObject*> revdeps(MathObject&) const;
+
   QHash<int, QByteArray> roleNames() const override;
 
 signals:
