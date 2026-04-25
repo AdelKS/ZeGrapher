@@ -7,6 +7,7 @@ inc = include_directories('.')
 
 source_files = [
   'Animation/animatedconstant.cpp',
+  'Animation/animationconductor.cpp',
   'Calculus/polynomial.cpp',
   'Calculus/polynomialregression.cpp',
   'Calculus/regression.cpp',
@@ -92,6 +93,7 @@ qml_files = [
 
 qmlcpp_files = [
   'Animation/animatedconstant.h',
+  'Animation/animationconductor.h',
   'DataPlot/csvpreviewmodel.h',
   'DataPlot/datatablemodel.h',
   'globalvars.h',

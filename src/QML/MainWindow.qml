@@ -16,6 +16,23 @@ ApplicationWindow {
     Information.screenChanged(win); // converted from (px per mm) to (px per cm)
   }
 
+  Connections {
+    target: win
+    enabled: AnimationConductor.animating
+
+    // naturally follows the refresh rate of the screen
+    function onAfterAnimating() {
+      AnimationConductor.animationStep();
+    }
+  }
+
+  Connections {
+    target: AnimationConductor
+    function onAnimatingChanged() {
+      if (AnimationConductor.animating) AnimationConductor.animationStep()
+    }
+  }
+
   FileDialog {
     id: fileDialog
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
