@@ -1,6 +1,4 @@
 #include "MathObjects/constant.h"
-#include "information.h"
-
 namespace zg {
 namespace mathobj {
 
@@ -36,7 +34,13 @@ State Constant::sync() {
 
 void Constant::set_value(double val)
 {
+  if (value == val)
+    return;
+
   zcMathObj = val;
+  value = val;
+
+  emit valueChanged();
   emit updated();
 }
 
