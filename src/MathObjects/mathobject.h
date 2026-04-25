@@ -42,6 +42,7 @@ struct MathObject: QObject {
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
   Q_PROPERTY(bool discrete READ isDiscrete NOTIFY continuityChanged)
   Q_PROPERTY(bool continuous READ isContinuous NOTIFY continuityChanged)
+  Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
 
 public:
   using EvalHandle
@@ -74,6 +75,8 @@ public:
 
   EvalHandle getZcObject() const;
 
+  void setSchrodinger(bool);
+
   Q_INVOKABLE mathobj::Equation* getEquation();
   Q_INVOKABLE mathobj::Expr* getExpr();
   Q_INVOKABLE mathobj::Constant* getConstant();
@@ -83,6 +86,7 @@ public:
 
   Q_INVOKABLE bool isContinuous() const { return continuous; };
   Q_INVOKABLE bool isDiscrete() const { return discrete; };
+  Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
@@ -101,6 +105,7 @@ signals:
   void typeChanged();
   void continuityChanged();
   void nameChanged();
+  void schrodingerChanged();
 
 protected:
   std::variant<std::monostate,
@@ -112,6 +117,8 @@ protected:
                mathobj::Parametric*> backend;
   QString name;
   State state;
+
+  bool schrodinger = false;
   bool discrete = false;
   bool continuous = false;
 };

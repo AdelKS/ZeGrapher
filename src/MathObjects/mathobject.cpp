@@ -245,4 +245,21 @@ State MathObject::sync()
   return state;
 }
 
+void MathObject::setSchrodinger(bool s)
+{
+  if (schrodinger == s)
+    return;
+
+  schrodinger = s;
+
+  /// @brief set schrodinger constants to have a default NaN value
+  ///        so Expr that depend on it get a warning color
+  if (schrodinger)
+    if (auto* c = getConstant())
+      c->set_value(std::nan(""));
+
+
+  emit schrodingerChanged();
+}
+
 }
