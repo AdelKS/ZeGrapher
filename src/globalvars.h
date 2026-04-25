@@ -2,6 +2,7 @@
 
 #include "MathObjects/mathworld.h"
 #include "information.h"
+#include "Animation/animationconductor.h"
 
 namespace zg {
 
@@ -41,6 +42,44 @@ public:
 private:
   inline static QJSEngine *s_engine = nullptr;
 };
+
+
+inline AnimationConductor animationConductor;
+
+/// @brief register the 'information' global variable with QML
+/// @note  see https://doc.qt.io/qt-6/qml-singleton.html#exposing-an-existing-object-as-a-singleton
+
+struct AnimationConductorForeign
+{
+  Q_GADGET
+  QML_FOREIGN(AnimationConductor)
+  QML_SINGLETON
+  QML_NAMED_ELEMENT(AnimationConductor)
+
+public:
+
+  static AnimationConductor *create(QQmlEngine *, QJSEngine *engine)
+  {
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(engine->thread() == animationConductor.thread());
+
+    // There can only be one engine accessing the singleton.
+    if (s_engine)
+      Q_ASSERT(engine == s_engine);
+    else
+      s_engine = engine;
+
+    // Explicitly specify C++ ownership so that the engine doesn't delete
+    // the instance.
+    QJSEngine::setObjectOwnership(&animationConductor,
+                                  QJSEngine::CppOwnership);
+    return &animationConductor;
+  }
+
+private:
+  inline static QJSEngine *s_engine = nullptr;
+};
+
 
 }
 
