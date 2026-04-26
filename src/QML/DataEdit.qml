@@ -13,7 +13,8 @@ Item {
   property alias exprEdit: zcExprEdit
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
-  implicitHeight: zcExprEdit.implicitHeight
+  implicitHeight: gridLayout.implicitHeight
+  implicitWidth:  gridLayout.implicitWidth
 
   Behavior on height { SmoothedAnimation { duration: 200 } }
 
@@ -31,14 +32,18 @@ Item {
     root.destroy(200);
   }
 
-  RowLayout {
+  GridLayout {
+    id: gridLayout
+
+    columns: 2
     anchors.fill: parent
 
     ZeLabel {
-      text: qsTr("Name: ")
-      Layout.topMargin: 5
-      Layout.alignment: Qt.AlignTop | Qt.AlignRight
+      text: qsTr("name")
+      Layout.alignment: Qt.AlignHCenter
     }
+
+    Item {}
 
     ZcExprEdit {
       id: zcExprEdit

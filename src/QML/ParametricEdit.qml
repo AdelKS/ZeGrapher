@@ -12,7 +12,8 @@ Item {
   property NamedRef eq1: backend.obj1
   property NamedRef eq2: backend.obj2
 
-  implicitHeight: Math.max(lineEdit1.implicitHeight, lineEdit2.implicitHeight)
+  implicitHeight: gridLayout.implicitHeight
+  implicitWidth:  gridLayout.implicitWidth
 
   Behavior on height { SmoothedAnimation { duration: 200 } }
 
@@ -22,16 +23,34 @@ Item {
     root.destroy(200);
   }
 
-  RowLayout {
+  GridLayout {
+    id: gridLayout
+
+    columns: 5
     anchors.fill: parent
 
+    columnSpacing: 10
+    rowSpacing: 0
+
+    Item {}
+
     ZeLabel {
-      Layout.alignment: Qt.AlignTop
-      Layout.topMargin: 5
+      Layout.alignment: Qt.AlignHCenter
       id: ref1Label
-      text: "x: "
-      verticalAlignment: Text.AlignTop
+      text: qsTr("x object name")
     }
+
+    Item {}
+
+    ZeLabel {
+      Layout.alignment: Qt.AlignHCenter
+      id: ref2Label
+      text: qsTr("y object name")
+    }
+
+    Item {}
+
+    Item {}
 
     ZcExprEdit {
       Layout.fillWidth: true
@@ -44,19 +63,7 @@ Item {
       state: root.eq1.state
     }
 
-    Item {
-      Layout.preferredWidth: 10
-      Layout.preferredHeight: 0
-    }
-
-    ZeLabel {
-      Layout.topMargin: 5
-      Layout.alignment: Qt.AlignTop
-
-      id: ref2Label
-      text: "y: "
-      verticalAlignment: Text.AlignTop
-    }
+    Item {}
 
     ZcExprEdit {
       Layout.fillWidth: true
@@ -68,6 +75,8 @@ Item {
 
       state: root.eq2.state
     }
+
+    Item {}
   }
 
   Component.onCompleted: {
