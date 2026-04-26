@@ -143,10 +143,6 @@ Item {
             Layout.topMargin: 0
             Layout.fillWidth: true
 
-            Layout.maximumHeight: maxHeight
-
-            property int maxHeight: implicitHeight
-
             id: customSizeGroupBox
 
             GridLayout {
@@ -198,17 +194,12 @@ Item {
 
               ZeLabel {
                 Layout.alignment: Qt.AlignRight
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
 
                 id: sheetHeightLabel
 
                 text: qsTr("Height")
               }
               ZeDoubleSpinBox {
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
-
                 id: sheetHeight
 
                 onValueModified: {
@@ -227,15 +218,11 @@ Item {
 
               ZeLabel {
                 Layout.alignment: Qt.AlignRight
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
 
                 id: sheetWidthLabel
                 text: qsTr("Width")
               }
               ZeDoubleSpinBox {
-                Layout.maximumHeight: maxHeight
-                property int maxHeight: implicitHeight
 
                 id: sheetWidth
                 suffix: unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
@@ -265,7 +252,7 @@ Item {
                   name: "hidden";
                   when: sheetSizeSettings.currentValue === GraphSettings.SizeType.Fill
                   PropertyChanges {
-                    customSizeGroupBox.maxHeight: 0
+                    customSizeGroupBox.Layout.maximumHeight: 0
                     customSizeGroupBox.visible: false
                     emptyItem.visible: false
                   }
@@ -274,7 +261,7 @@ Item {
                   name: "shown";
                   when: sheetSizeSettings.currentValue !== GraphSettings.SizeType.Fill
                   PropertyChanges {
-                    customSizeGroupBox.maxHeight: customSizeGroupBox.implicitHeight
+                    customSizeGroupBox.Layout.maximumHeight: customSizeGroupBox.implicitHeight
                     customSizeGroupBox.visible: true
                     emptyItem.visible: true
                   }
@@ -288,7 +275,7 @@ Item {
                 SequentialAnimation {
                   NumberAnimation {
                     easing.type: Easing.InOutQuad;
-                    property: "maxHeight";
+                    property: "maximumHeight";
                     duration: 400;
                   }
                   PropertyAction {
