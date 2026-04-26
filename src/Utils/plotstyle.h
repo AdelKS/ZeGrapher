@@ -36,6 +36,7 @@ struct PlotStyle: QObject {
 
   Q_PROPERTY(bool visible MEMBER visible NOTIFY visibleChanged)
   Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
+  Q_PROPERTY(ThemedColor secondColor MEMBER secondColor NOTIFY secondColorChanged)
   Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
   Q_PROPERTY(QList<qreal> dashPattern MEMBER dashPattern NOTIFY dashPatternChanged)
   Q_PROPERTY(bool drawLine MEMBER drawLine NOTIFY drawLineChanged)
@@ -73,6 +74,10 @@ public:
 
   bool visible = true;
   ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
+
+  /// @brief used for simultaneous plotting
+  ThemedColor secondColor = {.dark = Qt::white, .light = Qt::gray};
+
   double lineWidth = 1.0;
   QList<qreal> dashPattern;
   bool drawLine = true;
@@ -98,6 +103,7 @@ signals:
   void coordinateSystemChanged();
   void rangeChanged();
   void objectTypeChanged();
+  void secondColorChanged();
 
 protected:
   mathobj::Expr* start;
