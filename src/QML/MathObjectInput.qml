@@ -160,8 +160,158 @@ Rectangle {
         }
       }
 
+      ColorButton {
+        id: secondColorButton
+        radius: 12
+        selectedColor: styleWidget.dataBackend.secondColor
+
+        onSelectedColorChanged: {
+          styleWidget.dataBackend.secondColor = selectedColor;
+        }
+
+        states: [
+          State {
+            name: "hidden";
+            when: !root.mathObj.schrodinger || root.mathObj.type === MathObject.CONSTANT
+            PropertyChanges {
+              secondColorButton.opacity: 0.
+              secondColorButton.radius: 0
+              secondColorButton.visible: false
+            }
+          },
+          State {
+            name: "shown";
+            when: root.mathObj.schrodinger && root.mathObj.type !== MathObject.CONSTANT
+            PropertyChanges {
+              secondColorButton.opacity: 1.
+              secondColorButton.radius: 12
+              secondColorButton.visible: true
+            }
+          }
+        ]
+
+        transitions: commonTransition
+      }
+
       Item {
         Layout.fillWidth: true
+      }
+
+      Transition {
+        id: commonTransition
+
+        reversible: true
+        from: "shown"
+        to: "hidden"
+        SequentialAnimation {
+          NumberAnimation {
+            easing.type: Easing.InOutQuad
+            properties: "opacity,maximumWidth,maximumHeight,radius"
+            duration: 200;
+          }
+          PropertyAction {
+            property: "visible"
+          }
+        }
+      }
+
+      Connections {
+        target: root.mathObj
+
+        function onSchrodingerChanged() {
+          if (loader.item && loader.item.animatedConstant)
+          {
+            loader.item.animatedConstant.deadAndAlive = root.mathObj.schrodinger;
+            schrodingerCatButton.checked = root.mathObj.schrodinger;
+          }
+        }
+      }
+
+      IconRoundButton {
+        id: schrodingerCatButton
+
+        Layout.minimumWidth: 20
+        Layout.maximumWidth: 30
+        Layout.preferredHeight: Layout.preferredWidth
+        Layout.preferredWidth: 30
+
+        readonly property bool isConstant: root.mathObj.type === MathObject.CONSTANT
+
+        checkable: true
+
+        lightThemeIcon: "qrc:/icons/schrodinger-cat-dark.svg"
+        darkThemeIcon: "qrc:/icons/schrodinger-cat-light.svg"
+
+        onToggled: {
+          if (checked) {
+            MathWorld.setSchrodingerConstant(root.mathObj);
+            AnimationConductor.setSchrodingerConstant(loader.item.animatedConstant);
+          } else {
+            MathWorld.unsetSchrodingerConstant(root.mathObj);
+            AnimationConductor.unsetSchrodingerConstant(loader.item.animatedConstant);
+          }
+        }
+
+        states: [
+          State {
+            name: "hidden";
+            when: !schrodingerCatButton.isConstant
+            PropertyChanges {
+              schrodingerCatButton.opacity: 0.
+              schrodingerCatButton.Layout.maximumWidth: 0
+              schrodingerCatButton.visible: false
+            }
+          },
+          State {
+            name: "shown";
+            when: schrodingerCatButton.isConstant
+            PropertyChanges {
+              schrodingerCatButton.opacity: 1.
+              schrodingerCatButton.Layout.maximumWidth: 30
+              schrodingerCatButton.visible: true
+            }
+          }
+        ]
+
+        transitions: commonTransition
+      }
+
+      Image {
+        Layout.minimumWidth: 20
+        Layout.maximumWidth: 30
+        Layout.preferredHeight: Layout.preferredWidth
+        Layout.preferredWidth: 30
+
+        source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/schrodinger-cat-dark.svg" : "qrc:/icons/schrodinger-cat-light.svg"
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
+
+        id: schrodingerObject
+
+        readonly property bool isSchrodingerObject: false
+
+        states: [
+          State {
+            name: "hidden";
+            when: !root.mathObj.schrodinger || root.mathObj.type === MathObject.CONSTANT
+            PropertyChanges {
+              schrodingerObject.Layout.maximumWidth: 0
+              schrodingerObject.Layout.maximumHeight: 0
+              schrodingerObject.visible: false
+            }
+          },
+          State {
+            name: "shown";
+            when: root.mathObj.schrodinger && root.mathObj.type !== MathObject.CONSTANT
+            PropertyChanges {
+              schrodingerObject.Layout.maximumWidth: 30
+              schrodingerObject.Layout.maximumHeight: 30
+              schrodingerObject.visible: true
+            }
+          }
+        ]
+
+        transitions: commonTransition
       }
 
       IconRoundButton {
@@ -183,10 +333,17 @@ Rectangle {
           when: ! eqTypeModel.get(objectTypeTumbler.currentIndex).has_graph
           PropertyChanges {
             colorButton.opacity: 0.
-            styleButton.opacity: 0.
-            displayButton.opacity: 0.
+            colorButton.radius: 0
             colorButton.visible: false
+
+            styleButton.opacity: 0.
+            styleButton.Layout.maximumWidth: 0
+            styleButton.Layout.maximumHeight: 0
             styleButton.visible: false
+
+            displayButton.opacity: 0.
+            displayButton.Layout.maximumWidth: 0
+            displayButton.Layout.maximumHeight: 0
             displayButton.visible: false
           }
         },
@@ -195,30 +352,23 @@ Rectangle {
           when: eqTypeModel.get(objectTypeTumbler.currentIndex).has_graph
           PropertyChanges {
             colorButton.opacity: 1.
-            styleButton.opacity: 1.
-            displayButton.opacity: 1.
+            colorButton.radius: 12
             colorButton.visible: true
+
+            styleButton.opacity: 1.
+            styleButton.Layout.maximumWidth: 30
+            styleButton.Layout.maximumHeight: 30
             styleButton.visible: true
+
+            displayButton.opacity: 1.
+            displayButton.Layout.maximumWidth: 30
+            displayButton.Layout.maximumHeight: 30
             displayButton.visible: true
           }
         }
       ]
 
-      transitions: Transition {
-        reversible: true
-        from: "shown"
-        to: "hidden"
-        SequentialAnimation {
-          NumberAnimation {
-            easing.type: Easing.InOutQuad;
-            property: "opacity";
-            duration: 500;
-          }
-          PropertyAction {
-            property: "visible"
-          }
-        }
-      }
+      transitions: commonTransition
     }
 
     ObjectStyle {
