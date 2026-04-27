@@ -52,4 +52,24 @@ void AnimationConductor::updateIsAnimating()
   }
 }
 
+void AnimationConductor::setSchrodingerConstant(AnimatedConstant* c)
+{
+  if (schrodingerConstant == c)
+    return;
+
+  schrodingerConstant = c;
+
+  emit schrodingerConstantChanged();
+}
+
+void AnimationConductor::unsetSchrodingerConstant(AnimatedConstant* c)
+{
+  if (schrodingerConstant != c or c == nullptr)
+    return;
+
+  schrodingerConstant = nullptr;
+
+  emit schrodingerConstantChanged();
+}
+
 }
