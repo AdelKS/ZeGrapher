@@ -41,6 +41,7 @@ class AnimationConductor: public QObject
   QML_ELEMENT
 
   Q_PROPERTY(bool animating READ isAnimating NOTIFY animatingChanged)
+  Q_PROPERTY(zg::AnimatedConstant* schrodingerConstant WRITE setSchrodingerConstant MEMBER schrodingerConstant NOTIFY schrodingerConstantChanged)
 
 public:
   AnimationConductor(QObject *parent = nullptr): QObject(parent) {}
@@ -50,6 +51,10 @@ public:
   Q_INVOKABLE void animationStep();
 
   Q_INVOKABLE bool isAnimating() const {return animating; }
+
+  Q_INVOKABLE void setSchrodingerConstant(zg::AnimatedConstant* c);
+  Q_INVOKABLE void unsetSchrodingerConstant(zg::AnimatedConstant* c);
+  zg::AnimatedConstant* getSchrodingerConstant() { return schrodingerConstant; }
 
 protected slots:
   void updateIsAnimating();
@@ -61,11 +66,15 @@ signals:
   /// @note only is triggered when a constant is actually animating
   void tick();
 
+  void schrodingerConstantChanged();
+
 protected:
   std::vector<zg::AnimatedConstant*> constants;
 
   /// @brief whether any constant is being animated
   bool animating = false;
+
+  zg::AnimatedConstant* schrodingerConstant = nullptr;
 
   std::optional<time_point> last_step_timestamp;
 };
