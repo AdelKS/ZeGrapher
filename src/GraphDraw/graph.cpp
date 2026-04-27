@@ -522,7 +522,7 @@ void Graph::updateQmlData()
 {
   qmlData.clear();
 
-  for (const auto& [_, f_curve] : sampler.getCurves())
+  for (const zg::SampledCurve& f_curve : sampler.getCurves())
   {
     if (not f_curve.style.visible) continue;
     if (f_curve.curve.empty()) continue;

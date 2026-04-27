@@ -38,7 +38,7 @@ void MathObjectDraw::drawObjects()
 {
   const auto start = std::chrono::high_resolution_clock::now();
 
-  for (const auto& [_, f_curve]: sampler.getCurves())
+  for (const auto& f_curve: sampler.getCurves())
     drawSampledCurve(f_curve);
 
   const auto end = std::chrono::high_resolution_clock::now();
