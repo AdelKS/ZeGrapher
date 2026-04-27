@@ -38,7 +38,7 @@ public:
   void setPixelStep(double pxStep);
   void update();
 
-  const auto& getCurves() { return curves; }
+  const auto& getCurves() { return curves_list; }
 
   /// @brief clears the saved points of functions whose name is in 'objectNames'
   void clearCache(QStringList objectNames);
@@ -51,6 +51,12 @@ public:
 
   /// @brief refreshes the sampling settings of every curve: clears the data if it changed
   void refresh_curve_settings();
+
+  /// @brief makes sure the full [start, step, end] range of values of the schrodinger constant
+  ///        is in the keys of the schrodinger_curves_map, no more no less
+  void refresh_schrodinger_keys();
+
+  void refresh_curves_list();
 
 protected:
 
@@ -65,6 +71,9 @@ protected:
   const zg::ZeViewMapper& mapper;
 
   std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
+  std::unordered_map<double, std::unordered_map<const zg::MathObject*, zg::SampledCurve>> schrodinger_curves_map;
+
+  std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;
 
   zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;

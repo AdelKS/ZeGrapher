@@ -22,6 +22,8 @@
 #include "globalvars.h"
 #include "sampler.impl.h"
 
+#include <cmath>
+
 Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
   : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
 {}
@@ -44,40 +46,72 @@ static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
   };
 }
 
+void Sampler::refresh_schrodinger_keys()
+{
+  if (not zg::animationConductor.getSchrodingerConstant())
+  {
+    schrodinger_curves_map.clear();
+    return;
+  }
+
+  const zg::AnimatedConstant* c = zg::animationConductor.getSchrodingerConstant();
+  assert(c);
+  assert(c->getSteps() > 0);
+
+  if (std::isnan(c->getFrom()) or std::isnan(c->getTo()))
+    return;
+
+  std::unordered_set<double> current_values;
+  for (size_t i = 0 ; i <= c->getSteps(); i++)
+  {
+    double t = double(i) / double(c->getSteps());
+    current_values.insert(std::lerp(c->getFrom(), c->getTo(), t));
+  }
+
+  std::erase_if(schrodinger_curves_map,
+                [&](const auto& item) { return not current_values.contains(item.first); });
+
+  for (double v: current_values)
+    schrodinger_curves_map.try_emplace(v);
+}
+
 void Sampler::refresh_valid_objects()
 {
-  std::unordered_map<const zg::MathObject*, zg::SampledCurve> refreshed_curves;
+  using MapT = std::unordered_map<const zg::MathObject*, zg::SampledCurve>;
+
+  auto update = [](zg::MathObject* f, MapT& curves, bool good)
+  {
+    auto curve_node = curves.extract(f);
+    if (good)
+    {
+      if (good)
+        curves[f].discrete = f->isDiscrete();
+      else
+        curves.erase(f);
+    }
+  };
 
   for (auto* f: zg::mathWorld.getMathObjects())
   {
     zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
-    auto curve_node = curves.extract(f);
-
-    if (not style or not f->isValid()
+    bool good = not (not style or not f->isValid()
         or std::isnan(style->getStart().v)
         or std::isnan(style->getEnd().v)
         or (f->isDiscrete() and std::isnan(style->getStep().v))
         or style->getStart() >= style->getEnd()
         or f->getType() == zg::MathObject::CONSTANT
         or f->getType() == zg::MathObject::EXPR
-        )
-      continue;
+        );
 
-    zg::SampledCurve& curve = curve_node
-                                ? curve_node.mapped()
-                                : refreshed_curves[f];
-    curve.discrete = f->isDiscrete();
-
-    if (curve_node)
-      refreshed_curves.insert(std::move(curve_node));
+    update(f, curves, good && !f->isSchrodinger());
+    for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
+      update(f, schrodinger_curves, good && f->isSchrodinger());
   }
-
-  curves = std::move(refreshed_curves);
 }
 
 void Sampler::refresh_curve_styles()
 {
-  for (auto* f: zg::mathWorld.getMathObjects())
+  for (auto* f : zg::mathWorld.getMathObjects())
   {
     zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
     if (not style)
@@ -85,26 +119,49 @@ void Sampler::refresh_curve_styles()
 
     if (auto it = curves.find(f); it != curves.end())
       it->second.style = make_curve_style(*style);
+
+    for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
+      if (auto it = schrodinger_curves.find(f); it != schrodinger_curves.end())
+        it->second.style = make_curve_style(*style);
   }
 }
 
 void Sampler::refresh_curve_settings()
 {
-  for (auto* f: zg::mathWorld.getMathObjects())
+  for (auto* f : zg::mathWorld.getMathObjects())
   {
     zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
-    auto it = curves.find(f);
-    if (it == curves.end() or not style)
+    if (not style)
       continue;
-    it->second.update_sampling_settings(*f, *style);
+
+    if (auto it = curves.find(f); it != curves.end())
+      it->second.update_sampling_settings(*f, *style);
+
+    for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
+      if (auto it = schrodinger_curves.find(f); it != schrodinger_curves.end())
+        it->second.update_sampling_settings(*f, *style);
+
   }
+}
+
+void Sampler::refresh_curves_list()
+{
+  curves_list.clear();
+  for (auto& [_, curve]: curves)
+    curves_list.push_back(curve);
+
+  for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
+    for (auto& [_, curve]: schrodinger_curves)
+      curves_list.push_back(curve);
 }
 
 void Sampler::update()
 {
+  refresh_schrodinger_keys();
   refresh_valid_objects();
   refresh_curve_styles();
   refresh_curve_settings();
+  refresh_curves_list();
 
   auto dispatch = [this](zg::MathObject::EvalHandle var_handle, auto& data)
   {
@@ -130,6 +187,34 @@ void Sampler::update()
     dispatch(f->getZcObject(), data);
     if (f->isContinuous())
       update_discontinuities(data);
+  }
+
+  if (zg::AnimatedConstant* c_obj = zg::animationConductor.getSchrodingerConstant())
+  {
+    zg::mathobj::Constant* c = c_obj->getBackend();
+    assert(c);
+
+    if (c) [[likely]]
+    {
+      for (auto& [v, schrodinger_curves]: schrodinger_curves_map)
+      {
+        c->zcMathObj = v;
+        double amplitude = c_obj->getTo() - c_obj->getFrom();
+        double t = amplitude != 0 ? (v - c_obj->getFrom()) / amplitude : 1.0;
+        for (auto& [f, data]: schrodinger_curves)
+        {
+          zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
+          if (not style)
+            continue;
+
+          data.style.color = style->colorLerp(t);
+          dispatch(f->getZcObject(), data);
+          if (f->isContinuous())
+            update_discontinuities(data);
+        }
+      }
+      c->zcMathObj = std::nan("");
+    }
   }
 
   const auto end = std::chrono::high_resolution_clock::now();
@@ -208,8 +293,16 @@ void Sampler::update_discontinuities(zg::SampledCurve& data)
 void Sampler::clearCache(QStringList objectNames)
 {
   refresh_valid_objects();
+  refresh_schrodinger_keys();
 
   for (auto& [f, curve]: curves)
     if (objectNames.contains(f->getName()))
       curve.clear();
+
+  for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
+  {
+    for( auto& [f, curve]: schrodinger_curves)
+      if (objectNames.contains(f->getName()))
+        curve.clear();
+  }
 }
