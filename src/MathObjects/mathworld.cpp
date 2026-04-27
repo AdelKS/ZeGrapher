@@ -16,14 +16,14 @@ QVariant MathWorld::data(const QModelIndex &index, int role) const
     return QVariant();
 
   QVariant var;
-  var.setValue(mathObjects.at(index.row()).first);
+  var.setValue(mathObjects.at(index.row()));
 
   return var;
 }
 
 void MathWorld::removeMathObject(MathObject* obj)
 {
-  auto it = std::ranges::find(mathObjects, obj, &std::pair<zg::MathObject*, PlotStyle*>::first);
+  auto it = std::ranges::find(mathObjects, obj);
   if (it == mathObjects.end())
     return;
 
@@ -46,21 +46,21 @@ void MathWorld::removeAltExprObject(mathobj::Expr* expr)
 
 void MathWorld::attachStyle(MathObject* obj, PlotStyle* style)
 {
-  auto it = std::ranges::find(mathObjects, obj, &std::pair<zg::MathObject*, PlotStyle*>::first);
+  auto it = std::ranges::find(mathObjects, obj);
   if (it == mathObjects.end())
     return;
 
-  it->second = style;
+  styles[obj] = style;
 }
 
 MathObject* MathWorld::addMathObject(MathObject::Type type)
 {
   beginInsertRows(QModelIndex(), mathObjects.size(), mathObjects.size());
-  mathObjects.emplace_back(std::make_pair(new zg::MathObject(this, type), static_cast<PlotStyle*>(nullptr)));
-  connect(mathObjects.back().first, &MathObject::stateChanged, this, &MathWorld::objectUpdated);
-  connect(mathObjects.back().first, &MathObject::updated, this, &MathWorld::objectUpdated);
+  mathObjects.emplace_back(new zg::MathObject(this, type));
+  connect(mathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
+  connect(mathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
   endInsertRows();
-  return mathObjects.back().first;
+  return mathObjects.back();
 }
 
 mathobj::Expr* MathWorld::addAltExprObject()
@@ -78,10 +78,10 @@ void MathWorld::objectUpdated()
 
   syncing = true;
 
-  for (auto&& [f, _]: mathObjects)
+  for (auto* f: mathObjects)
     f->sync();
 
-  for (auto&& f: altMathObjects)
+  for (auto* f: altMathObjects)
     f->sync();
 
   syncing = false;
@@ -129,7 +129,7 @@ void MathWorld::updateSchrodingerStatus()
     schrodingerObjects.insert(schrodingerConstant);
   }
 
-  for (auto&& [r, _]: mathObjects)
+  for (auto* r: mathObjects)
     r->setSchrodinger(schrodingerObjects.contains(r));
 
   for (MathObject* r: altMathObjects)
@@ -138,9 +138,7 @@ void MathWorld::updateSchrodingerStatus()
 
 std::unordered_set<MathObject*> MathWorld::direct_revdeps(MathObject& c) const
 {
-  using PairT = std::pair<zg::MathObject*, PlotStyle*>;
-
-  assert (std::ranges::find(mathObjects, &c, &PairT::first) != mathObjects.end() or
+  assert (std::ranges::find(mathObjects, &c) != mathObjects.end() or
           std::ranges::find(altMathObjects, &c) != altMathObjects.end());
 
   std::unordered_set<std::string> direct_revdep_names;
@@ -183,7 +181,7 @@ std::unordered_set<MathObject*> MathWorld::direct_revdeps(MathObject& c) const
     );
   };
 
-  for (auto&& [r, _]: mathObjects)
+  for (auto* r: mathObjects)
     insert_revdep(r);
 
   for (MathObject* r: altMathObjects)
