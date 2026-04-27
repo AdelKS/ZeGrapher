@@ -50,6 +50,7 @@ public:
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
   const auto& getMathObjects() const { return mathObjects; }
+  auto& getStyles() { return styles; }
   Q_INVOKABLE void removeMathObject(MathObject*);
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
 
@@ -78,7 +79,8 @@ protected slots:
   void updateSchrodingerStatus();
 
 protected:
-  std::vector<std::pair<zg::MathObject*, PlotStyle*>> mathObjects;
+  std::vector<zg::MathObject*> mathObjects;
+  std::unordered_map<const zg::MathObject*, PlotStyle*> styles;
 
   /// @brief the single constant currently driving simultaneous plotting, or nullptr
   zg::MathObject* schrodingerConstant = nullptr;

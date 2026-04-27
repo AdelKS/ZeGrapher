@@ -48,8 +48,9 @@ void Sampler::refresh_valid_objects()
 {
   std::unordered_map<const zg::MathObject*, zg::SampledCurve> refreshed_curves;
 
-  for (auto&& [f, style] : zg::mathWorld.getMathObjects())
+  for (auto* f: zg::mathWorld.getMathObjects())
   {
+    zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
     auto curve_node = curves.extract(f);
 
     if (not style or not f->isValid()
@@ -76,19 +77,22 @@ void Sampler::refresh_valid_objects()
 
 void Sampler::refresh_curve_styles()
 {
-  for (auto&& [f, style] : zg::mathWorld.getMathObjects())
+  for (auto* f: zg::mathWorld.getMathObjects())
   {
-    auto it = curves.find(f);
-    if (it == curves.end() or not style)
+    zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
+    if (not style)
       continue;
-    it->second.style = make_curve_style(*style);
+
+    if (auto it = curves.find(f); it != curves.end())
+      it->second.style = make_curve_style(*style);
   }
 }
 
 void Sampler::refresh_curve_settings()
 {
-  for (auto&& [f, style] : zg::mathWorld.getMathObjects())
+  for (auto* f: zg::mathWorld.getMathObjects())
   {
+    zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
     auto it = curves.find(f);
     if (it == curves.end() or not style)
       continue;
