@@ -78,6 +78,10 @@ public:
   /// @brief used for simultaneous plotting
   ThemedColor secondColor = {.dark = Qt::white, .light = Qt::gray};
 
+  /// @brief returns a linear interpolation between color and secondColor in the current theme
+  /// @param t: coeff in [0, 1]
+  QColor colorLerp(double t) const;
+
   double lineWidth = 1.0;
   QList<qreal> dashPattern;
   bool drawLine = true;

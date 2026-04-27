@@ -52,6 +52,15 @@ zg::real_range1d PlotStyle::getRange() const
   return real_range1d{.min = getStart(), .max = getEnd()};
 }
 
+QColor PlotStyle::colorLerp(double t) const
+{
+  const QColor &a = color.getCurrent(), &b = secondColor.getCurrent();
+  return QColor::fromRgbF(
+      std::lerp(a.redF(), b.redF(), t),
+      std::lerp(a.greenF(), b.greenF(), t),
+      std::lerp(a.blueF(), b.blueF(), t));
+}
+
 void PlotStyle::setObjectType(ObjectType newObjectType)
 {
   if (objectType != newObjectType)
