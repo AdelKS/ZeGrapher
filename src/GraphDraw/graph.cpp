@@ -473,6 +473,9 @@ void Graph::drawSupport()
 
   computeSupportRect();
 
+  pen.setStyle(Qt::NoPen);
+  painter->setPen(pen);
+
   painter->drawRect(supportRect);
 }
 
