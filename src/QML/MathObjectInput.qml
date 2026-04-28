@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Layouts
 
-Rectangle {
+Frame {
   id: root
   signal deleteMe()
 
@@ -10,15 +10,14 @@ Rectangle {
 
   property int deleteDuration: 250
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
+  leftPadding: 10
+  rightPadding: 10
+  topPadding: 5
+  bottomPadding: 10
 
-  color: myPalette.window
 
   Behavior on height { SmoothedAnimation { duration: root.deleteDuration } }
   Behavior on opacity { SmoothedAnimation { duration: root.deleteDuration } }
-
-  implicitWidth: layout.implicitWidth
-  implicitHeight: layout.implicitHeight
 
   onImplicitWidthChanged: {
     console.debug("MathObjectInput: implicitWidth", implicitWidth);
@@ -435,17 +434,6 @@ Rectangle {
           }
         }
       }
-    }
-
-    Item {
-      Layout.preferredHeight: 10
-      Layout.fillWidth: true
-    }
-
-    ToolSeparator
-    {
-      orientation: Qt.Horizontal
-      Layout.fillWidth: true
     }
   }
 
