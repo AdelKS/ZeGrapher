@@ -4,7 +4,7 @@
 
 ![ZeGrapher example](./screenshots/vitrine.png)
 
-ZeGrapher is a free, open source and easy to use software for plotting mathematical objects. It can plot functions, sequences, parametric equations and data on the plane.
+ZeGrapher is a free, open source and easy to use software for plotting mathematical objects. It can plot functions, sequences, parametric equations and data on the 2D plane.
 
 **Official website:** [https://zegrapher.com/](https://zegrapher.com/)
 
@@ -28,6 +28,7 @@ ZeGrapher is in a deep rework stage, the features described here may still not b
 - Can define "global constants", i.e. a variable that has an explicit numeric value without depending on any other object
   - Example `pi = 3.14`
   - Can be used for parametric plots of functions, sequences and parametric equations.
+  - Can be made into "Schrodinger Constants": take many values at once and all dependent math objects will be plotted simultaneously for each value taken
 - Can define "global variables", i.e. a function without input variables that can arbitrarily depend on other objects.
 - Plotting of 2D data
   - Polynomial fitting (regression).
@@ -43,8 +44,6 @@ ZeGrapher is in a deep rework stage, the features described here may still not b
   - Zoom/unzoom on each axis separately, around the mouse (with the scroll wheel), or fit on a mouse drawn rectangle.
   - Move the graph.
 - Customization/visualization
-  - Linear and logarithmic scales
-    - Can be set independently for `x` and `y` axes.
   - Can change the grid ticks to be multiples of a given variable/value
     - e.g. multiples of `π`
   - Change colors: axes, background, functions...
