@@ -6,6 +6,7 @@ import QtQuick.Controls.FluentWinUI3
 
 Item {
   id: root
+  clip: true
 
   required property Constant backend
 
@@ -14,23 +15,8 @@ Item {
   readonly property alias exprHeight: zcExprEdit.exprHeight
   property alias animatedConstant: wrapped_backend
 
-  implicitHeight: mainLayout.implicitHeight
-
-  Transition {
-    id: commonTransition
-    reversible: true
-    from: "shown"
-    to: "hidden"
-    SequentialAnimation {
-      NumberAnimation {
-        easing.type: Easing.InOutQuad;
-        property: "maximumHeight";
-        duration: 200;
-      }
-      PropertyAction {
-        property: "visible"
-      }
-    }
+  onImplicitHeightChanged: {
+    console.info("ConstantEdit: implicitHeight: ", implicitHeight);
   }
 
   AnimatedConstant {
@@ -67,57 +53,67 @@ Item {
     root.destroy(200);
   }
 
+   GridLayout {
+    id: nameLayout
+
+    columns: 2
+    rowSpacing: 0
+
+    anchors.left: parent.left
+    anchors.top: parent.top
+
+    ZeLabel {
+      Layout.alignment: Qt.AlignHCenter
+      text: qsTr("name")
+    }
+
+    Item {}
+
+    ZcExprEdit {
+      id: zcExprEdit
+
+      Layout.preferredWidth: 60
+
+      state: root.backend.state
+      onTextEdited: root.backend.setName(expression)
+
+      Layout.fillWidth: true
+      Layout.alignment: Qt.AlignVCenter
+    }
+
+    ZeLabel {
+      text: "="
+      Layout.preferredWidth: 20
+      Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+    }
+  }
+
   ColumnLayout {
     id: mainLayout
-    anchors.fill: parent
+    anchors.left: parent.left
+    anchors.right: parent.right
+    y: 0
 
-    RowLayout {
+    ColumnLayout {
+      id: valueLayout
 
-      GridLayout {
-        columns: 3
-        rowSpacing: 0
+      spacing: 0
+      clip: true
+      Layout.leftMargin: nameLayout.width
+      Layout.fillWidth: true
 
-        ZeLabel {
-          Layout.alignment: Qt.AlignHCenter
-          text: qsTr("name")
-        }
+      ZeLabel {
+        id: valueLabel
+        Layout.alignment: Qt.AlignHCenter
+        text: qsTr("value")
+      }
 
-        Item {}
+      NumberEdit
+      {
+        id: constant
 
-        ZeLabel {
-          id: valueLabel
-          Layout.alignment: Qt.AlignHCenter
-          text: qsTr("value")
-          enabled: !wrapped_backend.deadAndAlive
-        }
-
-        ZcExprEdit {
-          id: zcExprEdit
-
-          Layout.maximumWidth: 60
-
-          state: root.backend.state
-          onTextEdited: root.backend.setName(expression)
-
-          Layout.fillWidth: true
-          Layout.alignment: Qt.AlignVCenter
-        }
-
-        ZeLabel {
-          text: "="
-          Layout.maximumWidth: 20
-          Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-        }
-
-        NumberEdit
-        {
-          id: constant
-
-          Layout.fillWidth: true
-          Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-
-          enabled: !wrapped_backend.deadAndAlive
-        }
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
       }
     }
 
@@ -134,6 +130,7 @@ Item {
       }
 
       ZeLabel {
+        id: stepsLabel
         Layout.alignment: Qt.AlignHCenter
         text: qsTr("steps")
       }
@@ -160,15 +157,7 @@ Item {
         Slider {
           id: slider
           anchors.fill: parent
-
-          opacity: wrapped_backend.deadAndAlive ? 0 : 1
-          visible: opacity > 0
-          Behavior on opacity {
-            SequentialAnimation {
-              PauseAnimation { duration: 200 }
-              NumberAnimation { duration: 200 }
-            }
-          }
+          enabled: opacity > 0.5
 
           onMoved: {
             console.info("slider moved: ", value);
@@ -184,16 +173,8 @@ Item {
         ZeSpinBox {
           id: steps
           anchors.centerIn: parent
-
-          opacity: wrapped_backend.deadAndAlive ? 1 : 0
-          visible: opacity > 0
-
-          Behavior on opacity {
-            SequentialAnimation {
-              PauseAnimation { duration: 200 }
-              NumberAnimation { duration: 200 }
-            }
-          }
+          width: Math.min(implicitWidth, parent.width)
+          enabled: opacity > 0.5
 
           from: 1
           value: 5
@@ -202,28 +183,6 @@ Item {
 
           onValueModified: wrapped_backend.steps = value
         }
-
-
-        states: [
-          State {
-            name: "hidden";
-            when: constant.textInput.text.length === 0 && !wrapped_backend.deadAndAlive
-            PropertyChanges {
-              sliderLayout.Layout.maximumHeight: 0
-              sliderLayout.visible: false
-            }
-          },
-          State {
-            name: "shown";
-            when: constant.textInput.text.length !== 0 || wrapped_backend.deadAndAlive
-            PropertyChanges {
-              sliderLayout.Layout.maximumHeight: sliderLayout.implicitHeight
-              sliderLayout.visible: true
-            }
-          }
-        ]
-
-        transitions: commonTransition
       }
 
       NumberEdit {
@@ -330,24 +289,78 @@ Item {
 
   states: [
     State {
-      name: "hidden";
-      when: constant.textInput.text.length === 0 || wrapped_backend.deadAndAlive
+      name: "empty"
+      when: !wrapped_backend.deadAndAlive && constant.textInput.text.length === 0
       PropertyChanges {
+        mainLayout.y: 0
+        valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
+        valueLayout.opacity: 1.
+
+        sliderLayout.columnSpacing: 0
+        sliderLayout.Layout.leftMargin: 0
+        sliderLayout.Layout.maximumHeight: 0
+
         animationLayout.Layout.maximumHeight: 0
-        animationLayout.visible: false
+
+        slider.opacity: 1
+        steps.opacity: 0
+
+        stepsLabel.opacity: 0.
+
+        root.implicitHeight: valueLayout.implicitHeight
       }
     },
     State {
-      name: "shown";
-      when: constant.textInput.text.length !== 0 && !wrapped_backend.deadAndAlive
+      name: "numeric"
+      when: !wrapped_backend.deadAndAlive && constant.textInput.text.length !== 0
       PropertyChanges {
+        mainLayout.y: 0
+        valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
+        valueLayout.opacity: 1.
+
+        sliderLayout.columnSpacing: 0
+        sliderLayout.Layout.leftMargin: 0
+        sliderLayout.Layout.maximumHeight: sliderLayout.implicitHeight
+
         animationLayout.Layout.maximumHeight: animationLayout.implicitHeight
-        animationLayout.visible: true
+
+        slider.opacity: 1
+        steps.opacity: 0
+        stepsLabel.opacity: 0.
+
+        root.implicitHeight: valueLayout.implicitHeight + sliderLayout.implicitHeight + animationLayout.implicitHeight + 2 * mainLayout.spacing
+      }
+    },
+    State {
+      name: "schrodinger"
+      when: wrapped_backend.deadAndAlive
+      PropertyChanges {
+        mainLayout.y: - valueLayout.implicitHeight - mainLayout.spacing
+        valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
+        valueLayout.opacity: 0
+
+        sliderLayout.columnSpacing: 5
+        sliderLayout.Layout.maximumHeight: sliderLayout.implicitHeight
+        sliderLayout.Layout.leftMargin: nameLayout.width
+
+        animationLayout.Layout.maximumHeight: 0
+
+        slider.opacity: 0.
+        steps.opacity: 1.
+        stepsLabel.opacity: 1.
+
+        root.implicitHeight: sliderLayout.implicitHeight
       }
     }
   ]
 
-  transitions: commonTransition
+  transitions: Transition {
+    NumberAnimation {
+      properties: "implicitHeight,maximumHeight,leftMargin,opacity,y,columnSpacing"
+      duration: 400
+      easing.type: Easing.InOutQuad
+    }
+  }
 
 
   Component.onCompleted: {
