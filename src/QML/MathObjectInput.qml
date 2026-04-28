@@ -16,9 +16,6 @@ Frame {
   bottomPadding: 10
 
 
-  Behavior on height { SmoothedAnimation { duration: root.deleteDuration } }
-  Behavior on opacity { SmoothedAnimation { duration: root.deleteDuration } }
-
   onImplicitWidthChanged: {
     console.debug("MathObjectInput: implicitWidth", implicitWidth);
   }
@@ -35,18 +32,28 @@ Frame {
     console.debug("MathObjectInput: height", height);
   }
 
-  Timer {
-    id: deleteMeTimer
-    onTriggered: deleteMe()
-    interval: root.deleteDuration
-    repeat: false
+  function removeObj() {
+    state = "deleted";
   }
 
-  function removeObj() {
-    root.opacity = 0;
-    root.height = 0;
-    root.implicitHeight = 0;
-    deleteMeTimer.start();
+  states: State {
+    name: "deleted"
+    PropertyChanges {
+      root.opacity: 0
+      root.implicitHeight: 0
+    }
+  }
+
+  transitions: Transition {
+    to: "deleted"
+    SequentialAnimation {
+      NumberAnimation {
+        properties: "opacity,implicitHeight"
+        duration: root.deleteDuration
+        easing.type: Easing.InOutQuad
+      }
+      ScriptAction { script: root.deleteMe() }
+    }
   }
 
   ColumnLayout {
