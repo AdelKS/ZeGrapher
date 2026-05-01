@@ -331,6 +331,21 @@ Item {
           transitions: commonTransition
         }
 
+        Item {
+          id: dragHandle
+          Layout.minimumWidth: 20
+          Layout.maximumWidth: 30
+          Layout.preferredHeight: Layout.preferredWidth
+          Layout.preferredWidth: 30
+
+          Image {
+            anchors.fill: parent
+            source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/drag-handle-dark.svg" : "qrc:/icons/drag-handle-light.svg"
+            fillMode: Image.PreserveAspectFit
+            mipmap: true
+          }
+        }
+
         states: [
           State {
             name: "hidden";
