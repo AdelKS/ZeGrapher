@@ -46,8 +46,6 @@ struct ZeGraphSettings: QObject
 
   Q_PROPERTY(double targetSamplingDistancePx WRITE setTargetSamplingDistancePx MEMBER targetSamplingDistancePx NOTIFY targetSamplingDistanceChanged)
 
-  QML_VALUE_TYPE(ZeGraphSettings)
-
 public:
   explicit ZeGraphSettings(QObject* parent = nullptr): QObject(parent) {};
 
