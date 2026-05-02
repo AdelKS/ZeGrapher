@@ -156,12 +156,16 @@ void Sampler::refresh_curve_settings()
 void Sampler::refresh_curves_list()
 {
   curves_list.clear();
-  for (auto& [_, curve]: curves)
-    curves_list.push_back(curve);
 
-  for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
-    for (auto& [_, curve]: schrodinger_curves)
-      curves_list.push_back(curve);
+  for (auto* f : std::views::reverse(zg::mathWorld.getMathObjects()))
+  {
+    if (auto it = curves.find(f); it != curves.end())
+      curves_list.push_back(it->second);
+
+    for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
+      if (auto it = schrodinger_curves.find(f); it != schrodinger_curves.end())
+        curves_list.push_back(it->second);
+  }
 }
 
 void Sampler::update()
