@@ -38,7 +38,7 @@ namespace zg {
 class MathWorld: public QAbstractListModel
 {
   Q_OBJECT
-  QML_ELEMENT
+  QML_ANONYMOUS
 
 public:
   MathWorld(QObject *parent = nullptr): QAbstractListModel(parent) {}
