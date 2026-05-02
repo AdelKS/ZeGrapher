@@ -42,6 +42,8 @@ void MathWorld::removeAltExprObject(mathobj::Expr* expr)
 
   (*it)->deleteLater();
   altMathObjects.erase(it);
+
+  emit updated();
 }
 
 void MathWorld::attachStyle(MathObject* obj, PlotStyle* style)
@@ -68,6 +70,8 @@ void MathWorld::moveMathObject(int from, int to)
   std::swap(mathObjects[from], mathObjects[to]);
 
   endMoveRows();
+
+  emit updated();
 }
 
 MathObject* MathWorld::addMathObject(MathObject::Type type)
