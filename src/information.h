@@ -35,7 +35,7 @@ namespace zg {
 class Information: public QObject
 {
   Q_OBJECT
-  QML_ELEMENT
+  QML_ANONYMOUS
 
   Q_PROPERTY(ZeAppSettings* appSettings MEMBER appSettings NOTIFY appSettingsChanged)
   Q_PROPERTY(zg::GraphRange* range READ getGraphRange)

@@ -32,7 +32,7 @@ namespace zg {
 class DataTableModel: public QAbstractTableModel
 {
   Q_OBJECT
-  QML_ELEMENT
+  QML_ANONYMOUS
 
   Q_PROPERTY(int columns READ columnCount NOTIFY columnCountChanged)
 

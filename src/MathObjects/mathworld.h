@@ -38,7 +38,7 @@ namespace zg {
 class MathWorld: public QAbstractListModel
 {
   Q_OBJECT
-  QML_ELEMENT
+  QML_ANONYMOUS
 
   Q_PROPERTY(zg::MathObject* schrodingerConstant READ getSchrodingerConstant NOTIFY schrodingerConstantChanged)
 

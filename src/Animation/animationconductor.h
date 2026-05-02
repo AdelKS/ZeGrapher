@@ -38,7 +38,7 @@ using time_point = std::chrono::time_point<std::chrono::high_resolution_clock>;
 class AnimationConductor: public QObject
 {
   Q_OBJECT
-  QML_ELEMENT
+  QML_ANONYMOUS
 
   Q_PROPERTY(bool animating READ isAnimating NOTIFY animatingChanged)
   Q_PROPERTY(zg::AnimatedConstant* schrodingerConstant WRITE setSchrodingerConstant MEMBER schrodingerConstant NOTIFY schrodingerConstantChanged)
