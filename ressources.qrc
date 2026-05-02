@@ -109,5 +109,7 @@
         <file>icons/ping-pong-light.svg</file>
         <file>icons/schrodinger-cat-dark.svg</file>
         <file>icons/schrodinger-cat-light.svg</file>
+        <file>icons/drag-handle-dark.svg</file>
+        <file>icons/drag-handle-light.svg</file>
     </qresource>
 </RCC>

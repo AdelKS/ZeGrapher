@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="25"
+   version="1.1"
+   viewBox="0 0 25.000001 25"
+   width="25"
+   id="svg4269"
+   sodipodi:docname="drawer-light.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="19.121347"
+     inkscape:cx="11.688507"
+     inkscape:cy="14.826361"
+     inkscape:window-width="2048"
+     inkscape:window-height="1080"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1" />
+  <title
+     id="title4249" />
+  <desc
+     id="desc4251" />
+  <defs
+     id="defs4253" />
+  <g
+     id="g1"
+     transform="matrix(0.9,0,0,0.9,4.325561,4.9500685)">
+    <rect
+       height="17.073689"
+       id="Rectangle"
+       rx="0.86189294"
+       width="1.7237859"
+       x="1.1013445"
+       y="-17.619553"
+       style="fill:#b2b2b2;fill-opacity:1;fill-rule:evenodd;stroke:#b2b2b2;stroke-width:1.09173;stroke-dasharray:none;stroke-opacity:1"
+       transform="rotate(90)" />
+    <rect
+       height="17.073689"
+       id="Rectangle-3"
+       rx="0.86189294"
+       width="1.7237859"
+       x="7.5269194"
+       y="0.54586732"
+       style="fill:#b2b2b2;fill-opacity:1;fill-rule:evenodd;stroke:#b2b2b2;stroke-width:1.09173;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(0,1,1,0,0,0)" />
+    <rect
+       height="17.073689"
+       id="Rectangle-7"
+       rx="0.86189294"
+       width="1.7237859"
+       x="13.952456"
+       y="-17.619553"
+       style="fill:#b2b2b2;fill-opacity:1;fill-rule:evenodd;stroke:#b2b2b2;stroke-width:1.09173;stroke-dasharray:none;stroke-opacity:1"
+       transform="rotate(90)" />
+  </g>
+</svg>
