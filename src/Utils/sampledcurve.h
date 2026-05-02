@@ -15,7 +15,7 @@ namespace zg {
 
 struct SampledCurve {
 
-  static constexpr size_t min_size = 1024;
+  static constexpr size_t min_size = 128;
   static constexpr size_t max_size = 16384;
 
   SampledCurve() = default;

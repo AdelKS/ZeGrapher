@@ -66,12 +66,8 @@ QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double sc
     if (not currentSection.empty())
       finalCurve.append(std::move(currentSection));
 
+    // since we std::move'd it, the allocated array got moved  with it: need a new reserve
     currentSection.reserve(remainingNumPoints);
-  };
-
-  auto causes_flush = [&](size_t i) {
-    const auto& pt = curve[i];
-    return std::isnan(pt.x()) or std::isnan(pt.y()) or sampledCurve.discontinuities.contains(i);
   };
 
   for (size_t i = 0; i != curve.size(); i++)
@@ -87,18 +83,7 @@ QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double sc
     if (sampledCurve.discontinuities.contains(i))
       flush(curve.size() - i);
 
-    const QPointF P = curve[i] * scale;
-
-    if (not sampledCurve.discrete and currentSection.size() >= 2 and i + 1 < curve.size() and not causes_flush(i+1))
-    {
-      const QPointF& A = currentSection[currentSection.size() - 2];
-      const QPointF& B = currentSection.back();
-
-      if (sq_dist_to_line(A, P, B) >= 0.125)
-        currentSection.append(P);
-    }
-    else
-      currentSection.append(P);
+    currentSection.append(pt * scale);
   }
 
   flush(0);

@@ -5,12 +5,12 @@
 #include "sampler.h"
 
 
-template <zg::PlotStyle::CoordinateSystem coordinates>
+template <zg::PlotStyle::CoordinateSystem coordinates, bool discrete>
 void Sampler::sample(auto handle, zg::SampledCurve& data)
 {
   auto get_acceptable_input = [&](zg::real_unit x)
   {
-    if (data.discrete)
+    if constexpr (discrete)
       return std::round(std::max(0., x.v) / data.settings.step.v) * data.settings.step;
     else return x;
   };
@@ -58,9 +58,21 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     return dispatcher(handle, x);
   };
 
-  auto is_nan_pt = [](const zg::real_pt& pt)
+  auto is_nan_pt = []<typename T>(const T& pt)
   {
-    return std::isnan(pt.x.v) or std::isnan(pt.y.v);
+    if constexpr (std::is_same_v<T, zg::real_pt>)
+      return std::isnan(pt.x.v) or std::isnan(pt.y.v);
+    else if constexpr (std::is_same_v<T, QPointF>)
+      return std::isnan(pt.x()) or std::isnan(pt.y());
+    else static_assert(zc::utils::dependent_false_v<T>, "Type not handled");
+  };
+
+  // only used in debug builds
+  [[maybe_unused]] auto is_unique = [](const auto& vals) {
+    for (auto it = vals.begin() ; it != vals.end() and it+1 != vals.end() ; it++)
+      if (*it == *(it+1))
+        return false;
+    return true;
   };
 
   const auto range = data.settings.range;
@@ -90,10 +102,6 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
       increase_seq_cache(f.second);
     },
   }(handle);
-
-  const double sq_px_step = not data.discrete
-                              ? pixelStep.v * pixelStep.v
-                              : data.style.pointWidth * data.style.pointWidth;
 
   auto& input_vals = data.input;
   auto& curve = data.curve;
@@ -135,7 +143,6 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     << " sampling range: min=" << QString::number(range.min.v, 'g', 14)
     << " max=" << QString::number(range.max.v, 'g', 14);
 
-  const zg::real_unit min_step = data.get_smallest_allowed_step();
   const zg::real_unit max_step = data.get_biggest_allowed_step();
 
   // add uniformly sampled points
@@ -198,6 +205,16 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   static std::vector<QPointF> px_f_x;
   px_f_x.reserve(data.max_size/2);
 
+  const zg::real_unit min_input_dist = range.amplitude() / double(data.max_size);
+
+  // refine if points are too far apart
+  // so when we compute 3 points A, B, C with 3 consecutive input values,
+  // we should be at a refinement level where
+  // -  AB.AC > 0: C follows the trend that is shown by A and B and
+  //    doesn't "jump"
+  // - A, B and C are "nearly" aligned
+  // --> we check that sq_dist_to_ray(px_A, px_B, px_C) < sq_dist_to_ray_limit
+  //     i.e. the distance of C to the ray [AB) is less than a pixel, less than 'sq_dist_to_ray_limit'
   do
   {
     indices.clear();
@@ -205,45 +222,86 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     f_x.clear();
     px_f_x.clear();
 
-    for (size_t i = 0 ; i + 1 < input_vals.size() ; i++)
+    for (size_t i = 0 ; i + refine_increment < input_vals.size() ; i += refine_increment)
     {
-      const size_t i_b = i;
-      const zg::real_unit& b = input_vals[i_b];
-      const zg::real_pt& B = curve[i_b];
-      const QPointF& px_B = px_curve[i_b];
+      const size_t i_b = i+1;
+      const size_t i_c = i+2;
 
-      const size_t i_c = i+1;
-      const zg::real_unit& c = input_vals[i_c];
-      const zg::real_pt& C = curve[i_c];
-      const QPointF& px_C = px_curve[i_c];
+      auto refine = [&]() -> std::optional<zg::real_unit> {
+        const size_t i_a = i;
+        const zg::real_unit& a = input_vals[i_a];
+        const zg::real_pt& A = curve[i_a];
+        const QPointF& px_A = px_curve[i_a];
 
-      const zg::real_unit bc = c - b;
-      const QPointF px_BC = px_C - px_B;
-      const double px_sq_BC = QPointF::dotProduct(px_BC, px_BC);
+        const zg::real_unit& b = input_vals[i_b];
+        const zg::real_pt& B = curve[i_b];
+        const QPointF& px_B = px_curve[i_b];
 
-      const bool nan_pt = is_nan_pt(B) or is_nan_pt(C);
+        bool nan_pt = is_nan_pt(A) or is_nan_pt(B);
 
-      if (bc > max_step or nan_pt or px_sq_BC > sq_px_step)
-      {
-        if (bc >= 2*min_step)
+        const QPointF px_AB = px_A - px_B;
+        const double sq_px_AB = QPointF::dotProduct(px_AB, px_AB);
+
+        if (sq_px_AB < 0.125)
+          return {};
+
+        if constexpr (discrete)
         {
-          const zg::real_unit mid_input = get_acceptable_input((c + b) / 2.);
-          if (data.discrete and not (b < mid_input and mid_input < c))
-              continue;
+          const auto ba = b - a;
+          if (ba < min_input_dist)
+            return {};
 
-          const auto new_pt = get_f_pt(mid_input);
-          indices.push_back(i_c);
-          x.push_back(mid_input);
-          f_x.push_back(new_pt);
-          px_f_x.push_back(QPointF(mapper.to<zg::pixel>(new_pt)));
+          if (nan_pt or sq_px_AB >= 2*min_sq_dist_discrete)
+          {
+            auto mid = get_acceptable_input((a + b) / 2.);
+            if (a < mid and mid < b)
+              return mid;
+            else return {};
+          }
+          else return {};
         }
+        else
+        {
+          const zg::real_unit& c = input_vals[i_c];
+          const zg::real_pt& C = curve[i_c];
+          const QPointF& px_C = px_curve[i_c];
+
+          const zg::real_unit bc = c - b;
+          if (bc < min_input_dist)
+            return {};
+
+          nan_pt = nan_pt or is_nan_pt(C);
+
+          if (bc > max_step or nan_pt or sq_dist_to_ray(px_A, px_B, px_C) >= sq_dist_to_ray_limit)
+          {
+            auto mid = get_acceptable_input((b + c) / 2.);
+            assert(b < mid and mid < c);
+            return mid;
+          }
+          else return {};
+        }
+      };
+
+      if (auto opt_mid_input = refine())
+      {
+        const zg::real_unit mid_input = *opt_mid_input;
+
+        const auto new_pt = get_f_pt(mid_input);
+        indices.push_back(discrete ? i_b : i_c);
+        x.push_back(mid_input);
+        f_x.push_back(new_pt);
+        px_f_x.push_back(QPointF(mapper.to<zg::pixel>(new_pt)));
       }
     }
 
     if (not indices.empty())
       data.sparse_insert(indices, x, f_x, px_f_x);
 
-  } while(not indices.empty());
+    assert(std::ranges::is_sorted(input_vals));
+    assert(is_unique(input_vals));
+
+  } while(not indices.empty() and data.size() < data.max_size);
+  // ######################################
 
   qDebug() << "Object caching: " << obj_name << " curve has " << curve.size() << " points";
 }
