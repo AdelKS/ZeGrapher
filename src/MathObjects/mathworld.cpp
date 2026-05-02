@@ -53,6 +53,23 @@ void MathWorld::attachStyle(MathObject* obj, PlotStyle* style)
   styles[obj] = style;
 }
 
+void MathWorld::moveMathObject(int from, int to)
+{
+  const int n = int(mathObjects.size());
+  if (from == to or from < 0 or from >= n or to < 0 or to >= n)
+    return;
+
+  // QAbstractItemModel::beginMoveRows expects the destination row index in
+  // pre-move coordinates; when moving down, that's one past the target slot.
+  const int qmlTo = from < to ? to + 1 : to;
+  if (not beginMoveRows(QModelIndex(), from, from, QModelIndex(), qmlTo))
+    return;
+
+  std::swap(mathObjects[from], mathObjects[to]);
+
+  endMoveRows();
+}
+
 MathObject* MathWorld::addMathObject(MathObject::Type type)
 {
   beginInsertRows(QModelIndex(), mathObjects.size(), mathObjects.size());
