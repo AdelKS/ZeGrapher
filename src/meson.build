@@ -135,21 +135,35 @@ foreach qmlcpp_file: qmlcpp_files
 endforeach
 
 qt6 = import('qt6')
+
+qt6_modules = [
+  'Core',
+  'Gui',
+  'Widgets',
+  'Network',
+  'Svg',
+  'Quick',
+  'Qml',
+  'QuickWidgets',
+  'QmlIntegration',
+  'ShaderTools'
+]
+
 qt6_dep = dependency('qt6',
   version: '>=6.10',
-  modules: [
-    'Core',
-    'Gui',
-    'Widgets',
-    'Network',
-    'Svg',
-    'Quick',
-    'Qml',
-    'QuickWidgets',
-    'QmlIntegration',
-    'ShaderTools'
-  ]
+  modules: qt6_modules
 )
+
+qt6_metatypes_dir = qt6_dep.get_variable(pkgconfig: 'libdir') / 'qt6' / 'metatypes'
+
+qt6_foreign_metatypes = []
+foreach qt6_mod: qt6_modules
+  metatype_file_path = qt6_metatypes_dir / 'qt6' + qt6_mod.to_lower() + '_metatypes.json'
+  if fs.exists(metatype_file_path)
+    qt6_foreign_metatypes += [metatype_file_path]
+  endif
+endforeach
+
 boost_dep = dependency('boost')
 zecalculator_dep = dependency('zecalculator')
 
@@ -205,6 +219,7 @@ qml_mods = qt6.qml_module(
   moc_headers: qmlcpp_files,
   include_directories: qmlcpp_inc_dirs,
   dependencies: [qt6_dep],
+  qmltyperegistrar_extra_arguments: ['--foreign-types=' + ','.join(qt6_foreign_metatypes)],
 )
 
 compiler = meson.get_compiler('cpp')
