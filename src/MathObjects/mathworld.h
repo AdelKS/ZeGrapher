@@ -53,6 +53,7 @@ public:
   auto& getStyles() { return styles; }
   Q_INVOKABLE void removeMathObject(MathObject*);
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
+  Q_INVOKABLE void moveMathObject(int from, int to);
 
   Q_INVOKABLE void setSchrodingerConstant(zg::MathObject* c);
   Q_INVOKABLE void unsetSchrodingerConstant(zg::MathObject* c);

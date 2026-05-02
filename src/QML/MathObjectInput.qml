@@ -8,6 +8,8 @@ Item {
 
   required property MathObject mathObj
 
+  property alias dragHandle: dragHandle
+
   property int deleteDuration: 250
 
   implicitWidth: frame.implicitWidth + del.height / 2
