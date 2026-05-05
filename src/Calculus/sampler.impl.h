@@ -107,7 +107,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   auto& curve = data.curve;
   auto& px_curve = data.px_curve;
 
-  // clear from the right
+  // cleanup values outside of the range
   if (not input_vals.empty())
   {
     size_t vals_to_pop = 0;
@@ -123,11 +123,15 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
     data.pop_front(vals_to_pop);
   }
+  // ######################################
 
+  // recompute the pixel points
   px_curve.resize(curve.size());
   std::ranges::transform(curve, px_curve.begin(),
                          [&](const auto& pt) { return QPointF(mapper.to<zg::pixel>(pt)); });
+  // ######################################
 
+  // debug message
   std::string obj_name = zc::utils::overloaded{
     [&](const zc::DynMathObject<zc_t>* f)
     {
@@ -142,6 +146,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   qDebug() << "Object caching: " << obj_name
     << " sampling range: min=" << QString::number(range.min.v, 'g', 14)
     << " max=" << QString::number(range.max.v, 'g', 14);
+  // ######################################
 
   const zg::real_unit max_step = data.get_biggest_allowed_step();
 
@@ -195,6 +200,84 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   static std::vector<size_t> indices;
   indices.reserve(data.max_size/2);
+
+  constexpr size_t cleanup_increment = discrete ? 2 : 4;
+
+  [[maybe_unused]] const double min_sq_dist_discrete = 16 * data.style.pointWidth * data.style.pointWidth;
+
+  // cleanup points too close to each other
+  do
+  {
+    indices.clear();
+
+    for (size_t i = 0 ; i + cleanup_increment < input_vals.size() ; i += cleanup_increment)
+    {
+      const size_t i_b = i+1;
+      const size_t i_d = i+3;
+
+      auto cleanup = [&]{
+        const size_t i_a = i;
+        const zg::real_unit& a = input_vals[i_a];
+        const QPointF& px_A = px_curve[i_a];
+
+        const QPointF& px_B = px_curve[i_b];
+
+        const size_t i_c = i+2;
+        const zg::real_unit& c = input_vals[i_c];
+        const QPointF& px_C = px_curve[i_c];
+
+        const zg::real_unit ac = c - a;
+
+        bool nan_pt = is_nan_pt(px_A) or is_nan_pt(px_B) or is_nan_pt(px_C);
+
+        if constexpr (discrete)
+        {
+          if (nan_pt)
+            return false;
+
+          QPointF px_AB = px_B - px_A;
+          QPointF px_BC = px_C - px_B;
+          QPointF px_AC = px_C - px_A;
+          return QPointF::dotProduct(px_AC, px_AC) < 0.5 * min_sq_dist_discrete and
+                 QPointF::dotProduct(px_AB, px_AB) < 0.5 * min_sq_dist_discrete and
+                 QPointF::dotProduct(px_BC, px_BC) < 0.5 * min_sq_dist_discrete;
+        }
+        else
+        {
+          const QPointF& px_D = px_curve[i_d];
+
+          const size_t i_e = i+4;
+          const zg::real_unit& e = input_vals[i_e];
+          const QPointF& px_E = px_curve[i_e];
+
+          nan_pt = nan_pt or is_nan_pt(px_D) or is_nan_pt(px_E);
+          if (nan_pt)
+            return false;
+
+          const zg::real_unit ce = e - c;
+          return ac <= max_step and ce < max_step and sq_dist_to_ray(px_A, px_C, px_E) < sq_dist_to_ray_limit;
+        }
+      };
+
+      if (cleanup())
+      {
+        indices.push_back(i_b);
+        if constexpr (not discrete)
+          indices.push_back(i_d);
+      }
+    }
+
+    if (not indices.empty())
+      data.sparse_delete(indices);
+
+    assert(std::ranges::is_sorted(input_vals));
+    assert(is_unique(input_vals));
+
+  // if we are dealing with discrete data, we don't care about going under the min_size directive
+  } while(not indices.empty() and (discrete or data.size() > data.min_size));
+  // ######################################
+
+  constexpr size_t refine_increment = discrete ? 1 : 2;
 
   static std::vector<zg::real_unit> x;
   x.reserve(data.max_size/2);
