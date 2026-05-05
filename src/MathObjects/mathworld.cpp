@@ -15,10 +15,11 @@ QVariant MathWorld::data(const QModelIndex &index, int role) const
   if (role != Qt::DisplayRole)
     return QVariant();
 
-  QVariant var;
-  var.setValue(mathObjects.at(index.row()));
+  QVariantMap map;
+  map["mathObj"].setValue(mathObjects.at(index.row()));
+  map["style"].setValue(styles.at(mathObjects.at(index.row())));
 
-  return var;
+  return map;
 }
 
 void MathWorld::removeMathObject(MathObject* obj)
@@ -30,6 +31,18 @@ void MathWorld::removeMathObject(MathObject* obj)
   int index = it - mathObjects.begin();
   beginRemoveRows(QModelIndex(), index, index);
   obj->deleteLater();
+
+  assert(styles.contains(obj));
+  if (auto s_it = styles.find(obj); s_it != styles.end())
+  {
+    PlotStyle* style = s_it->second;
+    removeAltExprObject(style->start);
+    removeAltExprObject(style->step);
+    removeAltExprObject(style->end);
+    style->deleteLater();
+    styles.erase(s_it);
+  }
+
   mathObjects.erase(it);
   endRemoveRows();
 }
@@ -44,15 +57,6 @@ void MathWorld::removeAltExprObject(mathobj::Expr* expr)
   altMathObjects.erase(it);
 
   emit updated();
-}
-
-void MathWorld::attachStyle(MathObject* obj, PlotStyle* style)
-{
-  auto it = std::ranges::find(mathObjects, obj);
-  if (it == mathObjects.end())
-    return;
-
-  styles[obj] = style;
 }
 
 void MathWorld::moveMathObject(int from, int to)
@@ -77,7 +81,20 @@ void MathWorld::moveMathObject(int from, int to)
 MathObject* MathWorld::addMathObject(MathObject::Type type)
 {
   beginInsertRows(QModelIndex(), mathObjects.size(), mathObjects.size());
-  mathObjects.emplace_back(new zg::MathObject(this, type));
+  auto* obj = new zg::MathObject(this, type);
+  auto* style = new PlotStyle(this);
+
+  style->start = addAltExprObject();
+  style->step = addAltExprObject();
+  style->end = addAltExprObject();
+
+  style->start->setImplicitName("start");
+  style->step->setImplicitName("step");
+  style->end->setImplicitName("end");
+
+  mathObjects.emplace_back(obj);
+  styles[obj] = style;
+
   connect(mathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
   connect(mathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
   endInsertRows();
