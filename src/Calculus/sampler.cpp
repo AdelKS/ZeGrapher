@@ -205,6 +205,9 @@ void Sampler::update()
 
   for (auto& [f, data]: curves)
   {
+    if (not data.style.visible)
+      continue;
+
     dispatch(f->getZcObject(), data);
     if (f->isContinuous())
       update_discontinuities(data);
