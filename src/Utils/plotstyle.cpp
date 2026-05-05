@@ -58,4 +58,13 @@ void PlotStyle::setObjectType(ObjectType newObjectType)
   }
 }
 
+void PlotStyle::setVisible(bool v)
+{
+  if (visible != v)
+  {
+    visible = v;
+    emit visibleChanged();
+  }
+}
+
 }

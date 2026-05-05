@@ -71,6 +71,8 @@ public:
 
   zg::real_range1d getRange() const;
 
+  void setVisible(bool);
+
   bool visible = true;
   ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
 
