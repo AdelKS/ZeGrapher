@@ -23,6 +23,7 @@
 #include "globalvars.h"
 
 #include <QFile>
+#include <QCoreApplication>
 
 namespace zg {
 
@@ -216,7 +217,7 @@ void CsvPreviewModel::loadIntoWorld()
 
     loadingState = READING_CSV_FILE;
     emit loadingStateChanged();
-    qApp->processEvents();
+    QCoreApplication::processEvents();
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -240,7 +241,7 @@ void CsvPreviewModel::loadIntoWorld()
       {
         emit progressPercentageChanged();
         start = now;
-        qApp->processEvents();
+        QCoreApplication::processEvents();
       }
 
       if (line_num < rowSkipCount)
@@ -264,7 +265,7 @@ void CsvPreviewModel::loadIntoWorld()
       obj->getData()->setData(names[i], std::move(data[i]));
       progressPercentage = 50 + i*50/data.size();
       emit progressPercentageChanged();
-      qApp->processEvents();
+      QCoreApplication::processEvents();
     }
 
     file.close();
