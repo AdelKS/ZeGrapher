@@ -172,9 +172,13 @@ void SampledCurve::update_sampling_settings(const zg::MathObject& obj, const zg:
     .revision = obj.getRevision()
   };
 
+  if (newSettings.coordinateSystem != settings.coordinateSystem or
+      newSettings.step != settings.step or
+      newSettings.revision != settings.revision)
+    clear();
+
   if (newSettings != settings)
   {
-    clear();
     settings = newSettings;
   }
 }
