@@ -54,6 +54,8 @@ struct SampledCurve {
                      const std::vector<real_pt>& f_x,
                      const std::vector<QPointF>& px_f_x);
 
+  void sparse_delete(const std::vector<size_t>& indices);
+
   void pop_back(size_t pop_num);
 
   void pop_front(size_t pop_num);

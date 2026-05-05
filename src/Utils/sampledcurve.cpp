@@ -74,6 +74,8 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
                                  const std::vector<real_pt>& f_x,
                                  const std::vector<QPointF>& px_f_x)
 {
+  discontinuities.clear();
+
   assert(indices.size() <= curve.size()); // can only insert as many points as there are originally in  'curve'
   assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
   assert(indices.size() == x.size() and x.size() == f_x.size() and f_x.size() == px_f_x.size());
@@ -111,6 +113,50 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
   new_input.insert(new_input.end(), input.begin() + curve_index, input.end());
   new_curve.insert(new_curve.end(), curve.begin() + curve_index, curve.end());
   new_px_curve.insert(new_px_curve.end(), px_curve.begin() + curve_index, px_curve.end());
+
+  input = std::move(new_input);
+  curve = std::move(new_curve);
+  px_curve = std::move(new_px_curve);
+}
+
+void SampledCurve::sparse_delete(const std::vector<size_t>& indices)
+{
+  discontinuities.clear();
+
+  assert(indices.size() <= curve.size()); // can only delete as many points as there are originally in  'curve'
+  assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
+  assert(indices.back() < curve.size()); // biggest index to delete should be within the range
+  assert(input.size() == curve.size() and curve.size() == px_curve.size());
+
+  const size_t new_size = curve.size() - indices.size();
+
+  std::vector<real_unit> new_input;
+  new_input.reserve(new_size);
+
+  std::vector<real_pt> new_curve;
+  new_curve.reserve(new_size);
+
+  std::vector<QPointF> new_px_curve;
+  new_px_curve.reserve(new_size);
+
+  size_t i = 0, del_meta_i = 0;
+  while (i != curve.size() and del_meta_i != indices.size())
+  {
+    const size_t del_i = indices[del_meta_i];
+    if (i == del_i)
+      del_meta_i++;
+    else
+    {
+      new_input.push_back(input[i]);
+      new_curve.push_back(curve[i]);
+      new_px_curve.push_back(px_curve[i]);
+    }
+    i++;
+  }
+
+  new_input.insert(new_input.end(), input.begin() + i, input.end());
+  new_curve.insert(new_curve.end(), curve.begin() + i, curve.end());
+  new_px_curve.insert(new_px_curve.end(), px_curve.begin() + i, px_curve.end());
 
   input = std::move(new_input);
   curve = std::move(new_curve);
