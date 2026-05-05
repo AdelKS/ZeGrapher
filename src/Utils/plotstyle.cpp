@@ -4,14 +4,8 @@
 namespace zg {
 
 PlotStyle::PlotStyle(QObject* parent)
-  : QObject(parent),
-    start(mathWorld.addAltExprObject()),
-    end(mathWorld.addAltExprObject()),
-    step(mathWorld.addAltExprObject())
+  : QObject(parent)
 {
-  start->setImplicitName("start");
-  end->setImplicitName("end");
-  step->setImplicitName("step");
   connect(this, &PlotStyle::visibleChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::colorChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::lineWidthChanged, this, &PlotStyle::updated);
@@ -23,13 +17,6 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::rangeChanged, this, &PlotStyle::updated);
 
   connect(this, &PlotStyle::updated, &information, &Information::styleUpdated);
-}
-
-PlotStyle::~PlotStyle()
-{
-  mathWorld.removeAltExprObject(start);
-  mathWorld.removeAltExprObject(end);
-  mathWorld.removeAltExprObject(step);
 }
 
 zg::real_unit PlotStyle::getStart() const

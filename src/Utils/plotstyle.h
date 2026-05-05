@@ -60,7 +60,6 @@ public:
   Q_ENUM(CoordinateSystem);
 
   explicit PlotStyle(QObject *parent = nullptr);
-  ~PlotStyle();
 
   Q_INVOKABLE mathobj::Expr* getStartBackend() { return start; }
   Q_INVOKABLE mathobj::Expr* getEndBackend() { return end; }
@@ -82,10 +81,10 @@ public:
   /// @param t: coeff in [0, 1]
   QColor colorLerp(double t) const;
 
-  double lineWidth = 1.0;
+  double lineWidth = 2.0;
   QList<qreal> dashPattern;
   bool drawLine = true;
-  double pointWidth = 1.0;
+  double pointWidth = 4.0;
   PointStyle pointStyle = None;
   CoordinateSystem coordinateSystem = Cartesian;
 
@@ -110,9 +109,11 @@ signals:
   void secondColorChanged();
 
 protected:
-  mathobj::Expr* start;
-  mathobj::Expr* end;
-  mathobj::Expr* step;
+  friend class MathWorld;
+
+  mathobj::Expr* start = nullptr;
+  mathobj::Expr* end = nullptr;
+  mathobj::Expr* step = nullptr;
 };
 
 }

@@ -7,6 +7,7 @@ Item {
   signal deleteMe()
 
   required property MathObject mathObj
+  required property PlotStyle style
 
   property alias dragHandle: dragHandle
 
@@ -149,10 +150,14 @@ Item {
           Layout.preferredWidth: 30
 
           checkable: true
-          checked: false
+          checked: !root.style.visible
 
           lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
           darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
+
+          onToggled: {
+            root.style.visible = !checked
+          }
         }
 
         IconRoundButton {
@@ -172,20 +177,20 @@ Item {
         ColorButton {
           id: colorButton
           radius: 12
-          selectedColor: styleWidget.dataBackend.color
+          selectedColor: root.style.color
 
           onSelectedColorChanged: {
-            styleWidget.dataBackend.color = selectedColor;
+            root.style.color = selectedColor;
           }
         }
 
         ColorButton {
           id: secondColorButton
           radius: 12
-          selectedColor: styleWidget.dataBackend.secondColor
+          selectedColor: root.style.secondColor
 
           onSelectedColorChanged: {
-            styleWidget.dataBackend.secondColor = selectedColor;
+            root.style.secondColor = selectedColor;
           }
 
           states: [
@@ -394,11 +399,12 @@ Item {
 
       ObjectStyle {
         id: styleWidget
+        backend: root.style
+
         Layout.fillWidth: true
         Layout.preferredHeight: preferredHeight
         clip: true
         discrete: mathObj.discrete
-        dataBackend.visible: !displayButton.checked
 
         property int preferredHeight: 0
 
@@ -480,7 +486,6 @@ Item {
   Component.onCompleted: {
     loader.sync();
     objectTypeTumbler.sync();
-    MathWorld.attachStyle(mathObj, styleWidget.dataBackend);
   }
 
 }

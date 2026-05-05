@@ -7,7 +7,8 @@ import QtQuick.Controls.FluentWinUI3
 Item {
   id: root
   property bool discrete: false
-  property alias dataBackend: backend
+
+  required property PlotStyle backend
 
   property int implicitHeight: mainLayout.implicitHeight
 
@@ -23,21 +24,15 @@ Item {
     dashPatternTumbler.currentIndex = discrete ? dashPatterns.length - 1 : 0
   }
 
-  PlotStyle {
-    id: backend
-    dashPattern: root.dashPatterns[dashPatternTumbler.currentIndex]
-    drawLine: dashPatternTumbler.currentIndex !== root.dashPatterns.length - 1
-    lineWidth: Number(lineWidthSpinBox.value) / 10.0
-    pointStyle: pointStyleModel.get(pointStyleTumbler.currentIndex).type
-    pointWidth: Number(pointWidthSpinBox.value) / 4.
-    coordinateSystem: coordinates.currentValue
+  Connections {
+    target: root.backend
 
-    onCoordinateSystemChanged: {
-      if (coordinateSystem === PlotStyle.Cartesian) {
+    function onCoordinateSystemChanged() {
+      if (root.backend.coordinateSystem === PlotStyle.Cartesian) {
         startEdit.expression = "xmin";
         endEdit.expression = "xmax";
         stepEdit.expression = "1";
-      } else if (coordinateSystem === PlotStyle.Polar) {
+      } else if (root.backend.coordinateSystem === PlotStyle.Polar) {
         startEdit.expression = "0";
         endEdit.expression = "2*math::pi";
         stepEdit.expression = "math::pi/12";
@@ -80,6 +75,10 @@ Item {
             type: PlotStyle.Polar
           }
         }
+
+        onCurrentValueChanged: {
+          root.backend.coordinateSystem = currentValue
+        }
       }
     }
 
@@ -92,6 +91,11 @@ Item {
         Layout.maximumWidth: 100
         Layout.preferredHeight: 50
         model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
+
+        onCurrentIndexChanged: {
+          backend.dashPattern = root.dashPatterns[currentIndex];
+          backend.drawLine = (currentIndex !== root.dashPatterns.length - 1);
+        }
       }
       SpinBox {
         id: lineWidthSpinBox
@@ -100,12 +104,13 @@ Item {
         from: 1
         to: 100
         live: true
-        value: 20
+        value: backend.lineWidth * 10.
         stepSize: 10
         Layout.maximumWidth: 100
 
-        // workaround for value not being set on initialization
-        Component.onCompleted: { value = 20 }
+        onValueModified: {
+          backend.lineWidth = Number(value) / 10.0;
+        }
       }
     }
 
@@ -119,6 +124,10 @@ Item {
         Layout.preferredHeight: 50
         model: pointStyleModel
         fillMode: Image.PreserveAspectFit
+
+        onCurrentIndexChanged: {
+          root.backend.pointStyle = pointStyleModel.get(currentIndex).type
+        }
       }
       SpinBox {
         id: pointWidthSpinBox
@@ -128,10 +137,12 @@ Item {
         from: 1
         to: 100
         live: true
-        value: 20
+        value: root.backend.pointWidth * 4.
         stepSize: 10
 
-        Component.onCompleted: { value = 20 }
+        onValueModified: {
+          root.backend.pointWidth = Number(value) / 4.;
+        }
       }
     }
 
@@ -209,7 +220,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: backend.start
+        backend: root.backend.start
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -236,7 +247,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: backend.end
+        backend: root.backend.end
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -263,7 +274,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: backend.step
+        backend: root.backend.step
 
         id: stepEdit
         expression: "1"

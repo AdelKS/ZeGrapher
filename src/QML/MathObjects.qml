@@ -43,7 +43,7 @@ Item {
           id: wrapper
 
           required property int index
-          required property MathObject modelData
+          required property var modelData
 
           property bool justDropped: false
           property int lastSwappedWithY: -1
@@ -57,7 +57,8 @@ Item {
             id: input
             width: wrapper.width
             height: wrapper.height
-            mathObj: wrapper.modelData
+            mathObj: wrapper.modelData.mathObj
+            style: wrapper.modelData.style
 
             states: [
               State {
@@ -85,7 +86,7 @@ Item {
             }
 
             onDeleteMe: {
-              MathWorld.removeMathObject(wrapper.modelData);
+              MathWorld.removeMathObject(wrapper.modelData.mathObj);
             }
           }
 

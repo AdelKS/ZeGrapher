@@ -59,9 +59,6 @@ public:
   Q_INVOKABLE void unsetSchrodingerConstant(zg::MathObject* c);
   zg::MathObject* getSchrodingerConstant() { return schrodingerConstant; }
 
-  /// @brief attaches the plotstyle to the given mathobject
-  Q_INVOKABLE void attachStyle(MathObject*, PlotStyle*);
-
   /// @brief add Expr object that is not part of the model because its widget is elsewhere
   Q_INVOKABLE mathobj::Expr* addAltExprObject();
   Q_INVOKABLE void removeAltExprObject(mathobj::Expr*);
