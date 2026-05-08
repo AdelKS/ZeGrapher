@@ -18,6 +18,7 @@ source_files = [
   'GraphDraw/graph.cpp',
   'GraphDraw/gridcalculator.cpp',
   'GraphDraw/interactivegraph.cpp',
+  'GraphDraw/datapoints.cpp',
   'GraphDraw/mathobjectdraw.cpp',
   'GraphDraw/subgraph.cpp',
   'GraphDraw/viewmapper.cpp',
@@ -96,6 +97,7 @@ qmlcpp_files = [
   'globalvars.h',
   'GraphDraw/graph.h',
   'GraphDraw/interactivegraph.h',
+  'GraphDraw/datapoints.h',
   'information.h',
   'MathObjects/BuildingBlocks/stateful.h',
   'MathObjects/constant.h',
@@ -135,6 +137,45 @@ boost_dep = dependency('boost')
 zecalculator_dep = dependency('zecalculator')
 
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
+
+# --- Qt RHI shader compilation -----------------------------------------------
+# qsb cross-compiles GLSL into Qt's serialized shader format consumed by
+# QSGMaterialShader::setShaderFileName(). The .qsb files are bundled into a
+# Qt resource so they can be loaded via qrc:// at runtime.
+qt_libexec = qt6_dep.get_variable(pkgconfig: 'libexecdir')
+qt_bindir  = qt6_dep.get_variable(pkgconfig: 'bindir')
+
+qsb = find_program('qsb-qt6', 'qsb', dirs: [qt_libexec, qt_bindir], required: true)
+rcc = find_program('rcc-qt6', 'rcc', dirs: [qt_libexec, qt_bindir], required: true)
+
+shader_sources = [
+  'GraphDraw/shaders/markers.vert',
+  'GraphDraw/shaders/markers.frag',
+]
+
+shader_qsb_files = []
+foreach src : shader_sources
+  args = ['--glsl', '300es,330,410', '--hlsl', '50', '--msl', '12', '-b']
+  name = fs.name(src)
+  shader_qsb_files += custom_target(name + '.qsb',
+    input: src,
+    output: name + '.qsb',
+    command: [qsb] + args + ['-o', '@OUTPUT@', '@INPUT@'],
+  )
+endforeach
+
+shaders_qrc = configure_file(
+  input: 'GraphDraw/shaders/shaders.qrc.in',
+  output: 'shaders.qrc',
+  configuration: {
+    'MARKERS_VERT_QSB': shader_qsb_files[0].full_path(),
+    'MARKERS_FRAG_QSB': shader_qsb_files[1].full_path(),
+  },
+)
+
+shaders_resources_cpp = qt6.compile_resources(sources: shaders_qrc)
+# -----------------------------------------------------------------------------
+
 moc_files = qt6.compile_moc(
   headers : moc_header_files,
   include_directories: inc,
@@ -159,7 +200,7 @@ if compiler.get_id() == 'clang'
 endif
 
 executable('ZeGrapher',
-  sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
+  sources: ['main.cpp', source_files, compiled_ressources, shaders_resources_cpp, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
   win_subsystem: 'windows', # useful for Windows: displays the app without spawning

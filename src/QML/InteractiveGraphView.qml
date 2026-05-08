@@ -18,6 +18,7 @@ ScrollView {
       width: interactiveGraph.graphRect.width
       height: interactiveGraph.graphRect.height
       qmlData: interactiveGraph.qmlData
+      totalScaleFactor: interactiveGraph.settings.totalScaleFactor
     }
   }
 }

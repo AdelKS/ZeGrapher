@@ -45,6 +45,7 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(QSizeF availableSizeCm READ getAvailableSizeCm NOTIFY availableSizeCmChanged)
 
   Q_PROPERTY(double targetSamplingDistancePx WRITE setTargetSamplingDistancePx MEMBER targetSamplingDistancePx NOTIFY targetSamplingDistanceChanged)
+  Q_PROPERTY(double totalScaleFactor READ getTotalScaleFactor NOTIFY totalScaleFactorChanged)
 
 public:
   explicit ZeGraphSettings(QObject* parent = nullptr): QObject(parent) {};
@@ -59,6 +60,7 @@ public:
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
   double getTargetSamplingDistancePx() const { return targetSamplingDistancePx; }
+  double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor; }
 
 public slots:
   void setZoomSettings(ZeZoomSettings);
@@ -84,6 +86,7 @@ signals:
   void availableSizePxChanged();
   void availableSizeCmChanged();
   void targetSamplingDistanceChanged();
+  void totalScaleFactorChanged();
 
 protected:
   ZeZoomSettings zoom;

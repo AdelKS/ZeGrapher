@@ -266,10 +266,7 @@ void Graph::drawAll()
   const auto start = std::chrono::high_resolution_clock::now();
 
   if (not exporting)
-  {
     updateQmlData();
-    drawMarkers();
-  }
   else drawObjects();
 
   const auto end = std::chrono::high_resolution_clock::now();
@@ -286,7 +283,7 @@ void Graph::scaleView()
   qDebug() << "Scaling: " << settings.getSize().scalingFactor;
   qDebug() << "Zoom: " << settings.getZoom().zoom;
 
-  totalScaleFactor = settings.getSize().scalingFactor * settings.getZoom().zoom;
+  totalScaleFactor = settings.getTotalScaleFactor();
 
   // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
   // this is just telling it to draw everything bigger and translate coordinates accordingly
@@ -524,18 +521,24 @@ void Graph::updateQmlData()
   for (const auto& [_, f_curve] : sampler.getCurves())
   {
     if (not f_curve.style.visible) continue;
-    if (not f_curve.style.drawLine) continue;
     if (f_curve.curve.empty()) continue;
 
-    const QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
-
-    if (segments.isEmpty()) continue;
-
     QVariantMap curve;
-    curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
-    curve[QStringLiteral("style")]    = QVariant::fromValue(f_curve.style);
+    if (f_curve.style.drawLine)
+    {
+      const QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
 
-    qmlData.append(std::move(curve));
+      curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
+      curve[QStringLiteral("style")]    = QVariant::fromValue(f_curve.style);
+
+    }
+
+    if (f_curve.discrete and f_curve.style.pointStyle != zg::CurveStyle::None)
+      curve[QStringLiteral("markers")] = QVariant::fromValue(&f_curve);
+    else curve[QStringLiteral("markers")] = QVariant::fromValue(static_cast<const zg::SampledCurve*>(nullptr));
+
+    if (not curve.isEmpty())
+      qmlData.append(std::move(curve));
   }
 
   // Graph rect position in item pixel coordinates

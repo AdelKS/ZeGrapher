@@ -53,6 +53,11 @@ public:
   QVariantList getQmlData() const { return qmlData; }
   QRect getGraphRect() const { return graphRect; }
 
+  /// Live view of the sampler's curves, used by DataPoints for direct
+  /// scenegraph rendering without a QVariantList round-trip.
+  const auto& curves() const { return sampler.getCurves(); }
+  double getScaleFactor() const { return totalScaleFactor; }
+
 public slots:
   void setlegendFontSize(int size);
   void setLegendState(bool show);

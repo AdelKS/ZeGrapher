@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/zegrapher/shaders">
+        <file alias="markers.vert.qsb">@MARKERS_VERT_QSB@</file>
+        <file alias="markers.frag.qsb">@MARKERS_FRAG_QSB@</file>
+    </qresource>
+</RCC>

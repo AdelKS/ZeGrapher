@@ -103,18 +103,6 @@ void MathObjectDraw::drawObjects()
   qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 }
 
-void MathObjectDraw::drawMarkers()
-{
-  const auto start = std::chrono::high_resolution_clock::now();
-
-  for (const auto& [_, f_curve]: sampler.getCurves())
-    drawSampledCurve(f_curve, true);
-
-  const auto end = std::chrono::high_resolution_clock::now();
-
-  qDebug() << "Plotting Markers took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-}
-
 QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale)
 {
   QList<QPolygonF> finalCurve;
@@ -175,7 +163,7 @@ QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double sc
   return finalCurve;
 }
 
-void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve, bool markersOnly)
+void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 {
   if (not f_curve.style.visible)
     return;
@@ -184,7 +172,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve, bool mark
 
   const auto& style = f_curve.style;
 
-  if (style.drawLine and not markersOnly)
+  if (style.drawLine)
   {
     pen.setWidth(style.lineWidth);
     pen.setColor(style.color);

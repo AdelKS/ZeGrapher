@@ -31,6 +31,7 @@ void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
 
   zoom = s;
   emit zoomSettingsChanged();
+  emit totalScaleFactorChanged();
 };
 
 void ZeGraphSettings::setSizeSettings(ZeSizeSettings s)
@@ -38,12 +39,17 @@ void ZeGraphSettings::setSizeSettings(ZeSizeSettings s)
   if (size == s)
     return;
 
+  const bool scaleChanged = (size.scalingFactor != s.scalingFactor);
+
   size = s;
 
   emit sizeSettingsChanged();
 
   updateSizes();
   computeZoom();
+
+  if (scaleChanged)
+    emit totalScaleFactorChanged();
 };
 
 void ZeGraphSettings::setAxesSettings(ZeAxesSettings s)
@@ -130,6 +136,7 @@ void ZeGraphSettings::computeZoom()
   {
     zoom.zoom = newZoom;
     emit zoomSettingsChanged();
+    emit totalScaleFactorChanged();
   }
 }
 
