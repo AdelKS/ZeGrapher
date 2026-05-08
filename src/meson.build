@@ -142,6 +142,11 @@ qml_mods = qt6.qml_module(
   dependencies: [qt6_dep],
 )
 
+compiler = meson.get_compiler('cpp')
+if compiler.get_id() == 'gcc'
+  add_project_arguments('-Wno-sfinae-incomplete', language: 'cpp')
+endif
+
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
