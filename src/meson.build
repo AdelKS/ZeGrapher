@@ -147,6 +147,10 @@ if compiler.get_id() == 'gcc'
   add_project_arguments('-Wno-sfinae-incomplete', language: 'cpp')
 endif
 
+if compiler.get_id() == 'clang'
+  add_project_arguments('-Wno-c++26-extensions', language: 'cpp')
+endif
+
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
