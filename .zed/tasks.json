@@ -1,0 +1,113 @@
+[
+  {
+    "label": "setup-debug",
+    "command": "[ -d build-zg-debug ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "resetup-debug",
+    "command": "rm -rf build-zg-debug && meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "build-debug",
+    "command": "([ -d build-zg-debug ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true) && meson compile -C build-zg-debug",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "rebuild-debug",
+    "command": "rm -rf build-zg-debug && meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true && meson compile -C build-zg-debug",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "run-debug",
+    "command": "([ -d build-zg-debug ] || meson setup build-zg-debug -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true) && meson compile -C build-zg-debug && ./build-zg-debug/src/ZeGrapher",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "setup-debug-asan",
+    "command": "[ -d build-zg-debug-asan ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "resetup-debug-asan",
+    "command": "meson setup --wipe build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "build-debug-asan",
+    "command": "([ -d build-zg-debug-asan ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true) && meson compile -C build-zg-debug-asan",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "rebuild-debug-asan",
+    "command": "meson setup --wipe build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true && meson compile -C build-zg-debug-asan",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "run-debug-asan",
+    "command": "([ -d build-zg-debug-asan ] || meson setup build-zg-debug-asan -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D b_sanitize=address,undefined -D test=true) && meson compile -C build-zg-debug-asan && ./build-zg-debug-asan/src/ZeGrapher",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "env": {
+      "LSAN_OPTIONS": "suppressions=asan-leak-suppress.txt"
+    }
+  },
+  {
+    "label": "setup-debug-clang",
+    "command": "[ -d build-zg-debug-clang ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "resetup-debug-clang",
+    "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "build-debug-clang",
+    "command": "([ -d build-zg-debug-clang ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true) && meson compile -C build-zg-debug-clang",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "rebuild-debug-clang",
+    "command": "CXX=clang++ CXX_LD=lld meson setup --wipe build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true && meson compile -C build-zg-debug-clang",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "run-debug-clang",
+    "command": "([ -d build-zg-debug-clang ] || CXX=clang++ CXX_LD=lld meson setup build-zg-debug-clang -D optimization=0 -D debug=true -D werror=true -D warning_level=3 -D b_ndebug=false -D loglevel=debug -D test=true) && meson compile -C build-zg-debug-clang && ./build-zg-debug-clang/src/ZeGrapher",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "setup-release",
+    "command": "[ -d build-zg-release ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "resetup-release",
+    "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  },
+  {
+    "label": "build-release",
+    "command": "([ -d build-zg-release ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true) && meson compile -C build-zg-release",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "rebuild-release",
+    "command": "meson setup --wipe build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true && meson compile -C build-zg-release",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "tags": ["build"]
+  },
+  {
+    "label": "run-release",
+    "command": "([ -d build-zg-release ] || meson setup build-zg-release -D optimization=3 -D debug=false -D b_ndebug=true -D loglevel=off -D b_lto=true) && meson compile -C build-zg-release && ./build-zg-release/src/ZeGrapher",
+    "cwd": "$ZED_WORKTREE_ROOT"
+  }
+]
