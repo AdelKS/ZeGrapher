@@ -58,7 +58,9 @@ public:
 
   void refresh_curves_list();
 
-  double sq_dist_to_ray_limit = 0.25;
+  double sq_dist_to_ray_limit = 0.125;
+  size_t min_points = 128;
+  size_t max_points = 16384;
 
 protected:
 

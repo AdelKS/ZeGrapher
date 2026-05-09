@@ -75,7 +75,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     return true;
   };
 
-  const auto range = data.settings.range;
+  const auto& range = data.settings.range;
   const auto min = get_acceptable_input(range.min);
   const auto max = get_acceptable_input(range.max);
 
@@ -148,7 +148,11 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     << " max=" << QString::number(range.max.v, 'g', 14);
   // ######################################
 
-  const zg::real_unit max_step = data.get_biggest_allowed_step();
+  const zg::real_unit max_step = [&]{
+    if constexpr (discrete)
+      return std::max(std::round(range.amplitude() / double(min_points) / data.settings.step) * data.settings.step, data.settings.step);
+    else return range.amplitude() / double(min_points);
+  }();
 
   // add uniformly sampled points
   auto uniform_sample = [&](zg::real_unit start, zg::real_unit end) {
@@ -197,7 +201,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   // ######################################
 
   static std::vector<size_t> indices;
-  indices.reserve(data.max_size/2);
+  indices.reserve(max_points/2);
 
   constexpr size_t cleanup_increment = discrete ? 2 : 4;
 
@@ -272,19 +276,19 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     assert(is_unique(input_vals));
 
   // if we are dealing with discrete data, we don't care about going under the min_size directive
-  } while(not indices.empty() and (discrete or data.size() > data.min_size));
+  } while(not indices.empty() and (discrete or data.size() > min_points));
   // ######################################
 
   static std::vector<zg::real_unit> x;
-  x.reserve(data.max_size/2);
+  x.reserve(max_points/2);
 
   static std::vector<zg::real_pt> f_x;
-  f_x.reserve(data.max_size/2);
+  f_x.reserve(max_points/2);
 
   static std::vector<QPointF> px_f_x;
-  px_f_x.reserve(data.max_size/2);
+  px_f_x.reserve(max_points/2);
 
-  const zg::real_unit min_input_dist = range.amplitude() / double(data.max_size);
+  const zg::real_unit min_input_dist = range.amplitude() / double(max_points);
 
   // refine if points are too far apart
   // so when we compute 3 points A, B, C with 3 consecutive input values,
@@ -388,7 +392,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     assert(std::ranges::is_sorted(input_vals));
     assert(is_unique(input_vals));
 
-  } while(not indices.empty() and data.size() < data.max_size);
+  } while(not indices.empty() and data.size() < max_points);
   // ######################################
 
   qDebug() << "Object caching: " << obj_name << " curve has " << curve.size() << " points";

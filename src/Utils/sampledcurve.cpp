@@ -42,20 +42,6 @@ void SampledCurve::erase_chunk(size_t from, size_t size)
   px_curve.erase(px_curve.begin() + from, px_curve.begin() + to);
 }
 
-zg::real_unit SampledCurve::get_biggest_allowed_step() const
-{
-  if (discrete)
-    return std::max(std::round(settings.range.amplitude() / double(min_size) / settings.step) * settings.step, settings.step);
-  else return settings.range.amplitude() / double(min_size);
-};
-
-zg::real_unit SampledCurve::get_smallest_allowed_step() const
-{
-  if (discrete)
-    return std::max(std::round(settings.range.amplitude() / double(max_size) / settings.step) * settings.step, settings.step);
-  else return settings.range.amplitude() / double(max_size);
-};
-
 void SampledCurve::insert_chunk(size_t index,
                                 const std::vector<real_unit>& x,
                                 const std::vector<real_pt>& f_x,

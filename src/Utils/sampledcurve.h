@@ -15,9 +15,6 @@ namespace zg {
 
 struct SampledCurve {
 
-  static constexpr size_t min_size = 128;
-  static constexpr size_t max_size = 16384;
-
   SampledCurve() = default;
 
   const std::vector<real_unit>& get_input() const { return input; };
@@ -59,12 +56,6 @@ struct SampledCurve {
   void pop_back(size_t pop_num);
 
   void pop_front(size_t pop_num);
-
-    /// @brief returns the biggest step that can be made between two computed points
-  real_unit get_biggest_allowed_step() const;
-
-  /// @brief returns the smallest step that can be made between two computed points before giving up and looking for
-  real_unit get_smallest_allowed_step() const;
 
   /// @brief
   void update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& plotStyle);
