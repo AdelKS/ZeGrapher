@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utils/unit.h"
-#include "information.h"
+#include "globalvars.h"
 #include "sampler.h"
 
 
