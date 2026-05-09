@@ -1,2 +1,2 @@
 CompileFlags:
-  CompilationDatabase: clangd-compile-db/
+  CompilationDatabase: build-zg-debug-clang/
