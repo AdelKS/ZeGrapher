@@ -319,6 +319,52 @@ Item {
               }
             }
           }
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Min points")
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("The max is 2^value.")
+          }
+          ZeSpinBox {
+            id: minPointsLg2
+            Layout.alignment: Qt.AlignLeft
+
+            from: 2
+            stepSize: 1
+            value: root.graphSettings.minPointsLg2
+            to: maxPointsLg2
+
+            onValueModified: {
+              root.pauseSync = true;
+              root.graphSettings.minPointsLg2 = value;
+              console.debug("Min points changed: ", value);
+              root.pauseSync = false;
+            }
+          }
+
+          Label {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Max points")
+            ToolTip.visible: hovered
+            ToolTip.text: qsTr("The max is 2^value.")
+          }
+          ZeSpinBox {
+            id: maxPointsLg2
+            Layout.alignment: Qt.AlignLeft
+
+            from: minPointsLg2.value
+            value: root.graphSettings.maxPointsLg2
+            stepSize: 1
+            to: 16
+
+            onValueModified: {
+              root.pauseSync = true;
+              root.graphSettings.maxPointsLg2 = value;
+              console.debug("Max points changed: ", value);
+              root.pauseSync = false;
+            }
+          }
         }
       }
 

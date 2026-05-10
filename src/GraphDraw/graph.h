@@ -82,6 +82,7 @@ signals:
 
 protected slots:
   void updateSettingsVals();
+  void minMaxPointsChanged();
 
 protected:
   void scaleView();

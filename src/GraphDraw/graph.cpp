@@ -52,6 +52,9 @@ Graph::Graph(QQuickItem *parent)
   relFigRect.setWidth(1);
   relFigRect.moveTopLeft(QPointF(0, 0));
 
+  connect(&settings, &ZeGraphSettings::minPointsLg2Changed, this, &Graph::minMaxPointsChanged);
+  connect(&settings, &ZeGraphSettings::maxPointsLg2Changed, this, &Graph::minMaxPointsChanged);
+
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
   connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
@@ -634,4 +637,12 @@ void Graph::exportSVG(QString fileName)
   drawAll();
 
   painter->end();
+}
+
+void Graph::minMaxPointsChanged()
+{
+  sampler.min_points = 1ULL << settings.getMinPointsLg2();
+  sampler.max_points = 1ULL << settings.getMaxPointsLg2();
+
+  update();
 }

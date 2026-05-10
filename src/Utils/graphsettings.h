@@ -47,6 +47,9 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(double targetSamplingDistancePx WRITE setTargetSamplingDistancePx MEMBER targetSamplingDistancePx NOTIFY targetSamplingDistanceChanged)
   Q_PROPERTY(double totalScaleFactor READ getTotalScaleFactor NOTIFY totalScaleFactorChanged)
 
+  Q_PROPERTY(int minPointsLg2 MEMBER minPointsLg2 NOTIFY minPointsLg2Changed)
+  Q_PROPERTY(int maxPointsLg2 MEMBER maxPointsLg2 NOTIFY maxPointsLg2Changed)
+
 public:
   explicit ZeGraphSettings(QObject* parent = nullptr): QObject(parent) {};
 
@@ -61,6 +64,9 @@ public:
   Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
   double getTargetSamplingDistancePx() const { return targetSamplingDistancePx; }
   double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor; }
+
+  int getMinPointsLg2() const { return minPointsLg2; }
+  int getMaxPointsLg2() const { return maxPointsLg2; }
 
 public slots:
   void setZoomSettings(ZeZoomSettings);
@@ -87,6 +93,8 @@ signals:
   void availableSizeCmChanged();
   void targetSamplingDistanceChanged();
   void totalScaleFactorChanged();
+  void minPointsLg2Changed();
+  void maxPointsLg2Changed();
 
 protected:
   ZeZoomSettings zoom;
@@ -94,6 +102,10 @@ protected:
   ZeAxesSettings axes;
   ZeGridSettings grid;
   ZeSubgridSettings subgrid;
+
+  // log2 for adaptive sampling
+  int minPointsLg2 = 7;
+  int maxPointsLg2 = 14;
 
   QFont font;
 
