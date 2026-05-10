@@ -174,6 +174,24 @@ void ZeAxisMapper<axis>::setRange(const Range1D<u<p>>& range)
         break;
     }
   }
+
+  const double viewAmplitudePower = round(log10(view_range.amplitude().v));
+  const double pixelAmplitudePower = round(log10(pixel_range.amplitude().v));
+
+  const double viewRangePrecisionPower = viewAmplitudePower - pixelAmplitudePower;
+
+  auto trunc = [&](double& v) {
+    v = round(v * pow(10., -viewRangePrecisionPower)) * pow(10., viewRangePrecisionPower);
+  };
+
+  trunc(view_range.min.v);
+  trunc(view_range.max.v);
+
+  if (view_type == ZeAxisSettings::LINEAR)
+  {
+    real_range.min.v = view_range.min.v;
+    real_range.max.v = view_range.max.v;
+  }
 }
 
 template <ZeAxisName axis>
