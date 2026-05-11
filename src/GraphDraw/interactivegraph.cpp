@@ -77,5 +77,9 @@ void InteractiveGraph::mouseReleaseEvent(QMouseEvent *event)
 
 void InteractiveGraph::wheelEvent(QWheelEvent *event)
 {
-  Q_UNUSED(event);
+  const double inverted = event->inverted() ? -1.0 : 1.0;
+  const double factor = std::pow(1. + 1./32., inverted * double(event->angleDelta().y()) / 120.);
+  viewMapper.zoomView(zg::pixel_pt::from(event->position() / totalScaleFactor), factor);
+  information.setGraphRangeMouseEdit(viewMapper.getRange<zg::real>());
+  event->accept();
 }
