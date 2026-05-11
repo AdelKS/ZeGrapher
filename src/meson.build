@@ -135,7 +135,7 @@ foreach qmlcpp_file: qmlcpp_files
 endforeach
 
 qt6 = import('qt6')
-qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets', 'QmlIntegration'])
+qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets', 'Network', 'Svg', 'Quick', 'Qml', 'QuickWidgets', 'QmlIntegration', 'ShaderTools'])
 boost_dep = dependency('boost')
 zecalculator_dep = dependency('zecalculator')
 
