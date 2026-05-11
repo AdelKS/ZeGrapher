@@ -4,7 +4,7 @@ set -e
 
 # Install dependencies if not already present
 echo "Checking and installing dependencies..."
-brew install boost coreutils qtbase qtsvg qtdeclarative qttools qttranslations meson pkg-config create-dmg
+brew install boost coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools meson pkg-config create-dmg
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 version=$(bash "${deploy_dir}"/../version.sh get-vcs)
