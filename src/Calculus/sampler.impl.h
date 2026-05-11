@@ -87,7 +87,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     {
       auto& objectCache = information.mathObjectCache[f->get_slot()];
       size_t current_max = std::max(0., max.v);
-      objectCache.set_buffer_size(std::min(std::max(current_max, objectCache.get_buffer_size()), 1'000'000UL));
+      objectCache.set_buffer_size(std::min(std::max(current_max, objectCache.get_buffer_size()), size_t(1'000'000)));
     }
   };
 
