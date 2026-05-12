@@ -1,4 +1,4 @@
-<RCC>
+ <RCC>
     <qresource prefix="/">
         <file>icons/keyboard.png</file>
         <file>icons/go&amp;return.png</file>
@@ -39,7 +39,6 @@
         <file>translations/ZeGrapher_fr.qm</file>
         <file>icons/orthonormalView.svg</file>
         <file>icons/resetToDefaultView.svg</file>
-        <file>icons/export.svg</file>
         <file>icons/grid.png</file>
         <file>icons/grid_subgrid.png</file>
         <file>icons/no_grid.png</file>
@@ -84,7 +83,7 @@
         <file>icons/closed-eye-light.svg</file>
         <file>icons/table.svg</file>
         <file>icons/table-light.svg</file>
-        <file>icons/csv-import.svg</file>
+        <file>icons/csv-import-dark.svg</file>
         <file>icons/csv-import-light.svg</file>
         <file>icons/dash-dot-line.svg</file>
         <file>icons/dash-dot-line-light.svg</file>
@@ -111,5 +110,9 @@
         <file>icons/schrodinger-cat-light.svg</file>
         <file>icons/drag-handle-dark.svg</file>
         <file>icons/drag-handle-light.svg</file>
+        <file>icons/export-light.svg</file>
+        <file>icons/export-dark.svg</file>
+        <file>icons/export-graph-light.svg</file>
+        <file>icons/export-graph-dark.svg</file>
     </qresource>
 </RCC>

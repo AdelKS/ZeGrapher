@@ -151,7 +151,7 @@ Item {
       Layout.preferredWidth: 35
       Layout.alignment: Qt.AlignRight
 
-      lightThemeIcon: "qrc:/icons/csv-import.svg"
+      lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
       darkThemeIcon: "qrc:/icons/csv-import-light.svg"
 
       onReleased: fileDialog.visible = true
