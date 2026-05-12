@@ -282,8 +282,6 @@ void Graph::drawAll()
 
 void Graph::scaleView()
 {
-  pixelRatio = window()->effectiveDevicePixelRatio();
-
   qDebug() << "Scaling: " << settings.getSize().scalingFactor;
   qDebug() << "Zoom: " << settings.getZoom().zoom;
 
@@ -295,8 +293,6 @@ void Graph::scaleView()
 
   // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
   scaledSize /= totalScaleFactor;
-
-  qDebug() << "Pixel ratio: " << pixelRatio;
 
   qDebug() << "Available widget size: " << settings.getAvailableSizePx();
   qDebug() << "Graph size: " << size();

@@ -153,7 +153,6 @@ protected:
 
   // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
   // the other margin is scaled accordingly
-  double pixelRatio;
   QRect figureRect, supportRect, sheetRectScaled;
 
   QSizeF scaledSize;
