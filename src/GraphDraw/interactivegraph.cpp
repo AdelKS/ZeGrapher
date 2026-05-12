@@ -77,9 +77,38 @@ void InteractiveGraph::mouseReleaseEvent(QMouseEvent *event)
 
 void InteractiveGraph::wheelEvent(QWheelEvent *event)
 {
+  if (event->angleDelta().isNull())
+    return;
+
   const double inverted = event->inverted() ? -1.0 : 1.0;
-  const double factor = std::pow(1. + 1./32., inverted * double(event->angleDelta().y()) / 120.);
-  viewMapper.zoomView(zg::pixel_pt::from(event->position() / totalScaleFactor), factor);
+
+  int x_delta = event->angleDelta().x();
+  int y_delta = event->angleDelta().y();
+
+  // if SHIFT is pressed, swap x angleDelta with y
+  // this is so users without horizontal scroll can still do it
+  const bool xy_swap = event->modifiers() & Qt::ShiftModifier;
+
+  if (xy_swap) std::swap(x_delta, y_delta);
+
+  const double y_factor = std::pow(1. + 1./32., inverted * double(y_delta) / 120.);
+  const double x_factor = std::pow(1. + 1./32., inverted * double(x_delta) / 120.);
+
+  // if CTRL is pressed, handle x and y separately
+  const bool xy_separate = event->modifiers() & Qt::ControlModifier;
+
+  if (xy_separate)
+  {
+    if (x_delta != 0)
+      viewMapper.x.zoomView(zg::pixel_unit{event->position().x() / totalScaleFactor}, x_factor);
+
+    if (y_delta != 0)
+      viewMapper.y.zoomView(zg::pixel_unit{event->position().y() / totalScaleFactor}, y_factor);
+  }
+  else
+    viewMapper.zoomView(zg::pixel_pt::from(event->position() / totalScaleFactor),
+                        y_delta != 0 ? y_factor : x_factor);
+
   information.setGraphRangeMouseEdit(viewMapper.getRange<zg::real>());
   event->accept();
 }
