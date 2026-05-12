@@ -151,6 +151,9 @@ protected:
   double minRelSize;
   double totalScaleFactor;
 
+  // pixel position of the (0,0) coordinate in the graph
+  QPointF centre;
+
   // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
   // the other margin is scaled accordingly
   QRect figureRect, supportRect, sheetRectScaled;

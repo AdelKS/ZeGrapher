@@ -235,7 +235,7 @@ void Graph::drawAll()
   calculateTicksAndMargins();
   calculateTicksAndMargins();
 
-  updateCenterPosAndScaling();
+  centre = QPointF(viewMapper.to<zg::plane::pixel>(zg::view_pt{{0},{0}}));
 
   painter->translate(leftMargin, topMargin);
 
@@ -277,7 +277,7 @@ void Graph::drawAll()
 
   qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-  painter->translate(QPointF(centre.x, centre.y));
+  painter->translate(centre);
 }
 
 void Graph::scaleView()
@@ -426,24 +426,6 @@ void Graph::drawGraphRect()
   painter->setPen(pen);
 
   painter->drawRect(graphRectScaled);
-}
-
-void Graph::updateCenterPosAndScaling()
-{
-  // TODO: update this method not working here
-
-  pxPerUnit.y = double(graphRectScaled.height())
-                / fabs(std::as_const(viewMapper).y.getRange<zg::plane::view>().amplitude().v);
-  pxPerUnit.x = double(graphRectScaled.width())
-                / fabs(std::as_const(viewMapper).x.getRange<zg::plane::view>().amplitude().v);
-
-  if (settings.getAxes().orthonormal)
-  {
-    // TODO
-  }
-
-  centre.x = -viewMapper.x.getMin<zg::plane::view>().v * pxPerUnit.x;
-  centre.y = -viewMapper.y.getMin<zg::plane::view>().v * pxPerUnit.y;
 }
 
 QImage *Graph::drawImage()

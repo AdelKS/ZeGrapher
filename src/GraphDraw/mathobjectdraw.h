@@ -46,13 +46,11 @@ protected:
   QPolygonF polygon;
   QPen pen;
   QBrush brush;
-  Point centre;
   zg::ZeViewMapper viewMapper;
   Sampler sampler;
 
   double coef;
 
-  Point pxPerUnit;
   bool moving, recalculate, recalculateRegs;
 };
 
