@@ -8,6 +8,8 @@ Item {
 
   required property ZeGraphSettings graphSettings
 
+  property alias mathObjectsTab: mathObjectsTab
+
   implicitWidth: colLayout.implicitWidth
 
   onImplicitWidthChanged: {
@@ -75,7 +77,7 @@ Item {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
-      implicitWidth: Math.max(mathObjects.implicitWidth, gridSettings.implicitWidth, graphSettings.implicitWidth, appSettings.implicitWidth)
+      implicitWidth: Math.max(mathObjectsTab.implicitWidth, gridSettings.implicitWidth, graphSettings.implicitWidth, appSettings.implicitWidth)
 
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 
@@ -84,7 +86,7 @@ Item {
       }
 
       MathObjects {
-        id: mathObjects
+        id: mathObjectsTab
       }
 
       GridSettings {

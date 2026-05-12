@@ -33,16 +33,6 @@ ApplicationWindow {
     }
   }
 
-  FileDialog {
-    id: fileDialog
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
-    fileMode: FileDialog.OpenFile
-    options: FileDialog.ReadOnly
-    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
-    visible: false
-    onAccepted: dataPane.loadCSV(selectedFile)
-  }
-
   IconButton {
     id: drawer_button
     checkable: true
@@ -115,6 +105,15 @@ ApplicationWindow {
           interval: 4000
           repeat: false
           onTriggered: userInput.width = userInput.implicitWidth;
+        }
+
+        Connections {
+          target: userInput.mathObjectsTab
+
+          function onImportCSV(file: string)
+          {
+            dataPane.loadCSV(file);
+          }
         }
 
         Component.onCompleted: widthResetTimer.start()

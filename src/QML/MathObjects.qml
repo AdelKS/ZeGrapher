@@ -1,8 +1,13 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
+import QtQuick.Dialogs
+import QtCore
 
 Item {
+  id: root
+
+  signal importCSV(file: url)
 
   onImplicitWidthChanged: {
     console.debug("MathObjects: implicitWidth: ", implicitWidth)
@@ -131,6 +136,16 @@ Item {
     }
   }
 
+  FileDialog {
+    id: fileDialog
+    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    fileMode: FileDialog.OpenFile
+    options: FileDialog.ReadOnly
+    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
+    visible: false
+    onAccepted: root.importCSV(selectedFile)
+  }
+
   RowLayout
   {
     anchors.left: parent.left
@@ -154,7 +169,7 @@ Item {
       lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
       darkThemeIcon: "qrc:/icons/csv-import-light.svg"
 
-      onReleased: fileDialog.visible = true
+      onReleased: fileDialog.visible = true;
     }
 
     IconRoundButton {
