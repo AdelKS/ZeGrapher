@@ -82,12 +82,12 @@ void Information::screenChanged(QWindow* win)
   qDebug() << "Monitor pixel size: " << pixelSize;
   qDebug() << "Monitor cm size: " << cmSize;
 
-  double cm_per_mm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
+  double px_per_cm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
 
-  if (pixelDensity != cm_per_mm)
+  if (pixelDensity != px_per_cm)
   {
-    qDebug() << "pixel density " << cm_per_mm << "px per cm";
-    pixelDensity = cm_per_mm;
+    qDebug() << "pixel density " << px_per_cm << "px per cm";
+    pixelDensity = px_per_cm;
     emit pixelDensityChanged();
   }
 }

@@ -86,7 +86,7 @@ protected:
   QString exportFileName;
   zg::GraphRange* graph_range = nullptr;
 
-  /// @note in pixels per millimeter
+  /// @note in pixels per centimeter
   double pixelDensity = 50;
 
   QSize availableSheetSizePx;
