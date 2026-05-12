@@ -320,11 +320,10 @@ Item {
             }
           }
 
-          Label {
+          ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Min points")
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("The max is 2^value.")
+            tooltipText: qsTr("The minimum amount of points that each continuous curve should have, in 2^value.")
           }
           ZeSpinBox {
             id: minPointsLg2
@@ -343,11 +342,10 @@ Item {
             }
           }
 
-          Label {
+          ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Max points")
-            ToolTip.visible: hovered
-            ToolTip.text: qsTr("The max is 2^value.")
+            tooltipText: qsTr("The maximum amount of points that continuous curves can have, in 2^value.")
           }
           ZeSpinBox {
             id: maxPointsLg2
