@@ -71,7 +71,7 @@ public slots:
   void setNumPrec(int prec);
 
   void exportPDF(QUrl fileName);
-  void exportSVG(QString fileName);
+  void exportSVG(QUrl fileName);
 
   virtual void paint(QPainter *p) override;
 

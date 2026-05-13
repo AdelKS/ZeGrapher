@@ -571,40 +571,30 @@ void Graph::exportPDF(QUrl fileName)
   exporting = false;
 }
 
-void Graph::exportSVG(QString fileName)
+void Graph::exportSVG(QUrl fileName)
 {
   QSvgGenerator svgGenerator;
-  svgGenerator.setFileName(fileName);
+  svgGenerator.setFileName(fileName.toLocalFile());
 
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  double targetResolution = information.getPixelDensity() / settings.getSize().scalingFactor;
+  svgGenerator.setResolution(int(information.getPixelDensity() * CM_PER_INCH));
 
-  svgGenerator.setResolution(int(targetResolution));
+  svgGenerator.setSize(size().toSize());
+  svgGenerator.setViewBox(QRect(QPoint(0, 0), size().toSize()));
 
-  QSize sizePx(int(settings.getSize().cmSheetSize.width() * 0.393701 * targetResolution),
-               int(settings.getSize().cmSheetSize.height() * 0.393701 * targetResolution));
+  QPainter svgPainter(&svgGenerator);
 
-  svgGenerator.setSize(sizePx);
-  svgGenerator.setViewBox(QRect(QPoint(0, 0), sizePx));
-
-  painter->begin(&svgGenerator);
-
-  if (settings.getBackgroundColor().getCurrent() != QColor(Qt::white))
+  if (not svgPainter.isActive())
   {
-    painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
-    painter->drawRect(painter->window());
+    qWarning() << "exportSVG: painter not active, aborting";
+    return;
   }
 
-  figureRectScaled = painter->window();
-
-  painter->translate(figureRectScaled.topLeft());
-
   exporting = true;
-  drawAll();
-
-  painter->end();
+  paint(&svgPainter);
+  exporting = false;
 }
 
 void Graph::minMaxPointsChanged()
