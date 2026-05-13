@@ -49,7 +49,7 @@ public:
   QLocale::Language language;
   QFont font;
 
-  ThemedColor validSyntax = {.dark = "#009999", .light = "#00fefe"};
+  ThemedColor validSyntax = {.dark = "#009999", .light = "#009999"};
   ThemedColor invalidSyntax = {.dark = Qt::darkRed, .light = Qt::darkRed};
   ThemedColor warningSyntax = {.dark = Qt::darkYellow, .light = Qt::darkYellow};
 
