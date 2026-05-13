@@ -12,20 +12,25 @@ layout(std140, binding = 0) uniform buf {
   int   markerType;
 };
 
-// SDF helpers — all in centered, pixel-space sprite coordinates.
-//   r = visible half-extent (positive inside, negative outside is what the
-//   coverage step expects; SDFs return *negative* inside).
-
-float sdRhombus(vec2 p, float r) {
-  return abs(p.x) + abs(p.y) - r;
+// from https://iquilezles.org/articles/distfunctions2d/
+float sdRhombus(vec2 p, vec2 b)
+{
+  b.y = -b.y;
+  p = abs(p);
+  float h = clamp( (dot(b,p)+b.y*b.y)/dot(b,b), 0.0, 1.0 );
+  p -= b*vec2(h,h-1.0);
+  return length(p)*sign(p.x);
 }
 
 float sdDisc(vec2 p, float r) {
   return length(p) - r;
 }
 
-float sdSquare(vec2 p, float r) {
-  return max(abs(p.x), abs(p.y)) - r;
+// from https://iquilezles.org/articles/distfunctions2d/
+float sdBox(vec2 p, vec2 b )
+{
+  vec2 d = abs(p)-b;
+  return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
 }
 
 // Equilateral triangle, apex at the sprite top. 'r' is the circumradius.
@@ -42,13 +47,12 @@ float sdTriangle(vec2 p, float r) {
   return -length(p) * sign(p.y);
 }
 
-// Two perpendicular rectangles unioned: arms of half-length 'r' and
-// half-thickness 'h'. Used for the Cross point style.
-float sdCross(vec2 p, float r, float h) {
-  vec2 q = abs(p);
-  float dh = max(q.x - r, q.y - h);  // horizontal arm
-  float dv = max(q.y - r, q.x - h);  // vertical arm
-  return min(dh, dv);
+float sdRoundedCross(vec2 p, float w, in float r)
+{
+  float coef = sqrt(2.0)/2.0;
+  p = vec2(p.x * coef - p.y * coef, p.x * coef + p.y * coef);
+  p = abs(p);
+  return length(p-min(p.x+p.y,w)*0.5) - r;
 }
 
 void main() {
@@ -59,11 +63,11 @@ void main() {
 
   float sdf;
   switch (markerType) {
-    case 1: sdf = sdRhombus (p, radius);         break;
-    case 2: sdf = sdDisc  (p, radius);         break;
-    case 3: sdf = sdSquare  (p, radius);         break;
-    case 4: sdf = sdTriangle(p, radius);         break;
-    case 5: sdf = sdCross   (p, radius, strokeWidth);  break;
+    case 1: sdf = sdRhombus(p, vec2(radius, radius)) - strokeWidth/2.0;     break;
+    case 2: sdf = sdDisc(p, radius) - strokeWidth/2.0;                      break;
+    case 3: sdf = sdBox(p, vec2(radius, radius)) - strokeWidth/2.0;         break;
+    case 4: sdf = sdTriangle(p, radius) - strokeWidth/2.0;                  break;
+    case 5: sdf = sdRoundedCross(p, radius + strokeWidth, strokeWidth/2.0); break;
     default: discard;
   }
 
