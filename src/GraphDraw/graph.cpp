@@ -215,11 +215,14 @@ void Graph::paint(QPainter *p)
 {
   painter = p;
 
-  scaledSize = size();
+  if (exporting)
+    scaledSize = p->window().size().toSizeF();
+  else scaledSize = p->window().size().toSizeF() / window()->effectiveDevicePixelRatio();
+
+  qDebug() << "Original scaled size: " << scaledSize;
 
   scaleView();
   drawSupport();
-
   drawGraph();
 
   painter = nullptr;
@@ -294,8 +297,6 @@ void Graph::scaleView()
   // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
   scaledSize /= totalScaleFactor;
 
-  qDebug() << "Available widget size: " << settings.getAvailableSizePx();
-  qDebug() << "Graph size: " << size();
   qDebug() << "Painter viewport: " << painter->viewport();
   qDebug() << "Painter window: " << painter->window();
 }
@@ -314,7 +315,6 @@ void Graph::drawGraph()
 
   painter->translate(figureRectScaled.topLeft());
 
-  exporting = false;
   drawAll();
 }
 
@@ -461,7 +461,7 @@ void Graph::computeSupportRect()
 {
   QRectF rect;
 
-  if (settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
+  if (exporting or settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
   {
     rect.setSize(scaledSize);
   }
@@ -492,8 +492,6 @@ void Graph::computeSupportRect()
     }
   }
 
-  qDebug() << "Available rect: " << settings.getAvailableSizePx();
-  qDebug() << "Scaled size: " << scaledSize;
   qDebug() << "Support rect: " << rect;
 
   supportRect = rect.toRect();
@@ -536,49 +534,41 @@ void Graph::updateQmlData()
   emit graphRectChanged();
 }
 
-void Graph::exportPDF(QString fileName, SheetSizeType sizeType)
+void Graph::exportPDF(QUrl fileName)
 {
-  QPdfWriter *pdfWriter = new QPdfWriter(fileName);
+  QPdfWriter pdfWriter(fileName.toLocalFile());
 
-  pdfWriter->setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
-  pdfWriter->setTitle(tr("Exported graph"));
+  pdfWriter.setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
+  pdfWriter.setTitle(tr("Exported graph"));
 
-  int targetResolution = int(information.getPixelDensity() / settings.getSize().scalingFactor);
+  // resolution is set in DPI, pixels per inch
+  // information.getPixelDensity() is in pixels per centimeter
+  pdfWriter.setResolution(int(information.getPixelDensity() * CM_PER_INCH));
 
-  pdfWriter->setResolution(targetResolution);
+  QPageLayout layout(
+    QPageSize(settings.getSize().cmSheetSize * 10., QPageSize::Millimeter, "", QPageSize::ExactMatch),
+    QPageLayout::Portrait,
+    QMarginsF(0, 0, 0, 0),
+    QPageLayout::Millimeter
+  );
 
-  QPageLayout layout;
-  layout.setUnits(QPageLayout::Millimeter);
-
-  QSizeF sheetSizeMm(settings.getSize().cmSheetSize.width() * 10, settings.getSize().cmSheetSize.height() * 10);
-  layout.setPageSize(
-    QPageSize(sheetSizeMm, QPageSize::Millimeter, "", QPageSize::FuzzyOrientationMatch));
-
-  if (sizeType == SheetSizeType::NORMALISED)
-    layout.setOrientation(orientation);
-  else
-    layout.setOrientation(QPageLayout::Portrait);
-
-  pdfWriter->setPageLayout(layout);
-
-  painter->begin(pdfWriter);
-
-  if (settings.getBackgroundColor().getCurrent() != QColor(Qt::white))
-  {
-    painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
-    painter->drawRect(painter->viewport());
+  if (not layout.isValid()) {
+    qWarning() << "exportPDF: invalid page layout, aborting";
+    return;
   }
 
-  figureRectScaled = supportRect;
+  pdfWriter.setPageLayout(layout);
+  QPainter pdfPainter(&pdfWriter);
 
-  painter->translate(figureRectScaled.topLeft());
+  if (not pdfPainter.isActive())
+  {
+    qWarning() << "exportPDF: painter not active, aborting";
+    return;
+  }
 
   exporting = true;
-  drawAll();
-
-  painter->end();
-
-  delete pdfWriter;
+  paint(&pdfPainter);
+  exporting = false;
 }
 
 void Graph::exportSVG(QString fileName)
