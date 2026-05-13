@@ -4,6 +4,7 @@ ScrollView {
   id: scrollView
 
   property alias settings: interactiveGraph.settings
+  property alias graph: interactiveGraph
 
   InteractiveGraph {
     width: scrollView.width

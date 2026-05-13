@@ -110,10 +110,19 @@ ApplicationWindow {
         Connections {
           target: userInput.mathObjectsTab
 
-          function onImportCSV(file: string)
+          function onImportCSV(file: url)
           {
             dataPane.loadCSV(file);
           }
+        }
+
+        onExportGraph: function (file: url)
+        {
+          if (file.toString().toLowerCase().endsWith(".pdf"))
+            interactiveGraph.graph.exportPDF(file);
+          else if (file.toString().toLowerCase().endsWith(".svg"))
+            interactiveGraph.graph.exportSVG(file);
+          else interactiveGraph.graph.exportImage(file);
         }
 
         Component.onCompleted: widthResetTimer.start()
