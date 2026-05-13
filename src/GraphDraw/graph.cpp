@@ -215,7 +215,7 @@ void Graph::paint(QPainter *p)
 {
   painter = p;
 
-  if (exporting)
+  if (paintType == VECTOR_EXPORT)
     scaledSize = p->window().size().toSizeF();
   else scaledSize = p->window().size().toSizeF() / window()->effectiveDevicePixelRatio();
 
@@ -272,7 +272,7 @@ void Graph::drawAll()
 
   const auto start = std::chrono::high_resolution_clock::now();
 
-  if (not exporting)
+  if (paintType == GPU_RENDER)
     updateQmlData();
   else drawObjects();
 
@@ -293,6 +293,9 @@ void Graph::scaleView()
   // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
   // this is just telling it to draw everything bigger and translate coordinates accordingly
   painter->scale(totalScaleFactor, totalScaleFactor);
+
+  if (paintType == IMAGE_EXPORT)
+    painter->scale(window()->devicePixelRatio(), window()->devicePixelRatio());
 
   // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
   scaledSize /= totalScaleFactor;
@@ -428,21 +431,25 @@ void Graph::drawGraphRect()
   painter->drawRect(graphRectScaled);
 }
 
-QImage *Graph::drawImage()
+void Graph::exportImage(QUrl filename)
 {
-  QImage *image = new QImage(size().toSize(), QImage::Format_RGB32);
-  image->fill(settings.getBackgroundColor().getCurrent().rgb());
+  QImage image((size() * window()->devicePixelRatio()).toSize(), QImage::Format_RGB32);
 
-  QPainter p(image);
-  painter = &p;
+  if (image.isNull())
+  {
+    qWarning() << "exportImage: could not allocate image, aborting";
+    return;
+  }
 
-  exporting = true;
-  drawAll();
+  image.fill(settings.getBackgroundColor().getCurrent().rgb());
 
-  painter = nullptr;
+  QPainter imagePainter(&image);
 
-  //*image = image->convertToFormat(QImage::Format_Indexed8, Qt::DiffuseDither);
-  return image;
+  paintType = IMAGE_EXPORT;
+  paint(&imagePainter);
+  paintType = GPU_RENDER;
+
+  image.save(filename.toLocalFile(), nullptr, 100);
 }
 
 void Graph::drawSupport()
@@ -461,7 +468,7 @@ void Graph::computeSupportRect()
 {
   QRectF rect;
 
-  if (exporting or settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
+  if (paintType != GPU_RENDER or settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
   {
     rect.setSize(scaledSize);
   }
@@ -566,9 +573,9 @@ void Graph::exportPDF(QUrl fileName)
     return;
   }
 
-  exporting = true;
+  paintType = VECTOR_EXPORT;
   paint(&pdfPainter);
-  exporting = false;
+  paintType = GPU_RENDER;
 }
 
 void Graph::exportSVG(QUrl fileName)
@@ -592,9 +599,9 @@ void Graph::exportSVG(QUrl fileName)
     return;
   }
 
-  exporting = true;
+  paintType = VECTOR_EXPORT;
   paint(&svgPainter);
-  exporting = false;
+  paintType = GPU_RENDER;
 }
 
 void Graph::minMaxPointsChanged()

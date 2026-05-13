@@ -46,7 +46,6 @@ class Graph : public QQuickPaintedItem, public MathObjectDraw
 
 public:
   explicit Graph(QQuickItem* parent = nullptr);
-  QImage* drawImage();
 
   Q_INVOKABLE ZeGraphSettings* getGraphSettings() { return &settings; }
 
@@ -72,6 +71,7 @@ public slots:
 
   void exportPDF(QUrl fileName);
   void exportSVG(QUrl fileName);
+  void exportImage(QUrl filename);
 
   virtual void paint(QPainter *p) override;
 
@@ -163,8 +163,10 @@ protected:
 
   QPageLayout::Orientation orientation;
 
+  enum PaintType {GPU_RENDER, VECTOR_EXPORT, IMAGE_EXPORT};
+
   /// @brief are we painting into SVG or images ?
-  bool exporting = false;
+  PaintType paintType = GPU_RENDER;
 
   /// @note we draw continuous curves from QML to avoid a bottleneck
   ///       in using drawPolyline() that's very slow in QQuickPaintedItem
