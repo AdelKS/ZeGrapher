@@ -26,8 +26,6 @@ using namespace std;
 MathObjectDraw::MathObjectDraw(double targetSamplingDistance)
   : sampler(viewMapper, targetSamplingDistance)
 {
-  coef = sqrt(3) / 2;
-
   pen.setCapStyle(Qt::RoundCap);
   brush.setStyle(Qt::SolidPattern);
 
@@ -39,7 +37,9 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
   double w = style.pointWidth;
 
   pen.setColor(style.color);
-  pen.setWidth(w);
+  pen.setWidth(style.lineWidth);
+  pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+  pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);
   brush.setColor(style.color);
   painter->setBrush(brush);
   painter->setPen(pen);
@@ -50,8 +50,8 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
   {
   case zg::CurveStyle::Cross:
   {
-    painter->drawLine(pt + QPointF(0, 2 * w), pt + QPointF(0, -2 * w));
-    painter->drawLine(pt + QPointF(-2 * w, 0), pt + QPointF(2 * w, 0));
+    painter->drawLine(pt + QPointF(0, w), pt + QPointF(0, -w));
+    painter->drawLine(pt + QPointF(-w, 0), pt + QPointF(w, 0));
     break;
   }
   case zg::CurveStyle::Disc:
@@ -76,10 +76,10 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
   }
   case zg::CurveStyle::Triangle:
   {
-    w *= 2;
     QPolygonF polygon;
+    constexpr double coef = 0.86602540378443864676; // sqrt(3) / 2;
     double d = w * coef;
-    double b = w / 2;
+    double b = w / 2.;
 
     polygon << pt + QPointF(0, -w) << pt + QPointF(d, b) << pt + QPointF(-d, b);
 
@@ -161,6 +161,8 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
   {
     pen.setWidth(style.lineWidth);
     pen.setColor(style.color);
+    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+    pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);
     if (style.dashPattern.isEmpty())
       pen.setStyle(Qt::SolidLine);
     else

@@ -49,8 +49,6 @@ protected:
   zg::ZeViewMapper viewMapper;
   Sampler sampler;
 
-  double coef;
-
   bool moving, recalculate, recalculateRegs;
 };
 
