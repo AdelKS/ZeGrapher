@@ -12,48 +12,48 @@ ZeGrapher is a free, open source and easy to use software for plotting mathemati
 
 ### Features
 
-ZeGrapher is in a deep rework stage, the features described here may still not be implemented.
-
 - Visualize functions by giving their "natural" equations (e.g. `f(x) = 2+cos(x)`)
   - All the standard mathematical functions (`cos` `cosh` `exp` ...etc) can be used.
   - Any user defined function can be used.
-  - Planned: compute derivatives and integrals.
 - Visualize numerical sequences through specific equations
   - Defined by giving a list of expressions separated with `,` or `;`
-  - The last expression is the "generic" expression that is used for any other index that the first values.
-  - If more than one expression is provided, the first expressions are considered as the first values of the sequence
+    - The last expression is the "generic" expression that is used for any other index that the first values.
+    - If more than one expression is provided, the first expressions are considered as the first values of the sequence
   - Example: Fibonacci sequence `u(n) = 0 ; 1 ; u(n-2) + u(n-2)`
     - First values: `0`, `1`
     - Generic expression: `u(n-2) + u(n-1)`
 - Can define "global constants", i.e. a variable that has an explicit numeric value without depending on any other object
   - Example `pi = 3.14`
   - Can be used for parametric plots of functions, sequences and parametric equations.
-  - Can be made into "Schrodinger Constants": take many values at once and all dependent math objects will be plotted simultaneously for each value taken
+  - Can be made into "Schrodinger Constants" (Schrodinger cat icon): take many values at once and all dependent math objects will be plotted simultaneously for each value taken
 - Can define "global variables", i.e. a function without input variables that can arbitrarily depend on other objects.
 - Plotting of 2D data
-  - Polynomial fitting (regression).
   - Data can be imported from/exported to a CSV file.
-- Extensive tools for precise exporting
-  - Image (`png`, `jpeg`, `tiff`, `gif`...) and scalable (`svg`, `pdf`) formats
-  - Preview the graph exactly how it will look once exported
-    - Set sizes in centimeter or in pixels
-    - A global scaling factor is offered to change the DPI
-    - Move the graph within the page
-- Navigate on the graph :
+    - Tested with CSV files with millions of cells
+  - Excel-style table editing
+    - Insert / (bulk) delete of rows
+- Extensive tools for exports that look identical to the graph being previewed
+  - Scalable (`svg`, `pdf`) and image (`png`, `jpeg`, `bmp` and `ppm`) formats
+- Navigate on the graph
   - Select a curve to display the coordinates of its points.
-  - Zoom/unzoom on each axis separately, around the mouse (with the scroll wheel), or fit on a mouse drawn rectangle.
+  - Zoom/un-zoom
+    - Globally using the scroll wheel
+    - On each axis separately using CTRL + vertical/horizontal scroll
+      - CTRL + SHIFT swaps vertical/horizontal scroll so regular (vertical) scroll can zoom the x axis only.
   - Move the graph.
-- Customization/visualization
-  - Can change the grid ticks to be multiples of a given variable/value
+- Customization
+  - Change the grid ticks to be multiples of a given expression
     - e.g. multiples of `π`
   - Change colors: axes, background, functions...
-  - Adjust the plotting precision.
-    - Note that it will also affect rendering speed.
-  - Show/hide the grid
-  - Show/hide the subgrid.
-    - user set number of subdivisions
-  - Activate/deactivate curves\' smoothing.
+  - Adjust the plotting precision (affects rendering speed);
+  - Independent X/Y grid and sub-grid settings
+    - Show / hide
+    - Define number of subdivisions
   - Plot the graph on an orthonormal basis.
+  - Set custom graph size
+    - In _real_ centimeters: can be measured on-screen and in exported vector medium (PDF and SVG)
+    - In pixels
+  - A global scaling factor to change how big everything is
 
 ------------------------------------------
 
@@ -89,4 +89,4 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 - macOS
   - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
 - Windows
-  - Use [deploy/windows-bundle-7s.sh](deploy/windows-bundle-7s.sh) (requires to be run from an [MSYS2](https://www.msys2.org/) terminal)
+  - Use [deploy/windows-bundle-7z.sh](deploy/windows-bundle-7z.sh) (requires to be run from an [MSYS2](https://www.msys2.org/) terminal)
