@@ -332,7 +332,7 @@ Item {
             from: 2
             stepSize: 1
             value: root.graphSettings.minPointsLg2
-            to: maxPointsLg2
+            to: maxPointsLg2.value
 
             onValueModified: {
               root.pauseSync = true;
