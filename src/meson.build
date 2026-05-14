@@ -52,6 +52,7 @@ moc_header_files = [
   'Calculus/regressionvaluessaver.h',
   'GraphDraw/gridcalculator.h',
   'GraphDraw/subgraph.h',
+  'Utils/palettewatcher.h',
 ]
 
 qml_files = [
