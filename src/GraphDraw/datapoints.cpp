@@ -31,8 +31,8 @@
 namespace {
 
 // Lateral padding past the SDF iso-line so the fragment shader's coverage
-// gradient has somewhere to render. ~1px is enough for a 1-pixel AA band;
-// the extra absorbs slight gradient anisotropy at oblique angles.
+// gradient has somewhere to render. ~1 logical px is enough for a 1-pixel
+// AA band; the extra absorbs slight gradient anisotropy at oblique angles.
 constexpr float k_aa_pad = 1.5f;
 
 // Typed std140 building blocks. The alignas attribute encodes the std140
@@ -86,9 +86,9 @@ public:
 
   // Per-curve uniform state. Read by the shader at the std140 offsets above.
   QColor color       = Qt::black;
-  float  glSize      = 0.f;   // gl_PointSize incl. AA padding (pixels)
-  float  radius      = 0.f;   // visible half-extent for the SDF (pixels)
-  float  strokeWidth = 0.f;   // Cross arm half-thickness (pixels; ignored otherwise)
+  float  glSize      = 0.f;   // Quad side incl. AA padding (logical pixels)
+  float  radius      = 0.f;   // Visible half-extent for the SDF (logical pixels)
+  float  strokeWidth = 0.f;   // Cross arm half-thickness (logical pixels; ignored otherwise)
   int    markerType  = 0;     // matches zg::CurveStyle::PointStyle
 };
 
@@ -165,8 +165,8 @@ QSGNode *DataPoints::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
       ++n;
   if (n == 0) return root;
 
-  auto *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), n);
-  geometry->setDrawingMode(QSGGeometry::DrawPoints);
+  auto *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), int(n * 6));
+  geometry->setDrawingMode(QSGGeometry::DrawTriangles);
 
   auto *points = geometry->vertexDataAsPoint2D();
   qsizetype i = 0;
@@ -174,7 +174,10 @@ QSGNode *DataPoints::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
   {
     if (std::isnan(p.x()) or std::isnan(p.y()))
       continue;
-    points[i++].set(float(p.x() * totalScaleFactor), float(p.y() * totalScaleFactor));
+    float fx = float(p.x() * totalScaleFactor);
+    float fy = float(p.y() * totalScaleFactor);
+    for (int j = 0; j < 6; j++)
+      points[i++].set(fx, fy);
   }
 
   auto *material = new MarkersMaterial;

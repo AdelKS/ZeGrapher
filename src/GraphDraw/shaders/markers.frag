@@ -1,5 +1,6 @@
 #version 440
 
+layout(location = 0) in  vec2 vCorner;
 layout(location = 0) out vec4 fragColor;
 
 layout(std140, binding = 0) uniform buf {
@@ -56,10 +57,9 @@ float sdRoundedCross(vec2 p, float w, in float r)
 }
 
 void main() {
-  // gl_PointCoord runs (0,0) top-left to (1,1) bottom-right; scaling by
-  // glSize gives centered pixel offsets so the SDFs use the same units
-  // as radius/strokeWidth.
-  vec2 p = (gl_PointCoord - 0.5) * glSize;
+  // vCorner is in {-1,+1}²; scaling by glSize/2 gives centered offsets in
+  // logical pixels, matching the units of radius / strokeWidth.
+  vec2 p = vCorner * (glSize * 0.5);
 
   float sdf;
   if      (markerType == 1) sdf = sdRhombus(p, vec2(radius, radius)) - strokeWidth/2.0;
