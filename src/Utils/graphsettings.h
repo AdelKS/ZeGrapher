@@ -51,7 +51,7 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(int maxPointsLg2 MEMBER maxPointsLg2 NOTIFY maxPointsLg2Changed)
 
 public:
-  explicit ZeGraphSettings(QObject* parent = nullptr): QObject(parent) {};
+  explicit ZeGraphSettings(QObject* parent = nullptr);
 
   const ZeZoomSettings& getZoom() const { return zoom; };
   const ZeSizeSettings& getSize() const { return size; };
@@ -96,6 +96,9 @@ signals:
   void minPointsLg2Changed();
   void maxPointsLg2Changed();
 
+protected slots:
+  void onSystemPaletteChange();
+
 protected:
   ZeZoomSettings zoom;
   ZeSizeSettings size;
@@ -109,7 +112,9 @@ protected:
 
   QFont font;
 
-  ThemedColor backgroundColor = {.dark = "#202326", .light = Qt::white};
+  static constexpr auto defaultDarkBgColor = "#202326";
+
+  ThemedColor backgroundColor = {.dark = defaultDarkBgColor, .light = Qt::white};
 
   QSize availableSizePx;
   QSizeF availableSizeCm;

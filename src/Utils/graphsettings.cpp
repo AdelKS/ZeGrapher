@@ -20,9 +20,30 @@
 
 #include "graphsettings.h"
 #include "globalvars.h"
+#include "Utils/palettewatcher.h"
 
 #include <QGuiApplication>
 #include <QStyleHints>
+
+ZeGraphSettings::ZeGraphSettings(QObject* parent): QObject(parent) {
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+    backgroundColor.dark = QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
+
+  auto* paletteWatcher = new PaletteWatcher(this);
+  connect(paletteWatcher, &PaletteWatcher::paletteChanged, this, &ZeGraphSettings::onSystemPaletteChange);
+};
+
+void ZeGraphSettings::onSystemPaletteChange()
+{
+  QColor newColor = QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
+  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark
+      and backgroundColor.dark == defaultDarkBgColor
+      and newColor != defaultDarkBgColor)
+  {
+    backgroundColor.dark = newColor;
+    emit backgroundColorChanged();
+  }
+}
 
 void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
 {
