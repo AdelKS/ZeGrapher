@@ -14,6 +14,8 @@ Item {
 
   implicitHeight: zcExprEdit.implicitHeight
 
+  onExpressionChanged: root.backend.setExpression(expression)
+
   function refresh() {
     zcExprEdit.refresh();
   }
