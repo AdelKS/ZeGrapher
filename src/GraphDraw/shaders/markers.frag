@@ -62,14 +62,12 @@ void main() {
   vec2 p = (gl_PointCoord - 0.5) * glSize;
 
   float sdf;
-  switch (markerType) {
-    case 1: sdf = sdRhombus(p, vec2(radius, radius)) - strokeWidth/2.0;     break;
-    case 2: sdf = sdDisc(p, radius) - strokeWidth/2.0;                      break;
-    case 3: sdf = sdBox(p, vec2(radius, radius)) - strokeWidth/2.0;         break;
-    case 4: sdf = sdTriangle(p, radius) - strokeWidth/2.0;                  break;
-    case 5: sdf = sdRoundedCross(p, radius + strokeWidth, strokeWidth/2.0); break;
-    default: discard;
-  }
+  if      (markerType == 1) sdf = sdRhombus(p, vec2(radius, radius)) - strokeWidth/2.0;
+  else if (markerType == 2) sdf = sdDisc(p, radius) - strokeWidth/2.0;
+  else if (markerType == 3) sdf = sdBox(p, vec2(radius, radius)) - strokeWidth/2.0;
+  else if (markerType == 4) sdf = sdTriangle(p, radius) - strokeWidth/2.0;
+  else if (markerType == 5) sdf = sdRoundedCross(p, radius + strokeWidth, strokeWidth/2.0);
+  else discard;
 
   float aa = length(vec2(dFdx(sdf), dFdy(sdf)));
   float coverage = clamp(0.5 - sdf / max(aa, 1e-6), 0.0, 1.0);
