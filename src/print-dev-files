@@ -16,7 +16,7 @@ echo
 
 echo "moc_header_files = ["
 for f in $(grep -E -lir --include=*.h "Q_OBJECT" . | sort -u ); do
-    if ! grep -E "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)" "$f" &> /dev/null; then
+    if ! grep -E "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT|QML_ANONYMOUS)" "$f" &> /dev/null; then
         echo "  '${f#./}',"
     fi
 done
@@ -31,7 +31,7 @@ echo "]"
 echo
 
 echo "qmlcpp_files = ["
-for f in $(grep -E -lir --include=*.h "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT)" . | sort); do
+for f in $(grep -E -lir --include=*.h "(Q_GADGET|QML_ELEMENT|QML_NAMED_ELEMENT|QML_ANONYMOUS)" . | sort); do
     echo "  '${f#./}',"
 done
 echo "]"
