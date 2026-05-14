@@ -97,12 +97,11 @@ Item {
 
   LineEdit {
     id: errorLbl
-    height: 0
+    height: textEdit.length > 0 ? implicitHeight + 4 : 0
 
     function setErrorMsg(msg: string) {
       console.debug("ZcExprEdit: new error message: ", msg);
       errorLbl.textEdit.text = msg;
-      height = msg ? implicitHeight + 4 : 0;
     }
 
     Behavior on height { SmoothedAnimation { duration: 200 } }
