@@ -235,6 +235,6 @@ executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, shaders_resources_cpp, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, boost_dep, zecalculator_dep],
-  win_subsystem: 'windows', # useful for Windows: displays the app without spawning
+  win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
                             # a console alongside it, no-op on other platforms.
   install: true)
