@@ -18,10 +18,23 @@ Item {
       root.model.clearCells(tableView.selectionModel.selectedIndexes);
   }
 
-  implicitHeight: scrollView.implicitHeight + horizontalHeader.implicitHeight
+  // Only contribute an implicit size when the table actually has laid-out
+  // content. Otherwise we'd report just the header padding, which causes
+  // widthWhenVisible (in MainWindow) to settle to a nonsensical value while
+  // the model is empty / mid-relayout.
+  implicitWidth: scrollView.implicitWidth > 0
+    ? verticalHeader.implicitWidth + scrollView.implicitWidth
+    : 0
+  implicitHeight: scrollView.implicitHeight > 0
+    ? horizontalHeader.implicitHeight + scrollView.implicitHeight
+    : 0
 
   onImplicitHeightChanged: {
     console.debug("DataTable: implicitHeight=", implicitHeight);
+  }
+
+  onImplicitWidthChanged: {
+    console.debug("DataTable: implicitWidth=", implicitWidth);
   }
 
   Menu {
@@ -49,7 +62,7 @@ Item {
     }
   }
 
-  ContextMenu.menu: interactive ? menu : null
+  ContextMenu.menu: root.interactive ? menu : null
 
   Keys.onPressed: (event)=> {
     if ([Qt.Key_Delete, Qt.Key_Backspace].includes(event.key)) {
@@ -99,6 +112,7 @@ Item {
       }
 
       ZeLabel {
+        id: horizontalHeaderLabel
         anchors.fill: parent
         text: display
         verticalAlignment: Qt.AlignVCenter
@@ -121,7 +135,8 @@ Item {
       color: myPalette.base
       topLeftRadius: 5
       bottomLeftRadius: 5
-      implicitHeight: 25
+      implicitHeight: verticalHeaderLabel.implicitHeight + 3
+      implicitWidth: verticalHeaderLabel.implicitWidth + 10
 
       TapHandler {
         acceptedModifiers: Qt.NoModifier
@@ -148,6 +163,7 @@ Item {
       }
 
       ZeLabel {
+        id: verticalHeaderLabel
         anchors.fill: parent
         text: display
         verticalAlignment: Qt.AlignVCenter
@@ -163,6 +179,11 @@ Item {
     anchors.left: verticalHeader.right
     anchors.right: parent.right
     anchors.bottom: parent.bottom
+
+    // TableView reports contentWidth/Height = -1 while the model is being
+    // (re)laid out; clamp so we never propagate a bogus negative implicit size.
+    implicitWidth: Math.max(0, tableView.contentWidth)
+    implicitHeight: Math.max(0, tableView.contentHeight)
 
     TableView {
 
@@ -186,6 +207,19 @@ Item {
         NumberAnimation { duration: 250; easing.type: Easing.InOutQuad }
       }
 
+      Timer {
+        id: advanceEditTimer
+        interval: 1
+        repeat: false
+        property int targetRow: -1
+        property int targetCol: -1
+        onTriggered: {
+          const idx = tableView.index(targetRow, targetCol);
+          tableView.selectionModel.setCurrentIndex(idx, ItemSelectionModel.ClearAndSelect);
+          tableView.edit(idx);
+        }
+      }
+
       delegate: Item {
 
         id: item
@@ -193,6 +227,10 @@ Item {
         required property bool editing
         required property bool selected
         required property bool current
+        // row/column are required so they're real `item` properties, reachable
+        // as `item.row`/`item.column` from the sibling editDelegate Component.
+        required property int row
+        required property int column
 
         onSelectedChanged: {
           let selection = selected ? "selected" : "deselected"
@@ -209,6 +247,11 @@ Item {
 
         implicitWidth: 100
         implicitHeight: displayWidget.implicitHeight
+
+        // TableView caches delegate implicit sizes at layout time and doesn't
+        // track later changes — without forceLayout, a cell whose ValueEdit
+        // grew (invalid expression error message) keeps its old row height.
+        onImplicitHeightChanged: Qt.callLater(TableView.view.forceLayout)
 
         ValueEdit {
           id: displayWidget
@@ -228,19 +271,14 @@ Item {
           visible: !root.interactive || !editing
           enabled: false
 
-          expression: { expression = display }
+          expression: display
 
           Component.onCompleted: backend.setImplicitName("tableCell")
 
           Component.onDestruction : MathWorld.removeAltExprObject(backend)
         }
 
-        TableView.onReused: {
-          displayWidget.expression = display;
-        }
-
         TableView.editDelegate: FocusScope {
-
           width: parent.width
           height: parent.height
 
@@ -256,10 +294,20 @@ Item {
             Component.onDestruction: MathWorld.removeAltExprObject(backend)
           }
 
+          // Enter is the only commit trigger that leaves the current cell
+          // unchanged: Tab moves to the next column first, a click moves to
+          // the target cell first, focus-loss likewise. So commit-with-same-
+          // current-cell == Enter, and that's when we advance one row down.
           TableView.onCommit: {
             display = valueEdit.expression;
-            displayWidget.expression = valueEdit.expression;
-            console.debug("Updating model: display=", valueEdit.expression);
+            const sameCell = tableView.currentRow === item.row
+                          && tableView.currentColumn === item.column;
+            if (sameCell) {
+              console.log("Triggering next column cell edit");
+              advanceEditTimer.targetRow = item.row + 1;
+              advanceEditTimer.targetCol = item.column;
+              advanceEditTimer.start();
+            }
           }
 
           Component.onCompleted: {

@@ -11,6 +11,8 @@ ApplicationWindow {
   visible: true
   font: Information.appSettings.font
 
+  onWidthChanged: dataPane.updateWidthWhenVisible()
+
   onScreenChanged: {
     console.log("Moved to screen:", screen.name);
     Information.screenChanged(win); // converted from (px per mm) to (px per cm)
@@ -183,6 +185,13 @@ ApplicationWindow {
         Behavior on width {
           NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
         }
+
+        function updateWidthWhenVisible() {
+          if (implicitWidth > 0)
+            widthWhenVisible = Math.min(implicitWidth, win.width - x);
+        }
+
+        onImplicitWidthChanged: updateWidthWhenVisible()
       }
 
       Item {
