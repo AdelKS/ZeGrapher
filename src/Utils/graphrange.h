@@ -73,14 +73,14 @@ struct GraphRange: QObject
 public:
   GraphRange(QObject* parent = nullptr);
 
-  Q_INVOKABLE ZeAxisRange* getXBackend() const { return x; }
-  Q_INVOKABLE ZeAxisRange* getYBackend() const { return y; }
+  Q_INVOKABLE ZeAxisRange* getXBackend() { return &x; }
+  Q_INVOKABLE ZeAxisRange* getYBackend() { return &y; }
 
-  ZeAxisRange* const x;
-  ZeAxisRange* const y;
+  ZeAxisRange x;
+  ZeAxisRange y;
 
-  QRectF getLatestValidRect() const;
-  real_range2d getLatestValidSnapshot() const;
+  QRectF getLatestValidRect();
+  real_range2d getLatestValidSnapshot();
 
   void update(const real_range2d& range);
 };
