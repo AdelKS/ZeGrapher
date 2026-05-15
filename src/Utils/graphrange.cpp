@@ -103,10 +103,12 @@ QRectF GraphRange::getLatestValidRect()
   return graphWin;
 }
 
-void GraphRange::update(const real_range2d& range)
+void GraphRange::interactiveUpdate(const real_range2d& range)
 {
   x.update(range.x);
   y.update(range.y);
+
+  emit interactiveUpdate();
 }
 
 real_range2d GraphRange::getLatestValidSnapshot()

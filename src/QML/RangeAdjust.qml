@@ -3,6 +3,8 @@ import QtQuick
 Rectangle {
   id: root
 
+  required property GraphRange range
+
   property int spacing: 5
   implicitHeight: yminEdit.y + yminEdit.height
 
@@ -15,16 +17,16 @@ Rectangle {
   color: myPalette.window
 
   Connections {
-    target: Information.range.y
+    target: root.range.y
     function onStateChanged() {
-      console.debug("Y range state change: ", Information.range.y.state)
-      if (Information.range.y.state) {
+      console.debug("Y range state change: ", root.range.y.state)
+      if (root.range.y.state) {
         yminEdit.customErrorMsg = "";
         ymaxEdit.customErrorMsg = "";
       }
       else {
-        if (!isNaN(Information.range.y.min.value) && !isNaN(Information.range.y.max.value) &&
-            Information.range.y.min.value >= Information.range.y.max.value) {
+        if (!isNaN(root.range.y.min.value) && !isNaN(root.range.y.max.value) &&
+            root.range.y.min.value >= root.range.y.max.value) {
           yminEdit.customErrorMsg = "<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>";
           ymaxEdit.customErrorMsg = "<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>";
         }
@@ -33,16 +35,16 @@ Rectangle {
   }
 
   Connections {
-    target: Information.range.x
+    target: root.range.x
     function onStateChanged() {
-      console.debug("X range state change: ", Information.range.x.state)
-      if (Information.range.x.state) {
+      console.debug("X range state change: ", root.range.x.state)
+      if (root.range.x.state) {
         xminEdit.customErrorMsg = "";
         xmaxEdit.customErrorMsg = "";
       }
       else {
-        if (!isNaN(Information.range.x.min.value) && !isNaN(Information.range.x.max.value) &&
-            Information.range.x.min.value >= Information.range.x.max.value) {
+        if (!isNaN(root.range.x.min.value) && !isNaN(root.range.x.max.value) &&
+            root.range.x.min.value >= root.range.x.max.value) {
           xminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
           xmaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
         }
@@ -52,13 +54,13 @@ Rectangle {
 
 
   Connections {
-    target: Information
-    function onRangeChangedWithMouse() {
+    target: root.range
+    function onInteractiveUpdate() {
       console.debug("Update x/y min/max widgets after user interaction with graph")
-      ymaxEdit.expression = Information.range.y.max.expression;
-      yminEdit.expression = Information.range.y.min.expression;
-      xmaxEdit.expression = Information.range.x.max.expression;
-      xminEdit.expression = Information.range.x.min.expression;
+      ymaxEdit.expression = root.range.y.max.expression;
+      yminEdit.expression = root.range.y.min.expression;
+      xmaxEdit.expression = root.range.x.max.expression;
+      xminEdit.expression = root.range.x.min.expression;
     }
   }
 
@@ -85,7 +87,7 @@ Rectangle {
     anchors.horizontalCenter: root.horizontalCenter
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
-    backend: Information.range.y.max
+    backend: root.range.y.max
   }
 
   ZeTextEdit {
@@ -109,7 +111,7 @@ Rectangle {
     anchors.top: ymaxEdit.bottom
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
-    backend: Information.range.x.min
+    backend: root.range.x.min
   }
 
 
@@ -134,7 +136,7 @@ Rectangle {
     anchors.top: ymaxEdit.bottom
     anchors.margins: spacing
     width: parent.width/3 - 2*anchors.margins
-    backend: Information.range.x.max
+    backend: root.range.x.max
   }
 
   ZeTextEdit {
@@ -159,6 +161,6 @@ Rectangle {
     anchors.horizontalCenter: root.horizontalCenter
     anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
-    backend: Information.range.y.min
+    backend: root.range.y.min
   }
 }

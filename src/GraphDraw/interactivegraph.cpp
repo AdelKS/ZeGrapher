@@ -58,7 +58,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
       .x = zg::pixel_unit{double(-dr.x() / totalScaleFactor)},
       .y = zg::pixel_unit{double(-dr.y() / totalScaleFactor)},
     });
-    information.setGraphRangeMouseEdit(viewMapper.getRange<zg::real>());
+    settings.getRange()->interactiveUpdate(viewMapper.getRange<zg::real>());
     break;
   case NOTHING:
     break;
@@ -109,6 +109,6 @@ void InteractiveGraph::wheelEvent(QWheelEvent *event)
     viewMapper.zoomView(zg::pixel_pt::from(event->position() / totalScaleFactor),
                         y_delta != 0 ? y_factor : x_factor);
 
-  information.setGraphRangeMouseEdit(viewMapper.getRange<zg::real>());
+  settings.getRange()->interactiveUpdate(viewMapper.getRange<zg::real>());
   event->accept();
 }

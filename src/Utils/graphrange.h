@@ -82,7 +82,10 @@ public:
   QRectF getLatestValidRect();
   real_range2d getLatestValidSnapshot();
 
-  void update(const real_range2d& range);
+  void interactiveUpdate(const real_range2d& range);
+
+signals:
+  void interactiveUpdate();
 };
 
 } // namespace zg

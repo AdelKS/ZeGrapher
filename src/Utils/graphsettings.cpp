@@ -25,7 +25,8 @@
 #include <QGuiApplication>
 #include <QStyleHints>
 
-ZeGraphSettings::ZeGraphSettings(QObject* parent): QObject(parent) {
+ZeGraphSettings::ZeGraphSettings(QObject* parent): QObject(parent), range(this)
+{
   if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
     backgroundColor.dark = QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
 

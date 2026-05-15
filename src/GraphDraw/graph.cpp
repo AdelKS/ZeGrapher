@@ -36,7 +36,7 @@ Graph::Graph(QQuickItem *parent)
   topMargin = 20;
   bottomMargin = 30;
   pen.setCapStyle(Qt::RoundCap);
-  settings.setFont(information.appSettings->font);
+  settings.setFont(information.appSettings.font);
 
   legendFontSize = 12;
   legendState = false;
@@ -44,7 +44,7 @@ Graph::Graph(QQuickItem *parent)
   bold = italic = underline = false;
   numPrec = NUM_PREC;
 
-  viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
+  viewMapper.setGraphRange(settings.getRange()->getLatestValidSnapshot());
 
   minRelSize = RELATIVE_MIN_SIZE;
 
@@ -232,7 +232,7 @@ void Graph::drawAll()
 {
   painter->setFont(settings.getFont());
   fontMetrics = painter->fontMetrics();
-  viewMapper.setGraphRange(information.getGraphRange()->getLatestValidSnapshot());
+  viewMapper.setGraphRange(settings.getRange()->getLatestValidSnapshot());
 
   calculateTicksAndMargins();
   calculateTicksAndMargins();

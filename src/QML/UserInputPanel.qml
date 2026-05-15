@@ -49,6 +49,7 @@ Item {
       Layout.topMargin: 10
       Layout.fillWidth: true
       Layout.bottomMargin: 10
+      range: userInputPanel.graphSettings.range
     }
 
     TabBar {

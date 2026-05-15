@@ -24,7 +24,6 @@
 
 #include <zecalculator/zecalculator.h>
 
-#include "Utils/graphrange.h"
 #include "Utils/appsettings.h"
 #include "Utils/graphsettings.h"
 
@@ -37,21 +36,17 @@ class Information: public QObject
   Q_OBJECT
   QML_ANONYMOUS
 
-  Q_PROPERTY(ZeAppSettings* appSettings MEMBER appSettings NOTIFY appSettingsChanged)
-  Q_PROPERTY(zg::GraphRange* range READ getGraphRange)
+  Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettings NOTIFY appSettingsChanged)
+  Q_PROPERTY(ZeGraphSettings* graphSettings MEMBER graphSettings NOTIFY graphSettingsChanged)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
 
 public:
   Information(QObject* parent = nullptr);
 
-  const ZeGraphSettings& getEstheticSettings() const;
-  const ZeAppSettings& getAppSettings() const;
-  Q_INVOKABLE zg::GraphRange* getGraphRange() { return graph_range; }
+  ZeAppSettings* getAppSettings() { return &appSettings; }
   Q_INVOKABLE void setAppFont(QFont);
   double getPixelDensity() const { return pixelDensity; }
 
-  /// @brief graph range change from user mouse interaction
-  void setGraphRangeMouseEdit(const zg::real_range2d&);
   void setExportFileName(QString fileName);
   QString getExportFileName();
 
@@ -62,12 +57,12 @@ signals:
   void updateOccured();
   void drawStateUpdateOccured();
   void animationUpdate();
-  void rangeChangedWithMouse();
   void appFontChanged();
   void appSettingsChanged();
   void pixelDensityChanged();
   void availableSheetSizePxChanged();
   void availableSheetSizeCmChanged();
+  void graphSettingsChanged();
 
 public slots:
   void emitUpdateSignal();
@@ -80,11 +75,11 @@ public slots:
 
 public:
   zc::eval::Cache mathObjectCache;
-  ZeAppSettings* appSettings = nullptr;
+  ZeAppSettings appSettings;
+  ZeGraphSettings* graphSettings = nullptr;
 
 protected:
   QString exportFileName;
-  zg::GraphRange* graph_range = nullptr;
 
   /// @note in pixels per centimeter
   double pixelDensity = 50;
