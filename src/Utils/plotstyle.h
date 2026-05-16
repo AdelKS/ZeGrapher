@@ -43,7 +43,6 @@ struct PlotStyle: QObject {
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
-  Q_PROPERTY(ObjectType objectType WRITE setObjectType MEMBER objectType NOTIFY objectTypeChanged)
   Q_PROPERTY(mathobj::Expr* start READ getStartBackend)
   Q_PROPERTY(mathobj::Expr* end READ getEndBackend)
   Q_PROPERTY(mathobj::Expr* step READ getStepBackend)
@@ -90,11 +89,6 @@ public:
   PointStyle pointStyle = None;
   CoordinateSystem coordinateSystem = Cartesian;
 
-  ObjectType objectType = NonRepresentable;
-
-public slots:
-  void setObjectType(ObjectType);
-
 signals:
   void updated();
   void visibleChanged();
@@ -107,7 +101,6 @@ signals:
   void backendChanged();
   void coordinateSystemChanged();
   void rangeChanged();
-  void objectTypeChanged();
   void secondColorChanged();
 
 protected:

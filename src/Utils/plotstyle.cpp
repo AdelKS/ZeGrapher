@@ -49,15 +49,6 @@ QColor PlotStyle::colorLerp(double t) const
       std::lerp(a.blueF(), b.blueF(), t));
 }
 
-void PlotStyle::setObjectType(ObjectType newObjectType)
-{
-  if (objectType != newObjectType)
-  {
-    objectType = newObjectType;
-    emit objectTypeChanged();
-  }
-}
-
 void PlotStyle::setVisible(bool v)
 {
   if (visible != v)
