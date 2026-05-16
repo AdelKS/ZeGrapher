@@ -71,6 +71,7 @@ void MathObject::setType(Type t)
     zc::utils::overloaded{
       [this]<typename T>(T* n) {
         connect(n, &T::updated, this, &MathObject::updated);
+        connect(n, &T::destroyed, this, &MathObject::updated);
       },
       [](std::monostate) {},
     },
