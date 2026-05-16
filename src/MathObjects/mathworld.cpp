@@ -45,6 +45,7 @@ void MathWorld::removeMathObject(MathObject* obj)
 
   mathObjects.erase(it);
   endRemoveRows();
+  emit updated();
 }
 
 void MathWorld::removeAltExprObject(mathobj::Expr* expr)
@@ -55,7 +56,7 @@ void MathWorld::removeAltExprObject(mathobj::Expr* expr)
 
   (*it)->deleteLater();
   altMathObjects.erase(it);
-
+  objectUpdated();
   emit updated();
 }
 
@@ -97,6 +98,7 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
 
   connect(mathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
   connect(mathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
+  connect(mathObjects.back(), &MathObject::destroyed, this, &MathWorld::objectUpdated);
   endInsertRows();
   return mathObjects.back();
 }
@@ -106,6 +108,7 @@ mathobj::Expr* MathWorld::addAltExprObject()
   altMathObjects.emplace_back(new zg::MathObject(this, MathObject::EXPR));
   connect(altMathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
   connect(altMathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
+  connect(altMathObjects.back(), &MathObject::destroyed, this, &MathWorld::objectUpdated);
   return altMathObjects.back()->getExpr();
 }
 
