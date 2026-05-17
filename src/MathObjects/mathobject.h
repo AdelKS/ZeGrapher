@@ -20,11 +20,12 @@
 **
 ****************************************************************************/
 
+#include <yaml-cpp/yaml.h>
+
 #include <QtQmlIntegration/qqmlintegration.h>
 #include <QObject>
 #include <QSyntaxHighlighter>
 
-#include "Utils/plotstyle.h"
 #include "parametric.h"
 #include "equation.h"
 #include "expr.h"
@@ -155,6 +156,8 @@ protected:
   mathobj::Expr* step = nullptr;
 
   friend zg::MathWorld;
+
+  friend YAML::Emitter& operator << (YAML::Emitter&, const MathObject&);
 };
 
 template <class T>

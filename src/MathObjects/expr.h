@@ -20,6 +20,8 @@
 **
 ****************************************************************************/
 
+#include <yaml-cpp/yaml.h>
+
 #include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
@@ -67,6 +69,8 @@ protected:
   QString implicitName = {};
   double value = std::nan("");
 };
+
+YAML::Emitter& operator << (YAML::Emitter&, const Expr&);
 
 }
 }

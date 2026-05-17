@@ -53,5 +53,22 @@ State Data::sync() {
   return getState();
 };
 
+YAML::Emitter& operator << (YAML::Emitter& o, const Data& d)
+{
+  o << YAML::Key << "name";
+  o << YAML::Value << d.getName().toStdString();
+  o << YAML::Key << "values";
+  o << YAML::Flow;
+  o << YAML::BeginSeq;
+
+  for (size_t i = 0 ; i != d.zcMathObj.get_data_size() ; i++)
+    if (auto opt_str = d.zcMathObj.get_data_point(i))
+      o << *opt_str;
+    else o << "";
+
+  o << YAML::EndSeq;
+  return o;
+}
+
 }
 }

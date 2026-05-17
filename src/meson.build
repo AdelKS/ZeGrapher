@@ -165,9 +165,6 @@ foreach qt6_mod: qt6_modules
   endif
 endforeach
 
-boost_dep = dependency('boost')
-zecalculator_dep = dependency('zecalculator')
-
 compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
 
 # --- Qt RHI shader compilation -----------------------------------------------
@@ -232,10 +229,14 @@ if compiler.get_id() == 'clang'
   add_project_arguments('-Wno-c++26-extensions', language: 'cpp')
 endif
 
+boost_dep = dependency('boost')
+zecalculator_dep = dependency('zecalculator')
+yaml_cpp_dep = dependency('yaml-cpp')
+
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, shaders_resources_cpp, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
-  dependencies: [qt6_dep, boost_dep, zecalculator_dep],
+  dependencies: [qt6_dep, boost_dep, zecalculator_dep, yaml_cpp_dep],
   win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
                             # a console alongside it, no-op on other platforms.
   install: true)

@@ -23,5 +23,14 @@ State Parametric::sync()
   return obj1->getState();
 }
 
+YAML::Emitter& operator << (YAML::Emitter& o, const Parametric& p)
+{
+  o << YAML::Key << "first";
+  o << YAML::Value << p.obj1->getName().toStdString();
+  o << YAML::Key << "second";
+  o << YAML::Value << p.obj2->getName().toStdString();
+  return o;
+}
+
 } // namespace mathobj
 } // namespace zg

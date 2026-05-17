@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "MathObjects/mathobject.h"
+#include "Utils/utils.h"
 
 namespace zg {
 
@@ -287,6 +288,26 @@ std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
   settings.revision = getRevision();
 
   return settings;
+}
+
+YAML::Emitter& operator << (YAML::Emitter& o, const MathObject& m)
+{
+  if (m.getType() == MathObject::MONOSTATE or m.getType() == MathObject::NAMEDREF)
+    return o;
+
+  o << YAML::Key << "type";
+  o << YAML::Value << enumValToLowercaseStr(m.getType()).toStdString();
+
+  std::visit(
+    zc::utils::overloaded{
+      [&](std::monostate) {},
+      [&](const mathobj::NamedRef*) {},
+      [&](const auto* b) { o << b; },
+    },
+    m.backend
+  );
+
+  return o;
 }
 
 }

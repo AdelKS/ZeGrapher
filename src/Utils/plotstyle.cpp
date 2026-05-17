@@ -1,4 +1,5 @@
 #include "Utils/plotstyle.h"
+#include "Utils/utils.h"
 #include "globalvars.h"
 
 namespace zg {
@@ -35,6 +36,86 @@ void PlotStyle::setVisible(bool v)
     visible = v;
     emit visibleChanged();
   }
+}
+
+YAML::Emitter& operator << (YAML::Emitter& o, const PlotStyle& s)
+{
+  static PlotStyle defaultStyle;
+
+  o << YAML::BeginMap;
+
+  if (s.visible != defaultStyle.visible)
+  {
+    o << YAML::Key << "visible";
+    o << YAML::Value << s.visible;
+  }
+
+  auto saveColor = [&](const ThemedColor& color, const ThemedColor& defaultColor) {
+    o << YAML::BeginMap;
+    if (color.dark != defaultColor.dark)
+    {
+      o << YAML::Value << "dark";
+      o << YAML::Key << color.dark.name().toStdString();
+    }
+    if (color.light != defaultColor.light)
+    {
+      o << YAML::Value << "light";
+      o << YAML::Key << color.light.name().toStdString();
+    }
+    o << YAML::EndMap;
+  };
+
+  if (s.color != defaultStyle.color)
+  {
+    o << YAML::Key << "color";
+    saveColor(s.color, defaultStyle.color);
+  }
+
+  if (s.secondColor != defaultStyle.secondColor)
+  {
+    o << YAML::Key << "second_color";
+    saveColor(s.color, defaultStyle.color);
+  }
+
+  if (s.lineWidth != defaultStyle.lineWidth)
+  {
+    o << YAML::Key << "line_width";
+    o << YAML::Value << s.lineWidth;
+  }
+
+  if (s.drawLine != defaultStyle.drawLine)
+  {
+    o << YAML::Key << "draw_line";
+    o << YAML::Value << s.drawLine;
+  }
+
+  if (not s.dashPattern.empty())
+  {
+    o << YAML::Key << "dash_pattern";
+    o << YAML::Value << YAML::BeginSeq << YAML::Flow << std::vector<double>(s.dashPattern.begin(), s.dashPattern.end()) << YAML::EndSeq;
+  }
+
+  if (s.pointWidth != defaultStyle.pointWidth)
+  {
+    o << YAML::Key << "point_width";
+    o << YAML::Value << s.pointWidth;
+  }
+
+  if (s.pointStyle != defaultStyle.pointStyle)
+  {
+    o << YAML::Key << "point_style";
+    o << YAML::Value << enumValToLowercaseStr(s.pointStyle).toStdString();
+  }
+
+  if (s.coordinateSystem != defaultStyle.coordinateSystem)
+  {
+    o << YAML::Key << "coordinate_system";
+    o << YAML::Value << enumValToLowercaseStr(s.coordinateSystem).toStdString();
+  }
+
+  o << YAML::EndMap;
+
+  return o;
 }
 
 }

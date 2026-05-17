@@ -41,5 +41,12 @@ State Equation::sync()
   return getState();
 };
 
+YAML::Emitter& operator << (YAML::Emitter& o, const Equation& e)
+{
+  o << YAML::Key << "equation";
+  o << YAML::Value << e.getEquation().toStdString();
+  return o;
+}
+
 }
 }

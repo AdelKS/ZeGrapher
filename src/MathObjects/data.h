@@ -24,6 +24,7 @@
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
+#include <yaml-cpp/yaml.h>
 #include <string>
 #include <vector>
 
@@ -56,6 +57,8 @@ signals:
 protected:
   QString input_name;
 };
+
+YAML::Emitter& operator << (YAML::Emitter&, const Data&);
 
 }
 }

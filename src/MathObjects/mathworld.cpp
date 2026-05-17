@@ -251,4 +251,9 @@ std::unordered_set<MathObject*> MathWorld::revdeps(MathObject& c) const
   return revdeps_res;
 }
 
+YAML::Emitter& operator << (YAML::Emitter& o, const zg::MathWorld& w)
+{
+  return o;
+}
+
 }

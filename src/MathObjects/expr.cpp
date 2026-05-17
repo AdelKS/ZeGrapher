@@ -92,5 +92,12 @@ State Expr::sync()
   return getState();
 }
 
+YAML::Emitter& operator << (YAML::Emitter& o, const Expr& e)
+{
+  o << YAML::Key << "expression";
+  o << YAML::Value << e.getExpression().toStdString();
+  return o;
+}
+
 } // namespace mathobj
 } // namespace zg

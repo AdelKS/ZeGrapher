@@ -20,8 +20,10 @@
 **
 ****************************************************************************/
 
-#include "namedref.h"
+#include <yaml-cpp/yaml.h>
 #include <zecalculator/zecalculator.h>
+
+#include "namedref.h"
 
 namespace zg {
 namespace mathobj {
@@ -49,6 +51,8 @@ signals:
   void updated();
 
 };
+
+YAML::Emitter& operator << (YAML::Emitter&, const Parametric&);
 
 } // namespace mathobj
 } // namespace zg

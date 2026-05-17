@@ -20,6 +20,8 @@
 **
 ****************************************************************************/
 
+#include <yaml-cpp/yaml.h>
+
 #include <QObject>
 #include <QtQmlIntegration/qqmlintegration.h>
 
@@ -57,15 +59,15 @@ public:
 
   void setVisible(bool);
 
+  /// @brief returns a linear interpolation between color and secondColor in the current theme
+  /// @param t: coeff in [0, 1]
+  QColor colorLerp(double t) const;
+
   bool visible = true;
   ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
 
   /// @brief used for simultaneous plotting
   ThemedColor secondColor = {.dark = "#009999", .light = "#00fefe"};
-
-  /// @brief returns a linear interpolation between color and secondColor in the current theme
-  /// @param t: coeff in [0, 1]
-  QColor colorLerp(double t) const;
 
   double lineWidth = 2.0;
   QList<qreal> dashPattern;
@@ -86,8 +88,9 @@ signals:
   void rangeChanged();
   void secondColorChanged();
 
-protected:
+
   friend class MathWorld;
+  friend YAML::Emitter& operator << (YAML::Emitter&, const PlotStyle&);
 };
 
 }

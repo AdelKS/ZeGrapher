@@ -44,5 +44,14 @@ void Constant::set_value(double val)
   emit updated();
 }
 
+YAML::Emitter& operator << (YAML::Emitter& o, const Constant& c)
+{
+  o << YAML::Key << "name";
+  o << YAML::Value << c.getName().toStdString();
+  o << YAML::Key << "value";
+  o << YAML::Value << c.get_value();
+  return o;
+}
+
 }
 }

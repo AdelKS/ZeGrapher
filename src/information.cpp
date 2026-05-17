@@ -85,3 +85,9 @@ void Information::screenChanged(QWindow* win)
     emit pixelDensityChanged();
   }
 }
+
+void Information::exportYaml(QUrl filename)
+{
+  Q_UNUSED(filename);
+
+}

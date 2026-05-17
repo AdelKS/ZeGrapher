@@ -20,11 +20,13 @@
 
 #pragma once
 
-#include "MathObjects/mathobject.h"
+#include <yaml-cpp/yaml.h>
 
 #include <QAbstractListModel>
-
 #include <QtQmlIntegration/qqmlintegration.h>
+
+#include "MathObjects/mathobject.h"
+#include "Utils/plotstyle.h"
 
 namespace zc {
   /// @note we need this declaration of global variable be before the ZG one
@@ -67,6 +69,8 @@ public:
   std::unordered_set<MathObject*> revdeps(MathObject&) const;
 
   QHash<int, QByteArray> roleNames() const override;
+
+  friend YAML::Emitter& operator << (YAML::Emitter&, const zg::MathWorld&);
 
 signals:
   void updated();

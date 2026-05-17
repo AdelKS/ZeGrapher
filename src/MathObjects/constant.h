@@ -20,6 +20,8 @@
 **
 ****************************************************************************/
 
+#include <yaml-cpp/yaml.h>
+
 #include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
@@ -66,6 +68,8 @@ protected:
   ///        used in animations
   friend class zg::AnimatedConstant;
 };
+
+YAML::Emitter& operator << (YAML::Emitter&, const Constant&);
 
 }
 }

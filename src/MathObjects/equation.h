@@ -20,6 +20,8 @@
 **
 ****************************************************************************/
 
+#include <yaml-cpp/yaml.h>
+
 #include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
@@ -42,6 +44,7 @@ public:
 
   Q_INVOKABLE State setEquation(QString eq);
   Q_INVOKABLE QString getName() const;
+  QString getEquation() const { return equation; }
   State sync();
 
   Q_INVOKABLE bool isValid();
@@ -52,6 +55,8 @@ signals:
 protected:
   QString equation;
 };
+
+YAML::Emitter& operator << (YAML::Emitter&, const Equation&);
 
 }
 }
