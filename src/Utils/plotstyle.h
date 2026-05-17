@@ -42,10 +42,6 @@ struct PlotStyle: QObject {
   Q_PROPERTY(bool drawLine MEMBER drawLine NOTIFY drawLineChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
-  Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
-  Q_PROPERTY(mathobj::Expr* start READ getStartBackend)
-  Q_PROPERTY(mathobj::Expr* end READ getEndBackend)
-  Q_PROPERTY(mathobj::Expr* step READ getStepBackend)
 
 public:
 
@@ -55,18 +51,7 @@ public:
   enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle);
 
-  enum CoordinateSystem {Cartesian, Polar};
-  Q_ENUM(CoordinateSystem);
-
   explicit PlotStyle(QObject *parent = nullptr);
-
-  Q_INVOKABLE mathobj::Expr* getStartBackend() { return start; }
-  Q_INVOKABLE mathobj::Expr* getEndBackend() { return end; }
-  Q_INVOKABLE mathobj::Expr* getStepBackend() { return step; }
-
-  zg::real_unit getStart() const;
-  zg::real_unit getEnd() const;
-  zg::real_unit getStep() const;
 
   zg::real_range1d getRange() const;
 
@@ -87,7 +72,6 @@ public:
   bool drawLine = true;
   double pointWidth = 5.0;
   PointStyle pointStyle = None;
-  CoordinateSystem coordinateSystem = Cartesian;
 
 signals:
   void updated();
@@ -99,16 +83,11 @@ signals:
   void dashPatternChanged();
   void drawLineChanged();
   void backendChanged();
-  void coordinateSystemChanged();
   void rangeChanged();
   void secondColorChanged();
 
 protected:
   friend class MathWorld;
-
-  mathobj::Expr* start = nullptr;
-  mathobj::Expr* end = nullptr;
-  mathobj::Expr* step = nullptr;
 };
 
 }

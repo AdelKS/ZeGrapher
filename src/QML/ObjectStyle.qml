@@ -6,9 +6,9 @@ import QtQuick.Controls.FluentWinUI3
 
 Item {
   id: root
-  property bool discrete: false
 
   required property PlotStyle backend
+  required property MathObject mathObj
 
   property int implicitHeight: mainLayout.implicitHeight
 
@@ -20,25 +20,26 @@ Item {
     []             // no line (drawLine: false)
   ]
 
-  onDiscreteChanged: {
-    dashPatternTumbler.currentIndex = discrete ? dashPatterns.length - 1 : 0
+  Connections {
+    target: root.mathObj
+
+    function onDiscreteChanged() {
+      dashPatternTumbler.currentIndex = mathObj.discrete ? dashPatterns.length - 1 : 0
+    }
   }
 
   Connections {
-    target: root.backend
+    target: root.mathObj
 
     function onCoordinateSystemChanged() {
-      if (root.backend.coordinateSystem === PlotStyle.Cartesian) {
+      if (root.mathObj.coordinateSystem === MathObject.Cartesian) {
         startEdit.expression = "xmin";
         endEdit.expression = "xmax";
-        stepEdit.expression = "1";
-      } else if (root.backend.coordinateSystem === PlotStyle.Polar) {
+      } else if (root.mathObj.coordinateSystem === MathObject.Polar && !root.mathObj.discrete) {
         startEdit.expression = "0";
         endEdit.expression = "2*math::pi";
-        stepEdit.expression = "math::pi/12";
       }
     }
-
   }
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
@@ -68,16 +69,16 @@ Item {
         model: ListModel {
           ListElement {
             text: "Cartesian"
-            type: PlotStyle.Cartesian
+            type: MathObject.Cartesian
           }
           ListElement {
             text: "Polar"
-            type: PlotStyle.Polar
+            type: MathObject.Polar
           }
         }
 
         onCurrentValueChanged: {
-          root.backend.coordinateSystem = currentValue
+          root.mathObj.coordinateSystem = currentValue
         }
       }
     }
@@ -156,7 +157,7 @@ Item {
       states: [
         State {
           name: "hidden";
-          when: !root.discrete
+          when: !root.mathObj.discrete
           PropertyChanges {
             stepLabel.opacity: 0.
             stepEdit.opacity: 0.
@@ -170,7 +171,7 @@ Item {
         },
         State {
           name: "shown";
-          when: root.discrete
+          when: root.mathObj.discrete
           PropertyChanges {
             stepLabel.opacity: 1.
             stepEdit.opacity: 1.
@@ -220,7 +221,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.backend.start
+        backend: root.mathObj.start
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -247,7 +248,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.backend.end
+        backend: root.mathObj.end
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -274,7 +275,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.backend.step
+        backend: root.mathObj.step
 
         id: stepEdit
         expression: "1"

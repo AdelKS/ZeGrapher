@@ -25,6 +25,7 @@ namespace zg {
 MathObject::MathObject(QObject *parent, Type type) : QObject(parent)
 {
   setType(type);
+  connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
 }
 
 void MathObject::setType(Type t)
@@ -261,6 +262,31 @@ void MathObject::setSchrodinger(bool s)
 
 
   emit schrodingerChanged();
+}
+
+std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
+{
+  SamplingSettings settings;
+  settings.coordinateSystem = coordinateSystem;
+
+  if (double v = start->getValue(); not std::isnan(v))
+    settings.range.min.v = v;
+  else return {};
+
+  if (double v = end->getValue(); not std::isnan(v))
+    settings.range.max.v = v;
+  else return {};
+
+  if (settings.range.max <= settings.range.min)
+    return {};
+
+  if (double v = step->getValue(); not std::isnan(v))
+    settings.step.v = v;
+  else return {};
+
+  settings.revision = getRevision();
+
+  return settings;
 }
 
 }

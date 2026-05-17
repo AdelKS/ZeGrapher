@@ -57,9 +57,6 @@ struct SampledCurve {
 
   void pop_front(size_t pop_num);
 
-  /// @brief
-  void update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& plotStyle);
-
   CurveStyle style;
 
   bool discrete = false;
@@ -74,15 +71,7 @@ struct SampledCurve {
   /// @brief pixel coordinates of 'curve', updated by the Sampler after each sampling pass
   std::vector<QPointF> px_curve = {};
 
-  /// @brief settings that affect the resulting sampled values
-  struct SamplingSettings {
-    zg::real_range1d range = {.min = {0.}, .max = {0.}};
-    zg::real_unit step = {0.};
-    zg::PlotStyle::CoordinateSystem coordinateSystem = zg::PlotStyle::Cartesian;
-    size_t revision = 0;
-
-    bool operator == (const SamplingSettings&) const = default;
-  } settings;
+  MathObject::SamplingSettings settings;
 };
 
 } // namespace zg

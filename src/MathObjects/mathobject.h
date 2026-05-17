@@ -33,6 +33,8 @@
 
 namespace zg {
 
+class MathWorld;
+
 /// @brief Contains the information needed to compute the math object and how to plot it
 struct MathObject: QObject {
   Q_OBJECT
@@ -43,6 +45,10 @@ struct MathObject: QObject {
   Q_PROPERTY(bool discrete READ isDiscrete NOTIFY continuityChanged)
   Q_PROPERTY(bool continuous READ isContinuous NOTIFY continuityChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
+  Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
+  Q_PROPERTY(mathobj::Expr* start MEMBER start)
+  Q_PROPERTY(mathobj::Expr* end MEMBER end)
+  Q_PROPERTY(mathobj::Expr* step MEMBER step)
 
 public:
   using EvalHandle
@@ -61,9 +67,21 @@ public:
     PARAMETRIC
   };
 
-  explicit MathObject(QObject *parent = nullptr, Type type = EQUATION);
-
   Q_ENUM(Type);
+
+  enum CoordinateSystem {Cartesian, Polar};
+  Q_ENUM(CoordinateSystem);
+
+  struct SamplingSettings {
+    zg::real_range1d range = {.min = {0.}, .max = {0.}};
+    zg::real_unit step = {0.};
+    zg::MathObject::CoordinateSystem coordinateSystem = zg::MathObject::Cartesian;
+    size_t revision = 0;
+
+    bool operator == (const SamplingSettings&) const = default;
+  };
+
+  explicit MathObject(QObject *parent = nullptr, Type type = EQUATION);
 
   Q_INVOKABLE void setType(Type);
   Q_INVOKABLE Type getType() const;
@@ -88,6 +106,14 @@ public:
   Q_INVOKABLE bool isDiscrete() const { return discrete; };
   Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
 
+  CoordinateSystem getCoordinateSystem() const { return coordinateSystem; }
+
+  const mathobj::Expr* getStart() const { return start; }
+  const mathobj::Expr* getStep() const { return step; }
+  const mathobj::Expr* getEnd() const { return end; }
+
+  std::optional<SamplingSettings> getSamplingSettings();
+
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
   T* getBackend();
@@ -106,6 +132,7 @@ signals:
   void continuityChanged();
   void nameChanged();
   void schrodingerChanged();
+  void coordinateSystemChanged();
 
 protected:
   std::variant<std::monostate,
@@ -121,6 +148,13 @@ protected:
   bool schrodinger = false;
   bool discrete = false;
   bool continuous = false;
+  CoordinateSystem coordinateSystem = Cartesian;
+
+  mathobj::Expr* start = nullptr;
+  mathobj::Expr* end = nullptr;
+  mathobj::Expr* step = nullptr;
+
+  friend zg::MathWorld;
 };
 
 template <class T>
