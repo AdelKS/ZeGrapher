@@ -49,9 +49,6 @@ public:
   /// @brief refreshes the style of the currently valid objects
   void refresh_curve_styles();
 
-  /// @brief refreshes the sampling settings of every curve: clears the data if it changed
-  void refresh_curve_settings();
-
   /// @brief makes sure the full [start, step, end] range of values of the schrodinger constant
   ///        is in the keys of the schrodinger_curves_map, no more no less
   void refresh_schrodinger_keys();
@@ -66,7 +63,7 @@ protected:
 
   /// @brief samples an object given the current range and graph size
   /// @tparam continuous: whether the object is continuous or discrete
-  template <zg::PlotStyle::CoordinateSystem coordinates, bool discrete>
+  template <zg::MathObject::CoordinateSystem coordinates, bool discrete>
   void sample(auto, zg::SampledCurve&);
 
   /// @brief detects and records discontinuities in a fully sampled continuous curve
@@ -75,6 +72,10 @@ protected:
   const zg::ZeViewMapper& mapper;
 
   std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
+
+  zg::AnimatedConstant* anim_schrodinger_constant = nullptr;
+  zg::mathobj::Constant* schrodinger_constant = nullptr;
+
   std::unordered_map<double, std::unordered_map<const zg::MathObject*, zg::SampledCurve>> schrodinger_curves_map;
 
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;

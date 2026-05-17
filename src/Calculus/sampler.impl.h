@@ -5,7 +5,7 @@
 #include "sampler.h"
 
 
-template <zg::PlotStyle::CoordinateSystem coordinates, bool discrete>
+template <zg::MathObject::CoordinateSystem coordinates, bool discrete>
 void Sampler::sample(auto handle, zg::SampledCurve& data)
 {
   auto get_acceptable_input = [&](zg::real_unit x)
@@ -16,21 +16,21 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   };
   auto dispatcher = zc::utils::overloaded{
     [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
-      requires (coordinates == zg::PlotStyle::CoordinateSystem::Cartesian)
+      requires (coordinates == zg::MathObject::Cartesian)
     {
       tl::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
       double res = exp_res ? *exp_res : std::nan("");
       return zg::real_pt{x, zg::real_unit{res}};
     },
     [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
-      requires (coordinates == zg::PlotStyle::CoordinateSystem::Polar)
+      requires (coordinates == zg::MathObject::Polar)
     {
       tl::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
       double res = exp_res ? *exp_res : std::nan("");
       return zg::real_pt{std::cos(x.v) * zg::real_unit{res}, std::sin(x.v) * zg::real_unit{res}};
     },
     [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
-      requires (coordinates == zg::PlotStyle::CoordinateSystem::Cartesian)
+      requires (coordinates == zg::MathObject::Cartesian)
     {
       tl::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
       double res1 = exp_res1 ? *exp_res1 : std::nan("");
@@ -41,7 +41,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
       return zg::real_pt{zg::real_unit{res1}, zg::real_unit{res2}};
     },
     [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
-      requires (coordinates == zg::PlotStyle::CoordinateSystem::Polar)
+      requires (coordinates == zg::MathObject::Polar)
     {
       tl::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
       double res1 = exp_res1 ? *exp_res1 : std::nan("");

@@ -400,11 +400,11 @@ Item {
       ObjectStyle {
         id: styleWidget
         backend: root.style
+        mathObj: root.mathObj
 
         Layout.fillWidth: true
         Layout.preferredHeight: preferredHeight
         clip: true
-        discrete: mathObj.discrete
 
         property int preferredHeight: 0
 

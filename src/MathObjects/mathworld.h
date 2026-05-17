@@ -61,7 +61,7 @@ public:
 
   /// @brief add Expr object that is not part of the model because its widget is elsewhere
   Q_INVOKABLE mathobj::Expr* addAltExprObject();
-  Q_INVOKABLE void removeAltExprObject(mathobj::Expr*);
+  Q_INVOKABLE void removeAltExprObject(const mathobj::Expr*);
 
   std::unordered_set<MathObject*> direct_revdeps(MathObject&) const;
   std::unordered_set<MathObject*> revdeps(MathObject&) const;

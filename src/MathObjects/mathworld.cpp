@@ -36,9 +36,9 @@ void MathWorld::removeMathObject(MathObject* obj)
   if (auto s_it = styles.find(obj); s_it != styles.end())
   {
     PlotStyle* style = s_it->second;
-    removeAltExprObject(style->start);
-    removeAltExprObject(style->step);
-    removeAltExprObject(style->end);
+    removeAltExprObject(obj->getStart());
+    removeAltExprObject(obj->getStep());
+    removeAltExprObject(obj->getEnd());
     style->deleteLater();
     styles.erase(s_it);
   }
@@ -48,7 +48,7 @@ void MathWorld::removeMathObject(MathObject* obj)
   emit updated();
 }
 
-void MathWorld::removeAltExprObject(mathobj::Expr* expr)
+void MathWorld::removeAltExprObject(const mathobj::Expr* expr)
 {
   auto it = std::ranges::find_if(altMathObjects, [&](MathObject* obj){ return obj->getExpr() == expr; });
   if (it == altMathObjects.end())
@@ -85,13 +85,13 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
   auto* obj = new zg::MathObject(this, type);
   auto* style = new PlotStyle(this);
 
-  style->start = addAltExprObject();
-  style->step = addAltExprObject();
-  style->end = addAltExprObject();
+  obj->start = addAltExprObject();
+  obj->step = addAltExprObject();
+  obj->end = addAltExprObject();
 
-  style->start->setImplicitName("start");
-  style->step->setImplicitName("step");
-  style->end->setImplicitName("end");
+  obj->start->setImplicitName("start");
+  obj->step->setImplicitName("step");
+  obj->end->setImplicitName("end");
 
   mathObjects.emplace_back(obj);
   styles[obj] = style;

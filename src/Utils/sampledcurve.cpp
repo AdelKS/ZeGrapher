@@ -149,24 +149,4 @@ void SampledCurve::sparse_delete(const std::vector<size_t>& indices)
   px_curve = std::move(new_px_curve);
 }
 
-void SampledCurve::update_sampling_settings(const zg::MathObject& obj, const zg::PlotStyle& plotStyle)
-{
-  SamplingSettings newSettings = {
-    .range = plotStyle.getRange(),
-    .step = plotStyle.getStep(),
-    .coordinateSystem = plotStyle.coordinateSystem,
-    .revision = obj.getRevision()
-  };
-
-  if (newSettings.coordinateSystem != settings.coordinateSystem or
-      newSettings.step != settings.step or
-      newSettings.revision != settings.revision)
-    clear();
-
-  if (newSettings != settings)
-  {
-    settings = newSettings;
-  }
-}
-
 } // namespace zg

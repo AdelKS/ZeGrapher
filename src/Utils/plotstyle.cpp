@@ -13,31 +13,10 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::drawLineChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::pointWidthChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::pointStyleChanged, this, &PlotStyle::updated);
-  connect(this, &PlotStyle::coordinateSystemChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::rangeChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::secondColorChanged, this, &PlotStyle::updated);
 
   connect(this, &PlotStyle::updated, &information, &Information::styleUpdated);
-}
-
-zg::real_unit PlotStyle::getStart() const
-{
-  return {start->getValue()};
-}
-
-zg::real_unit PlotStyle::getEnd() const
-{
-  return {end->getValue()};
-}
-
-zg::real_unit PlotStyle::getStep() const
-{
-  return {step->getValue()};
-}
-
-zg::real_range1d PlotStyle::getRange() const
-{
-  return real_range1d{.min = getStart(), .max = getEnd()};
 }
 
 QColor PlotStyle::colorLerp(double t) const
