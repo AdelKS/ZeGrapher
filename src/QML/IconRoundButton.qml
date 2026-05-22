@@ -3,6 +3,7 @@ import QtQuick.Controls.FluentWinUI3
 
 RoundButton {
   id: root
+  radius: 5
 
   required property url lightThemeIcon
   required property url darkThemeIcon
