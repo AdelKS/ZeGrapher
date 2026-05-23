@@ -60,7 +60,6 @@ public:
     MONOSTATE,
     EQUATION,
     CONSTANT,
-    NAMEDREF,
     DATA,
     PARAMETRIC
   };
@@ -94,7 +93,6 @@ public:
 
   Q_INVOKABLE mathobj::Equation* getEquation();
   Q_INVOKABLE mathobj::Constant* getConstant();
-  Q_INVOKABLE mathobj::NamedRef* getNamedRef();
   Q_INVOKABLE mathobj::Data* getData();
   Q_INVOKABLE mathobj::Parametric* getParametric();
 
@@ -136,7 +134,6 @@ protected:
   std::variant<std::monostate,
                mathobj::Equation*,
                mathobj::Constant*,
-               mathobj::NamedRef*,
                mathobj::Data*,
                mathobj::Parametric*> backend;
   QString name;

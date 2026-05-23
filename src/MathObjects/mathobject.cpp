@@ -57,9 +57,6 @@ void MathObject::setType(Type t)
     case CONSTANT:
       backend = new mathobj::Constant(this);
       break;
-    case NAMEDREF:
-      backend = new mathobj::NamedRef(this);
-      break;
     case DATA:
       backend = new mathobj::Data(this);
       break;
@@ -95,9 +92,6 @@ MathObject::Type MathObject::getType() const
       [](const mathobj::Constant*) {
         return CONSTANT;
       },
-      [](const mathobj::NamedRef*) {
-        return NAMEDREF;
-      },
       [](const mathobj::Data*) {
         return DATA;
       },
@@ -117,11 +111,6 @@ mathobj::Equation* MathObject::getEquation()
 mathobj::Constant* MathObject::getConstant()
 {
   return getBackend<mathobj::Constant>();
-}
-
-mathobj::NamedRef* MathObject::getNamedRef()
-{
-  return getBackend<mathobj::NamedRef>();
 }
 
 mathobj::Data* MathObject::getData()
@@ -146,9 +135,6 @@ MathObject::EvalHandle MathObject::getZcObject() const
       [](const mathobj::Parametric* p) -> Ret {
         return std::make_pair(p->obj1->getZcObject(), p->obj2->getZcObject());
       },
-      [](const mathobj::NamedRef* n) -> Ret {
-        return n->getZcObject();
-      },
       [](std::monostate) -> Ret {
         return nullptr;
       },
@@ -164,11 +150,6 @@ size_t MathObject::getRevision() const
     zc::utils::overloaded{
       [](const auto* e) {
         return e->zcMathObj.get_revision();
-      },
-      [](const mathobj::NamedRef* r) {
-        if (const auto* o = r->getZcObject())
-          return o->get_revision();
-        else return size_t(0);
       },
       [](const mathobj::Parametric* p) {
         size_t rev1 = 0, rev2 = 0;
