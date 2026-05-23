@@ -62,8 +62,7 @@ Item {
             id: input
             width: wrapper.width
             height: wrapper.height
-            mathObj: wrapper.modelData.mathObj
-            style: wrapper.modelData.style
+            mathObj: wrapper.modelData
 
             states: [
               State {

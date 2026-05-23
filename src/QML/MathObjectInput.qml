@@ -7,7 +7,6 @@ Item {
   signal deleteMe()
 
   required property MathObject mathObj
-  required property PlotStyle style
 
   property alias dragHandle: dragHandle
 
@@ -150,13 +149,13 @@ Item {
           Layout.preferredWidth: 30
 
           checkable: true
-          checked: !root.style.visible
+          checked: !root.mathObj.style.visible
 
           lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
           darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
 
           onToggled: {
-            root.style.visible = !checked
+            root.mathObj.style.visible = !checked
           }
         }
 
@@ -177,20 +176,20 @@ Item {
         ColorButton {
           id: colorButton
           radius: 12
-          selectedColor: root.style.color
+          selectedColor: root.mathObj.style.color
 
           onSelectedColorChanged: {
-            root.style.color = selectedColor;
+            root.mathObj.style.color = selectedColor;
           }
         }
 
         ColorButton {
           id: secondColorButton
           radius: 12
-          selectedColor: root.style.secondColor
+          selectedColor: root.mathObj.style.secondColor
 
           onSelectedColorChanged: {
-            root.style.secondColor = selectedColor;
+            root.mathObj.style.secondColor = selectedColor;
           }
 
           states: [
@@ -399,7 +398,7 @@ Item {
 
       ObjectStyle {
         id: styleWidget
-        backend: root.style
+        backend: root.mathObj.style
         mathObj: root.mathObj
 
         Layout.fillWidth: true

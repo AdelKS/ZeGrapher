@@ -29,11 +29,7 @@ QVariant MathWorld::data(const QModelIndex &index, int role) const
   if (role != Qt::DisplayRole)
     return QVariant();
 
-  QVariantMap map;
-  map["mathObj"].setValue(mathObjects.at(index.row()));
-  map["style"].setValue(styles.at(mathObjects.at(index.row())));
-
-  return map;
+  return QVariant::fromValue(mathObjects.at(index.row()));
 }
 
 void MathWorld::removeMathObject(MathObject* obj)
@@ -45,14 +41,6 @@ void MathWorld::removeMathObject(MathObject* obj)
   int index = it - mathObjects.begin();
   beginRemoveRows(QModelIndex(), index, index);
   obj->deleteLater();
-
-  assert(styles.contains(obj));
-  if (auto s_it = styles.find(obj); s_it != styles.end())
-  {
-    PlotStyle* style = s_it->second;
-    style->deleteLater();
-    styles.erase(s_it);
-  }
 
   mathObjects.erase(it);
   endRemoveRows();
@@ -96,10 +84,8 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
 {
   beginInsertRows(QModelIndex(), mathObjects.size(), mathObjects.size());
   auto* obj = new zg::MathObject(this, type);
-  auto* style = new PlotStyle(this);
 
   mathObjects.emplace_back(obj);
-  styles[obj] = style;
 
   connect(mathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
   connect(mathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);

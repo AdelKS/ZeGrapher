@@ -109,9 +109,8 @@ void Sampler::refresh_valid_objects()
   const auto& mathObjects = zg::mathWorld.getMathObjects();
   for (auto* f: mathObjects)
   {
-    zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
     auto opt_sampling_settings = f->getSamplingSettings();
-    bool good = not (not style or not f->isValid()
+    bool good = not (not f->isValid()
         or f->isSchrodinger()
         or f->getType() == zg::MathObject::CONSTANT
         );
@@ -124,9 +123,8 @@ void Sampler::refresh_valid_objects()
     schrodinger_constant->zcMathObj = v;
     for (auto* f: mathObjects)
     {
-      zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
       auto opt_sampling_settings = f->getSamplingSettings();
-      bool good = not (not style or not f->isValid()
+      bool good = not (not f->isValid()
           or not f->isSchrodinger()
           or f->getType() == zg::MathObject::CONSTANT
           );
@@ -152,16 +150,12 @@ void Sampler::refresh_curve_styles()
 {
   for (auto* f : zg::mathWorld.getMathObjects())
   {
-    zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
-    if (not style)
-      continue;
-
     if (auto it = curves.find(f); it != curves.end())
-      it->second.style = make_curve_style(*style);
+      it->second.style = make_curve_style(f->style);
 
     for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
       if (auto it = schrodinger_curves.find(f); it != schrodinger_curves.end())
-        it->second.style = make_curve_style(*style);
+        it->second.style = make_curve_style(f->style);
   }
 }
 
@@ -233,11 +227,7 @@ void Sampler::update()
       double t = amplitude != 0 ? (v - anim_schrodinger_constant->getFrom()) / amplitude : 1.0;
       for (auto& [f, data]: schrodinger_curves)
       {
-        zg::PlotStyle* style = zg::mathWorld.getStyles()[f];
-        if (not style)
-          continue;
-
-        data.style.color = style->colorLerp(t);
+        data.style.color = f->style.colorLerp(t);
         dispatch(f->getZcObject(), data);
         if (f->isContinuous())
           update_discontinuities(data);

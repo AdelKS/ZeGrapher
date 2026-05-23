@@ -48,6 +48,7 @@ struct MathObject: QObject {
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(mathobj::Expr* start READ getStart)
   Q_PROPERTY(mathobj::Expr* end READ getEnd)
+  Q_PROPERTY(PlotStyle* style READ getStyle)
 
 public:
   using EvalHandle
@@ -108,6 +109,8 @@ public:
   mathobj::Expr* getStart() { return &start; }
   mathobj::Expr* getEnd() { return &end; }
 
+  PlotStyle* getStyle() { return &style; }
+
   std::optional<SamplingSettings> getSamplingSettings();
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
@@ -116,6 +119,8 @@ public:
 
   template <class T>
   const T* getBackend() const;
+
+  PlotStyle style;
 
 public slots:
   /// @brief forwards the refresh() call to the current active backend
