@@ -46,8 +46,8 @@ struct MathObject: QObject {
   Q_PROPERTY(bool continuous READ isContinuous NOTIFY continuityChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
-  Q_PROPERTY(mathobj::Expr* start MEMBER start)
-  Q_PROPERTY(mathobj::Expr* end MEMBER end)
+  Q_PROPERTY(mathobj::Expr* start READ getStart)
+  Q_PROPERTY(mathobj::Expr* end READ getEnd)
 
 public:
   using EvalHandle
@@ -59,7 +59,6 @@ public:
   {
     MONOSTATE,
     EQUATION,
-    EXPR,
     CONSTANT,
     NAMEDREF,
     DATA,
@@ -94,7 +93,6 @@ public:
   void setSchrodinger(bool);
 
   Q_INVOKABLE mathobj::Equation* getEquation();
-  Q_INVOKABLE mathobj::Expr* getExpr();
   Q_INVOKABLE mathobj::Constant* getConstant();
   Q_INVOKABLE mathobj::NamedRef* getNamedRef();
   Q_INVOKABLE mathobj::Data* getData();
@@ -106,8 +104,11 @@ public:
 
   CoordinateSystem getCoordinateSystem() const { return coordinateSystem; }
 
-  const mathobj::Expr* getStart() const { return start; }
-  const mathobj::Expr* getEnd() const { return end; }
+  const mathobj::Expr* getStart() const { return &start; }
+  const mathobj::Expr* getEnd() const { return &end; }
+
+  mathobj::Expr* getStart() { return &start; }
+  mathobj::Expr* getEnd() { return &end; }
 
   std::optional<SamplingSettings> getSamplingSettings();
 
@@ -134,7 +135,6 @@ signals:
 protected:
   std::variant<std::monostate,
                mathobj::Equation*,
-               mathobj::Expr*,
                mathobj::Constant*,
                mathobj::NamedRef*,
                mathobj::Data*,
@@ -147,8 +147,8 @@ protected:
   bool continuous = false;
   CoordinateSystem coordinateSystem = Cartesian;
 
-  mathobj::Expr* start = nullptr;
-  mathobj::Expr* end = nullptr;
+  mathobj::Expr start;
+  mathobj::Expr end;
 
   friend zg::MathWorld;
 };

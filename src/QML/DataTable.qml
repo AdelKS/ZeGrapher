@@ -253,10 +253,15 @@ Item {
         // grew (invalid expression error message) keeps its old row height.
         onImplicitHeightChanged: Qt.callLater(TableView.view.forceLayout)
 
+        Expr {
+          id: cellBackend
+          implicitName: "tableCell"
+        }
+
         ValueEdit {
           id: displayWidget
 
-          backend: MathWorld.addAltExprObject()
+          backend: cellBackend
 
           anchors.fill: parent
 
@@ -272,15 +277,16 @@ Item {
           enabled: false
 
           expression: display
-
-          Component.onCompleted: backend.setImplicitName("tableCell")
-
-          Component.onDestruction : MathWorld.removeAltExprObject(backend)
         }
 
         TableView.editDelegate: FocusScope {
           width: parent.width
           height: parent.height
+
+          Expr {
+            id: editCellBackend
+            implicitName: "editCell"
+          }
 
           ValueEdit {
             id: valueEdit
@@ -288,10 +294,7 @@ Item {
             visible: root.interactive && item.editing
             expression: display
             exprEdit.lineEditBackend.textEdit.focus: true
-            backend: MathWorld.addAltExprObject();
-
-            Component.onCompleted: backend.setImplicitName("editCell")
-            Component.onDestruction: MathWorld.removeAltExprObject(backend)
+            backend: editCellBackend
           }
 
           // Enter is the only commit trigger that leaves the current cell

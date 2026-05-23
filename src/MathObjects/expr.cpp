@@ -7,6 +7,12 @@ namespace mathobj {
 Expr::Expr(QObject *parent)
   : Stateful(parent), shared::ZcMathObjectBB()
 {
+  mathWorld.trackExprObject(this);
+}
+
+Expr::~Expr()
+{
+  mathWorld.untrackExprObject(this);
 }
 
 bool Expr::isValid()
@@ -90,6 +96,15 @@ State Expr::sync()
   updateValue();
 
   return getState();
+}
+
+void Expr::setSchrodinger(bool s)
+{
+  if (schrodinger == s)
+    return;
+
+  schrodinger = s;
+  emit schrodingerChanged();
 }
 
 } // namespace mathobj

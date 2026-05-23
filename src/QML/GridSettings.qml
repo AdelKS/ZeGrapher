@@ -140,27 +140,31 @@ Item {
             Layout.alignment: Qt.AlignRight
             text: qsTr('Multiplier')
           }
+          Expr {
+            id: xMultiplierBackend
+            implicitName: "xMultiplier"
+          }
           ValueEdit {
             Layout.fillWidth: true
 
-            backend: MathWorld.addAltExprObject()
+            backend: xMultiplierBackend
 
             Component.onCompleted: {
-              backend.setImplicitName("xMultiplier");
               root.graphSettings.axes.x.linear.constantMultiplier = backend;
             }
-            Component.onDestruction: MathWorld.removeAltExprObject(backend)
           }
-         ValueEdit {
+          Expr {
+            id: yMultiplierBackend
+            implicitName: "yMultiplier"
+          }
+          ValueEdit {
             Layout.fillWidth: true
 
-           backend: MathWorld.addAltExprObject()
+            backend: yMultiplierBackend
 
             Component.onCompleted: {
-              backend.setImplicitName("yMultiplier");
               root.graphSettings.axes.y.linear.constantMultiplier = backend;
             }
-            Component.onDestruction: MathWorld.removeAltExprObject(backend)
           }
         }
       }

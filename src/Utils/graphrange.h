@@ -38,14 +38,13 @@ struct ZeAxisRange: QObject
 public:
 
   ZeAxisRange(QObject *parent = nullptr);
-  ~ZeAxisRange();
 
-  Q_INVOKABLE mathobj::Expr* getMinBackend() const { return min; }
-  Q_INVOKABLE mathobj::Expr* getMaxBackend() const { return max; }
+  Q_INVOKABLE mathobj::Expr* getMinBackend() { return &min; }
+  Q_INVOKABLE mathobj::Expr* getMaxBackend() { return &max; }
   Q_INVOKABLE bool getState() const { return state; }
 
-  mathobj::Expr* const min;
-  mathobj::Expr* const max;
+  mathobj::Expr min;
+  mathobj::Expr max;
 
   real_range1d getSnapshot();
 

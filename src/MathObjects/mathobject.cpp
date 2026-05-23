@@ -22,9 +22,12 @@
 
 namespace zg {
 
-MathObject::MathObject(QObject *parent, Type type) : QObject(parent)
+MathObject::MathObject(QObject *parent, Type type)
+  : QObject(parent), start(this), end(this)
 {
   setType(type);
+  start.setImplicitName("start");
+  end.setImplicitName("end");
   connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
 }
 
@@ -50,9 +53,6 @@ void MathObject::setType(Type t)
       break;
     case EQUATION:
       backend = new mathobj::Equation(this);
-      break;
-    case EXPR:
-      backend = new mathobj::Expr(this);
       break;
     case CONSTANT:
       backend = new mathobj::Constant(this);
@@ -92,9 +92,6 @@ MathObject::Type MathObject::getType() const
       [](const mathobj::Equation*) {
         return EQUATION;
       },
-      [](const mathobj::Expr*) {
-        return EXPR;
-      },
       [](const mathobj::Constant*) {
         return CONSTANT;
       },
@@ -115,11 +112,6 @@ MathObject::Type MathObject::getType() const
 mathobj::Equation* MathObject::getEquation()
 {
   return getBackend<mathobj::Equation>();
-}
-
-mathobj::Expr* MathObject::getExpr()
-{
-  return getBackend<mathobj::Expr>();
 }
 
 mathobj::Constant* MathObject::getConstant()
@@ -269,11 +261,11 @@ std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
   SamplingSettings settings;
   settings.coordinateSystem = coordinateSystem;
 
-  if (double v = start->getValue(); not std::isnan(v))
+  if (double v = start.getValue(); not std::isnan(v))
     settings.range.min.v = v;
   else return {};
 
-  if (double v = end->getValue(); not std::isnan(v))
+  if (double v = end.getValue(); not std::isnan(v))
     settings.range.max.v = v;
   else return {};
 

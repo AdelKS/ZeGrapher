@@ -35,10 +35,12 @@ struct Expr : Stateful, shared::ZcMathObjectBB {
   Q_PROPERTY(double value READ getValue NOTIFY valueChanged)
   Q_PROPERTY(QString expression WRITE setExpression READ getExpression)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName NOTIFY implicitNameChanged)
+  Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
 
 public:
 
   explicit Expr(QObject *parent = nullptr);
+  ~Expr();
 
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State setImplicitName(QString name);
@@ -51,10 +53,14 @@ public:
 
   void updateValue();
 
+  void setSchrodinger(bool);
+  Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
+
 signals:
   void valueChanged();
   void implicitNameChanged();
   void updated();
+  void schrodingerChanged();
 
 protected:
   QString expression;
@@ -66,6 +72,7 @@ protected:
   ///          will be forwarded to ZeCalculator as "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
+  bool schrodinger = false;
 };
 
 }

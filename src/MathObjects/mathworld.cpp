@@ -2,6 +2,20 @@
 
 namespace zg {
 
+MathWorld::~MathWorld()
+{
+  // delete tracked MathObjects here so their value-member Expr destructors
+  // can untrack themselves while exprObjects is still alive — otherwise
+  // QObject's deleteChildren would run them after our members are gone.
+  destroying = true;
+  while (not mathObjects.empty())
+  {
+    auto* m = mathObjects.back();
+    mathObjects.pop_back();
+    delete m;
+  }
+}
+
 int MathWorld::rowCount(const QModelIndex &parent) const
 {
   if (parent.isValid())
@@ -36,8 +50,6 @@ void MathWorld::removeMathObject(MathObject* obj)
   if (auto s_it = styles.find(obj); s_it != styles.end())
   {
     PlotStyle* style = s_it->second;
-    removeAltExprObject(obj->getStart());
-    removeAltExprObject(obj->getEnd());
     style->deleteLater();
     styles.erase(s_it);
   }
@@ -47,14 +59,16 @@ void MathWorld::removeMathObject(MathObject* obj)
   emit updated();
 }
 
-void MathWorld::removeAltExprObject(const mathobj::Expr* expr)
+void MathWorld::untrackExprObject(const mathobj::Expr* expr)
 {
-  auto it = std::ranges::find_if(altMathObjects, [&](MathObject* obj){ return obj->getExpr() == expr; });
-  if (it == altMathObjects.end())
+  auto it = std::ranges::find(exprObjects, expr);
+  if (it == exprObjects.end())
     return;
 
-  (*it)->deleteLater();
-  altMathObjects.erase(it);
+  exprObjects.erase(it);
+  if (destroying)
+    return;
+
   objectUpdated();
   emit updated();
 }
@@ -84,12 +98,6 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
   auto* obj = new zg::MathObject(this, type);
   auto* style = new PlotStyle(this);
 
-  obj->start = addAltExprObject();
-  obj->end = addAltExprObject();
-
-  obj->start->setImplicitName("start");
-  obj->end->setImplicitName("end");
-
   mathObjects.emplace_back(obj);
   styles[obj] = style;
 
@@ -100,18 +108,16 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
   return mathObjects.back();
 }
 
-mathobj::Expr* MathWorld::addAltExprObject()
+void MathWorld::trackExprObject(mathobj::Expr* o)
 {
-  altMathObjects.emplace_back(new zg::MathObject(this, MathObject::EXPR));
-  connect(altMathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
-  connect(altMathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
-  connect(altMathObjects.back(), &MathObject::destroyed, this, &MathWorld::objectUpdated);
-  return altMathObjects.back()->getExpr();
+  exprObjects.push_back(o);
+  connect(o, &mathobj::Expr::stateChanged, this, &MathWorld::objectUpdated);
+  connect(o, &mathobj::Expr::updated, this, &MathWorld::objectUpdated);
 }
 
 void MathWorld::objectUpdated()
 {
-  if (syncing)
+  if (destroying or syncing)
     return;
 
   syncing = true;
@@ -119,7 +125,7 @@ void MathWorld::objectUpdated()
   for (auto* f: mathObjects)
     f->sync();
 
-  for (auto* f: altMathObjects)
+  for (auto* f: exprObjects)
     f->sync();
 
   syncing = false;
@@ -160,92 +166,90 @@ void MathWorld::unsetSchrodingerConstant(MathObject* c)
 
 void MathWorld::updateSchrodingerStatus()
 {
-  std::unordered_set<MathObject*> schrodingerObjects;
+  std::unordered_set<const zc::DynMathObject<zc_t>*> schrodingerBackends;
   if (schrodingerConstant)
   {
-    schrodingerObjects = revdeps(*schrodingerConstant);
-    schrodingerObjects.insert(schrodingerConstant);
-  }
-
-  for (auto* r: mathObjects)
-    r->setSchrodinger(schrodingerObjects.contains(r));
-
-  for (MathObject* r: altMathObjects)
-    r->setSchrodinger(schrodingerObjects.contains(r));
-}
-
-std::unordered_set<MathObject*> MathWorld::direct_revdeps(MathObject& c) const
-{
-  assert (std::ranges::find(mathObjects, &c) != mathObjects.end() or
-          std::ranges::find(altMathObjects, &c) != altMathObjects.end());
-
-  std::unordered_set<std::string> direct_revdep_names;
-
-  std::visit(
-    zc::utils::overloaded{
-      [&](const zc::DynMathObject<zc_t>* p){
-        for (auto&& [name, t]: zc::mathWorld.direct_revdeps(p->get_name())) direct_revdep_names.insert(name);
-      },
-      [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
-        for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.first->get_name())) direct_revdep_names.insert(name);
-        for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.second->get_name())) direct_revdep_names.insert(name);
-      },
-      [](std::monostate){},
-    },
-    c.getZcObject()
-  );
-
-  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdep_backends;
-
-  for (zc::DynMathObject<zc_t>& b: zc::mathWorld)
-    if (auto it = direct_revdep_names.find(std::string(b.get_name())); it != direct_revdep_names.end())
-      direct_revdep_backends.insert(&b);
-
-  std::unordered_set<MathObject*> direct_revdeps_res;
-
-  auto insert_revdep = [&](MathObject* r){
+    auto handle = schrodingerConstant->getZcObject();
+    schrodingerBackends = revdeps(handle);
     std::visit(
       zc::utils::overloaded{
-        [&](const zc::DynMathObject<zc_t>* p){
-          if (direct_revdep_backends.contains(p)) direct_revdeps_res.insert(r);
-        },
+        [&](const zc::DynMathObject<zc_t>* p) { schrodingerBackends.insert(p); },
         [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
-          if (direct_revdep_backends.contains(p.first)) direct_revdeps_res.insert(r);
-          else if (direct_revdep_backends.contains(p.second)) direct_revdeps_res.insert(r);
+          schrodingerBackends.insert(p.first);
+          schrodingerBackends.insert(p.second);
         },
-        [](std::monostate){},
+        [](std::monostate) {},
       },
-      r->getZcObject()
+      handle
+    );
+  }
+
+  auto inSet = [&](MathObject::EvalHandle h) -> bool {
+    return std::visit(
+      zc::utils::overloaded{
+        [&](const zc::DynMathObject<zc_t>* p) { return schrodingerBackends.contains(p); },
+        [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
+          return schrodingerBackends.contains(p.first) or schrodingerBackends.contains(p.second);
+        },
+        [](std::monostate) { return false; },
+      },
+      h
     );
   };
 
   for (auto* r: mathObjects)
-    insert_revdep(r);
+    r->setSchrodinger(inSet(r->getZcObject()));
 
-  for (MathObject* r: altMathObjects)
-    insert_revdep(r);
-
-  return direct_revdeps_res;
+  for (mathobj::Expr* r: exprObjects)
+    r->setSchrodinger(schrodingerBackends.contains(&r->zcMathObj));
 }
 
-std::unordered_set<MathObject*> MathWorld::revdeps(MathObject& c) const
+std::unordered_set<const zc::DynMathObject<zc_t>*>
+MathWorld::direct_revdeps(MathObject::EvalHandle handle) const
 {
-  std::unordered_set<MathObject*> to_explore = direct_revdeps(c), revdeps_res, explored;
+  std::unordered_set<std::string> names;
+
+  std::visit(
+    zc::utils::overloaded{
+      [&](const zc::DynMathObject<zc_t>* p){
+        for (auto&& [name, t]: zc::mathWorld.direct_revdeps(p->get_name())) names.insert(name);
+      },
+      [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
+        for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.first->get_name())) names.insert(name);
+        for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.second->get_name())) names.insert(name);
+      },
+      [](std::monostate){},
+    },
+    handle
+  );
+
+  std::unordered_set<const zc::DynMathObject<zc_t>*> res;
+  for (zc::DynMathObject<zc_t>& b: zc::mathWorld)
+    if (names.contains(std::string(b.get_name())))
+      res.insert(&b);
+  return res;
+}
+
+std::unordered_set<const zc::DynMathObject<zc_t>*>
+MathWorld::revdeps(MathObject::EvalHandle handle) const
+{
+  auto to_explore = direct_revdeps(handle);
+  std::unordered_set<const zc::DynMathObject<zc_t>*> res, explored;
 
   while (not to_explore.empty())
   {
-    MathObject* d = *to_explore.begin();
+    const zc::DynMathObject<zc_t>* d = *to_explore.begin();
     to_explore.erase(to_explore.begin());
 
     explored.insert(d);
-    revdeps_res.insert(d);
-    std::unordered_set<MathObject*> new_to_explore = direct_revdeps(*d);
-    for (MathObject* e: new_to_explore)
+    res.insert(d);
+    auto new_to_explore = direct_revdeps(MathObject::EvalHandle(d));
+    for (auto* e: new_to_explore)
       if (not explored.contains(e))
         to_explore.insert(e);
   }
 
-  return revdeps_res;
+  return res;
 }
 
 }

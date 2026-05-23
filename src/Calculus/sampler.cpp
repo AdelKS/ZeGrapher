@@ -114,7 +114,6 @@ void Sampler::refresh_valid_objects()
     bool good = not (not style or not f->isValid()
         or f->isSchrodinger()
         or f->getType() == zg::MathObject::CONSTANT
-        or f->getType() == zg::MathObject::EXPR
         );
 
     update(f, curves, opt_sampling_settings, good);
@@ -130,7 +129,6 @@ void Sampler::refresh_valid_objects()
       bool good = not (not style or not f->isValid()
           or not f->isSchrodinger()
           or f->getType() == zg::MathObject::CONSTANT
-          or f->getType() == zg::MathObject::EXPR
           );
 
       update(f, schrodinger_curves, opt_sampling_settings, good);

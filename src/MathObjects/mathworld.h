@@ -44,6 +44,7 @@ class MathWorld: public QAbstractListModel
 
 public:
   MathWorld(QObject *parent = nullptr): QAbstractListModel(parent) {}
+  ~MathWorld() override;
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
@@ -60,11 +61,11 @@ public:
   zg::MathObject* getSchrodingerConstant() { return schrodingerConstant; }
 
   /// @brief add Expr object that is not part of the model because its widget is elsewhere
-  Q_INVOKABLE mathobj::Expr* addAltExprObject();
-  Q_INVOKABLE void removeAltExprObject(const mathobj::Expr*);
+  void trackExprObject(mathobj::Expr*);
+  void untrackExprObject(const mathobj::Expr*);
 
-  std::unordered_set<MathObject*> direct_revdeps(MathObject&) const;
-  std::unordered_set<MathObject*> revdeps(MathObject&) const;
+  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdeps(MathObject::EvalHandle) const;
+  std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(MathObject::EvalHandle) const;
 
   QHash<int, QByteArray> roleNames() const override;
 
@@ -84,8 +85,9 @@ protected:
   zg::MathObject* schrodingerConstant = nullptr;
 
   /// @brief math objects that aren't part of the model (that the view represents)
-  std::vector<zg::MathObject*> altMathObjects;
+  std::vector<zg::mathobj::Expr*> exprObjects;
   bool syncing = false;
+  bool destroying = false;
 };
 
 } // namespace zg

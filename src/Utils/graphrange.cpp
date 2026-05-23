@@ -24,20 +24,12 @@
 namespace zg {
 
 ZeAxisRange::ZeAxisRange(QObject *parent)
-  : QObject(parent),
-    min(mathWorld.addAltExprObject()),
-    max(mathWorld.addAltExprObject())
+  : QObject(parent), min(this), max(this)
 {}
-
-ZeAxisRange::~ZeAxisRange()
-{
-  mathWorld.removeAltExprObject(min);
-  mathWorld.removeAltExprObject(max);
-}
 
 real_range1d ZeAxisRange::getSnapshot()
 {
-  real_range1d newSnapshot = {.min = {min->getValue()}, .max = {max->getValue()}};
+  real_range1d newSnapshot = {.min = {min.getValue()}, .max = {max.getValue()}};
   bool old_state = state;
 
   state = newSnapshot.is_valid();
@@ -52,7 +44,7 @@ real_range1d ZeAxisRange::getSnapshot()
 
 real_range1d ZeAxisRange::getLatestValidSnapshot()
 {
-  real_range1d newSnapshot = {.min = {min->getValue()}, .max = {max->getValue()}};
+  real_range1d newSnapshot = {.min = {min.getValue()}, .max = {max.getValue()}};
   bool old_state = state;
 
   state = newSnapshot.is_valid();
@@ -67,27 +59,24 @@ real_range1d ZeAxisRange::getLatestValidSnapshot()
 
 void ZeAxisRange::update(const real_range1d& range)
 {
-  if (not min or not max) [[unlikely]]
-    return;
-
-  min->setExpression(QString::number(range.min.v, 'g', 12));
-  max->setExpression(QString::number(range.max.v, 'g', 12));
+  min.setExpression(QString::number(range.min.v, 'g', 12));
+  max.setExpression(QString::number(range.max.v, 'g', 12));
 }
 
 GraphRange::GraphRange(QObject* parent)
   : QObject(parent), x(this), y(this)
 {
-  x.min->setImplicitName("xmin");
-  x.min->setExpression("-10");
+  x.min.setImplicitName("xmin");
+  x.min.setExpression("-10");
 
-  x.max->setImplicitName("xmax");
-  x.max->setExpression("10");
+  x.max.setImplicitName("xmax");
+  x.max.setExpression("10");
 
-  y.min->setImplicitName("ymin");
-  y.min->setExpression("-10");
+  y.min.setImplicitName("ymin");
+  y.min.setExpression("-10");
 
-  y.max->setImplicitName("ymax");
-  y.max->setExpression("10");
+  y.max.setImplicitName("ymax");
+  y.max.setExpression("10");
 };
 
 QRectF GraphRange::getLatestValidRect()
