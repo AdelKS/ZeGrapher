@@ -48,7 +48,6 @@ struct MathObject: QObject {
   Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(mathobj::Expr* start MEMBER start)
   Q_PROPERTY(mathobj::Expr* end MEMBER end)
-  Q_PROPERTY(mathobj::Expr* step MEMBER step)
 
 public:
   using EvalHandle
@@ -74,7 +73,6 @@ public:
 
   struct SamplingSettings {
     zg::real_range1d range = {.min = {0.}, .max = {0.}};
-    zg::real_unit step = {0.};
     zg::MathObject::CoordinateSystem coordinateSystem = zg::MathObject::Cartesian;
     size_t revision = 0;
 
@@ -109,7 +107,6 @@ public:
   CoordinateSystem getCoordinateSystem() const { return coordinateSystem; }
 
   const mathobj::Expr* getStart() const { return start; }
-  const mathobj::Expr* getStep() const { return step; }
   const mathobj::Expr* getEnd() const { return end; }
 
   std::optional<SamplingSettings> getSamplingSettings();
@@ -152,7 +149,6 @@ protected:
 
   mathobj::Expr* start = nullptr;
   mathobj::Expr* end = nullptr;
-  mathobj::Expr* step = nullptr;
 
   friend zg::MathWorld;
 };

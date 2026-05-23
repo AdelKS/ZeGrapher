@@ -37,7 +37,6 @@ void MathWorld::removeMathObject(MathObject* obj)
   {
     PlotStyle* style = s_it->second;
     removeAltExprObject(obj->getStart());
-    removeAltExprObject(obj->getStep());
     removeAltExprObject(obj->getEnd());
     style->deleteLater();
     styles.erase(s_it);
@@ -86,11 +85,9 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
   auto* style = new PlotStyle(this);
 
   obj->start = addAltExprObject();
-  obj->step = addAltExprObject();
   obj->end = addAltExprObject();
 
   obj->start->setImplicitName("start");
-  obj->step->setImplicitName("step");
   obj->end->setImplicitName("end");
 
   mathObjects.emplace_back(obj);

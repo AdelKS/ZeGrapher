@@ -159,12 +159,8 @@ Item {
           name: "hidden";
           when: !root.mathObj.discrete
           PropertyChanges {
-            stepLabel.opacity: 0.
-            stepEdit.opacity: 0.
             pointStyleTumbler.opacity: 0
             pointWidthSpinBox.opacity: 0
-            stepLabel.visible: false
-            stepEdit.visible: false
             pointStyleTumbler.visible: false
             pointWidthSpinBox.visible: false
           }
@@ -173,12 +169,8 @@ Item {
           name: "shown";
           when: root.mathObj.discrete
           PropertyChanges {
-            stepLabel.opacity: 1.
-            stepEdit.opacity: 1.
             pointStyleTumbler.opacity: 1.
             pointWidthSpinBox.opacity: 1.
-            stepLabel.visible: true
-            stepEdit.visible: true
             pointStyleTumbler.visible: true
             pointWidthSpinBox.visible: true
           }
@@ -258,27 +250,6 @@ Item {
 
       Item {
         Layout.maximumWidth: 10
-      }
-
-      ZeLabel {
-        Layout.topMargin: 5
-        Layout.alignment: Qt.AlignTop | Qt.AlignRight
-        Layout.preferredWidth: implicitWidth
-        Layout.preferredHeight: implicitHeight
-
-        id: stepLabel
-        text: qsTr("Step:")
-      }
-
-      ValueEdit {
-        Layout.alignment: Qt.AlignTop
-        Layout.fillHeight: true
-        Layout.fillWidth: true
-        Layout.minimumWidth: 30
-        backend: root.mathObj.step
-
-        id: stepEdit
-        expression: "1"
       }
     }
   }

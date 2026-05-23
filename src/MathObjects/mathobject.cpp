@@ -280,10 +280,6 @@ std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
   if (settings.range.max <= settings.range.min)
     return {};
 
-  if (double v = step->getValue(); not std::isnan(v))
-    settings.step.v = v;
-  else return {};
-
   settings.revision = getRevision();
 
   return settings;

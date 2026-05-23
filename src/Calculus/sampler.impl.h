@@ -11,7 +11,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   auto get_acceptable_input = [&](zg::real_unit x)
   {
     if constexpr (discrete)
-      return std::round(std::max(0., x.v) / data.settings.step.v) * data.settings.step;
+      return zg::real_unit{std::round(std::max(0., x.v))};
     else return x;
   };
   auto dispatcher = zc::utils::overloaded{
@@ -150,7 +150,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   const zg::real_unit max_step = [&]{
     if constexpr (discrete)
-      return std::max(std::round(range.amplitude() / double(min_points) / data.settings.step) * data.settings.step, data.settings.step);
+      return zg::real_unit{std::max(std::round(range.amplitude().v / double(min_points)), 1.0)};
     else return range.amplitude() / double(min_points);
   }();
 

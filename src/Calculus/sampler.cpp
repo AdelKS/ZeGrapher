@@ -98,7 +98,6 @@ void Sampler::refresh_valid_objects()
       auto& curve = c[f];
       curve.discrete = f->isDiscrete();
       if (curve.settings.coordinateSystem != new_settings.coordinateSystem or
-          curve.settings.step != new_settings.step or
           curve.settings.revision != new_settings.revision)
         curve.clear();
       curve.settings = new_settings;
