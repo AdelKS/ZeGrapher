@@ -19,6 +19,19 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::updated, &information, &Information::styleUpdated);
 }
 
+QList<qreal> PlotStyle::getDashPattern() const
+{
+  switch (dashPatternType)
+  {
+    case Dash: return {4., 2.};
+    case DashDot: return {4., 2., 2., 2.};
+    case Dot: return {1., 2.};
+    case NoLine: return {};
+    case Solid: return {};
+  }
+  return {};
+}
+
 QColor PlotStyle::colorLerp(double t) const
 {
   const QColor &a = color.getCurrent(), &b = secondColor.getCurrent();

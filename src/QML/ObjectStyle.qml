@@ -10,21 +10,13 @@ Item {
   required property PlotStyle backend
   required property MathObject mathObj
 
-  property int implicitHeight: mainLayout.implicitHeight
-
-  readonly property var dashPatterns: [
-    [],            // solid
-    [4., 2.],        // dash
-    [4., 2., 2., 2.],  // dash-dot
-    [1., 2.],        // dot
-    []             // no line (drawLine: false)
-  ]
+  implicitHeight: mainLayout.implicitHeight
 
   Connections {
     target: root.mathObj
 
     function onDiscreteChanged() {
-      dashPatternTumbler.currentIndex = mathObj.discrete ? dashPatterns.length - 1 : 0
+      dashPatternTumbler.currentIndex = indexFromModelValue(dashPatternTumbler.model, mathObj.discrete ? PlotStyle.NoLine : PlotStyle.Solid);
     }
   }
 
@@ -40,6 +32,15 @@ Item {
         endEdit.expression = "2*math::pi";
       }
     }
+  }
+
+  function indexFromModelValue(model: var, val: int) : int {
+    for (var i = 0; i !== model.count; i++) {
+      if (model.get(i).type === val)
+        return i;
+    }
+    console.warn("Value not in model: ", val)
+    return -1;
   }
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
@@ -94,8 +95,8 @@ Item {
         model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
 
         onCurrentIndexChanged: {
-          backend.dashPattern = root.dashPatterns[currentIndex];
-          backend.drawLine = (currentIndex !== root.dashPatterns.length - 1);
+          backend.dashPatternType = model.get(currentIndex).type;
+          backend.drawLine = model.get(currentIndex).type !== PlotStyle.NoLine;
         }
       }
       SpinBox {
@@ -256,20 +257,50 @@ Item {
 
   ListModel {
     id: dashPatternModel
-    ListElement { path: "qrc:/icons/solid-line.svg" }
-    ListElement { path: "qrc:/icons/dash-line.svg" }
-    ListElement { path: "qrc:/icons/dash-dot-line.svg" }
-    ListElement { path: "qrc:/icons/dot-line.svg" }
-    ListElement { path: "qrc:/icons/noLine.png" }
+    ListElement {
+      path: "qrc:/icons/solid-line.svg"
+      type: PlotStyle.Solid
+    }
+    ListElement {
+      path: "qrc:/icons/dash-line.svg"
+      type: PlotStyle.Dash
+    }
+    ListElement {
+      path: "qrc:/icons/dash-dot-line.svg"
+      type: PlotStyle.DashDot
+    }
+    ListElement {
+      path: "qrc:/icons/dot-line.svg"
+      type: PlotStyle.Dot
+    }
+    ListElement {
+      path: "qrc:/icons/noLine.png"
+      type: PlotStyle.NoLine
+    }
   }
 
   ListModel {
     id: dashPatternModelLight
-    ListElement { path: "qrc:/icons/solid-line-light.svg" }
-    ListElement { path: "qrc:/icons/dash-line-light.svg" }
-    ListElement { path: "qrc:/icons/dash-dot-line-light.svg" }
-    ListElement { path: "qrc:/icons/dot-line-light.svg" }
-    ListElement { path: "qrc:/icons/noLine.png" }
+     ListElement {
+      path: "qrc:/icons/solid-line-light.svg"
+      type: PlotStyle.Solid
+    }
+    ListElement {
+      path: "qrc:/icons/dash-line-light.svg"
+      type: PlotStyle.Dash
+    }
+    ListElement {
+      path: "qrc:/icons/dash-dot-line-light.svg"
+      type: PlotStyle.DashDot
+    }
+    ListElement {
+      path: "qrc:/icons/dot-line-light.svg"
+      type: PlotStyle.Dot
+    }
+    ListElement {
+      path: "qrc:/icons/noLine.png"
+      type: PlotStyle.NoLine
+    }
   }
 
   ListModel {

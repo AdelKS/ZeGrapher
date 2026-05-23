@@ -39,7 +39,7 @@ static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
     .visible = ps.visible,
     .color = ps.color.getCurrent(),
     .lineWidth = ps.lineWidth,
-    .dashPattern = ps.dashPattern,
+    .dashPattern = ps.getDashPattern(),
     .drawLine = ps.drawLine,
     .pointWidth = ps.pointWidth,
     .pointStyle = static_cast<zg::CurveStyle::PointStyle>(ps.pointStyle),

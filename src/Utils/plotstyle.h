@@ -24,7 +24,6 @@
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "GraphDraw/axismapper.h"
-#include "MathObjects/expr.h"
 #include "Utils/themedcolor.h"
 
 namespace zg {
@@ -38,7 +37,7 @@ struct PlotStyle: QObject {
   Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
   Q_PROPERTY(ThemedColor secondColor MEMBER secondColor NOTIFY secondColorChanged)
   Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
-  Q_PROPERTY(QList<qreal> dashPattern MEMBER dashPattern NOTIFY dashPatternChanged)
+  Q_PROPERTY(DashPatternType dashPatternType MEMBER dashPatternType NOTIFY dashPatternChanged)
   Q_PROPERTY(bool drawLine MEMBER drawLine NOTIFY drawLineChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
@@ -50,6 +49,9 @@ public:
 
   enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle);
+
+  enum DashPatternType { NoLine, Solid, Dash, DashDot, Dot};
+  Q_ENUM(DashPatternType);
 
   explicit PlotStyle(QObject *parent = nullptr);
 
@@ -66,10 +68,12 @@ public:
   QColor colorLerp(double t) const;
 
   double lineWidth = 2.0;
-  QList<qreal> dashPattern;
+  DashPatternType dashPatternType;
   bool drawLine = true;
   double pointWidth = 5.0;
   PointStyle pointStyle = None;
+
+  QList<qreal> getDashPattern() const;
 
 signals:
   void updated();
@@ -84,7 +88,6 @@ signals:
   void rangeChanged();
   void secondColorChanged();
 
-protected:
   friend class MathWorld;
 };
 
