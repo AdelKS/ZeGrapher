@@ -5,8 +5,8 @@
    viewBox="0 0 25.000001 25"
    width="25"
    id="svg4269"
-   sodipodi:docname="drawer-light.svg"
-   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="drag-handle-light.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -20,50 +20,68 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="19.121347"
-     inkscape:cx="11.688507"
-     inkscape:cy="14.826361"
-     inkscape:window-width="2048"
-     inkscape:window-height="1080"
+     inkscape:zoom="34.135026"
+     inkscape:cx="11.791407"
+     inkscape:cy="12.216191"
+     inkscape:window-width="2400"
+     inkscape:window-height="1323"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1" />
+     inkscape:current-layer="svg4269"
+     showguides="true" />
   <title
      id="title4249" />
   <desc
      id="desc4251" />
   <defs
      id="defs4253" />
-  <g
-     id="g1"
-     transform="matrix(0.9,0,0,0.9,4.325561,4.9500685)">
-    <rect
-       height="17.073689"
-       id="Rectangle"
-       rx="0.86189294"
-       width="1.7237859"
-       x="1.1013445"
-       y="-17.619553"
-       style="fill:#b2b2b2;fill-opacity:1;fill-rule:evenodd;stroke:#b2b2b2;stroke-width:1.09173;stroke-dasharray:none;stroke-opacity:1"
-       transform="rotate(90)" />
-    <rect
-       height="17.073689"
-       id="Rectangle-3"
-       rx="0.86189294"
-       width="1.7237859"
-       x="7.5269194"
-       y="0.54586732"
-       style="fill:#b2b2b2;fill-opacity:1;fill-rule:evenodd;stroke:#b2b2b2;stroke-width:1.09173;stroke-dasharray:none;stroke-opacity:1"
-       transform="matrix(0,1,1,0,0,0)" />
-    <rect
-       height="17.073689"
-       id="Rectangle-7"
-       rx="0.86189294"
-       width="1.7237859"
-       x="13.952456"
-       y="-17.619553"
-       style="fill:#b2b2b2;fill-opacity:1;fill-rule:evenodd;stroke:#b2b2b2;stroke-width:1.09173;stroke-dasharray:none;stroke-opacity:1"
-       transform="rotate(90)" />
-  </g>
+  <rect
+     style="fill:#b2b2b2;stroke:none;stroke-width:3.26743;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+     id="rect5-8-0"
+     width="2.9159999"
+     height="2.9159999"
+     x="13.764925"
+     y="16.207195"
+     ry="0.97290093" />
+  <rect
+     style="fill:#b2b2b2;stroke:none;stroke-width:3.26743;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+     id="rect5-2"
+     width="2.9159999"
+     height="2.9159999"
+     x="8.3190746"
+     y="16.17857"
+     ry="0.97290093" />
+  <rect
+     style="fill:#b2b2b2;stroke:none;stroke-width:3.26743;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+     id="rect6"
+     width="2.9159999"
+     height="2.9159999"
+     x="13.764925"
+     y="11.056314"
+     ry="0.97290093" />
+  <rect
+     style="fill:#b2b2b2;stroke:none;stroke-width:3.26743;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+     id="rect7"
+     width="2.9159999"
+     height="2.9159999"
+     x="8.3190746"
+     y="11.027686"
+     ry="0.97290093" />
+  <rect
+     style="fill:#b2b2b2;stroke:none;stroke-width:3.26743;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+     id="rect5-8"
+     width="2.9159999"
+     height="2.9159999"
+     x="13.764925"
+     y="5.9054317"
+     ry="0.97290093" />
+  <rect
+     style="fill:#b2b2b2;stroke:none;stroke-width:3.26743;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+     id="rect5"
+     width="2.9159999"
+     height="2.9159999"
+     x="8.3190746"
+     y="5.8768048"
+     ry="0.97290093" />
 </svg>
