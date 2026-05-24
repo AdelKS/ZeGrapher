@@ -33,7 +33,7 @@ struct Expr : Stateful, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(double value READ getValue NOTIFY valueChanged)
-  Q_PROPERTY(QString expression WRITE setExpression READ getExpression)
+  Q_PROPERTY(QString expression WRITE setExpression READ getExpression NOTIFY expressionChanged)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName NOTIFY implicitNameChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
 
@@ -61,6 +61,7 @@ signals:
   void implicitNameChanged();
   void updated();
   void schrodingerChanged();
+  void expressionChanged();
 
 protected:
   QString expression;

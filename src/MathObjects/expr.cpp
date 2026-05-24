@@ -66,12 +66,19 @@ double Expr::getValue()
 
 State Expr::setExpression(QString expr)
 {
-  expression = expr;
+  if (expr != expression)
+  {
+    expression = expr;
+    emit expressionChanged();
+  }
 
   std::string fullExpr = implicitName.toStdString() + "=" + expr.toStdString();
 
   if (fullExpression == fullExpr)
+  {
+    updateValue();
     return sync();
+  }
 
   fullExpression = fullExpr;
 
