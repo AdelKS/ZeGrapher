@@ -28,24 +28,50 @@ MathObject::MathObject(QObject *parent, Type type)
   setType(type);
   start.setImplicitName("start");
   end.setImplicitName("end");
+  updateStartEndDefaults();
   connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
+}
+
+void MathObject::setCoordinateSystem(CoordinateSystem s)
+{
+  if (s != coordinateSystem)
+  {
+    coordinateSystem = s;
+    updateStartEndDefaults();
+    emit coordinateSystemChanged();
+  }
+
+}
+
+void MathObject::updateStartEndDefaults()
+{
+  if (coordinateSystem == Polar)
+  {
+    start.setExpression("0");
+    end.setExpression("2*math::pi");
+  }
+  else
+  {
+    if (getType() == PARAMETRIC)
+    {
+      start.setExpression("0");
+      end.setExpression("10");
+    }
+    else
+    {
+      start.setExpression("xmin");
+      end.setExpression("xmax");
+    }
+  }
+
 }
 
 void MathObject::setType(Type t)
 {
-  if (backend.index() != size_t(t))
-  {
-    std::visit(
-      zc::utils::overloaded{
-        [](auto* n) {
-          n->deleteLater();
-        },
-        [](std::monostate) {},
-      },
-      backend
-    );
-  }
-  else return; // backend is already correct
+  const Type oldType = getType();
+
+  if (oldType == t)
+    return; // backend is already correct
 
   switch (t) {
     case MONOSTATE:
@@ -75,6 +101,9 @@ void MathObject::setType(Type t)
     },
     backend
   );
+
+  if ((oldType == PARAMETRIC or t == PARAMETRIC) and coordinateSystem != Polar)
+    updateStartEndDefaults();
 
   emit typeChanged();
 }

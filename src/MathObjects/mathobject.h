@@ -45,7 +45,7 @@ struct MathObject: QObject {
   Q_PROPERTY(bool discrete READ isDiscrete NOTIFY continuityChanged)
   Q_PROPERTY(bool continuous READ isContinuous NOTIFY continuityChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
-  Q_PROPERTY(CoordinateSystem coordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
+  Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(mathobj::Expr* start READ getStart)
   Q_PROPERTY(mathobj::Expr* end READ getEnd)
   Q_PROPERTY(PlotStyle* style READ getStyle)
@@ -101,6 +101,8 @@ public:
   Q_INVOKABLE bool isDiscrete() const { return discrete; };
   Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
 
+  Q_INVOKABLE void setCoordinateSystem(CoordinateSystem);
+
   CoordinateSystem getCoordinateSystem() const { return coordinateSystem; }
 
   const mathobj::Expr* getStart() const { return &start; }
@@ -134,6 +136,9 @@ signals:
   void nameChanged();
   void schrodingerChanged();
   void coordinateSystemChanged();
+
+protected slots:
+  void updateStartEndDefaults();
 
 protected:
   std::variant<std::monostate,

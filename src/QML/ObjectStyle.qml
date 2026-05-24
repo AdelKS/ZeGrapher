@@ -12,28 +12,6 @@ Item {
 
   implicitHeight: mainLayout.implicitHeight
 
-  Connections {
-    target: root.mathObj
-
-    function onDiscreteChanged() {
-      dashPatternTumbler.currentIndex = indexFromModelValue(dashPatternTumbler.model, mathObj.discrete ? PlotStyle.NoLine : PlotStyle.Solid);
-    }
-  }
-
-  Connections {
-    target: root.mathObj
-
-    function onCoordinateSystemChanged() {
-      if (root.mathObj.coordinateSystem === MathObject.Cartesian) {
-        startEdit.expression = "xmin";
-        endEdit.expression = "xmax";
-      } else if (root.mathObj.coordinateSystem === MathObject.Polar && !root.mathObj.discrete) {
-        startEdit.expression = "0";
-        endEdit.expression = "2*math::pi";
-      }
-    }
-  }
-
   function indexFromModelValue(model: var, val: int) : int {
     for (var i = 0; i !== model.count; i++) {
       if (model.get(i).type === val)
@@ -219,7 +197,6 @@ Item {
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
         id: startEdit
-        expression: "xmin"
       }
 
       Item {
@@ -246,7 +223,6 @@ Item {
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
         id: endEdit
-        expression: "xmax"
       }
 
       Item {
