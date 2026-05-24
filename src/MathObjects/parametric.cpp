@@ -23,5 +23,15 @@ State Parametric::sync()
   return obj1->getState();
 }
 
+bool Parametric::isDiscrete() const
+{
+  return obj1->isDiscrete() or obj2->isDiscrete();
+}
+
+bool Parametric::isContinuous() const
+{
+  return obj1->isContinuous() and obj2->isContinuous();
+}
+
 } // namespace mathobj
 } // namespace zg

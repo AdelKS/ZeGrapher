@@ -225,10 +225,6 @@ State MathObject::sync()
         continuous = c->isContinuous();
         discrete = c->isDiscrete();
       },
-      [&](const mathobj::Parametric* p) {
-        continuous = p->obj1->isContinuous() and p->obj2->isContinuous();
-        discrete = p->obj1->isDiscrete() or p->obj2->isDiscrete();
-      },
       [&](std::monostate) {
         continuous = false;
         discrete = false;

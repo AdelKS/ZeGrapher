@@ -42,6 +42,9 @@ public:
 
   State sync();
 
+  bool isDiscrete() const;
+  bool isContinuous() const;
+
   NamedRef* obj1;
   NamedRef* obj2;
 
