@@ -61,7 +61,7 @@ public:
   ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
 
   /// @brief used for simultaneous plotting
-  ThemedColor secondColor = {.dark = "#009999", .light = "#00fefe"};
+  ThemedColor secondColor = {.dark = "#00fefe", .light = "#009999"};
 
   /// @brief returns a linear interpolation between color and secondColor in the current theme
   /// @param t: coeff in [0, 1]
