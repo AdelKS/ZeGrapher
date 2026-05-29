@@ -90,7 +90,7 @@ Item {
             }
 
             onDeleteMe: {
-              MathWorld.removeMathObject(wrapper.modelData.mathObj);
+              MathWorld.removeMathObject(mathObj);
             }
           }
 
