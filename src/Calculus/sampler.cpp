@@ -48,35 +48,24 @@ static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
 
 void Sampler::refresh_schrodinger_keys()
 {
-  anim_schrodinger_constant = zg::animationConductor.getSchrodingerConstant();
-  if (not zg::animationConductor.getSchrodingerConstant())
+  schrodinger_constant = zg::mathWorld.getSchrodingerConstant();
+  if (not schrodinger_constant)
   {
-    schrodinger_constant = nullptr;
     schrodinger_curves_map.clear();
     return;
   }
-  else
-  {
-    schrodinger_constant = anim_schrodinger_constant->getBackend();
-    assert(schrodinger_constant);
-    if (not schrodinger_constant) [[unlikely]]
-    {
-      schrodinger_curves_map.clear();
-      return;
-    }
-  }
 
-  assert(anim_schrodinger_constant->getSteps() > 0);
+  assert(schrodinger_constant->getSteps() > 0);
 
-  if (std::isnan(anim_schrodinger_constant->getFrom()) or std::isnan(anim_schrodinger_constant->getTo()))
+  if (std::isnan(schrodinger_constant->getFrom()) or std::isnan(schrodinger_constant->getTo()))
     return;
 
   std::unordered_set<double> current_values;
-  for (size_t i = 0 ; i <= anim_schrodinger_constant->getSteps(); i++)
+  for (int i = 0 ; i <= schrodinger_constant->getSteps(); i++)
   {
-    double t = double(i) / double(anim_schrodinger_constant->getSteps());
+    double t = double(i) / double(schrodinger_constant->getSteps());
     current_values.insert(
-      std::lerp(anim_schrodinger_constant->getFrom(), anim_schrodinger_constant->getTo(), t));
+      std::lerp(schrodinger_constant->getFrom(), schrodinger_constant->getTo(), t));
   }
 
   std::erase_if(schrodinger_curves_map,
@@ -218,13 +207,13 @@ void Sampler::update()
       update_discontinuities(data);
   }
 
-  if (anim_schrodinger_constant and schrodinger_constant)
+  if (schrodinger_constant)
   {
     for (auto& [v, schrodinger_curves]: schrodinger_curves_map)
     {
       schrodinger_constant->zcMathObj = v;
-      double amplitude = anim_schrodinger_constant->getTo() - anim_schrodinger_constant->getFrom();
-      double t = amplitude != 0 ? (v - anim_schrodinger_constant->getFrom()) / amplitude : 1.0;
+      double amplitude = schrodinger_constant->getTo() - schrodinger_constant->getFrom();
+      double t = amplitude != 0 ? (v - schrodinger_constant->getFrom()) / amplitude : 1.0;
       for (auto& [f, data]: schrodinger_curves)
       {
         data.style.color = f->style.colorLerp(t);

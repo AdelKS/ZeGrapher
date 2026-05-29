@@ -63,6 +63,17 @@ void Base::setDiscrete(bool b)
 
   if (defStart) resetStart();
   if (defEnd) resetEnd();
+
+  emit discreteChanged();
+}
+
+void Base::setSchrodinger(bool s)
+{
+  if (schrodinger == s) return;
+
+  schrodinger = s;
+
+  emit schrodingerChanged();
 }
 
 zg::real_range1d Base::getSnapshot()

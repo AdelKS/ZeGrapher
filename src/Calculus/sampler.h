@@ -73,7 +73,6 @@ protected:
 
   std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
 
-  zg::AnimatedConstant* anim_schrodinger_constant = nullptr;
   zg::mathobj::Constant* schrodinger_constant = nullptr;
 
   std::unordered_map<double, std::unordered_map<const zg::MathObject*, zg::SampledCurve>> schrodinger_curves_map;

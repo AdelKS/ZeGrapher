@@ -107,6 +107,7 @@ void MathObject::setType(Type t)
         }
         else
         {
+          connect(&n->base, &Base::schrodingerChanged, this, &MathObject::schrodingerChanged);
           connect(&n->base, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
           connect(&n->base, &Base::discreteChanged, this, &MathObject::discreteChanged);
         }
@@ -250,23 +251,6 @@ bool MathObject::isDiscrete() const
   );
 }
 
-void MathObject::setSchrodinger(bool s)
-{
-  if (schrodinger == s)
-    return;
-
-  schrodinger = s;
-
-  /// @brief set schrodinger constants to have a default NaN value
-  ///        so Expr that depend on it get a warning color
-  if (schrodinger)
-    if (auto* c = getConstant())
-      c->set_value(std::nan(""));
-
-
-  emit schrodingerChanged();
-}
-
 std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
 {
   SamplingSettings settings;
@@ -287,6 +271,30 @@ std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
   settings.revision = getRevision();
 
   return settings;
+}
+
+void MathObject::setSchrodinger(bool s)
+{
+  std::visit(
+    zc::utils::overloaded{
+      [s](mathobj::Constant* c) { c->setDeadAndAlive(s); },
+      [s](auto* v) { v->base.setSchrodinger(s); },
+      [](std::monostate) {}
+    },
+    backend
+  );
+}
+
+bool MathObject::isSchrodinger() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [](const mathobj::Constant* c) { return c->isDeadAndAlive(); },
+      [](const auto* v) { return v->base.isSchrodinger(); },
+      [](std::monostate) { return false; }
+    },
+    backend
+  );
 }
 
 }

@@ -40,6 +40,7 @@ struct Base: QObject {
   Q_PROPERTY(mathobj::Expr* end READ getEndPtr)
   Q_PROPERTY(bool discrete WRITE setDiscrete MEMBER discrete NOTIFY discreteChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
+  Q_PROPERTY(bool schrodinger WRITE setSchrodinger MEMBER schrodinger NOTIFY schrodingerChanged)
 
 public:
   enum CoordinateSystem {Cartesian, Polar};
@@ -54,6 +55,7 @@ public:
 
   void setCoordinateSystem(CoordinateSystem);
   void setDiscrete(bool);
+  void setSchrodinger(bool);
 
   void setStart(QString s) { start.setExpression(s); }
   void setEnd(QString s) { end.setExpression(s); }
@@ -63,6 +65,7 @@ public:
 
   CoordinateSystem getCoordinateSystem() const { return coordinateSystem; }
   bool isDiscrete() const { return discrete; }
+  bool isSchrodinger() const { return schrodinger; }
 
   zg::real_range1d getSnapshot();
 
@@ -77,6 +80,7 @@ public:
 signals:
   void coordinateSystemChanged();
   void discreteChanged();
+  void schrodingerChanged();
 
 protected:
 
@@ -85,6 +89,7 @@ protected:
   DefaultStringRangeProvider defaultStringRangeProvider;
   CoordinateSystem coordinateSystem = Cartesian;
   bool discrete = false;
+  bool schrodinger = false;
 };
 
 using CoordinateSystem = Base::CoordinateSystem;

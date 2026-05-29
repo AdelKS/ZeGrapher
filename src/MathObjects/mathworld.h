@@ -40,7 +40,7 @@ class MathWorld: public QAbstractListModel
   Q_OBJECT
   QML_ANONYMOUS
 
-  Q_PROPERTY(zg::MathObject* schrodingerConstant READ getSchrodingerConstant NOTIFY schrodingerConstantChanged)
+  Q_PROPERTY(zg::mathobj::Constant* schrodingerConstant READ getSchrodingerConstant NOTIFY schrodingerConstantChanged)
 
 public:
   MathWorld(QObject *parent = nullptr): QAbstractListModel(parent) {}
@@ -55,9 +55,9 @@ public:
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
   Q_INVOKABLE void moveMathObject(int from, int to);
 
-  Q_INVOKABLE void setSchrodingerConstant(zg::MathObject* c);
-  Q_INVOKABLE void unsetSchrodingerConstant(zg::MathObject* c);
-  zg::MathObject* getSchrodingerConstant() { return schrodingerConstant; }
+  Q_INVOKABLE void setSchrodingerConstant(zg::mathobj::Constant* c);
+  Q_INVOKABLE void unsetSchrodingerConstant(zg::mathobj::Constant* c);
+  zg::mathobj::Constant* getSchrodingerConstant() { return schrodingerConstant; }
 
   /// @brief add Expr object that is not part of the model because its widget is elsewhere
   void trackExprObject(mathobj::Expr*);
@@ -80,7 +80,7 @@ protected:
   std::vector<zg::MathObject*> mathObjects;
 
   /// @brief the single constant currently driving simultaneous plotting, or nullptr
-  zg::MathObject* schrodingerConstant = nullptr;
+  zg::mathobj::Constant* schrodingerConstant = nullptr;
 
   /// @brief math objects that aren't part of the model (that the view represents)
   std::vector<zg::mathobj::Expr*> exprObjects;

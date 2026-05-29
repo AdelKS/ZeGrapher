@@ -244,7 +244,6 @@ Item {
           function onSchrodingerChanged() {
             if (loader.item && loader.item.animatedConstant)
             {
-              loader.item.animatedConstant.deadAndAlive = root.mathObj.schrodinger;
               schrodingerCatButton.checked = root.mathObj.schrodinger;
             }
           }
@@ -260,19 +259,15 @@ Item {
 
           readonly property bool isConstant: root.mathObj.type === MathObject.CONSTANT
 
-          checkable: true
+          checkable: isConstant
+
+          checked: isConstant && root.mathObj.schrodinger
 
           lightThemeIcon: "qrc:/icons/schrodinger-cat-dark.svg"
           darkThemeIcon: "qrc:/icons/schrodinger-cat-light.svg"
 
           onToggled: {
-            if (checked) {
-              MathWorld.setSchrodingerConstant(root.mathObj);
-              AnimationConductor.setSchrodingerConstant(loader.item.animatedConstant);
-            } else {
-              MathWorld.unsetSchrodingerConstant(root.mathObj);
-              AnimationConductor.unsetSchrodingerConstant(loader.item.animatedConstant);
-            }
+            root.mathObj.getConstant().deadAndAlive = checked;
           }
 
           states: [

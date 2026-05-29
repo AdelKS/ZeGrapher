@@ -22,28 +22,25 @@ Item {
   AnimatedConstant {
     id: wrapped_backend
     backend: root.backend
+
+    onSliderPosChanged: slider.value = wrapped_backend.sliderPos;
+    onPlayingChanged: playButton.checked = wrapped_backend.playing;
   }
 
   Connections {
-    target: wrapped_backend
+    target: root.backend
 
     function onFromChanged() {
-      from.setValue(wrapped_backend.from);
+      from.setValue(root.backend.from);
     }
     function onToChanged() {
-      to.setValue(wrapped_backend.to);
+      to.setValue(root.backend.to);
     }
     function onStepsChanged() {
-      steps.value = wrapped_backend.steps;
+      steps.value = root.backend.steps;
     }
     function onValueChanged() {
-      constant.setValue(backend.value)
-    }
-    function onSliderPosChanged() {
-      slider.value = wrapped_backend.sliderPos
-    }
-    function onPlayingChanged() {
-      playButton.checked = wrapped_backend.playing;
+      constant.setValue(root.backend.value)
     }
   }
 
@@ -144,7 +141,7 @@ Item {
         id: from
         implicitWidth: 70
 
-        onNumberEdited: wrapped_backend.from = value;
+        onNumberEdited: root.backend.from = value;
       }
 
 
@@ -157,7 +154,6 @@ Item {
         Slider {
           id: slider
           anchors.fill: parent
-          enabled: opacity > 0.5
 
           onMoved: {
             console.info("slider moved: ", value);
@@ -168,20 +164,23 @@ Item {
           stepSize: 0.01
           value: 0.5
           to: 1.
+
+          enabled: !root.backend.deadAndAlive
         }
 
         ZeSpinBox {
           id: steps
           anchors.centerIn: parent
           width: Math.min(implicitWidth, parent.width)
-          enabled: opacity > 0.5
 
           from: 1
           value: 5
           stepSize: 5
           to: 100
 
-          onValueModified: wrapped_backend.steps = value
+          onValueModified: root.backend.steps = value
+
+          enabled: root.backend.deadAndAlive
         }
       }
 
@@ -189,7 +188,7 @@ Item {
         id: to
         implicitWidth: 70
 
-        onNumberEdited: wrapped_backend.to = value;
+        onNumberEdited: root.backend.to = value;
       }
     }
 
@@ -225,9 +224,9 @@ Item {
           if (checked && pingPongButton.checked)
             pingPongButton.checked = false;
           if(checked)
-            wrapped_backend.loopType = AnimatedConstant.REPEAT;
+            root.backend.loopType = Constant.REPEAT;
           else if (!pingPongButton.checked)
-            wrapped_backend.loopType = AnimatedConstant.ONESHOT;
+            root.backend.loopType = Constant.ONESHOT;
         }
       }
 
@@ -244,9 +243,9 @@ Item {
           if (checked && loopButton.checked)
             loopButton.checked = false;
           if(checked)
-            wrapped_backend.loopType = AnimatedConstant.PING_PONG;
+            root.backend.loopType = Constant.PING_PONG;
           else if (!loopButton.checked)
-            wrapped_backend.loopType = AnimatedConstant.ONESHOT;
+            root.backend.loopType = Constant.ONESHOT;
         }
       }
 
@@ -259,9 +258,9 @@ Item {
         to: 500.
         step: 1.
 
-        Component.onCompleted: setValue(5.0)
+        Component.onCompleted: setValue(root.backend.duration)
 
-        onValueChanged: wrapped_backend.setDuration(value)
+        onValueChanged: root.backend.duration = value;
       }
     }
   }
@@ -272,7 +271,7 @@ Item {
       console.info("new double value: ", constant.textInput.text);
 
       let value = parseFloat(constant.textInput.text);
-      wrapped_backend.value = value;
+      root.backend.value = value;
 
       returnToCenter.start();
     }
@@ -290,7 +289,7 @@ Item {
   states: [
     State {
       name: "empty"
-      when: !wrapped_backend.deadAndAlive && constant.textInput.text.length === 0
+      when: !root.backend.deadAndAlive && constant.textInput.text.length === 0
       PropertyChanges {
         mainLayout.y: 0
         valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
@@ -312,7 +311,7 @@ Item {
     },
     State {
       name: "numeric"
-      when: !wrapped_backend.deadAndAlive && constant.textInput.text.length !== 0
+      when: !root.backend.deadAndAlive && constant.textInput.text.length !== 0
       PropertyChanges {
         mainLayout.y: 0
         valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
@@ -333,7 +332,7 @@ Item {
     },
     State {
       name: "schrodinger"
-      when: wrapped_backend.deadAndAlive
+      when: root.backend.deadAndAlive
       PropertyChanges {
         mainLayout.y: - valueLayout.implicitHeight - mainLayout.spacing
         valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
@@ -370,7 +369,6 @@ Item {
 
   Component.onDestruction: {
     AnimationConductor.untrack(wrapped_backend);
-    AnimationConductor.unsetSchrodingerConstant(wrapped_backend);
   }
 
 }

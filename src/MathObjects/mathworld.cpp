@@ -126,10 +126,14 @@ QHash<int, QByteArray> MathWorld::roleNames() const
   return { {Qt::DisplayRole, "mathObjPtr"} };
 }
 
-void MathWorld::setSchrodingerConstant(MathObject* c)
+void MathWorld::setSchrodingerConstant(zg::mathobj::Constant* c)
 {
   if (schrodingerConstant == c)
     return;
+
+  // make any eventual already shrodinger constant lose its status
+  if (schrodingerConstant)
+    schrodingerConstant->setDeadAndAlive(false);
 
   schrodingerConstant = c;
 
@@ -138,7 +142,7 @@ void MathWorld::setSchrodingerConstant(MathObject* c)
   emit schrodingerConstantChanged();
 }
 
-void MathWorld::unsetSchrodingerConstant(MathObject* c)
+void MathWorld::unsetSchrodingerConstant(zg::mathobj::Constant* c)
 {
   if (schrodingerConstant != c or c == nullptr)
     return;
@@ -148,26 +152,19 @@ void MathWorld::unsetSchrodingerConstant(MathObject* c)
   updateSchrodingerStatus();
 
   emit schrodingerConstantChanged();
+  emit updated();
 }
 
 void MathWorld::updateSchrodingerStatus()
 {
+  if (destroying)
+    return;
+
   std::unordered_set<const zc::DynMathObject<zc_t>*> schrodingerBackends;
   if (schrodingerConstant)
   {
-    auto handle = schrodingerConstant->getZcObject();
-    schrodingerBackends = revdeps(handle);
-    std::visit(
-      zc::utils::overloaded{
-        [&](const zc::DynMathObject<zc_t>* p) { schrodingerBackends.insert(p); },
-        [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
-          schrodingerBackends.insert(p.first);
-          schrodingerBackends.insert(p.second);
-        },
-        [](std::monostate) {},
-      },
-      handle
-    );
+    schrodingerBackends = revdeps(&schrodingerConstant->zcMathObj);
+    schrodingerBackends.insert(&schrodingerConstant->zcMathObj);
   }
 
   auto inSet = [&](MathObject::EvalHandle h) -> bool {

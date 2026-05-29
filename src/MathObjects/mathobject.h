@@ -95,7 +95,7 @@ public:
   bool isContinuous() const { return not isDiscrete(); };
 
   Q_INVOKABLE bool isDiscrete() const;
-  Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
+  Q_INVOKABLE bool isSchrodinger() const;
 
   Q_INVOKABLE void setCoordinateSystem(CoordinateSystem);
   CoordinateSystem getCoordinateSystem() const;
@@ -137,8 +137,6 @@ protected:
                mathobj::Parametric*> backend;
   QString name;
   State state;
-
-  bool schrodinger = false;
 
   friend zg::MathWorld;
 };

@@ -1,56 +1,31 @@
 #include "animatedconstant.h"
-#include "globalvars.h"
 
 namespace zg {
-
-bool AnimatedConstant::isDeadAndAlive() const
-{
-  return deadAndAlive;
-}
-
-void AnimatedConstant::setDeadAndAlive(bool s)
-{
-  if (s == deadAndAlive)
-    return;
-
-  deadAndAlive = s;
-
-  if (s)
-    setPlaying(false);
-
-  emit deadAndAliveChanged();
-}
 
 void AnimatedConstant::setBackend(mathobj::Constant* b)
 {
   backend = b;
-  connect(b, &mathobj::Constant::valueChanged, this, &AnimatedConstant::valueChanged);
+  connect(b, &mathobj::Constant::fromChanged, this, &AnimatedConstant::backendUpdate);
+  connect(b, &mathobj::Constant::toChanged, this, &AnimatedConstant::backendUpdate);
+  connect(b, &mathobj::Constant::valueChanged, this, &AnimatedConstant::backendUpdate);
+  connect(b, &mathobj::Constant::deadAndAliveChanged, this, &AnimatedConstant::backendUpdate);
 }
 
 void AnimatedConstant::animationStep(seconds T)
 {
   // in case the step took too long
-  phase = (phase * duration.count() + T.count() ) / duration.count();
+  phase = (phase * backend->duration.count() + T.count() ) / backend->duration.count();
 
-  switch (loopType)
+  if (backend->loopType == mathobj::Constant::ONESHOT and (phase > 1.0 or phase < 0.))
   {
-    case REPEAT:    sliderPos = std::fmod(phase, 1.0); break;
-    case ONESHOT:   sliderPos = phase < 1.0 ? phase : 1.0; break;
-    case PING_PONG: sliderPos = phase <= 1. ? phase : 2 - phase; break;
-  }
-
-  if (loopType == ONESHOT and phase >= 1.0)
-  {
-    phase = 1.0;
+    phase = std::clamp(phase, 0.0, 1.0);
     setPlaying(false);
   }
-  else phase = std::fmod(phase, loopType == PING_PONG ? 2.0 : 1.0);
+  else phase = std::fmod(phase, backend->loopType == mathobj::Constant::PING_PONG ? 2.0 : 1.0);
 
-  backend->value = (1. - sliderPos) * from + sliderPos * to;
-  backend->zcMathObj = backend->value;
+  assert(phase >= 0.);
 
-  emit valueChanged();
-  emit sliderPosChanged();
+  updateSliderPosFromPhase();
 }
 
 void AnimatedConstant::setPlaying(bool p)
@@ -58,7 +33,7 @@ void AnimatedConstant::setPlaying(bool p)
   if (p == playing)
     return;
 
-  if (p and deadAndAlive)
+  if (p and backend->deadAndAlive)
     return;
 
   playing = p;
@@ -66,84 +41,12 @@ void AnimatedConstant::setPlaying(bool p)
   emit playingChanged();
 }
 
-void AnimatedConstant::setDuration(double d)
-{
-  if (std::isnan(d))
-    setPlaying(false);
-
-  duration = seconds(d);
-}
-
-void AnimatedConstant::setValue(double v)
-{
-  if (backend->value == v)
-    return;
-
-  if (std::isnan(v))
-    setPlaying(false);
-
-  sliderPos = 0.5;
-  phase = 0.5;
-
-  backend->set_value(v);
-
-  from = lowerMul * v;
-  to = upperMul * v;
-
-  emit valueChanged();
-  emit fromChanged();
-  emit toChanged();
-  emit sliderPosChanged();
-}
-
-void AnimatedConstant::setFrom(double v)
-{
-  if (from == v)
-    return;
-
-  if (std::isnan(v))
-    setPlaying(false);
-
-  from = v;
-
-  constrainValue();
-  recomputeSliderPos();
-
-  emit fromChanged();
-}
-
-void AnimatedConstant::setTo(double v)
-{
-  if (to == v)
-    return;
-
-  if (std::isnan(v))
-    setPlaying(false);
-
-  to = v;
-
-  constrainValue();
-  recomputeSliderPos();
-
-  emit toChanged();
-}
-
-void AnimatedConstant::setSteps(size_t v)
-{
-  if (steps == v)
-    return;
-
-  steps = v;
-
-  emit stepsChanged();
-}
-
 void AnimatedConstant::setSliderPos(double v)
 {
   if (sliderPos == v)
     return;
 
-  if (deadAndAlive)
+  if (backend->deadAndAlive)
     return;
 
   assert(0. <= v);
@@ -152,76 +55,71 @@ void AnimatedConstant::setSliderPos(double v)
   sliderPos = v;
   phase = sliderPos;
 
-  backend->set_value(std::lerp(from, to, sliderPos));
+  ignoreSliderPosRecompute = true;
+  backend->setLerpValue(sliderPos);
+  ignoreSliderPosRecompute = false;
 
   emit sliderPosChanged();
 }
 
-void AnimatedConstant::constrainValue()
+void AnimatedConstant::backendUpdate()
 {
-  double value = backend->get_value();
+  if (std::isnan(backend->from) or std::isnan(backend->to) or backend->deadAndAlive)
+    setPlaying(false);
 
-  if (std::isnan(from) or std::isnan(to))
-    return;
-
-  const bool inverted = from > to;
-  const double min = std::min(from, to);
-  const double max = std::max(from, to);
-
-  if (value < min)
-  {
-    backend->set_value(min);
-    sliderPos = inverted ? 1.0 : 0.;
-    phase = sliderPos;
-
-    emit sliderPosChanged();
-  }
-  else if (max < value)
-  {
-    backend->set_value(max);
-    sliderPos = inverted ? 0. : 1.;
-    phase = sliderPos;
-
-    emit sliderPosChanged();
-  }
+  updateSliderPosFromRange();
 }
 
-void AnimatedConstant::setLoopType(LoopType t)
+void AnimatedConstant::updateSliderPosFromPhase()
 {
-  if (t == loopType)
-    return;
+  const double oldPhase = phase;
 
-  loopType = t;
+  switch (backend->loopType)
+  {
+    case mathobj::Constant::REPEAT:
+    case mathobj::Constant::ONESHOT:
+      setSliderPos(phase);
+      break;
+    case mathobj::Constant::PING_PONG:
+      setSliderPos(phase <= 1. ? phase : 2 - phase);
+      break;
+  }
 
-  // handle the case PING_PONG -> something else properly
-  phase = sliderPos;
+  phase = oldPhase;
 }
 
-void AnimatedConstant::recomputeSliderPos()
+void AnimatedConstant::updateSliderPosFromRange()
 {
+  if (ignoreSliderPosRecompute)
+    return;
+
   const double value = backend->value;
 
-  if (std::isnan(from) or std::isnan(to))
-    return;
-
-  const bool inverted = from > to;
-  const double min = std::min(from, to);
-  const double max = std::max(from, to);
-  const double amplitude = max - min;
-
-  if (amplitude == 0.0)
+  if (std::isnan(backend->from) or std::isnan(backend->to))
   {
     sliderPos = 0.5;
   }
   else
   {
-    if (inverted)
-      sliderPos = (max - value) / amplitude;
+    const bool inverted = backend->from > backend->to;
+    const double min = std::min(backend->from, backend->to);
+    const double max = std::max(backend->from, backend->to);
+    const double amplitude = max - min;
+
+    if (amplitude == 0.0)
+    {
+      sliderPos = 0.5;
+    }
     else
-      sliderPos = (value - min) / amplitude;
+    {
+      if (inverted)
+        sliderPos = (max - value) / amplitude;
+      else
+        sliderPos = (value - min) / amplitude;
+    }
   }
 
-  phase = sliderPos;
+  phase = phase >= 1.0 ? 2. - sliderPos : sliderPos;
 
   emit sliderPosChanged();
 }
