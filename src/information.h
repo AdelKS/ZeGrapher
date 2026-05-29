@@ -73,6 +73,8 @@ public slots:
   void setOrthonormal(bool state);
   void screenChanged(QWindow*);
 
+  void exportYaml(QUrl filename);
+
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;

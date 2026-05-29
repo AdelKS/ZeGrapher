@@ -26,7 +26,7 @@ Item {
 
 
   FileDialog {
-    id: fileDialog
+    id: exportDialog
     title: qsTr("Graph export")
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.SaveFile
@@ -38,6 +38,19 @@ Item {
     ]
     visible: false
     onAccepted: userInputPanel.exportGraph(selectedFile)
+  }
+
+  FileDialog {
+    id: saveDialog
+    title: qsTr("Save as ZeGrapher document")
+    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    fileMode: FileDialog.SaveFile
+    defaultSuffix: ".zg"
+    nameFilters: [
+      "ZeGrapher document (*.zg)",
+    ]
+    visible: false
+    onAccepted: Information.exportYaml(selectedFile)
   }
 
   ColumnLayout {
@@ -160,7 +173,22 @@ Item {
         lightThemeIcon: "qrc:/icons/export-graph-dark.svg"
         darkThemeIcon: "qrc:/icons/export-graph-light.svg"
 
-        onReleased: fileDialog.visible = true;
+        onReleased: exportDialog.visible = true;
+      }
+
+      IconRoundButton {
+        Layout.topMargin: 0
+        Layout.bottomMargin: 0
+
+        id: saveWorkspace
+        implicitWidth: 35
+        implicitHeight: 35
+        Layout.alignment: Qt.AlignRight
+
+        lightThemeIcon: "qrc:/icons/save-dark.svg"
+        darkThemeIcon: "qrc:/icons/save-light.svg"
+
+        onReleased: saveDialog.visible = true;
       }
     }
   }

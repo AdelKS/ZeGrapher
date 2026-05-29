@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "information.h"
+#include "globalvars.h"
 
 Information::Information(QObject* parent):
   QObject(parent), appSettings(this)
@@ -84,4 +85,9 @@ void Information::screenChanged(QWindow* win)
     pixelDensity = px_per_cm;
     emit pixelDensityChanged();
   }
+}
+
+void Information::exportYaml(QUrl filename)
+{
+  Q_UNUSED(filename);
 }
