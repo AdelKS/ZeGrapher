@@ -64,5 +64,36 @@ PlotStyle::PointStyle PlotStyle::defaultPointStyle() const
   else return PointStyle::None;
 }
 
+void PlotStyle::setDiscrete(bool d)
+{
+  if (d == discrete) return;
+  if (d)
+  {
+    if (dashPatternType != DashPatternType::NoLine)
+    {
+      dashPatternType = DashPatternType::NoLine;
+      emit dashPatternChanged();
+    }
+    if (pointStyle == PointStyle::None)
+    {
+      pointStyle = PointStyle::Square;
+      emit pointStyleChanged();
+    }
+  }
+  else
+  {
+    if (dashPatternType == DashPatternType::NoLine)
+    {
+      dashPatternType = DashPatternType::Solid;
+      emit dashPatternChanged();
+    }
+    if (pointStyle != PointStyle::None)
+    {
+      pointStyle = PointStyle::None;
+      emit pointStyleChanged();
+    }
+  }
+  discrete = d;
+}
 
 }

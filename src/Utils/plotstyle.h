@@ -84,7 +84,7 @@ public:
   PointStyle defaultPointStyle() const;
 
   /// @brief only used for determining defaults
-  void setDiscrete(bool d) { discrete = d; }
+  void setDiscrete(bool d);
 
 signals:
   void updated();
