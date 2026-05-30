@@ -36,7 +36,7 @@ struct PlotStyle: QObject {
   Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
   Q_PROPERTY(ThemedColor secondColor MEMBER secondColor NOTIFY secondColorChanged)
   Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
-  Q_PROPERTY(DashPatternType dashPatternType MEMBER dashPatternType NOTIFY dashPatternChanged)
+  Q_PROPERTY(LineStyle lineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
 
@@ -48,8 +48,8 @@ public:
   enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle);
 
-  enum DashPatternType { NoLine, Solid, Dash, DashDot, Dot};
-  Q_ENUM(DashPatternType);
+  enum LineStyle { NoLine, Solid, Dash, DashDot, Dot};
+  Q_ENUM(LineStyle);
 
   explicit PlotStyle(QObject *parent = nullptr);
 
@@ -66,7 +66,7 @@ public:
   QColor colorLerp(double t) const;
 
   double lineWidth = defaultLineWidth;
-  DashPatternType dashPatternType = Solid;
+  LineStyle lineStyle = Solid;
   double pointWidth = defaultPointWidth;
   PointStyle pointStyle = None;
 
@@ -80,7 +80,7 @@ public:
   static constexpr double defaultLineWidth = 2.0;
   static constexpr double defaultPointWidth = 5.0;
 
-  DashPatternType defaultDashPatternType() const;
+  LineStyle defaultLineStyle() const;
   PointStyle defaultPointStyle() const;
 
   /// @brief only used for determining defaults
@@ -93,7 +93,7 @@ signals:
   void lineWidthChanged();
   void pointStyleChanged();
   void pointWidthChanged();
-  void dashPatternChanged();
+  void lineStyleChanged();
   void drawLineChanged();
   void backendChanged();
   void rangeChanged();

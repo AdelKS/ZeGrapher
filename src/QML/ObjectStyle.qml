@@ -27,8 +27,8 @@ Item {
 
   Connections {
     target: backend
-    function onDashPatternChanged() {
-      dashPatternTumbler.currentIndex = root.indexFromModelValue(dashPatternModel, backend.dashPatternType);
+    function onLineStyleChanged() {
+      dashPatternTumbler.currentIndex = root.indexFromModelValue(dashPatternModel, backend.lineStyle);
     }
     function onPointStyleChanged() {
       pointStyleTumbler.currentIndex = root.indexFromModelValue(pointStyleModel, backend.pointStyle);
@@ -76,7 +76,7 @@ Item {
         model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
 
         onCurrentIndexChanged: {
-          backend.dashPatternType = model.get(currentIndex).type;
+          backend.lineStyle = model.get(currentIndex).type;
         }
       }
       SpinBox {

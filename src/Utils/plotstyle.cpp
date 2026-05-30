@@ -9,7 +9,7 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::visibleChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::colorChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::lineWidthChanged, this, &PlotStyle::updated);
-  connect(this, &PlotStyle::dashPatternChanged, this, &PlotStyle::updated);
+  connect(this, &PlotStyle::lineStyleChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::drawLineChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::pointWidthChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::pointStyleChanged, this, &PlotStyle::updated);
@@ -21,7 +21,7 @@ PlotStyle::PlotStyle(QObject* parent)
 
 QList<qreal> PlotStyle::getDashPattern() const
 {
-  switch (dashPatternType)
+  switch (lineStyle)
   {
     case Dash: return {4., 2.};
     case DashDot: return {4., 2., 2., 2.};
@@ -50,11 +50,11 @@ void PlotStyle::setVisible(bool v)
   }
 }
 
-PlotStyle::DashPatternType PlotStyle::defaultDashPatternType() const
+PlotStyle::LineStyle PlotStyle::defaultLineStyle() const
 {
   if (discrete)
-    return DashPatternType::NoLine;
-  else return DashPatternType::Solid;
+    return LineStyle::NoLine;
+  else return LineStyle::Solid;
 }
 
 PlotStyle::PointStyle PlotStyle::defaultPointStyle() const
@@ -69,10 +69,10 @@ void PlotStyle::setDiscrete(bool d)
   if (d == discrete) return;
   if (d)
   {
-    if (dashPatternType != DashPatternType::NoLine)
+    if (lineStyle != LineStyle::NoLine)
     {
-      dashPatternType = DashPatternType::NoLine;
-      emit dashPatternChanged();
+      lineStyle = LineStyle::NoLine;
+      emit lineStyleChanged();
     }
     if (pointStyle == PointStyle::None)
     {
@@ -82,10 +82,10 @@ void PlotStyle::setDiscrete(bool d)
   }
   else
   {
-    if (dashPatternType == DashPatternType::NoLine)
+    if (lineStyle == LineStyle::NoLine)
     {
-      dashPatternType = DashPatternType::Solid;
-      emit dashPatternChanged();
+      lineStyle = LineStyle::Solid;
+      emit lineStyleChanged();
     }
     if (pointStyle != PointStyle::None)
     {
