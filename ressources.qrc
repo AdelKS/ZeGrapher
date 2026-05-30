@@ -116,5 +116,7 @@
         <file>icons/export-graph-dark.svg</file>
         <file>icons/save-light.svg</file>
         <file>icons/save-dark.svg</file>
+        <file>icons/load-light.svg</file>
+        <file>icons/load-dark.svg</file>
     </qresource>
 </RCC>

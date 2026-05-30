@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   version="1.1"
+   viewBox="0 0 512 512"
+   id="svg5"
+   sodipodi:docname="load.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     inkscape:zoom="0.56705735"
+     inkscape:cx="76.711818"
+     inkscape:cy="111.09987"
+     inkscape:window-width="2400"
+     inkscape:window-height="1323"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <defs
+     id="defs5" />
+  <g
+     id="g2"
+     transform="matrix(0.8800905,0,0,0.8800905,30.69683,29.81675)">
+    <path
+       id="rect1"
+       style="fill:#b2b2b2;stroke-width:25;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:359.999"
+       d="m 103.33647,99.68542 h 73.33176 c 36.32319,0 27.35244,46.88175 57.33177,46 h 95.33177 73.33176 c 26.70397,0 48.20212,21.49815 48.20212,48.20212 v 172.2249 c 0,26.70398 -21.49815,48.20212 -48.20212,48.20212 H 109.33647 c -26.703972,0 -48.202116,-21.49814 -48.202116,-48.20212 v -224.2249 c 0,-26.70397 15.498144,-42.20212 42.202116,-42.20212 z"
+       sodipodi:nodetypes="scccssssssss" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:153.34px;line-height:1.5;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:10.0037px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:13;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+       x="148.34721"
+       y="333.88193"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         x="148.34721"
+         y="333.88193"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:13;stroke-dasharray:none">ZG</tspan></text>
+  </g>
+</svg>
