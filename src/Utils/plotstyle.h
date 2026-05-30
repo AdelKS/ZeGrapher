@@ -56,21 +56,32 @@ public:
   void setVisible(bool);
 
   bool visible = true;
-  ThemedColor color = {.dark = Qt::lightGray, .light = Qt::black};
+  ThemedColor color = defaultColor;
 
   /// @brief used for simultaneous plotting
-  ThemedColor secondColor = {.dark = "#00fefe", .light = "#009999"};
+  ThemedColor secondColor = defaultSecondColor;
 
   /// @brief returns a linear interpolation between color and secondColor in the current theme
   /// @param t: coeff in [0, 1]
   QColor colorLerp(double t) const;
 
-  double lineWidth = 2.0;
-  DashPatternType dashPatternType;
-  double pointWidth = 5.0;
+  double lineWidth = defaultLineWidth;
+  DashPatternType dashPatternType = Solid;
+  double pointWidth = defaultPointWidth;
   PointStyle pointStyle = None;
 
   QList<qreal> getDashPattern() const;
+
+  // defaults
+
+  const static ThemedColor defaultColor;
+  const static ThemedColor defaultSecondColor;
+
+  static constexpr double defaultLineWidth = 2.0;
+  static constexpr double defaultPointWidth = 5.0;
+
+  DashPatternType defaultDashPatternType() const;
+  PointStyle defaultPointStyle() const;
 
   /// @brief only used for determining defaults
   void setDiscrete(bool d) { discrete = d; }
@@ -93,5 +104,8 @@ protected:
 
   friend class MathWorld;
 };
+
+inline const ThemedColor PlotStyle::defaultColor = {.dark = Qt::lightGray, .light = Qt::black};
+inline const ThemedColor PlotStyle::defaultSecondColor = {.dark = "#00fefe", .light = "#009999"};
 
 }

@@ -50,4 +50,19 @@ void PlotStyle::setVisible(bool v)
   }
 }
 
+PlotStyle::DashPatternType PlotStyle::defaultDashPatternType() const
+{
+  if (discrete)
+    return DashPatternType::NoLine;
+  else return DashPatternType::Solid;
+}
+
+PlotStyle::PointStyle PlotStyle::defaultPointStyle() const
+{
+  if (discrete)
+    return PointStyle::Square;
+  else return PointStyle::None;
+}
+
+
 }
