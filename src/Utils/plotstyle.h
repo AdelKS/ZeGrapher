@@ -72,6 +72,9 @@ public:
 
   QList<qreal> getDashPattern() const;
 
+  /// @brief only used for determining defaults
+  void setDiscrete(bool d) { discrete = d; }
+
 signals:
   void updated();
   void visibleChanged();
@@ -84,6 +87,9 @@ signals:
   void backendChanged();
   void rangeChanged();
   void secondColorChanged();
+
+protected:
+  bool discrete = false;
 
   friend class MathWorld;
 };
