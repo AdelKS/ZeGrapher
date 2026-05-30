@@ -23,7 +23,6 @@
 #include <QObject>
 #include <QtQmlIntegration/qqmlintegration.h>
 
-#include "GraphDraw/axismapper.h"
 #include "Utils/themedcolor.h"
 
 namespace zg {
@@ -38,7 +37,6 @@ struct PlotStyle: QObject {
   Q_PROPERTY(ThemedColor secondColor MEMBER secondColor NOTIFY secondColorChanged)
   Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
   Q_PROPERTY(DashPatternType dashPatternType MEMBER dashPatternType NOTIFY dashPatternChanged)
-  Q_PROPERTY(bool drawLine MEMBER drawLine NOTIFY drawLineChanged)
   Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
 
@@ -69,7 +67,6 @@ public:
 
   double lineWidth = 2.0;
   DashPatternType dashPatternType;
-  bool drawLine = true;
   double pointWidth = 5.0;
   PointStyle pointStyle = None;
 

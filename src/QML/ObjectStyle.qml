@@ -67,7 +67,6 @@ Item {
 
         onCurrentIndexChanged: {
           backend.dashPatternType = model.get(currentIndex).type;
-          backend.drawLine = model.get(currentIndex).type !== PlotStyle.NoLine;
         }
       }
       SpinBox {
