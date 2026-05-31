@@ -156,7 +156,7 @@ Item {
 
     Item {
       Layout.fillWidth: true
-      Layout.minimumWidth: 2*40
+      Layout.minimumWidth: 3*40
     }
 
     IconRoundButton {

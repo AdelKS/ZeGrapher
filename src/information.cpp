@@ -96,3 +96,16 @@ QString Information::exportYaml(QUrl filename)
   }
   else return {};
 }
+
+QString Information::importYaml(QUrl filename)
+{
+  qInfo() << "Importing from " << filename.toLocalFile();
+
+  zg::MathWorld::POD pod;
+  auto read_error = glz::read_file_yaml(pod, filename.toLocalFile().toStdString());
+  if (read_error)
+    return QString::fromStdString(glz::format_error(read_error));
+
+  zg::mathWorld.importPod(pod);
+  return {};
+}

@@ -40,6 +40,12 @@ Item {
     onAccepted: userInputPanel.exportGraph(selectedFile)
   }
 
+  MessageDialog {
+    id: errorDialog
+    buttons: MessageDialog.Ok
+  }
+
+
   FileDialog {
     id: saveDialog
     title: qsTr("Save as ZeGrapher document")
@@ -51,6 +57,28 @@ Item {
     ]
     visible: false
     onAccepted: Information.exportYaml(selectedFile)
+  }
+
+  FileDialog {
+    id: loadDialog
+    title: qsTr("Load ZeGrapher document")
+    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    fileMode: FileDialog.OpenFile
+    defaultSuffix: ".zg"
+    nameFilters: [
+      "ZeGrapher document (*.zg)",
+    ]
+    visible: false
+    onAccepted: {
+      let error = Information.importYaml(selectedFile);
+      if (error.length !== 0)
+      {
+        errorDialog.text = qsTr("Error importing the workspace file");
+        errorDialog.informativeText = "The file is either malformed or one of the field has the wrong data in it";
+        errorDialog.detailedText = error;
+        errorDialog.visible = true;
+      }
+    }
   }
 
   ColumnLayout {
@@ -189,6 +217,21 @@ Item {
         darkThemeIcon: "qrc:/icons/save-light.svg"
 
         onReleased: saveDialog.visible = true;
+      }
+
+      IconRoundButton {
+        Layout.topMargin: 0
+        Layout.bottomMargin: 0
+
+        id: loadWorkspace
+        implicitWidth: 35
+        implicitHeight: 35
+        Layout.alignment: Qt.AlignRight
+
+        lightThemeIcon: "qrc:/icons/load-dark.svg"
+        darkThemeIcon: "qrc:/icons/load-light.svg"
+
+        onReleased: loadDialog.visible = true;
       }
     }
   }

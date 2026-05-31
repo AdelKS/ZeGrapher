@@ -74,6 +74,7 @@ public slots:
   void screenChanged(QWindow*);
 
   QString exportYaml(QUrl filename);
+  QString importYaml(QUrl filename);
 
 public:
   zc::eval::Cache mathObjectCache;
