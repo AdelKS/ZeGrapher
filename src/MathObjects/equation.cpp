@@ -26,6 +26,7 @@ State Equation::setEquation(QString eq)
 
   sync();
 
+  emit equationChanged();
   emit updated();
 
   return getState();

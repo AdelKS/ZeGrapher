@@ -34,7 +34,7 @@ struct Equation: Stateful, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString equation WRITE setEquation MEMBER equation)
+  Q_PROPERTY(QString equation WRITE setEquation MEMBER equation NOTIFY equationChanged)
 
 public:
 
@@ -50,6 +50,7 @@ public:
 
 signals:
   void updated();
+  void equationChanged();
 
 protected:
   QString equation;
