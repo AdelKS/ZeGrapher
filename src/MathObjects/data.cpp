@@ -84,5 +84,23 @@ Data::POD Data::exportPod() const
   };
 }
 
+void Data::importPod(Data::POD p)
+{
+  if (p.name)
+    setName(QString::fromStdString(*p.name));
+
+  if (p.start)
+    setStart(QString::fromStdString(*p.start));
+
+  if (p.end)
+    setStart(QString::fromStdString(*p.end));
+
+  if (p.values)
+    setData(std::move(*p.values));
+
+  if (p.coordinates)
+    setCoordinateSystem(*p.coordinates);
+}
+
 }
 }

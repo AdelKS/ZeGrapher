@@ -56,5 +56,23 @@ Parametric::POD Parametric::exportPod() const {
   };
 }
 
+void Parametric::importPod(Parametric::POD p)
+{
+  if (p.first)
+    setFirst(QString::fromStdString(*p.first));
+
+  if (p.second)
+    setFirst(QString::fromStdString(*p.second));
+
+  if (p.start)
+    setStart(QString::fromStdString(*p.start));
+
+  if (p.end)
+    setStart(QString::fromStdString(*p.end));
+
+  if (p.coordinates)
+    setCoordinateSystem(*p.coordinates);
+}
+
 } // namespace mathobj
 } // namespace zg

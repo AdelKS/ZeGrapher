@@ -73,5 +73,20 @@ Equation::POD Equation::exportPod() const {
   };
 }
 
+void Equation::importPod(Equation::POD p)
+{
+  if (p.equation)
+    setEquation(QString::fromStdString(*p.equation));
+
+  if (p.start)
+    setStart(QString::fromStdString(*p.start));
+
+  if (p.end)
+    setStart(QString::fromStdString(*p.end));
+
+  if (p.coordinates)
+    setCoordinateSystem(*p.coordinates);
+}
+
 }
 }

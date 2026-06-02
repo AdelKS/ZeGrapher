@@ -71,6 +71,7 @@ public:
   };
 
   POD exportPod() const;
+  void importPod(POD);
 
 signals:
   void updated();

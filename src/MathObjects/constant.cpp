@@ -169,7 +169,8 @@ void Constant::setLerpValue(double a)
   emit updated();
 }
 
-Constant::POD Constant::exportPod() const {
+Constant::POD Constant::exportPod() const
+{
   auto get_opt_edge = [this](double edge, double multiplier) -> std::optional<double> {
     if (std::isnan(value) or (not std::isnan(edge) and edge * multiplier != value))
       return edge;
@@ -186,6 +187,33 @@ Constant::POD Constant::exportPod() const {
     .dead_and_alive = yml::not_default(deadAndAlive, false),
     .duration = yml::not_default(duration.count(), defaultDuration.count())
   };
+}
+
+void Constant::importPod(Constant::POD p)
+{
+  if (p.name)
+    setName(QString::fromStdString(*p.name));
+
+  if (p.value)
+    set_value(*p.value);
+
+  if (p.from)
+    setFrom(*p.from);
+
+  if (p.to)
+    setTo(*p.to);
+
+  if (p.steps)
+    setSteps(*p.steps);
+
+  if (p.loop_type)
+    setLoopType(*p.loop_type);
+
+  if (p.dead_and_alive)
+    setDeadAndAlive(*p.dead_and_alive);
+
+  if (p.duration)
+    setDuration(*p.duration);
 }
 
 }

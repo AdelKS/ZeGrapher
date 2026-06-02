@@ -306,4 +306,17 @@ MathObject::POD MathObject::exportPod() const
   );
 }
 
+void MathObject::importPod(POD p)
+{
+  std::visit(
+    zc::utils::overloaded{
+      [this](mathobj::Constant::POD&& p) { setType(CONSTANT); getConstant()->importPod(std::move(p)); },
+      [this](mathobj::Data::POD&& p) { setType(DATA); getData()->importPod(std::move(p)); },
+      [this](mathobj::Equation::POD&& p) { setType(EQUATION); getEquation()->importPod(std::move(p)); },
+      [this](mathobj::Parametric::POD&& p) { setType(PARAMETRIC); getParametric()->importPod(std::move(p)); },
+    },
+    std::move(p)
+  );
+}
+
 }
