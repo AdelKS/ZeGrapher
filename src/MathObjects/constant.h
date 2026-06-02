@@ -38,7 +38,7 @@ struct Constant: Stateful, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name WRITE setName MEMBER input_name)
+  Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
   Q_PROPERTY(double from WRITE setFrom MEMBER from NOTIFY fromChanged)
   Q_PROPERTY(double value WRITE set_value MEMBER value NOTIFY valueChanged)
   Q_PROPERTY(double to WRITE setTo MEMBER to NOTIFY toChanged)
@@ -87,6 +87,7 @@ public:
   double get_value() const { return value; }
 
 signals:
+  void nameChanged();
   void updated();
   void fromChanged();
   void valueChanged();

@@ -21,6 +21,7 @@ State Constant::setName(QString new_input_name)
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
 
+  emit nameChanged();
   emit updated();
 
   return sync();
