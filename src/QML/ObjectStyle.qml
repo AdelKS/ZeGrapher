@@ -59,6 +59,8 @@ Item {
 
         model: coordinateType
 
+        currentIndex: indexFromModelValue(coordinateType, root.mathObj.coordinateSystem)
+
         onCurrentValueChanged: {
           root.mathObj.coordinateSystem = currentValue
         }
@@ -75,10 +77,13 @@ Item {
         Layout.preferredHeight: 50
         model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
 
+        currentIndex: indexFromModelValue(dashPatternModel, backend.lineStyle)
+
         onCurrentIndexChanged: {
           backend.lineStyle = model.get(currentIndex).type;
         }
       }
+
       SpinBox {
         id: lineWidthSpinBox
         Layout.alignment: Qt.AlignHCenter
@@ -106,6 +111,8 @@ Item {
         Layout.preferredHeight: 50
         model: pointStyleModel
         fillMode: Image.PreserveAspectFit
+
+        currentIndex: indexFromModelValue(pointStyleModel, backend.pointStyle)
 
         onCurrentIndexChanged: {
           root.backend.pointStyle = pointStyleModel.get(currentIndex).type
