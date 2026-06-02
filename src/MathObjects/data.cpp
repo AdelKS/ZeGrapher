@@ -100,6 +100,9 @@ void Data::importPod(Data::POD p)
 
   if (p.coordinates)
     setCoordinateSystem(*p.coordinates);
+
+  if (p.style)
+    style.importPod(std::move(*p.style));
 }
 
 }

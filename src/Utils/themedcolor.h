@@ -57,4 +57,5 @@ public:
   };
 
   std::optional<POD> exportPod(ThemedColor defaultColors) const;
+  void importPod(POD);
 };

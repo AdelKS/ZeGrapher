@@ -96,9 +96,38 @@ void PlotStyle::setDiscrete(bool d)
   discrete = d;
 }
 
+void PlotStyle::setLineWidth(double s)
+{
+  if (lineWidth == s) return;
+  lineWidth = s;
+  emit lineWidthChanged();
+}
+
+void PlotStyle::setLineStyle(LineStyle s)
+{
+  if (lineStyle == s) return;
+  lineStyle = s;
+  emit lineStyleChanged();
+}
+
+void PlotStyle::setPointStyle(PointStyle s)
+{
+  if (pointStyle == s) return;
+  pointStyle = s;
+  emit pointStyleChanged();
+}
+
+void PlotStyle::setPointWidth(double s)
+{
+  if (pointWidth == s) return;
+  pointWidth = s;
+  emit pointWidthChanged();
+}
+
 std::optional<PlotStyle::POD> PlotStyle::exportPod() const
 {
   auto pod = POD {
+    .visible = yml::not_default(visible, true),
     .color = color.exportPod(defaultColor),
     .second_color = secondColor.exportPod(defaultSecondColor),
     .line_width = yml::not_default(lineWidth, defaultLineWidth),
@@ -110,6 +139,36 @@ std::optional<PlotStyle::POD> PlotStyle::exportPod() const
   if (pod)
     return pod;
   else return {};
+}
+
+void PlotStyle::importPod(POD p)
+{
+  if (p.visible)
+    setVisible(*p.visible);
+
+  if (p.color)
+  {
+    color.importPod(std::move(*p.color));
+    emit colorChanged();
+  }
+
+  if (p.second_color)
+  {
+    secondColor.importPod(std::move(*p.second_color));
+    emit secondColorChanged();
+  }
+
+  if (p.line_width)
+    setLineWidth(*p.line_width);
+
+  if (p.line_style)
+    setLineStyle(*p.line_style);
+
+  if (p.point_width)
+    setPointWidth(*p.point_width);
+
+  if (p.point_style)
+    setPointStyle(*p.point_style);
 }
 
 }

@@ -36,10 +36,10 @@ struct PlotStyle: QObject {
   Q_PROPERTY(bool visible MEMBER visible NOTIFY visibleChanged)
   Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
   Q_PROPERTY(ThemedColor secondColor MEMBER secondColor NOTIFY secondColorChanged)
-  Q_PROPERTY(double lineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
-  Q_PROPERTY(LineStyle lineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
-  Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
-  Q_PROPERTY(double pointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
+  Q_PROPERTY(double lineWidth WRITE setLineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
+  Q_PROPERTY(LineStyle lineStyle WRITE setLineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
+  Q_PROPERTY(PointStyle pointStyle WRITE setPointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
+  Q_PROPERTY(double pointWidth WRITE setPointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
 
 public:
 
@@ -55,6 +55,10 @@ public:
   explicit PlotStyle(QObject *parent = nullptr);
 
   void setVisible(bool);
+  void setLineWidth(double);
+  void setLineStyle(LineStyle);
+  void setPointStyle(PointStyle);
+  void setPointWidth(double);
 
   bool visible = true;
   ThemedColor color = defaultColor;
@@ -88,6 +92,7 @@ public:
   void setDiscrete(bool d);
 
   struct POD {
+    std::optional<bool> visible;
     std::optional<ThemedColor::POD> color;
     std::optional<ThemedColor::POD> second_color;
     std::optional<double> line_width;
@@ -97,12 +102,12 @@ public:
 
     operator bool() const
     {
-      return color or second_color or line_width or line_style or point_width or point_style;
+      return visible or color or second_color or line_width or line_style or point_width or point_style;
     }
   };
 
   std::optional<POD> exportPod() const;
-
+  void importPod(POD);
 
 signals:
   void updated();

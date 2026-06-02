@@ -30,3 +30,12 @@ std::optional<ThemedColor::POD> ThemedColor::exportPod(ThemedColor defaultColors
     return pod;
   else return {};
 }
+
+void ThemedColor::importPod(POD p)
+{
+  if (p.dark)
+    dark = QColor::fromString(QString::fromStdString(*p.dark));
+
+  if (p.light)
+    light = QColor::fromString(QString::fromStdString(*p.dark));
+}

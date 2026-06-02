@@ -72,6 +72,9 @@ void Parametric::importPod(Parametric::POD p)
 
   if (p.coordinates)
     setCoordinateSystem(*p.coordinates);
+
+  if (p.style)
+    style.importPod(std::move(*p.style));
 }
 
 } // namespace mathobj

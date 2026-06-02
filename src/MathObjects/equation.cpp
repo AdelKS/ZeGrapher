@@ -82,10 +82,13 @@ void Equation::importPod(Equation::POD p)
     setStart(QString::fromStdString(*p.start));
 
   if (p.end)
-    setStart(QString::fromStdString(*p.end));
+    setEnd(QString::fromStdString(*p.end));
 
   if (p.coordinates)
     setCoordinateSystem(*p.coordinates);
+
+  if (p.style)
+    style.importPod(std::move(*p.style));
 }
 
 }
