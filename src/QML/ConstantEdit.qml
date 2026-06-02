@@ -19,6 +19,16 @@ Item {
     console.info("ConstantEdit: implicitHeight: ", implicitHeight);
   }
 
+  Connections {
+    target: backend
+    function onNameChanged() {
+      zcExprEdit.expression = backend.name;
+    }
+    function onValueChanged() {
+      constant.setValue(backend.value);
+    }
+  }
+
   AnimatedConstant {
     id: wrapped_backend
     backend: root.backend
