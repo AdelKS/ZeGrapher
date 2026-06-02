@@ -21,11 +21,19 @@ Item {
     root.destroy(200);
   }
 
+  Connections {
+    target: backend
+    function onEquationChanged() {
+      zcExprEdit.expression = backend.equation;
+    }
+  }
+
   ZcExprEdit {
     id: zcExprEdit
 
     state: root.backend.state
 
+    expression: backend.equation
     onTextEdited: backend.setEquation(expression)
 
     anchors.left: parent.left
