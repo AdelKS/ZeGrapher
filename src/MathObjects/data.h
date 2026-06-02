@@ -44,8 +44,9 @@ public:
   explicit Data(QObject *parent = nullptr);
 
   Q_INVOKABLE State setName(QString name);
-  State setData(QString name, std::vector<std::string> values);
   QString getName() const { return input_name; }
+
+  void setData(std::vector<std::string> values);
 
   State sync();
   Q_INVOKABLE bool isValid();

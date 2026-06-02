@@ -12,7 +12,7 @@ ZcMathObjectBB::ZcMathObjectBB()
 
 ZcMathObjectBB::~ZcMathObjectBB()
 {
-  zc::mathWorld.erase(zcMathObj);
+  std::ignore = zc::mathWorld.erase(zcMathObj);
 }
 
 bool ZcMathObjectBB::isContinuous() const

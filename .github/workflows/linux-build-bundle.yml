@@ -20,13 +20,18 @@ jobs:
           version: '6.10.*'
           modules: 'qtshadertools'
 
+      - name: Enable gcc testing repo
+        run: sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
       - name: Install Dependencies
         run: |
-          sudo apt install libboost-all-dev python3-pip libfuse2 libxcb-cursor0
+          sudo apt install libboost-all-dev python3-pip libfuse2 libxcb-cursor0 g++-15
           pip3 install --user meson ninja
 
       - name: Build & Bundle
         run: ./deploy/linux-bundle-appimage.sh
+        env:
+          CXX: g++-15
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v5

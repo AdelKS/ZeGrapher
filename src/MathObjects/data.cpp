@@ -11,7 +11,7 @@ Data::Data(QObject *parent)
              ? StringRange{"0", "10"}
              : StringRange{"0", "xmax"}; }, this)
 {
-  zcMathObj.set_data("", std::vector<std::string>(10));
+  zcMathObj.set_data(std::vector<std::string>(10));
 }
 
 State Data::setName(QString new_input_name)
@@ -30,20 +30,13 @@ State Data::setName(QString new_input_name)
   return getState();
 }
 
-State Data::setData(QString name, std::vector<std::string> values)
+void Data::setData(std::vector<std::string> values)
 {
-  bool nameChange = input_name != name;
-  input_name = name;
-  zcMathObj.set_data(name.toStdString(), std::move(values));
+  zcMathObj.set_data(std::move(values));
 
   sync();
 
-  if (nameChange)
-    emit nameChanged();
-
   emit updated();
-
-  return getState();
 }
 
 bool Data::isValid()

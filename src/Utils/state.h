@@ -45,7 +45,7 @@ public:
 
   /// @brief update state using this expected
   template <class T>
-  static State from(const tl::expected<T, zc::Error>& exp);
+  static State from(const std::expected<T, zc::Error>& exp);
 
   static State from(const std::optional<zc::Error>& err);
 
@@ -73,7 +73,7 @@ protected:
 };
 
 template <class T>
-State State::from(const tl::expected<T, zc::Error>& exp)
+State State::from(const std::expected<T, zc::Error>& exp)
 {
   return from(exp.has_value() ? std::optional<zc::Error>{} : exp.error());
 }

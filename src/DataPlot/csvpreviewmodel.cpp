@@ -263,7 +263,8 @@ void CsvPreviewModel::loadIntoWorld()
     {
       MathObject* obj = mathWorld.addMathObject(MathObject::DATA);
       obj->style.setVisible(false);
-      obj->getData()->setData(names[i], std::move(data[i]));
+      obj->getData()->setName(names[i]);
+      obj->getData()->setData(std::move(data[i]));
       progressPercentage = 50 + i*50/data.size();
       emit progressPercentageChanged();
       QCoreApplication::processEvents();

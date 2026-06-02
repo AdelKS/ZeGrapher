@@ -18,24 +18,24 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
       requires (coordinates == zg::CoordinateSystem::Cartesian)
     {
-      tl::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
+      std::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
       double res = exp_res ? *exp_res : std::nan("");
       return zg::real_pt{x, zg::real_unit{res}};
     },
     [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
       requires (coordinates == zg::CoordinateSystem::Polar)
     {
-      tl::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
+      std::expected<double, zc::Error> exp_res = (*f)({x.v}, &information.mathObjectCache);
       double res = exp_res ? *exp_res : std::nan("");
       return zg::real_pt{std::cos(x.v) * zg::real_unit{res}, std::sin(x.v) * zg::real_unit{res}};
     },
     [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
       requires (coordinates == zg::CoordinateSystem::Cartesian)
     {
-      tl::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
+      std::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
       double res1 = exp_res1 ? *exp_res1 : std::nan("");
 
-      tl::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information.mathObjectCache);
+      std::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information.mathObjectCache);
       double res2 = exp_res2 ? *exp_res2 : std::nan("");
 
       return zg::real_pt{zg::real_unit{res1}, zg::real_unit{res2}};
@@ -43,10 +43,10 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
       requires (coordinates == zg::CoordinateSystem::Polar)
     {
-      tl::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
+      std::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information.mathObjectCache);
       double res1 = exp_res1 ? *exp_res1 : std::nan("");
 
-      tl::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information.mathObjectCache);
+      std::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information.mathObjectCache);
       double res2 = exp_res2 ? *exp_res2 : std::nan("");
 
       return zg::real_pt{std::cos(res1) * zg::real_unit{res2}, std::sin(res1) * zg::real_unit{res2}};
