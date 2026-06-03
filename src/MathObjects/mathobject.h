@@ -25,7 +25,6 @@
 #include <QSyntaxHighlighter>
 
 #include "BuildingBlocks/base.h"
-#include "Utils/plotstyle.h"
 #include "constant.h"
 #include "data.h"
 #include "equation.h"
@@ -46,7 +45,7 @@ struct MathObject: QObject {
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem READ getCoordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(zg::Base* base READ getBase NOTIFY baseChanged)
-  Q_PROPERTY(PlotStyle* style READ getStyle)
+  Q_PROPERTY(PlotStyle* style READ getStyle NOTIFY styleChanged)
 
 public:
   using EvalHandle
@@ -100,7 +99,9 @@ public:
 
   Base* getBase();
 
-  PlotStyle* getStyle() { return &style; }
+  PlotStyle* getStyle();
+
+  const PlotStyle* getStyle() const;
 
   std::optional<SamplingSettings> getSamplingSettings();
 
@@ -110,8 +111,6 @@ public:
 
   template <class T>
   const T* getBackend() const;
-
-  PlotStyle style;
 
 public slots:
   /// @brief forwards the refresh() call to the current active backend
@@ -126,6 +125,7 @@ signals:
   void schrodingerChanged();
   void coordinateSystemChanged();
   void baseChanged();
+  void styleChanged();
 
 protected:
   using variant_t

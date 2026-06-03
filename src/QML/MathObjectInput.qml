@@ -8,6 +8,8 @@ Item {
 
   required property MathObject mathObj
 
+  property bool noStyle: root.mathObj.style === null
+
   property alias dragHandle: dragHandle
 
   property int deleteDuration: 250
@@ -133,7 +135,15 @@ Item {
           onActivated: {
             let newType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
             if (mathObj.type !== newType)
+            {
+              if (newType === MathObject.CONSTANT)
+                root.noStyle = true;
+
               mathObj.type = newType;
+
+              if (newType !== MathObject.CONSTANT)
+                root.noStyle = false;
+            }
           }
         }
 
@@ -149,13 +159,14 @@ Item {
           Layout.preferredWidth: 30
 
           checkable: true
-          checked: !root.mathObj.style.visible
+          checked: !(root.mathObj.style?.visible ?? true)
 
           lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
           darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
 
           onToggled: {
-            root.mathObj.style.visible = !checked
+            if (root.mathObj.style)
+              root.mathObj.style.visible = !checked
           }
         }
 
@@ -176,9 +187,14 @@ Item {
         ColorButton {
           id: colorButton
           radius: 12
-          selectedColor: root.mathObj.style.color
+
+          property themedColor lastGood
+
+          selectedColor: root.mathObj.style?.color ?? lastGood
 
           onSelectedColorChanged: {
+            if (!root.mathObj.style) return;
+            lastGood = selectedColor;
             root.mathObj.style.color = selectedColor;
           }
         }
@@ -186,9 +202,14 @@ Item {
         ColorButton {
           id: secondColorButton
           radius: 12
-          selectedColor: root.mathObj.style.secondColor
+
+          property themedColor lastGood
+
+          selectedColor: root.mathObj.style?.secondColor ?? lastGood
 
           onSelectedColorChanged: {
+            if (!root.mathObj.style) return;
+            lastGood = selectedColor;
             root.mathObj.style.secondColor = selectedColor;
           }
 
@@ -391,10 +412,12 @@ Item {
         transitions: commonTransition
       }
 
-      ObjectStyle {
+      Loader {
         id: styleWidget
-        backend: root.mathObj.style
-        mathObj: root.mathObj
+        active: !root.noStyle
+        sourceComponent: ObjectStyle {
+          mathObj: root.mathObj
+        }
 
         Layout.fillWidth: true
         Layout.preferredHeight: preferredHeight

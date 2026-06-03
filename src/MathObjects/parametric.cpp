@@ -23,6 +23,7 @@ State Parametric::sync()
     return obj2->getState();
 
   Base::setDiscrete(obj1->isDiscrete() or obj2->isDiscrete());
+  style.setDiscrete(Base::isDiscrete());
 
   return obj1->getState();
 }

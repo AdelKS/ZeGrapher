@@ -262,7 +262,7 @@ void CsvPreviewModel::loadIntoWorld()
     for (size_t i = 0 ; i != data.size() ; i++)
     {
       MathObject* obj = mathWorld.addMathObject(MathObject::DATA);
-      obj->style.setVisible(false);
+      obj->getStyle()->setVisible(false);
       obj->getData()->setName(names[i]);
       obj->getData()->setData(std::move(data[i]));
       progressPercentage = 50 + i*50/data.size();

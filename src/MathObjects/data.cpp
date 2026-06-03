@@ -56,6 +56,7 @@ State Data::sync() {
   setState(State::from(zcMathObj.name_status()));
 
   Base::setDiscrete(shared::ZcMathObjectBB::isDiscrete());
+  style.setDiscrete(Base::isDiscrete());
 
   return getState();
 };

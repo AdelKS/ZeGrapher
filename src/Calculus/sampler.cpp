@@ -140,11 +140,11 @@ void Sampler::refresh_curve_styles()
   for (auto* f : zg::mathWorld.getMathObjects())
   {
     if (auto it = curves.find(f); it != curves.end())
-      it->second.style = make_curve_style(f->style);
+      it->second.style = make_curve_style(*f->getStyle());
 
     for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
       if (auto it = schrodinger_curves.find(f); it != schrodinger_curves.end())
-        it->second.style = make_curve_style(f->style);
+        it->second.style = make_curve_style(*f->getStyle());
   }
 }
 
@@ -215,7 +215,7 @@ void Sampler::update()
       double t = amplitude != 0 ? (v - schrodinger_constant->getFrom()) / amplitude : 1.0;
       for (auto& [f, data]: schrodinger_curves)
       {
-        data.style.color = f->style.colorLerp(t);
+        data.style.color = f->getStyle()->colorLerp(t);
         dispatch(f->getZcObject(), data);
         if (f->isContinuous())
           update_discontinuities(data);

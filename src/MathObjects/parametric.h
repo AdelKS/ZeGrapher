@@ -21,7 +21,9 @@
 ****************************************************************************/
 
 #include "BuildingBlocks/base.h"
+#include "Utils/plotstyle.h"
 #include "namedref.h"
+
 #include <zecalculator/zecalculator.h>
 
 namespace zg {
@@ -48,6 +50,8 @@ public:
 
   NamedRef* obj1;
   NamedRef* obj2;
+
+  PlotStyle style;
 
 signals:
   void updated();

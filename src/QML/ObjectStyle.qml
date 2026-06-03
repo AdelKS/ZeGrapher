@@ -9,7 +9,6 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  required property PlotStyle backend
   required property MathObject mathObj
 
   implicitHeight: mainLayout.implicitHeight
@@ -26,12 +25,12 @@ Item {
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   Connections {
-    target: backend
+    target: mathObj.style
     function onLineStyleChanged() {
-      dashPatternTumbler.currentIndex = root.indexFromModelValue(dashPatternModel, backend.lineStyle);
+      dashPatternTumbler.currentIndex = root.indexFromModelValue(dashPatternModel, mathObj.style.lineStyle);
     }
     function onPointStyleChanged() {
-      pointStyleTumbler.currentIndex = root.indexFromModelValue(pointStyleModel, backend.pointStyle);
+      pointStyleTumbler.currentIndex = root.indexFromModelValue(pointStyleModel, mathObj.style.pointStyle);
     }
   }
 
@@ -77,10 +76,10 @@ Item {
         Layout.preferredHeight: 50
         model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
 
-        currentIndex: indexFromModelValue(dashPatternModel, backend.lineStyle)
+        currentIndex: indexFromModelValue(dashPatternModel, mathObj.style.lineStyle)
 
         onCurrentIndexChanged: {
-          backend.lineStyle = model.get(currentIndex).type;
+          mathObj.style.lineStyle = model.get(currentIndex).type;
         }
       }
 
@@ -91,12 +90,12 @@ Item {
         from: 1
         to: 100
         live: true
-        value: backend.lineWidth * 10.
+        value: mathObj.style.lineWidth * 10.
         stepSize: 10
         Layout.maximumWidth: 100
 
         onValueModified: {
-          backend.lineWidth = Number(value) / 10.0;
+          mathObj.style.lineWidth = Number(value) / 10.0;
         }
       }
     }
@@ -112,10 +111,10 @@ Item {
         model: pointStyleModel
         fillMode: Image.PreserveAspectFit
 
-        currentIndex: indexFromModelValue(pointStyleModel, backend.pointStyle)
+        currentIndex: indexFromModelValue(pointStyleModel, mathObj.style.pointStyle)
 
         onCurrentIndexChanged: {
-          root.backend.pointStyle = pointStyleModel.get(currentIndex).type
+          root.mathObj.style.pointStyle = pointStyleModel.get(currentIndex).type
         }
       }
       SpinBox {
@@ -126,11 +125,11 @@ Item {
         from: 1
         to: 100
         live: true
-        value: root.backend.pointWidth * 4.0
+        value: root.mathObj.style.pointWidth * 4.0
         stepSize: 10
 
         onValueModified: {
-          root.backend.pointWidth = Number(value) / 4.0;
+          root.mathObj.style.pointWidth = Number(value) / 4.0;
         }
       }
     }

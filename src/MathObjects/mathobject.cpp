@@ -59,6 +59,20 @@ Base* MathObject::getBase()
   }, backend);
 }
 
+PlotStyle* MathObject::getStyle()
+{
+  return const_cast<PlotStyle*>(std::as_const(*this).getStyle());
+}
+
+const PlotStyle* MathObject::getStyle() const
+{
+  return std::visit(zc::utils::overloaded{
+    [](auto* b) -> PlotStyle* { return &b->style; },
+    [](mathobj::Constant*) -> PlotStyle* { return nullptr; },
+  }, backend);
+}
+
+
 MathObject::variant_t MathObject::createBackend(Type t)
 {
   variant_t newBackend = [&]() -> variant_t {
@@ -115,6 +129,7 @@ void MathObject::setType(Type t)
 
   emit typeChanged();
   emit baseChanged();
+  emit styleChanged();
 }
 
 MathObject::Type MathObject::getType() const

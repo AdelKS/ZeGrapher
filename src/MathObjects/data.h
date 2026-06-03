@@ -22,6 +22,7 @@
 
 #include "BuildingBlocks/base.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
+#include "Utils/plotstyle.h"
 #include "Utils/state.h"
 
 #include <string>
@@ -52,6 +53,8 @@ public:
   State sync();
   Q_INVOKABLE bool isValid();
   const State& getState() const { return state; }
+
+  PlotStyle style;
 
 signals:
   void updated();
