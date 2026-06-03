@@ -211,34 +211,34 @@ size_t MathObject::getRevision() const
   );
 }
 
-State MathObject::sync()
+bool MathObject::isValid() const
 {
-  State oldState = state;
-
-  state = std::visit(zc::utils::overloaded{
-    [](auto* e) { return e->sync(); }
+  return std::visit(zc::utils::overloaded{
+    [](auto* e) { return e->isValid(); },
   }, backend);
+}
 
-  QString old_name = name;
-  name = std::visit(
+QString MathObject::getName() const
+{
+  return std::visit(
     zc::utils::overloaded{
       [](const auto* e) {
         return e->getName();
       },
       [](const mathobj::Parametric*) {
         return QString();
-      }
+      },
     },
     backend
   );
+}
 
-  if (old_name != name)
-    emit nameChanged();
-
-  if (oldState != state)
-    emit stateChanged();
-
-  return state;
+void MathObject::sync()
+{
+  std::visit(zc::utils::overloaded{
+    [](std::monostate) {},
+    [](auto* e) { e->sync(); },
+  }, backend);
 }
 
 bool MathObject::isDiscrete() const

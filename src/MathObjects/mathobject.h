@@ -39,7 +39,6 @@ struct MathObject: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
   Q_PROPERTY(bool discrete READ isDiscrete NOTIFY discreteChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
@@ -75,8 +74,8 @@ public:
   Q_INVOKABLE void setType(Type);
   Q_INVOKABLE Type getType() const;
 
-  bool isValid() const { return state.isValid(); };
-  QString getName() const { return name; };
+  bool isValid() const;
+  QString getName() const;
 
   size_t getRevision() const;
 
@@ -114,13 +113,11 @@ public:
 
 public slots:
   /// @brief forwards the refresh() call to the current active backend
-  State sync();
+  void sync();
 
 signals:
-  void stateChanged();
   void updated();
   void typeChanged();
-  void nameChanged();
   void discreteChanged();
   void schrodingerChanged();
   void coordinateSystemChanged();
@@ -130,9 +127,6 @@ signals:
 protected:
   using variant_t
     = std::variant<mathobj::Equation*, mathobj::Constant*, mathobj::Data*, mathobj::Parametric*>;
-
-  QString name;
-  State state;
 
   variant_t createBackend(Type);
 

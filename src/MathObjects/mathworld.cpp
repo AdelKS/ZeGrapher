@@ -87,7 +87,6 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
 
   mathObjects.emplace_back(obj);
 
-  connect(mathObjects.back(), &MathObject::stateChanged, this, &MathWorld::objectUpdated);
   connect(mathObjects.back(), &MathObject::updated, this, &MathWorld::objectUpdated);
   connect(mathObjects.back(), &MathObject::destroyed, this, &MathWorld::objectUpdated);
   endInsertRows();
@@ -97,7 +96,6 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
 void MathWorld::trackExprObject(mathobj::Expr* o)
 {
   exprObjects.push_back(o);
-  connect(o, &mathobj::Expr::stateChanged, this, &MathWorld::objectUpdated);
   connect(o, &mathobj::Expr::updated, this, &MathWorld::objectUpdated);
 }
 

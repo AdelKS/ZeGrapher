@@ -28,6 +28,11 @@ State Parametric::sync()
   return obj1->getState();
 }
 
+bool Parametric::isValid() const
+{
+  return obj1->isValid() and obj2->isValid();
+}
+
 bool Parametric::isDiscrete() const
 {
   return obj1->isDiscrete() or obj2->isDiscrete();
