@@ -173,7 +173,6 @@ void Sampler::update()
   auto dispatch = [this](zg::MathObject::EvalHandle var_handle, auto& data)
   {
     std::visit(zc::utils::overloaded{
-      [](std::monostate){},
       [&](auto handle){
         if (data.settings.coordinateSystem == zg::CoordinateSystem::Cartesian)
         {

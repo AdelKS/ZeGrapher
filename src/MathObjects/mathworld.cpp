@@ -173,8 +173,7 @@ void MathWorld::updateSchrodingerStatus()
         [&](const zc::DynMathObject<zc_t>* p) { return schrodingerBackends.contains(p); },
         [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
           return schrodingerBackends.contains(p.first) or schrodingerBackends.contains(p.second);
-        },
-        [](std::monostate) { return false; },
+        }
       },
       h
     );
@@ -200,8 +199,7 @@ MathWorld::direct_revdeps(MathObject::EvalHandle handle) const
       [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
         for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.first->get_name())) names.insert(name);
         for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.second->get_name())) names.insert(name);
-      },
-      [](std::monostate){},
+      }
     },
     handle
   );

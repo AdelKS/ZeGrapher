@@ -50,13 +50,11 @@ struct MathObject: QObject {
 
 public:
   using EvalHandle
-    = std::variant<std::monostate,
-                   const zc::DynMathObject<zc_t>*,
+    = std::variant<const zc::DynMathObject<zc_t>*,
                    std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
 
   enum Type
   {
-    MONOSTATE,
     EQUATION,
     CONSTANT,
     DATA,
@@ -130,13 +128,17 @@ signals:
   void baseChanged();
 
 protected:
-  std::variant<std::monostate,
-               mathobj::Equation*,
-               mathobj::Constant*,
-               mathobj::Data*,
-               mathobj::Parametric*> backend;
+  using variant_t
+    = std::variant<mathobj::Equation*, mathobj::Constant*, mathobj::Data*, mathobj::Parametric*>;
+
   QString name;
   State state;
+
+  variant_t createBackend(Type);
+
+  static Base* getBase(variant_t&);
+
+  variant_t backend;
 
   friend zg::MathWorld;
 };

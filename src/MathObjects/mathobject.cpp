@@ -23,7 +23,7 @@
 namespace zg {
 
 MathObject::MathObject(QObject *parent, Type type)
-  : QObject(parent)
+  : QObject(parent), backend(createBackend(type))
 {
   setType(type);
   connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
@@ -34,7 +34,6 @@ void MathObject::setCoordinateSystem(CoordinateSystem s)
   std::visit(zc::utils::overloaded{
       [](mathobj::Constant*) {},
       [s](auto* v) { v->base.setCoordinateSystem(s); },
-      [](std::monostate) {},
     },
     backend
   );
@@ -47,7 +46,6 @@ CoordinateSystem MathObject::getCoordinateSystem() const
     zc::utils::overloaded{
       [](const mathobj::Constant*) { return CoordinateSystem::Cartesian; },
       [](const auto* v) { return v->base.getCoordinateSystem(); },
-      [](std::monostate) { return CoordinateSystem::Cartesian; },
     },
     backend
   );
@@ -60,41 +58,24 @@ Base* MathObject::getBase()
     [](mathobj::Data* d)       -> Base* { return &d->base; },
     [](mathobj::Parametric* p) -> Base* { return &p->base; },
     [](mathobj::Constant*)     -> Base* { return nullptr; },
-    [](std::monostate)         -> Base* { return nullptr; },
   }, backend);
 }
 
-void MathObject::setType(Type t)
+MathObject::variant_t MathObject::createBackend(Type t)
 {
-  const Type oldType = getType();
-
-  if (oldType == t)
-    return; // backend is already correct
-
-  // delay delete the old pointer
-  // so QML can properly stop using it
-  std::visit(zc::utils::overloaded{
-    [](std::monostate){},
-    [](auto* p){ p->deleteLater(); },
-  }, backend);
-
-  switch (t) {
-    case MONOSTATE:
-      backend = std::monostate{};
-      break;
-    case EQUATION:
-      backend = new mathobj::Equation(this);
-      break;
-    case CONSTANT:
-      backend = new mathobj::Constant(this);
-      break;
-    case DATA:
-      backend = new mathobj::Data(this);
-      break;
-    case PARAMETRIC:
-      backend = new mathobj::Parametric(this);
-      break;
-  }
+  variant_t newBackend = [&]() -> variant_t {
+    switch (t) {
+      case EQUATION:
+        return new mathobj::Equation(this);
+      case CONSTANT:
+        return new mathobj::Constant(this);
+      case DATA:
+        return new mathobj::Data(this);
+      case PARAMETRIC:
+        return new mathobj::Parametric(this);
+      default: std::unreachable();
+    }
+  }();
 
   std::visit(
     zc::utils::overloaded{
@@ -112,10 +93,27 @@ void MathObject::setType(Type t)
           connect(&n->base, &Base::discreteChanged, this, &MathObject::discreteChanged);
         }
       },
-      [](std::monostate) {},
     },
-    backend
+    newBackend
   );
+
+  return newBackend;
+}
+
+void MathObject::setType(Type t)
+{
+  const Type oldType = getType();
+
+  if (oldType == t)
+    return; // backend is already correct
+
+  // delay delete the old pointer
+  // so QML can properly stop using it
+  std::visit(zc::utils::overloaded{
+    [](auto* p){ p->deleteLater(); },
+  }, backend);
+
+  backend = createBackend(t);
 
   emit typeChanged();
   emit baseChanged();
@@ -125,9 +123,6 @@ MathObject::Type MathObject::getType() const
 {
   return std::visit(
     zc::utils::overloaded{
-      [&](std::monostate) {
-        return MONOSTATE;
-      },
       [](const mathobj::Equation*) {
         return EQUATION;
       },
@@ -176,10 +171,7 @@ MathObject::EvalHandle MathObject::getZcObject() const
       },
       [](const mathobj::Parametric* p) -> Ret {
         return std::make_pair(p->obj1->getZcObject(), p->obj2->getZcObject());
-      },
-      [](std::monostate) -> Ret {
-        return nullptr;
-      },
+      }
     },
     backend
   );
@@ -200,8 +192,7 @@ size_t MathObject::getRevision() const
         if (const auto* o2 = p->obj2->getZcObject())
           rev2 = o2->get_revision();
         return rev1 + rev2;
-      },
-      [](std::monostate) { return size_t(0); },
+      }
     },
     backend
   );
@@ -212,8 +203,7 @@ State MathObject::sync()
   State oldState = state;
 
   state = std::visit(zc::utils::overloaded{
-    [](std::monostate) { return State(); },
-    [](auto* e) { return e->sync(); },
+    [](auto* e) { return e->sync(); }
   }, backend);
 
   QString old_name = name;
@@ -224,8 +214,7 @@ State MathObject::sync()
       },
       [](const mathobj::Parametric*) {
         return QString();
-      },
-      [](std::monostate) { return QString{}; },
+      }
     },
     backend
   );
@@ -244,8 +233,7 @@ bool MathObject::isDiscrete() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant* c) { return c->isDiscrete(); },
-      [](const auto* v) { return v->base.isDiscrete(); },
-      [](std::monostate) { return false; },
+      [](const auto* v) { return v->base.isDiscrete(); }
     },
     backend
   );
@@ -278,8 +266,7 @@ void MathObject::setSchrodinger(bool s)
   std::visit(
     zc::utils::overloaded{
       [s](mathobj::Constant* c) { c->setDeadAndAlive(s); },
-      [s](auto* v) { v->base.setSchrodinger(s); },
-      [](std::monostate) {}
+      [s](auto* v) { v->base.setSchrodinger(s); }
     },
     backend
   );
@@ -290,8 +277,7 @@ bool MathObject::isSchrodinger() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant* c) { return c->isDeadAndAlive(); },
-      [](const auto* v) { return v->base.isSchrodinger(); },
-      [](std::monostate) { return false; }
+      [](const auto* v) { return v->base.isSchrodinger(); }
     },
     backend
   );
