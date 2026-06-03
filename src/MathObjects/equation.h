@@ -29,7 +29,7 @@ namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
 ///        which also fits in a single zc::DynMathObject
-struct Equation: QObject, shared::ZcMathObjectBB {
+struct Equation: Base, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
@@ -47,8 +47,6 @@ public:
 
   Q_INVOKABLE bool isValid();
   const State& getState() const { return state; }
-
-  Base base;
 
 signals:
   void updated();

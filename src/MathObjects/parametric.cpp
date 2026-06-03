@@ -4,10 +4,9 @@ namespace zg {
 namespace mathobj {
 
 Parametric::Parametric(QObject *parent)
-  : QObject(parent),
+  : zg::Base([](CoordinateSystem, bool){ return StringRange{"0", "10"}; }, parent),
     obj1(new NamedRef(this)),
-    obj2(new NamedRef(this)),
-    base([](CoordinateSystem, bool){ return StringRange{"0", "10"}; }, this)
+    obj2(new NamedRef(this))
 {
   connect(obj1, &NamedRef::updated, this, &Parametric::updated);
   connect(obj2, &NamedRef::updated, this, &Parametric::updated);
@@ -22,6 +21,8 @@ State Parametric::sync()
     return obj1->getState();
   if (obj2->getState().getStatus() == State::INVALID or obj2->getState().getStatus() == State::NEUTRAL)
     return obj2->getState();
+
+  Base::setDiscrete(obj1->isDiscrete() or obj2->isDiscrete());
 
   return obj1->getState();
 }

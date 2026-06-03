@@ -5,11 +5,10 @@ namespace zg {
 namespace mathobj {
 
 Data::Data(QObject *parent)
-  : QObject(parent),
-    base([](CoordinateSystem s, bool){
+  : Base([](CoordinateSystem s, bool){
              return s == CoordinateSystem::Polar
              ? StringRange{"0", "10"}
-             : StringRange{"0", "xmax"}; }, this)
+             : StringRange{"0", "xmax"}; }, parent)
 {
   zcMathObj.set_data(std::vector<std::string>(10));
 }
@@ -55,6 +54,8 @@ bool Data::isValid()
 
 State Data::sync() {
   setState(State::from(zcMathObj.name_status()));
+
+  Base::setDiscrete(shared::ZcMathObjectBB::isDiscrete());
 
   return getState();
 };

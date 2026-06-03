@@ -33,7 +33,7 @@ void MathObject::setCoordinateSystem(CoordinateSystem s)
 {
   std::visit(zc::utils::overloaded{
       [](mathobj::Constant*) {},
-      [s](auto* v) { v->base.setCoordinateSystem(s); },
+      [s](auto* v) { v->setCoordinateSystem(s); }
     },
     backend
   );
@@ -45,7 +45,7 @@ CoordinateSystem MathObject::getCoordinateSystem() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant*) { return CoordinateSystem::Cartesian; },
-      [](const auto* v) { return v->base.getCoordinateSystem(); },
+      [](const auto* v) { return v->getCoordinateSystem(); }
     },
     backend
   );
@@ -54,10 +54,8 @@ CoordinateSystem MathObject::getCoordinateSystem() const
 Base* MathObject::getBase()
 {
   return std::visit(zc::utils::overloaded{
-    [](mathobj::Equation* e)   -> Base* { return &e->base; },
-    [](mathobj::Data* d)       -> Base* { return &d->base; },
-    [](mathobj::Parametric* p) -> Base* { return &p->base; },
-    [](mathobj::Constant*)     -> Base* { return nullptr; },
+    [](Base* b) -> Base* { return b; },
+    [](mathobj::Constant*) -> Base* { return nullptr; },
   }, backend);
 }
 
@@ -88,9 +86,9 @@ MathObject::variant_t MathObject::createBackend(Type t)
         }
         else
         {
-          connect(&n->base, &Base::schrodingerChanged, this, &MathObject::schrodingerChanged);
-          connect(&n->base, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
-          connect(&n->base, &Base::discreteChanged, this, &MathObject::discreteChanged);
+          connect(n, &Base::schrodingerChanged, this, &MathObject::schrodingerChanged);
+          connect(n, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
+          connect(n, &Base::discreteChanged, this, &MathObject::discreteChanged);
         }
       },
     },
@@ -233,7 +231,7 @@ bool MathObject::isDiscrete() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant* c) { return c->isDiscrete(); },
-      [](const auto* v) { return v->base.isDiscrete(); }
+      [](const Base* v) { return v->isDiscrete(); }
     },
     backend
   );
@@ -266,7 +264,7 @@ void MathObject::setSchrodinger(bool s)
   std::visit(
     zc::utils::overloaded{
       [s](mathobj::Constant* c) { c->setDeadAndAlive(s); },
-      [s](auto* v) { v->base.setSchrodinger(s); }
+      [s](auto* v) { v->setSchrodinger(s); }
     },
     backend
   );
@@ -277,7 +275,7 @@ bool MathObject::isSchrodinger() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant* c) { return c->isDeadAndAlive(); },
-      [](const auto* v) { return v->base.isSchrodinger(); }
+      [](const auto* v) { return v->isSchrodinger(); }
     },
     backend
   );

@@ -30,7 +30,7 @@ namespace mathobj {
 struct ZcMathObject;
 
 /// @brief holds the names of the two objects used to plot a parametric equation
-struct Parametric: QObject {
+struct Parametric: Base {
   Q_OBJECT
   QML_ELEMENT
 
@@ -48,8 +48,6 @@ public:
 
   NamedRef* obj1;
   NamedRef* obj2;
-
-  Base base;
 
 signals:
   void updated();

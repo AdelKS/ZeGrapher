@@ -5,15 +5,14 @@ namespace zg {
 namespace mathobj {
 
 Equation::Equation(QObject *parent)
-  : QObject(parent), shared::ZcMathObjectBB(),
-    base([](CoordinateSystem s, bool isDiscrete)
+  : Base([](CoordinateSystem s, bool isDiscrete)
           { return s == CoordinateSystem::Polar
                    ? isDiscrete
                      ? StringRange{"0", "10"}
                      : StringRange{"0", "2*math::pi"}
                    : isDiscrete
                      ? StringRange{"0",    "xmax"}
-                     : StringRange{"xmin", "xmax"}; }, this)
+                     : StringRange{"xmin", "xmax"}; }, parent), shared::ZcMathObjectBB()
 {}
 
 State Equation::setEquation(QString eq)
@@ -54,6 +53,8 @@ QString Equation::getName() const
 State Equation::sync()
 {
   setState(State::from(zcMathObj.status()));
+
+  Base::setDiscrete(shared::ZcMathObjectBB::isDiscrete());
 
   return getState();
 };
