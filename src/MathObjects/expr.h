@@ -20,7 +20,6 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
@@ -28,7 +27,7 @@ namespace zg {
 namespace mathobj {
 
 /// @brief Contains the information needed to compute the math object and how to plot it
-struct Expr : Stateful, shared::ZcMathObjectBB {
+struct Expr : QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
@@ -36,6 +35,7 @@ struct Expr : Stateful, shared::ZcMathObjectBB {
   Q_PROPERTY(QString expression WRITE setExpression READ getExpression NOTIFY expressionChanged)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName NOTIFY implicitNameChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
+  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 
@@ -44,10 +44,13 @@ public:
 
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State setImplicitName(QString name);
+  void setState(State s);
+
   State sync();
   Q_INVOKABLE double getValue();
   Q_INVOKABLE QString getExpression() const { return expression; }
   Q_INVOKABLE bool isValid();
+  const State& getState() const { return state; }
 
   QString getName() const { return implicitName; };
 
@@ -62,10 +65,12 @@ signals:
   void updated();
   void schrodingerChanged();
   void expressionChanged();
+  void stateChanged();
 
 protected:
   QString expression;
   std::string fullExpression;
+  State state;
 
   /// @brief the implicit variable that gets
   ///        defined in ZeCalculator for this expression
@@ -74,6 +79,7 @@ protected:
   QString implicitName = {};
   double value = std::nan("");
   bool schrodinger = false;
+
 };
 
 }

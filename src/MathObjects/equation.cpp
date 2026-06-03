@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 Equation::Equation(QObject *parent)
-  : Stateful(parent), shared::ZcMathObjectBB(),
+  : QObject(parent), shared::ZcMathObjectBB(),
     base([](CoordinateSystem s, bool isDiscrete)
           { return s == CoordinateSystem::Polar
                    ? isDiscrete
@@ -36,6 +36,14 @@ bool Equation::isValid()
 {
   sync();
   return getState().isValid();
+}
+
+void Equation::setState(State s)
+{
+  if (state == s) return;
+
+  state = s;
+  emit stateChanged();
 }
 
 QString Equation::getName() const

@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 Expr::Expr(QObject *parent)
-  : Stateful(parent), shared::ZcMathObjectBB()
+  : QObject(parent), shared::ZcMathObjectBB()
 {
   mathWorld.trackExprObject(this);
 }
@@ -19,6 +19,14 @@ bool Expr::isValid()
 {
   sync();
   return getState().isValid();
+}
+
+void Expr::setState(State s)
+{
+  if (state == s) return;
+
+  state = s;
+  emit stateChanged();
 }
 
 State Expr::setImplicitName(QString name)

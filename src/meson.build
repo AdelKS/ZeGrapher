@@ -105,7 +105,6 @@ qmlcpp_files = [
   'GraphDraw/interactivegraph.h',
   'information.h',
   'MathObjects/BuildingBlocks/base.h',
-  'MathObjects/BuildingBlocks/stateful.h',
   'MathObjects/constant.h',
   'MathObjects/data.h',
   'MathObjects/equation.h',

@@ -20,7 +20,6 @@
 **
 ****************************************************************************/
 
-#include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
@@ -34,7 +33,7 @@ namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
 ///        which also fits in a single zc::DynMathObject
-struct Constant: Stateful, shared::ZcMathObjectBB {
+struct Constant: QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
@@ -46,6 +45,7 @@ struct Constant: Stateful, shared::ZcMathObjectBB {
   Q_PROPERTY(LoopType loopType WRITE setLoopType MEMBER loopType NOTIFY loopTypeChanged)
   Q_PROPERTY(bool deadAndAlive WRITE setDeadAndAlive MEMBER deadAndAlive NOTIFY deadAndAliveChanged)
   Q_PROPERTY(double duration WRITE setDuration READ getDuration NOTIFY durationChanged)
+  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 
@@ -75,12 +75,14 @@ public:
   void setDuration(double);
   void setLoopType(LoopType);
   void setDeadAndAlive(bool);
+  void setState(State s);
 
   double getFrom() const { return from; }
   double getTo() const { return to; }
   int getSteps() const { return steps; }
   double getDuration() const { return duration.count(); }
   bool isDeadAndAlive() const { return deadAndAlive; }
+  const State& getState() const { return state; }
 
   Q_INVOKABLE bool isValid();
 
@@ -96,6 +98,7 @@ signals:
   void deadAndAliveChanged();
   void durationChanged();
   void loopTypeChanged();
+  void stateChanged();
 
 protected:
   void constrainValue();
@@ -110,6 +113,7 @@ protected:
   bool deadAndAlive = false;
 
   QString input_name;
+  State state;
 
   static constexpr double lowerMul = 0.5;
   static constexpr double upperMul = 1.5;

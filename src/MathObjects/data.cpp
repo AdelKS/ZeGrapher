@@ -5,7 +5,7 @@ namespace zg {
 namespace mathobj {
 
 Data::Data(QObject *parent)
-  : Stateful(parent),
+  : QObject(parent),
     base([](CoordinateSystem s, bool){
              return s == CoordinateSystem::Polar
              ? StringRange{"0", "10"}
@@ -28,6 +28,14 @@ State Data::setName(QString new_input_name)
   emit updated();
 
   return getState();
+}
+
+void Data::setState(State s)
+{
+  if (state == s) return;
+
+  state = s;
+  emit stateChanged();
 }
 
 void Data::setData(std::vector<std::string> values)

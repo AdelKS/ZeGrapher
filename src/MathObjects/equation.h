@@ -21,7 +21,6 @@
 ****************************************************************************/
 
 #include "BuildingBlocks/base.h"
-#include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
@@ -30,11 +29,12 @@ namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
 ///        which also fits in a single zc::DynMathObject
-struct Equation: Stateful, shared::ZcMathObjectBB {
+struct Equation: QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation NOTIFY equationChanged)
+  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 
@@ -43,17 +43,21 @@ public:
   Q_INVOKABLE State setEquation(QString eq);
   Q_INVOKABLE QString getName() const;
   State sync();
+  void setState(State s);
 
   Q_INVOKABLE bool isValid();
+  const State& getState() const { return state; }
 
   Base base;
 
 signals:
   void updated();
   void equationChanged();
+  void stateChanged();
 
 protected:
   QString equation;
+  State state;
 };
 
 }

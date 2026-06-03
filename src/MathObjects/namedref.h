@@ -19,8 +19,6 @@
 **  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
-
-#include "BuildingBlocks/stateful.h"
 #include "Utils/state.h"
 #include "structures.h"
 
@@ -30,33 +28,39 @@ namespace zg {
 namespace mathobj {
 
 /// @brief ZeGrapher proxy object that refers to another
-struct NamedRef: Stateful {
+struct NamedRef: QObject {
   Q_OBJECT
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER input_name)
+  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 
   explicit NamedRef(QObject *parent = nullptr);
 
   Q_INVOKABLE State setName(QString name);
-  QString getName() const { return input_name; }
+  void setState(State s);
 
-  State sync();
+  QString getName() const { return input_name; }
+  const State& getState() const { return state; }
 
   bool isDiscrete() const;
   bool isContinuous() const;
 
   Q_INVOKABLE bool isValid();
 
+  State sync();
+
   const zc::DynMathObject<zc_t>* getZcObject() const;
 
 signals:
   void updated();
+  void stateChanged();
 
 protected:
   QString input_name;
+  State state;
 };
 
 } // namespace mathobj

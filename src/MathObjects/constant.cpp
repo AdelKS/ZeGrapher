@@ -3,7 +3,7 @@
 namespace zg {
 namespace mathobj {
 
-Constant::Constant(QObject *parent): Stateful(parent)
+Constant::Constant(QObject *parent): QObject(parent)
 {
   zcMathObj = std::nan("");
 }
@@ -11,6 +11,14 @@ Constant::Constant(QObject *parent): Stateful(parent)
 Constant::~Constant()
 {
   mathWorld.unsetSchrodingerConstant(this);
+}
+
+void Constant::setState(State s)
+{
+  if (state == s) return;
+
+  state = s;
+  emit stateChanged();
 }
 
 State Constant::setName(QString new_input_name)

@@ -4,7 +4,7 @@
 namespace zg {
 namespace mathobj {
 
-NamedRef::NamedRef(QObject *parent): Stateful(parent)
+NamedRef::NamedRef(QObject *parent): QObject(parent)
 {
 }
 
@@ -20,6 +20,14 @@ State NamedRef::setName(QString new_input_name)
   emit updated();
 
   return getState();
+}
+
+void NamedRef::setState(State s)
+{
+  if (state == s) return;
+
+  state = s;
+  emit stateChanged();
 }
 
 bool NamedRef::isValid()
