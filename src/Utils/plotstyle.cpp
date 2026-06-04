@@ -96,4 +96,20 @@ void PlotStyle::setDiscrete(bool d)
   discrete = d;
 }
 
+std::optional<PlotStyle::POD> PlotStyle::exportPod() const
+{
+  auto pod = POD {
+    .color = color.exportPod(defaultColor),
+    .second_color = secondColor.exportPod(defaultSecondColor),
+    .line_width = yml::not_default(lineWidth, defaultLineWidth),
+    .line_style = yml::not_default(lineStyle, defaultLineStyle()),
+    .point_width = yml::not_default(pointWidth, defaultPointWidth),
+    .point_style = yml::not_default(pointStyle, defaultPointStyle()),
+  };
+
+  if (pod)
+    return pod;
+  else return {};
+}
+
 }

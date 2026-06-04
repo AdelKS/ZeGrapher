@@ -52,6 +52,7 @@ Parametric::POD Parametric::exportPod() const {
     .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
     .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
     .coordinates = yml::not_default(coordinateSystem, Cartesian),
+    .style = style.exportPod()
   };
 }
 

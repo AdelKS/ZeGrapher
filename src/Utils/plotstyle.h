@@ -24,6 +24,7 @@
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/themedcolor.h"
+#include "Utils/yaml.h"
 
 namespace zg {
 
@@ -42,13 +43,13 @@ struct PlotStyle: QObject {
 
 public:
 
-  enum ObjectType { NonRepresentable, Continuous, Discrete};
+  enum ObjectType { NonRepresentable, Continuous, Discrete };
   Q_ENUM(ObjectType);
 
   enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle);
 
-  enum LineStyle { NoLine, Solid, Dash, DashDot, Dot};
+  enum LineStyle { NoLine, Solid, Dash, DashDot, Dot };
   Q_ENUM(LineStyle);
 
   explicit PlotStyle(QObject *parent = nullptr);
@@ -86,6 +87,23 @@ public:
   /// @brief only used for determining defaults
   void setDiscrete(bool d);
 
+  struct POD {
+    std::optional<ThemedColor::POD> color;
+    std::optional<ThemedColor::POD> second_color;
+    std::optional<double> line_width;
+    std::optional<LineStyle> line_style;
+    std::optional<double> point_width;
+    std::optional<PointStyle> point_style;
+
+    operator bool() const
+    {
+      return color or second_color or line_width or line_style or point_width or point_style;
+    }
+  };
+
+  std::optional<POD> exportPod() const;
+
+
 signals:
   void updated();
   void visibleChanged();
@@ -109,3 +127,28 @@ inline const ThemedColor PlotStyle::defaultColor = {.dark = Qt::lightGray, .ligh
 inline const ThemedColor PlotStyle::defaultSecondColor = {.dark = "#00fefe", .light = "#009999"};
 
 }
+
+template <>
+struct glz::meta<zg::PlotStyle::PointStyle>
+{
+   using enum zg::PlotStyle::PointStyle;
+   static constexpr auto value = glz::enumerate(
+      "none",     None,
+      "rhombus",  Rhombus,
+      "disc",     Disc,
+      "square",   Square,
+      "triangle", Triangle,
+      "cross",    Cross);
+};
+
+template <>
+struct glz::meta<zg::PlotStyle::LineStyle>
+{
+   using enum zg::PlotStyle::LineStyle;
+   static constexpr auto value = glz::enumerate(
+      "noline",  NoLine,
+      "solid",   Solid,
+      "dash",    Dash,
+      "dot",     Dot,
+      "dashdot", DashDot);
+};

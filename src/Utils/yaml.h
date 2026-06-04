@@ -32,6 +32,7 @@ struct glz::meta<QString>
   static constexpr auto value = glz::custom<write, read>;
 };
 
+
 namespace zg {
 namespace yml {
 

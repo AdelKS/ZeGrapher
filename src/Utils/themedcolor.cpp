@@ -1,4 +1,5 @@
 #include "themedcolor.h"
+#include "Utils/yaml.h"
 
 #include <QGuiApplication>
 #include <QStyleHints>
@@ -16,4 +17,16 @@ void ThemedColor::setCurrent(QColor c)
     dark = c;
   else
     light = c;
+}
+
+std::optional<ThemedColor::POD> ThemedColor::exportPod(ThemedColor defaultColors) const
+{
+  auto pod = POD {
+    .dark = zg::yml::not_default(dark, defaultColors.dark).transform([](QColor c){ return c.name().toStdString(); }),
+    .light = zg::yml::not_default(light, defaultColors.light).transform([](QColor c){ return c.name().toStdString(); }),
+  };
+
+  if (pod)
+    return pod;
+  else return {};
 }

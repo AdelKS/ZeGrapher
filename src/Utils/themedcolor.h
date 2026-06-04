@@ -49,4 +49,12 @@ public:
   Q_INVOKABLE void setCurrent(QColor);
 
   bool operator == (const ThemedColor&) const = default;
+
+  struct POD {
+    std::optional<std::string> dark;
+    std::optional<std::string> light;
+    operator bool () const { return dark or light; }
+  };
+
+  std::optional<POD> exportPod(ThemedColor defaultColors) const;
 };

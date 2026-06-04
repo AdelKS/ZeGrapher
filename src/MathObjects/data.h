@@ -64,6 +64,7 @@ public:
     std::optional<std::string> end;
     std::optional<CoordinateSystem> coordinates;
     std::optional<std::vector<std::string>> values;
+    std::optional<PlotStyle::POD> style;
   };
 
   POD exportPod() const;

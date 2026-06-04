@@ -68,7 +68,8 @@ Equation::POD Equation::exportPod() const {
     .equation = yml::not_default(getEquation()),
     .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
     .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
-    .coordinates = yml::not_default(coordinateSystem, Cartesian)
+    .coordinates = yml::not_default(coordinateSystem, Cartesian),
+    .style = style.exportPod()
   };
 }
 

@@ -79,7 +79,8 @@ Data::POD Data::exportPod() const
     .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
     .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
     .coordinates = yml::not_default(coordinateSystem, Cartesian),
-    .values = yml::not_default(getData())
+    .values = yml::not_default(getData()),
+    .style = style.exportPod()
   };
 }
 
