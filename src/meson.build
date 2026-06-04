@@ -11,7 +11,6 @@ source_files = [
   'Calculus/polynomial.cpp',
   'Calculus/polynomialregression.cpp',
   'Calculus/regression.cpp',
-  'Calculus/regressionvaluessaver.cpp',
   'Calculus/sampler.cpp',
   'DataPlot/csvpreviewmodel.cpp',
   'DataPlot/datatablemodel.cpp',
@@ -50,7 +49,6 @@ source_files = [
 moc_header_files = [
   'Calculus/polynomialregression.h',
   'Calculus/regression.h',
-  'Calculus/regressionvaluessaver.h',
   'GraphDraw/gridcalculator.h',
   'GraphDraw/subgraph.h',
   'Utils/palettewatcher.h',
