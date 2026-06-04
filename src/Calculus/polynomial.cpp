@@ -20,8 +20,7 @@
 
 #include "polynomial.h"
 
-#include <boost/math/special_functions/binomial.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
+#include "Utils/algos.h"
 
 Polynomial::Polynomial(int monicMonomialDegree) : translation(0)
 {
@@ -99,7 +98,7 @@ void Polynomial::translateX(double Dx)
 
     for(uint n = 0 ; n < coefficients.size() ; n++)
         for(uint k = 0 ; k <= n ; k++)
-            translatedCoefficients[k] += coefficients[n] * boost::math::binomial_coefficient<double>(n,k) * DxPowTable[n-k];
+            translatedCoefficients[k] += coefficients[n] * zg::utils::binomial_coefficient(n,k) * DxPowTable[n-k];
 }
 
 void Polynomial::translateY(double Dy)

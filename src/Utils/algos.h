@@ -22,9 +22,24 @@
 
 #include <vector>
 #include <unordered_set>
+#include <cmath>
 
 namespace zg {
 namespace utils {
+
+/// @brief binomial coefficient "n choose k"
+/// @note evaluated through the (exact) gamma identity Γ(m+1) = m!, mirroring boost's
+///       beta-function path: going through lgamma avoids the overflow of multiplying factorials,
+/// @note exact for n <= 47
+inline double binomial_coefficient(unsigned n, unsigned k)
+{
+  if (k == 0 || k == n)
+    return 1;
+  if (k == 1 || k == n - 1)
+    return n;
+
+  return std::round(std::exp(std::lgamma(n + 1.0) - std::lgamma(k + 1.0) - std::lgamma(n - k + 1.0)));
+}
 
 /// @brief move all values of 'vec' by 'distance' indices/slots
 /// @note the slots on the left whose elements are moved from will have std::move() applied on them
