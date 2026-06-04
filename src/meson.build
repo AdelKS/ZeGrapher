@@ -230,14 +230,13 @@ if compiler.get_id() == 'clang'
   add_project_arguments('-Wno-c++26-extensions', language: 'cpp')
 endif
 
-boost_dep = dependency('boost')
 zecalculator_dep = dependency('zecalculator')
 glaze_dep = dependency('glaze')
 
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, shaders_resources_cpp, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
-  dependencies: [qt6_dep, boost_dep, zecalculator_dep, glaze_dep],
+  dependencies: [qt6_dep, zecalculator_dep, glaze_dep],
   win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
                             # a console alongside it, no-op on other platforms.
   install: true)

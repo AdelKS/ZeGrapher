@@ -66,7 +66,6 @@ ZeGrapher is available in the official repositories of Debian, Fedora, Ubuntu, F
 To compile from sources, ZeGrapher needs the following tools and libraries:
 
 - C++ compiler: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
-- [boost](https://www.boost.org/)
 - [Qt](https://www.qt.io)
 - [meson](mesonbuild.com)
 - [glaze](https://github.com/stephenberry/glaze)
