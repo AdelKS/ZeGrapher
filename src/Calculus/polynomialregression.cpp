@@ -24,10 +24,10 @@
 
 #include "polynomialregression.h"
 
-PolynomialRegression::PolynomialRegression(const std::weak_ptr<const UserData> &userData,
+PolynomialRegression::PolynomialRegression(std::vector<Point> dataPoints,
                                            int polynomialDegree, ApproxMethod method,
                                            DrawRange drawRange, double rangecoef, bool draw) :
-    Regression(), userData(userData), regressionDegree(polynomialDegree), rangeOption(drawRange),
+    Regression(), dataPoints(std::move(dataPoints)), regressionDegree(polynomialDegree), rangeOption(drawRange),
     rangeCoef(rangecoef), approxMethod(method)
 {
     drawState = draw;
@@ -48,7 +48,7 @@ QString PolynomialRegression::getInfo() const
 void PolynomialRegression::refresh()
 {
 
-    if(userData.lock()->dataPoints.size() <= 1)
+    if(dataPoints.size() <= 1)
     {
         valid = false;
         return;
@@ -71,9 +71,9 @@ void PolynomialRegression::refresh()
 void PolynomialRegression::updateNormalisedData()
 {
     normalisedData.clear();
-    normalisedData.reserve(userData.lock()->dataPoints.size());
+    normalisedData.reserve(dataPoints.size());
 
-    for(const auto &point : userData.lock()->dataPoints)
+    for(const auto &point : dataPoints)
     {
         normalisedData.emplace_back(Point({2*(point.x - xmin)/xamp - 1, 2*(point.y - ymin)/yamp - 1}));
     }
@@ -82,12 +82,12 @@ void PolynomialRegression::updateNormalisedData()
 
 void PolynomialRegression::updateMinMax()
 {
-    auto &&minmax_x = std::minmax_element(userData.lock()->dataPoints.cbegin(), userData.lock()->dataPoints.cend());
+    auto &&minmax_x = std::minmax_element(dataPoints.cbegin(), dataPoints.cend());
     xmin = minmax_x.first->x;
     xmax = minmax_x.second->x;
     xamp = xmax - xmin;
 
-    auto &&minmax_y = std::minmax_element(userData.lock()->dataPoints.cbegin(), userData.lock()->dataPoints.cend(), ptCompY);
+    auto &&minmax_y = std::minmax_element(dataPoints.cbegin(), dataPoints.cend(), ptCompY);
     ymin = minmax_y.first->y;
     ymax = minmax_y.second->y;
     yamp = ymax - ymin;
@@ -123,11 +123,6 @@ void PolynomialRegression::setRange(Range rg)
     range = rg;
 
     emit regressionModified();
-}
-
-bool PolynomialRegression::isPolar()
-{
-    return !userData.lock()->cartesian;
 }
 
 void PolynomialRegression::setRelativeRangeCoef(double coef)

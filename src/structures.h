@@ -162,30 +162,6 @@ struct Point
 
 bool ptCompY(const Point &pt1, const Point &pt2);
 
-// N.B: enum values are used as indexes in a vector!
-enum struct PointStyle : unsigned int { Rhombus = 0, Disc, Square, Triangle, Cross };
-
-struct DataStyle
-{
-    DataStyle(): draw(true), drawLines(false), drawPoints(true),
-        color(Qt::black), pointStyle(PointStyle::Square), lineStyle(Qt::SolidLine) {}
-
-    bool draw, drawLines, drawPoints;
-    QColor color;
-    PointStyle pointStyle;
-    Qt::PenStyle lineStyle;
-};
-
-struct UserData
-{
-    UserData() : cartesian(true), style() {}
-
-    std::vector<Point> dataPoints;
-    bool cartesian;
-    DataStyle style;
-};
-
-
 template<class Number>
 Number int_pow(Number a, int b)
 {

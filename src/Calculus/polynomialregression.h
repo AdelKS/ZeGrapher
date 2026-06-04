@@ -39,7 +39,7 @@ class PolynomialRegression : public Regression
     Q_OBJECT
 
 public:
-    explicit PolynomialRegression(const std::weak_ptr<const UserData> &userData,
+    explicit PolynomialRegression(std::vector<Point> dataPoints,
                                   int polynomialDegree, ApproxMethod method,
                                   DrawRange drawRange, double rangecoef, bool draw);
     ~PolynomialRegression();
@@ -50,7 +50,6 @@ public:
     void refresh();
     void setDrawRangeCalculusMethod(DrawRange option);
     void setRange(Range rg);
-    bool isPolar();
 
     void setApproxMethod(ApproxMethod method);
     void setRelativeRangeCoef(double coef);
@@ -66,7 +65,7 @@ protected:
     void calculateRegressionPolynomials();
     void normaliseData();
 
-    std::weak_ptr<const UserData> userData;
+    std::vector<Point> dataPoints;
 
     uint regressionDegree;
 
