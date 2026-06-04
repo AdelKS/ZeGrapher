@@ -35,6 +35,14 @@ Item {
     state: root.backend.state
 
     Component.onCompleted: root.backend.setExpression(expression)
+
+    Connections {
+      target: root.backend
+
+      function onExpressionChanged() {
+        zcExprEdit.expression = root.backend.expression;
+      }
+    }
   }
 
   Component.onCompleted: {
