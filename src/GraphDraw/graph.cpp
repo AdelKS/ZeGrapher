@@ -57,7 +57,6 @@ Graph::Graph(QQuickItem *parent)
 
   connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
   connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
-  connect(&information, SIGNAL(viewSettingsChanged()), this, SLOT(updateSettingsVals()));
   connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
 
   connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
@@ -73,11 +72,6 @@ Graph::Graph(QQuickItem *parent)
   connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });
 
   emit settingsChanged();
-}
-
-void Graph::updateSettingsVals()
-{
-  sampler.setPixelStep(settings.getTargetSamplingDistancePx());
 }
 
 void Graph::setNumPrec(int prec)

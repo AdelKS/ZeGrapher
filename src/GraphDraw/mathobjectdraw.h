@@ -32,7 +32,7 @@ QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double sc
 class MathObjectDraw
 {
 public:
-  explicit MathObjectDraw(double targetSamplingDistance = 1.0);
+  explicit MathObjectDraw();
 
 protected:
   void drawDataPoint(const QPointF& pt, const zg::CurveStyle& style);

@@ -162,15 +162,6 @@ void ZeGraphSettings::computeZoom()
   }
 }
 
-void ZeGraphSettings::setTargetSamplingDistancePx(double target)
-{
-  if (targetSamplingDistancePx == target)
-    return;
-
-  targetSamplingDistancePx = target;
-  emit targetSamplingDistanceChanged();
-}
-
 void ZeGraphSettings::setAvailableSizePx(QSize s)
 {
   if (availableSizePx != s)

@@ -33,9 +33,8 @@ namespace zg {
 class Sampler
 {
 public:
-  Sampler(const zg::ZeViewMapper& mapper, double pxStep);
+  Sampler(const zg::ZeViewMapper& mapper);
 
-  void setPixelStep(double pxStep);
   void update();
 
   const auto& getCurves() const { return curves_list; }
@@ -79,6 +78,5 @@ protected:
 
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;
 
-  zg::pixel_unit pixelStep;
   zg::Range1D<zg::u<zg::view>> viewRange;
 };

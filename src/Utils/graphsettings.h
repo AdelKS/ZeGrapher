@@ -46,7 +46,6 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(QSize availableSizePx WRITE setAvailableSizePx MEMBER availableSizePx NOTIFY availableSizePxChanged)
   Q_PROPERTY(QSizeF availableSizeCm READ getAvailableSizeCm NOTIFY availableSizeCmChanged)
 
-  Q_PROPERTY(double targetSamplingDistancePx WRITE setTargetSamplingDistancePx MEMBER targetSamplingDistancePx NOTIFY targetSamplingDistanceChanged)
   Q_PROPERTY(double totalScaleFactor READ getTotalScaleFactor NOTIFY totalScaleFactorChanged)
 
   Q_PROPERTY(int minPointsLg2 MEMBER minPointsLg2 NOTIFY minPointsLg2Changed)
@@ -65,7 +64,6 @@ public:
   const ThemedColor& getBackgroundColor() const { return backgroundColor; };
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
-  double getTargetSamplingDistancePx() const { return targetSamplingDistancePx; }
   double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor; }
 
   int getMinPointsLg2() const { return minPointsLg2; }
@@ -82,7 +80,6 @@ public slots:
   void updateSizes();
   void computeZoom();
   void setAvailableSizePx(QSize);
-  void setTargetSamplingDistancePx(double);
 
 signals:
   void zoomSettingsChanged();
@@ -94,7 +91,6 @@ signals:
   void backgroundColorChanged();
   void availableSizePxChanged();
   void availableSizeCmChanged();
-  void targetSamplingDistanceChanged();
   void totalScaleFactorChanged();
   void minPointsLg2Changed();
   void maxPointsLg2Changed();
@@ -122,8 +118,4 @@ protected:
 
   QSize availableSizePx;
   QSizeF availableSizeCm;
-
-  /// @brief target distance in pixels that neighboring sampled points should have
-  /// @note forwarded to the Sampler class
-  double targetSamplingDistancePx = 1;
 };

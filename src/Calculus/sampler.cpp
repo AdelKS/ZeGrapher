@@ -24,14 +24,9 @@
 
 #include <cmath>
 
-Sampler::Sampler(const zg::ZeViewMapper& mapper, double pxStep)
-  : mapper(mapper), pixelStep(zg::pixel_unit{pxStep})
+Sampler::Sampler(const zg::ZeViewMapper& mapper)
+  : mapper(mapper)
 {}
-
-void Sampler::setPixelStep(double pxStep)
-{
-  pixelStep = zg::pixel_unit{pxStep};
-}
 
 static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
 {

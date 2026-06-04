@@ -23,8 +23,8 @@
 
 using namespace std;
 
-MathObjectDraw::MathObjectDraw(double targetSamplingDistance)
-  : sampler(viewMapper, targetSamplingDistance)
+MathObjectDraw::MathObjectDraw()
+  : sampler(viewMapper)
 {
   pen.setCapStyle(Qt::RoundCap);
   brush.setStyle(Qt::SolidPattern);

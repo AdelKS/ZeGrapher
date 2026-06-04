@@ -81,7 +81,6 @@ signals:
   void graphRectChanged();
 
 protected slots:
-  void updateSettingsVals();
   void minMaxPointsChanged();
 
 protected:
