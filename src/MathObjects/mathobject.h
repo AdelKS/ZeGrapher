@@ -111,6 +111,13 @@ public:
   template <class T>
   const T* getBackend() const;
 
+  using POD = std::variant<mathobj::Equation::POD,
+                           mathobj::Constant::POD,
+                           mathobj::Data::POD,
+                           mathobj::Parametric::POD>;
+
+  POD exportPod() const;
+
 public slots:
   /// @brief forwards the refresh() call to the current active backend
   void sync();
@@ -152,3 +159,9 @@ T* MathObject::getBackend()
 }
 
 }
+
+template <>
+struct glz::meta<zg::MathObject::POD> {
+   static constexpr std::string_view tag = "type";
+   static constexpr auto ids = std::array {"equation", "constant", "data", "parametric"};
+};

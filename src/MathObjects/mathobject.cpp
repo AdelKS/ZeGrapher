@@ -296,4 +296,14 @@ bool MathObject::isSchrodinger() const
   );
 }
 
+MathObject::POD MathObject::exportPod() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [](const auto* c) -> POD { return c->exportPod(); },
+    },
+    backend
+  );
+}
+
 }

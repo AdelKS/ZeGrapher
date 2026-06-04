@@ -1,4 +1,5 @@
 #include "MathObjects/constant.h"
+#include "Utils/yaml.h"
 #include "globalvars.h"
 namespace zg {
 namespace mathobj {
@@ -21,10 +22,13 @@ void Constant::setState(State s)
   emit stateChanged();
 }
 
-State Constant::setName(QString new_input_name)
+void Constant::setName(QString new_input_name)
 {
   if (input_name == new_input_name)
-    return sync();
+  {
+    sync();
+    return;
+  }
 
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
@@ -32,7 +36,7 @@ State Constant::setName(QString new_input_name)
   emit nameChanged();
   emit updated();
 
-  return sync();
+  sync();
 }
 
 void Constant::setDeadAndAlive(bool s)
@@ -163,6 +167,25 @@ void Constant::setLerpValue(double a)
 
   emit valueChanged();
   emit updated();
+}
+
+Constant::POD Constant::exportPod() const {
+  auto get_opt_edge = [this](double edge, double multiplier) -> std::optional<double> {
+    if (std::isnan(value) or (not std::isnan(edge) and edge * multiplier != value))
+      return edge;
+    else return {};
+  };
+
+  return POD {
+    .name = yml::not_default(getName()),
+    .value = yml::not_nan(value),
+    .from = get_opt_edge(from, lowerMul),
+    .to = get_opt_edge(to, upperMul),
+    .steps = yml::not_default(steps, defaultSteps),
+    .loop_type = yml::not_default(loopType, defaultLoopType),
+    .dead_and_alive = yml::not_default(deadAndAlive, false),
+    .duration = yml::not_default(duration.count(), defaultDuration.count())
+  };
 }
 
 }

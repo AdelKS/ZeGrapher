@@ -41,15 +41,25 @@ public:
 
   explicit Equation(QObject *parent = nullptr);
 
-  Q_INVOKABLE State setEquation(QString eq);
+  Q_INVOKABLE void setEquation(QString eq);
   Q_INVOKABLE QString getName() const;
   State sync();
   void setState(State s);
 
   Q_INVOKABLE bool isValid();
   const State& getState() const { return state; }
+  QString getEquation() const { return equation; }
 
   PlotStyle style;
+
+ struct POD {
+    std::optional<std::string> equation;
+    std::optional<std::string> start;
+    std::optional<std::string> end;
+    std::optional<CoordinateSystem> coordinates;
+  };
+
+  POD exportPod() const;
 
 signals:
   void updated();

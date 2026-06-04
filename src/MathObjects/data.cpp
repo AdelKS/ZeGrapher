@@ -1,5 +1,7 @@
-#include "MathObjects/data.h"
 #include <string>
+
+#include "MathObjects/data.h"
+#include "Utils/yaml.h"
 
 namespace zg {
 namespace mathobj {
@@ -13,10 +15,13 @@ Data::Data(QObject *parent)
   zcMathObj.set_data(std::vector<std::string>(10));
 }
 
-State Data::setName(QString new_input_name)
+void Data::setName(QString new_input_name)
 {
   if (input_name == new_input_name)
-    return sync();
+  {
+    sync();
+    return;
+  }
 
   input_name = new_input_name;
   zcMathObj.set_name(input_name.toStdString());
@@ -25,8 +30,6 @@ State Data::setName(QString new_input_name)
 
   emit nameChanged();
   emit updated();
-
-  return getState();
 }
 
 void Data::setState(State s)
@@ -46,6 +49,14 @@ void Data::setData(std::vector<std::string> values)
   emit updated();
 }
 
+const std::vector<std::string>& Data::getData() const
+{
+  static const std::vector<std::string> empty;
+  if (auto* ptr = zcMathObj.get_data())
+    return *ptr;
+  else return empty;
+}
+
 bool Data::isValid()
 {
   sync();
@@ -60,6 +71,17 @@ State Data::sync() {
 
   return getState();
 };
+
+Data::POD Data::exportPod() const
+{
+  return POD {
+    .name = yml::not_default(getName()),
+    .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
+    .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
+    .coordinates = yml::not_default(coordinateSystem, Cartesian),
+    .values = yml::not_default(getData())
+  };
+}
 
 }
 }

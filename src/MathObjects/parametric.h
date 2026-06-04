@@ -55,6 +55,22 @@ public:
 
   PlotStyle style;
 
+  void setFirst(QString name) { obj1->setName(name); }
+  QString getFirst() const { return obj1->getName(); }
+
+  void setSecond(QString name) { obj2->setName(name); }
+  QString getSecond() const { return obj2->getName(); }
+
+  struct POD {
+    std::optional<std::string> first;
+    std::optional<std::string> second;
+    std::optional<std::string> start;
+    std::optional<std::string> end;
+    std::optional<CoordinateSystem> coordinates;
+  };
+
+  POD exportPod() const;
+
 signals:
   void updated();
 

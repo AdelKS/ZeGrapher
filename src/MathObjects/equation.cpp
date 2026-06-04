@@ -1,4 +1,5 @@
 #include "MathObjects/equation.h"
+#include "Utils/yaml.h"
 #include "information.h"
 
 namespace zg {
@@ -15,10 +16,13 @@ Equation::Equation(QObject *parent)
                      : StringRange{"xmin", "xmax"}; }, parent), shared::ZcMathObjectBB()
 {}
 
-State Equation::setEquation(QString eq)
+void Equation::setEquation(QString eq)
 {
   if (eq == equation)
-    return sync();
+  {
+    sync();
+    return;
+  }
 
   equation = eq;
   zcMathObj = equation.toStdString();
@@ -27,8 +31,6 @@ State Equation::setEquation(QString eq)
 
   emit equationChanged();
   emit updated();
-
-  return getState();
 }
 
 bool Equation::isValid()
@@ -59,6 +61,16 @@ State Equation::sync()
 
   return getState();
 };
+
+Equation::POD Equation::exportPod() const {
+
+  return POD {
+    .equation = yml::not_default(getEquation()),
+    .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
+    .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
+    .coordinates = yml::not_default(coordinateSystem, Cartesian)
+  };
+}
 
 }
 }

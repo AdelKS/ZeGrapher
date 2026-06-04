@@ -44,17 +44,29 @@ public:
 
   explicit Data(QObject *parent = nullptr);
 
-  Q_INVOKABLE State setName(QString name);
+  Q_INVOKABLE void setName(QString name);
   QString getName() const { return input_name; }
 
   void setData(std::vector<std::string> values);
   void setState(State s);
+
+  const std::vector<std::string>& getData() const;
 
   State sync();
   Q_INVOKABLE bool isValid();
   const State& getState() const { return state; }
 
   PlotStyle style;
+
+  struct POD {
+    std::optional<std::string> name;
+    std::optional<std::string> start;
+    std::optional<std::string> end;
+    std::optional<CoordinateSystem> coordinates;
+    std::optional<std::vector<std::string>> values;
+  };
+
+  POD exportPod() const;
 
 signals:
   void updated();

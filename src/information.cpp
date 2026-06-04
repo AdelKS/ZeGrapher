@@ -87,7 +87,12 @@ void Information::screenChanged(QWindow* win)
   }
 }
 
-void Information::exportYaml(QUrl filename)
+QString Information::exportYaml(QUrl filename)
 {
-  Q_UNUSED(filename);
+  qInfo() << "Exporting to " << filename.toLocalFile();
+  auto write_error = glz::write_file_yaml(zg::mathWorld.exportPod(), filename.toLocalFile().toStdString());
+  if (write_error) {
+    return QString::fromStdString(glz::format_error(write_error));
+  }
+  else return {};
 }

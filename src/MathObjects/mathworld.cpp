@@ -1,4 +1,5 @@
 #include "mathworld.h"
+#include "Utils/yaml.h"
 
 namespace zg {
 
@@ -229,6 +230,20 @@ MathWorld::revdeps(MathObject::EvalHandle handle) const
   }
 
   return res;
+}
+
+MathWorld::POD MathWorld::exportPod() const
+{
+  MathWorld::POD pod;
+  pod.math_objects.reserve(mathObjects.size());
+  for (const MathObject* o: mathObjects)
+    pod.math_objects.push_back(o->exportPod());
+  return pod;
+}
+
+void MathWorld::importPod(const POD&)
+{
+
 }
 
 }

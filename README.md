@@ -69,6 +69,7 @@ To compile from sources, ZeGrapher needs the following tools and libraries:
 - [boost](https://www.boost.org/)
 - [Qt](https://www.qt.io)
 - [meson](mesonbuild.com)
+- [glaze](https://github.com/stephenberry/glaze)
 
 To build
 

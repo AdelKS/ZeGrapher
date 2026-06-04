@@ -23,6 +23,8 @@
 #include "MathObjects/expr.h"
 #include "axismapper.h"
 
+#include <glaze/yaml.hpp>
+
 namespace zg {
 
 struct StringRange {
@@ -95,3 +97,12 @@ protected:
 using CoordinateSystem = Base::CoordinateSystem;
 
 }
+
+template <>
+struct glz::meta<zg::Base::CoordinateSystem>
+{
+   using enum zg::Base::CoordinateSystem;
+   static constexpr auto value = glz::enumerate(
+      "cartesian",  Cartesian,
+      "polar",   Polar);
+};

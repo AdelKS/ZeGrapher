@@ -1,4 +1,5 @@
 #include "parametric.h"
+#include "Utils/yaml.h"
 
 namespace zg {
 namespace mathobj {
@@ -41,6 +42,17 @@ bool Parametric::isDiscrete() const
 bool Parametric::isContinuous() const
 {
   return obj1->isContinuous() and obj2->isContinuous();
+}
+
+Parametric::POD Parametric::exportPod() const {
+
+  return POD {
+    .first = yml::not_default(getFirst()),
+    .second = yml::not_default(getSecond()),
+    .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
+    .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
+    .coordinates = yml::not_default(coordinateSystem, Cartesian),
+  };
 }
 
 } // namespace mathobj

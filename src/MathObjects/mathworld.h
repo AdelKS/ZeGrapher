@@ -22,8 +22,6 @@
 
 #include "MathObjects/mathobject.h"
 
-#include <QAbstractListModel>
-
 #include <QtQmlIntegration/qqmlintegration.h>
 
 namespace zc {
@@ -67,6 +65,13 @@ public:
   std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(MathObject::EvalHandle) const;
 
   QHash<int, QByteArray> roleNames() const override;
+
+  struct POD {
+    std::vector<MathObject::POD> math_objects;
+  };
+
+  POD exportPod() const;
+  void importPod(const POD&);
 
 signals:
   void updated();

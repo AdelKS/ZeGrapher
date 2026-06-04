@@ -60,7 +60,7 @@ public:
   explicit Constant(QObject *parent = nullptr);
   ~Constant();
 
-  Q_INVOKABLE State setName(QString name);
+  Q_INVOKABLE void setName(QString name);
   QString getName() const { return input_name; }
   State sync();
 
@@ -88,6 +88,19 @@ public:
 
   double get_value() const { return value; }
 
+ struct POD {
+    std::optional<std::string> name;
+    std::optional<double> value;
+    std::optional<double> from;
+    std::optional<double> to;
+    std::optional<int> steps;
+    std::optional<LoopType> loop_type;
+    std::optional<bool> dead_and_alive;
+    std::optional<double> duration;
+  };
+
+  POD exportPod() const;
+
 signals:
   void nameChanged();
   void updated();
@@ -106,11 +119,15 @@ protected:
   double from = std::nan("");
   double value = std::nan("");
   double to = std::nan("");
-  int steps = 5;
+  int steps = defaultSteps;
 
-  LoopType loopType = ONESHOT;
-  seconds duration = seconds(2.);
+  LoopType loopType = defaultLoopType;
+  seconds duration = defaultDuration;
   bool deadAndAlive = false;
+
+  static constexpr int defaultSteps = 5;
+  static constexpr LoopType defaultLoopType = ONESHOT;
+  static constexpr seconds defaultDuration = seconds(2.);
 
   QString input_name;
   State state;
