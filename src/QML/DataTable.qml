@@ -289,6 +289,7 @@ Item {
           }
 
           ValueEdit {
+            focus: true
             id: valueEdit
             anchors.fill: parent
             visible: root.interactive && item.editing
@@ -296,15 +297,9 @@ Item {
             backend: editCellBackend
           }
 
-          // Enter is the only commit trigger that leaves the current cell
-          // unchanged: Tab moves to the next column first, a click moves to
-          // the target cell first, focus-loss likewise. So commit-with-same-
-          // current-cell == Enter, and that's when we advance one row down.
           TableView.onCommit: {
             display = valueEdit.expression;
-            const sameCell = tableView.currentRow === item.row
-                          && tableView.currentColumn === item.column;
-            if (sameCell) {
+            if (activeFocus) {
               console.log("Triggering next column cell edit");
               advanceEditTimer.targetRow = item.row + 1;
               advanceEditTimer.targetCol = item.column;
