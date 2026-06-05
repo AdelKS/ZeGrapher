@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
 
+import ZeGrapher as ZG
+
 // A line edit without borders, that follows its content
 
 Item {
@@ -45,16 +47,7 @@ Item {
         valueRole: "type"
         background.implicitWidth: implicitContentWidth
 
-        model: ListModel {
-          ListElement {
-            text: "Cartesian"
-            type: MathObject.Cartesian
-          }
-          ListElement {
-            text: "Polar"
-            type: MathObject.Polar
-          }
-        }
+        model: coordinateType
 
         onCurrentValueChanged: {
           root.mathObj.coordinateSystem = currentValue
@@ -192,7 +185,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.mathObj.start
+        backend: root.mathObj.base.start
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -218,7 +211,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.mathObj.end
+        backend: root.mathObj.base.end
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -228,6 +221,18 @@ Item {
       Item {
         Layout.maximumWidth: 10
       }
+    }
+  }
+
+  ListModel {
+    id: coordinateType
+    ListElement {
+      text: "Cartesian"
+      type: ZG.Base.Cartesian
+    }
+    ListElement {
+      text: "Polar"
+      type: ZG.Base.Polar
     }
   }
 

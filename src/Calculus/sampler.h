@@ -63,7 +63,7 @@ protected:
 
   /// @brief samples an object given the current range and graph size
   /// @tparam continuous: whether the object is continuous or discrete
-  template <zg::MathObject::CoordinateSystem coordinates, bool discrete>
+  template <zg::CoordinateSystem coordinates, bool discrete>
   void sample(auto, zg::SampledCurve&);
 
   /// @brief detects and records discontinuities in a fully sampled continuous curve

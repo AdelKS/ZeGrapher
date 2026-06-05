@@ -24,12 +24,12 @@
 #include <QObject>
 #include <QSyntaxHighlighter>
 
+#include "BuildingBlocks/base.h"
 #include "Utils/plotstyle.h"
-#include "parametric.h"
-#include "equation.h"
-#include "expr.h"
 #include "constant.h"
 #include "data.h"
+#include "equation.h"
+#include "parametric.h"
 
 namespace zg {
 
@@ -42,12 +42,10 @@ struct MathObject: QObject {
 
   Q_PROPERTY(QString name READ getName NOTIFY nameChanged)
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
-  Q_PROPERTY(bool discrete READ isDiscrete NOTIFY continuityChanged)
-  Q_PROPERTY(bool continuous READ isContinuous NOTIFY continuityChanged)
+  Q_PROPERTY(bool discrete READ isDiscrete NOTIFY discreteChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
-  Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
-  Q_PROPERTY(mathobj::Expr* start READ getStart)
-  Q_PROPERTY(mathobj::Expr* end READ getEnd)
+  Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem READ getCoordinateSystem NOTIFY coordinateSystemChanged)
+  Q_PROPERTY(zg::Base* base READ getBase NOTIFY baseChanged)
   Q_PROPERTY(PlotStyle* style READ getStyle)
 
 public:
@@ -67,12 +65,9 @@ public:
 
   Q_ENUM(Type);
 
-  enum CoordinateSystem {Cartesian, Polar};
-  Q_ENUM(CoordinateSystem);
-
   struct SamplingSettings {
     zg::real_range1d range = {.min = {0.}, .max = {0.}};
-    zg::MathObject::CoordinateSystem coordinateSystem = zg::MathObject::Cartesian;
+    zg::CoordinateSystem coordinateSystem = zg::CoordinateSystem::Cartesian;
     size_t revision = 0;
 
     bool operator == (const SamplingSettings&) const = default;
@@ -97,19 +92,15 @@ public:
   Q_INVOKABLE mathobj::Data* getData();
   Q_INVOKABLE mathobj::Parametric* getParametric();
 
-  Q_INVOKABLE bool isContinuous() const { return continuous; };
-  Q_INVOKABLE bool isDiscrete() const { return discrete; };
+  bool isContinuous() const { return not isDiscrete(); };
+
+  Q_INVOKABLE bool isDiscrete() const;
   Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
 
   Q_INVOKABLE void setCoordinateSystem(CoordinateSystem);
+  CoordinateSystem getCoordinateSystem() const;
 
-  CoordinateSystem getCoordinateSystem() const { return coordinateSystem; }
-
-  const mathobj::Expr* getStart() const { return &start; }
-  const mathobj::Expr* getEnd() const { return &end; }
-
-  mathobj::Expr* getStart() { return &start; }
-  mathobj::Expr* getEnd() { return &end; }
+  Base* getBase();
 
   PlotStyle* getStyle() { return &style; }
 
@@ -132,13 +123,11 @@ signals:
   void stateChanged();
   void updated();
   void typeChanged();
-  void continuityChanged();
   void nameChanged();
+  void discreteChanged();
   void schrodingerChanged();
   void coordinateSystemChanged();
-
-protected slots:
-  void updateStartEndDefaults();
+  void baseChanged();
 
 protected:
   std::variant<std::monostate,
@@ -150,12 +139,6 @@ protected:
   State state;
 
   bool schrodinger = false;
-  bool discrete = false;
-  bool continuous = false;
-  CoordinateSystem coordinateSystem = Cartesian;
-
-  mathobj::Expr start;
-  mathobj::Expr end;
 
   friend zg::MathWorld;
 };

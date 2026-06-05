@@ -186,17 +186,17 @@ void Sampler::update()
     std::visit(zc::utils::overloaded{
       [](std::monostate){},
       [&](auto handle){
-        if (data.settings.coordinateSystem == zg::MathObject::Cartesian)
+        if (data.settings.coordinateSystem == zg::CoordinateSystem::Cartesian)
         {
           if (data.discrete)
-            sample<zg::MathObject::Cartesian, true>(handle, data);
-          else sample<zg::MathObject::Cartesian, false>(handle, data);
+            sample<zg::CoordinateSystem::Cartesian, true>(handle, data);
+          else sample<zg::CoordinateSystem::Cartesian, false>(handle, data);
         }
-        else if (data.settings.coordinateSystem == zg::MathObject::Polar)
+        else if (data.settings.coordinateSystem == zg::CoordinateSystem::Polar)
         {
           if (data.discrete)
-            sample<zg::MathObject::Polar, true>(handle, data);
-          else sample<zg::MathObject::Polar, false>(handle, data);
+            sample<zg::CoordinateSystem::Polar, true>(handle, data);
+          else sample<zg::CoordinateSystem::Polar, false>(handle, data);
         }
         else qCritical() << "Case not handled, aborting program";
       }

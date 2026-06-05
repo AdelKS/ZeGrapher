@@ -20,6 +20,7 @@
 **
 ****************************************************************************/
 
+#include "BuildingBlocks/base.h"
 #include "namedref.h"
 #include <zecalculator/zecalculator.h>
 
@@ -47,6 +48,8 @@ public:
 
   NamedRef* obj1;
   NamedRef* obj2;
+
+  Base base;
 
 signals:
   void updated();

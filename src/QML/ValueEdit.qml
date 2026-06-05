@@ -20,6 +20,10 @@ Item {
     zcExprEdit.refresh();
   }
 
+  onBackendChanged: {
+    zcExprEdit.expression = backend.expression;
+  }
+
   ZcExprEdit {
     id: zcExprEdit
 

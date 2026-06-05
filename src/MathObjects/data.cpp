@@ -4,7 +4,12 @@
 namespace zg {
 namespace mathobj {
 
-Data::Data(QObject *parent): Stateful(parent)
+Data::Data(QObject *parent)
+  : Stateful(parent),
+    base([](CoordinateSystem s, bool){
+             return s == CoordinateSystem::Polar
+             ? StringRange{"0", "10"}
+             : StringRange{"0", "xmax"}; }, this)
 {
   zcMathObj.set_data("", std::vector<std::string>(10));
 }

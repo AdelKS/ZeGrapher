@@ -20,10 +20,10 @@
 **
 ****************************************************************************/
 
+#include "BuildingBlocks/base.h"
 #include "BuildingBlocks/stateful.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
-
 
 namespace zg {
 namespace mathobj {
@@ -45,6 +45,8 @@ public:
   State sync();
 
   Q_INVOKABLE bool isValid();
+
+  Base base;
 
 signals:
   void updated();

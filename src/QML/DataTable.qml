@@ -256,6 +256,7 @@ Item {
         Expr {
           id: cellBackend
           implicitName: "tableCell"
+          expression: display
         }
 
         ValueEdit {
@@ -275,8 +276,6 @@ Item {
 
           visible: !root.interactive || !editing
           enabled: false
-
-          expression: display
         }
 
         TableView.editDelegate: FocusScope {
@@ -286,13 +285,13 @@ Item {
           Expr {
             id: editCellBackend
             implicitName: "editCell"
+            expression: display
           }
 
           ValueEdit {
             id: valueEdit
             anchors.fill: parent
             visible: root.interactive && item.editing
-            expression: display
             exprEdit.lineEditBackend.textEdit.focus: true
             backend: editCellBackend
           }

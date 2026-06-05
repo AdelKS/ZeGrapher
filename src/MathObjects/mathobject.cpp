@@ -23,47 +23,45 @@
 namespace zg {
 
 MathObject::MathObject(QObject *parent, Type type)
-  : QObject(parent), start(this), end(this)
+  : QObject(parent)
 {
   setType(type);
-  start.setImplicitName("start");
-  end.setImplicitName("end");
-  updateStartEndDefaults();
   connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
 }
 
 void MathObject::setCoordinateSystem(CoordinateSystem s)
 {
-  if (s != coordinateSystem)
-  {
-    coordinateSystem = s;
-    updateStartEndDefaults();
-    emit coordinateSystemChanged();
-  }
-
+  std::visit(zc::utils::overloaded{
+      [](mathobj::Constant*) {},
+      [s](auto* v) { v->base.setCoordinateSystem(s); },
+      [](std::monostate) {},
+    },
+    backend
+  );
 }
 
-void MathObject::updateStartEndDefaults()
-{
-  if (coordinateSystem == Polar)
-  {
-    start.setExpression("0");
-    end.setExpression("2*math::pi");
-  }
-  else
-  {
-    if (getType() == PARAMETRIC)
-    {
-      start.setExpression("0");
-      end.setExpression("10");
-    }
-    else
-    {
-      start.setExpression("xmin");
-      end.setExpression("xmax");
-    }
-  }
 
+CoordinateSystem MathObject::getCoordinateSystem() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [](const mathobj::Constant*) { return CoordinateSystem::Cartesian; },
+      [](const auto* v) { return v->base.getCoordinateSystem(); },
+      [](std::monostate) { return CoordinateSystem::Cartesian; },
+    },
+    backend
+  );
+}
+
+Base* MathObject::getBase()
+{
+  return std::visit(zc::utils::overloaded{
+    [](mathobj::Equation* e)   -> Base* { return &e->base; },
+    [](mathobj::Data* d)       -> Base* { return &d->base; },
+    [](mathobj::Parametric* p) -> Base* { return &p->base; },
+    [](mathobj::Constant*)     -> Base* { return nullptr; },
+    [](std::monostate)         -> Base* { return nullptr; },
+  }, backend);
 }
 
 void MathObject::setType(Type t)
@@ -72,6 +70,13 @@ void MathObject::setType(Type t)
 
   if (oldType == t)
     return; // backend is already correct
+
+  // delay delete the old pointer
+  // so QML can properly stop using it
+  std::visit(zc::utils::overloaded{
+    [](std::monostate){},
+    [](auto* p){ p->deleteLater(); },
+  }, backend);
 
   switch (t) {
     case MONOSTATE:
@@ -96,16 +101,23 @@ void MathObject::setType(Type t)
       [this]<typename T>(T* n) {
         connect(n, &T::updated, this, &MathObject::updated);
         connect(n, &T::destroyed, this, &MathObject::updated);
+        if constexpr (std::is_same_v<T, mathobj::Constant>)
+        {
+
+        }
+        else
+        {
+          connect(&n->base, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
+          connect(&n->base, &Base::discreteChanged, this, &MathObject::discreteChanged);
+        }
       },
       [](std::monostate) {},
     },
     backend
   );
 
-  if ((oldType == PARAMETRIC or t == PARAMETRIC) and coordinateSystem != Polar)
-    updateStartEndDefaults();
-
   emit typeChanged();
+  emit baseChanged();
 }
 
 MathObject::Type MathObject::getType() const
@@ -184,7 +196,7 @@ size_t MathObject::getRevision() const
         size_t rev1 = 0, rev2 = 0;
         if (const auto* o1 = p->obj1->getZcObject())
           rev1 = o1->get_revision();
-        if (const auto* o2 = p->obj1->getZcObject())
+        if (const auto* o2 = p->obj2->getZcObject())
           rev2 = o2->get_revision();
         return rev1 + rev2;
       },
@@ -217,25 +229,6 @@ State MathObject::sync()
     backend
   );
 
-  const bool old_continuous = continuous;
-  const bool old_discrete = discrete;
-  std::visit(
-    zc::utils::overloaded{
-      [&](const auto* c) {
-        continuous = c->isContinuous();
-        discrete = c->isDiscrete();
-      },
-      [&](std::monostate) {
-        continuous = false;
-        discrete = false;
-      },
-    },
-    backend
-  );
-
-  if (old_discrete != discrete or old_continuous != continuous)
-    emit continuityChanged();
-
   if (old_name != name)
     emit nameChanged();
 
@@ -243,6 +236,18 @@ State MathObject::sync()
     emit stateChanged();
 
   return state;
+}
+
+bool MathObject::isDiscrete() const
+{
+  return std::visit(
+    zc::utils::overloaded{
+      [](const mathobj::Constant* c) { return c->isDiscrete(); },
+      [](const auto* v) { return v->base.isDiscrete(); },
+      [](std::monostate) { return false; },
+    },
+    backend
+  );
 }
 
 void MathObject::setSchrodinger(bool s)
@@ -265,15 +270,16 @@ void MathObject::setSchrodinger(bool s)
 std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
 {
   SamplingSettings settings;
-  settings.coordinateSystem = coordinateSystem;
 
-  if (double v = start.getValue(); not std::isnan(v))
-    settings.range.min.v = v;
-  else return {};
+  auto* base = getBase();
+  if (not base) [[unlikely]]
+    return {};
 
-  if (double v = end.getValue(); not std::isnan(v))
-    settings.range.max.v = v;
-  else return {};
+  settings.coordinateSystem = getCoordinateSystem();
+  settings.range = base->getSnapshot();
+
+  if (std::isnan(settings.range.min.v) or std::isnan(settings.range.max.v)) [[unlikely]]
+    return {};
 
   if (settings.range.max <= settings.range.min)
     return {};

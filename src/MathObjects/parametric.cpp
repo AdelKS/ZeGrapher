@@ -4,7 +4,10 @@ namespace zg {
 namespace mathobj {
 
 Parametric::Parametric(QObject *parent)
-  : QObject(parent), obj1(new NamedRef(this)), obj2(new NamedRef(this))
+  : QObject(parent),
+    obj1(new NamedRef(this)),
+    obj2(new NamedRef(this)),
+    base([](CoordinateSystem, bool){ return StringRange{"0", "10"}; }, this)
 {
   connect(obj1, &NamedRef::updated, this, &Parametric::updated);
   connect(obj2, &NamedRef::updated, this, &Parametric::updated);
