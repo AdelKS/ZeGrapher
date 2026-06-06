@@ -268,9 +268,8 @@ Item {
         to: 500.
         step: 1.
 
-        Component.onCompleted: setValue(root.backend.duration)
-
-        onValueChanged: root.backend.duration = value;
+        value: root.backend.duration
+        onValueModified: (value) => root.backend.duration = value
       }
     }
   }

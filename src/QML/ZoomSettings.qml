@@ -60,7 +60,7 @@ Rectangle {
         }
       }
 
-      onValueModified: {
+      onValueModified: (value) => {
         fitSheet.checked = false;
         graphSettings.zoom.zoom = value / 100.0;
       }

@@ -7,25 +7,33 @@ Item {
   property alias prefix: spinBox.prefix
   property alias decimals: spinBox.decimals
 
-  signal valueModified();
-
   property real from: 0.0
-  readonly property real value: spinBox.value / spinBox.decimalFactor
   property real to: 1.0
   property real step: 0.1
 
+  // Two-way bindable: bind `value` to the source and push edits back via the
+  // signal argument, so the binding survives user edits:
+  //   value: backend.foo
+  //   onValueModified: (value) => backend.foo = value
+  property real value: 0
+
+  signal valueModified(real value)
+
+  onValueChanged: spinBox.set_value(value)
+  Component.onCompleted: spinBox.set_value(value)
+
+  function setValue(val: real) {
+    value = val;
+  }
+
   function increase() {
     spinBox.increase();
-    root.valueModified();
+    root.valueModified(spinBox.value / spinBox.decimalFactor);
   }
 
   function decrease() {
     spinBox.decrease();
-    root.valueModified();
-  }
-
-  function setValue(val: real) {
-    spinBox.set_value(val);
+    root.valueModified(spinBox.value / spinBox.decimalFactor);
   }
 
   implicitHeight: spinBox.implicitHeight
@@ -42,20 +50,21 @@ Item {
     readonly property int decimalFactor: Math.pow(10, decimals)
 
     function decimalToInt(decimal) {
-      return decimal * decimalFactor
+      return Math.round(decimal * decimalFactor)
     }
 
     function set_value(val: real) {
-      value = decimalToInt(val);
+      let scaled = decimalToInt(val);
+      if (value !== scaled)
+        value = scaled;
     }
 
-    onValueModified: root.valueModified();
-
     from: decimalToInt(root.from)
-    value: { value = from; }
     to: decimalToInt(root.to)
     stepSize: decimalToInt(root.step)
     editable: true
+
+    onValueModified: root.valueModified(value / decimalFactor)
 
     readonly property regexp numberExtractionRegExp: /\*?(\d+(\.\d+)?)\*?/
 

@@ -255,16 +255,8 @@ Item {
             step: 0.1
             to: 2.0
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.grid.x.lineWidth = value;
-              console.info("x grid line width: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
-            Component.onCompleted: {
-              setValue(root.graphSettings.grid.x.lineWidth);
-            }
+            value: root.graphSettings.grid.x.lineWidth
+            onValueModified: (value) => root.graphSettings.grid.x.lineWidth = value
           }
           ZeDoubleSpinBox {
             Layout.fillWidth: true
@@ -276,16 +268,8 @@ Item {
             to: 2.0
             decimals: 1
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.grid.y.lineWidth = value;
-              console.info("y grid line width: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
-            Component.onCompleted: {
-              setValue(root.graphSettings.grid.y.lineWidth);
-            }
+            value: root.graphSettings.grid.y.lineWidth
+            onValueModified: (value) => root.graphSettings.grid.y.lineWidth = value
           }
 
         }
@@ -416,16 +400,8 @@ Item {
             step: 0.1
             to: 2.0
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.subgrid.x.lineWidth = value;
-              console.info("x grid line width: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
-            Component.onCompleted: {
-              setValue(root.graphSettings.subgrid.x.lineWidth);
-            }
+            value: root.graphSettings.subgrid.x.lineWidth
+            onValueModified: (value) => root.graphSettings.subgrid.x.lineWidth = value
           }
           ZeDoubleSpinBox {
             Layout.fillWidth: true
@@ -437,16 +413,8 @@ Item {
             to: 2.0
             decimals: 1
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.subgrid.y.lineWidth = value;
-              console.info("y grid line width: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
-            Component.onCompleted: {
-              setValue(root.graphSettings.subgrid.y.lineWidth);
-            }
+            value: root.graphSettings.subgrid.y.lineWidth
+            onValueModified: (value) => root.graphSettings.subgrid.y.lineWidth = value
           }
 
         }

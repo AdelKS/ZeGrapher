@@ -85,16 +85,8 @@ Item {
             step: 0.1
             to: 5.0
 
-            onValueModified: {
-              root.pauseSync = true;
-              root.graphSettings.size.scalingFactor = value;
-              console.debug("global scale changed to: ", value);
-              root.pauseSync = false;
-            }
-
-            Component.onCompleted: {
-              setValue(1.0);
-            }
+            value: root.graphSettings.size.scalingFactor
+            onValueModified: (value) => root.graphSettings.size.scalingFactor = value
           }
 
           ZeLabel {
@@ -202,7 +194,7 @@ Item {
               ZeDoubleSpinBox {
                 id: sheetHeight
 
-                onValueModified: {
+                onValueModified: (value) => {
                   root.pauseSync = true;
                   console.log("Updating sheet size");
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
@@ -234,7 +226,7 @@ Item {
                   }
                 }
 
-                onValueModified: {
+                onValueModified: (value) => {
                   root.pauseSync = true;
                   if (unitComboBox.currentValue === SizeUnit.PIXEL) {
                     root.graphSettings.size.pxSheetSize.width = value;
@@ -385,16 +377,8 @@ Item {
             step: 0.5
             to: 5.0
 
-            onValueModified: {
-              root.pauseSync = true;
-              root.graphSettings.axes.lineWidth = value;
-              console.debug("Axes line width changed: ", value);
-              root.pauseSync = false;
-            }
-
-            Component.onCompleted: {
-              setValue(graphSettings.axes.lineWidth);
-            }
+            value: root.graphSettings.axes.lineWidth
+            onValueModified: (value) => root.graphSettings.axes.lineWidth = value
           }
 
           Label {
