@@ -75,7 +75,7 @@ public:
 
   static constexpr int defaultSubdivs = 2;
   static constexpr bool defaultShowCoordinates = false;
-  static constexpr bool defaultShow = false;
+  static constexpr bool defaultShow = true;
   static constexpr double defaultLineWidth = 0.6;
   static const ThemedColor defaultColor;
 
