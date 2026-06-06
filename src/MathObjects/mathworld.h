@@ -66,9 +66,7 @@ public:
 
   QHash<int, QByteArray> roleNames() const override;
 
-  struct POD {
-    std::vector<MathObject::POD> math_objects;
-  };
+  using POD = std::vector<MathObject::POD>;
 
   POD exportPod() const;
   void importPod(POD);

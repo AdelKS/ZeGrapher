@@ -28,6 +28,7 @@
 #include "Utils/graphrange.h"
 #include "Utils/gridsettings.h"
 #include "Utils/themedcolor.h"
+#include "Utils/yaml.h"
 #include "structures.h"
 
 struct ZeGraphSettings: QObject
@@ -69,6 +70,24 @@ public:
   int getMinPointsLg2() const { return minPointsLg2; }
   int getMaxPointsLg2() const { return maxPointsLg2; }
 
+  struct POD {
+    std::optional<zg::GraphRange::POD> range;
+    std::optional<double> zoom;
+    std::optional<ZeSizeSettings::POD> size;
+    std::optional<ZeAxesSettings::POD> axes;
+    std::optional<ZeGridSettings::POD> grid;
+    std::optional<ZeSubgridSettings::POD> subgrid;
+    std::optional<zg::yml::QFontPOD> font;
+    std::optional<ThemedColor::POD> background;
+    std::optional<int> min_points;
+    std::optional<int> max_points;
+
+    operator bool () const { return range or zoom or size or axes or grid or subgrid or font or background or min_points or max_points; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
+
 public slots:
   void setZoomSettings(ZeZoomSettings);
   void setSizeSettings(ZeSizeSettings);
@@ -99,21 +118,25 @@ protected slots:
   void onSystemPaletteChange();
 
 protected:
+  // log2 for adaptive sampling
+  int minPointsLg2 = 7;
+  int maxPointsLg2 = 14;
+
+  static constexpr int defaultMinPoints = 7;
+  static constexpr int defaultMaxPoints = 14;
+
+  QFont defaultFont;
+  QFont font;
+
+  ThemedColor defaultBgColor;
+  ThemedColor backgroundColor;
+
   ZeZoomSettings zoom;
   ZeSizeSettings size;
   ZeAxesSettings axes;
   ZeGridSettings grid;
   ZeSubgridSettings subgrid;
   zg::GraphRange range;
-
-  // log2 for adaptive sampling
-  int minPointsLg2 = 7;
-  int maxPointsLg2 = 14;
-
-  QFont font;
-
-  ThemedColor defaultBgColor;
-  ThemedColor backgroundColor;
 
   QSize availableSizePx;
   QSizeF availableSizeCm;

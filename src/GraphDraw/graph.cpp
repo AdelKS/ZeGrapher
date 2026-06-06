@@ -71,6 +71,8 @@ Graph::Graph(QQuickItem *parent)
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
   connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });
 
+  information.graphSettings = &settings;
+
   emit settingsChanged();
 }
 

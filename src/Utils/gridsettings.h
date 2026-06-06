@@ -36,28 +36,65 @@ struct Ze1DGridCommonSettings
   Q_PROPERTY(ThemedColor color MEMBER color)
 
 public:
-  bool show = true;
-  double lineWidth = 0.6;
-  ThemedColor color = {.dark = "#6f6f6f", .light = "#717171"};
+  bool show = defaultShow;
+  double lineWidth = defaultLineWidth;
+  ThemedColor color = defaultColor;
+
+  static constexpr bool defaultShow = true;
+  static constexpr double defaultLineWidth = 0.6;
+  static const ThemedColor defaultColor;
+
+  struct POD {
+    std::optional<bool> show;
+    std::optional<double> line_width;
+    std::optional<ThemedColor::POD> color;
+
+    operator bool () const { return show or line_width or color; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
 
   bool operator == (const Ze1DGridCommonSettings&) const = default;
 };
+
+inline const ThemedColor Ze1DGridCommonSettings::defaultColor = {.dark = "#6f6f6f", .light = "#717171"};
 
 struct Ze1DSubgridSettings: Ze1DGridCommonSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(unsigned int subdivs MEMBER subdivs)
+  Q_PROPERTY(int subdivs MEMBER subdivs)
   Q_PROPERTY(bool showCoordinates MEMBER showCoordinates)
 
 public:
-  Ze1DSubgridSettings(): Ze1DGridCommonSettings({.show = false, .color = {.dark = "#434343", .light = "#d1d1d1"}}) {}
+  Ze1DSubgridSettings(): Ze1DGridCommonSettings({.show = defaultShow, .lineWidth = defaultLineWidth, .color = defaultColor}) {}
 
-  unsigned int subdivs = 2;
-  bool showCoordinates = false;
+  int subdivs = defaultSubdivs;
+  bool showCoordinates = defaultShowCoordinates;
+
+  static constexpr int defaultSubdivs = 2;
+  static constexpr bool defaultShowCoordinates = false;
+  static constexpr bool defaultShow = false;
+  static constexpr double defaultLineWidth = 0.6;
+  static const ThemedColor defaultColor;
+
+  struct POD {
+    std::optional<bool> show;
+    std::optional<double> line_width;
+    std::optional<ThemedColor::POD> color;
+    std::optional<int> subdivs;
+
+    operator bool () const { return show or line_width or color or subdivs; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
 
   bool operator == (const Ze1DSubgridSettings&) const = default;
 };
+
+inline const ThemedColor Ze1DSubgridSettings::defaultColor = {.dark = "#434343", .light = "#d1d1d1"};
 
 using Ze1DGridSettings = Ze1DGridCommonSettings;
 
@@ -71,6 +108,14 @@ struct ZeGridSettings
 public:
   Ze1DGridSettings x, y;
 
+  struct POD {
+    std::optional<Ze1DGridSettings::POD> x, y;
+    operator bool () const { return x or y; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
+
   bool operator == (const ZeGridSettings&) const = default;
 };
 
@@ -83,6 +128,14 @@ struct ZeSubgridSettings
 
 public:
   Ze1DSubgridSettings x, y;
+
+  struct POD {
+    std::optional<Ze1DSubgridSettings::POD> x, y;
+    operator bool () const { return x or y; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
 
   bool operator == (const ZeSubgridSettings&) const = default;
 

@@ -23,6 +23,7 @@
 #include "zecalculator/parsing/types.h"
 #include <cfloat>
 #include <QtWidgets>
+#include <glaze/yaml.hpp>
 
 #include <QMetaType>
 #include <QtQmlIntegration/qqmlintegration.h>
@@ -110,6 +111,28 @@ public:
   QSizeF cmSheetSize;
 
   bool operator == (const ZeSizeSettings &other) const = default;
+
+  struct POD
+  {
+    std::optional<double> scaling;
+    std::optional<SizeUnit::Unit> unit;
+    std::optional<double> width;
+    std::optional<double> height;
+
+    operator bool () const { return scaling or unit or width or height; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
+};
+
+template <>
+struct glz::meta<SizeUnit::Unit>
+{
+   using enum SizeUnit::Unit;
+   static constexpr auto value = glz::enumerate(
+    "centimeter", CENTIMETER,
+    "pixel", PIXEL);
 };
 
 struct ZoomingType: QObject

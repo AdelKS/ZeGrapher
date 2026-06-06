@@ -105,5 +105,39 @@ real_range2d GraphRange::getLatestValidSnapshot()
   return real_range2d{.x = x.getLatestValidSnapshot(), .y = y.getLatestValidSnapshot()};
 }
 
+std::optional<ZeAxisRange::POD> ZeAxisRange::exportPod() const
+{
+  return POD {
+    .min = min.getExpression().toStdString(),
+    .max = max.getExpression().toStdString()
+  };
+}
+
+void ZeAxisRange::importPod(POD p)
+{
+  if (p.min)
+    min.setExpression(QString::fromStdString(*p.min));
+
+  if (p.max)
+    max.setExpression(QString::fromStdString(*p.max));
+}
+
+std::optional<GraphRange::POD> GraphRange::exportPod() const
+{
+  return POD {
+    .x = x.exportPod(),
+    .y = y.exportPod()
+  };
+}
+
+void GraphRange::importPod(POD p)
+{
+  if (p.x)
+    x.importPod(std::move(*p.x));
+
+  if (p.y)
+    y.importPod(std::move(*p.y));
+}
+
 
 } // namespace zg

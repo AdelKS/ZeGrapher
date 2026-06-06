@@ -24,6 +24,7 @@
 
 #include <zecalculator/zecalculator.h>
 
+#include "MathObjects/mathworld.h"
 #include "Utils/appsettings.h"
 #include "Utils/graphsettings.h"
 
@@ -80,6 +81,19 @@ public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
   ZeGraphSettings* graphSettings = nullptr;
+
+  struct POD {
+    std::optional<zg::MathWorld::POD> math_objects;
+    std::optional<ZeGraphSettings::POD> graph;
+  };
+
+  struct PartialGraphPOD {
+    std::optional<ZeGraphSettings::POD> graph;
+  };
+
+  struct PartialMathPOD {
+    std::optional<zg::MathWorld::POD> math_objects;
+  };
 
 protected:
   QString exportFileName;

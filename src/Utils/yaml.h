@@ -21,6 +21,7 @@
 ****************************************************************************/
 
 #include <QString>
+#include <QFont>
 #include <glaze/yaml.hpp>
 
 template <>
@@ -30,6 +31,22 @@ struct glz::meta<QString>
   static constexpr auto write = [](QString& s, const std::string& input) { s = QString::fromStdString(input); };
   static constexpr auto read = [](QString& s) { return s.toStdString(); };
   static constexpr auto value = glz::custom<write, read>;
+};
+
+template <>
+struct glz::meta<QFont::Weight>
+{
+   using enum QFont::Weight;
+   static constexpr auto value = glz::enumerate(
+    "thin", QFont::Thin,
+    "extra light", QFont::ExtraLight,
+    "light", QFont::Light,
+    "normal", QFont::Normal,
+    "medium", QFont::Medium,
+    "demi bold", QFont::DemiBold,
+    "bold", QFont::Bold,
+    "extra bold", QFont::ExtraBold,
+    "black", QFont::Black);
 };
 
 
@@ -48,6 +65,28 @@ inline std::optional<double> not_nan(double v)
 {
   return not std::isnan(v) ? v : std::optional<double>{};
 }
+
+struct QFontPOD {
+  std::optional<std::string> name;
+  std::optional<int> size;
+  std::optional<QFont::Weight> weight;
+
+  operator bool () const { return name or size or weight; }
+
+  /// @brief creates an instance from a color and a default (to tell which fields to leave empty)
+  static std::optional<QFontPOD> from(QFont c, QFont def)
+  {
+    QFontPOD p {
+      .name = not_default(c.family().toStdString(), def.family().toStdString()),
+      .size = not_default(c.pointSize(), def.pointSize()),
+      .weight = not_default(c.weight(), def.weight())
+    };
+
+    if (p)
+      return p;
+    else return {};
+  }
+};
 
 }
 }

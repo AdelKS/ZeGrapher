@@ -23,6 +23,8 @@
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
+#include <glaze/glaze.hpp>
+
 namespace zg {
 
 using seconds = std::chrono::duration<double>;
@@ -143,3 +145,13 @@ protected:
 
 }
 }
+
+template <>
+struct glz::meta<zg::mathobj::Constant::LoopType>
+{
+   using enum zg::mathobj::Constant::LoopType;
+   static constexpr auto value = glz::enumerate(
+    "oneshot",  ONESHOT,
+    "repeat",   REPEAT,
+    "ping_pong", PING_PONG);
+};

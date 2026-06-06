@@ -21,6 +21,8 @@
 #include "information.h"
 #include "globalvars.h"
 
+#include <glaze/yaml.hpp>
+
 Information::Information(QObject* parent):
   QObject(parent), appSettings(this)
 {
@@ -90,7 +92,10 @@ void Information::screenChanged(QWindow* win)
 QString Information::exportYaml(QUrl filename)
 {
   qInfo() << "Exporting to " << filename.toLocalFile();
-  auto write_error = glz::write_file_yaml(zg::mathWorld.exportPod(), filename.toLocalFile().toStdString());
+
+  POD pod = {.math_objects = zg::mathWorld.exportPod(), .graph = graphSettings->exportPod()};
+
+  auto write_error = glz::write_file_yaml(pod, filename.toLocalFile().toStdString());
   if (write_error) {
     return QString::fromStdString(glz::format_error(write_error));
   }
@@ -101,11 +106,30 @@ QString Information::importYaml(QUrl filename)
 {
   qInfo() << "Importing from " << filename.toLocalFile();
 
-  zg::MathWorld::POD pod;
-  auto read_error = glz::read_file_yaml(pod, filename.toLocalFile().toStdString());
-  if (read_error)
-    return QString::fromStdString(glz::format_error(read_error));
+  QString error;
 
-  zg::mathWorld.importPod(pod);
-  return {};
+  constexpr glz::yaml::yaml_opts opts = {.error_on_unknown_keys = false };
+
+  // we read only the math settings then only the graph settings
+  // se we can do partial loads if ever.
+
+  {
+    PartialMathPOD mathPod;
+    auto read_error = glz::read_file_yaml<opts>(mathPod, filename.toLocalFile().toStdString());
+    if (read_error)
+      error = QString::fromStdString(glz::format_error(read_error));
+    else if (mathPod.math_objects)
+      zg::mathWorld.importPod(std::move(*mathPod.math_objects));
+  }
+
+  {
+    PartialGraphPOD graphPod;
+    auto read_error = glz::read_file_yaml<opts>(graphPod, filename.toLocalFile().toStdString());
+    if (read_error)
+      error += (error.isEmpty() ? "" : "\n\n") + QString::fromStdString(glz::format_error(read_error));
+    else if (graphPod.graph)
+      graphSettings->importPod(std::move(*graphPod.graph));
+  }
+
+  return error;
 }

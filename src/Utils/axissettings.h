@@ -83,6 +83,17 @@ public:
   ZeLogAxisSettings logSettings;
   ViewType axisType = LINEAR;
 
+  struct POD {
+    std::optional<int> tick_spacing;
+    std::optional<int> max_digits;
+    std::optional<std::string> multiplier;
+
+    operator bool () const { return tick_spacing or max_digits or multiplier; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
+
   bool operator == (const ZeAxisSettings &other) const = default;
 };
 
@@ -99,9 +110,24 @@ public:
   ZeAxisSettings x, y;
   bool orthonormal = false;
 
-  ThemedColor color = {.dark = "#dfdfdf", .light = Qt::black};
+  ThemedColor color = defaultColor;
+  double lineWidth = defaultLineWith;
 
-  double lineWidth = 2.0;
+  static const ThemedColor defaultColor;
+  static constexpr double defaultLineWith = 2.0;
 
   bool operator == (const ZeAxesSettings &other) const = default;
+
+  struct POD {
+    std::optional<ThemedColor::POD> color;
+    std::optional<double> line_width;
+    std::optional<ZeAxisSettings::POD> x, y;
+
+    operator bool () const { return color or line_width or x or y; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
 };
+
+inline const ThemedColor ZeAxesSettings::defaultColor = {.dark = "#dfdfdf", .light = Qt::black};

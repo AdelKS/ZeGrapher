@@ -36,10 +36,10 @@ QColor getWindowColor()
 }
 
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
-  : QObject(parent), range(this),
+  : QObject(parent), defaultFont(information.getAppSettings()->font), font(defaultFont),
     defaultBgColor(
       ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),
-    backgroundColor(defaultBgColor)
+    backgroundColor(defaultBgColor), range(this)
 {
   auto* paletteWatcher = new PaletteWatcher(this);
   connect(paletteWatcher, &PaletteWatcher::paletteChanged, this, &ZeGraphSettings::onSystemPaletteChange);
@@ -188,4 +188,94 @@ void ZeGraphSettings::setAvailableSizePx(QSize s)
     computeZoom();
     emit availableSizePxChanged();
   }
+}
+
+std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
+{
+  POD p {
+    .range = range.exportPod(),
+    .zoom = zoom.zoomingType == ZoomingType::CUSTOM ? zoom.zoom : std::optional<double>{},
+    .size = size.exportPod(),
+    .axes = axes.exportPod(),
+    .grid = grid.exportPod(),
+    .subgrid = subgrid.exportPod(),
+    .font = zg::yml::QFontPOD::from(font, defaultFont),
+    .background = backgroundColor.exportPod(defaultBgColor),
+    .min_points = zg::yml::not_default(minPointsLg2, defaultMinPoints),
+    .max_points = zg::yml::not_default(maxPointsLg2, defaultMaxPoints)
+  };
+
+  if (p) return p;
+  else return {};
+}
+
+void ZeGraphSettings::importPod(POD p)
+{
+  if (p.range) range.importPod(std::move(*p.range));
+
+  if (p.zoom)
+  {
+    zoom.zoomingType = ZoomingType::CUSTOM;
+    zoom.zoom = *p.zoom;
+    emit zoomSettingsChanged();
+  }
+
+  if (p.size)
+  {
+    size.importPod(std::move(*p.size));
+    emit sizeSettingsChanged();
+  }
+
+  if (p.axes)
+  {
+    axes.importPod(std::move(*p.axes));
+    emit axesSettingsChanged();
+  }
+
+  if (p.grid)
+  {
+    grid.importPod(std::move(*p.grid));
+    emit gridSettingsChanged();
+  }
+
+  if (p.subgrid)
+  {
+    subgrid.importPod(std::move(*p.subgrid));
+    emit subgridSettingsChanged();
+  }
+
+  if (p.font)
+  {
+    if (p.font->name)
+      font.setFamily(QString::fromStdString(*p.font->name));
+
+    if (p.font->size)
+      font.setPointSize(p.font->size.value());
+
+    if (p.font->weight)
+      font.setWeight(p.font->weight.value());
+
+    emit fontChanged();
+  }
+
+  if (p.background)
+  {
+    backgroundColor.importPod(std::move(*p.background));
+    emit backgroundColorChanged();
+  }
+
+  if (p.min_points)
+  {
+    minPointsLg2 = p.min_points.value();
+    emit minPointsLg2Changed();
+  }
+
+  if (p.max_points)
+  {
+    maxPointsLg2 = p.max_points.value();
+    emit maxPointsLg2Changed();
+  }
+
+  qDebug() << "Done loading graph settings";
+
 }

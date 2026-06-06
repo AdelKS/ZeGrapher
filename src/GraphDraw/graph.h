@@ -331,7 +331,7 @@ void Graph::drawLinSubgrid()
   {
     if (not first_tick)
     {
-      for (uint mul = 1; mul <= subgridSettings.subdivs; mul++)
+      for (int mul = 1; mul <= subgridSettings.subdivs; mul++)
       {
         const zg::real_unit cur_pos = double(mul) / double(subgridSettings.subdivs + 1)
                                          * previous_pos

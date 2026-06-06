@@ -52,6 +52,14 @@ public:
 
   void update(const real_range1d& range);
 
+  struct POD {
+    std::optional<std::string> min, max;
+    operator bool () const { return min or max; }
+  };
+
+  void importPod(POD);
+  std::optional<POD> exportPod() const;
+
 signals:
   void stateChanged();
 
@@ -82,6 +90,14 @@ public:
   real_range2d getLatestValidSnapshot();
 
   void interactiveUpdate(const real_range2d& range);
+
+  struct POD {
+    std::optional<ZeAxisRange::POD> x, y;
+    operator bool () const { return x or y; }
+  };
+
+  void importPod(POD);
+  std::optional<POD> exportPod() const;
 
 signals:
   void interactiveUpdate();

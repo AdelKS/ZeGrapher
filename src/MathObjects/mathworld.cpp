@@ -234,16 +234,16 @@ MathWorld::revdeps(MathObject::EvalHandle handle) const
 
 MathWorld::POD MathWorld::exportPod() const
 {
-  MathWorld::POD pod;
-  pod.math_objects.reserve(mathObjects.size());
+  MathWorld::POD math_objects;
+  math_objects.reserve(mathObjects.size());
   for (const MathObject* o: mathObjects)
-    pod.math_objects.push_back(o->exportPod());
-  return pod;
+    math_objects.push_back(o->exportPod());
+  return math_objects;
 }
 
-void MathWorld::importPod(POD p)
+void MathWorld::importPod(POD math_objects)
 {
-  for (MathObject::POD& o: p.math_objects)
+  for (MathObject::POD& o: math_objects)
   {
     std::visit(
       zc::utils::overloaded{
