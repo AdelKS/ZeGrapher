@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include <QApplication>
+#include <QTimer>
 
 // track application palette change through signals
 // this is not offered out of the box by Qt for whatever reason
@@ -27,15 +28,28 @@ class PaletteWatcher : public QObject
   Q_OBJECT
 
 public:
-  explicit PaletteWatcher(QObject *parent = nullptr) : QObject(parent) {
+
+  explicit PaletteWatcher(QObject *parent = nullptr)
+    : QObject(parent), timer(this)
+  {
+    timer.setInterval(500);
+    timer.setSingleShot(true);
     qApp->installEventFilter(this);
+
+    connect(&timer, &QTimer::timeout, this, &PaletteWatcher::paletteChanged);
   }
+
 signals:
   void paletteChanged();
+
 protected:
-  bool eventFilter(QObject *obj, QEvent *event) override {
+  bool eventFilter(QObject *obj, QEvent *event) override
+  {
     if (obj == qApp && event->type() == QEvent::ApplicationPaletteChange)
-      emit paletteChanged();
+      timer.start();
     return QObject::eventFilter(obj, event);
   }
+
+  QTimer timer;
+
 };
