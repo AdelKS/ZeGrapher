@@ -24,16 +24,6 @@ Item {
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-  Connections {
-    target: mathObj.style
-    function onLineStyleChanged() {
-      dashPatternTumbler.currentIndex = root.indexFromModelValue(dashPatternModel, mathObj.style.lineStyle);
-    }
-    function onPointStyleChanged() {
-      pointStyleTumbler.currentIndex = root.indexFromModelValue(pointStyleModel, mathObj.style.pointStyle);
-    }
-  }
-
   GridLayout {
     id: mainLayout
     columns: 3
