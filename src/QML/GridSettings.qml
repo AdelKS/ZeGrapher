@@ -8,8 +8,6 @@ import QtQuick.Controls.FluentWinUI3
 Item {
   id: root
 
-  property bool pauseSync: false
-
   required property ZeGraphSettings graphSettings
 
   implicitWidth: scrollView.implicitWidth
@@ -64,17 +62,11 @@ Item {
             implicitWidth: 85
 
             from: 0
-            value: 0
+            value: root.graphSettings.axes.x.tickSpacing
             stepSize: 1
             to: 5
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.axes.x.tickSpacing = value;
-              console.info("x axis tick spacing: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
+            onValueModified: root.graphSettings.axes.x.tickSpacing = value
           }
          ZeSpinBox {
             Layout.fillWidth: true
@@ -82,17 +74,11 @@ Item {
             implicitWidth: 85
 
             from: 0
-            value: 0
+            value: root.graphSettings.axes.y.tickSpacing
             stepSize: 1
             to: 5
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.axes.y.tickSpacing = value;
-              console.info("y axis tick spacing: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
+            onValueModified: root.graphSettings.axes.y.tickSpacing = value
           }
 
           ZeLabel {
@@ -105,17 +91,11 @@ Item {
             implicitWidth: 85
 
             from: 2
-            value: 4
+            value: root.graphSettings.axes.x.linear.maxDigitsNum
             stepSize: 1
             to: 10
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.axes.x.linear.maxDigitsNum = value;
-              console.info("x axis max digit num: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
+            onValueModified: root.graphSettings.axes.x.linear.maxDigitsNum = value
           }
          ZeSpinBox {
             Layout.fillWidth: true
@@ -123,17 +103,11 @@ Item {
             implicitWidth: 85
 
             from: 2
-            value: 4
+            value: root.graphSettings.axes.y.linear.maxDigitsNum
             stepSize: 1
             to: 10
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.axes.y.linear.maxDigitsNum = value;
-              console.info("y axis max digit num: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
+            onValueModified: root.graphSettings.axes.y.linear.maxDigitsNum = value
           }
 
           ZeLabel {
@@ -359,13 +333,7 @@ Item {
             stepSize: 1
             to: 20
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.subgrid.x.subdivs = value;
-              console.info("x subgrid subdivs: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
+            onValueModified: root.graphSettings.subgrid.x.subdivs = value
           }
           ZeSpinBox {
             Layout.fillWidth: true
@@ -377,13 +345,7 @@ Item {
             stepSize: 1
             to: 20
 
-            function updateBackend() {
-              root.pauseSync = true;
-              root.graphSettings.subgrid.y.subdivs = value;
-              console.info("y subgrid subdivs: ", value);
-              root.pauseSync = false;
-            }
-            onValueModified: updateBackend()
+            onValueModified: root.graphSettings.subgrid.y.subdivs = value
           }
 
           ZeLabel {
