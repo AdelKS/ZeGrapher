@@ -13,11 +13,20 @@ Item {
   readonly property double max_px_size: 10000
   readonly property double max_cm_size: 1000
 
-  property bool pauseSync: false
-
   required property ZeGraphSettings graphSettings
 
   enum SizeType { Fill, Custom }
+
+  readonly property bool pixelUnits: root.graphSettings.size.sizeUnit === SizeUnit.PIXEL
+
+  function indexFromModelValue(model: var, val: int) : int {
+    for (var i = 0; i !== model.count; i++) {
+      if (model.get(i).value === val)
+        return i;
+    }
+    console.warn("Value not in model: ", val)
+    return -1;
+  }
 
   FontDialog {
     id: graphFontDialog
@@ -25,31 +34,6 @@ Item {
 
     onAccepted: {
       root.graphSettings.font = selectedFont;
-    }
-  }
-
-  function syncWithBackend() {
-    console.log("Syncing size settings with backend")
-    if (root.graphSettings.size.sizeUnit === SizeUnit.PIXEL) {
-      sheetHeight.suffix = qsTr(" px");
-      sheetHeight.to = root.max_px_size;
-      sheetHeight.setValue(root.graphSettings.size.pxSheetSize.height);
-      sheetHeight.step = root.px_increment;
-
-      sheetWidth.suffix = qsTr(" px");
-      sheetWidth.to = root.max_px_size;
-      sheetWidth.setValue(root.graphSettings.size.pxSheetSize.width);
-      sheetWidth.step = root.px_increment;
-    } else {
-      sheetHeight.suffix = qsTr(" cm");
-      sheetHeight.to = root.max_cm_size;
-      sheetHeight.setValue(root.graphSettings.size.cmSheetSize.height);
-      sheetHeight.step = root.cm_increment;
-
-      sheetWidth.suffix = qsTr(" cm");
-      sheetWidth.to = root.max_cm_size;
-      sheetWidth.setValue(root.graphSettings.size.cmSheetSize.width);
-      sheetWidth.step = root.cm_increment;
     }
   }
 
@@ -104,7 +88,10 @@ Item {
             textRole: "text"
             valueRole: "value"
 
-            model: ListModel {
+            model: sheetSizeModel
+
+            ListModel {
+              id: sheetSizeModel
               ListElement {
                 text: qsTr("Fill Window")
                 value: GraphSettings.SizeType.Fill
@@ -115,15 +102,15 @@ Item {
               }
             }
 
-            onCurrentValueChanged: {
-              root.pauseSync = true;
-              root.graphSettings.size.sheetFillsWindow = (currentValue === GraphSettings.SizeType.Fill)
+            currentIndex: root.indexFromModelValue(sheetSizeModel, root.graphSettings.size.sheetFillsWindow ? GraphSettings.SizeType.Fill : GraphSettings.SizeType.Custom)
+
+            onActivated: (index) => {
+              root.graphSettings.size.sheetFillsWindow = ( sheetSizeModel.get(index).value === GraphSettings.SizeType.Fill);
 
               if (currentValue === GraphSettings.SizeType.Fill) {
                 root.graphSettings.zoom.zoom = 1.0;
                 root.graphSettings.zoom.zoomingType = ZoomingType.FITSHEET;
               }
-              root.pauseSync = false;
             }
           }
 
@@ -142,15 +129,6 @@ Item {
               columnSpacing: 10
               columns: 2
 
-              Connections {
-                target: root.graphSettings
-
-                function onSizeChanged() {
-                  root.syncWithBackend()
-                }
-                enabled: !root.pauseSync
-              }
-
               ZeLabel {
                 Layout.alignment: Qt.AlignRight
                 text: qsTr('Unit')
@@ -165,14 +143,16 @@ Item {
                 textRole: "text"
                 valueRole: "value"
 
-                onCurrentValueChanged: {
-                  root.pauseSync = true;
-                  root.graphSettings.size.sizeUnit = currentValue;
-                  root.syncWithBackend();
-                  root.pauseSync = false;
+                currentIndex: root.indexFromModelValue(unitModel, root.graphSettings.size.sizeUnit)
+
+                onActivated: (index) => {
+                  root.graphSettings.size.sizeUnit = unitModel.get(index).value;
                 }
 
-                model: ListModel {
+                model: unitModel
+
+                ListModel {
+                  id: unitModel
                   ListElement {
                     text: qsTr("Pixels")
                     value: SizeUnit.PIXEL
@@ -193,18 +173,23 @@ Item {
               }
               ZeDoubleSpinBox {
                 id: sheetHeight
+                suffix: root.pixelUnits ? qsTr(" px") : qsTr(" cm")
+                to: root.pixelUnits ? root.max_px_size : root.max_cm_size
+                step: root.pixelUnits ? root.px_increment : root.cm_increment
+
+                value: root.pixelUnits ? root.graphSettings.size.pxSheetSize.height : root.graphSettings.size.cmSheetSize.height
 
                 onValueModified: (value) => {
-                  root.pauseSync = true;
+
                   console.log("Updating sheet size");
-                  if (unitComboBox.currentValue === SizeUnit.PIXEL) {
+                  if (root.pixelUnits) {
                     root.graphSettings.size.pxSheetSize.height = value;
                     root.graphSettings.size.cmSheetSize.height = value / Information.pixelDensity;
                   } else {
                     root.graphSettings.size.pxSheetSize.height = value * Information.pixelDensity;
                     root.graphSettings.size.cmSheetSize.height = value;
                   }
-                  root.pauseSync = false;
+
                 }
               }
 
@@ -217,25 +202,20 @@ Item {
               ZeDoubleSpinBox {
 
                 id: sheetWidth
-                suffix: unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
+                suffix: root.pixelUnits ? qsTr(" px") : qsTr(" cm")
+                to: root.pixelUnits ? root.max_px_size : root.max_cm_size
+                step: root.pixelUnits ? root.px_increment : root.cm_increment
 
-                Connections {
-                  target: unitComboBox
-                  function onCurrentValueChanged() {
-                    sheetWidth.suffix = unitComboBox.currentValue === SizeUnit.PIXEL ? qsTr(" px") : qsTr(" cm")
-                  }
-                }
+                value: root.pixelUnits ? root.graphSettings.size.pxSheetSize.width : root.graphSettings.size.cmSheetSize.width
 
                 onValueModified: (value) => {
-                  root.pauseSync = true;
-                  if (unitComboBox.currentValue === SizeUnit.PIXEL) {
+                  if (root.pixelUnits) {
                     root.graphSettings.size.pxSheetSize.width = value;
                     root.graphSettings.size.cmSheetSize.width = value / Information.pixelDensity;
                   } else {
                     root.graphSettings.size.pxSheetSize.width = value * Information.pixelDensity;
                     root.graphSettings.size.cmSheetSize.width = value;
                   }
-                  root.pauseSync = false;
                 }
               }
 
@@ -327,10 +307,8 @@ Item {
             to: maxPointsLg2.value
 
             onValueModified: {
-              root.pauseSync = true;
               root.graphSettings.minPointsLg2 = value;
               console.debug("Min points changed: ", value);
-              root.pauseSync = false;
             }
           }
 
@@ -349,10 +327,8 @@ Item {
             to: 16
 
             onValueModified: {
-              root.pauseSync = true;
               root.graphSettings.maxPointsLg2 = value;
               console.debug("Max points changed: ", value);
-              root.pauseSync = false;
             }
           }
         }
