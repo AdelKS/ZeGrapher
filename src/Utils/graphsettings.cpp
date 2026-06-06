@@ -25,25 +25,41 @@
 #include <QGuiApplication>
 #include <QStyleHints>
 
-ZeGraphSettings::ZeGraphSettings(QObject* parent): QObject(parent), range(this)
+bool isDarkTheme()
 {
-  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
-    backgroundColor.dark = QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
+  return QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
+}
 
+QColor getWindowColor()
+{
+  return QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
+}
+
+ZeGraphSettings::ZeGraphSettings(QObject* parent)
+  : QObject(parent), range(this),
+    defaultBgColor(
+      ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),
+    backgroundColor(defaultBgColor)
+{
   auto* paletteWatcher = new PaletteWatcher(this);
   connect(paletteWatcher, &PaletteWatcher::paletteChanged, this, &ZeGraphSettings::onSystemPaletteChange);
 };
 
 void ZeGraphSettings::onSystemPaletteChange()
 {
-  QColor newColor = QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
-  if (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark
-      and backgroundColor.dark == defaultDarkBgColor
-      and newColor != defaultDarkBgColor)
+  if (not isDarkTheme()) return;
+
+  QColor newDarkBgColor = getWindowColor();
+  if (backgroundColor.dark == defaultBgColor.dark
+      and newDarkBgColor != defaultBgColor.dark)
   {
-    backgroundColor.dark = newColor;
+    defaultBgColor.dark = newDarkBgColor;
+    backgroundColor.dark = newDarkBgColor;
     emit backgroundColorChanged();
   }
+
+  else if (newDarkBgColor != defaultBgColor.dark)
+    defaultBgColor.dark = newDarkBgColor;
 }
 
 void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)

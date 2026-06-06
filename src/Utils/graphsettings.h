@@ -112,9 +112,8 @@ protected:
 
   QFont font;
 
-  static constexpr auto defaultDarkBgColor = "#202326";
-
-  ThemedColor backgroundColor = {.dark = defaultDarkBgColor, .light = Qt::white};
+  ThemedColor defaultBgColor;
+  ThemedColor backgroundColor;
 
   QSize availableSizePx;
   QSizeF availableSizeCm;
