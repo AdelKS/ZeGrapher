@@ -64,6 +64,11 @@ Item {
     stepSize: decimalToInt(root.step)
     editable: true
 
+    // re-assert the value when the range changes, so a widened bound is not
+    // left clamped to a stale one (binding evaluation order is not guaranteed)
+    onFromChanged: set_value(root.value)
+    onToChanged: set_value(root.value)
+
     onValueModified: root.valueModified(value / decimalFactor)
 
     readonly property regexp numberExtractionRegExp: /\*?(\d+(\.\d+)?)\*?/
