@@ -280,16 +280,6 @@ Item {
             selectedColor: root.graphSettings.backgroundColor
 
             onSelectedColorChanged: root.graphSettings.backgroundColor = selectedColor;
-
-            Connections {
-              target: root.graphSettings
-
-              function onBackgroundColorChanged() {
-                if (backgroundColor.selectedColor !== root.graphSettings.backgroundColor) {
-                  backgroundColor.selectedColor = root.graphSettings.backgroundColor
-                }
-              }
-            }
           }
 
           ZeLabel {
@@ -368,16 +358,6 @@ Item {
             selectedColor: root.graphSettings.axes.color
 
             onSelectedColorChanged: root.graphSettings.axes.color = selectedColor;
-
-            Connections {
-              target: root.graphSettings
-
-              function onAxesChanged() {
-                if (axesColor.selectedColor !== root.graphSettings.axes.color) {
-                  axesColor.selectedColor = root.graphSettings.axes.color
-                }
-              }
-            }
           }
         }
       }
