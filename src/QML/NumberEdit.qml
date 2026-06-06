@@ -7,15 +7,19 @@ Rectangle {
   property alias textInput: edit
   property double value: NaN
 
-  signal numberEdited();
+  // Two-way bindable: bind `value` to the source and push edits back via the
+  // signal argument, so the binding survives user edits:
+  //   value: backend.foo
+  //   onNumberEdited: (value) => backend.foo = value
+  signal numberEdited(real value);
 
-  function setValue(val: double) {
-    if (!isNaN(val))
-      edit.text = val.toString();
-    else edit.text = "";
-
-    value = val;
+  // mirror external/programmatic value changes into the field, but leave the
+  // text alone while the user is mid-edit (e.g. typing "1." parses to 1)
+  onValueChanged: {
+    if (parseFloat(edit.text) !== value)
+      edit.text = isNaN(value) ? "" : value.toString();
   }
+  Component.onCompleted: edit.text = isNaN(value) ? "" : value.toString();
 
   clip: true
 
@@ -42,10 +46,7 @@ Rectangle {
     text: ""
     validator: DoubleValidator{}
 
-    onTextEdited: {
-      rec.value = parseFloat(text);
-      rec.numberEdited();
-    }
+    onTextEdited: rec.numberEdited(parseFloat(text));
   }
 
   TextMetrics {
