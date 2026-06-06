@@ -24,9 +24,6 @@ Item {
     function onNameChanged() {
       zcExprEdit.expression = backend.name;
     }
-    function onValueChanged() {
-      constant.setValue(backend.value);
-    }
   }
 
   AnimatedConstant {
@@ -34,24 +31,6 @@ Item {
     backend: root.backend
 
     onSliderPosChanged: slider.value = wrapped_backend.sliderPos;
-    onPlayingChanged: playButton.checked = wrapped_backend.playing;
-  }
-
-  Connections {
-    target: root.backend
-
-    function onFromChanged() {
-      from.setValue(root.backend.from);
-    }
-    function onToChanged() {
-      to.setValue(root.backend.to);
-    }
-    function onStepsChanged() {
-      steps.value = root.backend.steps;
-    }
-    function onValueChanged() {
-      constant.setValue(root.backend.value)
-    }
   }
 
   function removeObj() {
@@ -81,6 +60,7 @@ Item {
 
       Layout.preferredWidth: 60
 
+      expression: backend.name
       state: root.backend.state
       onTextEdited: root.backend.setName(expression)
 
@@ -121,6 +101,9 @@ Item {
 
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+
+        value: root.backend.value
+        onNumberEdited: (value) => root.backend.value = value
       }
     }
 
@@ -151,7 +134,8 @@ Item {
         id: from
         implicitWidth: 70
 
-        onNumberEdited: root.backend.from = value;
+        value: root.backend.from
+        onNumberEdited: (value) => root.backend.from = value;
       }
 
 
@@ -174,7 +158,6 @@ Item {
           stepSize: 0.01
           value: 0.5
           to: 1.
-
           enabled: !root.backend.deadAndAlive
         }
 
@@ -184,7 +167,7 @@ Item {
           width: Math.min(implicitWidth, parent.width)
 
           from: 1
-          value: 5
+          value: root.backend.steps
           stepSize: 5
           to: 100
 
@@ -198,7 +181,8 @@ Item {
         id: to
         implicitWidth: 70
 
-        onNumberEdited: root.backend.to = value;
+        value: root.backend.to
+        onNumberEdited: (value) => root.backend.to = value;
       }
     }
 
@@ -218,7 +202,8 @@ Item {
         darkThemeIcon: checked ? "qrc:/icons/pause-light.svg" : "qrc:/icons/play-light.svg"
         checkable: true
 
-        onCheckedChanged: wrapped_backend.playing = checked;
+        checked: wrapped_backend.playing
+        onClicked: wrapped_backend.playing = checked;
       }
 
       IconButton {
@@ -272,27 +257,6 @@ Item {
         onValueModified: (value) => root.backend.duration = value
       }
     }
-  }
-
-  Connections {
-    target: constant.textInput
-    function onTextEdited() {
-      console.info("new double value: ", constant.textInput.text);
-
-      let value = parseFloat(constant.textInput.text);
-      root.backend.value = value;
-
-      returnToCenter.start();
-    }
-  }
-
-  NumberAnimation {
-    id: returnToCenter
-    target: slider
-    property: "value"
-    to: 0.5
-    duration: 300
-    easing.type: Easing.OutCubic
   }
 
   states: [
