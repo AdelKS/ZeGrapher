@@ -15,9 +15,9 @@ Item {
   readonly property alias exprHeight: zcExprEdit.exprHeight
   property alias animatedConstant: wrapped_backend
 
-  onImplicitHeightChanged: {
-    console.info("ConstantEdit: implicitHeight: ", implicitHeight);
-  }
+  // the name editor (left) and the value/slider/animation column (right) are
+  // parallel columns; the row is as tall as the taller one.
+  implicitHeight: Math.max(mainLayout.implicitHeight, nameLayout.implicitHeight)
 
   Connections {
     target: backend
@@ -44,6 +44,7 @@ Item {
 
     columns: 2
     rowSpacing: 0
+    columnSpacing: 0
 
     anchors.left: parent.left
     anchors.top: parent.top
@@ -71,7 +72,10 @@ Item {
     ZeLabel {
       text: "="
       Layout.preferredWidth: 20
-      Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+      Layout.preferredHeight: zcExprEdit.exprHeight
+      Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+      horizontalAlignment: Text.AlignHCenter
+      verticalAlignment: Text.AlignVCenter
     }
   }
 
@@ -79,6 +83,7 @@ Item {
     id: mainLayout
     anchors.left: parent.left
     anchors.right: parent.right
+    spacing: 0
     y: 0
 
     ColumnLayout {
@@ -105,6 +110,8 @@ Item {
         value: root.backend.value
         onNumberEdited: (value) => root.backend.value = value
       }
+
+      Item { Layout.fillHeight: true }
     }
 
     GridLayout {
@@ -264,7 +271,6 @@ Item {
       name: "empty"
       when: !root.backend.deadAndAlive && constant.textInput.text.length === 0
       PropertyChanges {
-        mainLayout.y: 0
         valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
         valueLayout.opacity: 1.
 
@@ -278,16 +284,14 @@ Item {
         steps.opacity: 0
 
         stepsLabel.opacity: 0.
-
-        root.implicitHeight: valueLayout.implicitHeight
       }
     },
     State {
       name: "numeric"
       when: !root.backend.deadAndAlive && constant.textInput.text.length !== 0
       PropertyChanges {
-        mainLayout.y: 0
-        valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
+        valueLayout.Layout.minimumHeight: nameLayout.implicitHeight
+        valueLayout.Layout.maximumHeight: Math.max(valueLayout.implicitHeight, nameLayout.implicitHeight)
         valueLayout.opacity: 1.
 
         sliderLayout.columnSpacing: 0
@@ -299,16 +303,13 @@ Item {
         slider.opacity: 1
         steps.opacity: 0
         stepsLabel.opacity: 0.
-
-        root.implicitHeight: valueLayout.implicitHeight + sliderLayout.implicitHeight + animationLayout.implicitHeight + 2 * mainLayout.spacing
       }
     },
     State {
       name: "schrodinger"
       when: root.backend.deadAndAlive
       PropertyChanges {
-        mainLayout.y: - valueLayout.implicitHeight - mainLayout.spacing
-        valueLayout.Layout.maximumHeight: valueLayout.implicitHeight
+        valueLayout.Layout.maximumHeight: 0
         valueLayout.opacity: 0
 
         sliderLayout.columnSpacing: 5
@@ -320,15 +321,13 @@ Item {
         slider.opacity: 0.
         steps.opacity: 1.
         stepsLabel.opacity: 1.
-
-        root.implicitHeight: sliderLayout.implicitHeight
       }
     }
   ]
 
   transitions: Transition {
     NumberAnimation {
-      properties: "implicitHeight,maximumHeight,leftMargin,opacity,y,columnSpacing"
+      properties: "minimumHeight,maximumHeight,leftMargin,opacity,columnSpacing"
       duration: 400
       easing.type: Easing.InOutQuad
     }
