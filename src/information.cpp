@@ -102,6 +102,9 @@ QString Information::exportYaml(QUrl filename)
   else return {};
 }
 
+template <typename T>
+struct P {};
+
 QString Information::importYaml(QUrl filename)
 {
   qInfo() << "Importing from " << filename.toLocalFile();
@@ -113,23 +116,20 @@ QString Information::importYaml(QUrl filename)
   // we read only the math settings then only the graph settings
   // se we can do partial loads if ever.
 
-  {
-    PartialMathPOD mathPod;
-    auto read_error = glz::read_file_yaml<opts>(mathPod, filename.toLocalFile().toStdString());
-    if (read_error)
-      error = QString::fromStdString(glz::format_error(read_error));
-    else if (mathPod.math_objects)
-      zg::mathWorld.importPod(std::move(*mathPod.math_objects));
-  }
+  const std::string path = filename.toLocalFile().toStdString();
 
-  {
-    PartialGraphPOD graphPod;
-    auto read_error = glz::read_file_yaml<opts>(graphPod, filename.toLocalFile().toStdString());
+  auto partialImport = [&]<typename Pod>(P<Pod>, auto& importInto) {
+    Pod pod;
+    auto& [element] = pod;
+    auto read_error = glz::read_file_yaml<opts>(pod, path);
     if (read_error)
-      error += (error.isEmpty() ? "" : "\n\n") + QString::fromStdString(glz::format_error(read_error));
-    else if (graphPod.graph)
-      graphSettings->importPod(std::move(*graphPod.graph));
-  }
+      error += (error.isEmpty() ? "" : "\n") + QString::fromStdString(glz::format_error(read_error));
+    else if (element)
+      importInto.importPod(std::move(*element));
+  };
+
+  partialImport(P<PartialMathPOD>{}, zg::mathWorld);
+  partialImport(P<PartialGraphPOD>{}, *graphSettings);
 
   return error;
 }
