@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 
   // the information global var can't initialize the correct font until QGuiApplication is initialized.
   // so we set it here
-  qDebug() << "Setting app font: " << a.font();
-  information.setAppFont(a.font());
+  qDebug() << "Setting app default font: " << a.font();
+  information.appSettings.setDefaultFont(a.font());
 
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
 

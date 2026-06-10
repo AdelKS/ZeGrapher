@@ -25,14 +25,14 @@
 #include <QFont>
 #include <QColor>
 
+#include "Utils/yaml.h"
 #include "themedcolor.h"
 
 struct ZeAppSettings: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(bool firstName MEMBER startupUpdateCheck)
-  Q_PROPERTY(QLocale::Language language MEMBER language)
+  Q_PROPERTY(Language language MEMBER language NOTIFY languageChanged)
   Q_PROPERTY(QFont font MEMBER font WRITE setFont NOTIFY fontChanged)
   Q_PROPERTY(ThemedColor validSyntax MEMBER validSyntax NOTIFY validSyntaxChanged)
   Q_PROPERTY(ThemedColor invalidSyntax MEMBER invalidSyntax NOTIFY invalidSyntaxChanged)
@@ -40,25 +40,62 @@ struct ZeAppSettings: QObject
 
 public:
 
-  explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent)
-  {
-    qDebug() << "merde";
-  }
+  enum Language {
+    English = QLocale::Language::English,
+    French = QLocale::Language::French
+  };
+  Q_ENUM(Language);
 
-  bool startupUpdateCheck;
-  QLocale::Language language;
+  explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent) {}
+
+  void setDefaultFont(QFont);
+
+  Language language = English;
   QFont font;
 
-  ThemedColor validSyntax = {.dark = "#009999", .light = "#009999"};
-  ThemedColor invalidSyntax = {.dark = Qt::darkRed, .light = Qt::darkRed};
-  ThemedColor warningSyntax = {.dark = Qt::darkYellow, .light = Qt::darkYellow};
+  ThemedColor validSyntax = defaultValidSyntax;
+  ThemedColor invalidSyntax = defaultInvalidSyntax;
+  ThemedColor warningSyntax = defaultWarningSyntax;
+
+  QFont defaultFont;
+
+  const static ThemedColor defaultValidSyntax;
+  const static ThemedColor defaultInvalidSyntax;
+  const static ThemedColor defaultWarningSyntax;
 
   Q_INVOKABLE void setFont(QFont);
+
+  struct POD {
+    std::optional<Language> language;
+    std::optional<zg::yml::QFontPOD> font;
+    std::optional<ThemedColor::POD> valid_syntax;
+    std::optional<ThemedColor::POD> invalid_syntax;
+    std::optional<ThemedColor::POD> warning_syntax;
+
+    operator bool () const { return language or font or valid_syntax or invalid_syntax or warning_syntax; }
+  };
+
+  std::optional<POD> exportPod() const;
+  void importPod(POD);
 
 signals:
   void validSyntaxChanged();
   void invalidSyntaxChanged();
   void warningSyntaxChanged();
   void fontChanged();
+  void languageChanged();
 
+};
+
+inline const ThemedColor ZeAppSettings::defaultValidSyntax = {.dark = "#009999", .light = "#009999"};
+inline const ThemedColor ZeAppSettings::defaultInvalidSyntax = {.dark = Qt::darkRed, .light = Qt::darkRed};
+inline const ThemedColor ZeAppSettings::defaultWarningSyntax = {.dark = Qt::darkYellow, .light = Qt::darkYellow};
+
+template <>
+struct glz::meta<ZeAppSettings::Language>
+{
+   using enum ZeAppSettings::Language;
+   static constexpr auto value = glz::enumerate(
+    "english", English,
+    "french", French);
 };

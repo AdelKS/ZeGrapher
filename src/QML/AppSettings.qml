@@ -17,6 +17,15 @@ Item {
     }
   }
 
+  function indexFromModelValue(model: var, val: int) : int {
+    for (var i = 0; i !== model.count; i++) {
+      if (model.get(i).value === val)
+        return i;
+    }
+    console.warn("Value not in model: ", val)
+    return -1;
+  }
+
   ScrollView {
     anchors.fill: parent
     anchors.margins: 5
@@ -40,9 +49,22 @@ Item {
         implicitContentWidthPolicy: ComboBox.WidestText
         background.implicitWidth: implicitContentWidth
         textRole: "text"
+        valueRole: "value"
 
-        model: ListModel {
-          ListElement { text: "English" }
+        model: langsModel
+
+        ListModel {
+          id: langsModel
+          ListElement {
+            text: "English"
+            value: ZeAppSettings.English
+          }
+        }
+
+        currentIndex: root.indexFromModelValue(langsModel, Information.appSettings.language)
+
+        onActivated: (index) => {
+          root.appSettings.language = langsModel.get(index).value;
         }
       }
 

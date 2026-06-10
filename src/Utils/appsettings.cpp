@@ -31,3 +31,65 @@ void ZeAppSettings::setFont(QFont font)
     emit fontChanged();
   }
 }
+
+void ZeAppSettings::setDefaultFont(QFont f)
+{
+  if (font == defaultFont)
+    setFont(f);
+
+  defaultFont = f;
+}
+
+std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
+{
+  using zg::yml::not_default;
+  POD p {
+    .language = not_default(language, English),
+    .font = zg::yml::QFontPOD::from(font, defaultFont),
+    .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
+    .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
+    .warning_syntax = warningSyntax.exportPod(defaultWarningSyntax),
+  };
+
+  if (p)
+    return p;
+  else return {};
+}
+
+void ZeAppSettings::importPod(POD p)
+{
+  if (p.language and language != *p.language)
+  {
+    language = *p.language;
+    emit languageChanged();
+  }
+
+  if (p.font)
+  {
+    if (p.font->name)
+      font.setFamily(QString::fromStdString(*p.font->name));
+    if (p.font->weight)
+      font.setWeight(*p.font->weight);
+    if (p.font->size)
+      font.setPointSize(*p.font->size);
+    emit fontChanged();
+  }
+
+  if (p.valid_syntax)
+  {
+    validSyntax.importPod(std::move(*p.valid_syntax));
+    emit validSyntaxChanged();
+  }
+
+  if (p.invalid_syntax)
+  {
+    invalidSyntax.importPod(std::move(*p.invalid_syntax));
+    emit invalidSyntaxChanged();
+  }
+
+  if (p.warning_syntax)
+  {
+    warningSyntax.importPod(std::move(*p.warning_syntax));
+    emit warningSyntaxChanged();
+  }
+}

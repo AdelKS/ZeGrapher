@@ -45,7 +45,6 @@ public:
   Information(QObject* parent = nullptr);
 
   ZeAppSettings* getAppSettings() { return &appSettings; }
-  Q_INVOKABLE void setAppFont(QFont);
   double getPixelDensity() const { return pixelDensity; }
 
   void setExportFileName(QString fileName);
@@ -85,10 +84,15 @@ public:
   struct POD {
     std::optional<zg::MathWorld::POD> math_objects;
     std::optional<ZeGraphSettings::POD> graph;
+    std::optional<ZeAppSettings::POD> app;
   };
 
   struct PartialGraphPOD {
     std::optional<ZeGraphSettings::POD> graph;
+  };
+
+  struct PartialAppPOD {
+    std::optional<ZeAppSettings::POD> app;
   };
 
   struct PartialMathPOD {

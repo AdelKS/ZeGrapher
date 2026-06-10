@@ -39,11 +39,6 @@ void Information::emitAnimationUpdate()
   emit animationUpdate();
 }
 
-void Information::setAppFont(QFont font)
-{
-  appSettings.setFont(font);
-}
-
 void Information::setOrthonormal([[maybe_unused]] bool state)
 {
   // TODO
@@ -92,8 +87,11 @@ void Information::screenChanged(QWindow* win)
 QString Information::exportYaml(QUrl filename)
 {
   qInfo() << "Exporting to " << filename.toLocalFile();
-
-  POD pod = {.math_objects = zg::mathWorld.exportPod(), .graph = graphSettings->exportPod()};
+  POD pod = {
+    .math_objects = zg::mathWorld.exportPod(),
+    .graph = graphSettings->exportPod(),
+    .app = appSettings.exportPod()
+  };
 
   auto write_error = glz::write_file_yaml(pod, filename.toLocalFile().toStdString());
   if (write_error) {
@@ -130,6 +128,7 @@ QString Information::importYaml(QUrl filename)
 
   partialImport(P<PartialMathPOD>{}, zg::mathWorld);
   partialImport(P<PartialGraphPOD>{}, *graphSettings);
+  partialImport(P<PartialAppPOD>{}, appSettings);
 
   return error;
 }
