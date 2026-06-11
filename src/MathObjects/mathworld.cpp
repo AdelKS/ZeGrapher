@@ -193,18 +193,18 @@ MathWorld::direct_revdeps(MathObject::EvalHandle handle) const
   std::visit(
     zc::utils::overloaded{
       [&](const zc::DynMathObject<zc_t>* p){
-        for (auto&& [name, t]: zc::mathWorld.direct_revdeps(p->get_name())) names.insert(name);
+        for (auto&& [name, t]: backend.direct_revdeps(p->get_name())) names.insert(name);
       },
       [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
-        for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.first->get_name())) names.insert(name);
-        for (auto&& [name, _]: zc::mathWorld.direct_revdeps(p.second->get_name())) names.insert(name);
+        for (auto&& [name, _]: backend.direct_revdeps(p.first->get_name())) names.insert(name);
+        for (auto&& [name, _]: backend.direct_revdeps(p.second->get_name())) names.insert(name);
       }
     },
     handle
   );
 
   std::unordered_set<const zc::DynMathObject<zc_t>*> res;
-  for (zc::DynMathObject<zc_t>& b: zc::mathWorld)
+  for (const zc::DynMathObject<zc_t>& b: backend)
     if (names.contains(std::string(b.get_name())))
       res.insert(&b);
   return res;

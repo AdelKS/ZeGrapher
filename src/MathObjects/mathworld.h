@@ -24,14 +24,14 @@
 
 #include <QtQmlIntegration/qqmlintegration.h>
 
-namespace zc {
-  /// @note we need this declaration of global variable be before the ZG one
-  ///       so destruction order works well: zg::MathObject needs to register itself
-  ///       from this mathworld backend during its destruction
-  inline MathWorld<zc_t> mathWorld;
-}
-
 namespace zg {
+
+namespace mathobj {
+  struct NamedRef;
+
+namespace shared {
+  struct ZcMathObjectBB;
+}}
 
 class MathWorld: public QAbstractListModel
 {
@@ -80,6 +80,8 @@ protected slots:
   void updateSchrodingerStatus();
 
 protected:
+  zc::MathWorld<zc_t> backend;
+
   std::vector<zg::MathObject*> mathObjects;
 
   /// @brief the single constant currently driving simultaneous plotting, or nullptr
@@ -89,6 +91,9 @@ protected:
   std::vector<zg::mathobj::Expr*> exprObjects;
   bool syncing = false;
   bool destroying = false;
+
+  friend struct mathobj::shared::ZcMathObjectBB;
+  friend struct mathobj::NamedRef;
 };
 
 } // namespace zg

@@ -1,5 +1,5 @@
 #include "namedref.h"
-#include "mathworld.h"
+#include "globalvars.h"
 
 namespace zg {
 namespace mathobj {
@@ -72,7 +72,7 @@ bool NamedRef::isDiscrete() const
 
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
 {
-  return zc::mathWorld.get(input_name.toStdString());
+  return zg::mathWorld.backend.get(input_name.toStdString());
 }
 
 } // namespace mathobj
