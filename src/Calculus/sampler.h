@@ -79,4 +79,16 @@ protected:
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;
 
   zg::Range1D<zg::u<zg::view>> viewRange;
+
+  ///@brief vector to hold temporary sampling data
+  std::vector<size_t> indices;
+
+  ///@brief vector to hold temporary sampling data
+  std::vector<zg::real_unit> x;
+
+  ///@brief vector to hold temporary sampling data
+  std::vector<zg::real_pt> f_x;
+
+  ///@brief vector to hold temporary sampling data
+  std::vector<QPointF> px_f_x;
 };

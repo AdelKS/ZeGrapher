@@ -200,7 +200,6 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   }
   // ######################################
 
-  static std::vector<size_t> indices;
   indices.reserve(max_points/2);
 
   constexpr size_t cleanup_increment = discrete ? 2 : 4;
@@ -279,13 +278,8 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   } while(not indices.empty() and (discrete or data.size() > min_points));
   // ######################################
 
-  static std::vector<zg::real_unit> x;
   x.reserve(max_points/2);
-
-  static std::vector<zg::real_pt> f_x;
   f_x.reserve(max_points/2);
-
-  static std::vector<QPointF> px_f_x;
   px_f_x.reserve(max_points/2);
 
   const zg::real_unit min_input_dist = range.amplitude() / double(max_points);
