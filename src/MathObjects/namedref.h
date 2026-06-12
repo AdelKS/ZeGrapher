@@ -32,7 +32,7 @@ struct NamedRef: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name WRITE setName MEMBER input_name)
+  Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
   Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
@@ -57,6 +57,7 @@ public:
 signals:
   void updated();
   void stateChanged();
+  void nameChanged();
 
 protected:
   QString input_name;

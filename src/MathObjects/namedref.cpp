@@ -18,6 +18,7 @@ State NamedRef::setName(QString new_input_name)
   sync();
 
   emit updated();
+  emit nameChanged();
 
   return getState();
 }
