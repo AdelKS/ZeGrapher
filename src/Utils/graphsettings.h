@@ -42,7 +42,7 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(ZeAxesSettings axes WRITE setAxesSettings MEMBER axes NOTIFY axesSettingsChanged)
   Q_PROPERTY(ZeGridSettings grid WRITE setGridSettings MEMBER grid NOTIFY gridSettingsChanged)
   Q_PROPERTY(ZeSubgridSettings subgrid WRITE setSubgridSettings MEMBER subgrid NOTIFY subgridSettingsChanged)
-  Q_PROPERTY(zg::GraphRange* range READ getRange)
+  Q_PROPERTY(zg::GraphRange* range READ getRangePtr)
 
   Q_PROPERTY(QSize availableSizePx WRITE setAvailableSizePx MEMBER availableSizePx NOTIFY availableSizePxChanged)
   Q_PROPERTY(QSizeF availableSizeCm READ getAvailableSizeCm NOTIFY availableSizeCmChanged)
@@ -60,7 +60,7 @@ public:
   const ZeAxesSettings& getAxes() const { return axes; };
   const ZeGridSettings& getGrid() const { return grid; };
   const ZeSubgridSettings& getSubgrid() const { return subgrid; };
-  zg::GraphRange* getRange() { return &range; }
+  zg::GraphRange* getRangePtr() { return &range; }
   QFont getFont() const { return font; };
   const ThemedColor& getBackgroundColor() const { return backgroundColor; };
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
@@ -117,6 +117,9 @@ signals:
 protected slots:
   void onSystemPaletteChange();
 
+public:
+  zg::GraphRange range;
+
 protected:
   // log2 for adaptive sampling
   int minPointsLg2 = 7;
@@ -136,7 +139,6 @@ protected:
   ZeAxesSettings axes;
   ZeGridSettings grid;
   ZeSubgridSettings subgrid;
-  zg::GraphRange range;
 
   QSize availableSizePx;
   QSizeF availableSizeCm;

@@ -44,7 +44,7 @@ Graph::Graph(QQuickItem *parent)
   bold = italic = underline = false;
   numPrec = NUM_PREC;
 
-  viewMapper.setGraphRange(settings.getRange()->getLatestValidSnapshot());
+  viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
   minRelSize = RELATIVE_MIN_SIZE;
 
@@ -223,7 +223,7 @@ void Graph::drawAll()
 {
   painter->setFont(settings.getFont());
   fontMetrics = painter->fontMetrics();
-  viewMapper.setGraphRange(settings.getRange()->getLatestValidSnapshot());
+  viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
   calculateTicksAndMargins();
   calculateTicksAndMargins();

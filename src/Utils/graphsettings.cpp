@@ -36,10 +36,13 @@ QColor getWindowColor()
 }
 
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
-  : QObject(parent), defaultFont(information.getAppSettings()->font), font(defaultFont),
+  : QObject(parent),
+    range(this),
+    defaultFont(information.getAppSettings()->font),
+    font(defaultFont),
     defaultBgColor(
       ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),
-    backgroundColor(defaultBgColor), range(this)
+    backgroundColor(defaultBgColor)
 {
   auto* paletteWatcher = new PaletteWatcher(this);
   connect(paletteWatcher, &PaletteWatcher::paletteChanged, this, &ZeGraphSettings::onSystemPaletteChange);
