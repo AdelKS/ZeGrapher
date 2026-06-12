@@ -31,17 +31,17 @@ struct ZeAxisRange: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(mathobj::Expr* min READ getMinBackend)
-  Q_PROPERTY(mathobj::Expr* max READ getMaxBackend)
+  Q_PROPERTY(mathobj::Expr* min READ getMinPtr CONSTANT)
+  Q_PROPERTY(mathobj::Expr* max READ getMaxPtr CONSTANT)
   Q_PROPERTY(bool state READ getState NOTIFY stateChanged)
 
 public:
 
   ZeAxisRange(QObject *parent = nullptr);
 
-  Q_INVOKABLE mathobj::Expr* getMinBackend() { return &min; }
-  Q_INVOKABLE mathobj::Expr* getMaxBackend() { return &max; }
-  Q_INVOKABLE bool getState() const { return state; }
+  mathobj::Expr* getMinPtr() { return &min; }
+  mathobj::Expr* getMaxPtr() { return &max; }
+  bool getState() const { return state; }
 
   mathobj::Expr min;
   mathobj::Expr max;
@@ -74,14 +74,14 @@ struct GraphRange: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(ZeAxisRange* x READ getXBackend)
-  Q_PROPERTY(ZeAxisRange* y READ getYBackend)
+  Q_PROPERTY(ZeAxisRange* x READ getXPtr CONSTANT)
+  Q_PROPERTY(ZeAxisRange* y READ getYPtr CONSTANT)
 
 public:
   GraphRange(QObject* parent = nullptr);
 
-  Q_INVOKABLE ZeAxisRange* getXBackend() { return &x; }
-  Q_INVOKABLE ZeAxisRange* getYBackend() { return &y; }
+  ZeAxisRange* getXPtr() { return &x; }
+  ZeAxisRange* getYPtr() { return &y; }
 
   ZeAxisRange x;
   ZeAxisRange y;

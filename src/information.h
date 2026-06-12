@@ -37,14 +37,14 @@ class Information: public QObject
   Q_OBJECT
   QML_ANONYMOUS
 
-  Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettings NOTIFY appSettingsChanged)
+  Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
   Q_PROPERTY(ZeGraphSettings* graphSettings MEMBER graphSettings NOTIFY graphSettingsChanged)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
 
 public:
   Information(QObject* parent = nullptr);
 
-  ZeAppSettings* getAppSettings() { return &appSettings; }
+  ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   double getPixelDensity() const { return pixelDensity; }
 
 signals:

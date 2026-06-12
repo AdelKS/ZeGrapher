@@ -38,8 +38,8 @@ struct Base: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(mathobj::Expr* start READ getStartPtr)
-  Q_PROPERTY(mathobj::Expr* end READ getEndPtr)
+  Q_PROPERTY(mathobj::Expr* start READ getStartPtr CONSTANT)
+  Q_PROPERTY(mathobj::Expr* end READ getEndPtr CONSTANT)
   Q_PROPERTY(bool discrete WRITE setDiscrete MEMBER discrete NOTIFY discreteChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(bool schrodinger WRITE setSchrodinger MEMBER schrodinger NOTIFY schrodingerChanged)
