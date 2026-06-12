@@ -11,6 +11,7 @@ Parametric::Parametric(QObject *parent)
 {
   connect(obj1, &NamedRef::updated, this, &Parametric::updated);
   connect(obj2, &NamedRef::updated, this, &Parametric::updated);
+  connect(&style, &PlotStyle::updated, this, &Parametric::updated);
 }
 
 State Parametric::sync()

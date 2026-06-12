@@ -31,6 +31,8 @@ void Equation::setEquation(QString eq)
 
   emit equationChanged();
   emit updated();
+
+  connect(&style, &PlotStyle::updated, this, &Equation::updated);
 }
 
 bool Equation::isValid()

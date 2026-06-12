@@ -55,10 +55,6 @@ Graph::Graph(QQuickItem *parent)
   connect(&settings, &ZeGraphSettings::minPointsLg2Changed, this, &Graph::minMaxPointsChanged);
   connect(&settings, &ZeGraphSettings::maxPointsLg2Changed, this, &Graph::minMaxPointsChanged);
 
-  connect(&information, SIGNAL(estheticSettingsChanged()), this, SLOT(update()));
-  connect(&information, SIGNAL(updateOccured()), this, SLOT(update()));
-  connect(&information, SIGNAL(styleUpdated()), this, SLOT(update()));
-
   connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ update(); });
@@ -66,7 +62,6 @@ Graph::Graph(QQuickItem *parent)
   connect(&settings, &ZeGraphSettings::subgridSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
-  connect(&information, &Information::dataUpdated, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
   connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });

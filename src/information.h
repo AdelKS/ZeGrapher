@@ -47,17 +47,7 @@ public:
   ZeAppSettings* getAppSettings() { return &appSettings; }
   double getPixelDensity() const { return pixelDensity; }
 
-  void setExportFileName(QString fileName);
-  QString getExportFileName();
-
 signals:
-  void newOrthonormalityState(bool orth);
-  void styleUpdated();
-  void dataUpdated();
-  void updateOccured();
-  void drawStateUpdateOccured();
-  void animationUpdate();
-  void appFontChanged();
   void appSettingsChanged();
   void pixelDensityChanged();
   void availableSheetSizePxChanged();
@@ -65,12 +55,6 @@ signals:
   void graphSettingsChanged();
 
 public slots:
-  void emitUpdateSignal();
-  void emitDataUpdate();
-  void emitDrawStateUpdate();
-  void emitAnimationUpdate();
-
-  void setOrthonormal(bool state);
   void screenChanged(QWindow*);
 
   QString exportYaml(QUrl filename);

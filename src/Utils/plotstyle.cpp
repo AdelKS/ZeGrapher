@@ -15,8 +15,6 @@ PlotStyle::PlotStyle(QObject* parent)
   connect(this, &PlotStyle::pointStyleChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::rangeChanged, this, &PlotStyle::updated);
   connect(this, &PlotStyle::secondColorChanged, this, &PlotStyle::updated);
-
-  connect(this, &PlotStyle::updated, &information, &Information::styleUpdated);
 }
 
 QList<qreal> PlotStyle::getDashPattern() const

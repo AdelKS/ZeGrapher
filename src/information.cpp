@@ -26,43 +26,6 @@
 Information::Information(QObject* parent):
   QObject(parent), appSettings(this)
 {
-  emit appSettingsChanged();
-}
-
-void Information::emitDataUpdate()
-{
-  emit dataUpdated();
-}
-
-void Information::emitAnimationUpdate()
-{
-  emit animationUpdate();
-}
-
-void Information::setOrthonormal([[maybe_unused]] bool state)
-{
-  // TODO
-  emit updateOccured();
-}
-
-void Information::emitUpdateSignal()
-{
-  emit updateOccured();
-}
-
-void Information::emitDrawStateUpdate()
-{
-  emit drawStateUpdateOccured();
-}
-
-void Information::setExportFileName(QString fileName)
-{
-  exportFileName = fileName;
-}
-
-QString Information::getExportFileName()
-{
-  return exportFileName;
 }
 
 void Information::screenChanged(QWindow* win)

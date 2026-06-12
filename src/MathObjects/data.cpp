@@ -13,6 +13,7 @@ Data::Data(QObject *parent)
              : StringRange{"0", "xmax"}; }, parent)
 {
   zcMathObj.set_data(std::vector<std::string>(10));
+  connect(&style, &PlotStyle::updated, this, &Data::updated);
 }
 
 void Data::setName(QString new_input_name)
