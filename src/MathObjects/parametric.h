@@ -36,8 +36,8 @@ struct Parametric: Base {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(NamedRef* obj1 MEMBER obj1)
-  Q_PROPERTY(NamedRef* obj2 MEMBER obj2)
+  Q_PROPERTY(NamedRef* obj1 READ getObj1Ptr)
+  Q_PROPERTY(NamedRef* obj2 READ getObj2Ptr)
 
 public:
 
@@ -45,21 +45,24 @@ public:
 
   State sync();
 
-  bool isValid() const;
+  bool isValid();
 
   bool isDiscrete() const;
   bool isContinuous() const;
 
-  NamedRef* obj1;
-  NamedRef* obj2;
+  NamedRef* getObj1Ptr() { return &obj1; }
+  NamedRef* getObj2Ptr() { return &obj2; }
+
+  NamedRef obj1;
+  NamedRef obj2;
 
   PlotStyle style;
 
-  void setFirst(QString name) { obj1->setName(name); }
-  QString getFirst() const { return obj1->getName(); }
+  void setFirst(QString name) { obj1.setName(name); }
+  QString getFirst() const { return obj1.getName(); }
 
-  void setSecond(QString name) { obj2->setName(name); }
-  QString getSecond() const { return obj2->getName(); }
+  void setSecond(QString name) { obj2.setName(name); }
+  QString getSecond() const { return obj2.getName(); }
 
   struct POD {
     std::optional<std::string> first;

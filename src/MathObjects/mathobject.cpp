@@ -183,7 +183,7 @@ MathObject::EvalHandle MathObject::getZcObject() const
         return &c->zcMathObj;
       },
       [](const mathobj::Parametric* p) -> Ret {
-        return std::make_pair(p->obj1->getZcObject(), p->obj2->getZcObject());
+        return std::make_pair(p->obj1.getZcObject(), p->obj2.getZcObject());
       }
     },
     backend
@@ -200,9 +200,9 @@ size_t MathObject::getRevision() const
       },
       [](const mathobj::Parametric* p) {
         size_t rev1 = 0, rev2 = 0;
-        if (const auto* o1 = p->obj1->getZcObject())
+        if (const auto* o1 = p->obj1.getZcObject())
           rev1 = o1->get_revision();
-        if (const auto* o2 = p->obj2->getZcObject())
+        if (const auto* o2 = p->obj2.getZcObject())
           rev2 = o2->get_revision();
         return rev1 + rev2;
       }
