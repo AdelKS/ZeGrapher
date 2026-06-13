@@ -184,7 +184,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
                                             ? axesSettings.x.linSettings
                                             : axesSettings.y.linSettings;
 
-  double constantMultiplier = axisSettings.constantMultiplier->getValue();;
+  double constantMultiplier = axisSettings.constantMultiplier;
   if (std::isnan(constantMultiplier) or constantMultiplier == 0)
     constantMultiplier = 1.0;
 

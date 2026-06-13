@@ -6,7 +6,7 @@ std::optional<ZeAxisSettings::POD> ZeAxisSettings::exportPod() const
   POD p {
     .tick_spacing = zg::yml::not_default(tickRelSpacing, 0),
     .max_digits = zg::yml::not_default(linSettings.maxDigitsNum, 3),
-    .multiplier = zg::yml::not_default(linSettings.constantMultiplier->getExpression())
+    .multiplier = zg::yml::not_default(linSettings.constantMultiplierStr)
   };
 
   if (p)
@@ -20,7 +20,7 @@ void ZeAxisSettings::importPod(ZeAxisSettings::POD p)
     tickRelSpacing = *p.tick_spacing;
 
   if (p.multiplier)
-    linSettings.constantMultiplier->setExpression(QString::fromStdString(*p.multiplier));
+    linSettings.constantMultiplierStr = QString::fromStdString(*p.multiplier);
 
   if (p.max_digits)
     linSettings.maxDigitsNum = *p.max_digits;

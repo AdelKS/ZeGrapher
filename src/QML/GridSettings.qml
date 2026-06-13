@@ -117,28 +117,27 @@ Item {
           Expr {
             id: xMultiplierBackend
             implicitName: "xMultiplier"
+            expression: root.graphSettings.axes.x.linear.constantMultiplierStr
+            onValueChanged: {
+              console.log("new x multiplier: ", value);
+              root.graphSettings.axes.x.linear.constantMultiplier = value;
+            }
+            onExpressionChanged: root.graphSettings.axes.x.linear.constantMultiplierStr = expression;
           }
           ValueEdit {
             Layout.fillWidth: true
-
             backend: xMultiplierBackend
-
-            Component.onCompleted: {
-              root.graphSettings.axes.x.linear.constantMultiplier = backend;
-            }
           }
           Expr {
             id: yMultiplierBackend
             implicitName: "yMultiplier"
+            expression: root.graphSettings.axes.y.linear.constantMultiplierStr
+            onValueChanged: root.graphSettings.axes.y.linear.constantMultiplier = value;
+            onExpressionChanged: root.graphSettings.axes.y.linear.constantMultiplierStr = expression;
           }
           ValueEdit {
             Layout.fillWidth: true
-
             backend: yMultiplierBackend
-
-            Component.onCompleted: {
-              root.graphSettings.axes.y.linear.constantMultiplier = backend;
-            }
           }
         }
       }

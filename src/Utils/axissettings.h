@@ -26,7 +26,6 @@
 #include <QString>
 #include <QtQmlIntegration/qqmlintegration.h>
 
-#include "MathObjects/expr.h"
 #include "Utils/themedcolor.h"
 
 struct ZeLogAxisSettings
@@ -48,15 +47,13 @@ struct ZeLinAxisSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(zg::mathobj::Expr* constantMultiplier MEMBER constantMultiplier)
+  Q_PROPERTY(QString constantMultiplierStr MEMBER constantMultiplierStr)
+  Q_PROPERTY(double constantMultiplier MEMBER constantMultiplier)
   Q_PROPERTY(int maxDigitsNum MEMBER maxDigitsNum)
 
 public:
-
-  /// @brief arbitrary expression that will be used a multiplier to the coordinates
-  /// @example if it's "π", then the coordinates will be multiples of π
-  /// @note non-owning pointer: needs to be instantiated and owned in QML then assigned here
-  zg::mathobj::Expr* constantMultiplier = nullptr;
+  QString constantMultiplierStr;
+  double constantMultiplier = std::nan("");
 
   int maxDigitsNum = 3;
 

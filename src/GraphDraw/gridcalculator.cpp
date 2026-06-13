@@ -14,9 +14,10 @@ QString GridCalculator::get_coordinate_string(const ZeLinAxisSettings &axisSetti
 {
   QString posStr;
 
-  if (axisSettings.constantMultiplier->isValid())
+  if (not std::isnan(axisSettings.constantMultiplier)
+      and not axisSettings.constantMultiplierStr.isEmpty())
   {
-    QString expr = axisSettings.constantMultiplier->getExpression();
+    QString expr = axisSettings.constantMultiplierStr;
     if (fabs(multiplier + 1.0) <= MAX_NUM_PREC_DEC)
       posStr = "-" + expr;
     else if (fabs(multiplier - 1.0) <= MAX_NUM_PREC_DEC)
