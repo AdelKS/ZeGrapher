@@ -25,7 +25,7 @@
 #include <glaze/yaml.hpp>
 
 Information::Information(QObject* parent):
-  QObject(parent), appSettings(this)
+  QObject(parent), appSettings(this), graphSettings(this)
 {}
 
 void Information::screenChanged(QWindow* win)
@@ -52,7 +52,7 @@ QString Information::exportYaml(QUrl filename)
   qInfo() << "Exporting to " << filename.toLocalFile();
   POD pod = {
     .math_objects = zg::mathWorld.exportPod(),
-    .graph = graphSettings->exportPod(),
+    .graph = graphSettings.exportPod(),
     .app = appSettings.exportPod()
   };
 
@@ -90,7 +90,7 @@ QString Information::importYaml(QUrl filename)
   };
 
   partialImport(P<PartialMathPOD>{}, zg::mathWorld);
-  partialImport(P<PartialGraphPOD>{}, *graphSettings);
+  partialImport(P<PartialGraphPOD>{}, graphSettings);
   partialImport(P<PartialAppPOD>{}, appSettings);
 
   return error;

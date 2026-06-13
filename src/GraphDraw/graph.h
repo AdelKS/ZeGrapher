@@ -136,7 +136,7 @@ protected:
 
   void updateQmlData();
 
-  ZeGraphSettings settings;
+  ZeGraphSettings& settings;
 
   GridCalculator gridCalculator;
   QFontMetrics fontMetrics;

@@ -39,7 +39,7 @@ class Information: public QObject
   QML_ANONYMOUS
 
   Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
-  Q_PROPERTY(ZeGraphSettings* graphSettings MEMBER graphSettings NOTIFY graphSettingsChanged)
+  Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
 
 public:
@@ -47,6 +47,7 @@ public:
 
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   double getPixelDensity() const { return pixelDensity; }
+  ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
 
 signals:
   void appSettingsChanged();
@@ -64,7 +65,7 @@ public slots:
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
-  ZeGraphSettings* graphSettings = nullptr;
+  ZeGraphSettings graphSettings;
 
   struct POD {
     std::optional<zg::MathWorld::POD> math_objects;
