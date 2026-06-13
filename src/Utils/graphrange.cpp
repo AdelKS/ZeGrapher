@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "Utils/graphrange.h"
-#include "globalvars.h"
+#include "information.h"
 
 namespace zg {
 

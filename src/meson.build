@@ -99,7 +99,6 @@ qmlcpp_files = [
   'Animation/animationconductor.h',
   'DataPlot/csvpreviewmodel.h',
   'DataPlot/datatablemodel.h',
-  'globalvars.h',
   'GraphDraw/datapoints.h',
   'GraphDraw/graph.h',
   'GraphDraw/interactivegraph.h',

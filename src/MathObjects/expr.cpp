@@ -1,5 +1,5 @@
 #include "expr.h"
-#include "globalvars.h"
+#include "information.h"
 
 namespace zg {
 namespace mathobj {

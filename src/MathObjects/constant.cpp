@@ -1,6 +1,6 @@
 #include "MathObjects/constant.h"
 #include "Utils/yaml.h"
-#include "globalvars.h"
+#include "information.h"
 namespace zg {
 namespace mathobj {
 

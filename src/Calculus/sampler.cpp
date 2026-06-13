@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "Calculus/sampler.h"
-#include "globalvars.h"
+#include "information.h"
 #include "sampler.impl.h"
 
 #include <cmath>

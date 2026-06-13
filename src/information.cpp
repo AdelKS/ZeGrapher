@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "information.h"
-#include "globalvars.h"
+#include "information.h"
 
 #include <glaze/yaml.hpp>
 

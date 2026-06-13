@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "structures.h"
-#include "globalvars.h"
+#include "information.h"
 
 #include <QGuiApplication>
 #include <QObject>

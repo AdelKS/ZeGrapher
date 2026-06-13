@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "graphsettings.h"
-#include "globalvars.h"
+#include "information.h"
 #include "Utils/palettewatcher.h"
 
 #include <QGuiApplication>
@@ -38,7 +38,7 @@ QColor getWindowColor()
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
   : QObject(parent),
     range(this),
-    defaultFont(information.getAppSettings()->font),
+    defaultFont(information.appSettings.font),
     font(defaultFont),
     defaultBgColor(
       ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),

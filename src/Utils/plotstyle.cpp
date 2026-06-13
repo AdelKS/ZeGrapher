@@ -1,5 +1,5 @@
 #include "Utils/plotstyle.h"
-#include "globalvars.h"
+#include "information.h"
 
 namespace zg {
 

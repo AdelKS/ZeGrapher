@@ -19,7 +19,8 @@
 ****************************************************************************/
 
 #include "GraphDraw/graph.h"
-#include "globalvars.h"
+#include "Animation/animationconductor.h"
+#include "information.h"
 
 #include <QQuickWindow>
 #include <QSvgGenerator>

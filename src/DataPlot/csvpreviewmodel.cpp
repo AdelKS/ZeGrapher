@@ -20,7 +20,7 @@
 
 #include "csvpreviewmodel.h"
 #include "MathObjects/mathobject.h"
-#include "globalvars.h"
+#include "information.h"
 
 #include <QFile>
 #include <QCoreApplication>
