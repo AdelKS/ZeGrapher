@@ -38,8 +38,6 @@ QColor getWindowColor()
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
   : QObject(parent),
     range(this),
-    defaultFont(information.appSettings.font),
-    font(defaultFont),
     defaultBgColor(
       ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),
     backgroundColor(defaultBgColor)
@@ -145,12 +143,12 @@ void ZeGraphSettings::updateSizes()
   if (size.sheetFillsWindow)
   {
     size.pxSheetSize = availableSizePx;
-    size.cmSheetSize = availableSizePx.toSizeF() / information.getPixelDensity();
+    size.cmSheetSize = availableSizePx.toSizeF() / information->getPixelDensity();
   }
 
   if (size.sizeUnit == SizeUnit::CENTIMETER)
-    size.pxSheetSize = (size.cmSheetSize * information.getPixelDensity()).toSize();
-  else size.cmSheetSize = size.pxSheetSize.toSizeF() / information.getPixelDensity();
+    size.pxSheetSize = (size.cmSheetSize * information->getPixelDensity()).toSize();
+  else size.cmSheetSize = size.pxSheetSize.toSizeF() / information->getPixelDensity();
 
   if (size != oldSize)
     emit sizeSettingsChanged();
@@ -186,7 +184,7 @@ void ZeGraphSettings::setAvailableSizePx(QSize s)
   if (availableSizePx != s)
   {
     availableSizePx = s;
-    availableSizeCm = s.toSizeF() / information.getPixelDensity();
+    availableSizeCm = s.toSizeF() / information->getPixelDensity();
     updateSizes();
     computeZoom();
     emit availableSizePxChanged();

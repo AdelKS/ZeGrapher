@@ -4,7 +4,7 @@
 #include <zecalculator/zecalculator.h>
 
 Highlighter::Highlighter(QObject* parent): QSyntaxHighlighter(parent) {
-  connect(&information.appSettings, &ZeAppSettings::invalidSyntaxChanged, this, &Highlighter::rehighlight);
+  connect(&information->appSettings, &ZeAppSettings::invalidSyntaxChanged, this, &Highlighter::rehighlight);
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, &Highlighter::rehighlight);
 }
 
@@ -23,9 +23,9 @@ void Highlighter::highlightBlock(const QString &text)
            << "Highlighter address: " << this;
 
   QTextCharFormat invalidFormat;
-  invalidFormat.setForeground(information.appSettings.invalidSyntax.getCurrent());
+  invalidFormat.setForeground(information->appSettings.invalidSyntax.getCurrent());
   invalidFormat.setFontUnderline(true);
-  invalidFormat.setUnderlineColor(information.appSettings.invalidSyntax.getCurrent());
+  invalidFormat.setUnderlineColor(information->appSettings.invalidSyntax.getCurrent());
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
   if (auto opt_err_tok = state.getErrToken(); opt_err_tok)

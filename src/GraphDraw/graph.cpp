@@ -28,7 +28,7 @@
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent),
     MathObjectDraw(),
-    settings(this),
+    settings(information->graphSettings),
     gridCalculator(settings.getAxes(), this),
     fontMetrics(settings.getFont())
 {
@@ -37,7 +37,7 @@ Graph::Graph(QQuickItem *parent)
   topMargin = 20;
   bottomMargin = 30;
   pen.setCapStyle(Qt::RoundCap);
-  settings.setFont(information.appSettings.font);
+  settings.setFont(information->appSettings.font);
 
   legendFontSize = 12;
   legendState = false;
@@ -67,7 +67,7 @@ Graph::Graph(QQuickItem *parent)
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
   connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });
 
-  information.graphSettings = &settings;
+  information->graphSettings = &settings;
 
   emit settingsChanged();
 }
@@ -541,8 +541,8 @@ void Graph::exportPDF(QUrl fileName)
   pdfWriter.setTitle(tr("Exported graph"));
 
   // resolution is set in DPI, pixels per inch
-  // information.getPixelDensity() is in pixels per centimeter
-  pdfWriter.setResolution(int(information.getPixelDensity() * CM_PER_INCH));
+  // information->getPixelDensity() is in pixels per centimeter
+  pdfWriter.setResolution(int(information->getPixelDensity() * CM_PER_INCH));
 
   QPageLayout layout(
     QPageSize(settings.getSize().cmSheetSize * 10., QPageSize::Millimeter, "", QPageSize::ExactMatch),
@@ -578,7 +578,7 @@ void Graph::exportSVG(QUrl fileName)
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  svgGenerator.setResolution(int(information.getPixelDensity() * CM_PER_INCH));
+  svgGenerator.setResolution(int(information->getPixelDensity() * CM_PER_INCH));
 
   svgGenerator.setSize(size().toSize());
   svgGenerator.setViewBox(QRect(QPoint(0, 0), size().toSize()));

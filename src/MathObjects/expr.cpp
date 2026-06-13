@@ -55,7 +55,7 @@ State Expr::setImplicitName(QString name)
 
 void Expr::updateValue()
 {
-  std::expected<double, zc::Error> exp_res = zcMathObj({}, &information.mathObjectCache);
+  std::expected<double, zc::Error> exp_res = zcMathObj({}, &information->mathObjectCache);
   double old_value = value;
   if (exp_res)
     value = zg::real_unit{*exp_res}.v;

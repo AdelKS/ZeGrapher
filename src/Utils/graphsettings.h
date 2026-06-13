@@ -128,8 +128,8 @@ protected:
   static constexpr int defaultMinPoints = 7;
   static constexpr int defaultMaxPoints = 14;
 
-  QFont defaultFont;
-  QFont font;
+  QFont defaultFont = qGuiApp->font();
+  QFont font = qGuiApp->font();
 
   ThemedColor defaultBgColor;
   ThemedColor backgroundColor;

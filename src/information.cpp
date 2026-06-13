@@ -21,12 +21,12 @@
 #include "information.h"
 #include "information.h"
 
+#include <QStandardPaths>
 #include <glaze/yaml.hpp>
 
 Information::Information(QObject* parent):
   QObject(parent), appSettings(this)
-{
-}
+{}
 
 void Information::screenChanged(QWindow* win)
 {

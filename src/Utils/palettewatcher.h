@@ -1,3 +1,5 @@
+#pragma once
+
 /****************************************************************************
 **  Copyright (c) 2026, Adel Kara Slimane <adel.ks@zegrapher.com>
 **

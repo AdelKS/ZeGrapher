@@ -32,6 +32,7 @@ namespace zg {
   struct PlotStyle;
 }
 
+///@note must be instanced after QGuiApplication (instanced in main.cpp)
 class Information: public QObject
 {
   Q_OBJECT
@@ -93,7 +94,8 @@ protected:
   QSizeF availableSheetSizeCm;
 };
 
-inline Information information;
+///@note defined in the main() to come after QGuiApplication
+inline Information* information = nullptr;
 
 /// @brief register the 'information' global variable with QML
 /// @note  see https://doc.qt.io/qt-6/qml-singleton.html#exposing-an-existing-object-as-a-singleton
@@ -109,8 +111,10 @@ public:
 
   static Information *create(QQmlEngine *, QJSEngine *engine)
   {
+    // pointer should be non nullptr by now
+    Q_ASSERT(information);
     // The engine has to have the same thread affinity as the singleton.
-    Q_ASSERT(engine->thread() == information.thread());
+    Q_ASSERT(engine->thread() == information->thread());
 
     // There can only be one engine accessing the singleton.
     if (s_engine)
@@ -120,9 +124,9 @@ public:
 
     // Explicitly specify C++ ownership so that the engine doesn't delete
     // the instance.
-    QJSEngine::setObjectOwnership(&information,
+    QJSEngine::setObjectOwnership(information,
                                   QJSEngine::CppOwnership);
-    return &information;
+    return information;
   }
 
 private:

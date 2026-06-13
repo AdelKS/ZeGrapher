@@ -24,6 +24,7 @@
 #include <QLocale>
 #include <QFont>
 #include <QColor>
+#include <QGuiApplication>
 
 #include "Utils/yaml.h"
 #include "themedcolor.h"
@@ -57,7 +58,7 @@ public:
   ThemedColor invalidSyntax = defaultInvalidSyntax;
   ThemedColor warningSyntax = defaultWarningSyntax;
 
-  QFont defaultFont;
+  QFont defaultFont = qGuiApp->font();
 
   const static ThemedColor defaultValidSyntax;
   const static ThemedColor defaultInvalidSyntax;

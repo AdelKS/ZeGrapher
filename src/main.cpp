@@ -30,18 +30,17 @@ int main(int argc, char *argv[])
 {
   QGuiApplication a(argc, argv);
 
-  // the information global var can't initialize the correct font until QGuiApplication is initialized.
-  // so we set it here
-  qDebug() << "Setting app default font: " << a.font();
-  information.appSettings.setDefaultFont(a.font());
-
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
 
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
-  QCoreApplication::setOrganizationName("ZeGrapher Project");
+  QCoreApplication::setOrganizationName("ZeGrapher");
   QCoreApplication::setOrganizationDomain("zegrapher.com");
   QCoreApplication::setApplicationName("ZeGrapher");
+
+  // define after QGuiApp and QCoreApp::set* because it will use stuff from them
+  Information info;
+  information = &info;
 
   QSettings settings;
   QTranslator translator;
