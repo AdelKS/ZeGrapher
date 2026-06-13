@@ -25,6 +25,7 @@
 
 // track application palette change through signals
 // this is not offered out of the box by Qt for whatever reason
+// to be instanced after QGuiApp since it needs it
 class PaletteWatcher : public QObject
 {
   Q_OBJECT
@@ -36,7 +37,7 @@ public:
   {
     timer.setInterval(500);
     timer.setSingleShot(true);
-    qApp->installEventFilter(this);
+    qGuiApp->installEventFilter(this);
 
     connect(&timer, &QTimer::timeout, this, &PaletteWatcher::paletteChanged);
   }
@@ -55,3 +56,5 @@ protected:
   QTimer timer;
 
 };
+
+inline PaletteWatcher* paletteWatcher = nullptr;

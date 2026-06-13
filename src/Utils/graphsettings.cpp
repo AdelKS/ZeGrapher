@@ -42,7 +42,6 @@ ZeGraphSettings::ZeGraphSettings(QObject* parent)
       ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),
     backgroundColor(defaultBgColor)
 {
-  auto* paletteWatcher = new PaletteWatcher(this);
   connect(paletteWatcher, &PaletteWatcher::paletteChanged, this, &ZeGraphSettings::onSystemPaletteChange);
 };
 
