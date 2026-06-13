@@ -10,7 +10,13 @@
             "request": "launch",
             "program": "${workspaceFolder}/build-zg-debug/src/ZeGrapher",
             "cwd": "${workspaceFolder}/build-zg-debug",
-            "preLaunchTask": "build-debug"
+            "preLaunchTask": "build-debug",
+            // Disable debuginfod: on Arch, DEBUGINFOD_URLS is set system-wide and a
+            // failed cache commit makes LLVM abort with "CachedFileStream was not
+            // committed." Local debug builds already have full symbols.
+            "initCommands": [
+                "settings clear plugin.symbol-locator.debuginfod.server-urls"
+            ]
         }
     ]
 }
