@@ -184,8 +184,4 @@ Item {
       onReleased: MathWorld.addMathObject();
     }
   }
-
-  Component.onCompleted: {
-    MathWorld.addMathObject();
-  }
 }

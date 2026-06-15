@@ -57,6 +57,17 @@ int main(int argc, char *argv[])
   if (not positionalArguments.empty())
     for (QString& document: parser.positionalArguments())
       info.importYaml(QUrl::fromLocalFile(document));
+  else {
+    auto* cst = zg::mathWorld.addMathObject(zg::MathObject::CONSTANT)->getConstant();
+    cst->set_value(2);
+    cst->setName("a");
+
+    auto* cos = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+    cos->setEquation("f(x) = a * cos(x)");
+
+    auto* fibo = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+    fibo->setEquation("u(n) = a ; a ; u(n-2) + u(n-1)");
+  }
 
   QSettings settings;
   QTranslator translator;
