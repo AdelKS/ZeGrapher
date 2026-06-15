@@ -32,6 +32,22 @@ namespace zg {
   struct PlotStyle;
 }
 
+struct IOError {
+  Q_GADGET
+  QML_VALUE_TYPE(ioError)
+
+  Q_PROPERTY(QString title MEMBER title)
+  Q_PROPERTY(QString file MEMBER file)
+  Q_PROPERTY(QString text MEMBER text)
+  Q_PROPERTY(QString details MEMBER details)
+
+public:
+  QString title;
+  QString file = {};
+  QString text;
+  QString details = {};
+};
+
 ///@note must be instanced after QGuiApplication (instanced in main.cpp)
 class Information: public QObject
 {
@@ -41,6 +57,7 @@ class Information: public QObject
   Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
   Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
+  Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
 public:
   Information(QObject* parent = nullptr);
@@ -48,6 +65,9 @@ public:
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   double getPixelDensity() const { return pixelDensity; }
   ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
+  int getIoErrorCount() const { return ioErrors.size(); }
+
+  Q_INVOKABLE IOError popIoError();
 
 signals:
   void appSettingsChanged();
@@ -55,12 +75,12 @@ signals:
   void availableSheetSizePxChanged();
   void availableSheetSizeCmChanged();
   void graphSettingsChanged();
+  void ioErrorCountChanged();
 
 public slots:
   void screenChanged(QWindow*);
-
-  QString exportYaml(QUrl filename);
-  QString importYaml(QUrl filename);
+  void exportYaml(QUrl filename);
+  void importYaml(QUrl filename);
 
 public:
   zc::eval::Cache mathObjectCache;
@@ -73,20 +93,9 @@ public:
     std::optional<ZeAppSettings::POD> app;
   };
 
-  struct PartialGraphPOD {
-    std::optional<ZeGraphSettings::POD> graph;
-  };
-
-  struct PartialAppPOD {
-    std::optional<ZeAppSettings::POD> app;
-  };
-
-  struct PartialMathPOD {
-    std::optional<zg::MathWorld::POD> math_objects;
-  };
-
 protected:
-  QString exportFileName;
+  void appendIoErr(IOError err);
+  QList<IOError> ioErrors;
 
   /// @note in pixels per centimeter
   double pixelDensity = 50;

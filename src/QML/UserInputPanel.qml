@@ -41,8 +41,31 @@ Item {
   }
 
   MessageDialog {
-    id: errorDialog
+    id: ioErrorDialog
+
+    property ioError currentError
+
+    title: currentError.title
+    text: currentError.file + "\n\n" + currentError.text
+    detailedText: currentError.details
     buttons: MessageDialog.Ok
+
+    onAccepted: showNextIfAny()
+
+    function showNextIfAny() {
+      if (Information.ioErrorCount > 0) {
+        currentError = Information.popIoError();
+        open();
+      }
+    }
+  }
+
+  Connections {
+    target: Information
+    function onIoErrorCountChanged() {
+      if (!ioErrorDialog.visible)
+        ioErrorDialog.showNextIfAny()
+    }
   }
 
 
@@ -69,16 +92,7 @@ Item {
       "ZeGrapher document (*.zg)",
     ]
     visible: false
-    onAccepted: {
-      let error = Information.importYaml(selectedFile);
-      if (error.length !== 0)
-      {
-        errorDialog.text = qsTr("Error importing the workspace file");
-        errorDialog.informativeText = "The file is either malformed or one of the field has the wrong data in it";
-        errorDialog.detailedText = error;
-        errorDialog.visible = true;
-      }
-    }
+    onAccepted: Information.importYaml(selectedFile)
   }
 
   ColumnLayout {

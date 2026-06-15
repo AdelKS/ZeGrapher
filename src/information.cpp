@@ -47,51 +47,139 @@ void Information::screenChanged(QWindow* win)
   }
 }
 
-QString Information::exportYaml(QUrl filename)
+IOError Information::popIoError()
 {
-  qInfo() << "Exporting to " << filename.toLocalFile();
+  IOError err = std::move(ioErrors.front());
+  ioErrors.pop_front();
+  return err;
+}
+
+void Information::appendIoErr(IOError err)
+{
+  ioErrors.push_back(std::move(err));
+  emit ioErrorCountChanged();
+}
+
+void Information::exportYaml(QUrl filename)
+{
+  qDebug() << "Exporting to " << filename.toLocalFile();
   POD pod = {
     .math_objects = zg::mathWorld.exportPod(),
     .graph = graphSettings.exportPod(),
     .app = appSettings.exportPod()
   };
 
-  auto write_error = glz::write_file_yaml(pod, filename.toLocalFile().toStdString());
-  if (write_error) {
-    return QString::fromStdString(glz::format_error(write_error));
+  auto exp_content = glz::write_yaml(pod);
+  if (not exp_content)
+  {
+    appendIoErr(
+      {.title = tr("Internal bug"),
+       .text = tr("This is a bug, please report it to "
+                  "contact@zegrapher.com or at "
+                  "https://github.com/AdelKS/ZeGrapher/issues with a way on how to reproduce it."),
+       .details = tr("Could not serialize ZeGrapher's state")});
+    return;
   }
-  else return {};
+
+  const QString path = filename.toLocalFile();
+  if (path.isEmpty())
+  {
+    appendIoErr({
+      .title = tr("File information error"),
+      .file = filename.toString(),
+      .text = tr("Input is not a local file path."),
+    });
+    return;
+  }
+
+  QFileInfo info(path);
+  if (not info.absoluteDir().mkpath("."))
+  {
+    appendIoErr({.title = tr("File operation error"),
+                 .file = path,
+                 .text = tr("Could not create directory."),
+                 .details = info.absolutePath()});
+    return;
+  }
+
+  QSaveFile file(path);
+  if (not file.open(QIODevice::WriteOnly))
+  {
+    appendIoErr({.title = tr("File operation error"),
+                 .file = path,
+                 .text = tr("Could not open file"),
+                 .details = file.errorString()});
+    return;
+  }
+
+  qint64 written = file.write(exp_content->data(), exp_content->size());
+  if (written != qint64(exp_content->size()))
+  {
+    appendIoErr({.title = tr("File operation error"),
+                 .file = path,
+                 .text = tr("Incomplete write of ZeGrapher document, operation cancelled."),
+                 .details = file.errorString()});
+    return;
+  }
+
+  if (not file.commit())
+  {
+    appendIoErr({.title = tr("File operation error"),
+                 .file = path,
+                 .text = tr("Could not finalize saved document."),
+                 .details = file.errorString()});
+    return;
+  }
 }
 
 template <typename T>
 struct P {};
 
-QString Information::importYaml(QUrl filename)
+void Information::importYaml(QUrl filename)
 {
   qInfo() << "Importing from " << filename.toLocalFile();
 
-  QString error;
+  const QString path = filename.toLocalFile();
+  if (path.isEmpty())
+  {
+    appendIoErr({.title = tr("File information error"),
+                 .file = path,
+                 .text = tr("Input is not a local file path."),
+                 .details = filename.toString()});
+    return;
+  }
 
-  constexpr glz::yaml::yaml_opts opts = {.error_on_unknown_keys = false };
+  QFile file(path);
+  if (not file.open(QIODevice::ReadOnly))
+  {
+    appendIoErr({.title = tr("File operation error"),
+                 .file = path,
+                 .text = tr("Could not open file.")});
+    return;
+  }
 
-  // we read only the math settings then only the graph settings
-  // se we can do partial loads if ever.
+  const QByteArray bytes = file.readAll();
+  if (file.error() != QFileDevice::NoError)
+  {
+    appendIoErr({.title = tr("File operation error"),
+                 .file = path,
+                 .text = tr("Could not read file entirely."),
+                 .details = file.errorString()});
+  }
 
-  const std::string path = filename.toLocalFile().toStdString();
+  const std::string_view content(bytes.data(), bytes.size());
 
-  auto partialImport = [&]<typename Pod>(P<Pod>, auto& importInto) {
-    Pod pod;
-    auto& [element] = pod;
-    auto read_error = glz::read_file_yaml<opts>(pod, path);
-    if (read_error)
-      error += (error.isEmpty() ? "" : "\n") + QString::fromStdString(glz::format_error(read_error));
-    else if (element)
-      importInto.importPod(std::move(*element));
-  };
+  POD pod;
+  auto read_error = glz::read_yaml(pod, content);
+  if (read_error)
+    appendIoErr({.title = tr("Parsing error"),
+                 .file = path,
+                 .text = tr("Error while parsing document."),
+                 .details = QString::fromStdString(glz::format_error(read_error, content))});
 
-  partialImport(P<PartialMathPOD>{}, zg::mathWorld);
-  partialImport(P<PartialGraphPOD>{}, graphSettings);
-  partialImport(P<PartialAppPOD>{}, appSettings);
-
-  return error;
+  else {
+    if (pod.app) appSettings.importPod(std::move(*pod.app));
+    if (pod.graph) graphSettings.importPod(std::move(*pod.graph));
+    if (pod.math_objects) zg::mathWorld.importPod(std::move(*pod.math_objects));
+  }
 }
