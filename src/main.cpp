@@ -23,6 +23,7 @@
 #include "structures.h"
 
 #include <QGuiApplication>
+#include <QCommandLineParser>
 #include <QObject>
 #include <QQmlApplicationEngine>
 
@@ -38,13 +39,24 @@ int main(int argc, char *argv[])
 
   QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
 
-  QCoreApplication::setOrganizationName("ZeGrapher");
-  QCoreApplication::setOrganizationDomain("zegrapher.com");
   QCoreApplication::setApplicationName("ZeGrapher");
+  QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
 
   // define after QGuiApp and QCoreApp::set* because it will use stuff from them
   Information info;
   information = &info;
+
+  QCommandLineParser parser;
+  parser.setApplicationDescription("2D math plotter");
+  parser.addHelpOption();
+  parser.addVersionOption();
+  parser.addPositionalArgument(QObject::tr("file"), QObject::tr("ZeGrapher (.zg) workspace file(s) to open on startup"));
+  parser.process(a);
+
+  const auto positionalArguments = parser.positionalArguments();
+  if (not positionalArguments.empty())
+    for (QString& document: parser.positionalArguments())
+      info.importYaml(QUrl::fromLocalFile(document));
 
   QSettings settings;
   QTranslator translator;
