@@ -99,6 +99,8 @@ public:
     std::optional<LoopType> loop_type;
     std::optional<bool> dead_and_alive;
     std::optional<double> duration;
+
+    auto operator<=>(const POD&) const = default;
   };
 
   POD exportPod() const;

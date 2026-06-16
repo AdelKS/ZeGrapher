@@ -65,6 +65,8 @@ public:
     std::optional<CoordinateSystem> coordinates;
     std::optional<std::vector<std::string>> values;
     std::optional<PlotStyle::POD> style;
+
+    auto operator<=>(const POD&) const = default;
   };
 
   POD exportPod() const;
