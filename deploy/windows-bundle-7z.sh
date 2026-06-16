@@ -3,7 +3,7 @@
 
 set -e
 
-pacboy -S --noconfirm gcc meson qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations qt6-shadertools 7zip
+pacboy -S --noconfirm gcc meson qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations qt6-shadertools 7zip glaze
 
 deploy_script_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
