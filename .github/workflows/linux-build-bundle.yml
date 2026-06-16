@@ -25,7 +25,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          sudo apt install libboost-all-dev python3-pip libfuse2 libxcb-cursor0 g++-15
+          sudo apt install python3-pip libfuse2 libxcb-cursor0 g++-15
           pip3 install --user meson ninja
 
       - name: Build & Bundle
