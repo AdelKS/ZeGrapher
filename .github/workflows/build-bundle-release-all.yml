@@ -18,12 +18,12 @@ jobs:
   build-macos-x64:
     uses: ./.github/workflows/macos-build-bundle.yml
     with:
-      runner: macos-15-intel
+      runner: macos-26-intel
 
   build-macos-arm64:
     uses: ./.github/workflows/macos-build-bundle.yml
     with:
-      runner: macos-15
+      runner: macos-26
 
   make-release:
 
