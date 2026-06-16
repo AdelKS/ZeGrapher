@@ -16,26 +16,6 @@
         <file>icons/polynomial.png</file>
         <file>icons/arrow_left.png</file>
         <file>icons/arrow_right.png</file>
-        <file>doc/data_help_fr.html</file>
-        <file>doc/basePin.png</file>
-        <file>doc/columnActions_fr.png</file>
-        <file>doc/columnFill_fr.png</file>
-        <file>doc/lineActions_fr.png</file>
-        <file>doc/pins.png</file>
-        <file>doc/polynomialCoefVals_fr.png</file>
-        <file>doc/Rpin.png</file>
-        <file>doc/selector.png</file>
-        <file>doc/Tetapin.png</file>
-        <file>doc/Xpin.png</file>
-        <file>doc/Ypin.png</file>
-        <file>doc/english-icon.png</file>
-        <file>doc/french-icon.png</file>
-        <file>doc/columnActions_en.png</file>
-        <file>doc/columnFill_en.png</file>
-        <file>doc/data_help_en.html</file>
-        <file>doc/lineActions_en.png</file>
-        <file>doc/pins_en.png</file>
-        <file>doc/polynomialCoefVals_en.png</file>
         <file>translations/ZeGrapher_fr.qm</file>
         <file>icons/orthonormalView.svg</file>
         <file>icons/resetToDefaultView.svg</file>
@@ -43,19 +23,11 @@
         <file>icons/grid_subgrid.png</file>
         <file>icons/no_grid.png</file>
         <file>translations/ZeGrapher_de.qm</file>
-        <file>doc/data_help_de.html</file>
-        <file>doc/german-icon.png</file>
-        <file>doc/columnActions_de.png</file>
-        <file>doc/columnFill_de.png</file>
-        <file>doc/lineActions_de.png</file>
-        <file>doc/pins_de.png</file>
         <file>icons/ZeGrapher.png</file>
         <file>icons/fit-sheet.svg</file>
         <file>icons/zoom-in-icon.svg</file>
         <file>icons/zoom-out-icon.svg</file>
         <file>translations/ZeGrapher_zh.qm</file>
-        <file>doc/data_help_zh.html</file>
-        <file>doc/taiwan-icon.png</file>
         <file>icons/settings.svg</file>
         <file>icons/settings-light.svg</file>
         <file>icons/math.svg</file>
