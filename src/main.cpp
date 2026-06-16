@@ -54,10 +54,15 @@ int main(int argc, char *argv[])
   parser.process(a);
 
   const auto positionalArguments = parser.positionalArguments();
+  const QString lastWorkspace = QStandardPaths::locate(QStandardPaths::AppConfigLocation,
+                                                       "last-workbook.zg");
   if (not positionalArguments.empty())
     for (QString& document: parser.positionalArguments())
       info.importYaml(QUrl::fromLocalFile(document));
-  else {
+  else if (not lastWorkspace.isEmpty())
+      info.importYaml(QUrl::fromLocalFile(lastWorkspace));
+  else
+  {
     auto* cst = zg::mathWorld.addMathObject(zg::MathObject::CONSTANT)->getConstant();
     cst->set_value(2);
     cst->setName("a");

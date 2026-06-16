@@ -61,6 +61,7 @@ class Information: public QObject
 
 public:
   Information(QObject* parent = nullptr);
+  ~Information();
 
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   double getPixelDensity() const { return pixelDensity; }

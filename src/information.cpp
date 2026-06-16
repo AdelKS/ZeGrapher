@@ -28,6 +28,13 @@ Information::Information(QObject* parent):
   QObject(parent), appSettings(this), graphSettings(this)
 {}
 
+Information::~Information()
+{
+  QString lastWorkspaceFolder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+  if (not lastWorkspaceFolder.isEmpty())
+    exportYaml(QUrl::fromLocalFile(lastWorkspaceFolder + "/last-workbook.zg"));
+}
+
 void Information::screenChanged(QWindow* win)
 {
 
