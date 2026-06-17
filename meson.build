@@ -1,5 +1,5 @@
 project('ZeGrapher', 'cpp',
-    version : run_command('version.sh', 'get-vcs', check: true).stdout().strip(),
+    version : run_command('bash', 'version.sh', 'get-vcs', check: true).stdout().strip(),
     default_options : [
         'cpp_std=c++23',
         'buildtype=release',
@@ -12,7 +12,7 @@ project('ZeGrapher', 'cpp',
     meson_version: '>=1.7'
 )
 
-meson.add_dist_script('version.sh', 'set-dist', meson.project_version())
+meson.add_dist_script('bash', 'version.sh', 'set-dist', meson.project_version())
 
 if get_option('debug')
     add_project_arguments('-D QT_QML_DEBUG', language: 'cpp')
