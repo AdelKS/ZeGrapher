@@ -42,35 +42,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Save git info
-        id: git_info
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          latest_tag=$(git -C "$MESON_SOURCE_ROOT" tag --list --sort=-creatordate | grep -v continuous | head -n1)
-          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
-
-          rev_count=$(git rev-list --count "${latest_tag}"..HEAD)
-          echo "rev_count=$rev_count" >> $GITHUB_OUTPUT
-
       - name: Download release artifacts
         uses: actions/download-artifact@v5
 
-      - name: Make new release
+      - name: Make new prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           files_list=$(find *-artifact-* -type f | paste -sd' ')
-          gh release create ${{ steps.git_info.outputs.latest_tag }} $files_list --latest \
-          --title 'ZeGrapher ${{ steps.git_info.outputs.latest_tag }}' \
-          --notes-from-tag
-        if: steps.git_info.outputs.rev_count == 0
-
-      - name: Make new continuous build release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          files_list=$(find *-artifact-* -type f | paste -sd' ')
-          gh release create continuous-${{ steps.git_info.outputs.latest_tag }}-rev${{ steps.git_info.outputs.rev_count }} $files_list --prerelease \
-          --title 'ZeGrapher continuous build ${{ steps.git_info.outputs.latest_tag }} rev ${{ steps.git_info.outputs.rev_count }}'
-        if: steps.git_info.outputs.rev_count != 0
+          current_version=$(./version.sh get-vcs)
+          gh release create "$current_version" $files_list \
+          --title "ZeGrapher $current_version" --prerelease
