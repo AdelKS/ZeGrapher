@@ -1,8 +1,6 @@
 name: Build & Release for all platforms
 on:
   push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
@@ -26,6 +24,7 @@ jobs:
       runner: macos-26
 
   make-release:
+    if: github.ref_name == github.event.repository.default_branch && github.repository == 'AdelKS/ZeGrapher'
 
     runs-on: ubuntu-latest
 
