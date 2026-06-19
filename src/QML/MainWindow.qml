@@ -35,20 +35,6 @@ ApplicationWindow {
     }
   }
 
-  IconButton {
-    id: drawer_button
-    checkable: true
-    checked: true
-    z: 100
-    x: 5
-    y: 5
-    width: 25
-    height: 25
-    flat: true
-    lightThemeIcon: 'qrc:/icons/drawer.svg'
-    darkThemeIcon: 'qrc:/icons/drawer-light.svg'
-  }
-
   Rectangle {
     id: drawer
     x: 0
@@ -143,10 +129,13 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         z: 100
 
-        ToolSeparator
+        Rectangle
         {
-          orientation: Qt.Vertical
-          anchors.fill: parent
+          width: 1.5
+          color: "grey"
+          anchors.top: parent.top
+          anchors.bottom: parent.bottom
+          anchors.horizontalCenter: parent.horizontalCenter
         }
 
         MouseArea {
@@ -279,16 +268,59 @@ ApplicationWindow {
         }
       }
     }
+
+    Rectangle {
+      id: drawer_button
+      width: 25
+      height: width
+      radius: 8
+      color: myPalette.window
+      z: -1
+      border.color: "grey"
+      border.width: 1.5
+
+      property int apparentWidth: 2.*width/3.
+      property bool checked: true
+
+      anchors.top: parent.top
+      anchors.topMargin: 8
+      anchors.right: parent.right
+      anchors.rightMargin: -apparentWidth
+
+      Image {
+        anchors.centerIn: parent
+        anchors.horizontalCenterOffset: parent.checked ? 0 : width/3.
+        width: parent.width/3.
+
+        rotation: drawer_button.checked ? 180 : 0
+
+        Behavior on rotation {
+          NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
+        }
+
+        source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/selector.svg" : "qrc:/icons/selector-light.svg"
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
+
+        id: arrow
+      }
+
+      MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: drawer_button.checked = !drawer_button.checked
+      }
+    }
   }
 
   ScrollView {
     property bool anchorToDrawer: drawer_button.checked && win.width - drawer.width >= 400
     id: graphScrollView
 
-    x: anchorToDrawer ? drawer.width : 0
+    x: drawer_button.apparentWidth + (anchorToDrawer ? drawer.width : 0)
     y: 0
     height: win.height
-    width: anchorToDrawer ? win.width - drawer.width : win.width
+    width: (anchorToDrawer ? win.width - drawer.width : win.width) - drawer_button.apparentWidth
 
     contentHeight: interactiveGraph.implicitHeight
     contentWidth: interactiveGraph.implicitWidth
