@@ -230,7 +230,7 @@ if compiler.get_id() == 'clang'
 endif
 
 zecalculator_dep = dependency('zecalculator', version: '>=0.13.0')
-glaze_dep = dependency('glaze')
+glaze_dep = dependency('glaze', version: '>=v7.7')
 
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_ressources, shaders_resources_cpp, moc_files, qml_mods],
