@@ -58,17 +58,6 @@ public:
   double getScaleFactor() const { return totalScaleFactor; }
 
 public slots:
-  void setlegendFontSize(int size);
-  void setLegendState(bool show);
-
-  void setXaxisLegend(QString legend);
-  void setYaxisLegend(QString legend);
-
-  void setBold(bool state);
-  void setUnderline(bool state);
-  void setItalic(bool state);
-  void setNumPrec(int prec);
-
   void exportPDF(QUrl fileName);
   void exportSVG(QUrl fileName);
   void exportImage(QUrl filename);
@@ -93,7 +82,7 @@ protected:
   void drawGraphRect();
   void drawAll();
   void updateGraphRect();
-  void writeLegends();
+  void writeAxisTitles();
 
   /// @brief draw a line that spans the whole graph width or height
   /// @tparam axis: the line will be perpendicular to this axis
@@ -141,11 +130,8 @@ protected:
   GridCalculator gridCalculator;
   QFontMetrics fontMetrics;
   ZeLinAxisTicks xAxisTicks, yAxisTicks;
-  int leftMargin, rightMargin, topMargin, bottomMargin, additionalMargin;
-  int  legendFontSize, numPrec;
+  int leftMargin, rightMargin, topMargin, bottomMargin;
   QRect figureRectScaled, graphRectScaled;
-  QString xLegend, yLegend;
-  bool legendState, bold, italic, underline;
 
   double minRelSize;
   double totalScaleFactor;

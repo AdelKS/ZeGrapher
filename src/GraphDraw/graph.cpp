@@ -39,12 +39,6 @@ Graph::Graph(QQuickItem *parent)
   pen.setCapStyle(Qt::RoundCap);
   settings.setFont(information->appSettings.font);
 
-  legendFontSize = 12;
-  legendState = false;
-  additionalMargin = 0;
-  bold = italic = underline = false;
-  numPrec = NUM_PREC;
-
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
   minRelSize = RELATIVE_MIN_SIZE;
@@ -70,82 +64,6 @@ Graph::Graph(QQuickItem *parent)
   emit settingsChanged();
 }
 
-void Graph::setNumPrec(int prec)
-{
-  numPrec = prec;
-  update();
-}
-
-void Graph::setBold(bool state)
-{
-  bold = state;
-  update();
-}
-
-void Graph::setUnderline(bool state)
-{
-  underline = state;
-  update();
-}
-
-void Graph::setItalic(bool state)
-{
-  italic = state;
-  update();
-}
-
-void Graph::setlegendFontSize(int size)
-{
-  if (legendState)
-  {
-    leftMargin -= legendFontSize;
-    leftMargin += size;
-
-    bottomMargin -= legendFontSize;
-    bottomMargin += size;
-
-    additionalMargin = size + 10;
-  }
-
-  legendFontSize = size;
-
-  update();
-}
-
-void Graph::setLegendState(bool show)
-{
-  if (show && !legendState)
-  {
-    leftMargin += legendFontSize + 10;
-    bottomMargin += legendFontSize + 10;
-
-    additionalMargin = legendFontSize + 10;
-  }
-  else if (!show && legendState)
-  {
-    leftMargin -= legendFontSize + 10;
-    bottomMargin -= legendFontSize + 10;
-
-    additionalMargin = 0;
-  }
-
-  legendState = show;
-
-  update();
-}
-
-void Graph::setXaxisLegend(QString legend)
-{
-  xLegend = legend;
-  update();
-}
-
-void Graph::setYaxisLegend(QString legend)
-{
-  yLegend = legend;
-  update();
-}
-
 void Graph::updateGraphRect()
 {
   graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
@@ -158,6 +76,8 @@ void Graph::updateGraphRect()
 void Graph::calculateTicksAndMargins()
 {
   updateGraphRect();
+
+  painter->setFont(settings.getFont());
 
   xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
   yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, fontMetrics);
@@ -178,8 +98,6 @@ void Graph::calculateTicksAndMargins()
   if(xAxisTicks.offset.basePowerOffset == 0 && xAxisTicks.offset.sumOffset == 0)
     rightMargin = 10;
 
-  leftMargin = yAxisTicks.maxPxWidth + additionalMargin + 10;
-
   int offset_margin = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
   {
@@ -196,6 +114,16 @@ void Graph::calculateTicksAndMargins()
       offset_margin = new_offsetmargin;
   }
 
+  int xLegendMargin = 0, yLegendMargin = 0;
+  painter->setFont(settings.getAxes().titleFont);
+  if (not settings.getAxes().y.title.isEmpty())
+    yLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().y.title).height();
+
+  if (not settings.getAxes().x.title.isEmpty())
+    xLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().x.title).height();
+
+  bottomMargin = yAxisTicks.maxPxHeight + xLegendMargin + 10;
+  leftMargin = yAxisTicks.maxPxWidth + yLegendMargin + 10;
   topMargin = std::max(20, 5 + offset_margin);
 
   updateGraphRect();
@@ -252,9 +180,7 @@ void Graph::drawAll()
   }
 
   drawGraphRect();
-
-  if(legendState)
-      writeLegends();
+  writeAxisTitles();
 
   painter->setClipRect(graphRectScaled);
 
@@ -312,15 +238,11 @@ void Graph::drawGraph()
 }
 
 
-void Graph::writeLegends()
+void Graph::writeAxisTitles()
 {
-  QFont font = settings.getFont();
-  font.setPixelSize(legendFontSize);
-  font.setItalic(italic);
-  font.setBold(bold);
-  font.setUnderline(underline);
+  painter->setFont(settings.getAxes().titleFont);
 
-  painter->setFont(font);
+  const auto& xLegend = settings.getAxes().x.title;
 
   if (!xLegend.isEmpty())
   {
@@ -332,11 +254,14 @@ void Graph::writeLegends()
 
     painter->drawText(startDrawPoint, xLegend);
   }
+
+  const auto& yLegend = settings.getAxes().y.title;
+
   if (!yLegend.isEmpty())
   {
     painter->rotate(-90);
     int yLegendWidth = painter->fontMetrics().boundingRect(yLegend).width();
-    int yLegendHeight = legendFontSize + 6;
+    int yLegendHeight = painter->fontMetrics().boundingRect(yLegend).height() + 6;
 
     QPoint startDrawPoint;
     startDrawPoint.setX(-(graphRectScaled.height() - (graphRectScaled.height() - yLegendWidth) / 2));
