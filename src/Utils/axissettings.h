@@ -21,12 +21,14 @@
 #pragma once
 
 #include <QColor>
+#include <QFont>
 #include <QMetaType>
 #include <QObject>
 #include <QString>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/themedcolor.h"
+#include "Utils/yaml.h"
 
 struct ZeLogAxisSettings
 {
@@ -68,24 +70,27 @@ struct ZeAxisSettings
   Q_PROPERTY(ZeLogAxisSettings log MEMBER logSettings)
   Q_PROPERTY(ViewType axisType MEMBER axisType)
   Q_PROPERTY(int tickSpacing MEMBER tickRelSpacing)
+  Q_PROPERTY(QString title MEMBER title)
 
 public:
   enum ViewType
   {
-      LINEAR, LOG
+    LINEAR, LOG
   };
 
   int tickRelSpacing = 0;
   ZeLinAxisSettings linSettings;
   ZeLogAxisSettings logSettings;
   ViewType axisType = LINEAR;
+  QString title;
 
   struct POD {
+    std::optional<std::string> title;
     std::optional<int> tick_spacing;
     std::optional<int> max_digits;
     std::optional<std::string> multiplier;
 
-    operator bool () const { return tick_spacing or max_digits or multiplier; }
+    operator bool () const { return title or tick_spacing or max_digits or multiplier; }
   };
 
   std::optional<POD> exportPod() const;
@@ -102,6 +107,7 @@ struct ZeAxesSettings
   Q_PROPERTY(ZeAxisSettings y MEMBER y)
   Q_PROPERTY(ThemedColor color MEMBER color)
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
+  Q_PROPERTY(QFont titleFont MEMBER titleFont)
 
 public:
   ZeAxisSettings x, y;
@@ -109,6 +115,11 @@ public:
 
   ThemedColor color = defaultColor;
   double lineWidth = defaultLineWith;
+
+  QFont titleFont;
+  QFont defaultTitleFont;
+
+  void setDefaultTitleFont(QFont);
 
   static const ThemedColor defaultColor;
   static constexpr double defaultLineWith = 2.0;
@@ -119,8 +130,9 @@ public:
     std::optional<ThemedColor::POD> color;
     std::optional<double> line_width;
     std::optional<ZeAxisSettings::POD> x, y;
+    std::optional<zg::yml::QFontPOD> title_font;
 
-    operator bool () const { return color or line_width or x or y; }
+    operator bool () const { return color or line_width or x or y or title_font; }
   };
 
   std::optional<POD> exportPod() const;
