@@ -50,7 +50,7 @@ Rectangle {
       text: ""
       onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
-      onTextEdited: root.textEdited()
+      onTextEdited: rec.textEdited()
 
       Keys.onPressed: (event)=> {
         console.debug("LineEdit: key pressed, ID=0x", event.key.toString(16));
