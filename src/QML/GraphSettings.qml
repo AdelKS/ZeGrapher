@@ -359,6 +359,49 @@ Item {
 
             onSelectedColorChanged: root.graphSettings.axes.color = selectedColor;
           }
+
+          FontDialog {
+            id: fontDialog
+            currentFont: Information.graphSettings.axes.titleFont
+
+            onAccepted: {
+              Information.graphSettings.axes.titleFont = selectedFont;
+            }
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('X Title')
+          }
+          LineEdit {
+            Layout.fillWidth: true
+            border.color: "grey"
+            text: Information.graphSettings.axes.x.title
+            onTextEdited: Information.graphSettings.axes.x.title = text
+          }
+
+         ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Y Title')
+          }
+          LineEdit {
+            Layout.fillWidth: true
+            border.color: "grey"
+            text: Information.graphSettings.axes.y.title
+            onTextEdited: Information.graphSettings.axes.y.title = text
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr('Title font')
+          }
+          Button {
+            Layout.alignment: Qt.AlignLeft
+            Layout.fillWidth: true
+
+            text: fontDialog.currentFont.family
+            onClicked: fontDialog.open()
+          }
         }
       }
     }
