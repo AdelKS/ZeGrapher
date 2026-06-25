@@ -78,6 +78,7 @@ void Graph::calculateTicksAndMargins()
   updateGraphRect();
 
   painter->setFont(settings.getFont());
+  fontMetrics = painter->fontMetrics();
 
   xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
   yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, fontMetrics);
@@ -114,16 +115,18 @@ void Graph::calculateTicksAndMargins()
       offset_margin = new_offsetmargin;
   }
 
+  const int gap = settings.getAxes().spacing.v;
+
   int xLegendMargin = 0, yLegendMargin = 0;
   painter->setFont(settings.getAxes().titleFont);
   if (not settings.getAxes().y.title.isEmpty())
-    yLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().y.title).height();
+    yLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().y.title).height() + gap;
 
   if (not settings.getAxes().x.title.isEmpty())
-    xLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().x.title).height();
+    xLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().x.title).height() + gap;
 
-  bottomMargin = yAxisTicks.maxPxHeight + xLegendMargin + 10;
-  leftMargin = yAxisTicks.maxPxWidth + yLegendMargin + 10;
+  bottomMargin = yAxisTicks.maxPxHeight + xLegendMargin;
+  leftMargin = yAxisTicks.maxPxWidth + yLegendMargin;
   topMargin = std::max(20, 5 + offset_margin);
 
   updateGraphRect();
@@ -243,14 +246,15 @@ void Graph::writeAxisTitles()
   painter->setFont(settings.getAxes().titleFont);
 
   const auto& xLegend = settings.getAxes().x.title;
+  const int gap = settings.getAxes().spacing.v;
 
   if (!xLegend.isEmpty())
   {
-    int xLegendWidth = painter->fontMetrics().boundingRect(xLegend).width();
+    const auto textRect = painter->fontMetrics().boundingRect(xLegend);
 
     QPoint startDrawPoint;
-    startDrawPoint.setX((graphRectScaled.width() - xLegendWidth) / 2);
-    startDrawPoint.setY(graphRectScaled.height() + bottomMargin - 10);
+    startDrawPoint.setX((graphRectScaled.width() - textRect.width()) / 2);
+    startDrawPoint.setY(graphRectScaled.height() + bottomMargin - gap);
 
     painter->drawText(startDrawPoint, xLegend);
   }
@@ -260,12 +264,11 @@ void Graph::writeAxisTitles()
   if (!yLegend.isEmpty())
   {
     painter->rotate(-90);
-    int yLegendWidth = painter->fontMetrics().boundingRect(yLegend).width();
-    int yLegendHeight = painter->fontMetrics().boundingRect(yLegend).height() + 6;
+    const auto textRect = painter->fontMetrics().boundingRect(yLegend);
 
     QPoint startDrawPoint;
-    startDrawPoint.setX(-(graphRectScaled.height() - (graphRectScaled.height() - yLegendWidth) / 2));
-    startDrawPoint.setY(-leftMargin + yLegendHeight);
+    startDrawPoint.setX(-(graphRectScaled.height() - (graphRectScaled.height() - textRect.width()) / 2));
+    startDrawPoint.setY(- leftMargin + textRect.height() - gap);
 
     painter->drawText(startDrawPoint, yLegend);
 

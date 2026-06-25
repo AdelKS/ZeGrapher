@@ -28,6 +28,7 @@
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/themedcolor.h"
+#include "Utils/unit.h"
 #include "Utils/yaml.h"
 
 struct ZeLogAxisSettings
@@ -118,6 +119,11 @@ public:
 
   QFont titleFont;
   QFont defaultTitleFont;
+
+  ///@brief spacing between different things in the graph
+  ///       currently: between the axis and the coordinates
+  ///                  between the coordinates and the axis titles
+  static constexpr zg::pixel_unit spacing = {5};
 
   void setDefaultTitleFont(QFont);
 

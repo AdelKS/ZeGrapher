@@ -204,9 +204,11 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
   painter->setFont(settings.getFont());
   pen.setColor(settings.getAxes().color.getCurrent());
   painter->setPen(pen);
+  fontMetrics = painter->fontMetrics();
 
   int txtWidth = fontMetrics.horizontalAdvance(txt);
   int txtHeight = fontMetrics.boundingRect('0').height();
+  const int gap = settings.getAxes().spacing.v;
   if constexpr (axis == ZeAxisName::X)
   {
     double space;
@@ -217,11 +219,11 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
       space = double(txtWidth) / 2.;
 
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + txtHeight + 5), txt);
+    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + txtHeight + gap), txt);
   }
   else
   {
-    painter->drawText(QPointF(- txtWidth - 5, pos.v + txtHeight/2.), txt);
+    painter->drawText(QPointF(- txtWidth - gap, pos.v + txtHeight/2.), txt);
   }
 };
 
