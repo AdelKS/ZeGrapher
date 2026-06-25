@@ -25,6 +25,7 @@
 #include <QSyntaxHighlighter>
 
 #include "BuildingBlocks/base.h"
+#include "Utils/unit.h"
 #include "constant.h"
 #include "data.h"
 #include "equation.h"

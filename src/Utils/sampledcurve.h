@@ -6,10 +6,9 @@
 
 #include <QPointF>
 
-#include "GraphDraw/axismapper.h"
 #include "MathObjects/mathobject.h"
+#include "Utils/unit.h"
 #include "curvestyle.h"
-#include "plotstyle.h"
 
 namespace zg {
 

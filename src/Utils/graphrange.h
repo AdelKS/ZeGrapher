@@ -22,8 +22,8 @@
 
 #include <QtQmlIntegration/qqmlintegration.h>
 
-#include "GraphDraw/axismapper.h"
 #include "MathObjects/expr.h"
+#include "Utils/unit.h"
 
 namespace zg {
 
