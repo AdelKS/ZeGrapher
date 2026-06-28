@@ -246,8 +246,6 @@ Range1D<u<q>> ZeAxisMapper<axis>::to(const Range1D<u<p>>& r) const
 template <ZeAxisName axis>
 void ZeAxisMapper<axis>::zoomView(unit<u<plane::pixel>> center, double ratio)
 {
-  Q_ASSERT(pixel_range.contains(center));
-
   const double new_amplitude = ratio * view_range.amplitude().v;
 
   const auto view_center = to<plane::view>(center);
