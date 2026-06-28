@@ -83,6 +83,7 @@ protected:
   void drawAll();
   void updateGraphRect();
   void writeAxisTitles();
+  void injectClipPath(QByteArray& svg);
 
   /// @brief draw a line that spans the whole graph width or height
   /// @tparam axis: the line will be perpendicular to this axis
@@ -152,6 +153,9 @@ protected:
 
   /// @brief are we painting into SVG or images ?
   PaintType paintType = GPU_RENDER;
+
+  /// @brief for implementing the workaround for SVG clipping
+  bool svgExport = false;
 
   /// @note we draw continuous curves from QML to avoid a bottleneck
   ///       in using drawPolyline() that's very slow in QQuickPaintedItem

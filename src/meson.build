@@ -143,6 +143,7 @@ qt6_modules = [
   'Widgets',
   'Network',
   'Svg',
+  'Xml',
   'Quick',
   'Qml',
   'QuickWidgets',
