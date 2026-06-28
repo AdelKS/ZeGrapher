@@ -163,12 +163,11 @@ void Graph::drawAll()
 
   painter->translate(leftMargin, topMargin);
 
+  painter->setClipRect(graphRectScaled);
+
   if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
       and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
   {
-    writeAxisOffsetY();
-    writeAxisOffsetX();
-
     drawLinSubgrid<ZeAxisName::Y>();
     drawLinSubgrid<ZeAxisName::X>();
 
@@ -177,15 +176,7 @@ void Graph::drawAll()
 
     drawLinAxis<ZeAxisName::Y>();
     drawLinAxis<ZeAxisName::X>();
-
-    drawLinCoordinateTicks<ZeAxisName::Y>();
-    drawLinCoordinateTicks<ZeAxisName::X>();
   }
-
-  drawGraphRect();
-  writeAxisTitles();
-
-  painter->setClipRect(graphRectScaled);
 
   sampler.update();
 
@@ -196,6 +187,21 @@ void Graph::drawAll()
   else drawObjects();
 
   const auto end = std::chrono::high_resolution_clock::now();
+
+  painter->setClipping(false);
+
+  if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
+      and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
+  {
+    writeAxisOffsetY();
+    writeAxisOffsetX();
+
+    drawLinCoordinateTicks<ZeAxisName::Y>();
+    drawLinCoordinateTicks<ZeAxisName::X>();
+  }
+
+  drawGraphRect();
+  writeAxisTitles();
 
   qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
