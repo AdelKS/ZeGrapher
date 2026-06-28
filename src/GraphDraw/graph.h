@@ -247,8 +247,6 @@ void Graph::drawLinCoordinateTicks()
     else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
   }();
 
-  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
-
   for (const ZeLinAxisTick &axisTick : axisTicks)
   {
     if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
@@ -257,46 +255,32 @@ void Graph::drawLinCoordinateTicks()
 
     zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
 
-    if (fabs(px_pos.v - zero_pt.v) > 1.)
-    {
-      drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
-      writeCoordinate<axis>(px_pos, axisTick.posStr);
-    }
+    drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
+    writeCoordinate<axis>(px_pos, axisTick.posStr);
+
   }
+
+  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
+
+  if (axisMapper.isInView(zero_pt))
+    writeCoordinate<axis>(zero_pt, "0");
 }
 
 template <ZeAxisName axis>
 void Graph::drawLinAxis()
 {
-  painter->setFont(settings.getFont());
-  QFontMetrics fontMetrics = painter->fontMetrics();
-
   const ZeAxesSettings &axesSettings = settings.getAxes();
 
-  pen.setCapStyle(Qt::FlatCap);
-
-  const auto& [axisMapper, axisTicks] = [this]{
+  const auto& axisMapper = [this]{
     if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
+      return viewMapper.x;
+    else return viewMapper.y;
   }();
 
   const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
 
-  for (const ZeLinAxisTick &axisTick : axisTicks)
-  {
-    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
-            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
-      continue;
-
-    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
-
-    if (fabs(px_pos.v - zero_pt.v) <= 1.)
-    {
-      drawLine<axis>(zero_pt, axesSettings.color.getCurrent(), axesSettings.lineWidth);
-      writeCoordinate<axis>(zero_pt, "0");
-    }
-  }
+  if (axisMapper.isInView(zero_pt))
+    drawLine<axis>(zero_pt, axesSettings.color.getCurrent(), axesSettings.lineWidth);
 }
 
 template <ZeAxisName axis>

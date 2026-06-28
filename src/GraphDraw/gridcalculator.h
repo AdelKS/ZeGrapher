@@ -279,12 +279,15 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   double multiplier = (floor(scaledOffsetRange.min.v / realStep) - 1) * realStep;
   double power_offset = int_pow(10.0, axisTicks.offset.basePowerOffset);
 
-  // TODO: offset is not good, figure it out
+  const zg::pixel_unit zero_pt = axis_mapper.template to<zg::pixel>(zg::real_unit{0.});
 
   do
   {
     ZeLinAxisTick tick;
     multiplier += realStep;
+    zg::pixel_unit px_mul = axis_mapper.template to<zg::pixel>(zg::real_unit{multiplier});
+    if (fabs(px_mul.v - zero_pt.v) <= 1.)
+      continue;
     tick.pos = {multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset};
     tick.posStr = get_coordinate_string(axisSettings, multiplier);
 
