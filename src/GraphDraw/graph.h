@@ -247,6 +247,9 @@ void Graph::drawLinCoordinateTicks()
     else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
   }();
 
+
+  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
+
   for (const ZeLinAxisTick &axisTick : axisTicks)
   {
     if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
@@ -255,15 +258,11 @@ void Graph::drawLinCoordinateTicks()
 
     zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
 
-    drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
+    if (fabs(px_pos.v - zero_pt.v) > 1.)
+      drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
+
     writeCoordinate<axis>(px_pos, axisTick.posStr);
-
   }
-
-  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
-
-  if (axisMapper.isInView(zero_pt))
-    writeCoordinate<axis>(zero_pt, "0");
 }
 
 template <ZeAxisName axis>

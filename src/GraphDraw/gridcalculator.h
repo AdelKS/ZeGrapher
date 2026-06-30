@@ -287,7 +287,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     multiplier += realStep;
     zg::pixel_unit px_mul = axis_mapper.template to<zg::pixel>(zg::real_unit{multiplier});
     if (fabs(px_mul.v - zero_pt.v) <= 1.)
-      continue;
+      multiplier = 0;
     tick.pos = {multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset};
     tick.posStr = get_coordinate_string(axisSettings, multiplier);
 
