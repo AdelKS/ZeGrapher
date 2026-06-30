@@ -7,6 +7,8 @@ import QtCore
 Item {
   id: root
 
+  required property size globalMenuSize
+
   signal importCSV(file: url)
 
   onImplicitWidthChanged: {
@@ -20,7 +22,7 @@ Item {
     anchors.fill: parent
 
     contentWidth: Math.max(availableWidth - ScrollBar.vertical.width * ScrollBar.vertical.visible, mathObjCol.implicitWidth)
-    contentHeight: Math.max(availableHeight - ScrollBar.horizontal.height * ScrollBar.horizontal.visible, mathObjCol.implicitHeight)
+    contentHeight: Math.max(availableHeight - ScrollBar.horizontal.height * ScrollBar.horizontal.visible, mathObjCol.implicitHeight) + root.globalMenuSize.height + 5
 
     implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
     implicitHeight: mathObjCol.implicitHeight + ScrollBar.horizontal.height
@@ -150,13 +152,14 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
     anchors.bottom: parent.bottom
+    anchors.bottomMargin: 10 + Math.max((root.globalMenuSize.height - height) / 2., 0)
     anchors.margins: 10
     height: implicitHeight
     spacing: 5
 
     Item {
       Layout.fillWidth: true
-      Layout.minimumWidth: 3*40
+      Layout.minimumWidth: root.globalMenuSize.width
     }
 
     IconRoundButton {

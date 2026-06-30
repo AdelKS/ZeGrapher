@@ -156,20 +156,24 @@ Item {
 
       MathObjects {
         id: mathObjectsTab
+        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
       }
 
       GridSettings {
         id: gridSettings
         graphSettings: userInputPanel.graphSettings
+        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
       }
 
       GraphSettings {
         id: graphSettingsTab
         graphSettings: userInputPanel.graphSettings
+        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
       }
 
       AppSettings {
         id: appSettings
+        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
       }
     }
   }

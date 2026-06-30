@@ -8,6 +8,8 @@ import QtQuick.Controls.FluentWinUI3
 Item {
   id: root
 
+  required property size globalMenuSize
+
   FontDialog {
     id: fontDialog
     currentFont: Information.appSettings.font
@@ -30,6 +32,8 @@ Item {
     anchors.fill: parent
     anchors.margins: 5
     leftPadding: Math.max((availableWidth - grid.implicitWidth)/2, 0)
+
+    contentHeight: grid.implicitHeight + root.globalMenuSize.height
 
     GridLayout {
       id: grid

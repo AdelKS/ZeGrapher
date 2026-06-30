@@ -9,6 +9,7 @@ Item {
   id: root
 
   required property ZeGraphSettings graphSettings
+  required property size globalMenuSize
 
   implicitWidth: scrollView.implicitWidth
 
@@ -21,9 +22,11 @@ Item {
     leftPadding: Math.max((width - mainLayout.implicitWidth)/2, 0)
     implicitWidth: mainLayout.implicitWidth + ScrollBar.vertical.width + anchors.margins * 2
 
+    contentHeight: mainLayout.implicitHeight + root.globalMenuSize.height + 10
+
     ColumnLayout {
       id: mainLayout
-      anchors.fill: parent
+      width: parent.width
 
       GroupBox {
         Layout.columnSpan: 2

@@ -14,6 +14,7 @@ Item {
   readonly property double max_cm_size: 1000
 
   required property ZeGraphSettings graphSettings
+  required property size globalMenuSize
 
   enum SizeType { Fill, Custom }
 
@@ -41,10 +42,11 @@ Item {
     anchors.fill: parent
     anchors.margins: 5
     leftPadding: Math.max((width - mainLayout.implicitWidth)/2, 0)
+    contentHeight: mainLayout.implicitHeight + root.globalMenuSize.height + 10
 
     ColumnLayout {
       id: mainLayout
-      anchors.fill: parent
+      width: parent.width
 
       GroupBox {
         Layout.fillWidth: true
