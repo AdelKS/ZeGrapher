@@ -47,19 +47,20 @@ ZeGraphSettings::ZeGraphSettings(QObject* parent)
 
 void ZeGraphSettings::onSystemPaletteChange()
 {
-  if (not isDarkTheme()) return;
-
-  QColor newDarkBgColor = getWindowColor();
-  if (backgroundColor.dark == defaultBgColor.dark
-      and newDarkBgColor != defaultBgColor.dark)
+  if (isDarkTheme())
   {
-    defaultBgColor.dark = newDarkBgColor;
-    backgroundColor.dark = newDarkBgColor;
-    emit backgroundColorChanged();
-  }
+    QColor newDarkBgColor = getWindowColor();
+    if (backgroundColor.dark == defaultBgColor.dark
+        and newDarkBgColor != defaultBgColor.dark)
+    {
+      defaultBgColor.dark = newDarkBgColor;
+      backgroundColor.dark = newDarkBgColor;
+    }
 
-  else if (newDarkBgColor != defaultBgColor.dark)
-    defaultBgColor.dark = newDarkBgColor;
+    else if (newDarkBgColor != defaultBgColor.dark)
+      defaultBgColor.dark = newDarkBgColor;
+  }
+  emit backgroundColorChanged();
 }
 
 void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
