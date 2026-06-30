@@ -1,6 +1,6 @@
 import QtQuick
 
-Rectangle {
+Item {
   id: root
 
   required property GraphRange range
@@ -13,8 +13,6 @@ Rectangle {
   }
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
-  color: myPalette.window
 
   Connections {
     target: root.range.y

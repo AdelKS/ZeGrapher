@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Dialogs
+import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Window
 
@@ -10,6 +11,10 @@ ApplicationWindow {
   height: 600
   visible: true
   font: Information.appSettings.font
+
+  color: Information.graphSettings.backgroundColor.current
+
+  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
   onWidthChanged: dataPane.updateWidthWhenVisible()
 
@@ -35,6 +40,17 @@ ApplicationWindow {
     }
   }
 
+  RectangularShadow {
+    z: 49
+    anchors.fill: drawer
+    radius: drawer.radius
+    blur: 10
+    spread: 0
+    offset.x: 0
+    color: myPalette.shadow
+    opacity: drawer.width > 0 ? Math.max(0, 1 + drawer.x / drawer.width) : 1
+  }
+
   Rectangle {
     id: drawer
     x: 0
@@ -42,9 +58,8 @@ ApplicationWindow {
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     width: row.width
-    color: myPalette.window
 
-    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
+    color: myPalette.midlight
 
     states: [
       State {
@@ -128,15 +143,6 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         z: 100
-
-        Rectangle
-        {
-          width: 1.5
-          color: "grey"
-          anchors.top: parent.top
-          anchors.bottom: parent.bottom
-          anchors.horizontalCenter: parent.horizontalCenter
-        }
 
         MouseArea {
           anchors.fill: parent
@@ -269,15 +275,22 @@ ApplicationWindow {
       }
     }
 
+    RectangularShadow {
+      z: -2
+      anchors.fill: drawer_button
+      radius: drawer_button.radius
+      blur: 10
+      spread: 0
+      color: myPalette.shadow
+    }
+
     Rectangle {
       id: drawer_button
       width: 25
       height: width
       radius: 8
-      color: myPalette.window
-      z: -1
-      border.color: "grey"
-      border.width: 1.5
+      color: myPalette.midlight
+      z: +1
 
       property int apparentWidth: 2.*width/3.
       property bool checked: true
@@ -289,8 +302,8 @@ ApplicationWindow {
 
       Image {
         anchors.centerIn: parent
-        anchors.horizontalCenterOffset: parent.checked ? 0 : width/3.
-        width: parent.width/3.
+        anchors.horizontalCenterOffset: parent.checked ? 2 : 3.
+        width: 10
 
         rotation: drawer_button.checked ? 180 : 0
 
