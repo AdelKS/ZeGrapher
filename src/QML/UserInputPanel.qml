@@ -174,8 +174,15 @@ Item {
     }
   }
 
-  ScrollView {
+  Frame {
+    id: globalMenu
+
     z: 100
+
+    leftPadding: 5
+    rightPadding: 5
+    topPadding: 5
+    bottomPadding: 5
 
     anchors.left: userInputPanel.left
     anchors.leftMargin: 10
@@ -186,66 +193,71 @@ Item {
     height: implicitHeight
     width: implicitWidth
 
-    contentHeight: height
-    contentWidth: availableWidth
+    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-    implicitHeight: globalButtonsRow.implicitHeight
-    implicitWidth: globalButtonsRow.implicitWidth
+    background: Rectangle {
+      color: myPalette.light
+      radius: 5
+      opacity: 0.95
+    }
 
-    ScrollBar.horizontal.visible: false
-    ScrollBar.vertical.visible: false
+    ScrollView {
+      contentWidth: availableWidth
 
-    RowLayout
-    {
-      id: globalButtonsRow
-      spacing: 5
+      implicitHeight: globalButtonsRow.implicitHeight
+      implicitWidth: globalButtonsRow.implicitWidth
 
-      Item {
-        Layout.fillWidth: true
-      }
+      ScrollBar.horizontal.visible: false
+      ScrollBar.vertical.visible: false
 
-      IconRoundButton {
-        Layout.topMargin: 0
-        Layout.bottomMargin: 0
-        id: exportGraph
-        implicitWidth: 35
-        implicitHeight: 35
-        Layout.alignment: Qt.AlignRight
+      RowLayout
+      {
+        id: globalButtonsRow
+        spacing: 5
 
-        lightThemeIcon: "qrc:/icons/export-graph-dark.svg"
-        darkThemeIcon: "qrc:/icons/export-graph-light.svg"
+        IconRoundButton {
+          Layout.topMargin: 0
+          Layout.bottomMargin: 0
+          id: exportGraph
+          implicitWidth: 35
+          implicitHeight: 35
+          Layout.alignment: Qt.AlignRight
 
-        onReleased: exportDialog.visible = true;
-      }
+          lightThemeIcon: "qrc:/icons/export-graph-dark.svg"
+          darkThemeIcon: "qrc:/icons/export-graph-light.svg"
 
-      IconRoundButton {
-        Layout.topMargin: 0
-        Layout.bottomMargin: 0
+          onReleased: exportDialog.visible = true;
+        }
 
-        id: saveWorkspace
-        implicitWidth: 35
-        implicitHeight: 35
-        Layout.alignment: Qt.AlignRight
+        IconRoundButton {
+          Layout.topMargin: 0
+          Layout.bottomMargin: 0
 
-        lightThemeIcon: "qrc:/icons/save-dark.svg"
-        darkThemeIcon: "qrc:/icons/save-light.svg"
+          id: saveWorkspace
+          implicitWidth: 35
+          implicitHeight: 35
+          Layout.alignment: Qt.AlignRight
 
-        onReleased: saveDialog.visible = true;
-      }
+          lightThemeIcon: "qrc:/icons/save-dark.svg"
+          darkThemeIcon: "qrc:/icons/save-light.svg"
 
-      IconRoundButton {
-        Layout.topMargin: 0
-        Layout.bottomMargin: 0
+          onReleased: saveDialog.visible = true;
+        }
 
-        id: loadWorkspace
-        implicitWidth: 35
-        implicitHeight: 35
-        Layout.alignment: Qt.AlignRight
+        IconRoundButton {
+          Layout.topMargin: 0
+          Layout.bottomMargin: 0
 
-        lightThemeIcon: "qrc:/icons/load-dark.svg"
-        darkThemeIcon: "qrc:/icons/load-light.svg"
+          id: loadWorkspace
+          implicitWidth: 35
+          implicitHeight: 35
+          Layout.alignment: Qt.AlignRight
 
-        onReleased: loadDialog.visible = true;
+          lightThemeIcon: "qrc:/icons/load-dark.svg"
+          darkThemeIcon: "qrc:/icons/load-light.svg"
+
+          onReleased: loadDialog.visible = true;
+        }
       }
     }
   }
