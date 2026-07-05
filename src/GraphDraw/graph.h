@@ -111,6 +111,9 @@ protected:
   void drawLinCoordinateTicks();
 
   template <ZeAxisName axis>
+  void writeCoordinates();
+
+  template <ZeAxisName axis>
   void drawLinAxis();
 
   template <ZeAxisName axis>
@@ -171,8 +174,9 @@ void Graph::drawLine(zg::pixel_unit pos, const QColor& col, double lineWidth)
   pen.setColor(col);
   pen.setWidthF(lineWidth);
   pen.setStyle(Qt::SolidLine);
+  pen.setCapStyle(Qt::PenCapStyle::FlatCap);
   painter->setPen(pen);
-  painter->setRenderHint(QPainter::Antialiasing, false);
+  painter->setRenderHint(QPainter::Antialiasing, true);
 
   if constexpr (axis == ZeAxisName::X)
     painter->drawLine(QPointF(pos.v, 0.), QPointF(pos.v, graphRectScaled.height()));
@@ -185,19 +189,22 @@ void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
 {
   pen.setColor(col);
   pen.setWidthF(lineWidth);
+  pen.setCapStyle(Qt::PenCapStyle::RoundCap);
   painter->setPen(pen);
-  painter->setRenderHint(QPainter::Antialiasing, false);
+  painter->setRenderHint(QPainter::Antialiasing, true);
+
+  constexpr double tickLength = 3;
 
   if constexpr (axis == ZeAxisName::X)
   {
-    painter->drawLine(QPointF(pos.v, 4), QPointF(pos.v, 0));
-    painter->drawLine(QPointF(pos.v, graphRectScaled.height() - 4),
+    painter->drawLine(QPointF(pos.v, tickLength), QPointF(pos.v, 0));
+    painter->drawLine(QPointF(pos.v, graphRectScaled.height() - tickLength),
                       QPointF(pos.v, graphRectScaled.height()));
   }
   else
   {
-    painter->drawLine(QPointF(4, pos.v), QPointF(0, pos.v));
-    painter->drawLine(QPointF(graphRectScaled.width() - 4, pos.v),
+    painter->drawLine(QPointF(tickLength, pos.v), QPointF(0, pos.v));
+    painter->drawLine(QPointF(graphRectScaled.width() - tickLength, pos.v),
                       QPointF(graphRectScaled.width(), pos.v));
   }
 };
@@ -260,7 +267,25 @@ void Graph::drawLinCoordinateTicks()
 
     if (fabs(px_pos.v - zero_pt.v) > 1.)
       drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
+  }
+}
 
+template <ZeAxisName axis>
+void Graph::writeCoordinates()
+{
+  const auto& [axisMapper, axisTicks] = [this]{
+    if constexpr (axis == ZeAxisName::X)
+      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks);
+    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
+  }();
+
+  for (const ZeLinAxisTick &axisTick : axisTicks)
+  {
+    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
+            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
+      continue;
+
+    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
     writeCoordinate<axis>(px_pos, axisTick.posStr);
   }
 }
@@ -296,7 +321,6 @@ void Graph::drawLinSubgrid()
     return;
 
   painter->setFont(settings.getFont());
-  QFontMetrics fontMetrics = painter->fontMetrics();
 
   pen.setCapStyle(Qt::FlatCap);
   bool first_tick = true;
@@ -343,7 +367,6 @@ void Graph::drawLinGrid()
     return;
 
   painter->setFont(settings.getFont());
-  QFontMetrics fontMetrics = painter->fontMetrics();
 
   pen.setCapStyle(Qt::FlatCap);
 

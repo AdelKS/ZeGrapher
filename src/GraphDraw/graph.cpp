@@ -198,6 +198,13 @@ void Graph::drawAll()
 
   const auto end = std::chrono::high_resolution_clock::now();
 
+  if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
+      and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
+  {
+    drawLinCoordinateTicks<ZeAxisName::Y>();
+    drawLinCoordinateTicks<ZeAxisName::X>();
+  }
+
   painter->setClipping(false);
 
   // end of SVG export workaround
@@ -213,8 +220,8 @@ void Graph::drawAll()
     writeAxisOffsetY();
     writeAxisOffsetX();
 
-    drawLinCoordinateTicks<ZeAxisName::Y>();
-    drawLinCoordinateTicks<ZeAxisName::X>();
+    writeCoordinates<ZeAxisName::Y>();
+    writeCoordinates<ZeAxisName::X>();
   }
 
   drawGraphRect();
@@ -361,12 +368,13 @@ void Graph::drawGraphRect()
 {
   const auto &axesSettings = settings.getAxes();
 
-  painter->setRenderHint(QPainter::Antialiasing, false);
+  painter->setRenderHint(QPainter::Antialiasing, true);
   painter->setBrush(QBrush(Qt::NoBrush));
 
   pen.setWidth(axesSettings.lineWidth);
   pen.setColor(axesSettings.color.getCurrent());
   pen.setStyle(Qt::SolidLine);
+  pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);
   painter->setPen(pen);
 
   painter->drawRect(graphRectScaled);
