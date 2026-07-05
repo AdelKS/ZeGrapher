@@ -71,7 +71,7 @@ void Graph::updateGraphRect()
 {
   graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
   graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
-  graphRectScaled.moveTopLeft(QPoint(0, 0)); // because painter is translated to its top-left corner
+  graphRectScaled.moveTopLeft(QPointF(0, 0)); // because painter is translated to its top-left corner
   qDebug() << "Graph rect scaled " << graphRectScaled;
   viewMapper.setGraphRect(graphRectScaled);
 }
@@ -88,21 +88,21 @@ void Graph::calculateTicksAndMargins()
 
   if(xAxisTicks.offset.sumOffset != 0)
   {
-    int margin = fontMetrics.boundingRect(xAxisTicks.offset.sumOffsetStr()).width() + 5;
+    double margin = fontMetrics.boundingRect(xAxisTicks.offset.sumOffsetStr()).width() + 5;
     if(rightMargin < margin)
       rightMargin = 10 + margin;
   }
 
   if(xAxisTicks.offset.basePowerOffset != 0)
   {
-    int margin = fontMetrics.boundingRect(xAxisTicks.offset.basePowerOffsetStr()).width() + 5;
+    double margin = fontMetrics.boundingRect(xAxisTicks.offset.basePowerOffsetStr()).width() + 5;
     rightMargin = 10 + margin;
   }
 
   if(xAxisTicks.offset.basePowerOffset == 0 && xAxisTicks.offset.sumOffset == 0)
     rightMargin = 10;
 
-  int offset_margin = 0;
+  double offset_margin = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
   {
     QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
@@ -113,24 +113,26 @@ void Graph::calculateTicksAndMargins()
   {
     QString sum_offset = yAxisTicks.offset.sumOffsetStr();
 
-    int new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
+    double new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
     if (new_offsetmargin > offset_margin)
       offset_margin = new_offsetmargin;
   }
 
-  const int gap = settings.getAxes().spacing.v;
+  const double gap = settings.getAxes().spacing.v;
 
-  int xLegendMargin = 0, yLegendMargin = 0;
+  double xLegendMargin = 0, yLegendMargin = 0;
   painter->setFont(settings.getAxes().titleFont);
+  const QFontMetricsF titleMetrics = painter->fontMetrics();
   if (not settings.getAxes().y.title.isEmpty())
-    yLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().y.title).height() + gap;
+    yLegendMargin = titleMetrics.tightBoundingRect(settings.getAxes().y.title).height() + gap;
 
   if (not settings.getAxes().x.title.isEmpty())
-    xLegendMargin = painter->fontMetrics().boundingRect(settings.getAxes().x.title).height() + gap;
+    xLegendMargin = titleMetrics.tightBoundingRect(settings.getAxes().x.title).height() + gap;
 
-  bottomMargin = yAxisTicks.maxPxHeight + xLegendMargin;
-  leftMargin = yAxisTicks.maxPxWidth + yLegendMargin;
-  topMargin = std::max(20, 5 + offset_margin);
+  // layout: graph edge | gap | coordinates | gap | title | gap | figure edge
+  bottomMargin = gap + xAxisTicks.maxPxHeight() + xLegendMargin + gap;
+  leftMargin = gap + yAxisTicks.maxPxWidth + yLegendMargin + gap;
+  topMargin = std::max(20., 5. + offset_margin);
 
   updateGraphRect();
 }
@@ -274,33 +276,35 @@ void Graph::drawGraph()
 void Graph::writeAxisTitles()
 {
   painter->setFont(settings.getAxes().titleFont);
+  const QFontMetricsF metrics = painter->fontMetrics();
+  const double gap = settings.getAxes().spacing.v;
 
-  const auto& xLegend = settings.getAxes().x.title;
-  const int gap = settings.getAxes().spacing.v;
+  const auto& xTitle = settings.getAxes().x.title;
 
-  if (!xLegend.isEmpty())
+  if (!xTitle.isEmpty())
   {
-    const auto textRect = painter->fontMetrics().boundingRect(xLegend);
+    // ink rect is relative to the baseline start point: top() < 0, bottom() = descender ink
+    const QRectF ink = metrics.tightBoundingRect(xTitle);
 
-    QPoint startDrawPoint;
-    startDrawPoint.setX((graphRectScaled.width() - textRect.width()) / 2);
-    startDrawPoint.setY(graphRectScaled.height() + bottomMargin - gap);
+    QPointF startDrawPoint;
+    startDrawPoint.setX((graphRectScaled.width() - ink.width()) / 2 - ink.left());
+    startDrawPoint.setY(graphRectScaled.height() + bottomMargin - gap - ink.bottom());
 
-    painter->drawText(startDrawPoint, xLegend);
+    painter->drawText(startDrawPoint, xTitle);
   }
 
-  const auto& yLegend = settings.getAxes().y.title;
+  const auto& yTitle = settings.getAxes().y.title;
 
-  if (!yLegend.isEmpty())
+  if (!yTitle.isEmpty())
   {
     painter->rotate(-90);
-    const auto textRect = painter->fontMetrics().boundingRect(yLegend);
+    const QRectF ink = metrics.tightBoundingRect(yTitle);
 
-    QPoint startDrawPoint;
-    startDrawPoint.setX(-(graphRectScaled.height() - (graphRectScaled.height() - textRect.width()) / 2));
-    startDrawPoint.setY(- leftMargin + textRect.height() - gap);
+    QPointF startDrawPoint;
+    startDrawPoint.setX(-(graphRectScaled.height() + ink.width()) / 2 - ink.left());
+    startDrawPoint.setY(-leftMargin + gap - ink.top());
 
-    painter->drawText(startDrawPoint, yLegend);
+    painter->drawText(startDrawPoint, yTitle);
 
     painter->rotate(90);
   }
@@ -324,7 +328,7 @@ void Graph::writeAxisOffsetX()
                                - fontMetrics.boundingRect(sum_offset).height() - 10),
                      sum_offset);
 
-    int margin = fontMetrics.boundingRect(sum_offset).width() + 5;
+    double margin = fontMetrics.boundingRect(sum_offset).width() + 5;
     Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
   }
 
@@ -334,15 +338,15 @@ void Graph::writeAxisOffsetX()
 
     painter->drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
 
-    int margin = fontMetrics.boundingRect(power_offset).width() + 5;
+    double margin = fontMetrics.boundingRect(power_offset).width() + 5;
     Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
   }
 }
 
 void Graph::writeAxisOffsetY()
 {
-  int powerOffset_size = 0;
-  int offset_margin = 0;
+  double powerOffset_size = 0;
+  double offset_margin = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
   {
     QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
@@ -355,7 +359,7 @@ void Graph::writeAxisOffsetY()
   {
     QString sum_offset = yAxisTicks.offset.sumOffsetStr();
 
-    int new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
+    double new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
     if (new_offsetmargin > offset_margin)
       offset_margin = new_offsetmargin;
 
@@ -450,7 +454,7 @@ void Graph::computeSupportRect()
 
   qDebug() << "Support rect: " << rect;
 
-  supportRect = rect.toRect();
+  supportRect = rect;
 }
 
 void Graph::updateQmlData()
@@ -481,10 +485,10 @@ void Graph::updateQmlData()
   }
 
   // Graph rect position in item pixel coordinates
-  graphRect = QRect((figureRectScaled.x() + leftMargin) * totalScaleFactor,
-                      (figureRectScaled.y() + topMargin)  * totalScaleFactor,
-                       graphRectScaled.width()             * totalScaleFactor,
-                       graphRectScaled.height()            * totalScaleFactor);
+  graphRect = QRectF((figureRectScaled.x() + leftMargin) * totalScaleFactor,
+                     (figureRectScaled.y() + topMargin) * totalScaleFactor,
+                     graphRectScaled.width() * totalScaleFactor,
+                     graphRectScaled.height() * totalScaleFactor);
 
   emit qmlDataChanged();
   emit graphRectChanged();

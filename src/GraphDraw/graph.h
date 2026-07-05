@@ -42,7 +42,7 @@ class Graph : public QQuickPaintedItem, public MathObjectDraw
   Q_PROPERTY(ZeGraphSettings* settings READ getGraphSettings NOTIFY settingsChanged)
 
   Q_PROPERTY(QVariantList qmlData READ getQmlData NOTIFY qmlDataChanged)
-  Q_PROPERTY(QRect graphRect READ getGraphRect NOTIFY graphRectChanged)
+  Q_PROPERTY(QRectF graphRect READ getGraphRect NOTIFY graphRectChanged)
 
 public:
   explicit Graph(QQuickItem* parent = nullptr);
@@ -50,7 +50,7 @@ public:
   Q_INVOKABLE ZeGraphSettings* getGraphSettings() { return &settings; }
 
   QVariantList getQmlData() const { return qmlData; }
-  QRect getGraphRect() const { return graphRect; }
+  QRectF getGraphRect() const { return graphRect; }
 
   /// Live view of the sampler's curves, used by DataPoints for direct
   /// scenegraph rendering without a QVariantList round-trip.
@@ -132,10 +132,10 @@ protected:
   ZeGraphSettings& settings;
 
   GridCalculator gridCalculator;
-  QFontMetrics fontMetrics;
+  QFontMetricsF fontMetrics;
   ZeLinAxisTicks xAxisTicks, yAxisTicks;
-  int leftMargin, rightMargin, topMargin, bottomMargin;
-  QRect figureRectScaled, graphRectScaled;
+  double leftMargin, rightMargin, topMargin, bottomMargin;
+  QRectF figureRectScaled, graphRectScaled;
 
   double minRelSize;
   double totalScaleFactor;
@@ -145,7 +145,7 @@ protected:
 
   // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
   // the other margin is scaled accordingly
-  QRect figureRect, supportRect, sheetRectScaled;
+  QRectF figureRect, supportRect, sheetRectScaled;
 
   QSizeF scaledSize;
   QRectF relFigRect;
@@ -165,7 +165,7 @@ protected:
   QVariantList qmlData;
 
   /// @note we need to tell QML exactly where to draw the curves
-  QRect graphRect;
+  QRectF graphRect;
 };
 
 template <ZeAxisName axis>
@@ -217,24 +217,25 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
   painter->setPen(pen);
   fontMetrics = painter->fontMetrics();
 
-  int txtWidth = fontMetrics.horizontalAdvance(txt);
-  int txtHeight = fontMetrics.boundingRect('0').height();
-  const int gap = settings.getAxes().spacing.v;
+  qreal txtWidth = fontMetrics.horizontalAdvance(txt);
+  const double gap = settings.getAxes().spacing.v;
   if constexpr (axis == ZeAxisName::X)
   {
     double space;
     if (txt.startsWith('-'))
-      space = double(fontMetrics.horizontalAdvance(txt.mid(1))) / 2.
+      space = fontMetrics.horizontalAdvance(txt.mid(1)) / 2.
               + fontMetrics.horizontalAdvance('-');
     else
-      space = double(txtWidth) / 2.;
+      space = txtWidth / 2.;
 
     painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + txtHeight + gap), txt);
+    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + gap + xAxisTicks.maxPxAscent),
+                      txt);
   }
   else
   {
-    painter->drawText(QPointF(- txtWidth - gap, pos.v + txtHeight/2.), txt);
+    const QRectF ink = fontMetrics.tightBoundingRect(txt);
+    painter->drawText(QPointF(- txtWidth - gap, pos.v - ink.top()/2.), txt);
   }
 };
 
@@ -242,7 +243,7 @@ template <ZeAxisName axis>
 void Graph::drawLinCoordinateTicks()
 {
   painter->setFont(settings.getFont());
-  QFontMetrics fontMetrics = painter->fontMetrics();
+  QFontMetricsF fontMetrics = painter->fontMetrics();
 
   const ZeAxesSettings &axesSettings = settings.getAxes();
 

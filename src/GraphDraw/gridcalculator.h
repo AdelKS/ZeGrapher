@@ -23,7 +23,6 @@
 #include <QObject>
 
 #include "axismapper.h"
-#include "information.h"
 #include "structures.h"
 
 #define TARGET_TICKS_NUM 20
@@ -76,8 +75,9 @@ struct ZeLogAxisTicks
 struct ZeLinAxisTicks
 {
   ZeOffset offset;
-  int maxPxWidth = 0;
-  int maxPxHeight = 0;
+  double maxPxWidth = 0;
+  double maxPxAscent = 0, maxPxDescent = 0;
+  double maxPxHeight() const { return maxPxAscent + maxPxDescent; }
   std::vector<ZeLinAxisTick> ticks;
 };
 
@@ -89,11 +89,11 @@ public:
 
   template <ZeAxisName axis>
   ZeLinAxisTicks getLinearAxisTicks(const zg::ZeAxisMapper<axis> &mapper,
-                                    const QFontMetrics &metrics);
+                                    const QFontMetricsF &metrics);
 
 protected:
   template <ZeAxisName axis>
-  int getMaxStrPxSize(const zg::real_range1d &range, double realStep, const QFontMetrics &metrics);
+  double getMaxStrPxSize(const zg::real_range1d &range, double realStep, const QFontMetricsF &metrics);
 
   QString get_coordinate_string(const ZeLinAxisSettings &axisSettings, double multiplier);
 
@@ -103,13 +103,13 @@ protected:
 };
 
 template <ZeAxisName axis>
-int GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
-                                    double realStep,
-                                    const QFontMetrics &metrics)
+double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
+                                       double realStep,
+                                       const QFontMetricsF &metrics)
 {
   // get the next tick value _within_ the range
   double multiplier = std::ceil(scaled_range.min.v / realStep) * realStep;
-  int maxStrPxSize = 0, currentStrPxSize = 0;
+  double maxStrPxSize = 0, currentStrPxSize = 0;
   QString posStr;
 
   while (multiplier < scaled_range.max.v)
@@ -136,7 +136,7 @@ int GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
 
 template <ZeAxisName axis>
 ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &axis_mapper,
-                                                  const QFontMetrics &metrics)
+                                                  const QFontMetricsF &metrics)
 {
   // qDebug() << "New tick spacing calculation";
 
@@ -243,15 +243,15 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     baseStep = int_pow(10.0, targetPower);
     realStep = baseStep * baseMultiplier;
 
-    int maxStrPxSize = getMaxStrPxSize<axis>(scaledOffsetRange, realStep, metrics);
+    double maxStrPxSize = getMaxStrPxSize<axis>(scaledOffsetRange, realStep, metrics);
 
-    if (double(maxStrPxSize) + minDistBetweenCoordinates >= realStep * pxPerUnit)
+    if (maxStrPxSize + minDistBetweenCoordinates >= realStep * pxPerUnit)
     {
       base10Inc(targetPower, baseMultiplier);
       previously_increased = true;
     }
     else if (!previously_increased
-             and double(maxStrPxSize) + minDistBetweenCoordinates <= baseStep * previousMultiplier(baseMultiplier) * pxPerUnit)
+             and maxStrPxSize + minDistBetweenCoordinates <= baseStep * previousMultiplier(baseMultiplier) * pxPerUnit)
     {
       base10Dec(targetPower, baseMultiplier);
       previously_increased = false;
@@ -291,11 +291,14 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     tick.pos = {multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset};
     tick.posStr = get_coordinate_string(axisSettings, multiplier);
 
-    auto rect = metrics.boundingRect(tick.posStr);
-    if (axisTicks.maxPxHeight < rect.height())
-      axisTicks.maxPxHeight = rect.height();
-    if (axisTicks.maxPxWidth < rect.width())
-      axisTicks.maxPxWidth = rect.width();
+    // only ticks within the range get drawn, take only those into consideration
+    if (scaledOffsetRange.min.v < multiplier and multiplier < scaledOffsetRange.max.v)
+    {
+      const QRectF ink = metrics.tightBoundingRect(tick.posStr);
+      axisTicks.maxPxAscent = std::max(axisTicks.maxPxAscent, -ink.top());
+      axisTicks.maxPxDescent = std::max(axisTicks.maxPxDescent, ink.bottom());
+      axisTicks.maxPxWidth = std::max(axisTicks.maxPxWidth, metrics.horizontalAdvance(tick.posStr));
+    }
 
     axisTicks.ticks.push_back(tick);
   }

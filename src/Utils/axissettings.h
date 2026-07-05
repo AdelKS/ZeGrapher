@@ -123,7 +123,7 @@ public:
   ///@brief spacing between different things in the graph
   ///       currently: between the axis and the coordinates
   ///                  between the coordinates and the axis titles
-  static constexpr zg::pixel_unit spacing = {5};
+  static constexpr zg::pixel_unit spacing = {6};
 
   void setDefaultTitleFont(QFont);
 
