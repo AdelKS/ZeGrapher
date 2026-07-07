@@ -281,14 +281,20 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
   const zg::pixel_unit zero_pt = axis_mapper.template to<zg::pixel>(zg::real_unit{0.});
 
+  auto getPos = [&]
+  {
+    return zg::real_unit{multiplier * constantMultiplier * power_offset
+                         + axisTicks.offset.sumOffset};
+  };
+
   do
   {
     ZeLinAxisTick tick;
     multiplier += realStep;
-    zg::pixel_unit px_mul = axis_mapper.template to<zg::pixel>(zg::real_unit{multiplier});
-    if (fabs(px_mul.v - zero_pt.v) <= 1.)
+    zg::pixel_unit px_pos = axis_mapper.template to<zg::pixel>(getPos());
+    if (fabs(px_pos.v - zero_pt.v) <= 1.)
       multiplier = 0;
-    tick.pos = {multiplier * constantMultiplier * power_offset + axisTicks.offset.sumOffset};
+    tick.pos = getPos();
     tick.posStr = get_coordinate_string(axisSettings, multiplier);
 
     // only ticks within the range get drawn, take only those into consideration
