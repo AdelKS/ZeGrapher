@@ -4,7 +4,6 @@
 #include "information.h"
 #include "sampler.h"
 
-
 template <zg::CoordinateSystem coordinates, bool discrete>
 void Sampler::sample(auto handle, zg::SampledCurve& data)
 {
@@ -284,101 +283,150 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   const zg::real_unit min_input_dist = range.amplitude() / double(max_points);
 
-  // refine if points are too far apart
-  // so when we compute 3 points A, B, C with 3 consecutive input values,
-  // we should be at a refinement level where
-  // -  AB.AC > 0: C follows the trend that is shown by A and B and
-  //    doesn't "jump"
-  // - A, B and C are "nearly" aligned
-  // --> we check that sq_dist_to_ray(px_A, px_B, px_C) < sq_dist_to_ray_limit
-  //     i.e. the distance of C to the ray [AB) is less than a pixel, less than 'sq_dist_to_ray_limit'
+  // refine each interval until:
+  // - it is narrower than max_step, with NaN/valid pairs bisected towards the
+  //   domain boundary down to min_input_dist (so max_points sets the depth)
+  // - its points are "nearly" aligned with their neighbors: within
+  //   sq_dist_to_ray_limit of the ray cast from the two points on either side
+
+  bool insertion_happened = false;
+
+  auto insert = [&](size_t index, zg::real_unit mid, zg::real_pt mid_pt) {
+    assert(indices.empty() or indices.back() < index);
+    insertion_happened = true;
+    indices.push_back(index);
+    x.push_back(mid);
+    f_x.push_back(mid_pt);
+    px_f_x.push_back(QPointF(mapper.to<zg::pixel>(mid_pt)));
+  };
+
+  auto get_mid = [&](zg::real_unit u, zg::real_unit v) -> std::optional<zg::real_unit>
+  {
+    auto mid = get_acceptable_input((u + v) / 2.);
+    if (u < mid and mid < v)
+      return mid;
+    else return {};
+  };
+
+  auto insert_mid = [&](size_t index, zg::real_unit u, zg::real_unit v)
+  {
+    if (auto mid = get_mid(u, v))
+      insert(index, *mid, get_f_pt(*mid));
+  };
+
+  auto two_pt_refine = [&](size_t i_a, size_t i_b)
+  {
+    const zg::real_unit& a = input_vals[i_a];
+    const zg::real_pt& A = curve[i_a];
+    const QPointF& px_A = px_curve[i_a];
+
+    const zg::real_unit& b = input_vals[i_b];
+    const zg::real_pt& B = curve[i_b];
+    const QPointF& px_B = px_curve[i_b];
+
+    const auto ab = b - a;
+
+    // if we are above max_step, refine without asking further questions
+    if (ab > max_step)
+    {
+      insert_mid(i_b, a, b);
+      return true;
+    }
+
+    // we count on min_points to be high enough to catch one potential valid point between
+    // two NaN points, so don't refine further
+    if (is_nan_pt(A) and is_nan_pt(B))
+      return false;
+
+    if (is_nan_pt(A) or is_nan_pt(B))
+    {
+      if (min_input_dist < ab)
+      {
+        insert_mid(i_b, a, b);
+        return true;
+      }
+      return false;
+    }
+
+    if constexpr (discrete)
+    {
+      if (ab < min_input_dist)
+        return false;
+
+      const QPointF px_AB = px_A - px_B;
+      const double sq_px_AB = QPointF::dotProduct(px_AB, px_AB);
+
+      if (sq_px_AB >= 2*min_sq_dist_discrete)
+      {
+        insert_mid(i_b, a, b);
+        return true;
+      }
+    }
+    return false;
+  };
+
+  enum Direction {RIGHT, LEFT};
+  auto three_pt_refine = [&]<Direction d>(std::integral_constant<Direction, d>, size_t i_a, size_t i_b, size_t i_c)
+  {
+    const zg::real_unit& a = input_vals[i_a];
+    const zg::real_pt& A = curve[i_a];
+    const QPointF& px_A = px_curve[i_a];
+
+    const zg::real_unit& b = input_vals[i_b];
+    const zg::real_pt& B = curve[i_b];
+    const QPointF& px_B = px_curve[i_b];
+
+    const zg::real_unit& c = input_vals[i_c];
+    const zg::real_pt& C = curve[i_c];
+    const QPointF& px_C = px_curve[i_c];
+
+    if (min_input_dist <= (d == LEFT ? b - a : c - b))
+    {
+      const QPointF px_dist = (d == LEFT ? px_C - px_B : px_B - px_A);
+      const double sq_px_dist = QPointF::dotProduct(px_dist, px_dist);
+
+      bool refine_cond = (not is_nan_pt(A) and not is_nan_pt(B) and not is_nan_pt(C)
+                          and sq_px_dist >= 0.125
+                          and (d == LEFT ? sq_dist_to_ray(px_C, px_B, px_A)
+                                         : sq_dist_to_ray(px_A, px_B, px_C))
+                                >= sq_dist_to_ray_limit);
+
+      if (refine_cond)
+        d == LEFT ? insert_mid(i_b, a, b) : insert_mid(i_c, b, c);
+
+      return refine_cond;
+    }
+    return false;
+  };
+
+  constexpr std::integral_constant<Direction, LEFT> left;
+  constexpr std::integral_constant<Direction, RIGHT> right;
+
+  // regular 2-point refines
   do
   {
+    insertion_happened = false;
     indices.clear();
     x.clear();
     f_x.clear();
     px_f_x.clear();
 
-    for (size_t i = 0 ; i + (discrete ? 1 : 2) < input_vals.size() ; i++)
+    const size_t n = input_vals.size();
+
+    if (n >= 2)
+      if (not two_pt_refine(0, 1) and not discrete and n >= 3)
+        three_pt_refine(left, 0, 1, 2);
+
+    for (size_t i = 1 ; i + 2 < n ; i++)
     {
-      const size_t i_a = i;
-      const zg::real_unit& a = input_vals[i_a];
-      const zg::real_pt& A = curve[i_a];
-      const QPointF& px_A = px_curve[i_a];
-
-      const size_t i_b = i+1;
-      const zg::real_unit& b = input_vals[i_b];
-      const zg::real_pt& B = curve[i_b];
-      const QPointF& px_B = px_curve[i_b];
-
-      const auto ba = b - a;
-
-      const size_t i_c = i+2;
-
-      bool nan_pt = is_nan_pt(A) or is_nan_pt(B);
-
-      auto need_refine = [&]() -> std::optional<zg::real_unit> {
-
-        const QPointF px_AB = px_A - px_B;
-        const double sq_px_AB = QPointF::dotProduct(px_AB, px_AB);
-
-        if (sq_px_AB < 0.125)
-          return {};
-
-        if constexpr (discrete)
-        {
-          if (ba < min_input_dist)
-            return {};
-
-          if (nan_pt or sq_px_AB >= 2*min_sq_dist_discrete)
-          {
-            auto mid = get_acceptable_input((a + b) / 2.);
-            if (a < mid and mid < b)
-              return mid;
-            else return {};
-          }
-          else return {};
-        }
-        else
-        {
-          const zg::real_unit& c = input_vals[i_c];
-          const zg::real_pt& C = curve[i_c];
-          const QPointF& px_C = px_curve[i_c];
-
-          const zg::real_unit bc = c - b;
-          if (ba > max_step or bc > max_step or bc < min_input_dist)
-            return {};
-
-          nan_pt = nan_pt or is_nan_pt(C);
-
-          if (nan_pt or sq_dist_to_ray(px_A, px_B, px_C) >= sq_dist_to_ray_limit)
-          {
-            auto mid = get_acceptable_input((b + c) / 2.);
-            assert(b < mid and mid < c);
-            return mid;
-          }
-          else return {};
-        }
-      };
-
-      auto refine = [&](size_t index, zg::real_unit mid) {
-        const auto new_pt = get_f_pt(mid);
-        indices.push_back(index);
-        x.push_back(mid);
-        f_x.push_back(new_pt);
-        px_f_x.push_back(QPointF(mapper.to<zg::pixel>(new_pt)));
-      };
-
-      if (ba > max_step)
-      {
-        refine(i_b, get_acceptable_input((b+a)/2.));
-        continue;
-      }
-
-      if (auto opt_mid_input = need_refine())
-        refine(discrete ? i_b : i_c, *opt_mid_input);
-
+      if (not two_pt_refine(i, i+1) and not discrete)
+        if (not three_pt_refine(left, i, i+1, i+2))
+          three_pt_refine(right, i-1, i, i+1);
     }
+
+    if (n >= 3)
+      if (not two_pt_refine(n-2, n-1) and not discrete)
+        three_pt_refine(right, n-3, n-2, n-1);
 
     if (not indices.empty())
       data.sparse_insert(indices, x, f_x, px_f_x);
@@ -386,7 +434,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     assert(std::ranges::is_sorted(input_vals));
     assert(is_unique(input_vals));
 
-  } while(not indices.empty() and data.size() < max_points);
+  } while(insertion_happened and data.size() < max_points);
   // ######################################
 
   qDebug() << "Object caching: " << obj_name << " curve has " << curve.size() << " points";

@@ -241,6 +241,7 @@ void Sampler::update_discontinuities(zg::SampledCurve& data)
 
   for (size_t i = 0; i + 2 < input_vals.size(); i++)
   {
+    const zg::real_pt& A = curve[i];
     const QPointF& px_A = data.px_curve[i];
 
     const zg::real_pt& B = curve[i+1];
@@ -249,7 +250,7 @@ void Sampler::update_discontinuities(zg::SampledCurve& data)
     const zg::real_pt& C = curve[i+2];
     const QPointF& px_C = data.px_curve[i+2];
 
-    if (is_nan_pt(B) or is_nan_pt(C))
+    if (is_nan_pt(A) or is_nan_pt(B) or is_nan_pt(C))
       continue;
 
     if (sq_dist_to_ray(px_A, px_B, px_C) < sq_dist_to_ray_limit)
