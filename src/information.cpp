@@ -71,6 +71,7 @@ void Information::exportYaml(QUrl filename)
 {
   qDebug() << "Exporting to " << filename.toLocalFile();
   POD pod = {
+    .zegrapher = SOFTWARE_VERSION,
     .math_objects = zg::mathWorld.exportPod(),
     .graph = graphSettings.exportPod(),
     .app = appSettings.exportPod()

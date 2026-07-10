@@ -89,6 +89,10 @@ public:
   ZeGraphSettings graphSettings;
 
   struct POD {
+    /// @brief version of ZeGrapher that wrote the document, always serialized
+    ///        first: content-based MIME type detection matches on the first line,
+    ///        see appdata/ZeGrapher.mime.xml
+    std::optional<std::string> zegrapher;
     std::optional<zg::MathWorld::POD> math_objects;
     std::optional<ZeGraphSettings::POD> graph;
     std::optional<ZeAppSettings::POD> app;
