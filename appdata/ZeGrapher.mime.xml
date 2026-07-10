@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-zegrapher">
+    <comment>ZeGrapher document</comment>
+    <comment xml:lang="fr">Document ZeGrapher</comment>
+    <comment xml:lang="de">ZeGrapher-Dokument</comment>
+    <sub-class-of type="application/yaml"/>
+    <glob pattern="*.zg"/>
+    <magic priority="80">
+      <match type="string" offset="0" value="zegrapher: "/>
+    </magic>
+  </mime-type>
+</mime-info>

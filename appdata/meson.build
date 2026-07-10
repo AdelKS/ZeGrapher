@@ -21,4 +21,7 @@ else
 
     install_data('ZeGrapher.desktop', install_dir : get_option('datadir') / 'applications')
     # https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s02.html
+
+    install_data('ZeGrapher.mime.xml', install_dir : get_option('datadir') / 'mime/packages', rename : 'ZeGrapher.xml')
+    # https://specifications.freedesktop.org/shared-mime-info-spec/latest/
 endif
