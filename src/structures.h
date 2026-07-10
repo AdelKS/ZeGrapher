@@ -152,7 +152,7 @@ struct ZeZoomSettings
   Q_GADGET
   Q_PROPERTY(ZoomingType::Type zoomingType MEMBER zoomingType)
   Q_PROPERTY(double zoom MEMBER zoom)
-  QML_VALUE_TYPE(ZeZoomSettings)
+  QML_VALUE_TYPE(zeZoomSettings)
 
 public:
 

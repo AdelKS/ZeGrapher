@@ -7,7 +7,7 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  property ZG.State state
+  property zgState state
   property string customErrorMsg: ''
   property bool nanValue: false
 

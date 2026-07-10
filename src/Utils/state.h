@@ -32,7 +32,7 @@ namespace zg {
 /// @brief QML-exposed "state" wrapper
 struct State {
   Q_GADGET
-  QML_ELEMENT
+  QML_VALUE_TYPE(zgState)
 
   Q_PROPERTY(QString errorMsg READ getErrorMsg)
   Q_PROPERTY(Status status READ getStatus)
@@ -71,6 +71,14 @@ protected:
   std::optional<zc::Error> opt_zc_error;
   Status status = NEUTRAL;
 };
+
+/// @brief exposes State's enums to QML as uppercase 'State',
+//         the value type itself still needs to have a lowercase name
+namespace StateEnums {
+  Q_NAMESPACE
+  QML_FOREIGN_NAMESPACE(zg::State)
+  QML_NAMED_ELEMENT(State)
+}
 
 template <class T>
 State State::from(const std::expected<T, zc::Error>& exp)
