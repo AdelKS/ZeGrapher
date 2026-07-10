@@ -106,7 +106,7 @@ void CsvPreviewModel::readCsvFile()
 {
   QFile file(csvFile.toLocalFile());
 
-  if(file.open(QFile::ReadOnly | QFile::Text))
+  if(not csvFile.isEmpty() and file.open(QFile::ReadOnly | QFile::Text))
   {
     QTextStream in(&file);
     int line_num = 0;
