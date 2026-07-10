@@ -31,7 +31,7 @@ Item {
   ScrollView {
     anchors.fill: parent
     anchors.margins: 5
-    leftPadding: Math.max((availableWidth - grid.implicitWidth)/2, 0)
+    leftPadding: Math.max((width - grid.implicitWidth)/2, 0)
 
     contentHeight: grid.implicitHeight + root.globalMenuSize.height
 
