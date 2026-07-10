@@ -37,6 +37,7 @@ struct StringRange {
 struct Base: QObject {
   Q_OBJECT
   QML_ELEMENT
+  QML_UNCREATABLE("abstract base of math object backends, only exposed for enum and property access")
 
   Q_PROPERTY(mathobj::Expr* start READ getStartPtr CONSTANT)
   Q_PROPERTY(mathobj::Expr* end READ getEndPtr CONSTANT)
