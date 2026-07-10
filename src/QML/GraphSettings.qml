@@ -281,7 +281,7 @@ Item {
 
             selectedColor: root.graphSettings.backgroundColor
 
-            onSelectedColorChanged: root.graphSettings.backgroundColor = selectedColor;
+            onSelectedColorModified: root.graphSettings.backgroundColor = selectedColor;
           }
 
           ZeLabel {
@@ -359,7 +359,7 @@ Item {
 
             selectedColor: root.graphSettings.axes.color
 
-            onSelectedColorChanged: root.graphSettings.axes.color = selectedColor;
+            onSelectedColorModified: root.graphSettings.axes.color = selectedColor;
           }
 
           FontDialog {

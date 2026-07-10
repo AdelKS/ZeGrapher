@@ -7,6 +7,8 @@ Shape {
 
   property themedColor selectedColor
 
+  signal selectedColorModified()
+
   property bool darkMode: Application.styleHints.colorScheme === Qt.ColorScheme.Dark
 
   onDarkModeChanged: {
@@ -95,6 +97,7 @@ Shape {
     onAccepted: {
       disk.selectedColor.setCurrent(selectedColor);
       disk.selectedColorChanged();
+      disk.selectedColorModified();
     }
   }
 

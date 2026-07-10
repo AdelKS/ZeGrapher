@@ -193,9 +193,13 @@ Item {
           selectedColor: root.mathObj.style?.color ?? lastGood
 
           onSelectedColorChanged: {
-            if (!root.mathObj.style) return;
-            lastGood = selectedColor;
-            root.mathObj.style.color = selectedColor;
+            if (root.mathObj.style)
+              lastGood = selectedColor;
+          }
+
+          onSelectedColorModified: {
+            if (root.mathObj.style)
+              root.mathObj.style.color = selectedColor;
           }
         }
 
@@ -208,9 +212,13 @@ Item {
           selectedColor: root.mathObj.style?.secondColor ?? lastGood
 
           onSelectedColorChanged: {
-            if (!root.mathObj.style) return;
-            lastGood = selectedColor;
-            root.mathObj.style.secondColor = selectedColor;
+            if (root.mathObj.style)
+              lastGood = selectedColor;
+          }
+
+          onSelectedColorModified: {
+            if (root.mathObj.style)
+              root.mathObj.style.secondColor = selectedColor;
           }
 
           states: [

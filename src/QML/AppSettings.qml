@@ -103,7 +103,7 @@ Item {
 
             selectedColor: Information.appSettings.validSyntax
 
-            onSelectedColorChanged: Information.appSettings.validSyntax = selectedColor;
+            onSelectedColorModified: Information.appSettings.validSyntax = selectedColor;
 
             Connections {
               target: Information.appSettings
@@ -126,7 +126,7 @@ Item {
 
             selectedColor: Information.appSettings.warningSyntax
 
-            onSelectedColorChanged: Information.appSettings.warningSyntax = selectedColor;
+            onSelectedColorModified: Information.appSettings.warningSyntax = selectedColor;
 
             Connections {
               target: Information.appSettings
@@ -149,7 +149,7 @@ Item {
 
             selectedColor: Information.appSettings.invalidSyntax
 
-            onSelectedColorChanged: Information.appSettings.invalidSyntax = selectedColor;
+            onSelectedColorModified: Information.appSettings.invalidSyntax = selectedColor;
 
             Connections {
               target: Information.appSettings
