@@ -24,6 +24,7 @@
 
 #include <QGuiApplication>
 #include <QCommandLineParser>
+#include <QLoggingCategory>
 #include <QObject>
 #include <QQmlApplicationEngine>
 
@@ -37,7 +38,19 @@ int main(int argc, char *argv[])
 
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
 
-  QLoggingCategory::defaultCategory()->setEnabled(QtDebugMsg, true);
+  // QT_NO_*_OUTPUT only compiles out C++ q(Debug|Info|Warning) calls, QML's
+  // console.* goes through logging categories at runtime
+  QString logFilterRules;
+#ifdef QT_NO_DEBUG_OUTPUT
+  logFilterRules += "*.debug=false\n";
+#endif
+#ifdef QT_NO_INFO_OUTPUT
+  logFilterRules += "*.info=false\n";
+#endif
+#ifdef QT_NO_WARNING_OUTPUT
+  logFilterRules += "*.warning=false\n";
+#endif
+  QLoggingCategory::setFilterRules(logFilterRules);
 
   QCoreApplication::setApplicationName("ZeGrapher");
   QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
