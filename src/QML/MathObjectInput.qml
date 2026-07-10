@@ -91,22 +91,22 @@ Item {
           model: ListModel {
             id: eqTypeModel
             ListElement {
-              text: "Equation"
+              text: qsTr("Equation")
               type: MathObject.EQUATION
               has_graph: true
             }
             ListElement {
-              text: "Constant"
+              text: qsTr("Constant")
               type: MathObject.CONSTANT
               has_graph: false
             }
             ListElement {
-              text: "Parametric"
+              text: qsTr("Parametric")
               type: MathObject.PARAMETRIC
               has_graph: true
             }
             ListElement {
-              text: "Data"
+              text: qsTr("Data")
               type: MathObject.DATA
               has_graph: true
             }

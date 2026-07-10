@@ -32,9 +32,9 @@ Item {
     fileMode: FileDialog.SaveFile
     defaultSuffix: "pdf"
     nameFilters: [
-      "Portable Document Format (*.pdf)",
-      "Scalable Vector Graphics (*.svg)",
-      "Image format (*.png *.jpeg *.jpg *.bmp *.ppm)" // supported formats: https://doc.qt.io/qt-6.11/qimage.html#reading-and-writing-image-files
+      qsTr("Portable Document Format (%1)").arg("*.pdf"),
+      qsTr("Scalable Vector Graphics (%1)").arg("*.svg"),
+      qsTr("Image format (%1)").arg("*.png *.jpeg *.jpg *.bmp *.ppm") // supported formats: https://doc.qt.io/qt-6.11/qimage.html#reading-and-writing-image-files
     ]
     visible: false
     onAccepted: userInputPanel.exportGraph(selectedFile)
@@ -76,7 +76,7 @@ Item {
     fileMode: FileDialog.SaveFile
     defaultSuffix: ".zg"
     nameFilters: [
-      "ZeGrapher document (*.zg)",
+      qsTr("ZeGrapher document (%1)").arg("*.zg"),
     ]
     visible: false
     onAccepted: Information.exportYaml(selectedFile)
@@ -89,7 +89,7 @@ Item {
     fileMode: FileDialog.OpenFile
     defaultSuffix: ".zg"
     nameFilters: [
-      "ZeGrapher document (*.zg)",
+      qsTr("ZeGrapher document (%1)").arg("*.zg"),
     ]
     visible: false
     onAccepted: Information.importYaml(selectedFile)

@@ -100,7 +100,7 @@ Item {
         }
         CheckBox {
           id: hasHeaderRow
-          text: "Header row"
+          text: qsTr("Header row")
         }
         RowLayout {
           ZeLabel {

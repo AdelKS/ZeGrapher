@@ -232,11 +232,11 @@ Item {
   ListModel {
     id: coordinateType
     ListElement {
-      text: "Cartesian"
+      text: qsTr("Cartesian")
       type: ZG.Base.Cartesian
     }
     ListElement {
-      text: "Polar"
+      text: qsTr("Polar")
       type: ZG.Base.Polar
     }
   }
