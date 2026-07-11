@@ -51,7 +51,14 @@
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 
 // extern definitions for the supported languages
-inline const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French, QLocale::German, QLocale::Chinese};
+inline const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French };
+
+/// @brief the OS language if supported, English otherwise
+inline QLocale::Language systemLanguage()
+{
+  const auto lang = QLocale::system().language();
+  return supportedLangs.contains(lang) ? lang : QLocale::English;
+}
 inline QString langToShortString(QLocale::Language lang)
 {
     if(lang == QLocale::French)

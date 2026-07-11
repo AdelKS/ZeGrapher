@@ -59,6 +59,9 @@ int main(int argc, char *argv[])
   Information info;
   information = &info;
 
+  // an imported workbook can override it
+  info.appSettings.language = ZeAppSettings::Language(systemLanguage());
+
   QCommandLineParser parser;
   parser.setApplicationDescription("2D math plotter");
   parser.addHelpOption();
@@ -88,21 +91,8 @@ int main(int argc, char *argv[])
   }
 
   QSettings settings;
-  QTranslator translator;
 
   settings.beginGroup("app");
-
-  QLocale::Language language;
-
-  if (settings.contains("language"))
-    language = settings.value("language").toLocale().language();
-  else
-    language = QLocale::system().language();
-
-  QString langString = langToShortString(language);
-  if (supportedLangs.contains(language)) [[maybe_unused]]
-    bool loaded = translator.load(":/Translations/ZeGrapher_" + langToShortString(language) + ".qm");
-
   settings.beginGroup("font");
 
   if (settings.contains("family") && settings.contains("size"))
@@ -114,8 +104,7 @@ int main(int argc, char *argv[])
     a.setFont(font);
   }
 
-  a.installTranslator(&translator);
-
+  QTranslator translator;
   QQmlApplicationEngine engine;
 
   QObject::connect(&engine,
@@ -125,6 +114,21 @@ int main(int argc, char *argv[])
                      if (object == nullptr)
                        qFatal("unable to load scene");
                    });
+
+  auto applyLanguage = [&a, &translator, &engine, &info]()
+  {
+    a.removeTranslator(&translator);
+
+    const auto lang = QLocale::Language(info.appSettings.language);
+    if (lang != QLocale::English
+        and translator.load(":/translations/ZeGrapher_" + langToShortString(lang) + ".qm"))
+      a.installTranslator(&translator);
+
+    engine.retranslate();
+  };
+
+  applyLanguage();
+  QObject::connect(&info.appSettings, &ZeAppSettings::languageChanged, &engine, applyLanguage);
 
   engine.load("qrc:///qt/qml/ZeGrapher/MainWindow.qml");
 
