@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "appsettings.h"
+#include "structures.h"
 
 #include <QGuiApplication>
 #include <QStyleHints>
@@ -44,7 +45,7 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
 {
   using zg::yml::not_default;
   POD p {
-    .language = not_default(language, English),
+    .language = not_default(language, Language(systemLanguage())),
     .font = zg::yml::QFontPOD::from(font, defaultFont),
     .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
     .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
