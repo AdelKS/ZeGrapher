@@ -16,18 +16,15 @@
         <file>icons/polynomial.png</file>
         <file>icons/arrow_left.png</file>
         <file>icons/arrow_right.png</file>
-        <file>translations/ZeGrapher_fr.qm</file>
         <file>icons/orthonormalView.svg</file>
         <file>icons/resetToDefaultView.svg</file>
         <file>icons/grid.png</file>
         <file>icons/grid_subgrid.png</file>
         <file>icons/no_grid.png</file>
-        <file>translations/ZeGrapher_de.qm</file>
         <file>icons/ZeGrapher.png</file>
         <file>icons/fit-sheet.svg</file>
         <file>icons/zoom-in-icon.svg</file>
         <file>icons/zoom-out-icon.svg</file>
-        <file>translations/ZeGrapher_zh.qm</file>
         <file>icons/settings.svg</file>
         <file>icons/settings-light.svg</file>
         <file>icons/math.svg</file>
