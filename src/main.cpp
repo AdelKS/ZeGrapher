@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
   parser.setApplicationDescription("2D math plotter");
   parser.addHelpOption();
   parser.addVersionOption();
-  parser.addPositionalArgument(QObject::tr("file"), QObject::tr("ZeGrapher (.zg) workspace file(s) to open on startup"));
+  parser.addPositionalArgument(QObject::tr("file"), QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
   parser.process(a);
 
   const auto positionalArguments = parser.positionalArguments();

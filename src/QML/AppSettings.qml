@@ -209,10 +209,10 @@ Item {
                 updateCheckText.text = qsTr("An error occurred.");
                 break;
               case UpdateCheck.UPDATE_MAYBE_AVAILABLE:
-                updateCheckText.text = qsTr("Update maybe available, visit zegrapher.com to download it.");
+                updateCheckText.text = qsTr("Update may be available, see zegrapher.com.");
                 break;
               case UpdateCheck.UPDATE_AVAILABLE:
-                updateCheckText.text = qsTr("Update available, visit zegrapher.com to download it.");
+                updateCheckText.text = qsTr("Update available on zegrapher.com.");
                 break;
               case UpdateCheck.UP_TO_DATE:
                 updateCheckText.text = qsTr("You have the latest version.");
@@ -226,7 +226,7 @@ Item {
             updateCheckText.text = updateCheckText.text + "\n" + qsTr("Current version:") + " " + checker.currentVersion;
 
             if ([UpdateCheck.UPDATE_MAYBE_AVAILABLE, UpdateCheck.UPDATE_AVAILABLE, UpdateCheck.UP_TO_DATE].includes(status)) {
-              updateCheckText.text = updateCheckText.text + "\n" + qsTr("Latest stable release:") + " " + checker.latestVersion;
+              updateCheckText.text = updateCheckText.text + "\n" + qsTr("Latest release:") + " " + checker.latestVersion;
             }
             if (status !== UpdateCheck.IDLE ) {
               updateCheckText.m_height = updateCheckText.implicitHeight;

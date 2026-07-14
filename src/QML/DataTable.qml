@@ -53,7 +53,7 @@ Item {
       visible: tableView.currentRow >= 0
     }
     MenuItem {
-      text: qsTr("Insert row bellow")
+      text: qsTr("Insert row below")
       onTriggered: {
         let row = tableView.currentRow;
         root.model.insertRows(row+1, 1);

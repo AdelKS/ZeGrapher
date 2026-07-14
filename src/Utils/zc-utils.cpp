@@ -9,19 +9,19 @@ QString zcErrorToStr(const zc::Error& err)
   switch (err.type)
   {
     case zc::Error::CPP_INCORRECT_ARGNUM:
-      return QObject::tr("Programmatically calling C++ math function with wrong number of arguments");
+      return QObject::tr("Programmatically calling C++ math function with the wrong number of arguments");
 
     case zc::Error::NOT_MATH_OBJECT_DEFINITION:
-      return QObject::tr("Not a correct math object definition");
+      return QObject::tr("Invalid math object definition");
 
     case zc::Error::OBJECT_NOT_IN_WORLD:
-      return QObject::tr("Object not registered in current math world");
+      return QObject::tr("Object not registered in math world");
 
     case zc::Error::NAME_ALREADY_TAKEN:
       return QObject::tr("Name already taken");
 
     case zc::Error::UNKNOWN:
-      return QObject::tr("Unkown error");
+      return QObject::tr("Unknown error");
 
     case zc::Error::WRONG_FORMAT:
       return QObject::tr("Wrong format");
@@ -42,7 +42,7 @@ QString zcErrorToStr(const zc::Error& err)
       return QObject::tr("Undefined function");
 
     case zc::Error::CALLING_FUN_ARG_COUNT_MISMATCH:
-      return QObject::tr("Calling function with wrong number of arguments");
+      return QObject::tr("Calling function with the wrong number of arguments");
 
     case zc::Error::NOT_IMPLEMENTED:
       return QObject::tr("Feature not implemented");
@@ -51,13 +51,13 @@ QString zcErrorToStr(const zc::Error& err)
       return QObject::tr("Empty expression");
 
     case zc::Error::RECURSION_DEPTH_OVERFLOW:
-      return QObject::tr("Maximum recursion depth has been attained");
+      return QObject::tr("Maximum recursion depth reached");
 
     case zc::Error::WRONG_OBJECT_TYPE:
-      return QObject::tr("Objet has the wrong type");
+      return QObject::tr("Object has the wrong type");
 
     case zc::Error::OBJECT_INVALID_STATE:
-      return QObject::tr("Objet in invalid state");
+      return QObject::tr("Object in invalid state");
 
     default:
       return QObject::tr("Unsupported error code");

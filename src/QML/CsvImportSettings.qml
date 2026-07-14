@@ -44,7 +44,7 @@ Item {
     ColumnLayout {
       anchors.fill: parent
       ZeLabel {
-        text: csvPreviewModel.loadingState === CsvPreviewModel.READING_CSV_FILE ? qsTr("Reading CSV File") : qsTr("Loading data into world")
+        text: csvPreviewModel.loadingState === CsvPreviewModel.READING_CSV_FILE ? qsTr("Reading CSV file") : qsTr("Loading data")
       }
       ProgressBar {
         from: 0

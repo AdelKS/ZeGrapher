@@ -82,9 +82,9 @@ void Information::exportYaml(QUrl filename)
   {
     appendIoErr(
       {.title = tr("Internal bug"),
-       .text = tr("This is a bug, please report it to "
-                  "contact@zegrapher.com or at "
-                  "https://github.com/AdelKS/ZeGrapher/issues with a way on how to reproduce it."),
+       .text = tr("Please report this bug to "
+                  "contact@zegrapher.com or "
+                  "https://github.com/AdelKS/ZeGrapher/issues, with a way to reproduce it."),
        .details = tr("Could not serialize ZeGrapher's state")});
     return;
   }
@@ -103,7 +103,7 @@ void Information::exportYaml(QUrl filename)
   QFileInfo info(path);
   if (not info.absoluteDir().mkpath("."))
   {
-    appendIoErr({.title = tr("File operation error"),
+    appendIoErr({.title = tr("File error"),
                  .file = path,
                  .text = tr("Could not create directory."),
                  .details = info.absolutePath()});
@@ -113,9 +113,9 @@ void Information::exportYaml(QUrl filename)
   QSaveFile file(path);
   if (not file.open(QIODevice::WriteOnly))
   {
-    appendIoErr({.title = tr("File operation error"),
+    appendIoErr({.title = tr("File error"),
                  .file = path,
-                 .text = tr("Could not open file"),
+                 .text = tr("Could not open file."),
                  .details = file.errorString()});
     return;
   }
@@ -123,16 +123,16 @@ void Information::exportYaml(QUrl filename)
   qint64 written = file.write(exp_content->data(), exp_content->size());
   if (written != qint64(exp_content->size()))
   {
-    appendIoErr({.title = tr("File operation error"),
+    appendIoErr({.title = tr("File error"),
                  .file = path,
-                 .text = tr("Incomplete write of ZeGrapher document, operation cancelled."),
+                 .text = tr("Incomplete write, operation cancelled."),
                  .details = file.errorString()});
     return;
   }
 
   if (not file.commit())
   {
-    appendIoErr({.title = tr("File operation error"),
+    appendIoErr({.title = tr("File error"),
                  .file = path,
                  .text = tr("Could not finalize saved document."),
                  .details = file.errorString()});
@@ -160,7 +160,7 @@ void Information::importYaml(QUrl filename)
   QFile file(path);
   if (not file.open(QIODevice::ReadOnly))
   {
-    appendIoErr({.title = tr("File operation error"),
+    appendIoErr({.title = tr("File error"),
                  .file = path,
                  .text = tr("Could not open file.")});
     return;
@@ -169,7 +169,7 @@ void Information::importYaml(QUrl filename)
   const QByteArray bytes = file.readAll();
   if (file.error() != QFileDevice::NoError)
   {
-    appendIoErr({.title = tr("File operation error"),
+    appendIoErr({.title = tr("File error"),
                  .file = path,
                  .text = tr("Could not read file entirely."),
                  .details = file.errorString()});
@@ -182,7 +182,7 @@ void Information::importYaml(QUrl filename)
   if (read_error)
     appendIoErr({.title = tr("Parsing error"),
                  .file = path,
-                 .text = tr("Error while parsing document."),
+                 .text = tr("Could not parse document."),
                  .details = QString::fromStdString(glz::format_error(read_error, content))});
 
   else {

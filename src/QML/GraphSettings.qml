@@ -95,7 +95,7 @@ Item {
             ListModel {
               id: sheetSizeModel
               ListElement {
-                text: qsTr("Fill Window")
+                text: qsTr("Fill window")
                 value: GraphSettings.SizeType.Fill
               }
               ListElement {
@@ -287,7 +287,7 @@ Item {
           ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Min points")
-            tooltipText: qsTr("The minimum amount of points that each continuous curve should have, in 2^value.")
+            tooltipText: qsTr("Minimum number of points per continuous curve, in 2^value.")
           }
           ZeSpinBox {
             id: minPointsLg2
@@ -307,7 +307,7 @@ Item {
           ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Max points")
-            tooltipText: qsTr("The maximum amount of points that continuous curves can have, in 2^value.")
+            tooltipText: qsTr("Maximum number of points per continuous curve, in 2^value.")
           }
           ZeSpinBox {
             id: maxPointsLg2
@@ -373,7 +373,7 @@ Item {
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
-            text: qsTr('X Title')
+            text: qsTr('X title')
           }
           LineEdit {
             Layout.fillWidth: true
@@ -384,7 +384,7 @@ Item {
 
          ZeLabel {
             Layout.alignment: Qt.AlignRight
-            text: qsTr('Y Title')
+            text: qsTr('Y title')
           }
           LineEdit {
             Layout.fillWidth: true
