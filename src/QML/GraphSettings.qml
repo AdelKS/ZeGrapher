@@ -186,9 +186,9 @@ Item {
                   console.log("Updating sheet size");
                   if (root.pixelUnits) {
                     root.graphSettings.size.pxSheetSize.height = value;
-                    root.graphSettings.size.cmSheetSize.height = value / Information.pixelDensity;
+                    root.graphSettings.size.cmSheetSize.height = value / root.graphSettings.pixelDensity;
                   } else {
-                    root.graphSettings.size.pxSheetSize.height = value * Information.pixelDensity;
+                    root.graphSettings.size.pxSheetSize.height = value * root.graphSettings.pixelDensity;
                     root.graphSettings.size.cmSheetSize.height = value;
                   }
 
@@ -213,9 +213,9 @@ Item {
                 onValueModified: (value) => {
                   if (root.pixelUnits) {
                     root.graphSettings.size.pxSheetSize.width = value;
-                    root.graphSettings.size.cmSheetSize.width = value / Information.pixelDensity;
+                    root.graphSettings.size.cmSheetSize.width = value / root.graphSettings.pixelDensity;
                   } else {
-                    root.graphSettings.size.pxSheetSize.width = value * Information.pixelDensity;
+                    root.graphSettings.size.pxSheetSize.width = value * root.graphSettings.pixelDensity;
                     root.graphSettings.size.cmSheetSize.width = value;
                   }
                 }

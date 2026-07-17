@@ -35,25 +35,6 @@ Information::~Information()
     exportYaml(QUrl::fromLocalFile(lastWorkspaceFolder + "/last-workbook.zg"));
 }
 
-void Information::screenChanged(QWindow* win)
-{
-
-  QSizeF pixelSize = win->screen()->size().toSizeF();
-  QSizeF cmSize = win->screen()->physicalSize() / 10;
-
-  qDebug() << "Monitor pixel size: " << pixelSize;
-  qDebug() << "Monitor cm size: " << cmSize;
-
-  double px_per_cm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
-
-  if (pixelDensity != px_per_cm)
-  {
-    qDebug() << "pixel density " << px_per_cm << "px per cm";
-    pixelDensity = px_per_cm;
-    emit pixelDensityChanged();
-  }
-}
-
 IOError Information::popIoError()
 {
   IOError err = std::move(ioErrors.front());

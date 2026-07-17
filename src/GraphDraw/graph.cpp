@@ -60,6 +60,7 @@ Graph::Graph(QQuickItem *parent)
   connect(&settings, &ZeGraphSettings::subgridSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::pixelDensityChanged, this, [this]{ update(); });
   connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
   connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });
@@ -503,7 +504,7 @@ void Graph::exportPDF(QUrl fileName)
 
   // resolution is set in DPI, pixels per inch
   // information->getPixelDensity() is in pixels per centimeter
-  pdfWriter.setResolution(int(information->getPixelDensity() * CM_PER_INCH));
+  pdfWriter.setResolution(int(settings.pixelDensity * CM_PER_INCH));
 
   QPageLayout layout(
     QPageSize(settings.getSize().cmSheetSize * 10., QPageSize::Millimeter, "", QPageSize::ExactMatch),
@@ -543,7 +544,7 @@ void Graph::exportSVG(QUrl fileName)
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  svgGenerator.setResolution(int(information->getPixelDensity() * CM_PER_INCH));
+  svgGenerator.setResolution(int(settings.pixelDensity * CM_PER_INCH));
 
   svgGenerator.setSize(size().toSize());
   svgGenerator.setViewBox(QRect(QPoint(0, 0), size().toSize()));

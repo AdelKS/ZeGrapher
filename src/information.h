@@ -56,7 +56,6 @@ class Information: public QObject
 
   Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
-  Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
   Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
 public:
@@ -64,7 +63,6 @@ public:
   ~Information();
 
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
-  double getPixelDensity() const { return pixelDensity; }
   ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
   int getIoErrorCount() const { return ioErrors.size(); }
 
@@ -72,14 +70,12 @@ public:
 
 signals:
   void appSettingsChanged();
-  void pixelDensityChanged();
   void availableSheetSizePxChanged();
   void availableSheetSizeCmChanged();
   void graphSettingsChanged();
   void ioErrorCountChanged();
 
 public slots:
-  void screenChanged(QWindow*);
   void exportYaml(QUrl filename);
   void importYaml(QUrl filename);
 
@@ -101,9 +97,6 @@ public:
 protected:
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
-
-  /// @note in pixels per centimeter
-  double pixelDensity = 50;
 
   QSize availableSheetSizePx;
   QSizeF availableSheetSizeCm;

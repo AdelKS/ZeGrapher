@@ -20,7 +20,7 @@ ApplicationWindow {
 
   onScreenChanged: {
     console.log("Moved to screen:", screen.name);
-    Information.screenChanged(win); // converted from (px per mm) to (px per cm)
+    Information.graphSettings.screenChanged(win); // converted from (px per mm) to (px per cm)
   }
 
   Connections {
@@ -378,12 +378,12 @@ ApplicationWindow {
       Connections {
         target: interactiveGraph.settings
 
-        function onZoomChanged() {
+        function onZoomSettingsChanged() {
           console.log("zoom settings change: updating implicit sizes");
           interactiveGraph.updateImplicitSize();
         }
 
-        function onSizeChanged() {
+        function onSizeSettingsChanged() {
           console.log("size settings change: updating implicit sizes");
           interactiveGraph.updateImplicitSize();
         }
@@ -456,6 +456,6 @@ ApplicationWindow {
   }
 
   Component.onCompleted: {
-    Information.screenChanged(win);
+    Information.graphSettings.screenChanged(win);
   }
 }

@@ -51,6 +51,7 @@ struct ZeGraphSettings: QObject
 
   Q_PROPERTY(int minPointsLg2 MEMBER minPointsLg2 NOTIFY minPointsLg2Changed)
   Q_PROPERTY(int maxPointsLg2 MEMBER maxPointsLg2 NOTIFY maxPointsLg2Changed)
+  Q_PROPERTY(double pixelDensity READ getPixelDensity NOTIFY pixelDensityChanged)
 
 public:
   explicit ZeGraphSettings(QObject* parent = nullptr);
@@ -69,6 +70,11 @@ public:
 
   int getMinPointsLg2() const { return minPointsLg2; }
   int getMaxPointsLg2() const { return maxPointsLg2; }
+
+  double getPixelDensity() const { return pixelDensity; }
+
+  /// @note in pixels per centimeter
+  double pixelDensity = 35;
 
   struct POD {
     std::optional<zg::GraphRange::POD> range;
@@ -113,6 +119,10 @@ signals:
   void totalScaleFactorChanged();
   void minPointsLg2Changed();
   void maxPointsLg2Changed();
+  void pixelDensityChanged();
+
+public slots:
+  void screenChanged(QWindow* win);
 
 protected slots:
   void onSystemPaletteChange();

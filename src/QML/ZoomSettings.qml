@@ -81,7 +81,7 @@ Rectangle {
 
       onClicked: {
         root.graphSettings.zoom.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
-        Information.computeZoom();
+        root.graphSettings.computeZoom();
       }
 
       lightThemeIcon: 'qrc:/icons/size.svg'

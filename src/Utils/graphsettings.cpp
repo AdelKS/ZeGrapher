@@ -73,6 +73,30 @@ void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
   emit totalScaleFactorChanged();
 };
 
+void ZeGraphSettings::screenChanged(QWindow* win)
+{
+
+  QSizeF pixelSize = win->screen()->size().toSizeF();
+  QSizeF cmSize = win->screen()->physicalSize() / 10;
+
+  qDebug() << "Monitor pixel size: " << pixelSize;
+  qDebug() << "Monitor cm size: " << cmSize;
+
+  double px_per_cm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
+
+  if (pixelDensity != px_per_cm)
+  {
+    qDebug() << "pixel density " << px_per_cm << "px per cm";
+    pixelDensity = px_per_cm;
+    availableSizeCm = availableSizePx.toSizeF() / pixelDensity;
+    updateSizes();
+    computeZoom();
+    emit pixelDensityChanged();
+    emit availableSizeCmChanged();
+    emit totalScaleFactorChanged();
+  }
+}
+
 void ZeGraphSettings::setSizeSettings(ZeSizeSettings s)
 {
   if (size == s)
@@ -143,12 +167,12 @@ void ZeGraphSettings::updateSizes()
   if (size.sheetFillsWindow)
   {
     size.pxSheetSize = availableSizePx;
-    size.cmSheetSize = availableSizePx.toSizeF() / information->getPixelDensity();
+    size.cmSheetSize = availableSizePx.toSizeF() / pixelDensity;
   }
 
   if (size.sizeUnit == SizeUnit::CENTIMETER)
-    size.pxSheetSize = (size.cmSheetSize * information->getPixelDensity()).toSize();
-  else size.cmSheetSize = size.pxSheetSize.toSizeF() / information->getPixelDensity();
+    size.pxSheetSize = (size.cmSheetSize * pixelDensity).toSize();
+  else size.cmSheetSize = size.pxSheetSize.toSizeF() / pixelDensity;
 
   if (size != oldSize)
     emit sizeSettingsChanged();
@@ -184,7 +208,7 @@ void ZeGraphSettings::setAvailableSizePx(QSize s)
   if (availableSizePx != s)
   {
     availableSizePx = s;
-    availableSizeCm = s.toSizeF() / information->getPixelDensity();
+    availableSizeCm = s.toSizeF() / pixelDensity;
     updateSizes();
     computeZoom();
     emit availableSizePxChanged();
