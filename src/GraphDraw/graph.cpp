@@ -240,7 +240,8 @@ void Graph::scaleView()
   qDebug() << "Scaling: " << settings.getSize().scalingFactor;
   qDebug() << "Zoom: " << settings.getZoom().zoom;
 
-  totalScaleFactor = settings.getTotalScaleFactor();
+  totalScaleFactor = paintType == VECTOR_EXPORT ? settings.getSize().scalingFactor
+                                                : settings.getTotalScaleFactor();
 
   // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
   // this is just telling it to draw everything bigger and translate coordinates accordingly
@@ -503,8 +504,7 @@ void Graph::exportPDF(QUrl fileName)
   pdfWriter.setTitle(tr("Exported graph"));
 
   // resolution is set in DPI, pixels per inch
-  // information->getPixelDensity() is in pixels per centimeter
-  pdfWriter.setResolution(int(settings.pixelDensity * CM_PER_INCH));
+  pdfWriter.setResolution(int(ZeGraphSettings::targetPixelDensity * CM_PER_INCH));
 
   QPageLayout layout(
     QPageSize(settings.getSize().cmSheetSize * 10., QPageSize::Millimeter, "", QPageSize::ExactMatch),
@@ -544,7 +544,7 @@ void Graph::exportSVG(QUrl fileName)
   svgGenerator.setTitle(tr("Exported graph"));
   svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
 
-  svgGenerator.setResolution(int(settings.pixelDensity * CM_PER_INCH));
+  svgGenerator.setResolution(int(ZeGraphSettings::targetPixelDensity * CM_PER_INCH));
 
   svgGenerator.setSize(size().toSize());
   svgGenerator.setViewBox(QRect(QPoint(0, 0), size().toSize()));

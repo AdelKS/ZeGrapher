@@ -66,7 +66,7 @@ public:
   const ThemedColor& getBackgroundColor() const { return backgroundColor; };
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
-  double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor; }
+  double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor * pixelDensity / targetPixelDensity; }
 
   int getMinPointsLg2() const { return minPointsLg2; }
   int getMaxPointsLg2() const { return maxPointsLg2; }
@@ -75,6 +75,9 @@ public:
 
   /// @note in pixels per centimeter
   double pixelDensity = 35;
+
+  /// @brief baseline pixel density that 1.0x scaling should achieve
+  static constexpr double targetPixelDensity = 35;
 
   struct POD {
     std::optional<zg::GraphRange::POD> range;
