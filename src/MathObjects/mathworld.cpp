@@ -186,7 +186,7 @@ void MathWorld::updateSchrodingerStatus()
 }
 
 std::unordered_set<const zc::DynMathObject<zc_t>*>
-MathWorld::direct_revdeps(MathObject::EvalHandle handle) const
+MathWorld::direct_revdeps(MathObject::EvalHandle handle)
 {
   std::unordered_set<std::string> names;
 
@@ -211,7 +211,7 @@ MathWorld::direct_revdeps(MathObject::EvalHandle handle) const
 }
 
 std::unordered_set<const zc::DynMathObject<zc_t>*>
-MathWorld::revdeps(MathObject::EvalHandle handle) const
+MathWorld::revdeps(MathObject::EvalHandle handle)
 {
   auto to_explore = direct_revdeps(handle);
   std::unordered_set<const zc::DynMathObject<zc_t>*> res, explored;

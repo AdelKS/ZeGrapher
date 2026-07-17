@@ -463,6 +463,8 @@ void Graph::updateQmlData()
 {
   qmlData.clear();
 
+  const auto start = std::chrono::high_resolution_clock::now();
+
   for (const zg::SampledCurve& f_curve : sampler.getCurves())
   {
     if (not f_curve.style.visible) continue;
@@ -491,6 +493,10 @@ void Graph::updateQmlData()
                      (figureRectScaled.y() + topMargin) * totalScaleFactor,
                      graphRectScaled.width() * totalScaleFactor,
                      graphRectScaled.height() * totalScaleFactor);
+
+  const auto end = std::chrono::high_resolution_clock::now();
+
+  qDebug() << "Preparing QML data took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
   emit qmlDataChanged();
   emit graphRectChanged();
