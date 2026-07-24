@@ -144,6 +144,18 @@ void DataTableModel::clearCells(QModelIndexList list)
     setData(index, QString());
 }
 
+void DataTableModel::removeCell(const QModelIndex& cell)
+{
+  if (size_t(cell.column()) >= tableColumns.size())
+    return;
+
+  tableColumns[cell.column()]->zcMathObj.remove_data_point(cell.row());
+
+  QModelIndex topLeft = cell;
+  QModelIndex bottomRight = index(rowCount() - 1, cell.column());
+  emit dataChanged(topLeft, bottomRight);
+}
+
 QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int) const
 {
   if (orientation == Qt::Orientation::Horizontal)
