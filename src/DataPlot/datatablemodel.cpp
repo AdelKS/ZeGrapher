@@ -100,6 +100,10 @@ bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
 
   Q_ASSERT(rowCount() == old_row_count + count);
 
+  // QML TableView binds delegates to a cell position, not to a persistent
+  // model index, so endInsertRows() only fixes the row count/geometry — the
+  // rows shifted down keep showing their old cached values. Refresh the
+  // inserted rows plus everything below them so their content re-reads.
   if (old_row_count > 0)
   {
     QModelIndex topLeft = index(row, 0);
@@ -108,6 +112,30 @@ bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
   }
 
   return true;
+}
+
+void DataTableModel::removeRow(int row)
+{
+  if (row < 0 or row >= rowCount())
+    return;
+
+  beginRemoveRows(QModelIndex(), row, row);
+
+  for (mathobj::Data* dataObj: tableColumns)
+    dataObj->zcMathObj.remove_data_point(row);
+
+  endRemoveRows();
+
+  // QML TableView binds delegates to a cell position, not to a persistent
+  // model index, so endRemoveRows() only fixes the row count/geometry — the
+  // rows shifted up keep showing their old cached values. Refresh everything
+  // from the removal point down to the new last row so their content re-reads.
+  if (row < rowCount())
+  {
+    QModelIndex topLeft = index(row, 0);
+    QModelIndex bottomRight = index(rowCount() - 1, columnCount() - 1);
+    emit dataChanged(topLeft, bottomRight, {Qt::DisplayRole});
+  }
 }
 
 void DataTableModel::clearCells(QModelIndexList list)
