@@ -183,6 +183,7 @@ void DataTableModel::deregisterTableColumn(zg::mathobj::Data* d)
     columnNames.erase(columnNames.begin() + index);
     endRemoveColumns();
     emit columnCountChanged();
+    emit headerDataChanged(Qt::Orientation::Horizontal, index, columnCount()-1);
   }
 }
 
