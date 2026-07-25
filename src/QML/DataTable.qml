@@ -18,6 +18,42 @@ Item {
       root.model.clearCells(tableView.selectionModel.selectedIndexes);
   }
 
+  function deleteSelection() {
+    const selectionModel = tableView.selectionModel;
+    if (!selectionModel.hasSelection)
+      return;
+
+    console.debug("TableEdit: deleting selection");
+
+    // Save selected stuff before we start deleting
+    const fullColumns = selectionModel.selectedColumns().map(index => index.column);
+    const fullRows = selectionModel.selectedRows().map(index => index.row);
+    const looseCells = selectionModel.selectedIndexes
+      .filter(index => !fullColumns.includes(index.column) && !fullRows.includes(index.row));
+
+    // merge full rows with individual cells in same container, so we can sort it by row
+    // we delete the biggest indices first because they won't affect the following ones
+    const rowRemovals = [];
+    for (const row of fullRows)
+      rowRemovals.push({ row: row });
+    for (const index of looseCells)
+      rowRemovals.push({ row: index.row, column: index.column });
+
+    rowRemovals.sort((a, b) => b.row - a.row);
+
+    for (const item of rowRemovals)
+    {
+      if ('column' in item)
+        root.model.removeCell(tableView.index(item.row, item.column));
+      else
+        root.model.removeRow(item.row);
+    }
+
+    // Fully-selected columns: remove the whole Data math object backing each
+    for (const column of fullColumns)
+      root.model.requestUiInitiatedDelete(column);
+  }
+
   // Only contribute an implicit size when the table actually has laid-out
   // content. Otherwise we'd report just the header padding, which causes
   // widthWhenVisible (in MainWindow) to settle to a nonsensical value while
@@ -45,6 +81,11 @@ Item {
       visible: tableView.selectionModel.hasSelection
     }
     MenuItem {
+      text: qsTr("Delete")
+      onTriggered: { deleteSelection(); }
+      visible: tableView.selectionModel.hasSelection
+    }
+    MenuItem {
       text: qsTr("Insert row above")
       onTriggered: {
         let row = tableView.currentRow;
@@ -65,7 +106,10 @@ Item {
   ContextMenu.menu: root.interactive ? menu : null
 
   Keys.onPressed: (event)=> {
-    if ([Qt.Key_Delete, Qt.Key_Backspace].includes(event.key)) {
+    if (event.key === Qt.Key_Delete) {
+      deleteSelection();
+      event.accepted = true;
+    } else if (event.key === Qt.Key_Backspace) {
       clearSelection();
       event.accepted = true;
     }
