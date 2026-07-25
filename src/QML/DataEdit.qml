@@ -50,6 +50,8 @@ Item {
 
       state: root.backend.state
 
+      expression: backend.name
+
       onTextEdited: {
         console.debug("DataEdit: updating name in backend: ", expression);
         backend.setName(expression);
