@@ -63,6 +63,9 @@ public:
   Q_INVOKABLE void deregisterTableColumn(zg::mathobj::Data*);
   Q_INVOKABLE void setColumnName(zg::mathobj::Data*, QString);
 
+public slots:
+  void requestUiInitiatedDelete(size_t column);
+
 signals:
   void columnCountChanged();
 

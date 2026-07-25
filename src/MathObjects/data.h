@@ -29,6 +29,9 @@
 #include <vector>
 
 namespace zg {
+
+struct MathObject;
+
 namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression
@@ -46,6 +49,8 @@ public:
 
   Q_INVOKABLE void setName(QString name);
   QString getName() const { return input_name; }
+
+  zg::MathObject* mathObject() const;
 
   void setData(std::vector<std::string> values);
   void setState(State s);
@@ -71,6 +76,9 @@ public:
 
   POD exportPod() const;
   void importPod(POD);
+
+public slots:
+  void requestUiInitiatedDelete();
 
 signals:
   void updated();

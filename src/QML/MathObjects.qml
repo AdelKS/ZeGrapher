@@ -56,6 +56,13 @@ Item {
 
       z: dragArea.drag.active ? 2 : 1
 
+      Connections {
+        target: dragWrapper.modelData
+        function onInitiateUiDelete() {
+          collapse.start();
+        }
+      }
+
       NumberAnimation {
         id: collapse
         target: dragWrapper
@@ -72,8 +79,6 @@ Item {
         width: dragWrapper.width
         height: dragWrapper.height
         mathObj: dragWrapper.modelData
-
-        onDeleteMe: collapse.start();
 
         z: dragArea.drag.active ? 100 : 0
 

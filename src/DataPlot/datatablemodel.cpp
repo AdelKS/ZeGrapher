@@ -209,4 +209,10 @@ QHash<int, QByteArray> DataTableModel::roleNames() const
   return { {Qt::DisplayRole, "display"}, {Qt::EditRole, "display"} };
 }
 
+void DataTableModel::requestUiInitiatedDelete(size_t column)
+{
+  if (column < tableColumns.size())
+    tableColumns[column]->requestUiInitiatedDelete();
+}
+
 }

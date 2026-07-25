@@ -4,7 +4,6 @@ import QtQuick.Layouts
 
 Item {
   id: root
-  signal deleteMe()
 
   required property MathObject mathObj
 
@@ -479,7 +478,7 @@ Item {
     lightThemeIcon: "qrc:/icons/delete-dark.svg"
     darkThemeIcon: "qrc:/icons/delete-light.svg"
 
-    onReleased: root.deleteMe();
+    onReleased: root.mathObj.requestUiInitiatedDelete();
   }
 
   Component.onCompleted: {

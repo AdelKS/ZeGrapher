@@ -1,10 +1,16 @@
 #include <string>
 
 #include "MathObjects/data.h"
+#include "MathObjects/mathobject.h"
 #include "Utils/yaml.h"
 
 namespace zg {
 namespace mathobj {
+
+MathObject* Data::mathObject() const
+{
+  return qobject_cast<MathObject*>(parent());
+}
 
 Data::Data(QObject *parent)
   : Base([](CoordinateSystem s, bool){
@@ -104,6 +110,11 @@ void Data::importPod(Data::POD p)
 
   if (p.style)
     style.importPod(std::move(*p.style));
+}
+
+void Data::requestUiInitiatedDelete()
+{
+  mathObject()->requestUiInitiatedDelete();
 }
 
 }
