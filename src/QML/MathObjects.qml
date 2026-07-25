@@ -11,129 +11,126 @@ Item {
 
   signal importCSV(file: url)
 
+  property real objectsImplicitWidth: 0
+
+  implicitWidth: objectsImplicitWidth + verticalScrollBar.width * verticalScrollBar.visible
+
   onImplicitWidthChanged: {
     console.debug("MathObjects: implicitWidth: ", implicitWidth)
   }
 
-  implicitWidth: scrollView.implicitWidth
-
-  ScrollView {
-    id: scrollView
+  ListView {
+    id: listView
     anchors.fill: parent
+    anchors.margins: 5
+    anchors.rightMargin: 0
+    clip: true
 
-    contentWidth: Math.max(availableWidth - ScrollBar.vertical.width * ScrollBar.vertical.visible, mathObjCol.implicitWidth)
-    contentHeight: Math.max(availableHeight - ScrollBar.horizontal.height * ScrollBar.horizontal.visible, mathObjCol.implicitHeight) + root.globalMenuSize.height + 5
+    model: MathWorld
+    spacing: 10
 
-    implicitWidth: mathObjCol.implicitWidth + ScrollBar.vertical.width
-    implicitHeight: mathObjCol.implicitHeight + ScrollBar.horizontal.height
+    bottomMargin: root.globalMenuSize.height + 10
 
-    ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-
-    Column {
-      id: mathObjCol
-      spacing: 10
-      anchors.fill: parent
-      anchors.margins: 5
-
-      move: Transition {
-        NumberAnimation {
-          properties: "y";
-          duration: 400;
-          easing.type: Easing.OutCubic
-        }
-      }
-
-      Repeater {
-        id: rep
-        model: MathWorld
-        delegate: Item {
-          id: wrapper
-
-          required property int index
-          required property var modelData
-
-          property bool justDropped: false
-          property int lastSwappedWithY: -1
-
-          width: Math.max(mathObjCol.width, input.implicitWidth)
-          height: input.implicitHeight
-
-          z: dragArea.drag.active ? 100 : 0
-
-          MathObjectInput {
-            id: input
-            width: wrapper.width
-            height: wrapper.height
-            mathObj: wrapper.modelData
-
-            states: [
-              State {
-                name: "dragging"
-                when: dragArea.drag.active
-                ParentChange { target: input; parent: scrollView.contentItem }
-              },
-              State {
-                name: "normal"
-                when: !dragArea.drag.active
-                ParentChange { target: input; parent: wrapper; y: 0; }
-              }
-            ]
-
-            transitions: Transition {
-              from: "dragging"
-              to: "normal"
-              ParentAnimation {
-                NumberAnimation {
-                  property: "y"
-                  duration: 400
-                  easing.type: Easing.OutCubic
-                }
-              }
-            }
-
-            onDeleteMe: {
-              MathWorld.removeMathObject(mathObj);
-            }
-          }
-
-          MouseArea {
-            id: dragArea
-            parent: input.dragHandle
-            anchors.fill: parent
-            drag.target: input
-            drag.axis: Drag.YAxis
-            cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
-
-            onPositionChanged: {
-              if (!drag.active)
-                return;
-              const P = mapToItem(mathObjCol, mouseX, mouseY);
-              const i = wrapper.index;
-              if (i > 0) {
-                const prev = rep.itemAt(i - 1);
-                if (prev && P.y < prev.y + prev.height / 2) {
-                  MathWorld.moveMathObject(i, i - 1);
-                  return;
-                }
-              }
-              if (i < rep.count - 1) {
-                const next = rep.itemAt(i + 1);
-                if (next && P.y > next.y + next.height / 2) {
-                  MathWorld.moveMathObject(i, i + 1);
-                  return;
-                }
-              }
-            }
-          }
-        }
-      }
-
+    ScrollBar.vertical: ScrollBar {
+      id: verticalScrollBar
+      policy: listView.contentHeight > listView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 
-    Component.onCompleted: {
-      scrollView.ScrollBar.vertical.policy = Qt.binding(function() {
-        return scrollView.contentHeight > scrollView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-      });
+    move: Transition {
+      NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
+    }
+    moveDisplaced: Transition {
+      NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
+    }
+
+    delegate: Item {
+      id: dragWrapper
+
+      required property int index
+      required property var modelData
+
+      width: listView.width - verticalScrollBar.width * verticalScrollBar.visible
+
+      implicitHeight: input.implicitHeight
+      height: implicitHeight
+
+      z: dragArea.drag.active ? 2 : 1
+
+      NumberAnimation {
+        id: collapse
+        target: dragWrapper
+        properties: "height,opacity"
+        duration: 300
+        to: 0
+        easing.type: Easing.InOutQuad
+
+        onFinished: MathWorld.removeMathObject(dragWrapper.modelData)
+      }
+
+      MathObjectInput {
+        id: input
+        width: dragWrapper.width
+        height: dragWrapper.height
+        mathObj: dragWrapper.modelData
+
+        onDeleteMe: collapse.start();
+
+        z: dragArea.drag.active ? 100 : 0
+
+        Component.onCompleted: root.objectsImplicitWidth = Math.max(root.objectsImplicitWidth, implicitWidth)
+        onImplicitWidthChanged: root.objectsImplicitWidth = Math.max(root.objectsImplicitWidth, implicitWidth)
+
+        states: [
+          State {
+            name: "dragging"
+            when: dragArea.drag.active
+            ParentChange { target: input; parent: listView.contentItem }
+          },
+          State {
+            name: "normal"
+            when: !dragArea.drag.active
+            ParentChange { target: input; parent: dragWrapper; y: 0 }
+          }
+        ]
+
+        transitions: Transition {
+          from: "dragging"
+          to: "normal"
+          ParentAnimation {
+            NumberAnimation { property: "y"; duration: 400; easing.type: Easing.OutCubic }
+          }
+        }
+      }
+
+      MouseArea {
+        id: dragArea
+        parent: input.dragHandle
+        anchors.fill: parent
+        drag.target: input
+        drag.axis: Drag.YAxis
+        cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
+
+        onPositionChanged: {
+          if (!drag.active)
+            return;
+          const P = mapToItem(listView.contentItem, mouseX, mouseY);
+          const i = dragWrapper.index;
+          if (i > 0) {
+            const prev = listView.itemAtIndex(i - 1);
+            if (prev && P.y < prev.y + prev.height / 2) {
+              MathWorld.moveMathObject(i, i - 1);
+              return;
+            }
+          }
+          if (i < listView.count - 1) {
+            const next = listView.itemAtIndex(i + 1);
+            if (next && P.y > next.y + next.height / 2) {
+              MathWorld.moveMathObject(i, i + 1);
+              return;
+            }
+          }
+        }
+      }
     }
   }
 

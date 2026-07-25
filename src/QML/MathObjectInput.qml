@@ -12,8 +12,6 @@ Item {
 
   property alias dragHandle: dragHandle
 
-  property int deleteDuration: 250
-
   implicitWidth: frame.implicitWidth + del.height / 2
   implicitHeight: frame.implicitHeight + del.height / 2
 
@@ -31,30 +29,6 @@ Item {
 
   onHeightChanged: {
     console.debug("MathObjectInput: height", height);
-  }
-
-  function removeObj() {
-    state = "deleted";
-  }
-
-  states: State {
-    name: "deleted"
-    PropertyChanges {
-      root.opacity: 0
-      root.implicitHeight: 0
-    }
-  }
-
-  transitions: Transition {
-    to: "deleted"
-    SequentialAnimation {
-      NumberAnimation {
-        properties: "opacity,implicitHeight"
-        duration: root.deleteDuration
-        easing.type: Easing.InOutQuad
-      }
-      ScriptAction { script: root.deleteMe() }
-    }
   }
 
   Frame {
@@ -505,7 +479,7 @@ Item {
     lightThemeIcon: "qrc:/icons/delete-dark.svg"
     darkThemeIcon: "qrc:/icons/delete-light.svg"
 
-    onReleased: root.removeObj()
+    onReleased: root.deleteMe();
   }
 
   Component.onCompleted: {
