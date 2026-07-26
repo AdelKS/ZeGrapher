@@ -66,6 +66,7 @@ qml_files = [
   'QML/DataColumnEdit.qml',
   'QML/DataEdit.qml',
   'QML/DataPane.qml',
+  'QML/DataSheetEdit.qml',
   'QML/DataTable.qml',
   'QML/EquationEdit.qml',
   'QML/GraphSettings.qml',
