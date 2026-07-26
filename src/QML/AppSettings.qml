@@ -104,16 +104,6 @@ Item {
             selectedColor: Information.appSettings.validSyntax
 
             onSelectedColorModified: Information.appSettings.validSyntax = selectedColor;
-
-            Connections {
-              target: Information.appSettings
-
-              function onWarningSyntaxChanged() {
-                if (validSyntaxColorButton.selectedColor !== Information.appSettings.validSyntax) {
-                  validSyntaxColorButton.selectedColor = Information.appSettings.validSyntax
-                }
-              }
-            }
           }
 
           Label {
@@ -127,16 +117,6 @@ Item {
             selectedColor: Information.appSettings.warningSyntax
 
             onSelectedColorModified: Information.appSettings.warningSyntax = selectedColor;
-
-            Connections {
-              target: Information.appSettings
-
-              function onWarningSyntaxChanged() {
-                if (warningSyntaxColorButton.selectedColor !== Information.appSettings.warningSyntax) {
-                  warningSyntaxColorButton.selectedColor = Information.appSettings.warningSyntax
-                }
-              }
-            }
           }
 
           Label {
@@ -150,16 +130,6 @@ Item {
             selectedColor: Information.appSettings.invalidSyntax
 
             onSelectedColorModified: Information.appSettings.invalidSyntax = selectedColor;
-
-            Connections {
-              target: Information.appSettings
-
-              function onWarningSyntaxChanged() {
-                if (invalidSyntaxColorButton.selectedColor !== Information.appSettings.invalidSyntax) {
-                  invalidSyntaxColorButton.selectedColor = Information.appSettings.invalidSyntax
-                }
-              }
-            }
           }
         }
       }
