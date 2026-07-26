@@ -61,7 +61,6 @@ public:
 
   Q_INVOKABLE void registerTableColumn(zg::mathobj::Data*);
   Q_INVOKABLE void deregisterTableColumn(zg::mathobj::Data*);
-  Q_INVOKABLE void setColumnName(zg::mathobj::Data*, QString);
 
 public slots:
   void requestUiInitiatedDelete(size_t column);
@@ -70,6 +69,11 @@ signals:
   void columnCountChanged();
 
 protected:
+  static QString headerName(const zg::mathobj::Data*);
+
+  /// @brief re-reads the header of an already registered column
+  void refreshColumnName(const zg::mathobj::Data*);
+
   std::vector<QString> columnNames;
   std::vector<zg::mathobj::Data*> tableColumns;
 

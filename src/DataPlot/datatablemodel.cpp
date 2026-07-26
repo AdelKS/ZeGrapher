@@ -170,8 +170,13 @@ void DataTableModel::registerTableColumn(zg::mathobj::Data* d)
 
   beginInsertColumns(QModelIndex(), tableColumns.size(), tableColumns.size());
   tableColumns.push_back(d);
-  columnNames.push_back(d->getName());
+  columnNames.push_back(headerName(d));
   endInsertColumns();
+
+  // a column is named by the Data object, we just follow it
+  connect(d, &mathobj::Data::nameChanged, this, [this, d] { refreshColumnName(d); });
+  connect(d, &mathobj::Data::stateChanged, this, [this, d] { refreshColumnName(d); });
+
   emit columnCountChanged();
 }
 
@@ -179,6 +184,8 @@ void DataTableModel::deregisterTableColumn(zg::mathobj::Data* d)
 {
   if (auto it = std::ranges::find(tableColumns, d); it != tableColumns.end())
   {
+    disconnect(d, nullptr, this, nullptr);
+
     int index = size_t(it - tableColumns.begin());
     beginRemoveColumns(QModelIndex(), index, index);
     tableColumns.erase(it);
@@ -189,17 +196,25 @@ void DataTableModel::deregisterTableColumn(zg::mathobj::Data* d)
   }
 }
 
-void DataTableModel::setColumnName(zg::mathobj::Data* d, QString name)
+QString DataTableModel::headerName(const zg::mathobj::Data* d)
 {
-  if (auto it = std::ranges::find(tableColumns, d); it != tableColumns.end())
-  {
-    int index = size_t(it - tableColumns.begin());
-    if (columnNames.at(index) != name)
-    {
-      columnNames[index] = name;
-      emit headerDataChanged(Qt::Orientation::Horizontal, index, index);
-    }
-  }
+  // a column whose name doesn't hold up has no header to show
+  return d->getState().isValid() ? d->getName() : QString();
+}
+
+void DataTableModel::refreshColumnName(const zg::mathobj::Data* d)
+{
+  auto it = std::ranges::find(tableColumns, d);
+  if (it == tableColumns.end())
+    return;
+
+  const int index = it - tableColumns.begin();
+  const QString name = headerName(d);
+  if (columnNames.at(index) == name)
+    return;
+
+  columnNames[index] = name;
+  emit headerDataChanged(Qt::Orientation::Horizontal, index, index);
 }
 
 Qt::ItemFlags DataTableModel::flags(const QModelIndex &) const

@@ -52,10 +52,8 @@ Item {
         expression: root.backend.name
 
         onTextEdited: {
-          console.debug("DataColumn: updating name in backend: ", expression);
+          console.debug("DataColumnEdit: updating name in backend: ", expression);
           root.backend.setName(expression);
-          if (showInTable.checked)
-            DataTableModel.setColumnName(root.backend, root.backend.isValid() ? expression : "");
         }
 
         Layout.fillWidth: true
