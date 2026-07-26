@@ -9,7 +9,8 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  required property MathObject mathObj
+  required property Base base
+  required property PlotStyle style
 
   implicitHeight: mainLayout.implicitHeight
 
@@ -48,10 +49,10 @@ Item {
 
         model: coordinateType
 
-        currentIndex: indexFromModelValue(coordinateType, root.mathObj.coordinateSystem)
+        currentIndex: indexFromModelValue(coordinateType, root.base.coordinateSystem)
 
         onCurrentValueChanged: {
-          root.mathObj.coordinateSystem = currentValue
+          root.base.coordinateSystem = currentValue
         }
       }
     }
@@ -66,10 +67,10 @@ Item {
         Layout.preferredHeight: 50
         model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
 
-        currentIndex: indexFromModelValue(dashPatternModel, mathObj.style.lineStyle)
+        currentIndex: indexFromModelValue(dashPatternModel, root.style.lineStyle)
 
         onCurrentIndexChanged: {
-          mathObj.style.lineStyle = model.get(currentIndex).type;
+          root.style.lineStyle = model.get(currentIndex).type;
         }
       }
 
@@ -80,12 +81,12 @@ Item {
         from: 1
         to: 100
         live: true
-        value: mathObj.style.lineWidth * 10.
+        value: root.style.lineWidth * 10.
         stepSize: 10
         Layout.maximumWidth: 100
 
         onValueModified: {
-          mathObj.style.lineWidth = Number(value) / 10.0;
+          root.style.lineWidth = Number(value) / 10.0;
         }
       }
     }
@@ -101,10 +102,10 @@ Item {
         model: pointStyleModel
         fillMode: Image.PreserveAspectFit
 
-        currentIndex: indexFromModelValue(pointStyleModel, mathObj.style.pointStyle)
+        currentIndex: indexFromModelValue(pointStyleModel, root.style.pointStyle)
 
         onCurrentIndexChanged: {
-          root.mathObj.style.pointStyle = pointStyleModel.get(currentIndex).type
+          root.style.pointStyle = pointStyleModel.get(currentIndex).type
         }
       }
       SpinBox {
@@ -115,11 +116,11 @@ Item {
         from: 1
         to: 100
         live: true
-        value: root.mathObj.style.pointWidth * 4.0
+        value: root.style.pointWidth * 4.0
         stepSize: 10
 
         onValueModified: {
-          root.mathObj.style.pointWidth = Number(value) / 4.0;
+          root.style.pointWidth = Number(value) / 4.0;
         }
       }
     }
@@ -134,7 +135,7 @@ Item {
       states: [
         State {
           name: "hidden";
-          when: !root.mathObj.discrete
+          when: !root.base.discrete
           PropertyChanges {
             pointStyleTumbler.opacity: 0
             pointWidthSpinBox.opacity: 0
@@ -144,7 +145,7 @@ Item {
         },
         State {
           name: "shown";
-          when: root.mathObj.discrete
+          when: root.base.discrete
           PropertyChanges {
             pointStyleTumbler.opacity: 1.
             pointWidthSpinBox.opacity: 1.
@@ -190,7 +191,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.mathObj.base.start
+        backend: root.base.start
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -216,7 +217,7 @@ Item {
         Layout.fillHeight: true
         Layout.fillWidth: true
         Layout.minimumWidth: 30
-        backend: root.mathObj.base.end
+        backend: root.base.end
 
         Behavior on width { SmoothedAnimation { duration: 500 } }
 

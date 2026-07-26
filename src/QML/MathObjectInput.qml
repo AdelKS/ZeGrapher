@@ -397,7 +397,8 @@ Item {
         id: styleWidget
         active: !root.noStyle
         sourceComponent: ObjectStyle {
-          mathObj: root.mathObj
+          base: root.mathObj.base
+          style: root.mathObj.style
         }
 
         Layout.fillWidth: true
