@@ -52,8 +52,6 @@ public:
   Q_INVOKABLE void setName(QString name);
   QString getName() const { return input_name; }
 
-  zg::MathObject* mathObject() const;
-
   void setData(std::vector<std::string> values);
   void setState(State s);
 

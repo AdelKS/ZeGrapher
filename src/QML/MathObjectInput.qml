@@ -80,8 +80,8 @@ Item {
             }
             ListElement {
               text: qsTr("Data")
-              type: MathObject.DATA
-              has_graph: true
+              type: MathObject.DATASHEET
+              has_graph: false
             }
           }
 
@@ -455,8 +455,8 @@ Item {
               loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"backend": mathObj.getConstant()});
             } else if (currentType === MathObject.PARAMETRIC) {
               loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"backend": mathObj.getParametric()});
-            } else if (currentType === MathObject.DATA) {
-              loader.setSource("qrc:/qt/qml/ZeGrapher/DataEdit.qml", {"backend": mathObj.getData()});
+            } else if (currentType === MathObject.DATASHEET) {
+              loader.setSource("qrc:/qt/qml/ZeGrapher/DataSheetEdit.qml", {"sheet": mathObj.getDataSheet()});
             }
           }
         }

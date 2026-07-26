@@ -1,17 +1,12 @@
 #include <string>
 
 #include "MathObjects/data.h"
-#include "MathObjects/mathobject.h"
+#include "MathObjects/datasheet.h"
 #include "Utils/yaml.h"
 #include "DataPlot/datatablemodel.h"
 
 namespace zg {
 namespace mathobj {
-
-MathObject* Data::mathObject() const
-{
-  return qobject_cast<MathObject*>(parent());
-}
 
 Data::Data(QObject *parent)
   : Base([](CoordinateSystem s, bool){
@@ -119,7 +114,8 @@ void Data::importPod(Data::POD p)
 
 void Data::requestUiInitiatedDelete()
 {
-  mathObject()->requestUiInitiatedDelete();
+  if (auto* sheet = qobject_cast<DataSheet*>(parent()))
+    sheet->deleteColumn(this);
 }
 
 void Data::setShowInTable(bool s)

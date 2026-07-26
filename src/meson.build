@@ -64,7 +64,6 @@ qml_files = [
   'QML/CsvImportSettings.qml',
   'QML/CurvesOverlay.qml',
   'QML/DataColumnEdit.qml',
-  'QML/DataEdit.qml',
   'QML/DataPane.qml',
   'QML/DataSheetEdit.qml',
   'QML/DataTable.qml',

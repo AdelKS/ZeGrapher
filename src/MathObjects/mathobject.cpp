@@ -33,6 +33,7 @@ void MathObject::setCoordinateSystem(CoordinateSystem s)
 {
   std::visit(zc::utils::overloaded{
       [](mathobj::Constant*) {},
+      [](mathobj::DataSheet*) {},
       [s](auto* v) { v->setCoordinateSystem(s); }
     },
     backend
@@ -45,6 +46,7 @@ CoordinateSystem MathObject::getCoordinateSystem() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant*) { return CoordinateSystem::Cartesian; },
+      [](const mathobj::DataSheet*) { return CoordinateSystem::Cartesian; },
       [](const auto* v) { return v->getCoordinateSystem(); }
     },
     backend
@@ -56,6 +58,7 @@ Base* MathObject::getBase()
   return std::visit(zc::utils::overloaded{
     [](Base* b) -> Base* { return b; },
     [](mathobj::Constant*) -> Base* { return nullptr; },
+    [](mathobj::DataSheet*) -> Base* { return nullptr; },
   }, backend);
 }
 
@@ -69,6 +72,7 @@ const PlotStyle* MathObject::getStyle() const
   return std::visit(zc::utils::overloaded{
     [](auto* b) -> PlotStyle* { return &b->style; },
     [](mathobj::Constant*) -> PlotStyle* { return nullptr; },
+    [](mathobj::DataSheet*) -> PlotStyle* { return nullptr; },
   }, backend);
 }
 
@@ -81,10 +85,10 @@ MathObject::variant_t MathObject::createBackend(Type t)
         return new mathobj::Equation(this);
       case CONSTANT:
         return new mathobj::Constant(this);
-      case DATA:
-        return new mathobj::Data(this);
       case PARAMETRIC:
         return new mathobj::Parametric(this);
+      case DATASHEET:
+        return new mathobj::DataSheet(this);
       default: std::unreachable();
     }
   }();
@@ -94,11 +98,7 @@ MathObject::variant_t MathObject::createBackend(Type t)
       [this]<typename T>(T* n) {
         connect(n, &T::updated, this, &MathObject::updated);
         connect(n, &T::destroyed, this, &MathObject::updated);
-        if constexpr (std::is_same_v<T, mathobj::Constant>)
-        {
-
-        }
-        else
+        if constexpr (std::derived_from<T, Base>)
         {
           connect(n, &Base::schrodingerChanged, this, &MathObject::schrodingerChanged);
           connect(n, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
@@ -142,11 +142,11 @@ MathObject::Type MathObject::getType() const
       [](const mathobj::Constant*) {
         return CONSTANT;
       },
-      [](const mathobj::Data*) {
-        return DATA;
-      },
       [](const mathobj::Parametric*) {
         return PARAMETRIC;
+      },
+      [](const mathobj::DataSheet*) {
+        return DATASHEET;
       },
     },
     backend
@@ -163,15 +163,14 @@ mathobj::Constant* MathObject::getConstant()
   return getBackend<mathobj::Constant>();
 }
 
-mathobj::Data* MathObject::getData()
-{
-  return getBackend<mathobj::Data>();
-}
-
-
 mathobj::Parametric* MathObject::getParametric()
 {
   return getBackend<mathobj::Parametric>();
+}
+
+mathobj::DataSheet* MathObject::getDataSheet()
+{
+  return getBackend<mathobj::DataSheet>();
 }
 
 MathObject::EvalHandle MathObject::getZcObject() const
@@ -184,6 +183,10 @@ MathObject::EvalHandle MathObject::getZcObject() const
       },
       [](const mathobj::Parametric* p) -> Ret {
         return std::make_pair(p->obj1.getZcObject(), p->obj2.getZcObject());
+      },
+      // a sheet is a bag of Data objects, it has nothing of its own to evaluate
+      [](const mathobj::DataSheet*) -> Ret {
+        return static_cast<const zc::DynMathObject<zc_t>*>(nullptr);
       }
     },
     backend
@@ -205,6 +208,9 @@ size_t MathObject::getRevision() const
         if (const auto* o2 = p->obj2.getZcObject())
           rev2 = o2->get_revision();
         return rev1 + rev2;
+      },
+      [](const mathobj::DataSheet*) -> size_t {
+        return 0;
       }
     },
     backend
@@ -228,6 +234,9 @@ QString MathObject::getName() const
       [](const mathobj::Parametric*) {
         return QString();
       },
+      [](const mathobj::DataSheet*) {
+        return QString();
+      },
     },
     backend
   );
@@ -236,7 +245,6 @@ QString MathObject::getName() const
 void MathObject::sync()
 {
   std::visit(zc::utils::overloaded{
-    [](std::monostate) {},
     [](auto* e) { e->sync(); },
   }, backend);
 }
@@ -246,6 +254,7 @@ bool MathObject::isDiscrete() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant* c) { return c->isDiscrete(); },
+      [](const mathobj::DataSheet*) { return false; },
       [](const Base* v) { return v->isDiscrete(); }
     },
     backend
@@ -279,6 +288,7 @@ void MathObject::setSchrodinger(bool s)
   std::visit(
     zc::utils::overloaded{
       [s](mathobj::Constant* c) { c->setDeadAndAlive(s); },
+      [](mathobj::DataSheet*) {},
       [s](auto* v) { v->setSchrodinger(s); }
     },
     backend
@@ -290,6 +300,7 @@ bool MathObject::isSchrodinger() const
   return std::visit(
     zc::utils::overloaded{
       [](const mathobj::Constant* c) { return c->isDeadAndAlive(); },
+      [](const mathobj::DataSheet*) { return false; },
       [](const auto* v) { return v->isSchrodinger(); }
     },
     backend
@@ -311,9 +322,9 @@ void MathObject::importPod(POD p)
   std::visit(
     zc::utils::overloaded{
       [this](mathobj::Constant::POD&& p) { setType(CONSTANT); getConstant()->importPod(std::move(p)); },
-      [this](mathobj::Data::POD&& p) { setType(DATA); getData()->importPod(std::move(p)); },
       [this](mathobj::Equation::POD&& p) { setType(EQUATION); getEquation()->importPod(std::move(p)); },
       [this](mathobj::Parametric::POD&& p) { setType(PARAMETRIC); getParametric()->importPod(std::move(p)); },
+      [this](mathobj::DataSheet::POD&& p) { setType(DATASHEET); getDataSheet()->importPod(std::move(p)); },
     },
     std::move(p)
   );

@@ -27,7 +27,7 @@
 #include "BuildingBlocks/base.h"
 #include "Utils/unit.h"
 #include "constant.h"
-#include "data.h"
+#include "datasheet.h"
 #include "equation.h"
 #include "parametric.h"
 
@@ -56,8 +56,8 @@ public:
   {
     EQUATION,
     CONSTANT,
-    DATA,
-    PARAMETRIC
+    PARAMETRIC,
+    DATASHEET
   };
 
   Q_ENUM(Type);
@@ -86,8 +86,8 @@ public:
 
   Q_INVOKABLE mathobj::Equation* getEquation();
   Q_INVOKABLE mathobj::Constant* getConstant();
-  Q_INVOKABLE mathobj::Data* getData();
   Q_INVOKABLE mathobj::Parametric* getParametric();
+  Q_INVOKABLE mathobj::DataSheet* getDataSheet();
 
   bool isContinuous() const { return not isDiscrete(); };
 
@@ -114,8 +114,8 @@ public:
 
   using POD = std::variant<mathobj::Equation::POD,
                            mathobj::Constant::POD,
-                           mathobj::Data::POD,
-                           mathobj::Parametric::POD>;
+                           mathobj::Parametric::POD,
+                           mathobj::DataSheet::POD>;
 
   POD exportPod() const;
   void importPod(POD);
@@ -136,8 +136,10 @@ signals:
   void initiateUiDelete();
 
 protected:
-  using variant_t
-    = std::variant<mathobj::Equation*, mathobj::Constant*, mathobj::Data*, mathobj::Parametric*>;
+  using variant_t = std::variant<mathobj::Equation*,
+                                 mathobj::Constant*,
+                                 mathobj::Parametric*,
+                                 mathobj::DataSheet*>;
 
   variant_t createBackend(Type);
 
@@ -167,5 +169,5 @@ T* MathObject::getBackend()
 template <>
 struct glz::meta<zg::MathObject::POD> {
    static constexpr std::string_view tag = "type";
-   static constexpr auto ids = std::array {"equation", "constant", "data", "parametric"};
+   static constexpr auto ids = std::array {"equation", "constant", "parametric", "datasheet"};
 };
