@@ -81,22 +81,12 @@ Item {
       lightThemeIcon: "qrc:/icons/table.svg"
       darkThemeIcon: "qrc:/icons/table-light.svg"
 
-      onToggled: {
-        if (showInTable.checked) {
-          DataTableModel.registerTableColumn(root.backend);
-        } else {
-          DataTableModel.deregisterTableColumn(root.backend);
-        }
-      }
+      onToggled: root.backend.showInTable = checked;
     }
   }
 
   Component.onCompleted: {
     console.debug("DataEdit: backend=", root.backend);
-  }
-
-  Component.onDestruction: {
-    DataTableModel.deregisterTableColumn(root.backend);
   }
 
 }

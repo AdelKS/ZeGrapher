@@ -166,6 +166,8 @@ QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, in
 
 void DataTableModel::registerTableColumn(zg::mathobj::Data* d)
 {
+  if (std::ranges::find(tableColumns, d) != tableColumns.end()) return;
+
   beginInsertColumns(QModelIndex(), tableColumns.size(), tableColumns.size());
   tableColumns.push_back(d);
   columnNames.push_back(d->getName());

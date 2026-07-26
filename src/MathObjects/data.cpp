@@ -3,6 +3,7 @@
 #include "MathObjects/data.h"
 #include "MathObjects/mathobject.h"
 #include "Utils/yaml.h"
+#include "DataPlot/datatablemodel.h"
 
 namespace zg {
 namespace mathobj {
@@ -87,7 +88,8 @@ Data::POD Data::exportPod() const
     .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
     .coordinates = yml::not_default(coordinateSystem, Cartesian),
     .values = yml::not_default(getData()),
-    .style = style.exportPod()
+    .style = style.exportPod(),
+    .showInTable = yml::not_default(showInTable, false)
   };
 }
 
@@ -110,11 +112,32 @@ void Data::importPod(Data::POD p)
 
   if (p.style)
     style.importPod(std::move(*p.style));
+
+  if (p.showInTable)
+    setShowInTable(*p.showInTable);
 }
 
 void Data::requestUiInitiatedDelete()
 {
   mathObject()->requestUiInitiatedDelete();
+}
+
+void Data::setShowInTable(bool s)
+{
+  if (s == showInTable) return;
+
+  showInTable = s;
+  if (showInTable)
+    dataTableModel.registerTableColumn(this);
+  else
+    dataTableModel.deregisterTableColumn(this);
+
+  emit showInTableChanged();
+}
+
+Data::~Data()
+{
+  dataTableModel.deregisterTableColumn(this);
 }
 
 }

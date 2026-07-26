@@ -42,10 +42,12 @@ struct Data: Base, shared::ZcMathObjectBB {
 
   Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
   Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(bool showInTable WRITE setShowInTable MEMBER showInTable NOTIFY showInTableChanged )
 
 public:
 
   explicit Data(QObject *parent = nullptr);
+  ~Data();
 
   Q_INVOKABLE void setName(QString name);
   QString getName() const { return input_name; }
@@ -61,6 +63,8 @@ public:
   Q_INVOKABLE bool isValid();
   const State& getState() const { return state; }
 
+  Q_INVOKABLE void setShowInTable(bool);
+
   PlotStyle style;
 
   struct POD {
@@ -70,6 +74,7 @@ public:
     std::optional<CoordinateSystem> coordinates;
     std::optional<std::vector<std::string>> values;
     std::optional<PlotStyle::POD> style;
+    std::optional<bool> showInTable;
 
     auto operator<=>(const POD&) const = default;
   };
@@ -84,10 +89,12 @@ signals:
   void updated();
   void nameChanged();
   void stateChanged();
+  void showInTableChanged();
 
 protected:
   QString input_name;
   State state;
+  bool showInTable = false;
 
 };
 
