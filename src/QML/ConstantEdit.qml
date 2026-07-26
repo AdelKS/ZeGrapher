@@ -22,8 +22,6 @@ Item {
   AnimatedConstant {
     id: wrapped_backend
     backend: root.backend
-
-    onSliderPosChanged: slider.value = wrapped_backend.sliderPos;
   }
 
   function removeObj() {
@@ -149,14 +147,11 @@ Item {
           id: slider
           anchors.fill: parent
 
-          onMoved: {
-            console.info("slider moved: ", value);
-            wrapped_backend.sliderPos = value;
-          }
+          onMoved: wrapped_backend.sliderPos = value
 
           from: 0.
           stepSize: 0.01
-          value: 0.5
+          value: wrapped_backend.sliderPos
           to: 1.
           enabled: !root.backend.deadAndAlive
         }
