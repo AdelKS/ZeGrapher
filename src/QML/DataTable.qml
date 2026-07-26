@@ -239,6 +239,9 @@ Item {
       clip: true
       pointerNavigationEnabled: true
       keyNavigationEnabled: true
+
+      // so selectionRect drag selects properly (according to docs)
+      acceptedButtons: Qt.NoButton
       selectionBehavior: TableView.SelectCells
       resizableRows: false
       resizableColumns: true
@@ -279,14 +282,6 @@ Item {
         onSelectedChanged: {
           let selection = selected ? "selected" : "deselected"
           console.debug("Cell ", selection, ": row=", row, " column=", column);
-        }
-
-        onCurrentChanged: {
-          if (root.interactive && current && !selected)
-          {
-            console.debug("Making current cell selected")
-            tableView.selectionModel.select(tableView.index(row, column), ItemSelectionModel.Select);
-          }
         }
 
         implicitWidth: 100
@@ -357,29 +352,11 @@ Item {
         }
       }
     }
-
-    SelectionRectangle {
-      id: selectionRect
-      target: tableView
-
-      onActiveChanged: {
-        console.debug("Selection rectangle state: ", active);
-      }
-
-      bottomRightHandle: Rectangle {
-        width: 20
-        height: 20
-        radius: 10
-        visible: SelectionRectangle.control.active
-      }
-      topLeftHandle: Rectangle {
-        width: 20
-        height: 20
-        radius: 10
-        visible: SelectionRectangle.control.active
-      }
-    }
   }
 
-
+  SelectionRectangle {
+    id: selectionRect
+    target: tableView
+    selectionMode: SelectionRectangle.Drag
+  }
 }
