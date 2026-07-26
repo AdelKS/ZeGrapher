@@ -254,19 +254,6 @@ Item {
         NumberAnimation { duration: 250; easing.type: Easing.InOutQuad }
       }
 
-      Timer {
-        id: advanceEditTimer
-        interval: 1
-        repeat: false
-        property int targetRow: -1
-        property int targetCol: -1
-        onTriggered: {
-          const idx = tableView.index(targetRow, targetCol);
-          tableView.selectionModel.setCurrentIndex(idx, ItemSelectionModel.ClearAndSelect);
-          tableView.edit(idx);
-        }
-      }
-
       delegate: Item {
 
         id: item
@@ -338,12 +325,6 @@ Item {
 
           TableView.onCommit: {
             display = valueEdit.expression;
-            if (activeFocus) {
-              console.log("Triggering next column cell edit");
-              advanceEditTimer.targetRow = item.row + 1;
-              advanceEditTimer.targetCol = item.column;
-              advanceEditTimer.start();
-            }
           }
 
           Component.onCompleted: {
