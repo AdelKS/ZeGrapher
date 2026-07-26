@@ -19,10 +19,10 @@ Item {
   Behavior on height { SmoothedAnimation { duration: 200 } }
 
   Connections {
-    target: backend
+    target: root.backend
     function onNameChanged() {
-      if (root.name != backend.name)
-        root.name = backend.name;
+      if (root.name != root.backend.name)
+        root.name = root.backend.name;
     }
   }
 
@@ -50,17 +50,17 @@ Item {
 
       state: root.backend.state
 
-      expression: backend.name
+      expression: root.backend.name
 
       onTextEdited: {
         console.debug("DataEdit: updating name in backend: ", expression);
-        backend.setName(expression);
+        root.backend.setName(expression);
         if (showInTable.checked) {
           console.debug("DataEdit: updating name in DataTableModel singleton.");
           if (backend.isValid())
-            DataTableModel.setColumnName(backend, expression);
+            DataTableModel.setColumnName(root.backend, expression);
           else
-            DataTableModel.setColumnName(backend, "");
+            DataTableModel.setColumnName(root.backend, "");
 
         }
       }
@@ -77,26 +77,26 @@ Item {
       Layout.preferredWidth: 30
 
       checkable: true
-      checked: false
+      checked: root.backend.showInTable
       lightThemeIcon: "qrc:/icons/table.svg"
       darkThemeIcon: "qrc:/icons/table-light.svg"
 
       onToggled: {
         if (showInTable.checked) {
-          DataTableModel.registerTableColumn(backend);
+          DataTableModel.registerTableColumn(root.backend);
         } else {
-          DataTableModel.deregisterTableColumn(backend);
+          DataTableModel.deregisterTableColumn(root.backend);
         }
       }
     }
   }
 
   Component.onCompleted: {
-    console.debug("DataEdit: backend=", backend);
+    console.debug("DataEdit: backend=", root.backend);
   }
 
   Component.onDestruction: {
-    DataTableModel.deregisterTableColumn(backend);
+    DataTableModel.deregisterTableColumn(root.backend);
   }
 
 }
