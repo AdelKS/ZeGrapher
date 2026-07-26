@@ -12,48 +12,6 @@ Item {
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-  function clearSelection() {
-    console.debug("TableEdit: clearing selection");
-    if (tableView.selectionModel.hasSelection)
-      root.model.clearCells(tableView.selectionModel.selectedIndexes);
-  }
-
-  function deleteSelection() {
-    const selectionModel = tableView.selectionModel;
-    if (!selectionModel.hasSelection)
-      return;
-
-    console.debug("TableEdit: deleting selection");
-
-    // Save selected stuff before we start deleting
-    const fullColumns = selectionModel.selectedColumns().map(index => index.column);
-    const fullRows = selectionModel.selectedRows().map(index => index.row);
-    const looseCells = selectionModel.selectedIndexes
-      .filter(index => !fullColumns.includes(index.column) && !fullRows.includes(index.row));
-
-    // merge full rows with individual cells in same container, so we can sort it by row
-    // we delete the biggest indices first because they won't affect the following ones
-    const rowRemovals = [];
-    for (const row of fullRows)
-      rowRemovals.push({ row: row });
-    for (const index of looseCells)
-      rowRemovals.push({ row: index.row, column: index.column });
-
-    rowRemovals.sort((a, b) => b.row - a.row);
-
-    for (const item of rowRemovals)
-    {
-      if ('column' in item)
-        root.model.removeCell(tableView.index(item.row, item.column));
-      else
-        root.model.removeRow(item.row);
-    }
-
-    // Fully-selected columns: remove the whole Data math object backing each
-    for (const column of fullColumns)
-      root.model.requestUiInitiatedDelete(column);
-  }
-
   // Only contribute an implicit size when the table actually has laid-out
   // content. Otherwise we'd report just the header padding, which causes
   // widthWhenVisible (in MainWindow) to settle to a nonsensical value while
@@ -77,44 +35,33 @@ Item {
     id: menu
     MenuItem {
       text: qsTr("Clear")
-      onTriggered: { clearSelection(); }
-      visible: tableView.selectionModel.hasSelection
+      onTriggered: { tableView.clearSelection(); }
+      visible: tableView.selectionModel.hasSelection || tableView.selectionModel.currentIndex.valid
     }
     MenuItem {
       text: qsTr("Delete")
-      onTriggered: { deleteSelection(); }
-      visible: tableView.selectionModel.hasSelection
+      onTriggered: { tableView.deleteSelection(); }
+      visible: tableView.selectionModel.hasSelection || tableView.selectionModel.currentIndex.valid
     }
     MenuItem {
       text: qsTr("Insert row above")
       onTriggered: {
-        let row = tableView.currentRow;
+        let row = tableView.selectionModel.currentIndex.row;
         root.model.insertRows(row, 1);
       }
-      visible: tableView.currentRow >= 0
+      visible: tableView.selectionModel.currentIndex.valid
     }
     MenuItem {
       text: qsTr("Insert row below")
       onTriggered: {
-        let row = tableView.currentRow;
+        let row = tableView.selectionModel.currentIndex.row;
         root.model.insertRows(row+1, 1);
       }
-      visible: tableView.currentRow >= 0
+      visible: tableView.selectionModel.currentIndex.valid
     }
   }
 
   ContextMenu.menu: root.interactive ? menu : null
-
-  Keys.onPressed: (event)=> {
-    if (event.key === Qt.Key_Delete) {
-      deleteSelection();
-      event.accepted = true;
-    } else if (event.key === Qt.Key_Backspace) {
-      clearSelection();
-      event.accepted = true;
-    }
-  }
-  Keys.enabled: root.interactive
 
   HorizontalHeaderView {
     id: horizontalHeader
@@ -234,6 +181,8 @@ Item {
       id: tableView
       model: root.model
 
+      editTriggers: TableView.AnyKeyPressed
+
       columnSpacing: 1
       rowSpacing: 1
       clip: true
@@ -249,6 +198,73 @@ Item {
       selectionModel: ItemSelectionModel {
         model: tableView.model
       }
+
+      function clearSelection() {
+        const currentIndex = selectionModel.currentIndex;
+        console.debug("TableEdit: clearing selection: ", selectionModel.selectedIndexes, " current index: ", currentIndex);
+        if (selectionModel.hasSelection)
+          root.model.clearCells(selectionModel.selectedIndexes);
+        if (currentIndex.valid)
+          root.model.clearCells([currentIndex]);
+      }
+
+      function deleteSelection() {
+        const currentIndex = selectionModel.currentIndex;
+        if (!selectionModel.hasSelection && !currentIndex.valid)
+          return;
+
+        console.debug("TableEdit: deleting selection");
+
+        // Save selected stuff before we start deleting
+        const fullColumns = selectionModel.selectedColumns().map(index => index.column);
+        const fullRows = selectionModel.selectedRows().map(index => index.row);
+        const looseCells = selectionModel.selectedIndexes
+          .filter(index => !fullColumns.includes(index.column) && !fullRows.includes(index.row));
+
+        if (currentIndex.valid &&
+            !fullColumns.includes(currentIndex.column) &&
+            !fullColumns.includes(currentIndex.row) &&
+            !looseCells.includes(currentIndex))
+          looseCells.push(currentIndex);
+
+        // merge full rows with individual cells in same container, so we can sort it by row
+        // we delete the biggest indices first because they won't affect the following ones
+        const rowRemovals = [];
+        for (const row of fullRows)
+          rowRemovals.push({ row: row });
+        for (const index of looseCells)
+          rowRemovals.push({ row: index.row, column: index.column });
+
+        rowRemovals.sort((a, b) => b.row - a.row);
+
+        for (const item of rowRemovals)
+        {
+          if ('column' in item)
+            root.model.removeCell(index(item.row, item.column));
+          else
+            root.model.removeRow(item.row);
+        }
+
+        // Fully-selected columns: remove the whole Data math object backing each
+        for (const column of fullColumns)
+          root.model.requestUiInitiatedDelete(column);
+      }
+
+      Keys.onPressed: (event)=> {
+        console.debug("TableEdit: key pressed, ID=0x", event.key.toString(16));
+        if (event.key === Qt.Key_Delete) {
+          deleteSelection();
+          event.accepted = true;
+        } else if (event.key === Qt.Key_Backspace) {
+          clearSelection();
+          event.accepted = true;
+        } else if (event.key == Qt.Key_Return) {
+          if (selectionModel.currentIndex.valid)
+            edit(selectionModel.currentIndex);
+          event.accepted = true;
+        }
+      }
+
 
       Behavior on width {
         NumberAnimation { duration: 250; easing.type: Easing.InOutQuad }
