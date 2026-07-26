@@ -43,6 +43,7 @@ struct Data: Base, shared::ZcMathObjectBB {
   Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
   Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
   Q_PROPERTY(bool showInTable WRITE setShowInTable MEMBER showInTable NOTIFY showInTableChanged )
+  Q_PROPERTY(PlotStyle* style READ getStyle CONSTANT)
 
 public:
 
@@ -64,6 +65,7 @@ public:
   Q_INVOKABLE void setShowInTable(bool);
 
   PlotStyle style;
+  PlotStyle* getStyle() { return &style; }
 
   struct POD {
     std::optional<std::string> name;

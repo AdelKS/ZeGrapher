@@ -31,53 +31,123 @@ Item {
     topPadding: 5
     bottomPadding: 5
 
-    RowLayout {
-      id: layout
+    ColumnLayout {
       anchors.fill: parent
       spacing: 5
 
-      ZcExprEdit {
-        id: zcExprEdit
+      RowLayout {
+        id: layout
+        Layout.fillWidth: true
+        spacing: 5
 
-        state: root.backend.state
+        ZcExprEdit {
+          id: zcExprEdit
 
-        expression: root.backend.name
-        onTextEdited: (expression) => root.backend.setName(expression)
+          state: root.backend.state
+
+          expression: root.backend.name
+          onTextEdited: (expression) => root.backend.setName(expression)
+
+          Layout.fillWidth: true
+          Layout.alignment: Qt.AlignVCenter
+        }
+
+        IconRoundButton {
+          id: displayButton
+          Layout.minimumWidth: 20
+          Layout.maximumWidth: 30
+          Layout.preferredHeight: Layout.preferredWidth
+          Layout.preferredWidth: 30
+          Layout.alignment: Qt.AlignVCenter
+
+          checkable: true
+          checked: !root.backend.style.visible
+
+          lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
+          darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
+
+          onToggled: root.backend.style.visible = !checked
+        }
+
+        IconRoundButton {
+          id: styleButton
+          Layout.minimumWidth: 20
+          Layout.maximumWidth: 30
+          Layout.preferredHeight: Layout.preferredWidth
+          Layout.preferredWidth: 30
+          Layout.alignment: Qt.AlignVCenter
+
+          checkable: true
+          checked: false
+
+          lightThemeIcon: "qrc:/icons/brush.svg"
+          darkThemeIcon: "qrc:/icons/brush-light.svg"
+        }
+
+        IconRoundButton {
+          id: showInTable
+          Layout.minimumWidth: 20
+          Layout.maximumWidth: 30
+          Layout.preferredHeight: Layout.preferredWidth
+          Layout.preferredWidth: 30
+          Layout.alignment: Qt.AlignVCenter
+
+          checkable: true
+          checked: root.backend.showInTable
+          lightThemeIcon: "qrc:/icons/table.svg"
+          darkThemeIcon: "qrc:/icons/table-light.svg"
+
+          onToggled: root.backend.showInTable = checked;
+        }
+
+        Item {
+          id: dragHandle
+          Layout.minimumWidth: 20
+          Layout.maximumWidth: 30
+          Layout.preferredHeight: Layout.preferredWidth
+          Layout.preferredWidth: 30
+          Layout.alignment: Qt.AlignVCenter
+
+          Image {
+            anchors.fill: parent
+            source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/drag-handle-dark.svg" : "qrc:/icons/drag-handle-light.svg"
+            fillMode: Image.PreserveAspectFit
+            mipmap: true
+          }
+        }
+      }
+
+      ObjectStyle {
+        id: styleWidget
+
+        base: root.backend
+        style: root.backend.style
 
         Layout.fillWidth: true
-        Layout.alignment: Qt.AlignVCenter
-      }
+        Layout.preferredHeight: preferredHeight
+        clip: true
 
-      IconRoundButton {
-        id: showInTable
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
-        Layout.alignment: Qt.AlignVCenter
+        property int preferredHeight: 0
 
-        checkable: true
-        checked: root.backend.showInTable
-        lightThemeIcon: "qrc:/icons/table.svg"
-        darkThemeIcon: "qrc:/icons/table-light.svg"
+        Behavior on preferredHeight { SmoothedAnimation { duration: 200 } }
 
-        onToggled: root.backend.showInTable = checked;
-      }
-
-      Item {
-        id: dragHandle
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
-        Layout.alignment: Qt.AlignVCenter
-
-        Image {
-          anchors.fill: parent
-          source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/drag-handle-dark.svg" : "qrc:/icons/drag-handle-light.svg"
-          fillMode: Image.PreserveAspectFit
-          mipmap: true
-        }
+        states: [
+          State {
+            name: "hidden"; when: !styleButton.checked
+            PropertyChanges {
+              styleWidget.preferredHeight: 0
+              styleWidget.visible: false
+            }
+          },
+          State {
+            name: "shown"; when: styleButton.checked
+            PropertyChanges {
+              explicit: false
+              styleWidget.preferredHeight: styleWidget.implicitHeight
+              styleWidget.visible: true
+            }
+          }
+        ]
       }
     }
   }
