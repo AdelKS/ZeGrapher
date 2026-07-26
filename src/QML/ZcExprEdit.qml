@@ -11,12 +11,15 @@ Item {
   property string customErrorMsg: ''
   property bool nanValue: false
 
-  property alias expression: lineEdit.text
   property alias highlighter: mhighlighter
   property alias lineEditBackend: lineEdit
   readonly property alias exprHeight: lineEdit.height
 
-  signal textEdited()
+  property string expression
+  signal textEdited(string expression)
+
+  onExpressionChanged: if (lineEdit.text !== expression) lineEdit.text = expression;
+  Component.onCompleted: lineEdit.text = expression;
 
   implicitHeight: lineEdit.height + errorLbl.height
 
@@ -78,7 +81,7 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    onTextEdited: root.textEdited()
+    onTextEdited: root.textEdited(lineEdit.text)
 
   }
 

@@ -19,13 +19,6 @@ Item {
   // parallel columns; the row is as tall as the taller one.
   implicitHeight: Math.max(mainLayout.implicitHeight, nameLayout.implicitHeight)
 
-  Connections {
-    target: backend
-    function onNameChanged() {
-      zcExprEdit.expression = backend.name;
-    }
-  }
-
   AnimatedConstant {
     id: wrapped_backend
     backend: root.backend
@@ -63,7 +56,7 @@ Item {
 
       expression: backend.name
       state: root.backend.state
-      onTextEdited: root.backend.setName(expression)
+      onTextEdited: (expression) => root.backend.setName(expression)
 
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter

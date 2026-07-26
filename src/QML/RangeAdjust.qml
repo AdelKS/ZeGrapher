@@ -14,6 +14,7 @@ Item {
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
+
   Connections {
     target: root.range.y
     function onStateChanged() {
@@ -51,17 +52,6 @@ Item {
   }
 
 
-  Connections {
-    target: root.range
-    function onInteractiveUpdate() {
-      console.debug("Update x/y min/max widgets after user interaction with graph")
-      ymaxEdit.expression = root.range.y.max.expression;
-      yminEdit.expression = root.range.y.min.expression;
-      xmaxEdit.expression = root.range.x.max.expression;
-      xminEdit.expression = root.range.x.min.expression;
-    }
-  }
-
   ZeTextEdit {
     id: ymaxLbl
     text: "<b>y</b><sub>max</sub>"
@@ -80,7 +70,6 @@ Item {
 
   ValueEdit {
     id: ymaxEdit
-    expression: "10"
     anchors.top: ymaxLbl.bottom
     anchors.horizontalCenter: root.horizontalCenter
     anchors.margins: spacing
@@ -104,7 +93,6 @@ Item {
 
   ValueEdit {
     id: xminEdit
-    expression: "-10"
     anchors.left: root.left
     anchors.top: ymaxEdit.bottom
     anchors.margins: spacing
@@ -129,7 +117,6 @@ Item {
 
   ValueEdit {
     id: xmaxEdit
-    expression: "10"
     anchors.right: root.right
     anchors.top: ymaxEdit.bottom
     anchors.margins: spacing
@@ -154,7 +141,6 @@ Item {
 
   ValueEdit {
     id: yminEdit
-    expression: "-10"
     y: xminEdit.y + xminEdit.exprHeight + spacing
     anchors.horizontalCenter: root.horizontalCenter
     anchors.margins: root.spacing

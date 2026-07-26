@@ -56,7 +56,8 @@ Item {
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignTop
 
-      onExpressionChanged: root.eq1.setName(expression);
+      expression: root.eq1.name
+      onTextEdited: (expression) => root.eq1.setName(expression)
 
       id: lineEdit1
 
@@ -69,7 +70,8 @@ Item {
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignTop
 
-      onExpressionChanged: root.eq2.setName(expression);
+      expression: root.eq2.name
+      onTextEdited: (expression) => root.eq2.setName(expression)
 
       id: lineEdit2
 

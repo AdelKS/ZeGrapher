@@ -14,14 +14,9 @@ Item {
 
   implicitHeight: zcExprEdit.implicitHeight
 
-  onExpressionChanged: root.backend.setExpression(expression)
 
   function refresh() {
     zcExprEdit.refresh();
-  }
-
-  onBackendChanged: {
-    zcExprEdit.expression = backend.expression;
   }
 
   ZcExprEdit {
@@ -29,7 +24,8 @@ Item {
 
     nanValue: isNaN(root.backend.value)
 
-    onTextEdited: root.backend.setExpression(expression);
+    expression: root.backend.expression
+    onTextEdited: (expression) => root.backend.setExpression(expression)
 
     anchors.left: parent.left
     anchors.right: parent.right
@@ -38,15 +34,6 @@ Item {
 
     state: root.backend.state
 
-    Component.onCompleted: root.backend.setExpression(expression)
-
-    Connections {
-      target: root.backend
-
-      function onExpressionChanged() {
-        zcExprEdit.expression = root.backend.expression;
-      }
-    }
   }
 
   Component.onCompleted: {

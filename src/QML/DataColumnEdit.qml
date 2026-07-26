@@ -17,14 +17,6 @@ Item {
   implicitHeight: frame.implicitHeight + del.height / 2
   implicitWidth: frame.implicitWidth + del.width / 2
 
-  Connections {
-    target: root.backend
-    function onNameChanged() {
-      if (root.name != root.backend.name)
-        root.name = root.backend.name;
-    }
-  }
-
   Frame {
     id: frame
     anchors.left: parent.left
@@ -50,11 +42,7 @@ Item {
         state: root.backend.state
 
         expression: root.backend.name
-
-        onTextEdited: {
-          console.debug("DataColumnEdit: updating name in backend: ", expression);
-          root.backend.setName(expression);
-        }
+        onTextEdited: (expression) => root.backend.setName(expression)
 
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignVCenter
