@@ -411,13 +411,17 @@ Item {
         states: [
           State {
             name: "hidden"; when: !styleButton.checked || !styleButton.visible
-            PropertyChanges { styleWidget.preferredHeight: 0 }
+            PropertyChanges {
+              styleWidget.preferredHeight: 0
+              styleWidget.visible: false
+            }
           },
           State {
             name: "shown"; when: styleButton.checked && styleButton.visible
             PropertyChanges {
               explicit: false
               styleWidget.preferredHeight: styleWidget.implicitHeight
+              styleWidget.visible: true
             }
           }
         ]
