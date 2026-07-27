@@ -106,7 +106,11 @@ Item {
           onActivated: {
             let newType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
             if (mathObj.type !== newType)
+            {
               mathObj.type = newType;
+              if (mathObj.type == MathObject.DATASHEET)
+                mathObj.getDataSheet().addColumn();
+            }
           }
         }
 
