@@ -72,6 +72,9 @@ public:
 
   zg::real_range1d getSnapshot();
 
+  /// @brief getSnapshot, but checks its validity
+  std::optional<zg::real_range1d> getValidSnapshot();
+
   bool isDefaultStart() const;
   bool isDefaultEnd() const;
 
