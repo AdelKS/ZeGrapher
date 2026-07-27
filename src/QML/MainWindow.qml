@@ -113,9 +113,9 @@ ApplicationWindow {
         Connections {
           target: userInput.mathObjectsTab
 
-          function onImportCSV(file: url)
+          function onImportCSV(file: url, dataSheet: DataSheet)
           {
-            dataPane.loadCSV(file);
+            dataPane.loadCSV(file, dataSheet);
           }
         }
 

@@ -15,7 +15,8 @@ Item {
   onImplicitHeightChanged: console.debug("DataPane: implicitHeight=", implicitHeight)
   onImplicitWidthChanged: console.debug("DataPane: implicitWidth=", implicitWidth)
 
-  function loadCSV(csvFile: url) {
+  function loadCSV(csvFile: url, dataSheet: DataSheet) {
+    csvImportSettings.dataSheet = dataSheet;
     csvImportSettings.csvFilePath = csvFile.toString();
     csvImportSettings.previewModel.csvFile = csvFile;
     importingCSV = true;

@@ -19,6 +19,7 @@ Item {
 
   property alias csvFilePath: csvFile.text
   property alias previewModel: csvPreviewModel
+  property alias dataSheet: csvPreviewModel.dataSheet
 
   signal done()
 

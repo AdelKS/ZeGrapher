@@ -9,7 +9,7 @@ Item {
 
   required property size globalMenuSize
 
-  signal importCSV(file: url)
+  signal importCSV(file: url, dataSheet: DataSheet)
 
   property real objectsImplicitWidth: 0
 
@@ -70,6 +70,8 @@ Item {
 
         Component.onCompleted: root.objectsImplicitWidth = Math.max(root.objectsImplicitWidth, implicitWidth)
         onImplicitWidthChanged: root.objectsImplicitWidth = Math.max(root.objectsImplicitWidth, implicitWidth)
+
+        onImportCSV: (file, dataSheet) => { root.importCSV(file, dataSheet); }
       }
     }
   }
@@ -81,7 +83,7 @@ Item {
     options: FileDialog.ReadOnly
     nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
     visible: false
-    onAccepted: root.importCSV(selectedFile)
+    onAccepted: root.importCSV(selectedFile, null)
   }
 
   RowLayout

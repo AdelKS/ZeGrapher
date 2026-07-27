@@ -9,6 +9,8 @@ Item {
 
   property alias dragHandle: dragHandle
 
+  signal importCSV(file: url, dataSheet: DataSheet)
+
   implicitWidth: frame.implicitWidth + del.height / 2
   implicitHeight: frame.implicitHeight + del.height / 2
 
@@ -431,6 +433,11 @@ Item {
             }
           }
         }
+      }
+
+      Connections {
+        target: loader.item
+        function onImportCSV(file: url, dataSheet: DataSheet) { root.importCSV(file, dataSheet); }
       }
     }
   }
