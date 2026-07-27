@@ -173,9 +173,9 @@ mathobj::DataSheet* MathObject::getDataSheet()
   return getBackend<mathobj::DataSheet>();
 }
 
-MathObject::EvalHandle MathObject::getZcObject() const
+EvalHandle MathObject::getZcObject() const
 {
-  using Ret = MathObject::EvalHandle;
+  using Ret = EvalHandle;
   return std::visit(
     zc::utils::overloaded{
       [&](const auto* c) -> Ret {
@@ -261,7 +261,7 @@ bool MathObject::isDiscrete() const
   );
 }
 
-std::optional<MathObject::SamplingSettings> MathObject::getSamplingSettings()
+std::optional<SamplingSettings> MathObject::getSamplingSettings()
 {
   auto* base = getBase();
   if (not base) [[unlikely]]

@@ -48,9 +48,6 @@ struct MathObject: QObject {
   Q_PROPERTY(PlotStyle* style READ getStyle NOTIFY styleChanged)
 
 public:
-  using EvalHandle
-    = std::variant<const zc::DynMathObject<zc_t>*,
-                   std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
 
   enum Type
   {
@@ -61,14 +58,6 @@ public:
   };
 
   Q_ENUM(Type);
-
-  struct SamplingSettings {
-    zg::real_range1d range = {.min = {0.}, .max = {0.}};
-    zg::CoordinateSystem coordinateSystem = zg::CoordinateSystem::Cartesian;
-    size_t revision = 0;
-
-    bool operator == (const SamplingSettings&) const = default;
-  };
 
   explicit MathObject(QObject *parent = nullptr, Type type = EQUATION);
 

@@ -27,6 +27,10 @@
 
 namespace zg {
 
+  using EvalHandle
+    = std::variant<const zc::DynMathObject<zc_t>*,
+                   std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
+
 struct StringRange {
   QString start, end;
   bool operator == (const StringRange&) const = default;
@@ -99,6 +103,14 @@ protected:
 };
 
 using CoordinateSystem = Base::CoordinateSystem;
+
+struct SamplingSettings {
+  zg::real_range1d range = {.min = {0.}, .max = {0.}};
+  CoordinateSystem coordinateSystem = CoordinateSystem::Cartesian;
+  size_t revision = 0;
+
+  bool operator == (const SamplingSettings&) const = default;
+};
 
 }
 

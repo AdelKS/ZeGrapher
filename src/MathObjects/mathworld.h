@@ -61,8 +61,8 @@ public:
   void trackExprObject(mathobj::Expr*);
   void untrackExprObject(const mathobj::Expr*);
 
-  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdeps(MathObject::EvalHandle);
-  std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(MathObject::EvalHandle);
+  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdeps(EvalHandle);
+  std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(EvalHandle);
 
   QHash<int, QByteArray> roleNames() const override;
 

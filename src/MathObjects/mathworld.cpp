@@ -166,7 +166,7 @@ void MathWorld::updateSchrodingerStatus()
     schrodingerBackends.insert(&schrodingerConstant->zcMathObj);
   }
 
-  auto inSet = [&](MathObject::EvalHandle h) -> bool {
+  auto inSet = [&](EvalHandle h) -> bool {
     return std::visit(
       zc::utils::overloaded{
         [&](const zc::DynMathObject<zc_t>* p) { return schrodingerBackends.contains(p); },
@@ -186,7 +186,7 @@ void MathWorld::updateSchrodingerStatus()
 }
 
 std::unordered_set<const zc::DynMathObject<zc_t>*>
-MathWorld::direct_revdeps(MathObject::EvalHandle handle)
+MathWorld::direct_revdeps(EvalHandle handle)
 {
   std::unordered_set<std::string> names;
 
@@ -211,7 +211,7 @@ MathWorld::direct_revdeps(MathObject::EvalHandle handle)
 }
 
 std::unordered_set<const zc::DynMathObject<zc_t>*>
-MathWorld::revdeps(MathObject::EvalHandle handle)
+MathWorld::revdeps(EvalHandle handle)
 {
   auto to_explore = direct_revdeps(handle);
   std::unordered_set<const zc::DynMathObject<zc_t>*> res, explored;
@@ -223,7 +223,7 @@ MathWorld::revdeps(MathObject::EvalHandle handle)
 
     explored.insert(d);
     res.insert(d);
-    auto new_to_explore = direct_revdeps(MathObject::EvalHandle(d));
+    auto new_to_explore = direct_revdeps(EvalHandle(d));
     for (auto* e: new_to_explore)
       if (not explored.contains(e))
         to_explore.insert(e);

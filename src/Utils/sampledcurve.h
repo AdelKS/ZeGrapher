@@ -70,7 +70,7 @@ struct SampledCurve {
   /// @brief pixel coordinates of 'curve', updated by the Sampler after each sampling pass
   std::vector<QPointF> px_curve = {};
 
-  MathObject::SamplingSettings settings;
+  SamplingSettings settings;
 };
 
 } // namespace zg

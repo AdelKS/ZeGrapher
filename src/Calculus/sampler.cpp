@@ -165,7 +165,7 @@ void Sampler::update()
   refresh_curve_styles();
   refresh_curves_list();
 
-  auto dispatch = [this](zg::MathObject::EvalHandle var_handle, auto& data)
+  auto dispatch = [this](zg::EvalHandle var_handle, auto& data)
   {
     std::visit(zc::utils::overloaded{
       [&](auto handle){
