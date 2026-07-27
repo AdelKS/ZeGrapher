@@ -136,5 +136,18 @@ Data::~Data()
   dataTableModel.deregisterTableColumn(this);
 }
 
+std::optional<zg::SamplingSettings> Data::getSamplingSettings()
+{
+  const auto opt_range = getValidSnapshot();
+  if (not opt_range)
+    return {};
+
+  return zg::SamplingSettings {
+    .range = *opt_range,
+    .coordinateSystem = getCoordinateSystem(),
+    .revision = zcMathObj.get_revision(),
+  };
+}
+
 }
 }

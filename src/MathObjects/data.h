@@ -60,7 +60,12 @@ public:
 
   State sync();
   Q_INVOKABLE bool isValid();
+
+  using Base::isDiscrete;
   const State& getState() const { return state; }
+
+  std::optional<SamplingSettings> getSamplingSettings();
+  EvalHandle getZcObject() { return &zcMathObj; }
 
   Q_INVOKABLE void setShowInTable(bool);
 
