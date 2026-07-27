@@ -21,40 +21,56 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showguides="true"
-     inkscape:zoom="1.6038803"
-     inkscape:cx="268.41155"
-     inkscape:cy="199.51613"
+     inkscape:zoom="1.1341147"
+     inkscape:cx="335.50398"
+     inkscape:cy="288.33062"
      inkscape:window-width="2400"
      inkscape:window-height="1323"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg5" />
+     inkscape:current-layer="g2" />
   <defs
      id="defs5" />
-  <path
-     style="fill:#b2b2b2;fill-opacity:1;stroke:#b2b2b2;stroke-width:50;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
-     d="M 353.40796,173.7022 V 362.49045 H 166.59204 v -220.9809 h 155.58781 z"
-     id="path1"
-     sodipodi:nodetypes="cccccc" />
-  <text
-     xml:space="preserve"
-     style="font-size:90.1304px;text-align:start;letter-spacing:5.88px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:13;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-     x="159.48517"
-     y="241.00243"
-     id="text8"><tspan
-       id="tspan8"
-       style="letter-spacing:5.88px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:13;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       x="159.48517"
-       y="241.00243"
-       dx="0">CSV</tspan></text>
-  <path
-     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:10.7139;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
-     d="m 213.85801,314.46488 h 92.28398 L 260,358.76814 Z"
-     id="path2"
-     sodipodi:nodetypes="ccc" />
-  <path
-     style="fill:#202326;fill-opacity:1;stroke:#ffffff;stroke-width:35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
-     d="m 260,285.40875 v 39.52796"
-     id="path3" />
+  <g
+     id="g2"
+     transform="translate(-2.2,-6)">
+    <path
+       id="folder-back"
+       style="fill:#b2b2b2;fill-opacity:1;stroke:none;stroke-width:0.947534"
+       d="m 103.93503,161.38946 c 0,-19.93833 14.43014,-36.10154 32.23063,-36.10154 h 65.94835 c 7.5303,0.10196 14.08245,4.41415 19.6965,10.0282 l 15.27768,17.0818 c 5.2672,5.2672 11.45769,10.02821 19.69649,10.02821 h 122.9013 c 17.80049,0 32.23064,16.16321 32.23064,36.10154 V 305.79564 H 103.93503 Z"
+       sodipodi:nodetypes="ccccccccccc" />
+    <rect
+       id="folder-front"
+       x="181.33934"
+       y="217.08394"
+       width="314.83084"
+       height="197.61952"
+       rx="31.43088"
+       transform="matrix(1,0,-0.22139295,0.97518468,0,0)"
+       style="fill:#b2b2b2;fill-opacity:1;stroke:none;stroke-width:42.0418;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill"
+       ry="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:106.601px;line-height:1.5;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:6.95449px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:9.03754;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+       x="250.7005"
+       y="322.86517"
+       id="text2"
+       transform="matrix(0.92409759,0,-0.26346308,1.0821368,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         x="250.7005"
+         y="322.86517"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:9.03754;stroke-dasharray:none">CSV</tspan></text>
+    <rect
+       id="folder-front-6"
+       x="182.1244"
+       y="217.78705"
+       width="313.71399"
+       height="196.31378"
+       rx="31.319378"
+       transform="matrix(1,0,-0.22207489,0.97502961,0,0)"
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:24.8798;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill"
+       ry="0" />
+  </g>
 </svg>
