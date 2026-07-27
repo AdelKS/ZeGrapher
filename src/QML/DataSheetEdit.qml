@@ -1,12 +1,17 @@
 // The columns of a DataSheet, listed as editable rows
 
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
+import QtQuick.Dialogs
+import QtCore
 
 Item {
   id: root
 
   required property DataSheet sheet
+
+  signal importCSV(file: url, dataSheet: DataSheet)
 
   /// @brief how tall the box grows on its own before the list starts scrolling
   property real maxAutoHeight: 300
@@ -50,7 +55,7 @@ Item {
       model: root.sheet
       spacing: 5
 
-      bottomMargin: addColumn.height + 15
+      bottomMargin: buttons.height + 15
 
       move: Transition {
         NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
@@ -86,19 +91,66 @@ Item {
     }
   }
 
-  IconRoundButton {
-    id: addColumn
+  FileDialog {
+    id: importDialog
+    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    fileMode: FileDialog.OpenFile
+    options: FileDialog.ReadOnly
+    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
+    visible: false
+    onAccepted: root.importCSV(selectedFile, root.sheet)
+  }
+
+  FileDialog {
+    id: exportDialog
+    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    fileMode: FileDialog.SaveFile
+    defaultSuffix: "csv"
+    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
+    visible: false
+  }
+
+  RowLayout {
+    id: buttons
     z: 100
-    width: 30
-    height: 30
     anchors.right: parent.right
     anchors.bottom: resizeHandle.top
     anchors.margins: 5
+    height: implicitHeight
+    spacing: 5
 
-    darkThemeIcon: "qrc:/icons/add-light.svg"
-    lightThemeIcon: "qrc:/icons/add.svg"
+    IconRoundButton {
+      id: importColumns
+      Layout.preferredHeight: 30
+      Layout.preferredWidth: 30
 
-    onReleased: root.sheet.addColumn();
+      lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
+      darkThemeIcon: "qrc:/icons/csv-import-light.svg"
+
+      onReleased: importDialog.visible = true;
+    }
+
+    IconRoundButton {
+      id: exportColumns
+      Layout.preferredHeight: 30
+      Layout.preferredWidth: 30
+
+      lightThemeIcon: "qrc:/icons/csv-export-dark.svg"
+      darkThemeIcon: "qrc:/icons/csv-export-light.svg"
+
+      onReleased: exportDialog.visible = true;
+    }
+
+    IconRoundButton {
+      id: addColumn
+      Layout.preferredHeight: 30
+      Layout.preferredWidth: 30
+
+      darkThemeIcon: "qrc:/icons/add-light.svg"
+      lightThemeIcon: "qrc:/icons/add.svg"
+
+      onReleased: root.sheet.addColumn();
+    }
   }
 
   MouseArea {
