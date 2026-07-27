@@ -21,35 +21,56 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showguides="true"
-     inkscape:zoom="0.56705735"
-     inkscape:cx="76.711818"
-     inkscape:cy="111.09987"
+     inkscape:zoom="1.1341147"
+     inkscape:cx="335.50398"
+     inkscape:cy="288.33062"
      inkscape:window-width="2400"
      inkscape:window-height="1323"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg5" />
+     inkscape:current-layer="g2" />
   <defs
      id="defs5" />
   <g
      id="g2"
-     transform="matrix(0.8800905,0,0,0.8800905,30.69683,29.81675)">
+     transform="translate(-2.2,-6)">
     <path
-       id="rect1"
-       style="fill:#b2b2b2;stroke-width:25;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:359.999"
-       d="m 103.33647,99.68542 h 73.33176 c 36.32319,0 27.35244,46.88175 57.33177,46 h 95.33177 73.33176 c 26.70397,0 48.20212,21.49815 48.20212,48.20212 v 172.2249 c 0,26.70398 -21.49815,48.20212 -48.20212,48.20212 H 109.33647 c -26.703972,0 -48.202116,-21.49814 -48.202116,-48.20212 v -224.2249 c 0,-26.70397 15.498144,-42.20212 42.202116,-42.20212 z"
-       sodipodi:nodetypes="scccssssssss" />
+       id="folder-back"
+       style="fill:#b2b2b2;fill-opacity:1;stroke:none;stroke-width:0.947534"
+       d="m 103.93503,161.38946 c 0,-19.93833 14.43014,-36.10154 32.23063,-36.10154 h 65.94835 c 7.5303,0.10196 14.08245,4.41415 19.6965,10.0282 l 15.27768,17.0818 c 5.2672,5.2672 11.45769,10.02821 19.69649,10.02821 h 122.9013 c 17.80049,0 32.23064,16.16321 32.23064,36.10154 V 305.79564 H 103.93503 Z"
+       sodipodi:nodetypes="ccccccccccc" />
+    <rect
+       id="folder-front"
+       x="181.33934"
+       y="217.08394"
+       width="314.83084"
+       height="197.61952"
+       rx="31.43088"
+       transform="matrix(1,0,-0.22139295,0.97518468,0,0)"
+       style="fill:#b2b2b2;fill-opacity:1;stroke:none;stroke-width:42.0418;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill"
+       ry="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:153.34px;line-height:1.5;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:10.0037px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:13;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
-       x="148.34721"
-       y="333.88193"
-       id="text2"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:106.601px;line-height:1.5;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:6.95449px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:9.03754;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:359.999;stroke-opacity:1"
+       x="300.57452"
+       y="320.42072"
+       id="text2"
+       transform="matrix(0.92409759,0,-0.26346308,1.0821368,0,0)"><tspan
          sodipodi:role="line"
          id="tspan2"
-         x="148.34721"
-         y="333.88193"
-         style="fill:#ffffff;fill-opacity:1;stroke-width:13;stroke-dasharray:none">ZG</tspan></text>
+         x="300.57452"
+         y="320.42072"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:9.03754;stroke-dasharray:none">ZG</tspan></text>
+    <rect
+       id="folder-front-6"
+       x="182.1244"
+       y="217.78705"
+       width="313.71399"
+       height="196.31378"
+       rx="31.319378"
+       transform="matrix(1,0,-0.22207489,0.97502961,0,0)"
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:24.8798;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill"
+       ry="0" />
   </g>
 </svg>
