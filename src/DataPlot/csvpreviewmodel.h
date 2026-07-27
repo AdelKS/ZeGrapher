@@ -25,6 +25,7 @@
 
 #include <QtQmlIntegration/qqmlintegration.h>
 
+#include "MathObjects/datasheet.h"
 namespace zg {
 
 class CsvPreviewModel: public QAbstractTableModel
@@ -39,6 +40,7 @@ class CsvPreviewModel: public QAbstractTableModel
   Q_PROPERTY(QUrl csvFile WRITE setCsvFile MEMBER csvFile)
   Q_PROPERTY(LoadingState loadingState READ getLoadingState NOTIFY loadingStateChanged)
   Q_PROPERTY(int progressPercentage READ getProgressPercentage NOTIFY progressPercentageChanged)
+  Q_PROPERTY(mathobj::DataSheet* dataSheet MEMBER dataSheet)
 
 public:
   CsvPreviewModel(QObject *parent = nullptr);
@@ -93,6 +95,8 @@ protected:
   /// @brief split csv data, rows[columns]
   /// @note the views refer to csvRawData
   QList<QList<QStringView>> csvData;
+
+  mathobj::DataSheet* dataSheet = nullptr;
 
 };
 

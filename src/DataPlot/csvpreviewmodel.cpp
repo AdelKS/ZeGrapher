@@ -259,11 +259,12 @@ void CsvPreviewModel::loadIntoWorld()
     loadingState = ADDING_TO_WORLD;
     emit loadingStateChanged();
 
-    mathobj::DataSheet* sheet = mathWorld.addMathObject(MathObject::DATASHEET)->getDataSheet();
+    if (not dataSheet)
+      dataSheet = mathWorld.addMathObject(MathObject::DATASHEET)->getDataSheet();
 
     for (size_t i = 0 ; i != data.size() ; i++)
     {
-      mathobj::Data* column = sheet->addColumn();
+      mathobj::Data* column = dataSheet->addColumn();
       column->style.setVisible(false);
       column->setName(names[i]);
       column->setData(std::move(data[i]));
@@ -275,6 +276,8 @@ void CsvPreviewModel::loadIntoWorld()
     file.close();
 
     loadingState = FREE;
+    dataSheet = nullptr;
+
     emit loadingStateChanged();
   }
 
