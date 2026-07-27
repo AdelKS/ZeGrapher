@@ -15,10 +15,6 @@ Item {
 
   implicitWidth: objectsImplicitWidth + verticalScrollBar.width * verticalScrollBar.visible
 
-  onImplicitWidthChanged: {
-    console.debug("MathObjects: implicitWidth: ", implicitWidth)
-  }
-
   ListView {
     id: listView
     anchors.fill: parent

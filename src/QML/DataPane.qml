@@ -12,9 +12,6 @@ Item {
   implicitHeight: dataTable.implicitHeight + 2*dataTable.anchors.margins
     + (root.importingCSV ? csvImportSettings.implicitHeight : 0)
 
-  onImplicitHeightChanged: console.debug("DataPane: implicitHeight=", implicitHeight)
-  onImplicitWidthChanged: console.debug("DataPane: implicitWidth=", implicitWidth)
-
   function loadCSV(csvFile: url, dataSheet: DataSheet) {
     csvImportSettings.dataSheet = dataSheet;
     csvImportSettings.csvFilePath = csvFile.toString();

@@ -80,9 +80,4 @@ Item {
 
     Item {}
   }
-
-  Component.onCompleted: {
-    console.debug("backendEdit: backend1=", eq1);
-    console.debug("backendEdit: backend2=", eq2);
-  }
 }

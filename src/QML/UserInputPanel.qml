@@ -16,15 +16,6 @@ Item {
 
   implicitWidth: colLayout.implicitWidth
 
-  onImplicitWidthChanged: {
-    console.debug("UserInputPanel: implicitWidth: ", implicitWidth);
-  }
-
-  onImplicitHeightChanged: {
-    console.debug("UserInputPanel: implicitHeight: ", implicitHeight);
-  }
-
-
   FileDialog {
     id: exportDialog
     title: qsTr("Graph export")

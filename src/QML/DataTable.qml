@@ -23,14 +23,6 @@ Item {
     ? horizontalHeader.implicitHeight + scrollView.implicitHeight
     : 0
 
-  onImplicitHeightChanged: {
-    console.debug("DataTable: implicitHeight=", implicitHeight);
-  }
-
-  onImplicitWidthChanged: {
-    console.debug("DataTable: implicitWidth=", implicitWidth);
-  }
-
   Menu {
     id: menu
     MenuItem {

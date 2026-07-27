@@ -14,22 +14,6 @@ Item {
   implicitWidth: frame.implicitWidth + del.height / 2
   implicitHeight: frame.implicitHeight + del.height / 2
 
-  onImplicitWidthChanged: {
-    console.debug("MathObjectInput: implicitWidth", implicitWidth);
-  }
-
-  onImplicitHeightChanged: {
-    console.debug("MathObjectInput: implicitHeight", implicitHeight);
-  }
-
-  onWidthChanged: {
-    console.debug("MathObjectInput: width", width);
-  }
-
-  onHeightChanged: {
-    console.debug("MathObjectInput: height", height);
-  }
-
   Frame {
     id: frame
     anchors.left: parent.left
@@ -401,15 +385,6 @@ Item {
         Layout.fillWidth: true
 
         property int currentType: -1
-
-        onStatusChanged: {
-          let statusStrings = [];
-          statusStrings[Loader.Null] = "Null";
-          statusStrings[Loader.Ready] = "Ready";
-          statusStrings[Loader.Loading] = "Loading";
-          statusStrings[Loader.Error] = "Error";
-          console.debug("Loader status: ", statusStrings[status]);
-        }
 
         Connections {
           target: mathObj

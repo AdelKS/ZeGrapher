@@ -9,14 +9,6 @@ Item {
   implicitHeight: layout.implicitHeight + 2 * layout.anchors.margins
   implicitWidth: layout.implicitWidth + 2 * layout.anchors.margins
 
-  onImplicitWidthChanged: {
-    console.debug("CsvImportSettings: implicit width: ", implicitWidth);
-  }
-
-  onImplicitHeightChanged: {
-    console.debug("CsvImportSettings: implicit height: ", implicitHeight);
-  }
-
   property alias csvFilePath: csvFile.text
   property alias previewModel: csvPreviewModel
   property alias dataSheet: csvPreviewModel.dataSheet

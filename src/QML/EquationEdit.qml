@@ -32,8 +32,4 @@ Item {
     anchors.left: parent.left
     anchors.right: parent.right
   }
-
-  Component.onCompleted: {
-    console.debug("backendEdit: backend=", backend);
-  }
 }

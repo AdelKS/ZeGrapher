@@ -209,11 +209,6 @@ Loader {
           Layout.preferredWidth: implicitWidth
           Layout.preferredHeight: implicitHeight
 
-          Component.onCompleted: {
-            console.debug("Start label implicit size: ", implicitWidth, "x", implicitHeight)
-            console.debug("Start label size: ", width, "x", height)
-          }
-
           id: startLabel
           text: qsTr("Start:")
         }
