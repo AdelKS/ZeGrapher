@@ -33,6 +33,9 @@ namespace zg {
 class Sampler
 {
 public:
+  using Plottable = std::variant<zg::MathObject*, zg::mathobj::Data*>;
+  using CurveMap = std::unordered_map<Plottable, zg::SampledCurve>;
+
   Sampler(const zg::ZeViewMapper& mapper);
 
   void update();
@@ -70,11 +73,11 @@ protected:
 
   const zg::ZeViewMapper& mapper;
 
-  std::unordered_map<const zg::MathObject*, zg::SampledCurve> curves;
+  CurveMap curves;
 
   zg::mathobj::Constant* schrodinger_constant = nullptr;
 
-  std::unordered_map<double, std::unordered_map<const zg::MathObject*, zg::SampledCurve>> schrodinger_curves_map;
+  std::unordered_map<double, CurveMap> schrodinger_curves_map;
 
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;
 
