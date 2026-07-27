@@ -41,6 +41,7 @@ struct DataSheet: QAbstractListModel {
   QML_ELEMENT
 
   Q_PROPERTY(int columns READ rowCount NOTIFY columnsChanged)
+  Q_PROPERTY(QString notes WRITE setNotes MEMBER notes NOTIFY notesChanged)
 
 public:
 
@@ -51,6 +52,8 @@ public:
   QHash<int, QByteArray> roleNames() const override;
 
   const std::vector<Data*>& getColumns() const { return columns; }
+
+  void setNotes(QString);
 
   Q_INVOKABLE zg::mathobj::Data* addColumn();
 
@@ -63,6 +66,7 @@ public:
   void sync();
 
   struct POD {
+    std::optional<std::string> notes;
     std::optional<std::vector<Data::POD>> columns;
 
     auto operator<=>(const POD&) const = default;
@@ -74,12 +78,16 @@ public:
 signals:
   void updated();
   void columnsChanged();
+  void notesChanged();
 
 protected:
   /// @brief forgets a column without touching it, it may be halfway through destruction
   void forgetColumn(const zg::mathobj::Data*);
 
   std::vector<Data*> columns;
+
+  /// @brief free-form comment the user attaches to the sheet, math ignores it
+  QString notes;
 };
 
 }

@@ -19,8 +19,7 @@ Item {
   /// @brief height the user dragged the box to, zero as long as they haven't
   property real userHeight: 0
 
-  /// @brief the bottom strip that holds the add button and the resize handle
-  readonly property real minimumHeight: listView.bottomMargin + resizeHandle.height
+  readonly property real minimumHeight: notesRow.height + listView.bottomMargin + resizeHandle.height
 
   property real columnsImplicitWidth: 0
 
@@ -33,13 +32,36 @@ Item {
   implicitWidth: columnsImplicitWidth + scrollBarWidth
   implicitHeight: Math.max(minimumHeight, userHeight > 0 ? userHeight : Math.min(autoHeight, maxAutoHeight))
 
-  onImplicitWidthChanged: {
-    console.debug("DataSheetEdit: implicitWidth: ", implicitWidth)
+  RowLayout {
+    id: notesRow
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    anchors.leftMargin: 5
+    anchors.rightMargin: root.scrollBarWidth + 5
+    height: implicitHeight
+    spacing: 5
+
+    ZeLabel {
+      text: qsTr("Notes:")
+    }
+
+    TextField {
+      id: notes
+      Layout.fillWidth: true
+
+      font: Information.appSettings.font
+      placeholderText: qsTr("your comment on this sheet")
+
+      text: root.sheet.notes
+      onTextEdited: root.sheet.notes = text
+    }
   }
 
   ScrollView {
     id: scrollView
     anchors.fill: parent
+    anchors.topMargin: notesRow.height
     anchors.bottomMargin: resizeHandle.height
     clip: true
 
@@ -54,6 +76,7 @@ Item {
 
       model: root.sheet
       spacing: 5
+      reuseItems: true
 
       bottomMargin: buttons.height + 15
 

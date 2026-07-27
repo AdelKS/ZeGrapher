@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 #include "MathObjects/datasheet.h"
-#include "MathObjects/mathobject.h"
 #include "Utils/yaml.h"
 
 namespace zg {
@@ -141,15 +140,28 @@ DataSheet::POD DataSheet::exportPod() const
     columnPods.push_back(d->exportPod());
 
   return POD {
+    .notes = yml::not_default(notes),
     .columns = yml::not_default(columnPods)
   };
 }
 
 void DataSheet::importPod(DataSheet::POD p)
 {
+  if (p.notes)
+    setNotes(QString::fromStdString(*p.notes));
+
   if (p.columns)
     for (Data::POD& column: *p.columns)
       addColumn()->importPod(std::move(column));
+}
+
+void DataSheet::setNotes(QString n)
+{
+  if (n == notes) return;
+
+  notes = n;
+
+  emit notesChanged();
 }
 
 }
