@@ -118,36 +118,10 @@ Item {
       }
 
       ObjectStyle {
-        id: styleWidget
-
         base: root.backend
         style: root.backend.style
 
-        Layout.fillWidth: true
-        Layout.preferredHeight: preferredHeight
-        clip: true
-
-        property int preferredHeight: 0
-
-        Behavior on preferredHeight { SmoothedAnimation { duration: 200 } }
-
-        states: [
-          State {
-            name: "hidden"; when: !styleButton.checked
-            PropertyChanges {
-              styleWidget.preferredHeight: 0
-              styleWidget.visible: false
-            }
-          },
-          State {
-            name: "shown"; when: styleButton.checked
-            PropertyChanges {
-              explicit: false
-              styleWidget.preferredHeight: styleWidget.implicitHeight
-              styleWidget.visible: true
-            }
-          }
-        ]
+        open: styleButton.checked
       }
     }
   }

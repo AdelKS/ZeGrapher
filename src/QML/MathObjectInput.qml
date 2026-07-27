@@ -7,8 +7,6 @@ Item {
 
   required property MathObject mathObj
 
-  property bool noStyle: root.mathObj.style === null
-
   property alias dragHandle: dragHandle
 
   implicitWidth: frame.implicitWidth + del.height / 2
@@ -108,15 +106,7 @@ Item {
           onActivated: {
             let newType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
             if (mathObj.type !== newType)
-            {
-              if (newType === MathObject.CONSTANT)
-                root.noStyle = true;
-
               mathObj.type = newType;
-
-              if (newType !== MathObject.CONSTANT)
-                root.noStyle = false;
-            }
           }
         }
 
@@ -393,39 +383,11 @@ Item {
         transitions: commonTransition
       }
 
-      Loader {
-        id: styleWidget
-        active: !root.noStyle
-        sourceComponent: ObjectStyle {
-          base: root.mathObj.base
-          style: root.mathObj.style
-        }
+      ObjectStyle {
+        base: root.mathObj.base
+        style: root.mathObj.style
 
-        Layout.fillWidth: true
-        Layout.preferredHeight: preferredHeight
-        clip: true
-
-        property int preferredHeight: 0
-
-        Behavior on preferredHeight { SmoothedAnimation { duration: 200 } }
-
-        states: [
-          State {
-            name: "hidden"; when: !styleButton.checked || !styleButton.visible
-            PropertyChanges {
-              styleWidget.preferredHeight: 0
-              styleWidget.visible: false
-            }
-          },
-          State {
-            name: "shown"; when: styleButton.checked && styleButton.visible
-            PropertyChanges {
-              explicit: false
-              styleWidget.preferredHeight: styleWidget.implicitHeight
-              styleWidget.visible: true
-            }
-          }
-        ]
+        open: styleButton.checked && styleButton.visible
       }
 
       Loader {
