@@ -87,5 +87,7 @@
         <file>icons/save-dark.svg</file>
         <file>icons/load-light.svg</file>
         <file>icons/load-dark.svg</file>
+        <file>icons/csv-export-dark.svg</file>
+        <file>icons/csv-export-light.svg</file>
     </qresource>
 </RCC>
