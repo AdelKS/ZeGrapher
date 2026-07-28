@@ -23,7 +23,10 @@
 #include "information.h"
 
 #include <QFile>
+#include <QDir>
 #include <QCoreApplication>
+
+#include <filesystem>
 
 namespace zg {
 
@@ -260,7 +263,21 @@ void CsvPreviewModel::loadIntoWorld()
     emit loadingStateChanged();
 
     if (not dataSheet)
+    {
+      auto display_path = [](const QUrl& url)
+      {
+        const std::filesystem::path path = url.toLocalFile().toStdString();
+        const auto rel = path.lexically_relative(QDir::homePath().toStdString());
+
+        // outside of home, 'rel' is empty or climbs back up with ".."
+        const bool in_home = not rel.empty() and *rel.begin() != "..";
+
+        return QString::fromStdString(in_home ? ("~" / rel).string() : path.string());
+      };
+
       dataSheet = mathWorld.addMathObject(MathObject::DATASHEET)->getDataSheet();
+      dataSheet->setNotes(tr("imported from %1").arg(display_path(csvFile)));
+    }
 
     for (size_t i = 0 ; i != data.size() ; i++)
     {
