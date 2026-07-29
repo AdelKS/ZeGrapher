@@ -21,6 +21,8 @@
 #include "MathObjects/datasheet.h"
 #include "Utils/yaml.h"
 
+#include <QSaveFile>
+
 namespace zg {
 namespace mathobj {
 
@@ -130,6 +132,59 @@ void DataSheet::sync()
 bool DataSheet::isValid() const
 {
   return std::ranges::all_of(columns, [](Data* d) { return d->getState().isValid(); });
+}
+
+void DataSheet::exportCSV(QUrl fileName) const
+{
+  QSaveFile file(fileName.toLocalFile());
+  if (not file.open(QFile::WriteOnly | QFile::Text))
+    return;
+
+  auto write = [&](std::string_view s) { file.write(s.data(), s.size()); };
+
+  // a field that holds a separator or a quote goes between quotes, its own quotes doubled
+  auto escape_cell = [](std::string_view field)
+  {
+    if (field.find_first_of(",\"") == std::string_view::npos)
+      return std::string(field);
+
+    std::string escaped = "\"";
+    for (char c: field)
+    {
+      if (c == '"')
+        escaped += '"';
+      escaped += c;
+    }
+    return escaped += '"';
+  };
+
+  auto write_row = [&](auto&& cell_of)
+  {
+    bool first = true;
+    for (const Data* d: columns)
+    {
+      if (not first) write(",");
+      first = false;
+      write(escape_cell(cell_of(d)));
+    }
+    write("\n");
+  };
+
+  write_row([](const Data* d) { return d->getName().toStdString(); });
+
+  size_t rows = 0;
+  for (const Data* d: columns)
+    rows = std::max(rows, d->getData().size());
+
+  // the columns rarely end together, the shorter ones trail empty cells
+  for (size_t row = 0 ; row != rows ; row++)
+    write_row([&](const Data* d) -> std::string_view
+    {
+      const std::vector<std::string>& values = d->getData();
+      return row < values.size() ? values[row] : std::string_view();
+    });
+
+  file.commit();
 }
 
 DataSheet::POD DataSheet::exportPod() const

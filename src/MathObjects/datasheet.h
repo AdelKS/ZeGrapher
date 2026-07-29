@@ -23,6 +23,7 @@
 #include "data.h"
 
 #include <QAbstractListModel>
+#include <QUrl>
 
 #include <vector>
 
@@ -62,6 +63,9 @@ public:
   Q_INVOKABLE int indexOfColumn(const zg::mathobj::Data*) const;
 
   Q_INVOKABLE bool isValid() const;
+
+  /// @brief writes the columns as an RFC 4180 CSV file, with the column names as header row
+  Q_INVOKABLE void exportCSV(QUrl fileName) const;
 
   void sync();
 

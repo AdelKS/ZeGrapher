@@ -131,6 +131,7 @@ Item {
     defaultSuffix: "csv"
     nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
     visible: false
+    onAccepted: root.sheet.exportCSV(selectedFile)
   }
 
   Frame {
