@@ -57,7 +57,7 @@ QVariant CsvPreviewModel::data(const QModelIndex& index, int) const
   Q_ASSERT(index.column() < columnCount());
   Q_ASSERT(index.row() < rowCount());
 
-  return QString(csvData.at(index.row()).at(index.column()));
+  return csvData.at(index.row()).at(index.column());
 }
 
 QVariant CsvPreviewModel::headerData(int section, Qt::Orientation orientation, int) const
@@ -158,7 +158,7 @@ void CsvPreviewModel::splitCsvFile()
 
   if (csvHasHeaderRow)
   {
-    columnNames = it->split(separator);
+    columnNames = splitCsvLine(*it, separator);
     column_count = columnNames.size();
     it++;
     row++;
@@ -166,7 +166,7 @@ void CsvPreviewModel::splitCsvFile()
 
   for (; it != csvRawData.cend() and row < maxRowCount + rowSkipCount + csvHasHeaderRow ; it++, row++)
   {
-    csvData << QStringView(*it).split(separator);
+    csvData << splitCsvLine(*it, separator);
     column_count = std::max(csvData.back().size(), column_count);
   }
 
@@ -251,9 +251,9 @@ void CsvPreviewModel::loadIntoWorld()
       if (line_num < rowSkipCount)
         ;
       else if (line_num == rowSkipCount and csvHasHeaderRow)
-        names = line.split(separator);
+        names = splitCsvLine(line, separator);
       else
-        append_values(line.split(separator));
+        append_values(splitCsvLine(line, separator));
 
       line_num++;
     }
@@ -300,5 +300,45 @@ void CsvPreviewModel::loadIntoWorld()
   }
 
 }
+
+QStringList CsvPreviewModel::splitCsvLine(QStringView line, QStringView sep)
+{
+  if (sep.isEmpty())
+    return {line.toString()};
+
+  // reads the quoted part of a field, leaving 'i' right after the closing quote
+  auto read_quoted = [&](qsizetype& i)
+  {
+    QString content;
+    for (i++ ; i < line.size() ; i++)
+    {
+      if (line[i] != '"')
+        content += line[i];
+      else if (i + 1 < line.size() and line[i+1] == '"')
+        content += line[i++];
+      else { i++; break; }
+    }
+    return content;
+  };
+
+  QStringList fields;
+
+  for (qsizetype i = 0 ;;)
+  {
+    QString field = line.sliced(i).startsWith('"') ? read_quoted(i) : QString();
+
+    const qsizetype sep_pos = line.indexOf(sep, i);
+    field += line.sliced(i, (sep_pos < 0 ? line.size() : sep_pos) - i);
+
+    fields << std::move(field);
+
+    if (sep_pos < 0)
+      return fields;
+
+    i = sep_pos + sep.size();
+  }
+}
+
+
 
 }

@@ -56,6 +56,12 @@ public:
 
   QHash<int, QByteArray> roleNames() const override;
 
+  /// @brief split a single CSV line, honoring RFC 4180 quoting
+  /// @note a field wrapped in double quotes may contain separators,
+  //        and a doubled quote within it stands for a literal one.
+  //        Quotes spanning several lines are not supported: one line is always one row.
+  static QStringList splitCsvLine(QStringView line, QStringView sep);
+
   enum LoadingState {FREE, READING_CSV_FILE, ADDING_TO_WORLD};
 
   Q_ENUM(LoadingState);
@@ -93,8 +99,7 @@ protected:
   QStringList columnNames;
 
   /// @brief split csv data, rows[columns]
-  /// @note the views refer to csvRawData
-  QList<QList<QStringView>> csvData;
+  QList<QStringList> csvData;
 
   mathobj::DataSheet* dataSheet = nullptr;
 
