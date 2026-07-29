@@ -97,29 +97,50 @@ Item {
       Layout.minimumWidth: root.globalMenuSize.width
     }
 
-    IconRoundButton {
-      id: importCSV
+    Frame {
+      id: buttonsFrame
       z: 100
-      Layout.preferredHeight: 35
-      Layout.preferredWidth: 35
+
       Layout.alignment: Qt.AlignRight
 
-      lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
-      darkThemeIcon: "qrc:/icons/csv-import-light.svg"
+      leftPadding: 5
+      rightPadding: 5
+      topPadding: 5
+      bottomPadding: 5
 
-      onReleased: fileDialog.visible = true;
-    }
+      SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-    IconRoundButton {
-      id: add
-      z: 100
-      Layout.preferredHeight: 35
-      Layout.preferredWidth: 35
-      Layout.alignment: Qt.AlignRight
-      darkThemeIcon: "qrc:/icons/add-light.svg"
-      lightThemeIcon: "qrc:/icons/add.svg"
+      background: Rectangle {
+        color: myPalette.light
+        radius: 5
+        opacity: 0.95
+      }
 
-      onReleased: MathWorld.addMathObject();
+      RowLayout {
+        spacing: 5
+
+        IconRoundButton {
+          id: importCSV
+          Layout.preferredHeight: 35
+          Layout.preferredWidth: 35
+
+          lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
+          darkThemeIcon: "qrc:/icons/csv-import-light.svg"
+
+          onReleased: fileDialog.visible = true;
+        }
+
+        IconRoundButton {
+          id: add
+          Layout.preferredHeight: 35
+          Layout.preferredWidth: 35
+
+          darkThemeIcon: "qrc:/icons/add-light.svg"
+          lightThemeIcon: "qrc:/icons/add.svg"
+
+          onReleased: MathWorld.addMathObject();
+        }
+      }
     }
   }
 }

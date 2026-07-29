@@ -78,7 +78,7 @@ Item {
       spacing: 5
       reuseItems: true
 
-      bottomMargin: buttons.height + 15
+      bottomMargin: buttonsFrame.height + 15
 
       move: Transition {
         NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
@@ -133,46 +133,66 @@ Item {
     visible: false
   }
 
-  RowLayout {
-    id: buttons
+  Frame {
+    id: buttonsFrame
     z: 100
+
     anchors.right: parent.right
     anchors.bottom: resizeHandle.top
     anchors.margins: 5
+
+    leftPadding: 5
+    rightPadding: 5
+    topPadding: 5
+    bottomPadding: 5
+
     height: implicitHeight
-    spacing: 5
+    width: implicitWidth
 
-    IconRoundButton {
-      id: importColumns
-      Layout.preferredHeight: 30
-      Layout.preferredWidth: 30
+    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
-      lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
-      darkThemeIcon: "qrc:/icons/csv-import-light.svg"
-
-      onReleased: importDialog.visible = true;
+    background: Rectangle {
+      color: myPalette.light
+      radius: 5
+      opacity: 0.95
     }
 
-    IconRoundButton {
-      id: exportColumns
-      Layout.preferredHeight: 30
-      Layout.preferredWidth: 30
+    RowLayout {
+      id: buttons
+      spacing: 5
 
-      lightThemeIcon: "qrc:/icons/csv-export-dark.svg"
-      darkThemeIcon: "qrc:/icons/csv-export-light.svg"
+      IconRoundButton {
+        id: importColumns
+        Layout.preferredHeight: 30
+        Layout.preferredWidth: 30
 
-      onReleased: exportDialog.visible = true;
-    }
+        lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
+        darkThemeIcon: "qrc:/icons/csv-import-light.svg"
 
-    IconRoundButton {
-      id: addColumn
-      Layout.preferredHeight: 30
-      Layout.preferredWidth: 30
+        onReleased: importDialog.visible = true;
+      }
 
-      darkThemeIcon: "qrc:/icons/add-light.svg"
-      lightThemeIcon: "qrc:/icons/add.svg"
+      IconRoundButton {
+        id: exportColumns
+        Layout.preferredHeight: 30
+        Layout.preferredWidth: 30
 
-      onReleased: root.sheet.addColumn();
+        lightThemeIcon: "qrc:/icons/csv-export-dark.svg"
+        darkThemeIcon: "qrc:/icons/csv-export-light.svg"
+
+        onReleased: exportDialog.visible = true;
+      }
+
+      IconRoundButton {
+        id: addColumn
+        Layout.preferredHeight: 30
+        Layout.preferredWidth: 30
+
+        darkThemeIcon: "qrc:/icons/add-light.svg"
+        lightThemeIcon: "qrc:/icons/add.svg"
+
+        onReleased: root.sheet.addColumn();
+      }
     }
   }
 
