@@ -130,7 +130,8 @@ void CsvPreviewModel::readCsvFile()
 
 void CsvPreviewModel::setSeparator(QString sep)
 {
-  separator = sep;
+  // support tab separator by looking for the user writing "\t"
+  separator = sep.replace("\\t", "\t");
   splitCsvFile();
 }
 
