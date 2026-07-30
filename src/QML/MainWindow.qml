@@ -16,6 +16,37 @@ ApplicationWindow {
 
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
+  component ResizeHandle: Item {
+    width: 5
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    z: 100
+
+    signal dragStarted()
+
+    /// @brief horizontal distance dragged since the press, in window coordinates
+    signal dragged(real diff)
+
+    MouseArea {
+      anchors.fill: parent
+
+      cursorShape: Qt.SizeHorCursor
+      acceptedButtons: Qt.LeftButton
+
+      property real sceneXonPress
+
+      onPressed: function (mouse) {
+        // mapToItem(null) maps to the window, i.e. (0,0) is top left corner of it
+        sceneXonPress = mapToItem(null, mouse.x, 0).x;
+        parent.dragStarted();
+      }
+
+      onPositionChanged: function (mouse) {
+        parent.dragged(mapToItem(null, mouse.x, 0).x - sceneXonPress);
+      }
+    }
+  }
+
   onWidthChanged: dataPane.updateWidthWhenVisible()
 
   onScreenChanged: {
@@ -99,6 +130,8 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         anchors.margins: 10
 
+        property int maxWidth: win.width - dataPane.width - 50;
+
         Behavior on width {
           NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
         }
@@ -137,33 +170,16 @@ ApplicationWindow {
         width: 5
       }
 
-      Item {
+      ResizeHandle {
         id: resizeHandle1
-        width: 5
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        z: 100
 
-        MouseArea {
-          anchors.fill: parent
+        property int widthOnPress: 0
 
-          cursorShape: Qt.SizeHorCursor
-          acceptedButtons: Qt.LeftButton
+        onDragStarted: widthOnPress = userInput.width
 
-          property real mouseXonPress
-
-          onPressed: {
-            mouseXonPress = mouseX;
-          }
-
-          onMouseXChanged: {
-            var diff = mouseX - mouseXonPress;
-            if (drawer.width + diff < win.width) {
-              userInput.width += diff;
-            }
-          }
+        onDragged: function (diff) {
+          userInput.width = Math.min(Math.max(widthOnPress + diff, 100), userInput.maxWidth);
         }
-
       }
 
       DataPane {
@@ -189,38 +205,24 @@ ApplicationWindow {
         onImplicitWidthChanged: updateWidthWhenVisible()
       }
 
-      Item {
+      ResizeHandle {
         id: resizeHandle2
-        width: 5
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        z: 100
+
+        property int widthOnPress: 0
+
+        onDragStarted: widthOnPress = dataPane.widthWhenVisible
+
+        // the "shown" state binds dataPane.width to widthWhenVisible, hence no
+        // assignment to the width itself
+        onDragged: function (diff) {
+          const maxWidth = win.width - (drawer.width - dataPane.width);
+          dataPane.widthWhenVisible = Math.min(Math.max(widthOnPress + diff, 0), maxWidth);
+        }
 
         ToolSeparator
         {
           orientation: Qt.Vertical
           anchors.fill: parent
-        }
-
-        MouseArea {
-          anchors.fill: parent
-
-          cursorShape: Qt.SizeHorCursor
-          acceptedButtons: Qt.LeftButton
-
-          property real mouseXonPress
-
-          onPressed: {
-            mouseXonPress = mouseX;
-          }
-
-          onMouseXChanged: {
-            var diff = mouseX - mouseXonPress;
-            if (drawer.width + diff < win.width && dataPane.width + diff > 0) {
-              dataPane.widthWhenVisible = dataPane.width + diff;
-              dataPane.width += diff;
-            }
-          }
         }
       }
 
