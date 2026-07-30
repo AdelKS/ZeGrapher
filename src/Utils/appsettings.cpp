@@ -47,6 +47,8 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
   POD p {
     .language = not_default(language, Language(systemLanguage())),
     .font = zg::yml::QFontPOD::from(font, defaultFont),
+    .window_size = zg::yml::QSizePOD::from(windowSize, defaultWindowSize),
+    .pane_width = not_default(paneWidth, defaultPaneWidth),
     .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
     .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
     .warning_syntax = warningSyntax.exportPod(defaultWarningSyntax),
@@ -74,6 +76,21 @@ void ZeAppSettings::importPod(POD p)
     if (p.font->size)
       font.setPointSize(*p.font->size);
     emit fontChanged();
+  }
+
+  if (p.window_size)
+  {
+    if (p.window_size->width)
+      windowSize.setWidth(*p.window_size->width);
+    if (p.window_size->height)
+      windowSize.setHeight(*p.window_size->height);
+    emit windowSizeChanged();
+  }
+
+  if (p.pane_width and paneWidth != *p.pane_width)
+  {
+    paneWidth = *p.pane_width;
+    emit paneWidthChanged();
   }
 
   if (p.valid_syntax)

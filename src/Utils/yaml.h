@@ -22,6 +22,7 @@
 
 #include <QString>
 #include <QFont>
+#include <QSize>
 #include <glaze/yaml.hpp>
 
 template <>
@@ -65,6 +66,26 @@ inline std::optional<double> not_nan(double v)
 {
   return not std::isnan(v) ? v : std::optional<double>{};
 }
+
+struct QSizePOD {
+  std::optional<int> width;
+  std::optional<int> height;
+
+  operator bool () const { return width or height; }
+
+  /// @brief creates an instance from a size and a default (to tell which fields to leave empty)
+  static std::optional<QSizePOD> from(QSize s, QSize def)
+  {
+    QSizePOD p {
+      .width = not_default(s.width(), def.width()),
+      .height = not_default(s.height(), def.height())
+    };
+
+    if (p)
+      return p;
+    else return {};
+  }
+};
 
 struct QFontPOD {
   std::optional<std::string> name;

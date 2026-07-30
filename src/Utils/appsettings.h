@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QLocale>
 #include <QFont>
+#include <QSize>
 #include <QColor>
 #include <QGuiApplication>
 
@@ -35,6 +36,8 @@ struct ZeAppSettings: QObject
   QML_ELEMENT
   Q_PROPERTY(Language language MEMBER language NOTIFY languageChanged)
   Q_PROPERTY(QFont font MEMBER font WRITE setFont NOTIFY fontChanged)
+  Q_PROPERTY(QSize windowSize MEMBER windowSize NOTIFY windowSizeChanged)
+  Q_PROPERTY(int paneWidth MEMBER paneWidth NOTIFY paneWidthChanged)
   Q_PROPERTY(ThemedColor validSyntax MEMBER validSyntax NOTIFY validSyntaxChanged)
   Q_PROPERTY(ThemedColor invalidSyntax MEMBER invalidSyntax NOTIFY invalidSyntaxChanged)
   Q_PROPERTY(ThemedColor warningSyntax MEMBER warningSyntax NOTIFY warningSyntaxChanged)
@@ -53,12 +56,17 @@ public:
 
   Language language = English;
   QFont font;
+  QSize windowSize = defaultWindowSize;
+  int paneWidth = defaultPaneWidth;
 
   ThemedColor validSyntax = defaultValidSyntax;
   ThemedColor invalidSyntax = defaultInvalidSyntax;
   ThemedColor warningSyntax = defaultWarningSyntax;
 
   QFont defaultFont = qGuiApp->font();
+
+  static constexpr QSize defaultWindowSize = {1000, 700};
+  static constexpr int defaultPaneWidth = 330;
 
   const static ThemedColor defaultValidSyntax;
   const static ThemedColor defaultInvalidSyntax;
@@ -69,11 +77,17 @@ public:
   struct POD {
     std::optional<Language> language;
     std::optional<zg::yml::QFontPOD> font;
+    std::optional<zg::yml::QSizePOD> window_size;
+    std::optional<int> pane_width;
     std::optional<ThemedColor::POD> valid_syntax;
     std::optional<ThemedColor::POD> invalid_syntax;
     std::optional<ThemedColor::POD> warning_syntax;
 
-    operator bool () const { return language or font or valid_syntax or invalid_syntax or warning_syntax; }
+    operator bool () const
+    {
+      return language or font or window_size or pane_width
+             or valid_syntax or invalid_syntax or warning_syntax;
+    }
   };
 
   std::optional<POD> exportPod() const;
@@ -85,6 +99,8 @@ signals:
   void warningSyntaxChanged();
   void fontChanged();
   void languageChanged();
+  void windowSizeChanged();
+  void paneWidthChanged();
 
 };
 
