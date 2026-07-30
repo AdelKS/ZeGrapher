@@ -287,6 +287,7 @@ Item {
         sliderLayout.Layout.maximumHeight: sliderLayout.implicitHeight
 
         animationLayout.Layout.maximumHeight: animationLayout.implicitHeight
+        animationLayout.Layout.topMargin: 8
 
         slider.opacity: 1
         steps.opacity: 0
@@ -315,7 +316,7 @@ Item {
 
   transitions: Transition {
     NumberAnimation {
-      properties: "minimumHeight,maximumHeight,leftMargin,opacity,columnSpacing"
+      properties: "minimumHeight,maximumHeight,leftMargin,topMargin,opacity,columnSpacing"
       duration: 400
       easing.type: Easing.InOutQuad
     }
