@@ -135,8 +135,6 @@ ApplicationWindow {
 
         property int maxWidth: win.width - dataPane.width - 50;
 
-        property int maxWidth: win.width - dataPane.width - 50;
-
         Behavior on width {
           NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
         }
@@ -185,34 +183,24 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         anchors.leftMargin: 10
         anchors.topMargin: 10
-        width: 150
 
-        property int widthWhenVisible: 150
+        property int resizedWidthDiff: 0
+        property int maxWidth: win.width - userInput.width - 50;
 
         Behavior on width {
           NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
         }
-
-        function updateWidthWhenVisible() {
-          if (implicitWidth > 0)
-            widthWhenVisible = Math.min(implicitWidth, win.width - x);
-        }
-
-        onImplicitWidthChanged: updateWidthWhenVisible()
       }
 
       ResizeHandle {
         id: resizeHandle2
 
-        property int widthOnPress: 0
+        property int diffOnPress: 0
 
-        onDragStarted: widthOnPress = dataPane.widthWhenVisible
+        onDragStarted: diffOnPress = dataPane.resizedWidthDiff
 
-        // the "shown" state binds dataPane.width to widthWhenVisible, hence no
-        // assignment to the width itself
         onDragged: function (diff) {
-          const maxWidth = win.width - (drawer.width - dataPane.width);
-          dataPane.widthWhenVisible = Math.min(Math.max(widthOnPress + diff, 0), maxWidth);
+          dataPane.resizedWidthDiff = diffOnPress + diff;
         }
 
         ToolSeparator
@@ -243,7 +231,7 @@ ApplicationWindow {
             resizeHandle2.opacity: 1.
             dataPane.visible: true
             resizeHandle2.visible: true
-            dataPane.width: dataPane.widthWhenVisible
+            dataPane.width: Math.min(Math.max(dataPane.implicitWidth + dataPane.resizedWidthDiff, resizeHandle2.width), dataPane.maxWidth)
             resizeHandle2.width: 5
           }
         }
