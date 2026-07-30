@@ -115,10 +115,6 @@ ApplicationWindow {
       anchors.bottom: parent.bottom
       anchors.left: parent.left
 
-      Behavior on width {
-        NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
-      }
-
       Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -134,10 +130,6 @@ ApplicationWindow {
         width: Information.appSettings.paneWidth
 
         property int maxWidth: win.width - dataPane.width - 50;
-
-        Behavior on width {
-          NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
-        }
 
         Connections {
           target: userInput.mathObjectsTab
@@ -186,10 +178,6 @@ ApplicationWindow {
 
         property int resizedWidthDiff: 0
         property int maxWidth: win.width - userInput.width - 50;
-
-        Behavior on width {
-          NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
-        }
       }
 
       ResizeHandle {
