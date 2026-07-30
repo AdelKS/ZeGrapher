@@ -28,8 +28,10 @@ ApplicationWindow {
     signal dragged(real diff)
 
     MouseArea {
+      id: handleArea
       anchors.fill: parent
 
+      hoverEnabled: true
       cursorShape: Qt.SizeHorCursor
       acceptedButtons: Qt.LeftButton
 
@@ -42,7 +44,16 @@ ApplicationWindow {
       }
 
       onPositionChanged: function (mouse) {
-        parent.dragged(mapToItem(null, mouse.x, 0).x - sceneXonPress);
+        if (pressed)
+          parent.dragged(mapToItem(null, mouse.x, 0).x - sceneXonPress);
+      }
+
+      Rectangle {
+        anchors.centerIn: parent
+        width: 3
+        height: parent.height / 2
+        radius: width / 2
+        color: handleArea.pressed || handleArea.containsMouse ? myPalette.highlight : myPalette.mid
       }
     }
   }
@@ -189,12 +200,7 @@ ApplicationWindow {
 
         onDragged: function (diff) {
           dataPane.resizedWidthDiff = diffOnPress + diff;
-        }
 
-        ToolSeparator
-        {
-          orientation: Qt.Vertical
-          anchors.fill: parent
         }
       }
 
