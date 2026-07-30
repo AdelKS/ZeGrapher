@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: windows-artifact-${{ inputs.msystem }}
-          path: deploy/ZeGrapher*.exe
+          path: deploy/ZeGrapher*.7z

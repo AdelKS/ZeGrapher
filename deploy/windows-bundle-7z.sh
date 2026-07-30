@@ -45,4 +45,4 @@ rm -d qml-temp
 
 cd ..
 
-7z a "$output_folder_name".exe -sfx "${deploy_dir}"
+7z a "$output_folder_name".7z "${deploy_dir}"
