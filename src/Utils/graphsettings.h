@@ -25,6 +25,7 @@
 #include <QColor>
 
 #include "Utils/axissettings.h"
+#include "Utils/fonts.h"
 #include "Utils/graphrange.h"
 #include "Utils/gridsettings.h"
 #include "Utils/themedcolor.h"
@@ -141,8 +142,7 @@ protected:
   static constexpr int defaultMinPoints = 7;
   static constexpr int defaultMaxPoints = 14;
 
-  QFont defaultFont = qGuiApp->font();
-  QFont font = qGuiApp->font();
+  QFont font = zg::mathFont();
 
   ThemedColor defaultBgColor;
   ThemedColor backgroundColor;

@@ -40,7 +40,6 @@ Graph::Graph(QQuickItem *parent)
   topMargin = 20;
   bottomMargin = 30;
   pen.setCapStyle(Qt::RoundCap);
-  settings.setFont(information->appSettings.font);
 
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 

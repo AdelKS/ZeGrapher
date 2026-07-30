@@ -224,7 +224,7 @@ std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
     .axes = axes.exportPod(),
     .grid = grid.exportPod(),
     .subgrid = subgrid.exportPod(),
-    .font = zg::yml::QFontPOD::from(font, defaultFont),
+    .font = zg::yml::QFontPOD::from(font, zg::mathFont()),
     .background = backgroundColor.exportPod(defaultBgColor),
     .min_points = zg::yml::not_default(minPointsLg2, defaultMinPoints),
     .max_points = zg::yml::not_default(maxPointsLg2, defaultMaxPoints)

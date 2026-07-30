@@ -27,6 +27,7 @@
 #include <QString>
 #include <QtQmlIntegration/qqmlintegration.h>
 
+#include "Utils/fonts.h"
 #include "Utils/themedcolor.h"
 #include "Utils/unit.h"
 #include "Utils/yaml.h"
@@ -117,8 +118,8 @@ public:
   ThemedColor color = defaultColor;
   double lineWidth = defaultLineWith;
 
-  QFont titleFont;
-  QFont defaultTitleFont;
+  QFont titleFont = zg::mathFont();
+  QFont defaultTitleFont = zg::mathFont();
 
   ///@brief spacing between different things in the graph
   ///       currently: between the axis and the coordinates
