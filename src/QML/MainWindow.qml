@@ -131,18 +131,14 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.margins: 10
+        width: Information.appSettings.paneWidth
+
+        property int maxWidth: win.width - dataPane.width - 50;
 
         property int maxWidth: win.width - dataPane.width - 50;
 
         Behavior on width {
           NumberAnimation { duration: 50; easing.type: Easing.InOutQuad }
-        }
-
-        Timer {
-          id: widthResetTimer
-          interval: 4000
-          repeat: false
-          onTriggered: userInput.width = userInput.implicitWidth;
         }
 
         Connections {
@@ -162,8 +158,6 @@ ApplicationWindow {
             interactiveGraph.graph.exportSVG(file);
           else interactiveGraph.graph.exportImage(file);
         }
-
-        Component.onCompleted: widthResetTimer.start()
       }
 
       Item {
@@ -180,7 +174,7 @@ ApplicationWindow {
         onDragStarted: widthOnPress = userInput.width
 
         onDragged: function (diff) {
-          userInput.width = Math.min(Math.max(widthOnPress + diff, 100), userInput.maxWidth);
+          Information.appSettings.paneWidth = Math.min(Math.max(widthOnPress + diff, 100), userInput.maxWidth);
         }
       }
 
