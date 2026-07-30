@@ -7,8 +7,8 @@ import QtQuick.Window
 
 ApplicationWindow {
   id: win
-  width: 900
-  height: 600
+  width: Information.appSettings.windowSize.width
+  height: Information.appSettings.windowSize.height
   visible: true
   font: Information.appSettings.font
 
@@ -47,7 +47,9 @@ ApplicationWindow {
     }
   }
 
-  onWidthChanged: dataPane.updateWidthWhenVisible()
+  onWidthChanged: Information.appSettings.windowSize = Qt.size(width, height)
+
+  onHeightChanged: Information.appSettings.windowSize = Qt.size(width, height)
 
   onScreenChanged: {
     console.log("Moved to screen:", screen.name);
