@@ -90,3 +90,12 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
   - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
 - Windows
   - Use [deploy/windows-bundle-7z.sh](deploy/windows-bundle-7z.sh) (requires to be run from an [MSYS2](https://www.msys2.org/) terminal)
+
+------------------------------------
+
+### Licensing
+
+ZeGrapher is licensed under the [GNU Affero General Public License v3](./LICENSE) or later.
+
+The unmodified bundled [Latin Modern Math font](./fonts/latinmodern-math.otf), is (re)distributed under the [GUST font license](./fonts/latinmodern-math-license.txt)
+

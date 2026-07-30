@@ -24,6 +24,7 @@
 
 #include <QGuiApplication>
 #include <QCommandLineParser>
+#include <QFontDatabase>
 #include <QLoggingCategory>
 #include <QObject>
 #include <QQmlApplicationEngine>
@@ -37,6 +38,9 @@ int main(int argc, char *argv[])
   paletteWatcher = &watcher;
 
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
+
+  if (QFontDatabase::addApplicationFont(":/fonts/latinmodern-math.otf") == -1)
+    qWarning("failed to load the bundled Latin Modern Math font");
 
   // QT_NO_*_OUTPUT only compiles out C++ q(Debug|Info|Warning) calls, QML's
   // console.* goes through logging categories at runtime
