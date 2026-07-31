@@ -55,4 +55,4 @@ jobs:
           files_list=$(find *-artifact-* -type f | paste -sd' ')
           current_version=$(./version.sh get-vcs)
           gh release create "$current_version" $files_list \
-          --title "ZeGrapher $current_version" --prerelease
+          --title "$current_version" --prerelease
