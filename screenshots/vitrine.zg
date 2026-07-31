@@ -1,0 +1,28 @@
+math_objects:
+  - type: constant
+    name: a
+    from: 0.5
+    to: 1.5
+    dead_and_alive: true
+  - type: equation
+    equation: f(t) = exp(sin(t)) - 2*cos(4*t) + sin(2*t/24)^5
+    style:
+      visible: false
+  - type: equation
+    equation: g(t) = a * f(t)
+    start: '-math::pi'
+    end: '4*math::pi'
+    coordinates: polar
+graph:
+  range:
+    x:
+      min: '-5'
+      max: '5'
+    y:
+      min: '-3.5'
+      max: '5.1'
+app:
+  window_size:
+    width: 1252
+    height: 769
+  pane_width: 403
