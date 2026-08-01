@@ -9,7 +9,6 @@ Item {
 
   required property Data backend
 
-  property alias name: zcExprEdit.expression
   property alias dragHandle: dragHandle
 
   signal deleteRequested()
@@ -40,13 +39,8 @@ Item {
         Layout.fillWidth: true
         spacing: 5
 
-        ZcExprEdit {
-          id: zcExprEdit
-
-          state: root.backend.state
-
-          expression: root.backend.name
-          onTextEdited: (expression) => root.backend.setName(expression)
+        NameEdit {
+          backend: root.backend
 
           Layout.fillWidth: true
           Layout.alignment: Qt.AlignVCenter
