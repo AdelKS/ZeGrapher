@@ -10,9 +10,6 @@ Item {
 
   required property Constant backend
 
-  property alias name: zcExprEdit.expression
-  property alias exprEdit: zcExprEdit
-  readonly property alias exprHeight: zcExprEdit.exprHeight
   property alias animatedConstant: wrapped_backend
 
   // the name editor (left) and the value/slider/animation column (right) are
@@ -30,40 +27,30 @@ Item {
     root.destroy(200);
   }
 
-   GridLayout {
+  RowLayout {
     id: nameLayout
 
-    columns: 2
-    rowSpacing: 0
-    columnSpacing: 0
+    spacing: 0
 
     anchors.left: parent.left
     anchors.top: parent.top
 
-    ZeLabel {
-      Layout.alignment: Qt.AlignHCenter
-      text: qsTr("name")
-    }
+    NameEdit {
+      id: nameEdit
 
-    Item {}
-
-    ZcExprEdit {
-      id: zcExprEdit
+      backend: root.backend
+      label: qsTr("name")
 
       Layout.preferredWidth: 60
-
-      expression: backend.name
-      state: root.backend.state
-      onTextEdited: (expression) => root.backend.setName(expression)
-
       Layout.fillWidth: true
-      Layout.alignment: Qt.AlignVCenter
+      Layout.alignment: Qt.AlignTop
     }
 
     ZeLabel {
       text: "="
       Layout.preferredWidth: 20
-      Layout.preferredHeight: zcExprEdit.exprHeight
+      Layout.preferredHeight: nameEdit.exprHeight
+      Layout.topMargin: nameEdit.exprY
       Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
