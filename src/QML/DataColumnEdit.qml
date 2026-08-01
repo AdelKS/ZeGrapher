@@ -94,6 +94,17 @@ Item {
           onToggled: root.backend.showInTable = checked;
         }
 
+        ColorButton {
+          id: colorButton
+          radius: 12
+
+          Layout.alignment: Qt.AlignVCenter
+
+          selectedColor: root.backend.style.color
+
+          onSelectedColorModified: root.backend.style.color = selectedColor
+        }
+
         Item {
           id: dragHandle
           Layout.minimumWidth: 20
