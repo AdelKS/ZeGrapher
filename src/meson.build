@@ -79,6 +79,7 @@ qml_files = [
   'QML/MainWindow.qml',
   'QML/MathObjectInput.qml',
   'QML/MathObjects.qml',
+  'QML/NameEdit.qml',
   'QML/NumberEdit.qml',
   'QML/ObjectStyle.qml',
   'QML/ParametricEdit.qml',
