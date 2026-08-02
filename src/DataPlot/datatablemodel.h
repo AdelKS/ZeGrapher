@@ -71,6 +71,9 @@ signals:
 protected:
   static QString headerName(const zg::mathobj::Data*);
 
+  /// @brief rowCount without taking 'without' into account
+  int rowCountWithout(zg::mathobj::Data* without = nullptr) const;
+
   /// @brief re-reads the header of an already registered column
   void refreshColumnName(const zg::mathobj::Data*);
 
