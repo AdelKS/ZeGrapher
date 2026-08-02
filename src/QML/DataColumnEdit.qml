@@ -79,6 +79,21 @@ Item {
         }
 
         IconRoundButton {
+          id: sampleButton
+          Layout.minimumWidth: 20
+          Layout.maximumWidth: 30
+          Layout.preferredHeight: Layout.preferredWidth
+          Layout.preferredWidth: 30
+          Layout.alignment: Qt.AlignVCenter
+
+          checkable: true
+          checked: false
+
+          lightThemeIcon: "qrc:/icons/sample-dark.svg"
+          darkThemeIcon: "qrc:/icons/sample-light.svg"
+        }
+
+        IconRoundButton {
           id: showInTable
           Layout.minimumWidth: 20
           Layout.maximumWidth: 30
@@ -127,6 +142,14 @@ Item {
         style: root.backend.style
 
         open: styleButton.checked
+      }
+
+      SamplingEdit {
+        column: root.backend
+
+        open: sampleButton.checked
+
+        onApplied: sampleButton.checked = false
       }
     }
   }
