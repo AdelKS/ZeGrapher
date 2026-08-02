@@ -93,5 +93,7 @@
         <file>fonts/latinmodern-math-license.txt</file>
         <file>icons/check-dark.svg</file>
         <file>icons/check-light.svg</file>
+        <file>icons/sample-dark.svg</file>
+        <file>icons/sample-light.svg</file>
     </qresource>
 </RCC>
