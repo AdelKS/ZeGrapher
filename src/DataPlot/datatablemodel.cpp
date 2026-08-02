@@ -208,6 +208,21 @@ QString DataTableModel::headerName(const zg::mathobj::Data* d)
   return d->getState().isValid() ? d->getName() : QString();
 }
 
+void DataTableModel::replaceColumnData(zg::mathobj::Data* d, std::vector<std::string> values)
+{
+  if (std::ranges::find(tableColumns, d) == tableColumns.end())
+  {
+    d->setData(std::move(values));
+    return;
+  }
+
+  // can't do insert/delete rows + dataChanged, Qt doesn't handle it well
+  // se we use reset model instead
+  beginResetModel();
+  d->setData(std::move(values));
+  endResetModel();
+}
+
 void DataTableModel::refreshColumnName(const zg::mathobj::Data* d)
 {
   auto it = std::ranges::find(tableColumns, d);
