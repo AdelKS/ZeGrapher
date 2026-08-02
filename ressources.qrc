@@ -91,5 +91,7 @@
         <file>icons/csv-export-light.svg</file>
         <file>fonts/latinmodern-math.otf</file>
         <file>fonts/latinmodern-math-license.txt</file>
+        <file>icons/check-dark.svg</file>
+        <file>icons/check-light.svg</file>
     </qresource>
 </RCC>
