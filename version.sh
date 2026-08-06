@@ -7,7 +7,8 @@ if [[ -z "$MESON_SOURCE_ROOT" ]]; then
 fi
 
 if [ "$1" = "get-vcs" ]; then
-  latest_tag=$(git -C "$MESON_SOURCE_ROOT" tag --list --sort=-creatordate | grep -v continuous | head -n1)
+  # skip tags that don't end in a number: probably not a version
+  latest_tag=$(git -C "$MESON_SOURCE_ROOT" tag --list --sort=-creatordate | grep -v continuous | grep -E '[0-9]$' | head -n1)
   rev_count=$(git -C "$MESON_SOURCE_ROOT" rev-list --count "${latest_tag}"..HEAD)
   if [[ $latest_tag =~ ^(.*)([0-9]+)$ ]]; then
     increment=1
