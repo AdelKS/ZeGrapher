@@ -252,30 +252,14 @@ ApplicationWindow {
       }
     }
 
-    RectangularShadow {
-      z: -2
-      anchors.fill: drawer_button
-      radius: drawer_button.radius
-      blur: 10
-      spread: 0
-      color: ZeStyle.palette.shadow
-    }
-
-    Rectangle {
+    EdgeButton {
       id: drawer_button
-      width: 25
-      height: width
-      radius: 8
-      color: ZeStyle.palette.window
       z: +1
 
-      property int apparentWidth: 2.*width/3.
-      property bool checked: true
+      checked: true
 
       anchors.top: parent.top
       anchors.topMargin: 8
-      anchors.right: parent.right
-      anchors.rightMargin: -apparentWidth
 
       Image {
         anchors.centerIn: parent
@@ -293,12 +277,6 @@ ApplicationWindow {
         mipmap: true
 
         id: arrow
-      }
-
-      MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        onClicked: drawer_button.checked = !drawer_button.checked
       }
     }
   }
