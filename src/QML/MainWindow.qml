@@ -392,6 +392,51 @@ ApplicationWindow {
     }
   }
 
+  RectangularShadow {
+    // drawn over the graph, under the pane it belongs to, and under the panel
+    z: 39
+    anchors.fill: docPane
+    radius: docPane.radius
+    blur: 10
+    spread: 0
+    offset.x: 0
+    color: myPalette.shadow
+    opacity: docPane.width > 0 ? Math.max(0, 1 + (docPane.x - win.docsEdge) / docPane.width) : 1
+  }
+
+  /// @brief the x of the right edge of the panel, whether the panel is folded
+  ///        away or not. The documentation pane unfolds from there
+  readonly property real docsEdge: drawer.x + drawer.width
+
+  DocPane {
+    id: docPane
+
+    z: 40
+    y: 0
+    height: win.height
+    width: Math.min(700, win.width - win.docsEdge - 15)
+
+    // its button sits under the button of the panel, and follows the edge of
+    // the pane the same way. The panel is drawn over it, so the button appears
+    // from behind the panel as the pane unfolds
+    buttonTopMargin: drawer_button.anchors.topMargin + drawer_button.height + 8
+
+    states: [
+      State {
+        name: "hidden"; when: !docPane.open
+        PropertyChanges { docPane.x: win.docsEdge - docPane.width }
+      },
+      State {
+        name: "shown"; when: docPane.open
+        PropertyChanges { docPane.x: win.docsEdge }
+      }
+    ]
+
+    transitions: Transition {
+      NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad }
+    }
+  }
+
   ZoomSettings {
     id: zoomSettings
     y: 0
