@@ -103,7 +103,7 @@ ApplicationWindow {
     anchors.bottom: parent.bottom
     width: row.width
 
-    color: myPalette.midlight
+    color: myPalette.window
 
     states: [
       State {
@@ -269,7 +269,7 @@ ApplicationWindow {
       width: 25
       height: width
       radius: 8
-      color: myPalette.midlight
+      color: myPalette.window
       z: +1
 
       property int apparentWidth: 2.*width/3.
