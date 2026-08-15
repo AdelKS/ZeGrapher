@@ -19,7 +19,7 @@ ZeGrapher is a free, open source and easy to use software for plotting mathemati
   - Defined by giving a list of expressions separated with `,` or `;`
     - The last expression is the "generic" expression that is used for any other index that the first values.
     - If more than one expression is provided, the first expressions are considered as the first values of the sequence
-  - Example: Fibonacci sequence `u(n) = 0 ; 1 ; u(n-2) + u(n-2)`
+  - Example: Fibonacci sequence `u(n) = 0 ; 1 ; u(n-2) + u(n-1)`
     - First values: `0`, `1`
     - Generic expression: `u(n-2) + u(n-1)`
 - Can define "global constants", i.e. a variable that has an explicit numeric value without depending on any other object
