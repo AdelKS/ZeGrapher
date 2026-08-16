@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
   information = &info;
 
   // an imported workbook can override it
-  info.appSettings.language = ZeAppSettings::Language(systemLanguage());
+  info.appSettings.language = systemLanguage();
 
   QCommandLineParser parser;
   parser.setApplicationDescription("2D math plotter");
