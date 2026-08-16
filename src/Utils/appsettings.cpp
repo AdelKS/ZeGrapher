@@ -33,11 +33,22 @@ void ZeAppSettings::setFont(QFont font)
   }
 }
 
+QVariantList ZeAppSettings::languages() const
+{
+  QVariantList list;
+
+  for (QLocale::Language lang: supportedLangs())
+    list.append(QVariantMap{{"text", langToNativeName(lang)}, {"value", int(lang)}});
+
+  return list;
+}
+
 std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
 {
   using zg::yml::not_default;
   POD p {
-    .language = not_default(language, Language(systemLanguage())),
+    .language = not_default(langToShortString(QLocale::Language(language)),
+                            langToShortString(systemLanguage())),
     .font = zg::yml::QFontPOD::from(font, defaultFont),
     .window_size = zg::yml::QSizePOD::from(windowSize, defaultWindowSize),
     .pane_width = not_default(paneWidth, defaultPaneWidth),
@@ -54,10 +65,17 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
 
 void ZeAppSettings::importPod(POD p)
 {
-  if (p.language and language != *p.language)
+  if (p.language)
   {
-    language = *p.language;
-    emit languageChanged();
+    // an unknown code, from an older ZeGrapher or a hand written file, leaves
+    // the language the app already picked from the system
+    const auto lang = QLocale::codeToLanguage(QString::fromStdString(*p.language));
+
+    if (lang != QLocale::AnyLanguage and language != int(lang))
+    {
+      language = lang;
+      emit languageChanged();
+    }
   }
 
   if (p.font)

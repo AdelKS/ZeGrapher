@@ -34,7 +34,8 @@ struct ZeAppSettings: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(Language language MEMBER language NOTIFY languageChanged)
+  Q_PROPERTY(int language MEMBER language NOTIFY languageChanged)
+  Q_PROPERTY(QVariantList languages READ languages CONSTANT)
   Q_PROPERTY(QFont font MEMBER font WRITE setFont NOTIFY fontChanged)
   Q_PROPERTY(QSize windowSize MEMBER windowSize NOTIFY windowSizeChanged)
   Q_PROPERTY(int paneWidth MEMBER paneWidth NOTIFY paneWidthChanged)
@@ -45,15 +46,13 @@ struct ZeAppSettings: QObject
 
 public:
 
-  enum Language {
-    English = QLocale::Language::English,
-    French = QLocale::Language::French
-  };
-  Q_ENUM(Language);
-
   explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent) {}
 
-  Language language = English;
+  /// @brief every language the app can show, as {text, value} for a combo box
+  QVariantList languages() const;
+
+  /// @brief the language the app shows, a QLocale::Language
+  int language = QLocale::English;
   QFont font;
   QSize windowSize = defaultWindowSize;
   int paneWidth = defaultPaneWidth;
@@ -76,7 +75,8 @@ public:
   Q_INVOKABLE void setFont(QFont);
 
   struct POD {
-    std::optional<Language> language;
+    /// @brief two letter code of a language, "fr" for French
+    std::optional<std::string> language;
     std::optional<zg::yml::QFontPOD> font;
     std::optional<zg::yml::QSizePOD> window_size;
     std::optional<int> pane_width;
@@ -110,12 +110,3 @@ signals:
 inline const ThemedColor ZeAppSettings::defaultValidSyntax = {.dark = "#009999", .light = "#009999"};
 inline const ThemedColor ZeAppSettings::defaultInvalidSyntax = {.dark = Qt::darkRed, .light = Qt::darkRed};
 inline const ThemedColor ZeAppSettings::defaultWarningSyntax = {.dark = Qt::darkYellow, .light = Qt::darkYellow};
-
-template <>
-struct glz::meta<ZeAppSettings::Language>
-{
-   using enum ZeAppSettings::Language;
-   static constexpr auto value = glz::enumerate(
-    "english", English,
-    "french", French);
-};

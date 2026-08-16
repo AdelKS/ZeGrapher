@@ -55,24 +55,62 @@
 /// @brief type of math objects to use in ZeCalculator
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 
-// extern definitions for the supported languages
-inline const QList<QLocale::Language> supportedLangs = { QLocale::English, QLocale::French };
+/// @brief the two letter code of a language, "fr" for French
+inline QString langToShortString(QLocale::Language lang)
+{
+  return QLocale::languageToCode(lang);
+}
 
-/// @brief the OS language if supported, English otherwise
+/// @brief every language the app can show, English first
+/// @note reads the translations the build embedded, so adding a language is
+///       adding its .ts file: nothing here lists them
+inline const QList<QLocale::Language>& supportedLangs()
+{
+  static const QList<QLocale::Language> langs = []
+  {
+    // English needs no translation file: it is what the source code holds
+    QList<QLocale::Language> found = {QLocale::English};
+
+    for (const QString& file: QDir(":/translations").entryList({"ZeGrapher_*.qm"}, QDir::Files))
+    {
+      const QString code = QFileInfo(file).completeBaseName().section('_', 1);
+      if (const auto lang = QLocale::codeToLanguage(code); lang != QLocale::AnyLanguage)
+        found.append(lang);
+    }
+
+    return found;
+  }();
+
+  return langs;
+}
+
+/// @brief the OS language if the app can show it, English otherwise
 inline QLocale::Language systemLanguage()
 {
   const auto lang = QLocale::system().language();
-  return supportedLangs.contains(lang) ? lang : QLocale::English;
+  return supportedLangs().contains(lang) ? lang : QLocale::English;
 }
-inline QString langToShortString(QLocale::Language lang)
+
+/// @brief the name of a language in that language, "Français" for French
+inline QString langToNativeName(QLocale::Language lang)
 {
-    if(lang == QLocale::French)
-        return "fr";
-    else if(lang == QLocale::German)
-        return "de";
-    else if(lang == QLocale::Chinese)
-        return "zh";
-    else return "en";
+  // QLocale has no name for a bare language: it picks a territory, and the name
+  // of the locale it lands on can carry that territory. English comes out as
+  // "American English" and Spanish as "español de España". The languages below
+  // are the ones where it does.
+  static const QHash<QLocale::Language, QString> withoutTerritory {
+    {QLocale::English, "English"},
+    {QLocale::Spanish, "Español"},
+  };
+
+  if (const auto it = withoutTerritory.constFind(lang); it != withoutTerritory.constEnd())
+    return *it;
+
+  QString name = QLocale(lang).nativeLanguageName();
+  if (not name.isEmpty())
+    name[0] = name[0].toUpper();
+
+  return name;
 }
 
 enum struct ZeAxisName {X, Y};

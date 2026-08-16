@@ -19,15 +19,6 @@ Item {
     }
   }
 
-  function indexFromModelValue(model: var, val: int) : int {
-    for (var i = 0; i !== model.count; i++) {
-      if (model.get(i).value === val)
-        return i;
-    }
-    console.warn("Value not in model: ", val)
-    return -1;
-  }
-
   ScrollView {
     anchors.fill: parent
     anchors.margins: 5
@@ -47,6 +38,8 @@ Item {
         text: qsTr('Language')
       }
       ComboBox {
+        id: langBox
+
         Layout.alignment: Qt.AlignLeft
         Layout.fillWidth: true
 
@@ -55,20 +48,13 @@ Item {
         textRole: "text"
         valueRole: "value"
 
-        model: langsModel
+        // one entry per translation the build embedded
+        model: Information.appSettings.languages
 
-        ListModel {
-          id: langsModel
-          ListElement {
-            text: "English"
-            value: ZeAppSettings.English
-          }
-        }
-
-        currentIndex: root.indexFromModelValue(langsModel, Information.appSettings.language)
+        currentIndex: langBox.model.findIndex((lang) => lang.value === Information.appSettings.language)
 
         onActivated: (index) => {
-          Information.appSettings.language = langsModel.get(index).value;
+          Information.appSettings.language = langBox.model[index].value;
         }
       }
 
