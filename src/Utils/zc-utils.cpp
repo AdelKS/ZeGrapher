@@ -6,46 +6,58 @@ namespace  zg {
 
 QString zcErrorToStr(const zc::Error& err)
 {
+  // the piece of the expression the error is about. The parser fills it in for
+  // every error below that names it, and leaves it empty for the others
+  const QString token = QString::fromStdString(err.token.substr);
+
   switch (err.type)
   {
     case zc::Error::CPP_INCORRECT_ARGNUM:
-      return QObject::tr("Programmatically calling C++ math function with the wrong number of arguments");
+      return QObject::tr("Internal error: C++ math function called with the wrong number of arguments");
 
     case zc::Error::NOT_MATH_OBJECT_DEFINITION:
-      return QObject::tr("Invalid math object definition");
+      return QObject::tr("Not a math object definition, write it as \"name = expression\"");
 
     case zc::Error::OBJECT_NOT_IN_WORLD:
-      return QObject::tr("Object not registered in math world");
+      return QObject::tr("Object not defined");
 
     case zc::Error::NAME_ALREADY_TAKEN:
-      return QObject::tr("Name already taken");
+      //: %1 is the name the user wrote
+      return QObject::tr("Name \"%1\" already taken").arg(token);
 
     case zc::Error::UNKNOWN:
       return QObject::tr("Unknown error");
 
     case zc::Error::WRONG_FORMAT:
-      return QObject::tr("Wrong format");
+      //: %1 is the piece of the expression that has the wrong format
+      return QObject::tr("Wrong format: \"%1\"").arg(token);
 
     case zc::Error::UNEXPECTED:
-      return QObject::tr("Unexpected");
+      //: %1 is the piece of the expression that cannot be there
+      return QObject::tr("Unexpected \"%1\"").arg(token);
 
     case zc::Error::UNEXPECTED_END_OF_EXPRESSION:
       return QObject::tr("Unexpected end of expression");
 
     case zc::Error::MISSING:
-      return QObject::tr("Missing");
+      //: %1 is what the expression needs, for example a closing bracket
+      return QObject::tr("Missing \"%1\"").arg(token);
 
     case zc::Error::UNDEFINED_VARIABLE:
-      return QObject::tr("Undefined variable");
+      //: %1 is the name the user wrote
+      return QObject::tr("Undefined variable \"%1\"").arg(token);
 
     case zc::Error::UNDEFINED_FUNCTION:
-      return QObject::tr("Undefined function");
+      //: %1 is the name the user wrote
+      return QObject::tr("Undefined function \"%1\"").arg(token);
 
     case zc::Error::CALLING_FUN_ARG_COUNT_MISMATCH:
-      return QObject::tr("Calling function with the wrong number of arguments");
+      //: %1 is the name of the function the user called
+      return QObject::tr("Function \"%1\" called with the wrong number of arguments").arg(token);
 
     case zc::Error::NOT_IMPLEMENTED:
-      return QObject::tr("Feature not implemented");
+      //: %1 is the piece of the expression that ZeGrapher does not compute yet
+      return QObject::tr("Not implemented yet: \"%1\"").arg(token);
 
     case zc::Error::EMPTY_EXPRESSION:
       return QObject::tr("Empty expression");
@@ -54,13 +66,15 @@ QString zcErrorToStr(const zc::Error& err)
       return QObject::tr("Maximum recursion depth reached");
 
     case zc::Error::WRONG_OBJECT_TYPE:
-      return QObject::tr("Object has the wrong type");
+      //: %1 is the name the user wrote, used as a variable when it is a function or the other way around
+      return QObject::tr("Object \"%1\" used as the wrong type").arg(token);
 
     case zc::Error::OBJECT_INVALID_STATE:
-      return QObject::tr("Object in invalid state");
+      //: %1 is the name of an object whose own definition is invalid
+      return QObject::tr("Object \"%1\" is in an invalid state").arg(token);
 
     default:
-      return QObject::tr("Unsupported error code");
+      return QObject::tr("Unknown error");
   }
 }
 
