@@ -547,7 +547,8 @@ void Graph::exportSVG(QUrl fileName)
   svgGenerator.setOutputDevice(&buffer);
 
   svgGenerator.setTitle(tr("Exported graph"));
-  svgGenerator.setDescription(tr("Created with ZeGrapher ") + SOFTWARE_VERSION);
+  //: %1 is the version of ZeGrapher, for example 4.0
+  svgGenerator.setDescription(tr("Created with ZeGrapher %1").arg(SOFTWARE_VERSION));
 
   svgGenerator.setResolution(int(ZeGraphSettings::targetPixelDensity * CM_PER_INCH));
 

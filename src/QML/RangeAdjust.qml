@@ -26,8 +26,11 @@ Item {
       else {
         if (!isNaN(root.range.y.min.value) && !isNaN(root.range.y.max.value) &&
             root.range.y.min.value >= root.range.y.max.value) {
-          yminEdit.customErrorMsg = "<b>y</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>y</b><sub>max</sub>";
-          ymaxEdit.customErrorMsg = "<b>y</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>y</b><sub>min</sub>";
+          const ymin = "<b>y</b><sub>min</sub>", ymax = "<b>y</b><sub>max</sub>";
+          //: %1 and %2 are the names of two bounds, for example ymin and ymax
+          yminEdit.customErrorMsg = qsTr("%1 must be smaller than %2").arg(ymin).arg(ymax);
+          //: %1 and %2 are the names of two bounds, for example ymax and ymin
+          ymaxEdit.customErrorMsg = qsTr("%1 must be greater than %2").arg(ymax).arg(ymin);
         }
       }
     }
@@ -44,8 +47,9 @@ Item {
       else {
         if (!isNaN(root.range.x.min.value) && !isNaN(root.range.x.max.value) &&
             root.range.x.min.value >= root.range.x.max.value) {
-          xminEdit.customErrorMsg = "<b>x</b><sub>min</sub>" + qsTr(" must be smaller than ") + "<b>x</b><sub>max</sub>";
-          xmaxEdit.customErrorMsg = "<b>x</b><sub>max</sub>" + qsTr(" must be greater than ") + "<b>x</b><sub>min</sub>";
+          const xmin = "<b>x</b><sub>min</sub>", xmax = "<b>x</b><sub>max</sub>";
+          xminEdit.customErrorMsg = qsTr("%1 must be smaller than %2").arg(xmin).arg(xmax);
+          xmaxEdit.customErrorMsg = qsTr("%1 must be greater than %2").arg(xmax).arg(xmin);
         }
       }
     }
