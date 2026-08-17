@@ -39,9 +39,8 @@ QString zcErrorToStr(const zc::Error& err)
     case zc::Error::UNEXPECTED_END_OF_EXPRESSION:
       return QObject::tr("Unexpected end of expression");
 
-    case zc::Error::MISSING:
-      //: %1 is what the expression needs, for example a closing bracket
-      return QObject::tr("Missing \"%1\"").arg(token);
+    case zc::Error::MISSING_CLOSING_PTH:
+      return QObject::tr("Missing \")\"");
 
     case zc::Error::UNDEFINED_VARIABLE:
       //: %1 is the name the user wrote
