@@ -174,7 +174,7 @@ foreach qt6_mod: qt6_modules
   endif
 endforeach
 
-compiled_ressources = qt6.compile_resources(sources: files('../ressources.qrc'))
+compiled_resources = qt6.compile_resources(sources: files('../resources.qrc'))
 
 # --- Qt RHI shader compilation -----------------------------------------------
 # qsb cross-compiles GLSL into Qt's serialized shader format consumed by
@@ -242,7 +242,7 @@ zecalculator_dep = dependency('zecalculator', version: '>=0.13.1')
 glaze_dep = dependency('glaze', version: '>=v7.7')
 
 executable('ZeGrapher',
-  sources: ['main.cpp', source_files, compiled_ressources, compiled_translations, shaders_resources_cpp, moc_files, qml_mods],
+  sources: ['main.cpp', source_files, compiled_resources, compiled_translations, shaders_resources_cpp, moc_files, qml_mods],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, zecalculator_dep, glaze_dep],
   win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
