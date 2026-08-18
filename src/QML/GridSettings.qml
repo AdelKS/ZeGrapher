@@ -204,17 +204,13 @@ Item {
             Layout.alignment: Qt.AlignCenter
             selectedColor: root.graphSettings.grid.x.color
 
-            onSelectedColorChanged: {
-              root.graphSettings.grid.x.color = selectedColor;
-            }
+            onSelectedColorModified: root.graphSettings.grid.x.color = selectedColor
           }
           ColorButton {
             Layout.alignment: Qt.AlignCenter
             selectedColor: root.graphSettings.grid.y.color
 
-            onSelectedColorChanged: {
-              root.graphSettings.grid.y.color = selectedColor;
-            }
+            onSelectedColorModified: root.graphSettings.grid.y.color = selectedColor
           }
 
           ZeLabel {
@@ -308,17 +304,13 @@ Item {
             Layout.alignment: Qt.AlignCenter
             selectedColor: root.graphSettings.subgrid.x.color
 
-            onSelectedColorChanged: {
-              root.graphSettings.subgrid.x.color = selectedColor;
-            }
+            onSelectedColorModified: root.graphSettings.subgrid.x.color = selectedColor
           }
           ColorButton {
             Layout.alignment: Qt.AlignCenter
             selectedColor: root.graphSettings.subgrid.y.color
 
-            onSelectedColorChanged: {
-              root.graphSettings.subgrid.y.color = selectedColor;
-            }
+            onSelectedColorModified: root.graphSettings.subgrid.y.color = selectedColor
           }
 
           ZeLabel {
