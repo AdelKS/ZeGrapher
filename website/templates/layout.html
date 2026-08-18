@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<!--
+	ZeGrapher website theme — Astral by HTML5 UP (html5up.net | @ajlkn),
+	reworked by Adel Kara Slimane to pure HTML + CSS (no JavaScript).
+
+	This is a LAYOUT TEMPLATE: the {{ ... }} slots are to be replaced by a
+	script
+-->
+<html lang="{{ lang }}">
+	<head>
+		<title>{{ title }}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css?v={{ css_version }}" />
+		{{ nav_active }}
+		<link rel="icon" type="image/svg+xml" href="../assets/images/ZeGrapher-logo.svg" />
+		<link rel="icon" type="image/png" sizes="128x128" href="../assets/images/ZeGrapher-logo.png" />
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="navcontainer">
+
+				<img class="logo" src="../assets/images/ZeGrapher-logo.svg" alt="ZeGrapher logo" />
+
+				<div style="flex-grow: 10; flex-basis: 0; flex-shrink: 10;"></div>
+
+				<nav id="nav" style="flex-shrink: 0;">
+					{{ nav }}
+				</nav>
+
+				<div id="tools">
+
+					<!-- The switch of the theme. The checkbox holds it, and the palette of
+					     main.css reads the checkbox. Both glyphs stand here, and the
+					     palette shows the one that opens the other theme. -->
+					<input type="checkbox" id="theme-switch"
+					       aria-label="Switch between the light and the dark theme" />
+					<label for="theme-switch" class="theme-toggle"
+					       title="Switch between the light and the dark theme">
+						<span class="moon" aria-hidden="true">{{ moon_icon }}</span>
+						<span class="sun" aria-hidden="true">{{ sun_icon }}</span>
+					</label>
+
+					<!-- The language menu of this build. Empty while the site holds one language. -->
+					<nav id="langs">
+						{{ languages }}
+					</nav>
+
+				</div>
+			</div>
+
+			<div id="main">
+
+				<!-- The prev/next arrows stand before the panels, so a panel paints
+				     over them. They are fixed, so this place in the markup sets
+				     nothing but that order. -->
+				{{ arrows }}
+
+				{{ content }}
+			</div>
+
+			{{ footer }}
+
+		</div>
+
+	</body>
+</html>
