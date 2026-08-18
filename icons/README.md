@@ -16,3 +16,7 @@ writes.
 
 On Windows, `meson.build` compiles `ZeGrapher.rc`, which puts `ZeGrapher.ico`
 into `ZeGrapher.exe`.
+
+The website shows `ZeGrapher.svg` as its logo and its favicon.
+`website/scripts/build-website.py` copies this file into the site when it
+builds, so the drawing is not duplicated.

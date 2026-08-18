@@ -1,0 +1,32 @@
+# The settings that build-website.py reads to build the site
+
+# ZeGrapher's GitHub repository. The download panel links its releases and
+# issues, and the app build reads it too
+repository: https://github.com/AdelKS/ZeGrapher
+
+# each panel's icon, keyed by its markdown file name
+icon-map:
+  1-home: home
+  2-features: list
+  3-gallery: image
+  4-documentation: book
+  5-download: download
+
+# the landing page picture, from content/<lang>/images/
+hero-image: vitrine.png
+
+# the gallery panel pictures, in this order
+gallery:
+  - vitrine.png
+  - functions.png
+  - schrodinger.png
+  - data.png
+
+footer:
+  links:
+    donate: https://donate.stripe.com/bJe8wQfuMdxM4ZX3fofnO01
+    contact: mailto:contact@zegrapher.com
+    # the CC BY 3.0 license of the theme requires this credit and its link
+    theme-based-on:
+      url: https://html5up.net/astral
+      link-name: Astral by HTML5 UP
