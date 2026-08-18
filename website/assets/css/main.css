@@ -1,0 +1,1434 @@
+/* Source Sans Pro, served from assets/fonts/. One file per weight, style and
+   subset, as Google Fonts cuts them: unicode-range keeps a browser from
+   fetching a subset that the page never shows. */
+
+/* latin */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-300-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-300-latin-ext.woff2") format("woff2");
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* greek */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-300-greek.woff2") format("woff2");
+	unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* latin */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-300-italic-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-300-italic-latin-ext.woff2") format("woff2");
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* greek */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 300;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-300-italic-greek.woff2") format("woff2");
+	unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* latin */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-400-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-400-latin-ext.woff2") format("woff2");
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* greek */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-400-greek.woff2") format("woff2");
+	unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/* latin */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-400-italic-latin.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin-ext */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-400-italic-latin-ext.woff2") format("woff2");
+	unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* greek */
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 400;
+	font-display: swap;
+	src: url("../fonts/source-sans-pro-400-italic-greek.woff2") format("woff2");
+	unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+/*
+	Astral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+html, body, div, span, applet, object,
+iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, a, abbr, acronym, address, big, cite,
+code, del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, b,
+u, i, center, dl, dt, dd, ol, ul, li, fieldset,
+form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside,
+canvas, details, embed, figure, figcaption,
+footer, header, hgroup, menu, nav, output, ruby,
+section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+	blockquote:before, blockquote:after, q:before, q:after {
+		content: '';
+		content: none;
+	}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+body {
+	-webkit-text-size-adjust: none;
+}
+
+mark {
+	background-color: transparent;
+	color: inherit;
+}
+
+input::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+/* Colors
+
+   Each color names its light value and its dark one, and 'light-dark()' picks
+   between the two by the 'color-scheme' of the page. The rules under the
+   palette are what set that scheme.
+
+   '#theme-switch' is the checkbox of the switch in the header, and it holds the
+   theme. The switch turns over the theme that the browser asks for: a browser
+   that asks for light draws dark while the box is ticked, and one that asks for
+   dark draws light.
+
+   A browser with no ':has()' drops the two rules that read the checkbox. It
+   draws the theme of its own preference, and the switch does nothing.
+
+   The header and the footer stand on the background of the page in both themes,
+   so their white text is no color of this palette. */
+
+	:root {
+		color-scheme: light;
+
+		--sky-a: light-dark(#00c7c7, #0a4646);        /* the two corners of the background gradient */
+		--sky-b: light-dark(#007878, #021818);        /* and the long middle of it */
+		--page: light-dark(#ffffff, #1b2224);         /* the card that holds the panels */
+		--ink: light-dark(#777777, #a7afb3);          /* body text */
+		--ink-strong: light-dark(#363636, #eef1f2);   /* headings, and bold text */
+		--ink-faint: light-dark(#aaaaaa, #939a9e);    /* the line under the title of the landing panel */
+		--link: light-dark(#006a6a, #3fc9c9);
+		--link-hover: light-dark(#004b4b, #93e8e8);
+		--line: light-dark(#dddddd, #3a4245);         /* a rule, and the bar of a quote */
+		--line-strong: light-dark(#e4e4e4, #434c50);  /* under the head row of a table */
+		--wash: light-dark(#f4f4f4, #262e31);         /* a code block, the rows of a table, a menu entry */
+		--tooltip: light-dark(#222222, #eef1f2);      /* the name of a nav icon */
+		--tooltip-ink: light-dark(#ffffff, #10161a);
+		--disc: light-dark(#007878, #0d7b7b);         /* the round prev/next arrow */
+		--disc-hover: light-dark(#005f5f, #12a3a3);
+		--shadow: light-dark(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.5));
+		--scrim: light-dark(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.92));  /* behind the picture of the lightbox */
+
+		/* the glyph of the switch: the moon opens the dark theme, and the sun the
+		   light one */
+		--sun-display: none;
+		--moon-display: block;
+	}
+
+	html:has(#theme-switch:checked) {
+		color-scheme: dark;
+		--sun-display: block;
+		--moon-display: none;
+	}
+
+	@media (prefers-color-scheme: dark) {
+
+		:root {
+			color-scheme: dark;
+			--sun-display: block;
+			--moon-display: none;
+		}
+
+		html:has(#theme-switch:checked) {
+			color-scheme: light;
+			--sun-display: none;
+			--moon-display: block;
+		}
+
+	}
+
+	/* A browser with no 'light-dark()' computes every color of the palette to
+	   nothing, and the page loses its background, its card and its nav. These
+	   are the light values of the palette, which such a browser draws instead.
+	   No color turns over there, so the switch goes away with them. */
+	@supports not (color: light-dark(#ffffff, #000000)) {
+
+		:root {
+			--sky-a: #00c7c7;
+			--sky-b: #007878;
+			--page: #ffffff;
+			--ink: #777777;
+			--ink-strong: #363636;
+			--ink-faint: #aaaaaa;
+			--link: #006a6a;
+			--link-hover: #004b4b;
+			--line: #dddddd;
+			--line-strong: #e4e4e4;
+			--wash: #f4f4f4;
+			--tooltip: #222222;
+			--tooltip-ink: #ffffff;
+			--disc: #007878;
+			--disc-hover: #005f5f;
+			--shadow: rgba(0, 0, 0, 0.25);
+			--scrim: rgba(0, 0, 0, 0.85);
+		}
+
+		/* '#tools' is what beats the 'display: flex' that the Nav section below
+		   sets on the switch. */
+		#tools .theme-toggle {
+			display: none;
+		}
+
+	}
+
+/* Basic */
+
+	html {
+		box-sizing: border-box;
+	}
+
+	*, *:before, *:after {
+		box-sizing: inherit;
+	}
+
+	body {
+		background-image: url("images/overlay.png"), linear-gradient(135deg, var(--sky-a), var(--sky-b), var(--sky-b), var(--sky-a));
+		background-repeat: repeat, no-repeat;
+		background-size: auto, 100% 100%;
+		background-attachment: fixed;
+		overflow-y: scroll;
+	}
+
+	body {
+		font-family: 'Source Sans Pro', sans-serif;
+		font-weight: 300;
+		color: var(--ink);
+		font-size: 20pt;
+		line-height: 1.75em;
+	}
+
+		@media screen and (max-width: 1680px) {
+
+			body {
+				font-size: 15pt;
+			}
+
+		}
+
+		@media screen and (max-width: 1280px) {
+
+			body {
+				font-size: 14pt;
+			}
+
+		}
+
+		@media screen and (max-width: 736px) {
+
+			body {
+				font-size: 12pt;
+			}
+
+		}
+
+		@media screen and (max-width: 360px) {
+
+			body {
+				font-size: 11pt;
+			}
+
+		}
+
+	strong, b, h1, h2, h3, h4, h5, h6 {
+		font-weight: 400;
+		color: var(--ink-strong);
+	}
+
+	/* Links in page content. '--sky-a', the light corner of the background, is
+	   too light to read as text on the panel, so '--link' is a teal of its own.
+	   .pic and .thumb hold an <img> and keep none of it, and a .tab-arrow stands
+	   on the background of the page and carries the white of its own rule. An
+	   .icon takes the color, which 'fill: currentColor' carries to the glyph, but
+	   not the underline. */
+	#main a:not(.pic, .thumb, .tab-arrow) {
+		color: var(--link);
+		transition: color .25s ease-in-out;
+	}
+
+		#main a:not(.pic, .thumb, .tab-arrow):hover {
+			color: var(--link-hover);
+		}
+
+	#main a:not(.pic, .thumb, .icon, .tab-arrow) {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.15em;
+	}
+
+		#main a:not(.pic, .thumb, .icon, .tab-arrow):hover {
+			text-decoration-thickness: 2px;
+		}
+
+	h1, h2, h3, h4, h5, h6 {
+		margin-bottom: 0.75em;
+	}
+
+	h1 {
+		font-size: 2.4em;
+		letter-spacing: -0.015em;
+	}
+
+	h2 {
+		font-size: 1.8em;
+		letter-spacing: -0.015em;
+	}
+
+	h3 {
+		font-size: 1.25em;
+		letter-spacing: -0.015em;
+	}
+
+	/* A section is an h3 and a part of it an h4, so the two need sizes of their
+	   own. The size below is over the 1em of the text, which keeps a subsection
+	   legible as a title. */
+	h4, h5, h6 {
+		font-size: 1.1em;
+		letter-spacing: -0.015em;
+	}
+
+	@media screen and (max-width: 736px) {
+
+		h1 {
+			font-size: 1.75em;
+		}
+
+		h2 {
+			font-size: 1.375em;
+		}
+
+		h3, h4, h5, h6 {
+			font-size: 1em;
+		}
+
+	}
+
+	blockquote {
+		border-left: solid 0.5em var(--line);
+		padding: 1em 0 1em 2em;
+		font-style: italic;
+	}
+
+	em, i {
+		font-style: italic;
+	}
+
+	hr {
+		border: 0;
+		border-top: solid 1px var(--line);
+		padding: 1.5em 0 0 0;
+		margin: 1.75em 0 0 0;
+	}
+
+	sub {
+		position: relative;
+		top: 0.5em;
+		font-size: 0.8em;
+	}
+
+	sup {
+		position: relative;
+		top: -0.5em;
+		font-size: 0.8em;
+	}
+
+	/* The reset gives code 'font: inherit', so a code span is indistinguishable
+	   from body text until these put the monospace face back. */
+	code {
+		font-family: monospace;
+		font-size: 0.9em;
+		background: var(--wash);
+		padding: 0.15em 0.4em;
+		border-radius: 0.25em;
+	}
+
+	pre {
+		font-family: monospace;
+		font-size: 0.9em;
+		line-height: 1.65;
+		background: var(--wash);
+		padding: 1em 1.25em;
+		/* A long command line scrolls inside the block instead of widening the page. */
+		overflow-x: auto;
+	}
+
+		pre code {
+			background: none;
+			padding: 0;
+			font-size: 1em;
+		}
+
+	p, ul, ol, dl, table, blockquote, pre {
+		margin-bottom: 2em;
+	}
+
+/* Table */
+
+	table {
+		width: 100%;
+	}
+
+		/* Plain 'table', not the theme's 'table.default': every table on this site
+		   comes from markdown, which has no way to put a class on one. */
+		table tbody tr {
+			border-bottom: solid 1px var(--wash);
+		}
+
+		table td {
+			padding: 0.5em 1em 0.5em 1em;
+		}
+
+		table th {
+			text-align: left;
+			font-weight: 600;
+			padding: 0.5em 1em 0.5em 1em;
+		}
+
+		table thead {
+			border-bottom: solid 2px var(--line-strong);
+		}
+
+/* Section/Article */
+
+	section, article {
+		margin-bottom: 3em;
+	}
+
+		section > :last-child, section:last-child, article > :last-child, article:last-child {
+			margin-bottom: 0;
+		}
+
+	header {
+		margin: 0 0 1.5em 0;
+	}
+
+		header > p {
+			margin: 0.5em 0 0 0;
+			color: var(--ink-faint);
+		}
+
+		@media screen and (max-width: 736px) {
+
+			header {
+				margin: 0 0 1em 0;
+			}
+
+		}
+
+/* List */
+
+	ul {
+		list-style: disc;
+		padding-left: 1em;
+	}
+
+		ul li {
+			padding-left: 0.5em;
+		}
+
+	/* A nested list belongs to its item, so it must not take the block
+	   margin-bottom above. That margin spaces the next item like a paragraph. */
+	li > ul, li > ol {
+		margin-bottom: 0;
+	}
+
+	ol {
+		list-style: decimal;
+		padding-left: 1.25em;
+	}
+
+		ol li {
+			padding-left: 0.25em;
+		}
+
+/* Icons */
+
+	.icon {
+		text-decoration: none;
+		position: relative;
+	}
+
+		/* build-website.py writes one <svg> per icon into the markup. The glyph
+		   keeps its own aspect ratio inside this box, as it did as a font glyph. */
+		.icon svg {
+			width: 1em;
+			height: 1em;
+			fill: currentColor;
+		}
+
+	.logo {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		flex-grow: 0;
+		max-width: 75px;
+		max-height: 75px;
+	}
+
+/* Nav */
+
+	.navcontainer {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		display: flex; 
+		flex-direction: row; 
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+	}
+
+	#nav {
+		text-align: center;
+		height: 4.25em;
+		cursor: default;
+	}
+
+	/* The switch of the theme and the menu of the languages sit where the
+	   right-hand spacer of the header was, so they keep the nav centered. The
+	   font-size of the two of them sits on each, and not here, so this box keeps
+	   the em of the body that the margin below is written in. */
+	#tools {
+		display: flex;
+		align-items: center;
+		gap: 0.2em;
+		flex-grow: 10;
+		flex-basis: 75px;
+		flex-shrink: 10;
+		justify-content: flex-end;
+	}
+
+	/* #nav stands 1.75em taller than an icon, and that space under the icons is
+	   where the caret of the open tab hangs. '.navcontainer' centers on the whole
+	   box of #nav, which leaves the logo and the tools half of that space under
+	   the icons. This margin lifts the two of them back onto the icons. A
+	   negative margin shrinks the margin box, so the row keeps the height that
+	   the caret needs. */
+	.logo,
+	#tools {
+		margin-top: -1.75em;
+	}
+
+	/* The checkbox that holds the theme. It stays in the page, and off the
+	   screen, so the keyboard reaches it. */
+	#theme-switch {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		border: 0;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+
+	.theme-toggle {
+		display: flex;
+		align-items: center;
+		font-size: 0.8em;
+		cursor: pointer;
+		padding: 0.35em 0.6em;
+		border-radius: 0.25em;
+		color: rgba(255, 255, 255, 0.85);
+		transition: color .25s ease-in-out, background-color .25s ease-in-out;
+	}
+
+		/* The palette picks the glyph: see '--sun-display' at the head of this
+		   file. */
+		.theme-toggle .sun {
+			display: var(--sun-display);
+		}
+
+		.theme-toggle .moon {
+			display: var(--moon-display);
+		}
+
+		.theme-toggle svg {
+			display: block;
+			width: 1.1em;
+			height: 1.1em;
+			fill: currentColor;
+		}
+
+		.theme-toggle:hover {
+			color: #ffffff;
+			background-color: rgba(255, 255, 255, 0.15);
+		}
+
+		/* The checkbox is off the screen, so the switch is what carries its
+		   focus ring. */
+		#theme-switch:focus-visible + .theme-toggle {
+			outline: solid 2px #ffffff;
+			outline-offset: 2px;
+		}
+
+	/* A <details> opens the list of languages with no JavaScript, and the list
+	   is absolute, so it covers the page in place of pushing the nav aside. */
+	#langs {
+		display: flex;
+		font-size: 0.8em;
+	}
+
+		/* The list hangs under the name of the open language, so that name is
+		   what positions it, not the strip that holds the name. */
+		#langs details {
+			position: relative;
+		}
+
+		/* 'list-style: none' drops the triangle of the summary in every browser
+		   but Safari, which reads the -webkit rule below. The :after rule draws
+		   the caret back, after the name of the language. */
+		#langs summary {
+			list-style: none;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 0.4em;
+			padding: 0.35em 0.6em;
+			border-radius: 0.25em;
+			white-space: nowrap;
+			color: rgba(255, 255, 255, 0.85);
+			transition: color .25s ease-in-out, background-color .25s ease-in-out;
+		}
+
+			#langs summary::-webkit-details-marker {
+				display: none;
+			}
+
+			#langs summary:after {
+				content: '';
+				display: block;
+				border-top: solid 0.35em currentColor;
+				border-left: solid 0.3em transparent;
+				border-right: solid 0.3em transparent;
+			}
+
+			#langs summary:hover {
+				color: #ffffff;
+				background-color: rgba(255, 255, 255, 0.15);
+			}
+
+			#langs details[open] summary:after {
+				transform: rotate(180deg);
+			}
+
+		/* The list of the other languages. A site of many languages fills the
+		   height of the screen, so the list scrolls at 60% of it. */
+		#langs ul {
+			position: absolute;
+			top: 100%;
+			right: 0;
+			z-index: 10;
+			margin: 0.25em 0 0 0;
+			padding: 0.25em 0;
+			min-width: 100%;
+			max-height: 60vh;
+			overflow-y: auto;
+			list-style: none;
+			text-align: left;
+			background-color: var(--page);
+			border-radius: 0.25em;
+			box-shadow: 0 0.25em 0.75em var(--shadow);
+		}
+
+			#langs li {
+				padding: 0;
+			}
+
+			#langs a {
+				display: block;
+				padding: 0.15em 1.25em;
+				white-space: nowrap;
+				text-decoration: none;
+				color: var(--ink-strong);
+				transition: color .25s ease-in-out, background-color .25s ease-in-out;
+			}
+
+				#langs a:hover {
+					color: var(--link);
+					background-color: var(--wash);
+				}
+
+		/* A phone has no room for the switch and the menu next to the nav, so
+		   the nav takes a row of its own. The logo, the switch and the menu stay
+		   on the row above it. */
+		@media screen and (max-width: 736px) {
+
+			.navcontainer {
+				flex-wrap: wrap;
+			}
+
+			/* The nav holds a row of its own here, so nothing lifts onto it. */
+			.logo,
+			#tools {
+				margin-top: 0;
+			}
+
+			#tools {
+				flex-grow: 0;
+				flex-shrink: 0;
+				flex-basis: auto;
+			}
+
+			/* 'height: auto' drops the fixed height of #nav, so the padding sets both
+			   gaps. The gap under the icons is where the caret of the open tab stands. */
+			#nav {
+				order: 1;
+				flex-basis: 100%;
+				height: auto;
+				padding: 1.25em 0 1.5em 0;
+			}
+
+		}
+
+		#nav a {
+			position: relative;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			color: #ffffff;
+			width: 1em;
+			height: 1em;
+			line-height: 0.9em;
+			/* An icon costs 1.5 times this size in width, margins included, so the
+			   five of them fill 82% of a screen at 11vw. Below that size they would
+			   wrap to a second row, and this shrinks them in place of it. */
+			font-size: min(2.5em, 11vw);
+			margin: 0 0.25em 0 0.25em;
+			opacity: 0.35;
+			outline: 0;
+			-moz-transition: opacity .25s ease-in-out;
+			-webkit-transition: opacity .25s ease-in-out;
+			-ms-transition: opacity .25s ease-in-out;
+			transition: opacity .25s ease-in-out;
+		}
+
+			#nav a svg {
+				width: 0.8em;
+				height: 0.8em;
+			}
+
+			/* The caret of the open tab. A border triangle has a sharp tip, so an
+			   SVG mask cuts the shape instead, with an arc for the tip, out of a
+			   box that takes the color of the page. Its base sits under the top
+			   edge of the page. 'scaleY' grows it out of the page, as the border
+			   of the theme did. The generated rule of the open tab sets
+			   'scaleY(1)' — see {{ nav_active }}. */
+			#nav a:after {
+				content: '';
+				display: block;
+				position: absolute;
+				left: 50%;
+				bottom: -0.75em;
+				width: 1em;
+				height: 0.5em;
+				margin-left: -0.5em;
+				background-color: var(--page);
+				-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 10' preserveAspectRatio='none'%3E%3Cpath d='M0 10 L8.59 1.41 A 2 2 0 0 1 11.41 1.41 L20 10 Z' fill='white'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+				mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 10' preserveAspectRatio='none'%3E%3Cpath d='M0 10 L8.59 1.41 A 2 2 0 0 1 11.41 1.41 L20 10 Z' fill='white'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+				transform: scaleY(0);
+				transform-origin: bottom;
+				-moz-transition: transform .25s ease-in-out;
+				-webkit-transition: transform .25s ease-in-out;
+				-ms-transition: transform .25s ease-in-out;
+				transition: transform .25s ease-in-out;
+			}
+
+			#nav a span {
+				display: block;
+				position: absolute;
+				background: var(--tooltip);
+				color: var(--tooltip-ink);
+				top: -2.75em;
+				font-size: 0.3em;
+				height: 2.25em;
+				line-height: 2.25em;
+				left: 50%;
+				opacity: 0;
+				-moz-transition: opacity .25s ease-in-out;
+				-webkit-transition: opacity .25s ease-in-out;
+				-ms-transition: opacity .25s ease-in-out;
+				transition: opacity .25s ease-in-out;
+				/* Sized by its label: a fixed width lets a longer title spill out of
+				   it. The centering must follow the real width, hence the translate
+				   in place of a negative margin. */
+				width: max-content;
+				padding: 0 1em;
+				transform: translateX(-50%);
+				white-space: nowrap;
+				text-align: center;
+			}
+
+				#nav a span:after {
+					content: '';
+					display: block;
+					position: absolute;
+					bottom: -0.4em;
+					left: 50%;
+					margin-left: -0.6em;
+					border-top: solid 0.6em var(--tooltip);
+					border-left: solid 0.6em transparent;
+					border-right: solid 0.6em transparent;
+				}
+
+			#nav a:hover {
+				opacity: 1.0;
+			}
+
+				#nav a:hover span {
+					opacity: 1.0;
+				}
+
+			/* Active-tab highlight (opacity + the caret above) is generated per page
+			   by build-website.py for the sections that actually exist — see {{ nav_active }}. */
+
+		@media screen and (max-width: 980px) {
+
+			#nav a span {
+				display: none;
+			}
+
+		}
+
+/* Wrapper */
+
+	#wrapper {
+		width: 45em;
+		margin: 0 auto;
+		min-height: 100vh;
+		max-width: 100%;
+		padding: 4em 0 1.25em 0;
+		display: -moz-flex;
+		display: -webkit-flex;
+		display: -ms-flex;
+		display: flex;
+		-moz-flex-direction: column;
+		-webkit-flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		-moz-align-items: center;
+		-webkit-align-items: center;
+		-ms-align-items: center;
+		align-items: center;
+		-moz-justify-content: center;
+		-webkit-justify-content: center;
+		-ms-justify-content: center;
+		justify-content: center;
+		-moz-transition: opacity 1s ease-in-out;
+		-webkit-transition: opacity 1s ease-in-out;
+		-ms-transition: opacity 1s ease-in-out;
+		transition: opacity 1s ease-in-out;
+	}
+
+		@media screen and (max-width: 1280px) {
+
+			#wrapper {
+				padding: 3em 0 1em 0;
+				max-width: calc(100% - 6em);
+			}
+
+			.logo {
+				max-width: 75px;
+				max-height: 75px;
+			}
+
+		}
+
+		@media screen and (max-width: 980px) {
+
+			#wrapper {
+				padding: 1.5em 0 0.75em 0;
+				max-width: calc(100% - 8em);
+			}
+
+			.logo {
+				max-width: 65px;
+				max-height: 65px;
+			}
+
+		}
+
+		@media screen and (max-width: 736px) {
+
+			#wrapper {
+				padding: 1em 0 0.5em 0;
+				max-width: calc(100% - 2em);
+			}
+
+			.logo {
+				max-width: 60px;
+				max-height: 60px;
+			}
+
+		}
+
+		@media screen and (max-width: 360px) {
+
+			#wrapper {
+				padding: 1em 0 0.5em 0;
+				max-width: 100%;
+			}
+
+			.logo {
+				max-width: 55px;
+				max-height: 55px;
+			}
+
+		}
+
+/* Main */
+
+	#main {
+		position: relative;
+		/* The hero picture reaches the edge of the page. 'overflow' clips it to the
+		   rounded corners below. */
+		overflow: hidden;
+		width: 100%;
+		background: var(--page);
+		border-radius: 0.75em;
+		box-shadow: 0px 1px 0px 0px var(--shadow);
+		-moz-transition: min-height 0.5s ease-in-out, max-height 0.5s ease-in-out;
+		-webkit-transition: min-height 0.5s ease-in-out, max-height 0.5s ease-in-out;
+		-ms-transition: min-height 0.5s ease-in-out, max-height 0.5s ease-in-out;
+		transition: min-height 0.5s ease-in-out, max-height 0.5s ease-in-out;
+	}
+
+		#main > .panel {
+			-moz-transition: opacity 0.25s ease-in-out;
+			-webkit-transition: opacity 0.25s ease-in-out;
+			-ms-transition: opacity 0.25s ease-in-out;
+			transition: opacity 0.25s ease-in-out;
+			margin-bottom: 0;
+			position: relative;
+			padding: 2em 2.5em 2.5em 2.5em;
+			width: 100%;
+			display: none;
+			/* A tab switch is #fragment navigation, so the browser scrolls the panel
+			   into view. This clamps that scroll to the page top: no jump from the
+			   top, and a return to the top out of a long tab scrolled down. */
+			scroll-margin-top: 100vh;
+		}
+
+			/* Section tabs (no JS): show only the panel whose id is in the URL. */
+			/* '#home' is the default section: shown when no other section is open. */
+			/* A doc heading is an anchor too, so a panel is equally open when the
+			   target sits inside it — that is the ':has(:target)' half of each rule. */
+			#main > .panel:target:not(.intro),
+			#main > .panel:not(.intro):has(:target) {
+				display: block;
+			}
+
+			#main:not(:has(:target)) > #home {
+				display: block;
+			}
+
+			#main:has(> .panel:not(.intro):target, > .panel:not(.intro) :target) > .panel.intro {
+				display: none;
+			}
+
+			/* Fade the panel that becomes visible. Entrance only: display:none cannot
+			   transition, so there is no exit animation, as the old JS had.
+			   Opacity alone on purpose: an animated transform would make a panel the
+			   containing block of a fixed descendant, which breaks such a descendant
+			   in Firefox. This stays a plain fade. */
+			@keyframes panel-in {
+				from { opacity: 0; }
+				to   { opacity: 1; }
+			}
+
+			#main > .panel:target,
+			#main > .panel:has(:target),
+			#main:not(:has(:target)) > #home {
+				animation: panel-in 0.35s ease-in-out;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				#main > .panel:target,
+				#main > .panel:has(:target),
+				#main:not(:has(:target)) > #home {
+					animation: none;
+				}
+			}
+
+			/* Media coming from markdown fits its panel. */
+			#main > .panel img {
+				max-width: 100%;
+				height: auto;
+			}
+
+			/* Every heading of a panel hangs to the left of the text, which reads as
+			   padded next to them. Each margin is 1em of body text, written in the em
+			   of the heading that takes it, so they all hang by the same width. */
+			#main > .panel:not(.intro) > h1 {
+				margin-left: -0.42em;
+			}
+
+			#main > .panel:not(.intro) > h2 {
+				margin-left: -0.55em;
+			}
+
+			#main > .panel:not(.intro) > h3 {
+				margin-left: -0.8em;
+			}
+
+			#main > .panel:not(.intro) > h4,
+			#main > .panel:not(.intro) > h5,
+			#main > .panel:not(.intro) > h6 {
+				margin-left: -0.91em;
+			}
+
+			/* A phone keeps 1.5em of padding, so half of the hang is what fits. The
+			   headings of h3 and under share the 1em of the text at this width. */
+			@media screen and (max-width: 736px) {
+
+				#main > .panel:not(.intro) > h1 {
+					margin-left: -0.29em;
+				}
+
+				#main > .panel:not(.intro) > h2 {
+					margin-left: -0.36em;
+				}
+
+				#main > .panel:not(.intro) > h3,
+				#main > .panel:not(.intro) > h4,
+				#main > .panel:not(.intro) > h5,
+				#main > .panel:not(.intro) > h6 {
+					margin-left: -0.5em;
+				}
+
+			}
+
+			/* Page-level prev/next arrows, fixed mid-page; only the active panel's
+			   pair is shown (generated rule). No font-size here on purpose: the arrow
+			   inherits the body font-size, so the 45em below equals #wrapper's width
+			   (Astral scales that font-size per breakpoint, so this tracks it).
+
+			   The arrows sit in #main, before the panels, and take no z-index: an
+			   arrow thus paints over the card and under every panel, in the order
+			   of the markup. On a phone the arrow stands on the edge of the card,
+			   and this is what keeps it under the text and the pictures there.
+			   #main must carry no transform: that would make it the containing
+			   block of these fixed arrows. */
+			.tab-arrow {
+				position: fixed;
+				top: 50%;
+				transform: translateY(-50%);
+				display: none;   /* shown for the active panel only (generated rule) */
+				align-items: center;
+				justify-content: center;
+				width: 2.6rem;
+				height: 2.6rem;
+				border-radius: 50%;
+				background: var(--disc);
+				color: #ffffff;
+				line-height: 1;
+				text-decoration: none;
+			}
+
+			.tab-arrow:hover {
+				background: var(--disc-hover);
+			}
+
+			/* Center the circle in the gap between the screen edge and the content
+			   column: gap center = (100% - 45em)/4, minus 1.3rem (half the circle).
+			   100% (not vw) excludes the scrollbar, so it matches the centered wrapper
+			   identically across browsers; max() keeps it on-screen on phones. */
+			.tab-arrow.prev { left:  max(0.5rem, calc((100% - 45em) / 4 - 1.3rem)); }
+			.tab-arrow.next { right: max(0.5rem, calc((100% - 45em) / 4 - 1.3rem)); }
+
+			.tab-arrow svg { width: 1.3rem; height: 1.3rem; fill: currentColor; }
+
+			/* Optically center the chevron glyph inside the circle. */
+			.tab-arrow.prev svg { transform: translateX(-10%); }
+			.tab-arrow.next svg { transform: translateX(10%); }
+
+			@media screen and (max-width: 736px) {
+
+				#main > .panel {
+					padding: 1.25em 1.5em 1.5em 1.5em;
+				}
+
+				/* A phone leaves no gap next to the page, so a disc there covers the text.
+				   The arrow takes the color of the page instead, and spans the 1.5em of
+				   panel padding out to the edge of the screen. Only its round outer side
+				   stands on the background, as a drop out of the edge of the page. */
+				.tab-arrow {
+					width: 2.5rem;
+					height: 3rem;
+					background: var(--page);
+					color: var(--disc);
+				}
+
+				.tab-arrow:hover {
+					background: var(--page);
+					color: var(--disc-hover);
+				}
+
+				.tab-arrow.prev {
+					left: 0;
+					border-radius: 1.5rem 0 0 1.5rem;
+				}
+
+				.tab-arrow.next {
+					right: 0;
+					border-radius: 0 1.5rem 1.5rem 0;
+				}
+
+				/* The chevron sits over the edge of the page, in the middle of the drop. */
+				.tab-arrow.prev svg { transform: translateX(-20%); }
+				.tab-arrow.next svg { transform: translateX(20%); }
+
+			}
+
+			/* #wrapper takes the whole screen at this width, so the page has no edge
+			   for a drop to stand on, and an arrow has nowhere to sit but over the
+			   text. The nav is the way through the panels here. '!important' is what
+			   beats the generated rule that shows the arrows of the open panel — see
+			   {{ arrows }}. */
+			@media screen and (max-width: 360px) {
+
+				.tab-arrow {
+					display: none !important;
+				}
+
+			}
+
+			#main > .panel.intro {
+				padding: 0;
+				display: -moz-flex;
+				display: -webkit-flex;
+				display: -ms-flex;
+				display: flex;
+				-moz-flex-direction: column;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+			}
+
+				#main > .panel.intro .pic {
+					text-decoration: none;
+					position: relative;
+					width: 100%;
+				}
+
+					#main > .panel.intro .pic:before {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						/* background: url("images/overlay.png"); */
+						width: 100%;
+						height: 100%;
+						z-index: 1;
+					}
+
+					/* The hero is a screenshot: it keeps its aspect ratio rather than
+					   being cropped to a fixed banner height. */
+					#main > .panel.intro .pic img {
+						display: block;
+						width: 100%;
+						height: auto;
+					}
+
+				#main > .panel.intro header {
+					padding: 2em 2.5em 2.5em 2.5em;
+					margin-bottom: 0;
+					width: 100%;
+				}
+
+					#main > .panel.intro header h1 {
+						line-height: 1.25em;
+						margin-bottom: 0;
+					}
+
+					#main > .panel.intro header p {
+						letter-spacing: -0.015em;
+						font-size: 1.25em;
+						margin: 0.25em 0 0 0;
+					}
+
+				@media screen and (max-width: 980px) {
+
+					#main > .panel.intro header {
+						padding: 2.5em 4em 3em 4em;
+						text-align: center;
+					}
+
+				}
+
+				@media screen and (max-width: 736px) {
+
+					#main > .panel.intro header {
+						padding: 1.75em 2em 2.5em 2em;
+					}
+
+						#main > .panel.intro header p {
+							font-size: 1em;
+							margin: 0.25em 0 0 0;
+						}
+
+				}
+
+/* Screenshot gallery + lightbox (no JS): a hidden checkbox toggles the overlay. */
+
+	.gallery {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14em, 1fr));
+		gap: 1em;
+		margin: 0 0 2em 0;
+	}
+
+		.gallery img {
+			display: block;
+			height: auto;
+		}
+
+		/* Only the thumbnail takes the width of its cell: a width on the overlay
+		   picture fights its max-height, and the picture loses its aspect ratio. */
+		.thumb img {
+			width: 100%;
+		}
+
+	.lightbox-toggle {
+		display: none;
+	}
+
+	.thumb {
+		display: block;
+		cursor: zoom-in;
+	}
+
+	.lightbox {
+		display: none;
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		padding: 2em;
+		background: var(--scrim);
+		cursor: zoom-out;
+	}
+
+	.lightbox img {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		max-width: 95%;
+		max-height: 95%;
+		box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
+	}
+
+	.lightbox-toggle:checked ~ .lightbox {
+		display: block;
+	}
+
+/* Download tiles: one big icon per platform. */
+
+	.release {
+		text-align: center;
+		font-weight: 600;
+	}
+
+	.downloads {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
+		gap: 1em;
+		margin: 0 0 2em 0;
+		text-align: center;
+	}
+
+		/* '.icon svg' sizes a glyph in em, so this is what makes the tile big. */
+		.download .icon {
+			display: block;
+			font-size: 4em;
+			line-height: 1;
+		}
+
+		.download .name {
+			display: block;
+			margin: 0.4em 0 0 0;
+		}
+
+		.download .sub {
+			display: block;
+			font-size: 0.8em;
+			opacity: 0.75;
+		}
+
+/* The donation icon, as big as a download tile. */
+
+	.donate {
+		text-align: center;
+		margin: 0 0 2em 0;
+	}
+
+		/* '.icon svg' sizes a glyph in em, so this is what makes it big. */
+		.donate .icon {
+			display: inline-block;
+			font-size: 4em;
+			line-height: 1;
+		}
+
+
+/* Footer: the strip that build-website.py writes under the page. */
+
+	#footer {
+		color: #f8f8f8;
+		text-align: center;
+		padding: 2em 0 0 0;
+		font-size: 0.9em;
+	}
+
+		#footer a {
+			color: rgba(255, 255, 255, 0.65);
+			transition: color .25s ease-in-out;
+		}
+
+			#footer a:hover {
+				color: #ffffff;
+			}
+
+		/* Markdown writes a plain list, and these put the items on one line.
+		   The border of an item is what divides it from the one before it. */
+		#footer ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+			#footer li {
+				display: inline-block;
+				padding-left: 1em;
+				margin-left: 1em;
+				border-left: solid 1px rgba(255, 255, 255, 0.25);
+				line-height: 1;
+			}
+
+				#footer li:first-child {
+					padding-left: 0;
+					margin-left: 0;
+					border-left: 0;
+				}
+
+		@media screen and (max-width: 736px) {
+
+			#footer li {
+				padding-left: 0.5em;
+				margin-left: 0.5em;
+			}
+
+		}
