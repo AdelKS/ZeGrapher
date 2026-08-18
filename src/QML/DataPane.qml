@@ -14,7 +14,7 @@ Item {
 
   function loadCSV(csvFile: url, dataSheet: DataSheet) {
     csvImportSettings.dataSheet = dataSheet;
-    csvImportSettings.csvFilePath = csvFile.toString();
+    csvImportSettings.csvFilePath = csvFile.pathname;
     csvImportSettings.previewModel.csvFile = csvFile;
     importingCSV = true;
   }
