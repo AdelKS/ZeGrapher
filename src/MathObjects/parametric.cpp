@@ -63,13 +63,13 @@ void Parametric::importPod(Parametric::POD p)
     setFirst(QString::fromStdString(*p.first));
 
   if (p.second)
-    setFirst(QString::fromStdString(*p.second));
+    setSecond(QString::fromStdString(*p.second));
 
   if (p.start)
     setStart(QString::fromStdString(*p.start));
 
   if (p.end)
-    setStart(QString::fromStdString(*p.end));
+    setEnd(QString::fromStdString(*p.end));
 
   if (p.coordinates)
     setCoordinateSystem(*p.coordinates);
