@@ -7,6 +7,8 @@ website/content/ holds one folder per language. English is the source: a
 language that leaves out a file or a picture takes the English one. The build
 of the app and every script that reads the content find the files through this
 module, so each one falls back to English the same way.
+
+website/build-config/build.yaml is read here too, with PyYAML.
 """
 
 import sys
@@ -14,12 +16,17 @@ from pathlib import Path
 
 SITE = Path(__file__).resolve().parents[1]
 CONTENT = SITE / "content"
+CONF_FILE = SITE / "build-config" / "build.yaml"
 
 # The language that every other one falls back to
 SOURCE = "en"
 
 # The folder of pictures inside a language folder, and the path a panel writes
 PICTURES = "images"
+
+# The short strings of a language that no panel holds: the words of the footer,
+# and the words that ask for a donation.
+STRINGS = "strings.yaml"
 
 # The documentation panel of the site is the manual of the app. The app reads it
 # under the name 'documentation.md', without the place of the panel in the page
@@ -58,6 +65,36 @@ def pictures(lang: str) -> dict[str, Path]:
             found.update((picture.name, picture) for picture in sorted(path.iterdir())
                          if picture.is_file())
     return found
+
+
+def read_conf() -> dict:
+    """website/build-config/build.yaml, as a mapping."""
+    import yaml
+
+    if not CONF_FILE.is_file():
+        sys.exit(f"{CONF_FILE} does not exist, and it holds the configuration of the site")
+
+    conf = yaml.safe_load(CONF_FILE.read_text(encoding="utf-8")) or {}
+    if not isinstance(conf, dict):
+        sys.exit(f"{CONF_FILE}: the file holds no mapping of names to settings")
+    return conf
+
+
+def link_url(link) -> str:
+    """The address of an entry of 'footer: links' in build.yaml.
+
+    An entry is an address, or a mapping that holds it under 'url'.
+    """
+    return link["url"] if isinstance(link, dict) else link
+
+
+def donate_url(conf: dict) -> str:
+    """The donation page, which is the 'donate' entry of 'footer: links'."""
+    link = (conf.get("footer") or {}).get("links", {}).get("donate")
+    if not link:
+        sys.exit(f"{CONF_FILE}: 'footer: links' names no 'donate', the entry "
+                 f"that links the donation page")
+    return link_url(link)
 
 
 def qrc_entries() -> list[str]:

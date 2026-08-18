@@ -13,3 +13,7 @@ They are generated from `ZeGrapher.svg`. To re-generate them, run:
 The docstring at the top of
 [rasterize-zegrapher-svg.py](./rasterize-zegrapher-svg.py) lists the files it
 writes.
+
+The website shows `ZeGrapher.svg` as its logo and its favicon.
+`website/scripts/build-website.py` copies this file into the site when it
+builds, so the drawing is not duplicated.

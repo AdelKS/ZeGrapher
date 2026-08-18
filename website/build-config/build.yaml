@@ -1,0 +1,28 @@
+# The settings that build-website.py reads to build the site
+
+# the icon of each panel, by the name of its markdown file
+icon-map:
+  1-home: home
+  2-features: list
+  3-gallery: image
+  4-documentation: book
+  5-download: download
+
+# the picture of the landing page, taken from content/<lang>/images/
+hero-image: vitrine.png
+
+# the pictures of the gallery panel, in this order
+gallery:
+  - vitrine.png
+  - functions.png
+  - schrodinger.png
+  - data.png
+
+footer:
+  links:
+    donate: https://donate.stripe.com/bJe8wQfuMdxM4ZX3fofnO01
+    contact: mailto:contact@zegrapher.com
+    # the CC BY 3.0 license of the theme requires this credit and its link
+    theme-based-on:
+      url: https://html5up.net/astral
+      link-name: Astral by HTML5 UP

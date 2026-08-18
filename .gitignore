@@ -1,8 +1,10 @@
 *.user
 deploy/*
-build*
+/build*
 clangd-compile-db
 .DS_Store
 .claude/*
 .wraplock
+__pycache__/
 /captures
+/website/download
