@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<!--
+	ZeGrapher website theme — Astral by HTML5 UP (html5up.net | @ajlkn),
+	reworked by Adel Kara Slimane to pure HTML + CSS (no JavaScript).
+
+	This is the layout template of a page. build-website.py replaces each
+	{{ ... }} slot with what it built.
+-->
+<html lang="{{ lang }}">
+	<head>
+		<title>{{ title }}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css?v={{ css_version }}" />
+		{{ nav_active }}
+		<link rel="icon" type="image/svg+xml" href="../assets/images/ZeGrapher.svg" />
+	</head>
+	<body>
+		<div id="wrapper">
+			<div class="navcontainer">
+
+				<img class="logo" src="../assets/images/ZeGrapher.svg" alt="ZeGrapher logo" />
+
+				<div style="flex-grow: 10; flex-basis: 0; flex-shrink: 10;"></div>
+
+				<nav id="nav" style="flex-shrink: 0;">
+					{{ nav }}
+				</nav>
+
+				<div id="tools">
+
+					<!-- The theme switch. The checkbox holds the state, and the palette
+					     of main.css reads that checkbox. Both glyphs are written here,
+					     and the palette shows the one that opens the other theme. -->
+					<input type="checkbox" id="theme-switch"
+					       aria-label="Switch between the light and the dark theme" />
+					<label for="theme-switch" class="theme-toggle"
+					       title="Switch between the light and the dark theme">
+						<span class="moon" aria-hidden="true">{{ moon_icon }}</span>
+						<span class="sun" aria-hidden="true">{{ sun_icon }}</span>
+					</label>
+
+					<!-- The language menu of this build. It is empty while the site holds
+					     one language. -->
+					<nav id="langs">
+						{{ languages }}
+					</nav>
+
+				</div>
+			</div>
+
+			<div id="main">
+
+				<!-- The previous/next arrows come before the panels, so a panel is
+				     painted over them. They are positioned as fixed, so their place
+				     in the markup sets nothing else. -->
+				{{ arrows }}
+
+				{{ content }}
+			</div>
+
+			{{ footer }}
+
+		</div>
+
+	</body>
+</html>
