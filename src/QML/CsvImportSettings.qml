@@ -57,10 +57,14 @@ Item {
       text: qsTr("CSV file to load")
     }
 
-    LineEdit {
+    TextField {
       id: csvFile
+
       Layout.leftMargin: 5
       Layout.fillWidth: true
+      readOnly: true
+
+      font: Information.appSettings.font
     }
 
     GroupBox {
