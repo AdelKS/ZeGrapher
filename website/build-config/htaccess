@@ -1,0 +1,19 @@
+# The site's server rules. build-website.py writes this file to the site root
+# as '.htaccess', and fills in the languages of the build.
+
+RewriteEngine on
+
+# Every request goes to https.
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE]
+
+# <lang>.zegrapher.com serves that language's page.
+RewriteCond %{HTTP_HOST} ^(?:www\.)?({{ languages }})\.zegrapher\.com$ [NC]
+RewriteRule ^(.*) https://zegrapher.com/%1/ [L,R=302]
+
+# The root redirects to the browser's first preferred language. A browser
+# asking for a language the site lacks lands on the English page, which every
+# other one is translated from.
+RewriteCond %{HTTP:Accept-Language} ^({{ languages }}) [NC]
+RewriteRule ^$ /%1/ [L,R=302]
+RewriteRule ^$ /en/ [L,R=302]

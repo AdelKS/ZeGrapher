@@ -5,7 +5,23 @@ Run each command below from this folder.
 
 - `content.py` — finds the files of each language, for the build of the app and
   for the scripts here
+- `fetch_icon.py` — downloads one icon
+- `fetch_fonts.py` — downloads the web font
 - `make-images.py` — takes the pictures of the app
+
+# Icons
+
+To add an icon
+
+1. Find the name of a solid icon on
+   [fontawesome.com](https://fontawesome.com/search?o=r&m=free&s=solid).
+2. Run `./fetch_icon.py <name>`. The tool writes `<name>.svg` to
+   [../assets/icons/](../assets/icons/).
+
+# Fonts
+
+Run `./fetch_fonts.py` to (re)fetch the fonts in
+[../assets/fonts/](../assets/fonts/).
 
 # Pictures
 
