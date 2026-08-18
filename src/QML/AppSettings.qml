@@ -68,7 +68,7 @@ Item {
         currentIndex: root.indexFromModelValue(langsModel, Information.appSettings.language)
 
         onActivated: (index) => {
-          root.appSettings.language = langsModel.get(index).value;
+          Information.appSettings.language = langsModel.get(index).value;
         }
       }
 
