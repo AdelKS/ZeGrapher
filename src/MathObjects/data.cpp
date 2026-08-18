@@ -97,7 +97,7 @@ void Data::importPod(Data::POD p)
     setStart(QString::fromStdString(*p.start));
 
   if (p.end)
-    setStart(QString::fromStdString(*p.end));
+    setEnd(QString::fromStdString(*p.end));
 
   if (p.values)
     setData(std::move(*p.values));
