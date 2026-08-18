@@ -50,7 +50,7 @@ Item {
 
       GroupBox {
         Layout.fillWidth: true
-        title: qsTr("Global settings")
+        title: qsTr("Size")
 
         GridLayout {
           columnSpacing: 10
@@ -259,6 +259,17 @@ Item {
               }
             }
           }
+
+        }
+      }
+
+      GroupBox {
+        Layout.fillWidth: true
+        title: qsTr("Drawing")
+
+        GridLayout {
+          columnSpacing: 10
+          columns: 2
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
