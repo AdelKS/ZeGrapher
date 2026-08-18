@@ -37,5 +37,5 @@ void ThemedColor::importPod(POD p)
     dark = QColor::fromString(QString::fromStdString(*p.dark));
 
   if (p.light)
-    light = QColor::fromString(QString::fromStdString(*p.dark));
+    light = QColor::fromString(QString::fromStdString(*p.light));
 }
