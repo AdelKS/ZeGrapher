@@ -1,0 +1,28 @@
+# Configuration needed for generating the website
+
+# which icon each page has
+icon-map:
+  1-home: home
+  2-features: list
+  3-gallery: image
+  4-documentation: book
+  5-download: download
+
+# the picture of the landing page, taken from content/<lang>/images/
+hero-image: vitrine.png
+
+# which pictures to put in the gallery
+gallery:
+  - vitrine.png
+  - functions.png
+  - schrodinger.png
+  - data.png
+
+footer:
+  links:
+    donate: https://donate.stripe.com/bJe8wQfuMdxM4ZX3fofnO01
+    contact: mailto:contact@zegrapher.com
+    # the CC BY 3.0 license of the theme asks for this credit and its link
+    theme-based-on:
+      url: https://html5up.net/astral
+      link-name: Astral by HTML5 UP

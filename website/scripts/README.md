@@ -3,8 +3,17 @@
 Two scripts live here. Each one reads or writes the folders of the website,
 which sits one level up. Run each command below from this folder.
 
+- `build-website.py` — builds the site out of the markdown
 - `fetch_icon.py` — downloads one icon
 - `fetch_fonts.py` — downloads the web font
+
+# Build
+
+Run `./build-website.py` to write the site to `../../build-website/`. The
+script needs [pandoc](https://pandoc.org/) on `PATH`, and PyYAML.
+
+`build-website.py` documents the name of a panel, the front matter, the
+generated blocks and the files that a release writes.
 
 # Icons
 
