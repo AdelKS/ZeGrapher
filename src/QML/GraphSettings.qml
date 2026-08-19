@@ -63,6 +63,7 @@ Item {
           ZeLabel {
             id: scalingLabel
             Layout.alignment: Qt.AlignRight
+            //: how big everything is drawn, not the zoom of the view
             text: qsTr('Scaling')
             tooltipText: qsTr("Draw everything on the graph bigger or smaller.")
           }
@@ -103,6 +104,7 @@ Item {
                 value: GraphSettings.SizeType.Fill
               }
               ListElement {
+                //: Give the graph a custom size, instead of making it fill the window
                 text: qsTr("Custom")
                 value: GraphSettings.SizeType.Custom
               }
@@ -185,6 +187,7 @@ Item {
               }
               ZeDoubleSpinBox {
                 id: sheetHeight
+                //: shorthand for pixels or centimeters, the size of the graph
                 suffix: root.pixelUnits ? qsTr(" px") : qsTr(" cm")
                 to: root.pixelUnits ? root.max_px_size : root.max_cm_size
                 step: root.pixelUnits ? root.px_increment : root.cm_increment
@@ -214,6 +217,7 @@ Item {
               ZeDoubleSpinBox {
 
                 id: sheetWidth
+                //: shorthand for pixels or centimeters, the size of the graph
                 suffix: root.pixelUnits ? qsTr(" px") : qsTr(" cm")
                 to: root.pixelUnits ? root.max_px_size : root.max_cm_size
                 step: root.pixelUnits ? root.px_increment : root.cm_increment

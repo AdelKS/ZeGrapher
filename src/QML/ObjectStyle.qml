@@ -274,10 +274,12 @@ Loader {
     ListModel {
       id: coordinateType
       ListElement {
+        //: cartesian coordinates
         text: qsTr("Cartesian")
         type: ZG.Base.Cartesian
       }
       ListElement {
+        //: polar coordinates
         text: qsTr("Polar")
         type: ZG.Base.Polar
       }

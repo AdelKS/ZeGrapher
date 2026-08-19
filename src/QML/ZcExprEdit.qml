@@ -53,7 +53,7 @@ Item {
       errorLbl.setErrorMsg(customErrorMsg);
     else {
       if (root.state.errorMsg.length === 0 && root.state.status !== ZG.State.NEUTRAL && nanValue)
-        errorLbl.setErrorMsg(qsTr("NaN"));
+        errorLbl.setErrorMsg("NaN");
       else errorLbl.setErrorMsg(root.state.errorMsg);
     }
 

@@ -112,6 +112,7 @@ Item {
 
       ZeTabButton {
         id: mathTabButton
+        //: title of the tab that holds the math objects, keep it short
         text: qsTr("Math")
       }
 
@@ -127,6 +128,7 @@ Item {
 
       ZeTabButton {
         id: appTabButton
+        //: title of the tab that holds the settings of the app, keep it short
         text: qsTr("App")
       }
     }
