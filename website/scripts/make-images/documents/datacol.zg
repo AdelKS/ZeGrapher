@@ -1,0 +1,17 @@
+math_objects:
+  - type: equation
+    equation: f(x) = 2 + cos(x)
+  - type: datasheet
+    notes: taken from f
+    columns:
+      - name: samples
+        values: ['3', '1.46', '1.16', '2.01']
+        showInTable: true
+graph:
+  range:
+    x: {min: '-1', max: '5'}
+    y: {min: '-1', max: '4'}
+app:
+  language: en
+  window_size: {width: 1332, height: 769}
+  pane_width: 483

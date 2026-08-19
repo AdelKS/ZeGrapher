@@ -1,0 +1,16 @@
+math_objects:
+  - type: constant
+    name: k
+    value: 1.2
+    from: 0
+    to: 3
+  - type: equation
+    equation: f(x) = k*cos(x)
+graph:
+  range:
+    x: {min: '-4', max: '4'}
+    y: {min: '-3', max: '3'}
+app:
+  language: en
+  window_size: {width: 1332, height: 769}
+  pane_width: 483
