@@ -34,6 +34,10 @@ endif
 
 add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', language : 'cpp')
 
+# a resource file of one prefix. A meson.build fills it with the files that it
+# lists at configure time
+qrc_template = files('generated.qrc.in')
+
 subdir('translations')
 subdir('src')
 subdir('appdata')
