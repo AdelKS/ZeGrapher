@@ -3,6 +3,7 @@
 // child that the user of the button declares.
 
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 import QtQuick.Effects
 
 Rectangle {
@@ -36,8 +37,15 @@ Rectangle {
     color: ZeStyle.palette.shadow
   }
 
+  // call sites give the hint with ToolTip.text
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: mouseArea.containsMouse && ToolTip.text.length !== 0
+
   MouseArea {
+    id: mouseArea
+
     anchors.fill: parent
+    hoverEnabled: true
     cursorShape: Qt.PointingHandCursor
     onClicked: root.checked = !root.checked
   }

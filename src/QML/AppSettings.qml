@@ -73,45 +73,58 @@ Item {
       ZeLabel {
         Layout.alignment: Qt.AlignRight
         text: qsTr('Syntax coloring')
+        tooltipText: qsTr("Border color of an expression, one color per state.")
       }
       Frame {
         Layout.fillWidth: true
         GridLayout {
           columns: 2
 
-          Label {
+          ZeLabel {
+            id: validSyntaxLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr("Valid")
+            tooltipText: qsTr("Border color of a valid expression.")
           }
           ColorButton {
             id: validSyntaxColorButton
             Layout.alignment: Qt.AlignLeft
+
+            ToolTip.text: validSyntaxLabel.tooltipText
 
             selectedColor: Information.appSettings.validSyntax
 
             onSelectedColorModified: Information.appSettings.validSyntax = selectedColor;
           }
 
-          Label {
+          ZeLabel {
+            id: warningSyntaxLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr("Warning")
+            tooltipText: qsTr("Border color of an expression that is valid but has no value.")
           }
           ColorButton {
             id: warningSyntaxColorButton
             Layout.alignment: Qt.AlignLeft
+
+            ToolTip.text: warningSyntaxLabel.tooltipText
 
             selectedColor: Information.appSettings.warningSyntax
 
             onSelectedColorModified: Information.appSettings.warningSyntax = selectedColor;
           }
 
-          Label {
+          ZeLabel {
+            id: invalidSyntaxLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr("Invalid")
+            tooltipText: qsTr("Border color of an invalid expression.")
           }
           ColorButton {
             id: invalidSyntaxColorButton
             Layout.alignment: Qt.AlignLeft
+
+            ToolTip.text: invalidSyntaxLabel.tooltipText
 
             selectedColor: Information.appSettings.invalidSyntax
 

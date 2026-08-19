@@ -96,6 +96,7 @@ Item {
         id: horizontalHeaderLabel
         anchors.fill: parent
         text: display
+        tooltipText: root.interactive ? qsTr("Click to select the whole column. Hold Shift to add to the selection.") : ""
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
       }
@@ -147,6 +148,7 @@ Item {
         id: verticalHeaderLabel
         anchors.fill: parent
         text: display
+        tooltipText: root.interactive ? qsTr("Click to select the whole row. Hold Shift to add to the selection.") : ""
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
       }

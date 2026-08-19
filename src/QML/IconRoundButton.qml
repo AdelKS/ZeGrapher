@@ -14,6 +14,10 @@ RoundButton {
   topPadding: 0
   bottomPadding: 0
 
+  // an icon carries no text, so call sites give the hint with ToolTip.text
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: hovered && ToolTip.text.length !== 0
+
   contentItem: Image {
     source: ZeStyle.dark ? root.darkThemeIcon : root.lightThemeIcon
     fillMode: Image.PreserveAspectFit

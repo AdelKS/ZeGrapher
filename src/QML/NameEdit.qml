@@ -1,6 +1,7 @@
 // A line edit for the name a math object is known by, with an optional label on top
 
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 import QtQuick.Layouts
 
 ColumnLayout {
@@ -16,6 +17,16 @@ ColumnLayout {
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
   spacing: 0
+
+  // call sites give the hint with ToolTip.text, and the label and the line edit
+  // show it. It stays away while the field has the focus, where it would cover
+  // the text
+  HoverHandler { id: hoverHandler }
+
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: hoverHandler.hovered
+    && !zcExprEdit.lineEditBackend.textEdit.activeFocus
+    && ToolTip.text.length !== 0
 
   ZeLabel {
     id: label

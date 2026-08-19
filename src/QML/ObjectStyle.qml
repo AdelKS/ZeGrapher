@@ -106,16 +106,17 @@ Loader {
           }
         }
 
-        SpinBox {
+        ZeSpinBox {
           id: lineWidthSpinBox
           Layout.alignment: Qt.AlignHCenter
-          editable: true
           from: 1
           to: 100
           live: true
           value: root.style.lineWidth * 10.
           stepSize: 10
           Layout.maximumWidth: 100
+
+          ToolTip.text: qsTr("The width of the line")
 
           onValueModified: {
             root.style.lineWidth = Number(value) / 10.0;
@@ -140,16 +141,17 @@ Loader {
             root.style.pointStyle = pointStyleModel.get(currentIndex).type
           }
         }
-        SpinBox {
+        ZeSpinBox {
           id: pointWidthSpinBox
           Layout.alignment: Qt.AlignHCenter
           Layout.maximumWidth: 100
-          editable: true
           from: 1
           to: 100
           live: true
           value: root.style.pointWidth * 4.0
           stepSize: 10
+
+          ToolTip.text: qsTr("The size of the points")
 
           onValueModified: {
             root.style.pointWidth = Number(value) / 4.0;
@@ -211,6 +213,7 @@ Loader {
 
           id: startLabel
           text: qsTr("Start:")
+          tooltipText: qsTr("The value where the plot starts.")
         }
 
         ValueEdit {
@@ -219,6 +222,8 @@ Loader {
           Layout.fillWidth: true
           Layout.minimumWidth: 30
           backend: root.base.start
+
+          ToolTip.text: startLabel.tooltipText
 
           Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -237,6 +242,7 @@ Loader {
 
           id: endLabel
           text: qsTr("End:")
+          tooltipText: qsTr("The value where the plot ends.")
         }
 
         ValueEdit {
@@ -245,6 +251,8 @@ Loader {
           Layout.fillWidth: true
           Layout.minimumWidth: 30
           backend: root.base.end
+
+          ToolTip.text: endLabel.tooltipText
 
           Behavior on width { SmoothedAnimation { duration: 500 } }
 

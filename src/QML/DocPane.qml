@@ -39,6 +39,9 @@ Rectangle {
     anchors.top: parent.top
     anchors.topMargin: root.buttonTopMargin
 
+    ToolTip.text: docs_button.checked ? qsTr("Hide the documentation")
+                                     : qsTr("Show the documentation")
+
     Image {
       anchors.centerIn: parent
       // centered on the visible half of the button, not on the button

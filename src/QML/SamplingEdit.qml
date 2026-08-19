@@ -77,6 +77,7 @@ Loader {
           id: sourceEdit
           backend: sampling.source
           label: qsTr("Object")
+          ToolTip.text: qsTr("The name of the object to sample.")
 
           Layout.fillWidth: true
           Layout.preferredWidth: 90
@@ -155,6 +156,9 @@ Loader {
 
           lightThemeIcon: "qrc:/icons/check-dark.svg"
           darkThemeIcon: "qrc:/icons/check-light.svg"
+
+          //: tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over
+          ToolTip.text: qsTr("Sample")
 
           onReleased: {
             const issueText = sampling.apply();
