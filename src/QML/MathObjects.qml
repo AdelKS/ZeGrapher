@@ -77,6 +77,7 @@ Item {
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.OpenFile
     options: FileDialog.ReadOnly
+    //: the three file filters of the file dialog: .csv, .txt, every file
     nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
     visible: false
     onAccepted: root.importCSV(selectedFile, null)
