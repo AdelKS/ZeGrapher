@@ -70,7 +70,7 @@ QString Sampling::apply()
   else if (std::abs(by) > std::abs(span))
     return tr("The step is wider than the range.");
   else if (span / by > maxPoints)
-    return tr("Amount of points exceed limit of %1 points.").arg(maxPoints);
+    return tr("Too many points: the limit is %1.").arg(maxPoints);
 
   const size_t pointCount = size_t(span / by) + 1;
 
@@ -82,7 +82,7 @@ QString Sampling::apply()
     const std::expected<double, zc::Error> res
       = (*zcObj)({from + double(i) * by}, &information->mathObjectCache);
 
-    // ZeCalculator can't read 'inf' or 'nan' back, such points stay empty
+    // ZeCalculator cannot read 'inf' or 'nan' back, such points stay empty
     values.push_back(res and std::isfinite(*res) ? std::format("{}", *res) : std::string());
   }
 
