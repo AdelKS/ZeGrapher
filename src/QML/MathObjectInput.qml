@@ -116,6 +116,8 @@ Item {
 
           iconName: checked ? "closed-eye" : "open-eye"
 
+          ToolTip.text: checked ? qsTr("Show the curve") : qsTr("Hide the curve")
+
           onToggled: {
             if (root.mathObj.style)
               root.mathObj.style.visible = !checked
@@ -133,11 +135,15 @@ Item {
           checked: false
 
           iconName: "brush"
+
+          ToolTip.text: qsTr("Plot style")
         }
 
         ColorButton {
           id: colorButton
           radius: 12
+
+          ToolTip.text: qsTr("The color of the curve")
 
           property themedColor lastGood
 
@@ -157,6 +163,8 @@ Item {
         ColorButton {
           id: secondColorButton
           radius: 12
+
+          ToolTip.text: qsTr("End color of the gradient over the family of Schrödinger curves")
 
           property themedColor lastGood
 
@@ -245,6 +253,8 @@ Item {
 
           iconName: "schrodinger-cat"
 
+          ToolTip.text: qsTr("Schrödinger mode: the constant takes several values at once")
+
           onToggled: {
             root.mathObj.getConstant().deadAndAlive = checked;
           }
@@ -313,6 +323,8 @@ Item {
 
         DragHandle {
           id: dragHandle
+
+          ToolTip.text: qsTr("Drag to change the order of the objects")
         }
 
         states: [
@@ -416,6 +428,8 @@ Item {
     z: 1
 
     iconName: "delete"
+
+    ToolTip.text: qsTr("Delete this object")
 
     onReleased: root.mathObj.requestUiInitiatedDelete();
   }

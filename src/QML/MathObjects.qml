@@ -120,6 +120,8 @@ Item {
 
           iconName: "csv-import"
 
+          ToolTip.text: qsTr("Load a CSV file into a new data sheet")
+
           onReleased: fileDialog.visible = true;
         }
 
@@ -129,6 +131,8 @@ Item {
           Layout.preferredWidth: 35
 
           iconName: "add"
+
+          ToolTip.text: qsTr("Add a math object")
 
           onReleased: MathWorld.addMathObject();
         }

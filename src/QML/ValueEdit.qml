@@ -1,6 +1,7 @@
 // A line edit where the user enters an expression that evaluates to a value
 
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 
 Item {
   id: root
@@ -21,6 +22,9 @@ Item {
 
   ZcExprEdit {
     id: zcExprEdit
+
+    // call sites set the hint with ToolTip.text
+    hint: root.ToolTip.text
 
     nanValue: isNaN(root.backend.value)
 

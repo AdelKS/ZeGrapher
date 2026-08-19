@@ -18,7 +18,7 @@ Item {
 
   FileDialog {
     id: exportDialog
-    title: qsTr("Graph export")
+    title: qsTr("Export the graph")
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.SaveFile
     defaultSuffix: "pdf"
@@ -62,7 +62,7 @@ Item {
 
   FileDialog {
     id: saveDialog
-    title: qsTr("Save as ZeGrapher document")
+    title: qsTr("Save as a ZeGrapher document")
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.SaveFile
     defaultSuffix: ".zg"
@@ -75,7 +75,7 @@ Item {
 
   FileDialog {
     id: loadDialog
-    title: qsTr("Load ZeGrapher document")
+    title: qsTr("Load a ZeGrapher document")
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.OpenFile
     defaultSuffix: ".zg"
@@ -210,6 +210,8 @@ Item {
 
           iconName: "export-graph"
 
+          ToolTip.text: qsTr("Export the graph: vector graphics (PDF, SVG) or images (PNG, JPG)")
+
           onReleased: exportDialog.visible = true;
         }
 
@@ -224,6 +226,8 @@ Item {
 
           iconName: "save"
 
+          ToolTip.text: qsTr("Save as a ZeGrapher document")
+
           onReleased: saveDialog.visible = true;
         }
 
@@ -237,6 +241,8 @@ Item {
           Layout.alignment: Qt.AlignRight
 
           iconName: "load"
+
+          ToolTip.text: qsTr("Load a ZeGrapher document")
 
           onReleased: loadDialog.visible = true;
         }

@@ -6,6 +6,10 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+  /// @brief how long the pointer must rest on a widget before its hint shows,
+  ///        in milliseconds
+  readonly property int tooltipDelay: 600
+
   /// @brief the width of one level of indent in a markdown list, in pixels
   readonly property real listIndent: 14
 

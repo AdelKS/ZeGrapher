@@ -1,6 +1,7 @@
 // A line edit for the name a math object is known by, with an optional label on top
 
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 import QtQuick.Layouts
 
 ColumnLayout {
@@ -17,8 +18,11 @@ ColumnLayout {
 
   spacing: 0
 
+  // call sites set the hint with ToolTip.text, which the label and line edit show
   ZeLabel {
     id: label
+
+    tooltipText: root.ToolTip.text
 
     visible: text.length !== 0
     Layout.alignment: Qt.AlignHCenter
@@ -27,6 +31,7 @@ ColumnLayout {
   ZcExprEdit {
     id: zcExprEdit
 
+    hint: root.ToolTip.text
     state: root.backend.state
 
     expression: root.backend.name

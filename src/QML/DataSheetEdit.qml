@@ -160,6 +160,8 @@ Item {
 
         iconName: "csv-import"
 
+        ToolTip.text: qsTr("Load a CSV file into this sheet")
+
         onReleased: importDialog.visible = true;
       }
 
@@ -170,6 +172,8 @@ Item {
 
         iconName: "csv-export"
 
+        ToolTip.text: qsTr("Write the columns of this sheet to a CSV file")
+
         onReleased: exportDialog.visible = true;
       }
 
@@ -179,6 +183,8 @@ Item {
         Layout.preferredWidth: 30
 
         iconName: "add"
+
+        ToolTip.text: qsTr("Add a column")
 
         onReleased: root.sheet.addColumn();
       }
@@ -195,6 +201,10 @@ Item {
 
     hoverEnabled: true
     cursorShape: Qt.SizeVerCursor
+
+    ToolTip.delay: ZeStyle.tooltipDelay
+    ToolTip.text: qsTr("Drag to resize the box of the sheet. Double-click for its default height.")
+    ToolTip.visible: containsMouse
 
     // else the ListView we sit in flicks away with our drag
     preventStealing: true

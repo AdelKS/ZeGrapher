@@ -15,5 +15,6 @@ Label {
   }
 
   ToolTip.text: tooltipText
+  ToolTip.delay: ZeStyle.tooltipDelay
   ToolTip.visible: mouseArea.containsMouse && tooltipText.length !== 0
 }

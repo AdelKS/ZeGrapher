@@ -34,6 +34,8 @@ Rectangle {
         zoom.increase();
       }
 
+      ToolTip.text: qsTr("Zoom in")
+
       iconName: "zoom-in-icon"
     }
 
@@ -46,6 +48,8 @@ Rectangle {
       to: 1000
       step: 10
       decimals: 2
+
+      ToolTip.text: qsTr("Zoom of the view")
 
       value: root.graphSettings.zoom.zoom * 100
 
@@ -63,6 +67,8 @@ Rectangle {
         zoom.decrease();
       }
 
+      ToolTip.text: qsTr("Zoom out")
+
       iconName: "zoom-out-icon"
     }
 
@@ -79,6 +85,8 @@ Rectangle {
         root.graphSettings.zoom.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
         root.graphSettings.computeZoom();
       }
+
+      ToolTip.text: qsTr("Fit the graph to the window")
 
       iconName: "size"
     }

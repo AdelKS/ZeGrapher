@@ -1,6 +1,7 @@
 // A line edit where the user enters an expression that evaluates to a value
 
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 
 import ZeGrapher as ZG
 
@@ -10,6 +11,9 @@ Item {
   property zgState state
   property string customErrorMsg: ''
   property bool nanValue: false
+
+  /// @brief the line edit's hint
+  property string hint
 
   property alias highlighter: mhighlighter
   property alias lineEditBackend: lineEdit
@@ -47,6 +51,8 @@ Item {
                                             : Information.appSettings.validSyntax);
       return "grey";
     }
+
+    ToolTip.text: root.hint
 
     anchors.left: parent.left
     anchors.right: parent.right
