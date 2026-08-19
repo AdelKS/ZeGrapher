@@ -1,0 +1,112 @@
+# Builds the site from the bundles of this run, and uploads it over SFTP.
+#
+# The secrets, all of them set in the settings of the repository:
+#   SFTP_HOST         the host that serves the site
+#   SFTP_USER         the user of the SFTP account
+#   SFTP_KEY          the private SSH key of that user, in full
+#   SFTP_KNOWN_HOSTS  the known_hosts line of the host, which pins its key
+
+name: website deploy
+
+on:
+  workflow_call:
+    secrets:
+      SFTP_HOST:
+        required: true
+      SFTP_USER:
+        required: true
+      SFTP_KEY:
+        required: true
+      SFTP_KNOWN_HOSTS:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc lftp python3-yaml
+
+      # The build takes the four bundles of the meson.build version from
+      # deploy/. It stops when one of them is missing.
+      - name: Download the bundles
+        uses: actions/download-artifact@v5
+        with:
+          merge-multiple: true
+          path: deploy
+
+      - name: Build the site
+        run: ./website/scripts/build-website.py
+
+      - name: Write the upload script
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+        run: |
+          # the script holds the host and the user, so it is written to a file
+          # that only this user can read. A command line is world readable
+          umask 077
+
+          # The SFTP login lands in the home directory, which holds
+          # `public_html`, the root of the published site.
+          #
+          # `public_html/analytics/` is not part of the build, and it has to be
+          # kept.
+          #
+          # The script below:
+          # 1. repairs a run that stopped after step 4. That run left
+          #    `analytics/` in `public_html.new`, and step 2 would delete it. The
+          #    script moves it back to `public_html/analytics`. If
+          #    `public_html` is gone, it renames `public_html.new` to
+          #    `public_html` instead. If there is nothing to repair, both
+          #    commands fail, and the script goes on
+          # 2. removes `public_html.new` and `public_html.old` of an earlier run
+          # 3. uploads the build to `public_html.new`
+          # 4. moves `public_html/analytics/` into `public_html.new/analytics`
+          # 5. renames `public_html` to `public_html.old`, so the old site stays
+          #    at hand
+          # 6. renames `public_html.new` to `public_html`
+
+          cat > "$RUNNER_TEMP/upload.lftp" <<EOF
+
+          set sftp:connect-program 'ssh -a -x -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -i $HOME/.ssh/deploy_key'
+          open -u "$SFTP_USER", "sftp://$SFTP_HOST"
+          mv public_html.new/analytics public_html/analytics
+          mv public_html.new public_html
+          set cmd:fail-exit yes
+          rm -r -f public_html.new
+          rm -r -f public_html.old
+          mirror --reverse --parallel=4 --verbose build-website public_html.new
+          mv public_html/analytics public_html.new/analytics
+          mv public_html public_html.old
+          mv public_html.new public_html
+
+          EOF
+
+      - name: Upload the site
+        env:
+          SFTP_KEY: ${{ secrets.SFTP_KEY }}
+          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
+        run: |
+          # 077 gives the private key mode 600 as soon as it is written
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SFTP_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$SFTP_KEY" > ~/.ssh/deploy_key
+
+          if [[ -z $(ls -A build-website 2>/dev/null) ]]; then
+            echo "the build wrote no site" >&2
+            exit 1
+          fi
+
+          # without "cmd:fail-exit" in the script, lftp reports a failure and
+          # still exits with 0
+          lftp -f "$RUNNER_TEMP/upload.lftp"

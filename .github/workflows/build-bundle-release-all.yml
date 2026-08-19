@@ -5,7 +5,10 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # On the default branch, a run deploys the site and creates the release. If a
+  # new push cancels it during the upload, the site has no public_html. So a run
+  # on the default branch waits for the run before it to finish
+  cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
 
@@ -27,29 +30,22 @@ jobs:
     with:
       runner: macos-26
 
-  make-release:
+  check-release:
     if: github.ref_name == github.event.repository.default_branch && github.repository == 'AdelKS/ZeGrapher'
 
     runs-on: ubuntu-24.04
 
-    needs:
-      - build-linux-x64
-      - build-windows-x64
-      - build-macos-x64
-      - build-macos-arm64
+    outputs:
+      release_type: ${{ steps.check.outputs.release_type }}
 
     steps:
 
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Download release artifacts
-        uses: actions/download-artifact@v5
-        with:
-          merge-multiple: true
-          path: deploy
-
-      - name: Make new release or prerelease
+      # If this step writes no release type, the jobs below do nothing
+      - name: Check for a new release or prerelease
+        id: check
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -70,8 +66,64 @@ jobs:
             exit 0
           fi
 
+          echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
+
+  deploy-website:
+    needs:
+      - check-release
+      - build-linux-x64
+      - build-windows-x64
+      - build-macos-x64
+      - build-macos-arm64
+    # Every running ZeGrapher reads 'latest' and 'latest_tag' from the site to
+    # find a new release. The site carries a release candidate or a full
+    # release, so a release candidate is tested on the site before the release.
+    # This condition is the only check: build-website.py builds any version.
+    if: contains(fromJSON('["rc", "full"]'), needs.check-release.outputs.release_type)
+    uses: ./.github/workflows/website-deploy.yml
+    secrets: inherit
+
+  make-release:
+    # The release comes after the site. If the site deploy fails, the tag does
+    # not exist yet, so the next run of the workflow retries both.
+    # A job is skipped when a job it needs is skipped, and deploy-website is
+    # skipped for an alpha or a beta. So this condition checks the results of
+    # the needed jobs itself.
+    if: >-
+      !cancelled() && !contains(needs.*.result, 'failure')
+      && needs.check-release.outputs.release_type != ''
+
+    runs-on: ubuntu-24.04
+
+    needs:
+      - check-release
+      - deploy-website
+      - build-linux-x64
+      - build-windows-x64
+      - build-macos-x64
+      - build-macos-arm64
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v5
+        with:
+          merge-multiple: true
+          path: deploy
+
+      - name: Make new release or prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TYPE: ${{ needs.check-release.outputs.release_type }}
+        run: |
+          set -e
+          version=$(python3 appdata/releases.py --version)
+
           prerelease=""
-          if [[ "$release_type" != full ]]; then
+          if [[ "$RELEASE_TYPE" != full ]]; then
             prerelease="--prerelease"
           fi
 
