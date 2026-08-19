@@ -9,6 +9,13 @@ RowLayout {
   property int fillMode: Image.PreserveAspectFit
   property alias currentIndex: tumbler.currentIndex
 
+  // the entries are pictures with no text, so each call site gives its own hint
+  // through ToolTip.text
+  HoverHandler { id: hoverHandler }
+
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: hoverHandler.hovered && ToolTip.text.length !== 0
+
   Image {
     id: selector1
     Layout.alignment: Layout.Center

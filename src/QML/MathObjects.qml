@@ -127,6 +127,8 @@ Item {
           lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
           darkThemeIcon: "qrc:/icons/csv-import-light.svg"
 
+          ToolTip.text: qsTr("Load a CSV file into a new data sheet")
+
           onReleased: fileDialog.visible = true;
         }
 
@@ -137,6 +139,8 @@ Item {
 
           darkThemeIcon: "qrc:/icons/add-light.svg"
           lightThemeIcon: "qrc:/icons/add.svg"
+
+          ToolTip.text: qsTr("Add a math object")
 
           onReleased: MathWorld.addMathObject();
         }

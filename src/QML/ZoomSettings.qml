@@ -36,6 +36,8 @@ Rectangle {
         zoom.increase();
       }
 
+      ToolTip.text: qsTr("Zoom in")
+
       lightThemeIcon: 'qrc:/icons/zoom-in-icon.svg'
       darkThemeIcon: 'qrc:/icons/zoom-in-icon-light.svg'
     }
@@ -49,6 +51,8 @@ Rectangle {
       to: 1000
       step: 10
       decimals: 2
+
+      ToolTip.text: qsTr("Zoom of the view")
 
       value: root.graphSettings.zoom.zoom * 100
 
@@ -65,6 +69,8 @@ Rectangle {
       onReleased: {
         zoom.decrease();
       }
+
+      ToolTip.text: qsTr("Zoom out")
 
       lightThemeIcon: 'qrc:/icons/zoom-out-icon.svg'
       darkThemeIcon: 'qrc:/icons/zoom-out-icon-light.svg'
@@ -83,6 +89,8 @@ Rectangle {
         root.graphSettings.zoom.zoomingType = checked ? ZoomingType.FITSHEET : ZoomingType.CUSTOM;
         root.graphSettings.computeZoom();
       }
+
+      ToolTip.text: qsTr("Fit the graph to the window")
 
       lightThemeIcon: 'qrc:/icons/size.svg'
       darkThemeIcon: 'qrc:/icons/size-light.svg'
