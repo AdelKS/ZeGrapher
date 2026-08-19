@@ -38,6 +38,9 @@ jobs:
       - build-macos-x64
       - build-macos-arm64
 
+    outputs:
+      is_prerelease: ${{ steps.release.outputs.is_prerelease }}
+
     steps:
 
       - name: Checkout repo
@@ -55,6 +58,7 @@ jobs:
           pip3 install --user meson ninja
 
       - name: Make new release or prerelease
+        id: release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -74,10 +78,21 @@ jobs:
 
           # alpha, beta and rc are the keywords of a version that is not final
           prerelease=""
+          release_type="full"
           if [[ "$version" =~ (alpha|beta|rc) ]]; then
             prerelease="--prerelease"
+            release_type="${BASH_REMATCH[1]}"
           fi
+          echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
 
           files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
           gh release create "v$version" $files_list \
           --title "v$version" $prerelease
+
+  deploy-website:
+    needs: make-release
+    # the site follows a release candidate and a full release. A run that makes
+    # no release writes no type, and the site stays as it is
+    if: contains(fromJSON('["full", "rc"]'), needs.make-release.outputs.release_type)
+    uses: ./.github/workflows/website-deploy.yml
+    secrets: inherit

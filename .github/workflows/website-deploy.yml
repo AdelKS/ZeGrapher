@@ -1,0 +1,104 @@
+# Builds the site out of the bundles of this run, and uploads it over SFTP.
+#
+# The secrets, all of them set in the settings of the repository:
+#   SFTP_HOST         the host that serves the site
+#   SFTP_USER         the user of the SFTP account
+#   SFTP_KEY          the private SSH key of that user, in full
+#   SFTP_KNOWN_HOSTS  the known_hosts line of the host, which pins its key
+
+name: website deploy
+
+on:
+  workflow_call:
+    secrets:
+      SFTP_HOST:
+        required: true
+      SFTP_USER:
+        required: true
+      SFTP_KEY:
+        required: true
+      SFTP_KNOWN_HOSTS:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc lftp python3-yaml
+
+      # The build reads the platform, the architecture and the version out of
+      # the name of every bundle in this folder, and stops on a set that misses
+      # one of them.
+      - name: Download the bundles
+        uses: actions/download-artifact@v5
+        with:
+          merge-multiple: true
+          path: website/download
+
+      - name: Build the site
+        run: ./website/scripts/build-website.py
+
+      - name: Write the upload script
+        env:
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+        run: |
+          # The script holds the host and the user, so it goes to a file
+          # that only this user can read. A command line is world readable.
+          umask 077
+
+          # The SFTP login lands in the home directory, where there is the
+          # `public_html` subfolder: the currently published website root
+          #
+          # ./public_html/analytics/ is not part of the new build and we need
+          # keep it
+          #
+          # This script
+          # 1. uploads `./public_html.new` (removes any existing `./public_html.new` first)
+          # 2. moves `./public_html/analytics/` to `./public_html.new/analytics`
+          # 3. renames `./public_html` to `./public_html.old` (removes any existing `./public_html.old` first)
+          #    - `public_html.old` stays just in case
+          # 4. renames `./public_html.new` to `./public_html`
+
+          cat > "$RUNNER_TEMP/upload.lftp" <<EOF
+
+          set sftp:connect-program 'ssh -a -x -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -i $HOME/.ssh/deploy_key'
+          set cmd:fail-exit yes
+          open -u "$SFTP_USER", "sftp://$SFTP_HOST"
+          rm -r -f public_html.new
+          rm -r -f public_html.old
+          mirror --reverse --parallel=4 --verbose build-website public_html.new
+          mv public_html/analytics public_html.new/analytics
+          mv public_html public_html.old
+          mv public_html.new public_html
+
+          EOF
+
+      - name: Upload the site
+        env:
+          SFTP_KEY: ${{ secrets.SFTP_KEY }}
+          SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
+        run: |
+          # 077 gives the private key mode 600 the moment it is written
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SFTP_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$SFTP_KEY" > ~/.ssh/deploy_key
+
+          if [[ -z $(ls -A build-website 2>/dev/null) ]]; then
+            echo "the build wrote no site" >&2
+            exit 1
+          fi
+
+          # without "cmd:fail-exit" in the script, lftp reports a failure and
+          # still exits 0
+          lftp -f "$RUNNER_TEMP/upload.lftp"
