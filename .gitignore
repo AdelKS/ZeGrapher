@@ -5,3 +5,4 @@ clangd-compile-db
 .DS_Store
 .claude/*
 .wraplock
+/captures

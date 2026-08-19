@@ -1,0 +1,11 @@
+math_objects:
+  - type: equation
+    equation: f(x) = 2 + cos(x)
+graph:
+  range:
+    x: {min: '-4', max: '4'}
+    y: {min: '0.5', max: '3.5'}
+app:
+  language: en
+  window_size: {width: 1329, height: 1000}
+  pane_width: 483

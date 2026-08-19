@@ -1,0 +1,107 @@
+diff --git a/src/QML/CsvImportSettings.qml b/src/QML/CsvImportSettings.qml
+index f0d57d41..e5a0baaa 100644
+--- a/src/QML/CsvImportSettings.qml
++++ b/src/QML/CsvImportSettings.qml
+@@ -101,6 +101,7 @@ Item {
+           CheckBox {
+             Layout.alignment: Qt.AlignCenter
+             id: hasHeaderRow
++            checked: true // SCREENSHOT PATCH
+             // with no text, the contentItem still carries the width of the
+             // indicator plus the spacing, so the implicit size is taken from the
+             // indicator itself
+diff --git a/src/QML/DataColumnEdit.qml b/src/QML/DataColumnEdit.qml
+index 66c3b9b7..b17eae29 100644
+--- a/src/QML/DataColumnEdit.qml
++++ b/src/QML/DataColumnEdit.qml
+@@ -87,7 +87,7 @@ Item {
+           Layout.alignment: Qt.AlignVCenter
+ 
+           checkable: true
+-          checked: false
++          checked: true // SCREENSHOT PATCH: sampling form unfolded
+ 
+           lightThemeIcon: "qrc:/icons/sample-dark.svg"
+           darkThemeIcon: "qrc:/icons/sample-light.svg"
+diff --git a/src/QML/DataPane.qml b/src/QML/DataPane.qml
+index 9fa88300..7adc4cbd 100644
+--- a/src/QML/DataPane.qml
++++ b/src/QML/DataPane.qml
+@@ -7,7 +7,7 @@ Item {
+ 
+   implicitWidth: Math.max(
+     dataTable.implicitWidth + 2*dataTable.anchors.margins + 5,
+-    root.importingCSV ? csvImportSettings.implicitWidth + 2*dataTable.anchors.margins + 5: 0
++    root.importingCSV ? 410 + 2*csvImportSettings.anchors.margins : 0 // SCREENSHOT PATCH: the same width in every language
+   )
+   implicitHeight: dataTable.implicitHeight + 2*dataTable.anchors.margins
+     + (root.importingCSV ? csvImportSettings.implicitHeight : 0)
+@@ -19,6 +19,12 @@ Item {
+     importingCSV = true;
+   }
+ 
++  Component.onCompleted: {
++    // SCREENSHOT PATCH: window width 1328 in the document opens the CSV import
++    if (Information.appSettings.windowSize.width === 1328)
++      Qt.callLater(() => root.loadCSV("file://" + Qt.application.arguments[1].replace(/[^\/]*$/, "") + "free-fall.csv", null));
++  }
++
+   CsvImportSettings {
+     id: csvImportSettings
+ 
+diff --git a/src/QML/DataSheetEdit.qml b/src/QML/DataSheetEdit.qml
+index 3cd9b18a..7dd9d934 100644
+--- a/src/QML/DataSheetEdit.qml
++++ b/src/QML/DataSheetEdit.qml
+@@ -14,7 +14,7 @@ Item {
+   signal importCSV(file: url, dataSheet: DataSheet)
+ 
+   /// @brief how tall the box grows on its own before the list starts scrolling
+-  property real maxAutoHeight: 300
++  property real maxAutoHeight: 600 // SCREENSHOT PATCH: room for the sampling form
+ 
+   /// @brief height the user dragged the box to, zero as long as they haven't
+   property real userHeight: 0
+diff --git a/src/QML/MathObjectInput.qml b/src/QML/MathObjectInput.qml
+index ef920c98..9d00a556 100644
+--- a/src/QML/MathObjectInput.qml
++++ b/src/QML/MathObjectInput.qml
+@@ -131,7 +131,7 @@ Item {
+           Layout.preferredWidth: 30
+ 
+           checkable: true
+-          checked: false
++          checked: true // SCREENSHOT PATCH: plot style unfolded
+ 
+           lightThemeIcon: "qrc:/icons/brush.svg"
+           darkThemeIcon: "qrc:/icons/brush-light.svg"
+diff --git a/src/QML/SamplingEdit.qml b/src/QML/SamplingEdit.qml
+index 7a1e81f7..0a9177b0 100644
+--- a/src/QML/SamplingEdit.qml
++++ b/src/QML/SamplingEdit.qml
+@@ -61,6 +61,7 @@ Loader {
+     Sampling {
+       id: sampling
+       column: root.column
++      Component.onCompleted: sampling.source.setName("f") // SCREENSHOT PATCH
+     }
+ 
+ 
+diff --git a/src/QML/UserInputPanel.qml b/src/QML/UserInputPanel.qml
+index 72709d73..80e6ff18 100644
+--- a/src/QML/UserInputPanel.qml
++++ b/src/QML/UserInputPanel.qml
+@@ -141,6 +141,13 @@ Item {
+ 
+       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
+ 
++      Component.onCompleted: {
++        // SCREENSHOT PATCH: the window width of the document selects the tab
++        const w = Information.appSettings.windowSize.width;
++        if (w >= 1329 && w <= 1331)
++          Qt.callLater(() => bar.setCurrentIndex(1332 - w));
++      }
++
+       onImplicitWidthChanged: {
+         console.log("UserInputPanel: SwipeView: implicitWidth: ", implicitWidth);
+       }
