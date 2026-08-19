@@ -1,0 +1,23 @@
+math_objects:
+  - type: datasheet
+    notes: a ball dropped from 110 m, measured every 0.5 s
+    columns:
+      - name: time
+        values: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5']
+        showInTable: true
+      - name: height
+        values: ['109.9', '108.9', '105.1', '98.6', '90.0', '79.0', '65.8', '49.7']
+        showInTable: true
+graph:
+  range:
+    x: {min: '-0.2', max: '8'}
+    y: {min: '0', max: '115'}
+  axes:
+    x:
+      title: time (s)
+    y:
+      title: height (m)
+app:
+  language: en
+  window_size: {width: 1332, height: 769}
+  pane_width: 483
