@@ -27,25 +27,19 @@ DataTableModel::DataTableModel(QObject *parent)
 {
 }
 
-int DataTableModel::rowCountWithout(zg::mathobj::Data* without) const
-{
-  size_t data_size = 0;
-  for (const zg::mathobj::Data* data: tableColumns)
-    if (data != without)
-      if (std::optional<size_t> opt_size = data->zcMathObj.get_data_size())
-        if (*opt_size > data_size)
-          data_size = *opt_size;
-
-  return int(data_size);
-}
-
 int DataTableModel::rowCount(const QModelIndex& parent) const
 {
   // no nested cells
   if (parent.isValid())
     return 0;
 
-  return rowCountWithout();
+  size_t data_size = 0;
+  for (const zg::mathobj::Data* data: tableColumns)
+      if (std::optional<size_t> opt_size = data->zcMathObj.get_data_size())
+        if (*opt_size > data_size)
+          data_size = *opt_size;
+
+  return int(data_size);
 }
 
 int DataTableModel::columnCount(const QModelIndex& parent) const
