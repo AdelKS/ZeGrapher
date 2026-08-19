@@ -22,7 +22,8 @@ graph:
       min: '-3.5'
       max: '5.1'
 app:
+  language: en
   window_size:
-    width: 1252
+    width: 1332
     height: 769
-  pane_width: 403
+  pane_width: 483
