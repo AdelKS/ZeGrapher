@@ -76,6 +76,7 @@ Loader {
         NameEdit {
           id: sourceEdit
           backend: sampling.source
+          //: the name of the math object to sample
           label: qsTr("Object")
           ToolTip.text: qsTr("The name of the object to sample.")
 
@@ -133,6 +134,7 @@ Loader {
           Layout.alignment: Qt.AlignTop
 
           ZeLabel {
+            //: the distance x_{i+1} - x_i between two samples f(x_i) and f(x_{i+1}) of the sampled object f
             text: qsTr("Step")
             Layout.alignment: Qt.AlignHCenter
           }

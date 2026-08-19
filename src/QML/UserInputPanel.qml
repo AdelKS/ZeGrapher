@@ -108,6 +108,9 @@ Item {
 
       ZeTabButton {
         id: mathTabButton
+        //: title of the tab that holds the math objects. The screenshots of the
+        //: website cut the row of tabs at the same width in every language, so
+        //: keep the title short. A word such as 'Objects' is fine
         text: qsTr("Math")
       }
 
@@ -123,6 +126,7 @@ Item {
 
       ZeTabButton {
         id: appTabButton
+        //: title of the tab that holds the settings of the app, keep it short
         text: qsTr("App")
       }
     }
