@@ -76,6 +76,7 @@ Loader {
         NameEdit {
           id: sourceEdit
           backend: sampling.source
+          //: the name of the math object to sample
           label: qsTr("Object")
           hint: qsTr("The name of the object to sample")
 
@@ -133,6 +134,7 @@ Loader {
           Layout.alignment: Qt.AlignTop
 
           ZeLabel {
+            //: The distance x_{i+1} - x_i between two samples f(x_i) and f(x_i+1) of the sampled object f
             text: qsTr("Step")
             Layout.alignment: Qt.AlignHCenter
           }
@@ -157,6 +159,7 @@ Loader {
           lightThemeIcon: "qrc:/icons/check-dark.svg"
           darkThemeIcon: "qrc:/icons/check-light.svg"
 
+          //: tooltip of the button that starts the sampling of an objet, once the user is done writing in what he wants to sample, from where to where
           ToolTip.text: qsTr("Sample")
 
           onReleased: {

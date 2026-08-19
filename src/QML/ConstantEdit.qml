@@ -108,6 +108,7 @@ Item {
       ZeLabel {
         id: stepsLabel
         Layout.alignment: Qt.AlignHCenter
+        //: a number of steps to make the constant take from min to max
         text: qsTr("steps")
         tooltipText: qsTr("Number of steps to go from min to max: the constant takes steps+1 values")
       }
@@ -239,7 +240,8 @@ Item {
       ZeDoubleSpinBox {
 
         id: animationPeriod
-        suffix: qsTr('s') // seconds
+        //: unit of time
+        suffix: qsTr('s')
         decimals: 2
         from: 0.1
         to: 500.
