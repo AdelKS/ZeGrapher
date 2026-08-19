@@ -47,11 +47,11 @@ Item {
           Item {}
           ZeLabel {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr('X')
+            text: 'X'
           }
           ZeLabel {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr('Y')
+            text: 'Y'
           }
 
 
@@ -128,6 +128,7 @@ Item {
           ZeLabel {
             id: multiplierLabel
             Layout.alignment: Qt.AlignRight
+            //: the ticks become multiples of this expression
             text: qsTr('Multiplier')
             tooltipText: qsTr("Ticks and their labels become multiples of this expression, for example π.")
           }
@@ -180,11 +181,11 @@ Item {
           Item {}
           ZeLabel {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr('X')
+            text: 'X'
           }
           ZeLabel {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr('Y')
+            text: 'Y'
           }
 
 
@@ -281,11 +282,11 @@ Item {
           Item {}
           ZeLabel {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr('X')
+            text: 'X'
           }
           ZeLabel {
             Layout.alignment: Qt.AlignHCenter
-            text: qsTr('Y')
+            text: 'Y'
           }
 
           ZeLabel {
