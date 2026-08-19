@@ -1,0 +1,14 @@
+math_objects:
+  - type: equation
+    equation: f(x) = 2 + cos(x)
+  - type: equation
+    equation: u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
+    end: '12'
+graph:
+  range:
+    x: {min: '-1', max: '13'}
+    y: {min: '-0.5', max: '3.5'}
+app:
+  language: en
+  window_size: {width: 1332, height: 769}
+  pane_width: 483

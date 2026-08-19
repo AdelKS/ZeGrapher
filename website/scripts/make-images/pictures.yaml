@@ -1,0 +1,161 @@
+# Every picture the website shows, under the capture it is cut out of. One
+# entry per capture: the document to open, the patch its state needs, and the
+# pictures taken out of the window. Every path starts at the repository root.
+# The document is one file, shared by every language, and
+# documents/overrides/<code>/ holds what changes in a language. An output writes
+# {lang} where its language goes.
+#
+# A rectangle is WxH+X+Y in the pixels of the capture, shadow included, or
+# 'whole' for the window as it was taken. A screen of another scale thus needs
+# new rectangles, which --reprompt-crops draws. 'frame' is the prompt shown in
+# the browser, so write what the picture must hold, not what it holds today.
+#
+# The languages are not listed here: make-images.py reads them from the .ts files
+# that translations/ holds, English first.
+#
+# website/scripts/README.md documents all of this.
+
+captures:
+  - name: overview
+    document: website/scripts/make-images/documents/vitrine.zg
+    images:
+      - output: website/content/{lang}/images/overview.png
+        rect: whole
+        frame: the window as the app opens a document
+      - output: website/content/{lang}/images/vitrine.png
+        rect: whole
+        frame: the same window, shown by the README and the website
+      - output: website/content/{lang}/images/panel.png
+        rect: 791x1209+106+144
+        frame: "the panel alone: the bounds, the tab row, the cards, the buttons under them, and the arrow on its edge"
+      - output: website/content/{lang}/images/math-tab.png
+        rect: 786x954+110+392
+        frame: "the Math tab: the tab row, the object cards, the buttons under them"
+      - output: website/content/{lang}/images/graph.png
+        rect: 1291x1211+938+144
+        frame: the graph alone, the whole width right of the panel
+      - output: website/content/{lang}/images/object-card.png
+        rect: 778x176+117+677
+        frame: "one object's card: its kind, its buttons, its equation"
+      - output: website/content/{lang}/images/add-object.png
+        rect: 64x66+807+1258
+        frame: the button that adds an object, at the bottom of the Math tab
+      - output: website/content/{lang}/images/cat-button.png
+        rect: 54x53+758+504
+        frame: the cat button of a constant card, turned on
+      - output: website/content/{lang}/images/files.png
+        rect: 215x87+128+1247
+        frame: the export, save and open buttons, at the bottom of the panel
+
+  - name: functions
+    document: website/scripts/make-images/documents/functions.zg
+    images:
+      - output: website/content/{lang}/images/functions.png
+        rect: whole
+        frame: a function and a sequence, plotted
+      - output: website/content/{lang}/images/range.png
+        rect: 781x226+115+157
+        frame: the four bounds of the view, above the tabs
+
+  - name: input-states
+    document: website/scripts/make-images/documents/input-states.zg
+    images:
+      - output: website/content/{lang}/images/input-states.png
+        rect: 775x569+118+526
+        frame: "the three cards, one under the other: the empty line, the valid one, the invalid one and its reason"
+      - output: website/content/{lang}/images/input-warning.png
+        rect: 255x141+379+162
+        frame: "the y max field: its label, its expression in the warning color, and NaN under it"
+
+  - name: constant
+    document: website/scripts/make-images/documents/constant.zg
+    images:
+      - output: website/content/{lang}/images/constant.png
+        rect: 778x344+115+477
+        frame: "the constant card: value, slider, animation"
+
+  - name: schrodinger
+    document: website/scripts/make-images/documents/schrodinger.zg
+    images:
+      - output: website/content/{lang}/images/schrodinger.png
+        rect: whole
+        frame: a constant taking six values at once
+
+  - name: parametric
+    document: website/scripts/make-images/documents/parametric.zg
+    images:
+      - output: website/content/{lang}/images/parametric.png
+        rect: 778x547+115+476
+        frame: the two equations and the parametric card under them
+
+  - name: data
+    document: website/scripts/make-images/documents/data.zg
+    images:
+      - output: website/content/{lang}/images/data.png
+        rect: whole
+        frame: a data sheet, its table and its plot
+      - output: website/content/{lang}/images/column-card.png
+        rect: 733x106+134+721
+        frame: "one column of a sheet: its name, its buttons, its handle"
+      - output: website/content/{lang}/images/sheet-buttons.png
+        rect: 778x165+116+779
+        frame: the buttons under a sheet, and the bar that resizes it
+      - output: website/content/{lang}/images/data-table.png
+        rect: 364x462+910+153
+        frame: "the table beside the panel: two columns, their headers and their rows"
+
+  - name: sheet
+    document: website/scripts/make-images/documents/sheet.zg
+    images:
+      - output: website/content/{lang}/images/zoom-bar.png
+        rect: 415x78+1376+132
+        frame: the zoom bar above the sheet
+
+  # states no document can reach on its own
+  - name: style
+    document: website/scripts/make-images/documents/style.zg
+    patch: website/scripts/make-images/states.patch
+    images:
+      - output: website/content/{lang}/images/style.png
+        rect: 780x384+113+476
+        frame: the equation card with its plot style unfolded
+
+  - name: datacol
+    document: website/scripts/make-images/documents/datacol.zg
+    patch: website/scripts/make-images/states.patch
+    images:
+      - output: website/content/{lang}/images/sampling.png
+        rect: 773x340+119+858
+        frame: "the data card: notes, the column, its sampling form"
+
+  - name: tab-csv
+    document: website/scripts/make-images/documents/tab-csv.zg
+    patch: website/scripts/make-images/states.patch
+    images:
+      - output: website/content/{lang}/images/csv-import.png
+        rect: 668x1130+914+152
+        frame: the CSV import panel, without the graph behind it
+
+  - name: tab-grid
+    document: website/scripts/make-images/documents/tab-grid.zg
+    patch: website/scripts/make-images/states.patch
+    images:
+      - output: website/content/{lang}/images/grid-tab.png
+        rect: 781x1028+115+384
+        frame: "the Grid tab: coordinates, grid, sub-grid"
+
+  - name: tab-graph
+    document: website/scripts/make-images/documents/tab-graph.zg
+    patch: website/scripts/make-images/states.patch
+    images:
+      - output: website/content/{lang}/images/graph-tab.png
+        rect: 785x1249+112+394
+        frame: "the Graph tab: the size, drawing and axes boxes"
+
+  - name: tab-app
+    document: website/scripts/make-images/documents/tab-app.zg
+    patch: website/scripts/make-images/states.patch
+    images:
+      - output: website/content/{lang}/images/app-tab.png
+        rect: 781x495+112+386
+        frame: the App tab, from Language down to the update button

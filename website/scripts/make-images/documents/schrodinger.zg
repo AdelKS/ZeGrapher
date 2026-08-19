@@ -1,0 +1,17 @@
+math_objects:
+  - type: constant
+    name: a
+    from: 0.5
+    to: 1.5
+    steps: 5
+    dead_and_alive: true
+  - type: equation
+    equation: f(x) = a*exp(-x^2/2)
+graph:
+  range:
+    x: {min: '-3', max: '3'}
+    y: {min: '-0.2', max: '1.7'}
+app:
+  language: en
+  window_size: {width: 1332, height: 769}
+  pane_width: 483

@@ -5,7 +5,7 @@
 
 ![Build Status](https://github.com/adelks/zegrapher/actions/workflows/build-bundle-release-all.yml/badge.svg)
 
-![ZeGrapher example](./screenshots/vitrine.png)
+![ZeGrapher example](./website/content/en/images/vitrine.png)
 
 ZeGrapher is a free, open source and easy to use software for plotting mathematical objects. It can plot functions, sequences, parametric equations and data on the 2D plane.
 

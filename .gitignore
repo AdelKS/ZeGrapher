@@ -6,4 +6,5 @@ clangd-compile-db
 .claude/*
 .wraplock
 __pycache__/
+/captures
 /website/download

@@ -1,0 +1,15 @@
+math_objects:
+  - type: equation
+    equation: ''
+  - type: equation
+    equation: f(x) = 2 + cos(x)
+  - type: equation
+    equation: g(x) = 2 + coss(x)
+graph:
+  range:
+    x: {min: '-1', max: '13'}
+    y: {min: '-0.5', max: 'sqrt(-1)'}
+app:
+  language: en
+  window_size: {width: 1332, height: 769}
+  pane_width: 483

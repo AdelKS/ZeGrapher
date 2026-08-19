@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ZeGrapher — crop rectangle picker</title>
+<style>
+  :root { color-scheme: dark light; --mark: #ff3ea5; }
+  body {
+    margin: 0; padding: 16px;
+    font: 14px/1.5 system-ui, sans-serif;
+    display: flex; flex-direction: column; gap: 12px; align-items: flex-start;
+  }
+  h1 { font-size: 20px; font-weight: 600; margin: 0; }
+  h1 b { color: var(--mark); }
+  header { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  #out {
+    font: 16px/1 ui-monospace, monospace;
+    padding: 8px 12px; border: 1px solid currentColor; border-radius: 6px;
+    user-select: all; min-width: 16ch;
+  }
+  #stage { position: relative; line-height: 0; }
+  canvas { max-width: 100%; cursor: crosshair; }
+  #rect {
+    position: absolute; border: 1px solid var(--mark); background: #ff3ea51a;
+    pointer-events: none; display: none;
+  }
+  /* the eight grips, on the rectangle's edges and corners */
+  #rect i {
+    position: absolute; width: 9px; height: 9px; margin: -5px 0 0 -5px;
+    background: var(--mark); border-radius: 2px;
+  }
+  #rect i.n, #rect i.s { left: 50% }
+  #rect i.w, #rect i.e { top: 50% }
+  #rect i.n, #rect i.nw, #rect i.ne { top: 0 }
+  #rect i.s, #rect i.sw, #rect i.se { top: 100% }
+  #rect i.w, #rect i.nw, #rect i.sw { left: 0 }
+  #rect i.e, #rect i.ne, #rect i.se { left: 100% }
+  .hint { opacity: .7; }
+  label { display: flex; gap: 6px; align-items: center; }
+  input[type=number] { width: 7ch; }
+</style>
+</head>
+<body>
+
+<h1 id="prompt">Crop rectangle picker</h1>
+
+<header>
+  <input type="file" id="file" accept="image/png">
+  <span id="out">—</span>
+  <button id="use" hidden>use this for <b id="name"></b></button>
+  <span class="hint" id="hint">drag on the capture, then copy the rectangle into <code>pictures.yaml</code></span>
+</header>
+
+<div id="stage">
+  <canvas id="canvas"></canvas>
+  <div id="rect">
+    <i class="nw"></i><i class="n"></i><i class="ne"></i><i class="e"></i>
+    <i class="se"></i><i class="s"></i><i class="sw"></i><i class="w"></i>
+  </div>
+</div>
+
+<p class="hint">
+  Drag on the capture to draw a rectangle. Drag its edges or its corners to
+  resize it, and its middle to move it. The readout is the rectangle in the
+  pixels of the capture, shadow included, which is what
+  <code>make-images.py</code> cuts by. A rectangle thus holds only for captures
+  taken the same way. If the window size or the scale of the screen changes,
+  draw it again.
+</p>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const rectEl = document.getElementById("rect");
+const out = document.getElementById("out");
+const params = new URLSearchParams(location.search);
+
+/// the rectangle you draw, in the pixels of the image
+let rect = null;
+
+/// what the current drag does: "new", "move", or the edges it grabs ("n", "se", …)
+let drag = null;
+
+const GRIP = 6; // the distance to an edge that still grabs it, in CSS pixels
+
+function loadFile(file) {
+  const img = new Image();
+  img.onload = () => {
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+    setRect(parse(params.get("current")));
+  };
+  img.src = URL.createObjectURL(file);
+}
+
+function parse(text) {
+  if (!text) return null;
+  const [w, h, x, y] = text.split(/[x+]/).map(Number);
+  return { x, y, w, h };
+}
+
+function format(r) {
+  const round = Math.round;
+  return `${round(r.w)}x${round(r.h)}+${round(r.x)}+${round(r.y)}`;
+}
+
+function setRect(r) {
+  rect = r && r.w > 2 && r.h > 2 ? r : null;
+  if (!rect) {
+    rectEl.style.display = "none";
+    out.textContent = "—";
+    return;
+  }
+  const k = canvas.getBoundingClientRect().width / canvas.width;
+  Object.assign(rectEl.style, {
+    display: "block",
+    left: `${rect.x * k}px`, top: `${rect.y * k}px`,
+    width: `${rect.w * k}px`, height: `${rect.h * k}px`
+  });
+  out.textContent = format(rect);
+}
+
+function at(e) {
+  const box = canvas.getBoundingClientRect();
+  const k = canvas.width / box.width;
+  return { x: (e.clientX - box.left) * k, y: (e.clientY - box.top) * k };
+}
+
+/// which part of the rectangle a point grabs
+function grip(p) {
+  if (!rect) return "new";
+  const t = GRIP * canvas.width / canvas.getBoundingClientRect().width;
+  const left = rect.x, right = rect.x + rect.w;
+  const top = rect.y, bottom = rect.y + rect.h;
+  if (p.x < left - t || p.x > right + t || p.y < top - t || p.y > bottom + t)
+    return "new";
+  const edges = (Math.abs(p.y - top) <= t ? "n" : Math.abs(p.y - bottom) <= t ? "s" : "")
+              + (Math.abs(p.x - left) <= t ? "w" : Math.abs(p.x - right) <= t ? "e" : "");
+  return edges || "move";
+}
+
+const cursors = {
+  new: "crosshair", move: "move",
+  n: "ns-resize", s: "ns-resize", w: "ew-resize", e: "ew-resize",
+  nw: "nwse-resize", se: "nwse-resize", ne: "nesw-resize", sw: "nesw-resize"
+};
+
+/// a drag that goes back over its start still gives a rectangle
+function normalise(r) {
+  return {
+    x: Math.min(r.x, r.x + r.w), y: Math.min(r.y, r.y + r.h),
+    w: Math.abs(r.w), h: Math.abs(r.h)
+  };
+}
+
+canvas.addEventListener("pointerdown", e => {
+  const p = at(e);
+  drag = { mode: grip(p), from: p, origin: rect && { ...rect } };
+  if (drag.mode === "new") setRect(null);
+  canvas.setPointerCapture(e.pointerId);
+});
+
+canvas.addEventListener("pointermove", e => {
+  const p = at(e);
+
+  if (!drag) {
+    canvas.style.cursor = cursors[grip(p)];
+    return;
+  }
+
+  const dx = p.x - drag.from.x, dy = p.y - drag.from.y;
+  const o = drag.origin;
+
+  if (drag.mode === "new")
+    setRect(normalise({ x: drag.from.x, y: drag.from.y, w: dx, h: dy }));
+  else if (drag.mode === "move")
+    setRect({ ...o, x: o.x + dx, y: o.y + dy });
+  else {
+    const r = { ...o };
+    if (drag.mode.includes("w")) { r.x = o.x + dx; r.w = o.w - dx; }
+    if (drag.mode.includes("e")) { r.w = o.w + dx; }
+    if (drag.mode.includes("n")) { r.y = o.y + dy; r.h = o.h - dy; }
+    if (drag.mode.includes("s")) { r.h = o.h + dy; }
+    setRect(normalise(r));
+  }
+});
+
+canvas.addEventListener("pointerup", () => { drag = null; });
+
+addEventListener("resize", () => rect && setRect(rect));
+
+document.getElementById("file").addEventListener("change", e => {
+  if (e.target.files[0]) loadFile(e.target.files[0]);
+});
+
+document.addEventListener("dragover", e => e.preventDefault());
+document.addEventListener("drop", e => {
+  e.preventDefault();
+  if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+});
+
+// make-images.py gives these: the capture to work on, and where to send the
+// answer
+const useBtn = document.getElementById("use");
+
+if (params.get("img")) {
+  fetch(params.get("img")).then(r => r.blob()).then(loadFile);
+  const name = params.get("name") ?? "this picture";
+  document.getElementById("name").textContent = name;
+  document.getElementById("prompt").innerHTML =
+    `<b>${name}</b> — ${params.get("prompt") || "draw the rectangle you want"}`;
+  document.getElementById("hint").textContent =
+    "the rectangle drawn is the one in use. Adjust it, or send it back as it is";
+  useBtn.hidden = false;
+}
+
+useBtn.addEventListener("click", () => {
+  if (!rect) return;
+  fetch("/rect", { method: "POST", body: out.textContent }).then(() => {
+    useBtn.disabled = true;
+    // for the browsers that refuse a window.close() they did not ask for
+    document.getElementById("hint").textContent = "sent — you can close this tab";
+    window.close();
+  });
+});
+</script>
+</body>
+</html>
