@@ -39,6 +39,10 @@ Item {
   implicitHeight: spinBox.implicitHeight
   implicitWidth: spinBox.implicitWidth
 
+  // call sites give the hint with ToolTip.text
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: spinBox.hovered && ToolTip.text.length !== 0
+
   SpinBox {
     id: spinBox
     anchors.fill: parent

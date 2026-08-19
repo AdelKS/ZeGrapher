@@ -85,11 +85,16 @@ Item {
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
+            id: separatorLabel
             text: qsTr("Separator:")
+            // "\\t" is kept out of qsTr(), because lupdate would write a real
+            // tab into the .ts file
+            tooltipText: qsTr("The string that separates two cells of a row. Write %1 for a TAB separator.").arg("\\t")
           }
           LineEdit {
             Layout.alignment: Qt.AlignLeft
             id: separatorEdit
+            ToolTip.text: separatorLabel.tooltipText
             Layout.preferredWidth: 30
             text: ","
             border.color: "grey"
@@ -101,8 +106,9 @@ Item {
           CheckBox {
             Layout.alignment: Qt.AlignCenter
             id: hasHeaderRow
-            // Without text the contentItem still holds the indicator's width plus
-            // the spacing, so the implicit size has to be taken from the indicator.
+            // with no text, the contentItem still carries the width of the
+            // indicator plus the spacing, so the implicit size is taken from the
+            // indicator itself
             implicitWidth: implicitIndicatorWidth
             implicitHeight: implicitIndicatorHeight
           }

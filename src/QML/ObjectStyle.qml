@@ -117,6 +117,10 @@ Loader {
           stepSize: 10
           Layout.maximumWidth: 100
 
+          ToolTip.delay: ZeStyle.tooltipDelay
+          ToolTip.text: qsTr("The width of the line")
+          ToolTip.visible: hovered
+
           onValueModified: {
             root.style.lineWidth = Number(value) / 10.0;
           }
@@ -150,6 +154,10 @@ Loader {
           live: true
           value: root.style.pointWidth * 4.0
           stepSize: 10
+
+          ToolTip.delay: ZeStyle.tooltipDelay
+          ToolTip.text: qsTr("The size of the points")
+          ToolTip.visible: hovered
 
           onValueModified: {
             root.style.pointWidth = Number(value) / 4.0;
@@ -211,6 +219,7 @@ Loader {
 
           id: startLabel
           text: qsTr("Start:")
+          tooltipText: qsTr("The value where the plot starts.")
         }
 
         ValueEdit {
@@ -219,6 +228,8 @@ Loader {
           Layout.fillWidth: true
           Layout.minimumWidth: 30
           backend: root.base.start
+
+          ToolTip.text: startLabel.tooltipText
 
           Behavior on width { SmoothedAnimation { duration: 500 } }
 
@@ -237,6 +248,7 @@ Loader {
 
           id: endLabel
           text: qsTr("End:")
+          tooltipText: qsTr("The value where the plot ends.")
         }
 
         ValueEdit {
@@ -245,6 +257,8 @@ Loader {
           Layout.fillWidth: true
           Layout.minimumWidth: 30
           backend: root.base.end
+
+          ToolTip.text: endLabel.tooltipText
 
           Behavior on width { SmoothedAnimation { duration: 500 } }
 

@@ -77,6 +77,7 @@ Loader {
           id: sourceEdit
           backend: sampling.source
           label: qsTr("Object")
+          hint: qsTr("The name of the object to sample")
 
           Layout.fillWidth: true
           Layout.preferredWidth: 90
@@ -155,6 +156,8 @@ Loader {
 
           lightThemeIcon: "qrc:/icons/check-dark.svg"
           darkThemeIcon: "qrc:/icons/check-light.svg"
+
+          ToolTip.text: qsTr("Sample")
 
           onReleased: {
             const issueText = sampling.apply();
