@@ -5,7 +5,10 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # On the default branch, a run deploys the site and creates the release.
+  # Cancelling it during the upload would leave the site without public_html,
+  # so runs there wait for the previous one instead
+  cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
 
@@ -27,12 +30,80 @@ jobs:
     with:
       runner: macos-26
 
-  make-release:
+  check-release:
     if: github.ref_name == github.event.repository.default_branch && github.repository == 'AdelKS/ZeGrapher'
 
     runs-on: ubuntu-24.04
 
+    outputs:
+      release_type: ${{ steps.check.outputs.release_type }}
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Install PyYAML
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-yaml
+
+      # Without a release type from this step, the jobs below do nothing
+      - name: Check for a new release or prerelease
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          version=$(python3 appdata/releases.py --version)
+
+          # dev, alpha, beta, rc or full. appdata/releases.py defines the version
+          # grammar
+          release_type=$(python3 appdata/releases.py --release-type)
+
+          if [[ "$release_type" == dev ]]; then
+            echo "$version is a development version, not making a release"
+            exit 0
+          fi
+
+          if gh release view "v$version" &> /dev/null; then
+            echo "v$version is released already"
+            exit 0
+          fi
+
+          echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
+
+  deploy-website:
     needs:
+      - check-release
+      - build-linux-x64
+      - build-windows-x64
+      - build-macos-x64
+      - build-macos-arm64
+    # Running ZeGrapher instances read 'latest' and 'latest_tag' from the site
+    # to find new releases. The site gets release candidates and full releases,
+    # so a release candidate is tested there before the release. This condition
+    # is the only check: build-website.py builds any version.
+    if: contains(fromJSON('["rc", "full"]'), needs.check-release.outputs.release_type)
+    uses: ./.github/workflows/website-deploy.yml
+    # the called job gets its environment's secrets only with inherit
+    secrets: inherit
+
+  make-release:
+    # The release comes after the site. If the site deploy fails, the tag
+    # doesn't exist yet, so the next run retries both.
+    # GitHub skips a job when a job it needs is skipped, and deploy-website is
+    # skipped for alphas and betas. So this condition checks the results of the
+    # needed jobs itself.
+    if: >-
+      !cancelled() && !contains(needs.*.result, 'failure')
+      && needs.check-release.outputs.release_type != ''
+
+    runs-on: ubuntu-24.04
+
+    needs:
+      - check-release
+      - deploy-website
       - build-linux-x64
       - build-windows-x64
       - build-macos-x64
@@ -57,26 +128,13 @@ jobs:
       - name: Make new release or prerelease
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_TYPE: ${{ needs.check-release.outputs.release_type }}
         run: |
           set -e
           version=$(python3 appdata/releases.py --version)
 
-          # dev, alpha, beta, rc or full. appdata/releases.py defines the version
-          # grammar
-          release_type=$(python3 appdata/releases.py --release-type)
-
-          if [[ "$release_type" == dev ]]; then
-            echo "$version is a development version, not making a release"
-            exit 0
-          fi
-
-          if gh release view "v$version" &> /dev/null; then
-            echo "v$version is released already"
-            exit 0
-          fi
-
           prerelease=""
-          if [[ "$release_type" != full ]]; then
+          if [[ "$RELEASE_TYPE" != full ]]; then
             prerelease="--prerelease"
           fi
 
