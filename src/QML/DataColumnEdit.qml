@@ -60,6 +60,9 @@ Item {
           lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
           darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
 
+          ToolTip.text: checked ? qsTr("Show the curve of this column")
+                                : qsTr("Hide the curve of this column")
+
           onToggled: root.backend.style.visible = !checked
         }
 
@@ -76,6 +79,8 @@ Item {
 
           lightThemeIcon: "qrc:/icons/brush.svg"
           darkThemeIcon: "qrc:/icons/brush-light.svg"
+
+          ToolTip.text: qsTr("Plot style")
         }
 
         IconRoundButton {
@@ -91,6 +96,8 @@ Item {
 
           lightThemeIcon: "qrc:/icons/sample-dark.svg"
           darkThemeIcon: "qrc:/icons/sample-light.svg"
+
+          ToolTip.text: qsTr("Fill this column by sampling an object")
         }
 
         IconRoundButton {
@@ -106,6 +113,8 @@ Item {
           lightThemeIcon: "qrc:/icons/table.svg"
           darkThemeIcon: "qrc:/icons/table-light.svg"
 
+          ToolTip.text: qsTr("Show this column in the table")
+
           onToggled: root.backend.showInTable = checked;
         }
 
@@ -114,6 +123,8 @@ Item {
           radius: 12
 
           Layout.alignment: Qt.AlignVCenter
+
+          ToolTip.text: qsTr("The color of the curve")
 
           selectedColor: root.backend.style.color
 
@@ -127,6 +138,12 @@ Item {
           Layout.preferredHeight: Layout.preferredWidth
           Layout.preferredWidth: 30
           Layout.alignment: Qt.AlignVCenter
+
+          HoverHandler { id: dragHandleHover }
+
+          ToolTip.delay: ZeStyle.tooltipDelay
+          ToolTip.text: qsTr("Drag to change the order of the columns (in the exported CSV and in the plot)")
+          ToolTip.visible: dragHandleHover.hovered
 
           Image {
             anchors.fill: parent
@@ -166,6 +183,8 @@ Item {
 
     lightThemeIcon: "qrc:/icons/delete-dark.svg"
     darkThemeIcon: "qrc:/icons/delete-light.svg"
+
+    ToolTip.text: qsTr("Delete this column")
 
     onReleased: root.deleteRequested();
   }

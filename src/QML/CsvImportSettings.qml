@@ -85,11 +85,15 @@ Item {
 
           ZeLabel {
             Layout.alignment: Qt.AlignRight
+            id: separatorLabel
             text: qsTr("Separator:")
+            // "\\t" stays out of qsTr(): lupdate would write a real tab into the .ts
+            tooltipText: qsTr("The string that separates two cells of a row. Write %1 for a TAB separator.").arg("\\t")
           }
           LineEdit {
             Layout.alignment: Qt.AlignLeft
             id: separatorEdit
+            ToolTip.text: separatorLabel.tooltipText
             Layout.preferredWidth: 30
             text: ","
             border.color: "grey"

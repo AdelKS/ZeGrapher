@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 import QtQuick.Shapes
 import QtQuick.Dialogs
 
@@ -8,6 +9,10 @@ Shape {
   property themedColor selectedColor
 
   signal selectedColorModified()
+
+  // a disk carries no text, so call sites give the hint with ToolTip.text
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: shape_path.hovered && ToolTip.text.length !== 0
 
   property bool darkMode: Application.styleHints.colorScheme === Qt.ColorScheme.Dark
 

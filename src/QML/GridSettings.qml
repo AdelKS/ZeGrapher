@@ -56,13 +56,17 @@ Item {
 
 
           ZeLabel {
+            id: spacingLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr('Spacing')
+            tooltipText: qsTr("How much further apart the ticks stand. Zero is the tightest spacing the app draws.")
           }
           ZeSpinBox {
             Layout.fillWidth: true
             Layout.minimumWidth: 85
             implicitWidth: 85
+
+            ToolTip.text: spacingLabel.tooltipText
 
             from: 0
             value: root.graphSettings.axes.x.tickSpacing
@@ -76,6 +80,8 @@ Item {
             Layout.minimumWidth: 85
             implicitWidth: 85
 
+            ToolTip.text: spacingLabel.tooltipText
+
             from: 0
             value: root.graphSettings.axes.y.tickSpacing
             stepSize: 1
@@ -85,13 +91,17 @@ Item {
           }
 
           ZeLabel {
+            id: maxDigitsLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr('Max digits')
+            tooltipText: qsTr("The number of digits a tick label can use before the app writes a power of ten.")
           }
           ZeSpinBox {
             Layout.fillWidth: true
             Layout.minimumWidth: 85
             implicitWidth: 85
+
+            ToolTip.text: maxDigitsLabel.tooltipText
 
             from: 2
             value: root.graphSettings.axes.x.linear.maxDigitsNum
@@ -105,6 +115,8 @@ Item {
             Layout.minimumWidth: 85
             implicitWidth: 85
 
+            ToolTip.text: maxDigitsLabel.tooltipText
+
             from: 2
             value: root.graphSettings.axes.y.linear.maxDigitsNum
             stepSize: 1
@@ -114,8 +126,10 @@ Item {
           }
 
           ZeLabel {
+            id: multiplierLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr('Multiplier')
+            tooltipText: qsTr("Ticks and their labels become multiples of this expression, for example π.")
           }
           Expr {
             id: xMultiplierBackend
@@ -130,6 +144,7 @@ Item {
           ValueEdit {
             Layout.fillWidth: true
             backend: xMultiplierBackend
+            ToolTip.text: multiplierLabel.tooltipText
           }
           Expr {
             id: yMultiplierBackend
@@ -141,6 +156,7 @@ Item {
           ValueEdit {
             Layout.fillWidth: true
             backend: yMultiplierBackend
+            ToolTip.text: multiplierLabel.tooltipText
           }
         }
       }

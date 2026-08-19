@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 
 // A line edit without borders, that follows its content
 
@@ -8,6 +9,13 @@ Rectangle {
   property alias textEdit: edit
 
   signal textEdited()
+
+  // call sites give the hint with ToolTip.text. It stays away while the field
+  // has the focus, where it would cover the text
+  HoverHandler { id: hoverHandler }
+
+  ToolTip.delay: ZeStyle.tooltipDelay
+  ToolTip.visible: hoverHandler.hovered && !edit.activeFocus && ToolTip.text.length !== 0
 
   border.width: 1.5
   radius: 4

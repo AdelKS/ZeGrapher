@@ -35,6 +35,10 @@ ApplicationWindow {
       cursorShape: Qt.SizeHorCursor
       acceptedButtons: Qt.LeftButton
 
+      ToolTip.delay: ZeStyle.tooltipDelay
+      ToolTip.text: qsTr("Drag to move the border")
+      ToolTip.visible: containsMouse && !pressed
+
       property real sceneXonPress
 
       onPressed: function (mouse) {
@@ -300,8 +304,13 @@ ApplicationWindow {
 
       MouseArea {
         anchors.fill: parent
+        hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: drawer_button.checked = !drawer_button.checked
+
+        ToolTip.delay: ZeStyle.tooltipDelay
+        ToolTip.text: drawer_button.checked ? qsTr("Fold the panel away") : qsTr("Unfold the panel")
+        ToolTip.visible: containsMouse
       }
     }
   }

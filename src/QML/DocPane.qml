@@ -72,8 +72,14 @@ Rectangle {
 
     MouseArea {
       anchors.fill: parent
+      hoverEnabled: true
       cursorShape: Qt.PointingHandCursor
       onClicked: docs_button.checked = !docs_button.checked
+
+      ToolTip.delay: ZeStyle.tooltipDelay
+      ToolTip.text: docs_button.checked ? qsTr("Hide the documentation")
+                                        : qsTr("Show the documentation")
+      ToolTip.visible: containsMouse
     }
   }
 

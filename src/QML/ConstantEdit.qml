@@ -40,6 +40,7 @@ Item {
 
       backend: root.backend
       label: qsTr("name")
+      hint: qsTr("Every expression can use this name.")
 
       Layout.preferredWidth: 60
       Layout.fillWidth: true
@@ -108,6 +109,7 @@ Item {
         id: stepsLabel
         Layout.alignment: Qt.AlignHCenter
         text: qsTr("steps")
+        tooltipText: qsTr("Number of steps to go from min to max: the constant takes steps+1 values")
       }
 
       ZeLabel {
@@ -145,6 +147,7 @@ Item {
 
         ZeSpinBox {
           id: steps
+          ToolTip.text: stepsLabel.tooltipText
           anchors.centerIn: parent
           width: Math.min(implicitWidth, parent.width)
 
@@ -184,6 +187,9 @@ Item {
         darkThemeIcon: checked ? "qrc:/icons/pause-light.svg" : "qrc:/icons/play-light.svg"
         checkable: true
 
+        ToolTip.text: checked ? qsTr("Pause the animation")
+                              : qsTr("Start the animation")
+
         checked: wrapped_backend.playing
         onClicked: wrapped_backend.playing = checked;
       }
@@ -196,6 +202,8 @@ Item {
         lightThemeIcon: checked ? "qrc:/icons/loop-dark.svg" : "qrc:/icons/loop-dark.svg"
         darkThemeIcon: checked ? "qrc:/icons/loop-light.svg" : "qrc:/icons/loop-light.svg"
         checkable: true
+
+        ToolTip.text: qsTr("Loop: at max, the constant jumps back to min and starts again")
 
         onCheckedChanged: {
           if (checked && pingPongButton.checked)
@@ -216,6 +224,8 @@ Item {
         darkThemeIcon: checked ? "qrc:/icons/ping-pong-light.svg" : "qrc:/icons/ping-pong-light.svg"
         checkable: true
 
+        ToolTip.text: qsTr("Ping pong: at max, the constant moves back to min, then to max again")
+
         onCheckedChanged: {
           if (checked && loopButton.checked)
             loopButton.checked = false;
@@ -234,6 +244,8 @@ Item {
         from: 0.1
         to: 500.
         step: 1.
+
+        ToolTip.text: qsTr("Time the constant takes to go from min to max")
 
         value: root.backend.duration
         onValueModified: (value) => root.backend.duration = value

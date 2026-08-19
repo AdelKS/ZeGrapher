@@ -226,6 +226,7 @@ moc_files = qt6.compile_moc(
 qml_mods = qt6.qml_module(
   'ZeGrapher',
   qml_sources: qml_files,
+  qml_singletons: files('QML/ZeStyle.qml'),
   moc_headers: qmlcpp_files,
   include_directories: qmlcpp_inc_dirs,
   dependencies: [qt6_dep],

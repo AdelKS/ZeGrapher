@@ -221,6 +221,8 @@ Item {
           lightThemeIcon: "qrc:/icons/export-graph-dark.svg"
           darkThemeIcon: "qrc:/icons/export-graph-light.svg"
 
+          ToolTip.text: qsTr("Export the graph: vector graphics (PDF, SVG) or images (PNG, JPG)")
+
           onReleased: exportDialog.visible = true;
         }
 
@@ -236,6 +238,8 @@ Item {
           lightThemeIcon: "qrc:/icons/save-dark.svg"
           darkThemeIcon: "qrc:/icons/save-light.svg"
 
+          ToolTip.text: qsTr("Save everything as a ZeGrapher document")
+
           onReleased: saveDialog.visible = true;
         }
 
@@ -250,6 +254,8 @@ Item {
 
           lightThemeIcon: "qrc:/icons/load-dark.svg"
           darkThemeIcon: "qrc:/icons/load-light.svg"
+
+          ToolTip.text: qsTr("Load a ZeGrapher document")
 
           onReleased: loadDialog.visible = true;
         }

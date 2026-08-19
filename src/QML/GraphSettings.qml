@@ -61,11 +61,15 @@ Item {
           }
 
           ZeLabel {
+            id: scalingLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr('Scaling')
+            tooltipText: qsTr("Draw everything on the graph bigger or smaller.")
           }
           ZeDoubleSpinBox {
             Layout.fillWidth: true
+
+            ToolTip.text: scalingLabel.tooltipText
 
             from: 0.1
             step: 0.1
@@ -132,13 +136,19 @@ Item {
               columns: 2
 
               ZeLabel {
+                id: unitLabel
                 Layout.alignment: Qt.AlignRight
                 text: qsTr('Unit')
+                tooltipText: qsTr("Centimeters give the graph a real size, on the screen and in PDF or SVG exports.")
               }
               ComboBox {
                 Layout.fillWidth: true
 
                 id: unitComboBox
+
+                ToolTip.delay: ZeStyle.tooltipDelay
+                ToolTip.text: unitLabel.tooltipText
+                ToolTip.visible: hovered
 
                 implicitContentWidthPolicy: ComboBox.WidestText
                 background.implicitWidth: implicitContentWidth
@@ -296,13 +306,16 @@ Item {
           }
 
           ZeLabel {
+            id: minPointsLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr("Min points")
-            tooltipText: qsTr("Minimum number of points per continuous curve, in 2^value.")
+            tooltipText: qsTr("Every continuous curve is made of at least %1 points.").arg(Math.pow(2, minPointsLg2.value))
           }
           ZeSpinBox {
             id: minPointsLg2
             Layout.alignment: Qt.AlignLeft
+
+            ToolTip.text: minPointsLabel.tooltipText
 
             from: 2
             stepSize: 1
@@ -316,13 +329,17 @@ Item {
           }
 
           ZeLabel {
+            id: maxPointsLabel
             Layout.alignment: Qt.AlignRight
             text: qsTr("Max points")
-            tooltipText: qsTr("Maximum number of points per continuous curve, in 2^value.")
+
+            tooltipText: qsTr("Every continuous curve is made of at most %1 points.").arg(Math.pow(2, maxPointsLg2.value))
           }
           ZeSpinBox {
             id: maxPointsLg2
             Layout.alignment: Qt.AlignLeft
+
+            ToolTip.text: maxPointsLabel.tooltipText
 
             from: minPointsLg2.value
             value: root.graphSettings.maxPointsLg2

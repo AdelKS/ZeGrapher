@@ -117,6 +117,8 @@ Item {
           lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
           darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
 
+          ToolTip.text: checked ? qsTr("Show the curve") : qsTr("Hide the curve")
+
           onToggled: {
             if (root.mathObj.style)
               root.mathObj.style.visible = !checked
@@ -135,11 +137,15 @@ Item {
 
           lightThemeIcon: "qrc:/icons/brush.svg"
           darkThemeIcon: "qrc:/icons/brush-light.svg"
+
+          ToolTip.text: qsTr("Plot style")
         }
 
         ColorButton {
           id: colorButton
           radius: 12
+
+          ToolTip.text: qsTr("The color of the curve")
 
           property themedColor lastGood
 
@@ -159,6 +165,8 @@ Item {
         ColorButton {
           id: secondColorButton
           radius: 12
+
+          ToolTip.text: qsTr("End color of the gradient over the family of Schrödinger curves")
 
           property themedColor lastGood
 
@@ -248,6 +256,8 @@ Item {
           lightThemeIcon: "qrc:/icons/schrodinger-cat-dark.svg"
           darkThemeIcon: "qrc:/icons/schrodinger-cat-light.svg"
 
+          ToolTip.text: qsTr("Schrödinger mode: the constant takes several values at once")
+
           onToggled: {
             root.mathObj.getConstant().deadAndAlive = checked;
           }
@@ -320,6 +330,12 @@ Item {
           Layout.maximumWidth: 30
           Layout.preferredHeight: Layout.preferredWidth
           Layout.preferredWidth: 30
+
+          HoverHandler { id: dragHandleHover }
+
+          ToolTip.delay: ZeStyle.tooltipDelay
+          ToolTip.text: qsTr("Drag to change the order of the objects")
+          ToolTip.visible: dragHandleHover.hovered
 
           Image {
             anchors.fill: parent
@@ -431,6 +447,8 @@ Item {
 
     lightThemeIcon: "qrc:/icons/delete-dark.svg"
     darkThemeIcon: "qrc:/icons/delete-light.svg"
+
+    ToolTip.text: qsTr("Delete this object")
 
     onReleased: root.mathObj.requestUiInitiatedDelete();
   }
