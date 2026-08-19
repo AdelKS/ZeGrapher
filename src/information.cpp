@@ -74,9 +74,9 @@ void Information::exportYaml(QUrl filename)
   if (path.isEmpty())
   {
     appendIoErr({
-      .title = tr("File information error"),
+      .title = tr("Could not save the document"),
       .file = filename.toString(),
-      .text = tr("Input is not a local file path."),
+      .text = tr("The target file path is invalid."),
     });
     return;
   }
@@ -84,9 +84,9 @@ void Information::exportYaml(QUrl filename)
   QFileInfo info(path);
   if (not info.absoluteDir().mkpath("."))
   {
-    appendIoErr({.title = tr("File error"),
+    appendIoErr({.title = tr("Could not save the document"),
                  .file = path,
-                 .text = tr("Could not create directory."),
+                 .text = tr("Could not create the folder."),
                  .details = info.absolutePath()});
     return;
   }
@@ -94,9 +94,9 @@ void Information::exportYaml(QUrl filename)
   QSaveFile file(path);
   if (not file.open(QIODevice::WriteOnly))
   {
-    appendIoErr({.title = tr("File error"),
+    appendIoErr({.title = tr("Could not save the document"),
                  .file = path,
-                 .text = tr("Could not open file."),
+                 .text = tr("Could not open the file for writing."),
                  .details = file.errorString()});
     return;
   }
@@ -104,18 +104,18 @@ void Information::exportYaml(QUrl filename)
   qint64 written = file.write(exp_content->data(), exp_content->size());
   if (written != qint64(exp_content->size()))
   {
-    appendIoErr({.title = tr("File error"),
+    appendIoErr({.title = tr("Could not save the document"),
                  .file = path,
-                 .text = tr("Incomplete write, operation cancelled."),
+                 .text = tr("The write did not finish. The file is left unchanged."),
                  .details = file.errorString()});
     return;
   }
 
   if (not file.commit())
   {
-    appendIoErr({.title = tr("File error"),
+    appendIoErr({.title = tr("Could not save the document"),
                  .file = path,
-                 .text = tr("Could not finalize saved document."),
+                 .text = tr("Could not replace the file with the new version."),
                  .details = file.errorString()});
     return;
   }
@@ -131,28 +131,35 @@ void Information::importYaml(QUrl filename)
   const QString path = filename.toLocalFile();
   if (path.isEmpty())
   {
-    appendIoErr({.title = tr("File information error"),
-                 .file = path,
-                 .text = tr("Input is not a local file path."),
-                 .details = filename.toString()});
+    appendIoErr({.title = tr("Could not load the document"),
+                 .file = filename.toString(),
+                 .text = tr("The path to the file has the wrong format.")});
     return;
   }
 
   QFile file(path);
+  if (not file.exists())
+  {
+    appendIoErr({.title = tr("Could not load the document"),
+                 .file = path,
+                 .text = tr("The file does not exist.")});
+    return;
+  }
+
   if (not file.open(QIODevice::ReadOnly))
   {
-    appendIoErr({.title = tr("File error"),
+    appendIoErr({.title = tr("Could not load the document"),
                  .file = path,
-                 .text = tr("Could not open file.")});
+                 .text = tr("Could not open the file for reading.")});
     return;
   }
 
   const QByteArray bytes = file.readAll();
   if (file.error() != QFileDevice::NoError)
   {
-    appendIoErr({.title = tr("File error"),
+    appendIoErr({.title = tr("Could not load the document"),
                  .file = path,
-                 .text = tr("Could not read file entirely."),
+                 .text = tr("Could not read the whole file."),
                  .details = file.errorString()});
   }
 
@@ -161,9 +168,9 @@ void Information::importYaml(QUrl filename)
   POD pod;
   auto read_error = glz::read_yaml(pod, content);
   if (read_error)
-    appendIoErr({.title = tr("Parsing error"),
+    appendIoErr({.title = tr("Could not load the document"),
                  .file = path,
-                 .text = tr("Could not parse document."),
+                 .text = tr("The file is not a valid ZeGrapher document."),
                  .details = QString::fromStdString(glz::format_error(read_error, content))});
 
   else {
