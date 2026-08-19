@@ -45,6 +45,9 @@ jobs:
 
       - name: Download release artifacts
         uses: actions/download-artifact@v5
+        with:
+          merge-multiple: true
+          path: deploy
 
       - name: Install Dependencies
         run: |
@@ -75,6 +78,6 @@ jobs:
             prerelease="--prerelease"
           fi
 
-          files_list=$(find *-artifact-* -type f | paste -sd' ')
+          files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
           gh release create "v$version" $files_list \
           --title "v$version" $prerelease
