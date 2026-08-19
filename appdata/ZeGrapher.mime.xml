@@ -2,6 +2,7 @@
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="application/x-zegrapher">
     <comment>ZeGrapher document</comment>
+    <comment xml:lang="fr">Document ZeGrapher</comment>
     <sub-class-of type="application/yaml"/>
     <glob pattern="*.zg"/>
     <magic priority="80">

@@ -4,6 +4,7 @@ Comment=Math plotting software
 Comment[fr]=Logiciel de tracé de courbes
 Comment[de]=Ein Programm zum Zeichnen von mathematischen Funktionen
 Keywords=graph;plot;curve;function;sequence;parametric;math;
+Keywords[fr]=graphe;courbe;tracé;fonction;suite;paramétrique;maths;
 Exec=ZeGrapher %F
 Terminal=false
 Type=Application
