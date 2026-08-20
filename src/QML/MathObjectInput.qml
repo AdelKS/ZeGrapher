@@ -412,6 +412,7 @@ Item {
 
       Connections {
         target: loader.item
+        ignoreUnknownSignals: true
         function onImportCSV(file: url, dataSheet: DataSheet) { root.importCSV(file, dataSheet); }
       }
     }
