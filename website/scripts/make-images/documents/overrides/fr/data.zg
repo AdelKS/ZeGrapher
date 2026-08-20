@@ -1,0 +1,11 @@
+math_objects:
+  - notes: balle lâchée de 110 m, relevés toutes les demi-secondes
+    columns:
+      - name: temps
+      - name: hauteur
+graph:
+  axes:
+    x:
+      title: temps (s)
+    y:
+      title: hauteur (m)
