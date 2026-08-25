@@ -3,11 +3,11 @@
 
 set -e
 
-pacboy -S --noconfirm gcc meson qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations qt6-shadertools 7zip glaze
+pacboy -S --noconfirm gcc meson qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations qt6-shadertools 7zip glaze jq
 
 deploy_script_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
-version=$(bash "${deploy_script_dir}"/../version.sh get-vcs)
+version=$(bash "${deploy_script_dir}"/../version.sh)
 output_folder_name="ZeGrapher-Windows-$MSYSTEM-$version"
 deploy_dir="$deploy_script_dir"/"$output_folder_name"
 

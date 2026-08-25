@@ -15,8 +15,6 @@ jobs:
         shell: msys2 {0}
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
       - uses: msys2/setup-msys2@v2
         with:

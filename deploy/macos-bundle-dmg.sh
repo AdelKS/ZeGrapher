@@ -7,7 +7,7 @@ echo "Checking and installing dependencies..."
 brew install coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools meson pkg-config create-dmg glaze
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
-version=$(bash "${deploy_dir}"/../version.sh get-vcs)
+version=$(bash "${deploy_dir}"/../version.sh)
 arch=`uname -m`
 app_name="ZeGrapher-macOS-$arch-$version"
 dmg_name="ZeGrapher-macOS-$arch-$version"

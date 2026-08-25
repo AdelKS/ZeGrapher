@@ -30,7 +30,7 @@ jobs:
   make-release:
     if: github.ref_name == github.event.repository.default_branch && github.repository == 'AdelKS/ZeGrapher'
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     needs:
       - build-linux-x64
@@ -42,17 +42,39 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
       - name: Download release artifacts
         uses: actions/download-artifact@v5
 
-      - name: Make new prerelease
+      - name: Install Dependencies
+        run: |
+          sudo apt install python3-pip jq
+          pip3 install --user meson ninja
+
+      - name: Make new release or prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -e
+          version=$(./version.sh)
+
+          # a '-dev' suffix marks a commit between two releases
+          if [[ "$version" == *-dev ]]; then
+            echo "$version is a development version, not making a release"
+            exit 0
+          fi
+
+          if gh release view "v$version" &> /dev/null; then
+            echo "v$version is released already"
+            exit 0
+          fi
+
+          # alpha, beta and rc are the keywords of a version that is not final
+          prerelease=""
+          if [[ "$version" =~ (alpha|beta|rc) ]]; then
+            prerelease="--prerelease"
+          fi
+
           files_list=$(find *-artifact-* -type f | paste -sd' ')
-          current_version=$(./version.sh get-vcs)
-          gh release create "$current_version" $files_list \
-          --title "$current_version" --prerelease
+          gh release create "v$version" $files_list \
+          --title "v$version" $prerelease
