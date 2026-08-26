@@ -1,0 +1,30 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the words of each entry of the footer
+footer:
+  donate: Fai una donazione
+  contact: Contatti
+  theme-based-on: Basato su
+
+# the labels of the buttons of the page. A screen reader reads them, and the
+# label of the theme switch also shows when the pointer rests on it
+buttons:
+  theme: Passa dal tema chiaro al tema scuro e viceversa
+  previous: Precedente
+  next: Successivo
+
+# the line over the download tiles. The build writes the version in place of
+# {version}, and the day of the release in place of {date}
+release: "Versione {version}, rilasciata il {date}"
+
+# the words of the tile that links the repository on GitHub: its name, and
+# the two smaller links under it
+downloads:
+  source: Codice sorgente
+  releases: Versioni
+  issues: Segnalazioni
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: Se ZeGrapher ti è utile, sostienilo con una donazione!
