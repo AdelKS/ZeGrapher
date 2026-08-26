@@ -1,0 +1,12 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the words of each entry of the footer
+footer:
+  donate: Spenden
+  contact: Kontakt
+  theme-based-on: Beruht auf
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: Wenn dir ZeGrapher nützt, unterstütze es mit einer Spende!
