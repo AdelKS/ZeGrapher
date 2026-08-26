@@ -1,0 +1,50 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the name of this language, written in that language. The menu at the top of
+# every page lists each language under this name. This key does not fall back
+# to English, so every language must write it
+language: 日本語
+
+# the title of the page, which the browser shows in its tab
+page_title: ZeGrapher、オープンソースのグラフ作成ソフト
+
+# the line under the title of the landing panel. A search engine also shows it
+# as the description of the page
+tagline: 無料・オープンソースで、すぐに使える数学グラフソフト。関数、数列、媒介変数表示、実験データを平面に描きます。
+
+# the words of each entry of the footer
+footer:
+  donate: 寄付する
+  contact: お問い合わせ
+  theme-based-on: テーマ：
+
+# the labels of the buttons of the page. A screen reader reads them, and the
+# label of the theme switch also shows when the pointer rests on it
+buttons:
+  theme: ライトテーマとダークテーマを切り替える
+  previous: 前へ
+  next: 次へ
+
+# the line over the download tiles. The build writes the version in place of
+# {version}, and the day of the release in place of {date}
+release: "バージョン {version}（{date} 公開）"
+
+# the words of the tile that links the repository on GitHub: its name, and
+# the two smaller links under it
+downloads:
+  source: ソースコード
+  releases: リリース
+  issues: 不具合報告
+
+# the caption of each gallery picture, by file name. The site gives it to the
+# picture as alt text, and software centers show it under the screenshot
+gallery:
+  vitrine.png: "極座標の曲線を、定数の複数の値について一度に描画"
+  functions.png: "同じグラフ上の関数と数列"
+  schrodinger.png: "シュレーディンガーモード：定数の値ごとに1本の曲線"
+  data.png: "測定データを表とグラフに表示"
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: ZeGrapher が役に立ったなら、寄付で支えてください！
