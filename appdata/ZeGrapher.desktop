@@ -3,6 +3,7 @@ Name=ZeGrapher
 Comment=Math plotting software
 Comment[fr]=Logiciel de tracé de courbes
 Comment[de]=Ein Programm zum Zeichnen von mathematischen Funktionen
+Comment[zh]=数学绘图软件
 Exec=ZeGrapher %F
 Terminal=false
 Type=Application
