@@ -41,6 +41,7 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
     .font = zg::yml::QFontPOD::from(font, defaultFont),
     .window_size = zg::yml::QSizePOD::from(windowSize, defaultWindowSize),
     .pane_width = not_default(paneWidth, defaultPaneWidth),
+    .csv_pane_width = not_default(csvPaneWidth, defaultCsvPaneWidth),
     .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
     .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
     .warning_syntax = warningSyntax.exportPod(defaultWarningSyntax),
@@ -83,6 +84,12 @@ void ZeAppSettings::importPod(POD p)
   {
     paneWidth = *p.pane_width;
     emit paneWidthChanged();
+  }
+
+  if (p.csv_pane_width and csvPaneWidth != *p.csv_pane_width)
+  {
+    csvPaneWidth = *p.csv_pane_width;
+    emit csvPaneWidthChanged();
   }
 
   if (p.valid_syntax)

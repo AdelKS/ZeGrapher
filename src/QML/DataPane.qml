@@ -7,7 +7,8 @@ Item {
 
   implicitWidth: Math.max(
     dataTable.implicitWidth + 2*dataTable.anchors.margins + 5,
-    root.importingCSV ? csvImportSettings.implicitWidth + 2*dataTable.anchors.margins + 5: 0
+    root.importingCSV ? Information.appSettings.csvPaneWidth
+                        + 2*csvImportSettings.anchors.margins : 0
   )
   implicitHeight: dataTable.implicitHeight + 2*dataTable.anchors.margins
     + (root.importingCSV ? csvImportSettings.implicitHeight : 0)
