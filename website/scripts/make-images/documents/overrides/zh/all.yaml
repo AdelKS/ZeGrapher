@@ -1,0 +1,6 @@
+# goes over every document of the folder above
+app:
+  language: zh
+  # the default interface font has no Chinese glyphs
+  font:
+    name: Noto Sans CJK SC
