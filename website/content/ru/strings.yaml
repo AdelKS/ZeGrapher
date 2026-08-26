@@ -1,0 +1,50 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the name of this language, written in that language. The menu at the top of
+# every page lists each language under this name. This key does not fall back
+# to English, so every language must write it
+language: Русский
+
+# the title of the page, which the browser shows in its tab
+page_title: ZeGrapher, свободная программа для построения графиков
+
+# the line under the title of the landing panel. A search engine also shows it
+# as the description of the page
+tagline: Свободная, бесплатная и простая программа для математических графиков. Строит на плоскости функции, последовательности, параметрические уравнения и данные опытов.
+
+# the words of each entry of the footer
+footer:
+  donate: Поддержать
+  contact: Связаться
+  theme-based-on: На основе
+
+# the labels of the buttons of the page. A screen reader reads them, and the
+# label of the theme switch also shows when the pointer rests on it
+buttons:
+  theme: Переключение светлой и тёмной темы
+  previous: Назад
+  next: Вперёд
+
+# the line over the download tiles. The build writes the version in place of
+# {version}, and the day of the release in place of {date}
+release: "Версия {version}, выпущена {date}"
+
+# the words of the tile that links the repository on GitHub: its name, and
+# the two smaller links under it
+downloads:
+  source: Исходный код
+  releases: Версии
+  issues: Ошибки
+
+# the caption of each gallery picture, by file name. The site gives it to the
+# picture as alt text, and software centers show it under the screenshot
+gallery:
+  vitrine.png: "Кривая в полярных координатах, построенная сразу для нескольких значений константы"
+  functions.png: "Функция и последовательность на одном графике"
+  schrodinger.png: "Режим Шрёдингера: по одной кривой на каждое значение константы"
+  data.png: "Данные измерений в таблице и на графике"
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: Если ZeGrapher вам полезна, поддержите её пожертвованием!
