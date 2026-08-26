@@ -1,0 +1,50 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the name of this language, written in that language. The menu at the top of
+# every page lists each language under this name. This key does not fall back
+# to English, so every language must write it
+language: Português
+
+# the title of the page, which the browser shows in its tab
+page_title: ZeGrapher, programa livre para traçar gráficos
+
+# the line under the title of the landing panel. A search engine also shows it
+# as the description of the page
+tagline: Um programa de gráficos matemáticos livre, gratuito e fácil de usar. Traça funções, sequências, equações paramétricas e dados de experimentos no plano.
+
+# the words of each entry of the footer
+footer:
+  donate: Doar
+  contact: Contato
+  theme-based-on: Baseado em
+
+# the labels of the buttons of the page. A screen reader reads them, and the
+# label of the theme switch also shows when the pointer rests on it
+buttons:
+  theme: Alternar entre o tema claro e o escuro
+  previous: Anterior
+  next: Próximo
+
+# the line over the download tiles. The build writes the version in place of
+# {version}, and the day of the release in place of {date}
+release: "Versão {version}, lançada em {date}"
+
+# the words of the tile that links the repository on GitHub: its name, and
+# the two smaller links under it
+downloads:
+  source: Código-fonte
+  releases: Versões
+  issues: Problemas
+
+# the caption of each gallery picture, by file name. The site gives it to the
+# picture as alt text, and software centers show it under the screenshot
+gallery:
+  vitrine.png: "Uma curva em coordenadas polares, traçada para vários valores de uma constante de uma vez"
+  functions.png: "Uma função e uma sequência no mesmo gráfico"
+  schrodinger.png: "Modo Schrödinger: uma curva por valor da constante"
+  data.png: "Dados medidos, numa tabela e no gráfico"
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: Se o ZeGrapher é útil para você, considere fazer uma doação para apoiá-lo!
