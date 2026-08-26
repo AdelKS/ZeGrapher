@@ -3,6 +3,7 @@
   <mime-type type="application/x-zegrapher">
     <comment>ZeGrapher document</comment>
     <comment xml:lang="fr">Document ZeGrapher</comment>
+    <comment xml:lang="es">Documento de ZeGrapher</comment>
     <comment xml:lang="zh">ZeGrapher 文档</comment>
     <sub-class-of type="application/yaml"/>
     <glob pattern="*.zg"/>
