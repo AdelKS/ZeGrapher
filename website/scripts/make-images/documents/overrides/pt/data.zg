@@ -1,0 +1,11 @@
+math_objects:
+  - notes: bola largada de 110 m, medida a cada meio segundo
+    columns:
+      - name: tempo
+      - name: altura
+graph:
+  axes:
+    x:
+      title: tempo (s)
+    y:
+      title: altura (m)
