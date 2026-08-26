@@ -1,0 +1,30 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the words of each entry of the footer
+footer:
+  donate: 捐赠
+  contact: 联系我们
+  theme-based-on: 改自
+
+# the labels of the buttons of the page. A screen reader reads them, and the
+# label of the theme switch also shows when the pointer rests on it
+buttons:
+  theme: 在浅色和深色主题之间切换
+  previous: 上一页
+  next: 下一页
+
+# the line over the download tiles. The build writes the version in place of
+# {version}, and the day of the release in place of {date}
+release: "版本 {version}，发布于 {date}"
+
+# the words of the tile that links the repository on GitHub: its name, and
+# the two smaller links under it
+downloads:
+  source: 源代码
+  releases: 发行版
+  issues: 问题反馈
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: 如果 ZeGrapher 帮到了你，欢迎捐赠支持它的开发！
