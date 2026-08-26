@@ -1,0 +1,11 @@
+math_objects:
+  - notes: мяч падает со 110 м, замеры каждые полсекунды
+    columns:
+      - name: время
+      - name: высота
+graph:
+  axes:
+    x:
+      title: время (с)
+    y:
+      title: высота (м)
