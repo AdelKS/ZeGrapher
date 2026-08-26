@@ -1,0 +1,11 @@
+math_objects:
+  - notes: pelota soltada desde 110 m, medida cada medio segundo
+    columns:
+      - name: tiempo
+      - name: altura
+graph:
+  axes:
+    x:
+      title: tiempo (s)
+    y:
+      title: altura (m)
