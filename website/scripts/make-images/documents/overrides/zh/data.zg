@@ -1,0 +1,11 @@
+math_objects:
+  - notes: 从 110 米高处落下的球，每 0.5 秒测量一次
+    columns:
+      - name: 时间
+      - name: 高度
+graph:
+  axes:
+    x:
+      title: 时间 (s)
+    y:
+      title: 高度 (m)
