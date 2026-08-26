@@ -1,0 +1,6 @@
+# the first object is an equation, and it holds nothing to translate
+math_objects:
+  - {}
+  - notes: muestreadas de f
+    columns:
+      - name: muestras
