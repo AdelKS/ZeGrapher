@@ -1,0 +1,6 @@
+# goes over every document of the folder above
+app:
+  language: ja
+  # the default interface font has no Japanese glyphs
+  font:
+    name: Noto Sans JP
