@@ -1,0 +1,11 @@
+math_objects:
+  - notes: 110 m から落としたボール、0.5 秒ごとに測定
+    columns:
+      - name: 時間
+      - name: 高さ
+graph:
+  axes:
+    x:
+      title: 時間 (s)
+    y:
+      title: 高さ (m)
