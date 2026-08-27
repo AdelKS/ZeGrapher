@@ -1,0 +1,11 @@
+math_objects:
+  - notes: Ball im freien Fall aus 110 m, Messung jede halbe Sekunde
+    columns:
+      - name: Zeit
+      - name: Höhe
+graph:
+  axes:
+    x:
+      title: Zeit (s)
+    y:
+      title: Höhe (m)
