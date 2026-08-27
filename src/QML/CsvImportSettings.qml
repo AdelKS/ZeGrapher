@@ -71,42 +71,77 @@ Item {
       title: qsTr("CSV import settings")
       Layout.fillWidth: true
 
-      GridLayout {
+      RowLayout {
         anchors.fill: parent
-        columns: 2
 
-        RowLayout {
+        Item {
+          Layout.fillWidth: true
+          implicitWidth: 0
+        }
+
+        GridLayout {
+          columns: 2
+          Layout.fillWidth: true
+
           ZeLabel {
+            Layout.alignment: Qt.AlignRight
             text: qsTr("Separator:")
           }
           LineEdit {
+            Layout.alignment: Qt.AlignLeft
             id: separatorEdit
             Layout.preferredWidth: 30
             text: ","
             border.color: "grey"
           }
-        }
-        RowLayout {
           ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Header row:")
+          }
+          CheckBox {
+            Layout.alignment: Qt.AlignCenter
+            id: hasHeaderRow
+            // with no text, the contentItem still carries the width of the
+            // indicator plus the spacing, so the implicit size is taken from the
+            // indicator itself
+            implicitWidth: implicitIndicatorWidth
+            implicitHeight: implicitIndicatorHeight
+          }
+        }
+
+        Item {
+          Layout.fillWidth: true
+          implicitWidth: 0
+        }
+
+        GridLayout {
+          columns: 2
+          Layout.fillWidth: true
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
+            text: qsTr("Preview rows:")
+          }
+          SpinBox {
+            Layout.alignment: Qt.AlignLeft
+            id: maxRows
+            value: 10
+          }
+
+          ZeLabel {
+            Layout.alignment: Qt.AlignRight
             text: qsTr("Skip rows:")
           }
           SpinBox {
+            Layout.alignment: Qt.AlignLeft
             id: skipRows
             value: 0
           }
         }
-        CheckBox {
-          id: hasHeaderRow
-          text: qsTr("Header row")
-        }
-        RowLayout {
-          ZeLabel {
-            text: qsTr("Preview rows:")
-          }
-          SpinBox {
-            id: maxRows
-            value: 10
-          }
+
+        Item {
+          Layout.fillWidth: true
+          implicitWidth: 0
         }
       }
     }
