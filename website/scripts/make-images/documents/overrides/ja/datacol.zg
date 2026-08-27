@@ -1,0 +1,6 @@
+# the first object is an equation, and it holds nothing to translate
+math_objects:
+  - {}
+  - notes: f から取得
+    columns:
+      - name: サンプル
