@@ -1,0 +1,11 @@
+math_objects:
+  - notes: palla lasciata cadere da 110 m, misurata ogni mezzo secondo
+    columns:
+      - name: tempo
+      - name: altezza
+graph:
+  axes:
+    x:
+      title: tempo (s)
+    y:
+      title: altezza (m)
