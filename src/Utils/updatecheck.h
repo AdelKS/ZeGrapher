@@ -12,8 +12,7 @@ class UpdateCheck : public QObject
   QML_ELEMENT
 
   Q_PROPERTY(Status status MEMBER status NOTIFY statusChanged)
-  Q_PROPERTY(QString currentVersion READ getCurrentVersion)
-  Q_PROPERTY(QString latestVersion READ getLatestVersion)
+  Q_PROPERTY(QString latestVersion READ getLatestVersion NOTIFY statusChanged)
 
 public:
   explicit UpdateCheck(QObject *parent = 0);
@@ -21,8 +20,7 @@ public:
   enum Status {IDLE, CHECKING, ERROR, UPDATE_MAYBE_AVAILABLE, UPDATE_AVAILABLE, UP_TO_DATE};
   Q_ENUM(Status);
 
-  Q_INVOKABLE QString getCurrentVersion() const { return currentVersion; }
-  Q_INVOKABLE QString getLatestVersion() const { return latestVersion; }
+  QString getLatestVersion() const { return latestVersion; }
 
 public slots:
   void refresh();
