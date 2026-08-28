@@ -98,16 +98,13 @@ Item {
       range: userInputPanel.graphSettings.range
     }
 
-    TabBar {
+    ZeTabBar {
       id: bar
       Layout.fillWidth: true
 
       onCurrentIndexChanged: swipeView.setCurrentIndex(currentIndex)
 
-      implicitWidth: mathTabButton.implicitWidth + graphTabButton.implicitWidth + appTabButton.implicitWidth
-
       ZeTabButton {
-        id: mathTabButton
         //: title of the tab that holds the math objects. The screenshots of the
         //: website cut the row of tabs at the same width in every language, so
         //: keep the title short. A word such as 'Objects' is fine
@@ -115,17 +112,14 @@ Item {
       }
 
       ZeTabButton {
-        id: gridTabButton
         text: qsTr("Grid")
       }
 
       ZeTabButton {
-        id: graphTabButton
         text: qsTr("Graph")
       }
 
       ZeTabButton {
-        id: appTabButton
         //: title of the tab that holds the settings of the app, keep it short
         text: qsTr("App")
       }
