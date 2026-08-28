@@ -1,40 +1,15 @@
  <RCC>
     <qresource prefix="/">
-        <file>icons/keyboard.png</file>
-        <file>icons/go&amp;return.png</file>
         <file>icons/roundPoint.png</file>
         <file>icons/squarePoint.png</file>
         <file>icons/rhombusPoint.png</file>
         <file>icons/trianglePoint.png</file>
-        <file>icons/dashLine.png</file>
-        <file>icons/dotLine.png</file>
-        <file>icons/solidLine.png</file>
-        <file>icons/dashDotLine.png</file>
         <file>icons/crossPoint.png</file>
-        <file>icons/help.png</file>
-        <file>icons/Tetapin.png</file>
-        <file>icons/polynomial.png</file>
-        <file>icons/arrow_left.png</file>
-        <file>icons/arrow_right.png</file>
-        <file>icons/orthonormalView.svg</file>
-        <file>icons/resetToDefaultView.svg</file>
-        <file>icons/grid.png</file>
-        <file>icons/grid_subgrid.png</file>
-        <file>icons/no_grid.png</file>
-        <file>icons/fit-sheet.svg</file>
         <file>icons/zoom-in-icon.svg</file>
         <file>icons/zoom-out-icon.svg</file>
-        <file>icons/settings.svg</file>
-        <file>icons/settings-light.svg</file>
-        <file>icons/math.svg</file>
         <file>icons/size.svg</file>
-        <file>icons/graph.svg</file>
-        <file>icons/misc.svg</file>
         <file>icons/add.svg</file>
         <file>icons/add-light.svg</file>
-        <file>icons/axes.svg</file>
-        <file>icons/drawer.svg</file>
-        <file>icons/drawer-light.svg</file>
         <file>icons/delete-dark.svg</file>
         <file>icons/delete-light.svg</file>
         <file>icons/noLine.png</file>
@@ -62,7 +37,6 @@
         <file>icons/solid-line.svg</file>
         <file>icons/solid-line-light.svg</file>
         <file>icons/loop-light.svg</file>
-        <file>icons/fit-sheet-light.svg</file>
         <file>icons/zoom-in-icon-light.svg</file>
         <file>icons/zoom-out-icon-light.svg</file>
         <file>icons/size-light.svg</file>
