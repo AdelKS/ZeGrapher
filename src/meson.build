@@ -161,13 +161,11 @@ qt6 = import('qt6')
 qt6_modules = [
   'Core',
   'Gui',
-  'Widgets',
   'Network',
   'Svg',
   'Xml',
   'Quick',
   'Qml',
-  'QuickWidgets',
   'QmlIntegration',
   'ShaderTools'
 ]
