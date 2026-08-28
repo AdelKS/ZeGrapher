@@ -20,6 +20,7 @@
 #pragma once
 
 #include <QtQmlIntegration/qqmlintegration.h>
+#include <QWindow>
 #include <QObject>
 #include <QFont>
 #include <QColor>

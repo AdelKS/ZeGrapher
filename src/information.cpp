@@ -19,8 +19,8 @@
 ****************************************************************************/
 
 #include "information.h"
-#include "information.h"
 
+#include <QSaveFile>
 #include <QStandardPaths>
 #include <glaze/yaml.hpp>
 

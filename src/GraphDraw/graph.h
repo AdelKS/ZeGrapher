@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <QPageLayout>
 #include <QQuickPaintedItem>
 #include <QImage>
 #include <QVariantList>

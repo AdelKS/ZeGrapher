@@ -22,6 +22,7 @@
 #include "information.h"
 #include "Utils/palettewatcher.h"
 
+#include <QPalette>
 #include <QGuiApplication>
 #include <QStyleHints>
 

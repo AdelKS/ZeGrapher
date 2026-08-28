@@ -22,6 +22,8 @@
 #include "Animation/animationconductor.h"
 #include "information.h"
 
+#include <QPdfWriter>
+#include <QStyleHints>
 #include <QQuickWindow>
 #include <QSvgGenerator>
 #include <QFile>

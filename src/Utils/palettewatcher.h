@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QTimer>
 
 // track application palette change through signals
@@ -48,7 +48,7 @@ signals:
 protected:
   bool eventFilter(QObject *obj, QEvent *event) override
   {
-    if (obj == qApp && event->type() == QEvent::ApplicationPaletteChange)
+    if (obj == qGuiApp && event->type() == QEvent::ApplicationPaletteChange)
       timer.start();
     return QObject::eventFilter(obj, event);
   }
