@@ -20,7 +20,9 @@
 **
 ****************************************************************************/
 
+#include <QFontMetricsF>
 #include <QObject>
+#include <QRectF>
 
 #include "axismapper.h"
 #include "structures.h"

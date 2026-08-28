@@ -1,6 +1,9 @@
 #include "highlighter.h"
 #include "information.h"
 
+#include <QGuiApplication>
+#include <QStyleHints>
+
 #include <zecalculator/zecalculator.h>
 
 Highlighter::Highlighter(QObject* parent): QSyntaxHighlighter(parent) {
