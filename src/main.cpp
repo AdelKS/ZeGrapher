@@ -22,12 +22,16 @@
 #include "information.h"
 #include "structures.h"
 
-#include <QGuiApplication>
 #include <QCommandLineParser>
 #include <QFontDatabase>
+#include <QGuiApplication>
+#include <QIcon>
 #include <QLoggingCategory>
 #include <QObject>
 #include <QQmlApplicationEngine>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QTranslator>
 
 
 int main(int argc, char *argv[])

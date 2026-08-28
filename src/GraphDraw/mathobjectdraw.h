@@ -21,7 +21,10 @@
 #ifndef GRAPHDRAW_H
 #define GRAPHDRAW_H
 
-#include <QWidget>
+#include <QBrush>
+#include <QPainter>
+#include <QPen>
+#include <QPolygonF>
 
 #include "Calculus/sampler.h"
 #include "GraphDraw/viewmapper.h"

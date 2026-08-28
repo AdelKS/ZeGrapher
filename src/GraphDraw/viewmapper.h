@@ -22,8 +22,8 @@
 
 #include <QObject>
 #include <QPair>
+#include <QPointF>
 #include <QRectF>
-#include <QWidget>
 
 #include "axismapper.h"
 #include "structures.h"

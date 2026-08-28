@@ -22,10 +22,15 @@
 
 #include "zecalculator/parsing/types.h"
 #include <cfloat>
-#include <QtWidgets>
 #include <glaze/yaml.hpp>
 
+#include <QDir>
+#include <QFileInfo>
+#include <QHash>
+#include <QLocale>
 #include <QMetaType>
+#include <QPointF>
+#include <QSizeF>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #define NORMAL 0
