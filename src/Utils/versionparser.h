@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QRegularExpression>
 #include <QString>
 
@@ -7,7 +9,7 @@
 /// @brief tries to parse the input string as vXX.YY.ZZ-rWWWWW (where X, Y, Z and W are digits and '-rWWWWW' is optional)
 /// @returns if successful, returns an array of small integers [XX, YY, ZZ, WWWW] (WWWW = 0 if it wasn't there)
 /// @note this helps in lexicographical comparison
-std::optional<std::array<ushort, 4>> parse_version_string(QString version)
+inline std::optional<std::array<ushort, 4>> parse_version_string(QString version)
 {
   static const QRegularExpression ver_regex = QRegularExpression(R"(v?(\d+)\.(\d+)\.(\d+)(-r\d+)?)");
 
