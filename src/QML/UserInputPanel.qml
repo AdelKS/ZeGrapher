@@ -120,6 +120,11 @@ Item {
         //: title of the tab that holds the settings of the app, keep it short
         text: qsTr("App")
       }
+
+      ZeTabButton {
+        //: title of the tab that tells what the app is, keep it short
+        text: qsTr("About")
+      }
     }
 
     SwipeView {
@@ -149,6 +154,11 @@ Item {
 
       AppSettings {
         id: appSettings
+        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+      }
+
+      About {
+        id: aboutTab
         globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
       }
     }

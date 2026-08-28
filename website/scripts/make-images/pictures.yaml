@@ -165,4 +165,4 @@ captures:
     images:
       - output: website/content/{lang}/images/app-tab.png
         rect: 781x495+112+386
-        frame: the App tab, from Language down to the update button
+        frame: "the App tab: language, font, syntax coloring"
