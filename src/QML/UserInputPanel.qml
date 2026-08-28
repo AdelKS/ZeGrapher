@@ -104,7 +104,8 @@ Item {
 
       onCurrentIndexChanged: swipeView.setCurrentIndex(currentIndex)
 
-      implicitWidth: mathTabButton.implicitWidth + graphTabButton.implicitWidth + appTabButton.implicitWidth
+      implicitWidth: mathTabButton.implicitWidth + gridTabButton.implicitWidth
+                     + graphTabButton.implicitWidth + appTabButton.implicitWidth
 
       onImplicitWidthChanged: {
         console.log("UserInputPanel: TabBar: implicitWidth: ", implicitWidth);
