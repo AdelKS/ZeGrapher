@@ -21,6 +21,7 @@
 #include "MathObjects/datasheet.h"
 #include "Utils/yaml.h"
 
+#include <QFile>
 #include <QSaveFile>
 
 namespace zg {
