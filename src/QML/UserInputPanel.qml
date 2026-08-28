@@ -104,7 +104,9 @@ Item {
 
       onCurrentIndexChanged: swipeView.setCurrentIndex(currentIndex)
 
-      implicitWidth: mathTabButton.implicitWidth + graphTabButton.implicitWidth + appTabButton.implicitWidth
+      implicitWidth: mathTabButton.implicitWidth + gridTabButton.implicitWidth
+                     + graphTabButton.implicitWidth + appTabButton.implicitWidth
+                     + aboutTabButton.implicitWidth
 
       onImplicitWidthChanged: {
         console.log("UserInputPanel: TabBar: implicitWidth: ", implicitWidth);
@@ -131,6 +133,12 @@ Item {
         //: title of the tab that holds the settings of the app, keep it short
         text: qsTr("App")
       }
+
+      ZeTabButton {
+        id: aboutTabButton
+        //: title of the tab that tells what the app is, keep it short
+        text: qsTr("About")
+      }
     }
 
     SwipeView {
@@ -139,7 +147,9 @@ Item {
       Layout.fillWidth: true
       Layout.fillHeight: true
 
-      implicitWidth: Math.max(mathObjectsTab.implicitWidth, gridSettings.implicitWidth, graphSettingsTab.implicitWidth, appSettings.implicitWidth)
+      implicitWidth: Math.max(mathObjectsTab.implicitWidth, gridSettings.implicitWidth,
+                              graphSettingsTab.implicitWidth, appSettings.implicitWidth,
+                              aboutTab.implicitWidth)
 
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 
@@ -166,6 +176,11 @@ Item {
 
       AppSettings {
         id: appSettings
+        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+      }
+
+      About {
+        id: aboutTab
         globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
       }
     }
