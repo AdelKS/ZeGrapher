@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// The grid and axis settings, in the panel's Grid tab
 
 import QtQuick
 import QtQuick.Layouts

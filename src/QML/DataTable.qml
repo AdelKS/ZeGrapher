@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// A table of data, with a header per column and per row
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
 
