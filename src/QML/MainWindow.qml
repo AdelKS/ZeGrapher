@@ -438,7 +438,16 @@ ApplicationWindow {
     }
   }
 
+  WhatsNewDialog {
+    id: whatsNewDialog
+  }
+
   Component.onCompleted: {
     Information.graphSettings.screenChanged(win);
+
+    // the settings file holds the version that ran last, and the app writes
+    // it on close, so the dialog opens once per update
+    if (whatsNewDialog.entries.length !== 0)
+      whatsNewDialog.open();
   }
 }
