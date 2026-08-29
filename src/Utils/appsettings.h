@@ -52,8 +52,6 @@ public:
 
   explicit ZeAppSettings(QObject* parent = nullptr): QObject(parent) {}
 
-  void setDefaultFont(QFont);
-
   Language language = English;
   QFont font;
   QSize windowSize = defaultWindowSize;

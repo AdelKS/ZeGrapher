@@ -29,7 +29,6 @@
 #include <QLoggingCategory>
 #include <QObject>
 #include <QQmlApplicationEngine>
-#include <QSettings>
 #include <QStandardPaths>
 #include <QTranslator>
 
@@ -96,20 +95,6 @@ int main(int argc, char *argv[])
 
     auto* fibo = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
     fibo->setEquation("u(n) = a ; a ; u(n-2) + u(n-1)");
-  }
-
-  QSettings settings;
-
-  settings.beginGroup("app");
-  settings.beginGroup("font");
-
-  if (settings.contains("family") && settings.contains("size"))
-  {
-    QFont font;
-    font.setPointSizeF(settings.value("size").toDouble());
-    font.setFamily(settings.value("family").toString());
-    font.setStyleStrategy(QFont::PreferAntialias);
-    a.setFont(font);
   }
 
   QTranslator translator;

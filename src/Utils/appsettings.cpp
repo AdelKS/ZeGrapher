@@ -33,14 +33,6 @@ void ZeAppSettings::setFont(QFont font)
   }
 }
 
-void ZeAppSettings::setDefaultFont(QFont f)
-{
-  if (font == defaultFont)
-    setFont(f);
-
-  defaultFont = f;
-}
-
 std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
 {
   using zg::yml::not_default;
