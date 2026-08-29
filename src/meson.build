@@ -20,7 +20,6 @@ source_files = [
   'GraphDraw/gridcalculator.cpp',
   'GraphDraw/interactivegraph.cpp',
   'GraphDraw/mathobjectdraw.cpp',
-  'GraphDraw/subgraph.cpp',
   'GraphDraw/viewmapper.cpp',
   'information.cpp',
   'MathObjects/BuildingBlocks/base.cpp',
@@ -54,7 +53,6 @@ moc_header_files = [
   'Calculus/polynomialregression.h',
   'Calculus/regression.h',
   'GraphDraw/gridcalculator.h',
-  'GraphDraw/subgraph.h',
   'Utils/palettewatcher.h',
 ]
 
