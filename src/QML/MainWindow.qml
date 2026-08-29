@@ -489,7 +489,17 @@ ApplicationWindow {
     }
   }
 
+  WhatsNewDialog {
+    id: whatsNewDialog
+  }
+
   Component.onCompleted: {
     Information.graphSettings.screenChanged(win);
+
+    // the workspace of the next run carries this version, so the dialog opens
+    // one time per update. A run that opens a document the reader named shows
+    // nothing: that reader came for the document
+    if (!Information.startedOnDocuments && whatsNewDialog.entries.length !== 0)
+      whatsNewDialog.open();
   }
 }
