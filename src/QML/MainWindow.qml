@@ -402,7 +402,7 @@ ApplicationWindow {
   }
 
   RectangularShadow {
-    // over the graph, under the pane it belongs to and under the panel
+    // drawn over the graph, under the pane it belongs to, and under the panel
     z: 39
     anchors.fill: docPane
     radius: docPane.radius
@@ -413,8 +413,8 @@ ApplicationWindow {
     opacity: docPane.width > 0 ? Math.max(0, 1 + (docPane.x - win.docsEdge) / docPane.width) : 1
   }
 
-  /// @brief the right edge of the panel, folded away or not: where the
-  ///        documentation comes out of
+  /// @brief the x of the right edge of the panel, whether the panel is folded
+  ///        away or not. The documentation pane unfolds from there
   readonly property real docsEdge: drawer.x + drawer.width
 
   DocPane {
@@ -425,9 +425,9 @@ ApplicationWindow {
     height: win.height
     width: Math.min(700, win.width - win.docsEdge - 15)
 
-    // its button sits under the button of the panel, and rides the edge of the
-    // pane the same way. The panel is drawn over it, so it comes out from
-    // behind the panel as the pane unfolds
+    // its button sits under the button of the panel, and follows the edge of
+    // the pane the same way. The panel is drawn over it, so the button appears
+    // from behind the panel as the pane unfolds
     buttonTopMargin: drawer_button.anchors.topMargin + drawer_button.height + 8
 
     states: [
@@ -489,7 +489,17 @@ ApplicationWindow {
     }
   }
 
+  WhatsNewDialog {
+    id: whatsNewDialog
+  }
+
   Component.onCompleted: {
     Information.graphSettings.screenChanged(win);
+
+    // the document of the next run carries this version, so the dialog opens
+    // once per update. A run that was given a document on the command line
+    // shows nothing: the reader came for that document
+    if (!Information.startedOnDocuments && whatsNewDialog.entries.length !== 0)
+      whatsNewDialog.open();
   }
 }
