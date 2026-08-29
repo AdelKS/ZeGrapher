@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// The zoom buttons and the zoom value, in a bar that floats over the graph
 
 import QtQuick
 import QtQuick.Layouts

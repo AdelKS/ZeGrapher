@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// One constant: the name it is known by, its value, and the animation that sweeps it
 
 import QtQuick
 import QtQuick.Layouts

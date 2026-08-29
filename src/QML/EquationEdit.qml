@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// One equation, as one line edit that holds 'f(x) = ...'
 
 import QtQuick
 
