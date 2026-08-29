@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// The settings of the app itself, under the App tab of the panel
 
 import QtQuick
 import QtQuick.Layouts

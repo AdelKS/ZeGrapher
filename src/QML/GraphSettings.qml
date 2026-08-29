@@ -1,4 +1,4 @@
-// A line edit where the user enters an expression that evaluates to a value
+// The settings of the graph, under the Graph tab of the panel
 
 import QtQuick
 import QtQuick.Layouts
