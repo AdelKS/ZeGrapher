@@ -93,6 +93,7 @@ qml_files = [
   'QML/ParametricEdit.qml',
   'QML/RangeAdjust.qml',
   'QML/ReleaseNotes.qml',
+  'QML/ReleaseNotesDialog.qml',
   'QML/SamplingEdit.qml',
   'QML/Separator.qml',
   'QML/TextTumbler.qml',
