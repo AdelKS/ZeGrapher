@@ -95,6 +95,7 @@ qml_files = [
   'QML/TextTumbler.qml',
   'QML/UserInputPanel.qml',
   'QML/ValueEdit.qml',
+  'QML/WhatsNewDialog.qml',
   'QML/ZcExprEdit.qml',
   'QML/ZeCheckBox.qml',
   'QML/ZeDoubleSpinBox.qml',

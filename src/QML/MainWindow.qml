@@ -489,7 +489,17 @@ ApplicationWindow {
     }
   }
 
+  WhatsNewDialog {
+    id: whatsNewDialog
+  }
+
   Component.onCompleted: {
     Information.graphSettings.screenChanged(win);
+
+    // the document of the next run carries this version, so the dialog opens
+    // once per update. A run that was given a document on the command line
+    // shows nothing: the reader came for that document
+    if (!Information.startedOnDocuments && whatsNewDialog.entries.length !== 0)
+      whatsNewDialog.open();
   }
 }
