@@ -150,32 +150,33 @@ Rectangle {
     Component {
       id: asText
 
-      TextArea {
+      // LinkLabel takes no padding, so the space around the text is set by the
+      // position of the label. A heading is alone in its block, so the space
+      // around a heading is set here too
+      Item {
+        id: textBlock
+
         property var modelData
 
-        // a heading is alone in its block, so the space around it is set here
         readonly property bool heading: modelData ? modelData.anchor.length !== 0 : false
+        readonly property real sideMargin: heading ? root.headingMargin : root.contentMargin
 
-        readOnly: true
-        selectByMouse: true
-        background: null
-        font: Information.appSettings.font
-        textFormat: TextEdit.MarkdownText
-        wrapMode: Text.WordWrap
-        color: myPalette.text
-        topPadding: heading ? 24 : 0
-        bottomPadding: heading ? 8 : 0
-        leftPadding: heading ? root.headingMargin : root.contentMargin
-        rightPadding: heading ? root.headingMargin : root.contentMargin
+        implicitHeight: label.y + label.implicitHeight + (heading ? 8 : 0)
 
-        text: modelData ? modelData.text : ""
+        LinkLabel {
+          id: label
 
-        onLinkActivated: (link) => root.follow(link)
+          x: textBlock.sideMargin
+          y: textBlock.heading ? 24 : 0
+          width: textBlock.width - 2 * textBlock.sideMargin
 
-        MouseArea {
-          anchors.fill: parent
-          acceptedButtons: Qt.NoButton
-          cursorShape: parent.hoveredLink.length !== 0 ? Qt.PointingHandCursor : Qt.IBeamCursor
+          markdown: textBlock.modelData ? textBlock.modelData.text : ""
+          selectByMouse: true
+          activeFocusOnPress: true
+          font: Information.appSettings.font
+          color: myPalette.text
+
+          onLinkActivated: (link) => root.follow(link)
         }
       }
     }
