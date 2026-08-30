@@ -77,6 +77,7 @@ qml_files = [
   'QML/ImageTumbler.qml',
   'QML/InteractiveGraphView.qml',
   'QML/LineEdit.qml',
+  'QML/LinkLabel.qml',
   'QML/ListViewItem.qml',
   'QML/MainWindow.qml',
   'QML/MathObjectInput.qml',
