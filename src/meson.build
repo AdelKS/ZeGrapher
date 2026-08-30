@@ -131,6 +131,7 @@ qmlcpp_files = [
   'Utils/plotstyle.h',
   'Utils/sampling.h',
   'Utils/state.h',
+  'Utils/textdocumenttools.h',
   'Utils/themedcolor.h',
   'Utils/updatecheck.h',
 ]
