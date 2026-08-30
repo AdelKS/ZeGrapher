@@ -170,6 +170,9 @@ Rectangle {
 
         onLinkActivated: (link) => root.follow(link)
 
+        Component.onCompleted: TextDocumentTools.setIndentWidth(textDocument,
+                                                                ZeStyle.listIndent)
+
         MouseArea {
           anchors.fill: parent
           acceptedButtons: Qt.NoButton
