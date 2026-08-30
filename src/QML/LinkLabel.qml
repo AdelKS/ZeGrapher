@@ -1,5 +1,8 @@
 // A block of markdown. Its links have the color of a valid expression, and
 // change color under the pointer.
+// It is drawn in a read-only TextArea and not in a Label, because a Label draws
+// with Text, which has no QTextDocument. The indent width of a markdown list is
+// a setting of that document.
 
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
@@ -49,6 +52,9 @@ TextArea {
           '<a href="' + url + '" style="color:'
           + (url === root.pointedLink ? ZeStyle.hoveredLinkColor : ZeStyle.linkColor)
           + '">' + label + '</a>')
+
+  Component.onCompleted: TextDocumentTools.setIndentWidth(root.textDocument,
+                                                          ZeStyle.listIndent)
 
   HoverHandler {
     id: pointer

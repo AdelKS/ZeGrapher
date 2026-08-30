@@ -10,6 +10,9 @@ QtObject {
   ///        in milliseconds
   readonly property int tooltipDelay: 600
 
+  /// @brief the width of one level of indent in a markdown list, in pixels
+  readonly property real listIndent: 14
+
   /// @brief the color of a link, the same color as a valid expression
   readonly property color linkColor: Information.appSettings.validSyntax.current
 
