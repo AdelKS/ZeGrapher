@@ -1,5 +1,5 @@
 project('ZeGrapher', 'cpp',
-    version : '4.0.0_beta3',
+    version : '4.0.0_rc0-dev',
     default_options : [
         'cpp_std=c++23',
         'buildtype=release',
