@@ -45,6 +45,7 @@ source_files = [
   'Utils/sampledcurve.cpp',
   'Utils/sampling.cpp',
   'Utils/state.cpp',
+  'Utils/textdocumenttools.cpp',
   'Utils/themedcolor.cpp',
   'Utils/updatecheck.cpp',
   'Utils/zc-utils.cpp',
@@ -75,6 +76,7 @@ qml_files = [
   'QML/ImageTumbler.qml',
   'QML/InteractiveGraphView.qml',
   'QML/LineEdit.qml',
+  'QML/LinkLabel.qml',
   'QML/ListViewItem.qml',
   'QML/MainWindow.qml',
   'QML/MathObjectInput.qml',
@@ -134,6 +136,7 @@ qmlcpp_files = [
   'Utils/plotstyle.h',
   'Utils/sampling.h',
   'Utils/state.h',
+  'Utils/textdocumenttools.h',
   'Utils/themedcolor.h',
   'Utils/updatecheck.h',
 ]

@@ -6,6 +6,15 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+  /// @brief the link color, the same as a valid expression's
+  readonly property color linkColor: themed(Information.appSettings.validSyntax)
+
+  /// @brief the color of a link under the pointer
+  // Qt.lighter on a dark window, and Qt.darker on a light one. One function for
+  // both themes washes the link out on one of the two
+  readonly property color hoveredLinkColor: dark ? Qt.lighter(linkColor, 1.4)
+                                                 : Qt.darker(linkColor, 1.4)
+
   readonly property SystemPalette palette: SystemPalette { colorGroup: SystemPalette.Active }
 
   /// @brief true when the app uses its dark theme. The FluentWinUI3 style is
