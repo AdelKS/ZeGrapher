@@ -29,7 +29,6 @@
 #include <QLoggingCategory>
 #include <QObject>
 #include <QQmlApplicationEngine>
-#include <QStandardPaths>
 #include <QTranslator>
 
 
@@ -76,26 +75,9 @@ int main(int argc, char *argv[])
   parser.addPositionalArgument(QObject::tr("file"), QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
   parser.process(a);
 
-  const auto positionalArguments = parser.positionalArguments();
-  const QString lastWorkspace = QStandardPaths::locate(QStandardPaths::AppConfigLocation,
-                                                       "last-workbook.zg");
-  if (not positionalArguments.empty())
-    for (QString& document: parser.positionalArguments())
-      info.importYaml(QUrl::fromLocalFile(document));
-  else if (not lastWorkspace.isEmpty())
-      info.importYaml(QUrl::fromLocalFile(lastWorkspace));
-  else
-  {
-    auto* cst = zg::mathWorld.addMathObject(zg::MathObject::CONSTANT)->getConstant();
-    cst->set_value(2);
-    cst->setName("a");
-
-    auto* cos = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
-    cos->setEquation("f(x) = a * cos(x)");
-
-    auto* fibo = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
-    fibo->setEquation("u(n) = a ; a ; u(n-2) + u(n-1)");
-  }
+  if (not parser.positionalArguments().isEmpty())
+    info.openStartupDocuments(parser.positionalArguments());
+  else info.loadExampleWorkspace();
 
   QTranslator translator;
   QQmlApplicationEngine engine;

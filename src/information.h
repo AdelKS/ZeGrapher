@@ -58,6 +58,12 @@ class Information: public QObject
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
   Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
+  /// @brief version of ZeGrapher that wrote the workspace this run restored, if it restored any
+  Q_PROPERTY(QString workspaceVersion MEMBER workspaceVersion CONSTANT)
+
+  /// @brief whether this run started with document(s) given as arguments
+  Q_PROPERTY(bool startedOnDocuments MEMBER startedOnDocuments CONSTANT)
+
 public:
   Information(QObject* parent = nullptr);
   ~Information();
@@ -80,9 +86,24 @@ public slots:
   void importYaml(QUrl filename);
 
 public:
+  /// @brief opens these documents, assumed during startup of the app (as arguments)
+  void openStartupDocuments(const QStringList& documents);
+
+  /// @brief writes the workspace that the next run restores
+  void saveWorkspace();
+
+  /// @brief the objects that a first start shows
+  void loadExampleWorkspace();
+
+public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
   ZeGraphSettings graphSettings;
+  QString workspaceVersion;
+  bool startedOnDocuments = false;
+
+  /// @brief the file that saveWorkspace() writes, under AppConfigLocation
+  static constexpr auto workspaceName = "last-workbook.zg";
 
   struct POD {
     /// @brief version of ZeGrapher that wrote the document, always serialized
@@ -95,6 +116,14 @@ public:
   };
 
 protected:
+  /// @brief reads the workspace of the last run and sets workspaceVersion
+  /// @returns false when no run wrote one yet
+  bool restoreWorkspace();
+
+  /// @brief the version of the document that importYaml() read last, empty when
+  ///        the file carried none
+  QString lastReadVersion;
+
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
 
