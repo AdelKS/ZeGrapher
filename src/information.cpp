@@ -33,9 +33,55 @@ Information::Information(QObject* parent):
 
 Information::~Information()
 {
-  QString lastWorkspaceFolder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-  if (not lastWorkspaceFolder.isEmpty())
-    exportYaml(QUrl::fromLocalFile(lastWorkspaceFolder + "/last-workbook.zg"));
+  saveLastDocument();
+}
+
+void Information::openStartupDocuments(const QStringList& documents)
+{
+  if (documents.isEmpty())
+    return;
+
+  for (const QString& document: documents)
+    importYaml(QUrl::fromLocalFile(document));
+
+  startedOnDocuments = true;
+}
+
+void Information::saveLastDocument()
+{
+  const QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+  if (not folder.isEmpty())
+    exportYaml(QUrl::fromLocalFile(folder + '/' + lastDocumentName));
+}
+
+bool Information::restoreLastDocument()
+{
+  QString path = QStandardPaths::locate(QStandardPaths::AppConfigLocation, lastDocumentName);
+
+  // ZeGrapher 4.0.0_beta3 and older wrote the document under this name
+  if (path.isEmpty())
+    path = QStandardPaths::locate(QStandardPaths::AppConfigLocation, "last-workbook.zg");
+
+  if (path.isEmpty())
+    return false;
+
+  importYaml(QUrl::fromLocalFile(path));
+  lastDocumentVersion = lastReadVersion;
+
+  return true;
+}
+
+void Information::loadExampleDocument()
+{
+  auto* cst = zg::mathWorld.addMathObject(zg::MathObject::CONSTANT)->getConstant();
+  cst->set_value(2);
+  cst->setName("a");
+
+  auto* cos = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+  cos->setEquation("f(x) = a * cos(x)");
+
+  auto* fibo = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+  fibo->setEquation("u(n) = a ; a ; u(n-2) + u(n-1)");
 }
 
 IOError Information::popIoError()
@@ -177,6 +223,8 @@ void Information::importYaml(QUrl filename)
                  .details = QString::fromStdString(glz::format_error(read_error, content))});
 
   else {
+    lastReadVersion = pod.zegrapher ? QString::fromStdString(*pod.zegrapher) : QString();
+
     if (pod.app) appSettings.importPod(std::move(*pod.app));
     if (pod.graph) graphSettings.importPod(std::move(*pod.graph));
     if (pod.math_objects) zg::mathWorld.importPod(std::move(*pod.math_objects));

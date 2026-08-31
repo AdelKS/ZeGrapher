@@ -58,6 +58,14 @@ class Information: public QObject
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
   Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
+  /// @brief the version of ZeGrapher that wrote the document this run
+  ///        restored, empty when this run restored none
+  Q_PROPERTY(QString lastDocumentVersion MEMBER lastDocumentVersion CONSTANT)
+
+  /// @brief true when a document was given on the command line, so this run
+  ///        restored no document of its own
+  Q_PROPERTY(bool startedOnDocuments MEMBER startedOnDocuments CONSTANT)
+
 public:
   Information(QObject* parent = nullptr);
   ~Information();
@@ -80,9 +88,28 @@ public slots:
   void importYaml(QUrl filename);
 
 public:
+  /// @brief opens the documents given on the command line, at startup
+  void openStartupDocuments(const QStringList& documents);
+
+  /// @brief writes the document that the next run opens again
+  void saveLastDocument();
+
+  /// @brief reads the document of the last run, and sets lastDocumentVersion
+  /// @returns false when no run has written one yet
+  bool restoreLastDocument();
+
+  /// @brief loads the objects that a first start shows
+  void loadExampleDocument();
+
+public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
   ZeGraphSettings graphSettings;
+  QString lastDocumentVersion;
+  bool startedOnDocuments = false;
+
+  /// @brief the name of the file saveLastDocument() writes, under AppConfigLocation
+  static constexpr auto lastDocumentName = "last-document.zg";
 
   struct POD {
     /// @brief version of ZeGrapher that wrote the document, always serialized
@@ -95,6 +122,10 @@ public:
   };
 
 protected:
+  /// @brief the version of the document importYaml() read last, empty when that
+  ///        file carried no version
+  QString lastReadVersion;
+
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
 
