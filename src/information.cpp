@@ -27,15 +27,61 @@
 #include <QStandardPaths>
 #include <glaze/yaml.hpp>
 
+namespace {
+
+/// @brief the document of the last run, empty when no run wrote one
+QString lastDocumentPath()
+{
+  QString path = QStandardPaths::locate(QStandardPaths::AppConfigLocation,
+                                        Information::lastDocumentName);
+
+  // ZeGrapher 4.0.0_beta3 and older wrote the document under this name
+  if (path.isEmpty())
+    path = QStandardPaths::locate(QStandardPaths::AppConfigLocation, "last-workbook.zg");
+
+  return path;
+}
+
+}
+
 Information::Information(QObject* parent):
   QObject(parent), appSettings(this), graphSettings(this)
 {}
 
 Information::~Information()
 {
-  QString lastWorkspaceFolder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-  if (not lastWorkspaceFolder.isEmpty())
-    exportYaml(QUrl::fromLocalFile(lastWorkspaceFolder + "/last-workbook.zg"));
+  saveLastDocument();
+}
+
+void Information::saveLastDocument()
+{
+  const QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+  if (not folder.isEmpty())
+    exportYaml(QUrl::fromLocalFile(folder + '/' + lastDocumentName));
+}
+
+bool Information::restoreLastDocument()
+{
+  const QString path = lastDocumentPath();
+  if (path.isEmpty())
+    return false;
+
+  importYaml(QUrl::fromLocalFile(path));
+
+  return true;
+}
+
+void Information::loadExampleDocument()
+{
+  auto* cst = zg::mathWorld.addMathObject(zg::MathObject::CONSTANT)->getConstant();
+  cst->set_value(2);
+  cst->setName("a");
+
+  auto* cos = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+  cos->setEquation("f(x) = a * cos(x)");
+
+  auto* fibo = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+  fibo->setEquation("u(n) = a ; a ; u(n-2) + u(n-1)");
 }
 
 IOError Information::popIoError()

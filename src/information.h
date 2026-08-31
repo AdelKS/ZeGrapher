@@ -80,9 +80,20 @@ public slots:
   void importYaml(QUrl filename);
 
 public:
+  /// @brief reads the document of the last run
+  /// @returns false when no run has written one yet
+  bool restoreLastDocument();
+
+  /// @brief loads the objects that a first start shows
+  void loadExampleDocument();
+
+public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
   ZeGraphSettings graphSettings;
+
+  /// @brief the name of the file saveLastDocument() writes, under AppConfigLocation
+  static constexpr auto lastDocumentName = "last-document.zg";
 
   struct POD {
     /// @brief version of ZeGrapher that wrote the document, always serialized
@@ -95,6 +106,9 @@ public:
   };
 
 protected:
+  /// @brief writes the document that the next run opens again
+  void saveLastDocument();
+
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
 
