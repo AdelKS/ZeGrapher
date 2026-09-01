@@ -13,3 +13,9 @@ website_qrc = configure_file(
     'FILES': run_command(python, content_py, 'qrc', check: true).stdout().strip(),
   },
 )
+
+# BuildInfo gives QML the GitHub repository that build.yaml names, so no other
+# file writes the address
+repository_url = run_command(python, content_py, 'repository', check: true).stdout().strip()
+
+add_project_arguments('-D REPOSITORY_URL="' + repository_url + '"', language: 'cpp')

@@ -3,6 +3,7 @@
 
     content.py qrc          prints the <file> entries of the website.qrc that
                             website/meson.build writes
+    content.py repository   prints the address of the GitHub repository
 
 website/content/ holds one folder per language. English is the source: a
 language that leaves out a file or a picture takes the English one. The build
@@ -134,6 +135,7 @@ def qrc_entries() -> list[str]:
 def main() -> int:
     commands = {
         "qrc": lambda: "\n".join(qrc_entries()),
+        "repository": lambda: repository_url(read_conf()),
     }
     if len(sys.argv) != 2 or sys.argv[1] not in commands:
         sys.exit(__doc__)
