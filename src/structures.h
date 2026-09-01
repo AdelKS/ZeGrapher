@@ -61,6 +61,24 @@ inline QString langToShortString(QLocale::Language lang)
   return QLocale::languageToCode(lang);
 }
 
+/// @brief the whole content of a file, empty when the file cannot be read
+inline QString readTextFile(const QString& path)
+{
+  QFile file(path);
+  if (not file.open(QIODevice::ReadOnly | QIODevice::Text))
+    return {};
+
+  return QString::fromUtf8(file.readAll());
+}
+
+/// @brief ':/website/<lang>', or ':/website/en' when the build embedded no such folder
+/// @note website/meson.build embeds the manual, which the app and the site share
+inline QString websiteFolder(QLocale::Language lang)
+{
+  const QString folder = ":/website/" + langToShortString(lang);
+  return QDir(folder).exists() ? folder : ":/website/en";
+}
+
 /// @brief every language the app can show, English first
 /// @note reads the translations the build embedded, so adding a language is
 ///       adding its .ts file: nothing here lists them
