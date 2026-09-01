@@ -1,21 +1,29 @@
 """The releases of ZeGrapher, out of appdata/release-notes.md.
 
-appdata/generate-metainfo reads them, and so does the step of the release
-workflow that writes the notes of a GitHub release. Both check the file the same
-way, so that check lives here.
+    releases.py [repository root] (--summary | --start-tag)
+
+--summary prints what the notes file writes about the release under work, which
+is the body that the workflow gives to 'gh release create'. GitHub writes the
+list of changes under it.
+
+--start-tag prints the release that those changes are counted from, and nothing
+when the heading of the release under work names no span.
+
+appdata/generate-metainfo reads the same releases, and both check the file the
+same way, so the check lives here.
 
 A heading of the notes file names one release, as '## v4.0.0 (2026-09-01)', or a
 span of releases, as '## v3.1.1 - v4.0.0 (2026-09-01)'. The span holds every
-release after '<from>', up to '<to>'. '<from>' stays out of the span: it is the
-release that the span counts its changes from. Every release of a span carries
-the text under that heading, and the day in the heading is the day that '<to>'
-went out.
+release after '<from>', up to '<to>'. '<from>' itself stays out of the span: it
+is the release the changes are counted from. Every release of a span carries the
+text under that heading, and the date in the heading is the day '<to>' went out.
 
-The headings come newest first, and no two of them hold the same release. A
-heading can name a release that has no tag yet. The tree between two releases
-carries the version of meson.build, and pending_tag() reads it.
+The headings run newest first, and no two of them hold the same release. A
+heading can name a release that has no tag yet. Between two releases the tree
+carries the version written in meson.build, and pending_tag() reads it.
 """
 
+import argparse
 import re
 import sys
 from dataclasses import dataclass
@@ -24,11 +32,11 @@ from pathlib import Path
 NOTES_NAME = "release-notes.md"
 
 # 'v4.0.0' names a release, 'v4.0.0_beta2' a pre-release of it, and 'v3.1' a
-# release that leaves its patch number out
+# release written without its patch number
 TAG = re.compile(r"^v(?P<major>[0-9]+)\.(?P<minor>[0-9]+)(?:\.(?P<patch>[0-9]+))?"
                  r"(?:_(?P<stage>alpha|beta|rc)(?P<number>[0-9]+))?$")
 
-# the stages come in this order, and a release comes after all three
+# the stages in order. A final release comes after all three
 STAGES = {"alpha": 0, "beta": 1, "rc": 2}
 FINAL_STAGE = 3
 
@@ -71,6 +79,9 @@ class Span:
 
     after: tuple
     """the key of '<from>', the release that the span counts its changes from"""
+
+    after_tag: str
+    """'<from>' the way the heading writes it"""
 
     newest: tuple
     """the key of '<to>', the newest release that the span holds"""
@@ -128,9 +139,9 @@ def notes(root: Path) -> list[Span]:
                      f"tags of a span, such as "
                      f"'## v3.1.1 - v4.0.0 (2026-09-01)'")
 
-        span = Span(after=version_key(tags[0]), newest=version_key(tags[-1]),
-                    newest_tag=tags[-1], date=dated["date"],
-                    summary=body.strip())
+        span = Span(after=version_key(tags[0]), after_tag=tags[0],
+                    newest=version_key(tags[-1]), newest_tag=tags[-1],
+                    date=dated["date"], summary=body.strip())
 
         if span.after > span.newest:
             sys.exit(f"{path}: '## {heading}' opens on the newer tag. A span "
@@ -154,6 +165,22 @@ def summary_of(spans: list[Span], tag: str) -> str:
     key = version_key(tag)
 
     return next((span.summary for span in spans if span.covers(key)), "")
+
+
+def start_tag_of(spans: list[Span], tag: str) -> str:
+    """The release that the changes of one release are counted from.
+
+    GitHub counts the changes of a release from the release before it, which for
+    the one that closes a span is its own release candidate. A span names the
+    tag to count from, and this returns it.
+
+    A heading of one tag names no span, and this returns nothing: the release
+    before is then the right place to count from.
+    """
+    key = version_key(tag)
+    span = next((span for span in spans if span.covers(key)), None)
+
+    return "" if span is None or span.after == span.newest else span.after_tag
 
 
 def announced(root: Path) -> list[Release]:
@@ -188,3 +215,28 @@ def pending_tag(root: Path) -> str:
                  f"tag of a release")
 
     return tag
+
+
+def main() -> int:
+    """Print what the notes file writes about the release under work."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("root", nargs="?")
+    parser.add_argument("--summary", action="store_true")
+    parser.add_argument("--start-tag", action="store_true")
+    args, rest = parser.parse_known_args()
+
+    if rest or args.summary == args.start_tag:
+        sys.exit(__doc__)
+
+    root = Path(args.root).resolve() if args.root \
+        else Path(__file__).resolve().parent.parent
+
+    spans, tag = notes(root), pending_tag(root)
+
+    print(summary_of(spans, tag) if args.summary else start_tag_of(spans, tag))
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
