@@ -138,6 +138,20 @@ jobs:
             prerelease="--prerelease"
           fi
 
+          # gh release create makes the tag below, so releases.yaml still
+          # holds this version as the upcoming release
+          notes=$(python3 appdata/releases.py --summary)
+
+          # GitHub appends the list of changes since the previous release. An
+          # announcement covers a span of releases, and the list of a full
+          # release must cover the whole span: without this, it only lists the
+          # changes since its last release candidate
+          start_tag=$(python3 appdata/releases.py --start-tag)
+          notes_start=""
+          if [[ -n "$start_tag" ]]; then
+            notes_start="--notes-start-tag $start_tag"
+          fi
+
           files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
           gh release create "v$version" $files_list \
-          --title "v$version" $prerelease
+          --title "v$version" --notes "$notes" --generate-notes $notes_start $prerelease

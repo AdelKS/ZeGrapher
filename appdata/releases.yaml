@@ -15,7 +15,8 @@
 # show, one <release> per full release in 'releases'. It takes the text of the
 # announcement that ends on that release, or else the text of the changes
 # entry. The app shows every entry that holds a release up to its own version,
-# with an announcement above the changes entries of its span.
+# with an announcement above the changes entries of its span. The GitHub
+# release of a tag shows the announcement and the changes entry that hold it.
 
 releases:
   - tag: v4.0.0

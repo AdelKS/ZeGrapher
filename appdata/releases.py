@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 """The releases of ZeGrapher, out of appdata/releases.yaml.
 
-    releases.py (--version | --release-type | --yaml OUTPUT)
+    releases.py (--version | --summary | --start-tag | --release-type
+                 | --yaml OUTPUT)
 
 --version prints the version in meson.build, such as '4.0.0_rc0-dev'.
+
+--summary prints what the release file writes about the release under work: the
+announcement, then the changes entry. It is the body that the workflow gives to
+'gh release create'. GitHub writes the list of changes under it.
+
+--start-tag prints the release that those changes are counted from, and nothing
+when GitHub can count from the release before.
 
 --release-type prints what the version in meson.build is: 'dev' between two
 releases, 'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
@@ -211,6 +219,42 @@ def load() -> Releases:
                     changes=entries_of("changes", data["changes"]))
 
 
+def covering(entries: list[Entry], tag: str) -> Entry | None:
+    """The entry that holds the release of that tag, None when no entry does."""
+    key = version_key(tag)
+
+    return next((entry for entry in entries if entry.covers(key)), None)
+
+
+def summary_of(announcement: Entry | None, changes: Entry | None) -> str:
+    """The announcement, then the changes entry under a heading that names its
+    span."""
+    if announcement is None or not announcement.text:
+        return changes.text if changes else ""
+
+    if changes is None or not changes.text:
+        return announcement.text
+
+    return f"{announcement.text}\n\n### {changes.span()}\n\n{changes.text}"
+
+
+def start_tag_of(tag: str, announcement: Entry | None, changes: Entry | None) -> str:
+    """The release that GitHub counts the changes of that release from.
+
+    GitHub counts from the release before, which for a full release is its last
+    release candidate. A full release counts from the 'from' of its
+    announcement instead, and a pre-release from the 'from' of its changes
+    entry. Each one takes the other entry when its own is missing. An entry
+    without 'from' gives nothing, and GitHub counts from the release before.
+    """
+    if TAG.match(tag)["stage"] is None:
+        entry = announcement or changes
+    else:
+        entry = changes or announcement
+
+    return entry.after_tag if entry else ""
+
+
 def announced() -> list[Release]:
     """The releases that a software center shows, the newest one first.
 
@@ -288,6 +332,8 @@ def main() -> int:
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--version", action="store_true")
+    action.add_argument("--summary", action="store_true")
+    action.add_argument("--start-tag", action="store_true")
     action.add_argument("--release-type", action="store_true")
     action.add_argument("--yaml", metavar="OUTPUT")
     args = parser.parse_args()
@@ -298,6 +344,16 @@ def main() -> int:
         print(project_version())
     elif args.release_type:
         print(release_type(project_version()))
+    else:
+        tag = pending_tag()
+        found = load()
+        announcement = covering(found.announcements, tag)
+        changes = covering(found.changes, tag)
+
+        if args.summary:
+            print(summary_of(announcement, changes))
+        else:
+            print(start_tag_of(tag, announcement, changes))
 
     return 0
 
