@@ -35,6 +35,7 @@ endif
 add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', language : 'cpp')
 
 subdir('translations')
+subdir('website')
 subdir('src')
 subdir('icons')
 subdir('appdata')
