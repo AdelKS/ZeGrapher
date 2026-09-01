@@ -14,7 +14,8 @@
 # appdata/generate-metainfo gives the metainfo file, which software centers
 # show, one <release> per full release in 'releases'. It takes the text of the
 # announcement that ends on that release, or else the text of the changes
-# entry.
+# entry. The app shows every entry that holds a release up to its own version,
+# with an announcement above the changes entries of its span.
 
 releases:
   - tag: v4.0.0
