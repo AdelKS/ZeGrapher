@@ -85,9 +85,24 @@ jobs:
           fi
           echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
 
+          # the tag is created with the release below, so at this point
+          # release-notes.md still names this version as the release under work
+          notes=$(python3 appdata/releases.py --summary)
+
+          # GitHub writes the list of changes under those notes, and it counts
+          # them from the release before this one. A heading of release-notes.md
+          # can hold a span of releases, and the list then has to run over the
+          # whole span: without this, the release that closes a span counts from
+          # its own release candidate
+          start_tag=$(python3 appdata/releases.py --start-tag)
+          notes_start=""
+          if [[ -n "$start_tag" ]]; then
+            notes_start="--notes-start-tag $start_tag"
+          fi
+
           files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
           gh release create "v$version" $files_list \
-          --title "v$version" $prerelease
+          --title "v$version" --notes "$notes" --generate-notes $notes_start $prerelease
 
   deploy-website:
     needs: make-release
