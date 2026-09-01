@@ -131,6 +131,7 @@ qmlcpp_files = [
   'structures.h',
   'Utils/appsettings.h',
   'Utils/axissettings.h',
+  'Utils/buildinfo.h',
   'Utils/curvestyle.h',
   'Utils/documentation.h',
   'Utils/graphrange.h',
@@ -238,7 +239,7 @@ qml_mods = qt6.qml_module(
   qml_sources: qml_files,
   qml_singletons: qml_singleton_files,
   moc_headers: qmlcpp_files,
-  include_directories: qmlcpp_inc_dirs,
+  include_directories: qmlcpp_inc_dirs + [buildconfig_inc],
   dependencies: [qt6_dep],
   qmltyperegistrar_extra_arguments: ['--foreign-types=' + ','.join(qt6_foreign_metatypes)],
 )
@@ -258,7 +259,7 @@ glaze_dep = dependency('glaze', version: '>=7.7')
 executable('ZeGrapher',
   sources: ['main.cpp', source_files, compiled_resources, shaders_resources_cpp, moc_files, qml_mods,
             app_icon_windows],
-  include_directories: [inc] + qmlcpp_inc_dirs,
+  include_directories: [inc, buildconfig_inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, zecalculator_dep, glaze_dep],
   win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
                             # a console alongside it, no-op on other platforms.

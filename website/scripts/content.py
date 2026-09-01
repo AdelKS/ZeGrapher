@@ -3,6 +3,9 @@
 
     content.py qrc          prints the <file> entries of the website.qrc that
                             website/meson.build writes
+    content.py header       prints buildconfig.h, the C++ header of the site, of
+                            the GitHub repository and of the email address of
+                            the author
 
 website/content/ holds one folder per language. English is the source: a
 language that leaves out a file or a picture takes the English one. The build
@@ -118,6 +121,16 @@ def repository_url(conf: dict) -> str:
     return url
 
 
+def contact_address(conf: dict) -> str:
+    """The email address of the author, out of the 'contact' entry of 'footer: links'."""
+    link = (conf.get("footer") or {}).get("links", {}).get("contact")
+    url = link_url(link) if link else ""
+    if not url.startswith("mailto:"):
+        sys.exit(f"{CONF_FILE}: 'footer: links' names no 'contact' that starts "
+                 f"with 'mailto:', the entry that gives the email address")
+    return url.removeprefix("mailto:")
+
+
 def qrc_entries() -> list[str]:
     """The files of the site that the app embeds, under ':/website/<lang>/'.
 
@@ -139,9 +152,27 @@ def qrc_entries() -> list[str]:
     return entries
 
 
+def cpp_string(value: str) -> str:
+    """The C++ string literal that holds the value."""
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def header(conf: dict) -> str:
+    """buildconfig.h, the addresses of build.yaml as C++ macros."""
+    macros = {"HOMEPAGE_URL": homepage_url(conf),
+              "REPOSITORY_URL": repository_url(conf),
+              "CONTACT_ADDRESS": contact_address(conf)}
+    lines = ["// website/scripts/content.py writes this file out of "
+             "website/build-config/build.yaml",
+             "#pragma once"]
+    lines += [f"#define {name} {cpp_string(value)}" for name, value in macros.items()]
+    return "\n".join(lines)
+
+
 def main() -> int:
     commands = {
         "qrc": lambda: "\n".join(qrc_entries()),
+        "header": lambda: header(read_conf()),
     }
     if len(sys.argv) != 2 or sys.argv[1] not in commands:
         sys.exit(__doc__)
