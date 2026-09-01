@@ -65,3 +65,10 @@ inline std::optional<Version> parse_version_string(const QString& version)
 
   return parts;
 }
+
+/// @brief this build's version, nothing when SOFTWARE_VERSION isn't a version
+inline std::optional<Version> build_version()
+{
+  static const auto version = parse_version_string(SOFTWARE_VERSION);
+  return version;
+}

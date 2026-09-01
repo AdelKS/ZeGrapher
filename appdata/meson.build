@@ -2,6 +2,24 @@
 # read, from ZeGrapher.metainfo.xml.in, releases.yaml and the site's panels.
 # The repository holds none of its output.
 
+# appdata/releases.py checks releases.yaml and copies it to the build folder,
+# where the app embeds it and src/Utils/releasenotes.h reads it. meson runs the
+# check again when releases.yaml changes
+release_notes_yaml = configure_file(
+    input : 'releases.yaml',
+    output : 'releases.yaml',
+    command : [python, files('releases.py'), '--yaml', '@OUTPUT@'],
+)
+
+release_notes_qrc = configure_file(
+    input : qrc_template,
+    output : 'release-notes.qrc',
+    configuration : {
+        'PREFIX' : '/releases',
+        'FILES' : '<file alias="notes.yaml">' + release_notes_yaml.full_path() + '</file>',
+    },
+)
+
 if host_machine.system() == 'darwin' # macos
     install_data(app_icon_icns, install_dir : 'Contents/Resources')
     install_data('Info.plist', install_dir : 'Contents')

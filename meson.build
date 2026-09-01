@@ -45,8 +45,10 @@ python = import('python').find_installation(modules : ['yaml'])
 
 subdir('translations')
 subdir('website')
-# icons/ compiles the Windows resource that src/ links
+# icons/ lists the files that appdata/ installs, and compiles the Windows
+# resource that src/ links. src/ compiles the resource files that
+# translations/, website/ and appdata/ write
 subdir('icons')
-subdir('src')
 subdir('appdata')
+subdir('src')
 subdir('test')

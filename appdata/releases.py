@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """The releases of ZeGrapher, out of appdata/releases.yaml.
 
+    releases.py --yaml OUTPUT
+
+--yaml checks the release file and copies it to OUTPUT, which the app embeds.
+
 The grammar of a tag and the check of the release file live here, and every
 script that reads a version or a release goes through this file. The top of
 appdata/releases.yaml says what the file holds. Between two releases the tree
 carries the version written in meson.build, and pending_tag() reads it.
 """
 
+import argparse
 import re
 import sys
 from dataclasses import dataclass
@@ -260,3 +265,30 @@ def release_type(version: str) -> str:
                  f"or '4.0.0_rc1'")
 
     return match["stage"] or "full"
+
+
+def write_app_file(path: Path) -> None:
+    """Check the release file, and copy it to the path that the app embeds."""
+    load()
+    text = RELEASES.read_text(encoding="utf-8")
+
+    # skip identical writes: they still update the file's mtime, which reruns
+    # every step that reads it
+    if not path.is_file() or path.read_text(encoding="utf-8") != text:
+        path.write_text(text, encoding="utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    action = parser.add_mutually_exclusive_group(required=True)
+    action.add_argument("--yaml", metavar="OUTPUT")
+    args = parser.parse_args()
+
+    write_app_file(Path(args.yaml))
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

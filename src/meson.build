@@ -186,7 +186,7 @@ foreach qt6_mod: qt6_modules
 endforeach
 
 compiled_resources = qt6.compile_resources(
-  sources: files('../resources.qrc') + translations_qrc + website_qrc
+  sources: files('../resources.qrc') + translations_qrc + website_qrc + release_notes_qrc
 )
 
 # --- Qt RHI shader compilation -----------------------------------------------
