@@ -1,4 +1,7 @@
-![ZeGrapher logo with name](ZeGrapher_named_logo.svg)
+<h1>
+  <img src="icons/ZeGrapher.svg" alt="" height="44" align="middle">
+  ZeGrapher
+</h1>
 
 ![Build Status](https://github.com/adelks/zegrapher/actions/workflows/build-bundle-release-all.yml/badge.svg)
 

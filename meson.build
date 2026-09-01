@@ -43,5 +43,6 @@ python = import('python').find_installation()
 
 subdir('translations')
 subdir('src')
+subdir('icons')
 subdir('appdata')
 subdir('test')
