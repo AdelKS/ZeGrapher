@@ -1,6 +1,8 @@
 # appdata/generate-metainfo writes the metainfo file that a software centre
-# reads. The build writes it out of ZeGrapher.metainfo.xml.in, release-notes.md
-# and the panels of the site, and the repository holds none of what it writes.
+# reads. It builds that file from ZeGrapher.metainfo.xml.in, release-notes.md
+# and the panels of the site. The repository holds none of its output.
+
+release_notes_qrc = files('release-notes.qrc')
 
 if host_machine.system() == 'darwin' # macos
     install_data(app_icon_icns, install_dir : 'Contents/Resources')
@@ -26,8 +28,8 @@ else
     install_data('ZeGrapher.mime.xml', install_dir : get_option('datadir') / 'mime/packages', rename : 'ZeGrapher.xml')
     # https://specifications.freedesktop.org/shared-mime-info-spec/latest/
 
-    # a software centre reads this file, and macOS and Windows have none. The
-    # name of the installed file must be the <id> that the file holds
+    # a software centre reads this file, and macOS and Windows have no such
+    # centre. The installed file must be named after the <id> it holds
     python = find_program('python3')
 
     custom_target('metainfo',

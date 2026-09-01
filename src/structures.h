@@ -71,8 +71,10 @@ inline QString readTextFile(const QString& path)
   return QString::fromUtf8(file.readAll());
 }
 
-/// @brief ':/website/<lang>', or ':/website/en' when the build embedded no such folder
-/// @note website/meson.build embeds the manual, which the app and the site share
+/// @brief the embedded website folder of a language, ':/website/fr'. It falls
+///        back to ':/website/en' when the build embedded no such folder
+/// @note website/meson.build embeds the two files that the app and the site
+///       share: the manual and the donation text
 inline QString websiteFolder(QLocale::Language lang)
 {
   const QString folder = ":/website/" + langToShortString(lang);
@@ -80,8 +82,8 @@ inline QString websiteFolder(QLocale::Language lang)
 }
 
 /// @brief every language the app can show, English first
-/// @note reads the translations the build embedded, so adding a language is
-///       adding its .ts file: nothing here lists them
+/// @note the list is read from the translations the build embedded, so a new
+///       language is a new .ts file and nothing else
 inline const QList<QLocale::Language>& supportedLangs()
 {
   static const QList<QLocale::Language> langs = []
@@ -109,13 +111,13 @@ inline QLocale::Language systemLanguage()
   return supportedLangs().contains(lang) ? lang : QLocale::English;
 }
 
-/// @brief the name of a language in that language, "Français" for French
+/// @brief the name of a language written in that language, "Français" for French
 inline QString langToNativeName(QLocale::Language lang)
 {
-  // QLocale has no name for a bare language: it picks a territory, and the name
-  // of the locale it lands on can carry that territory. English comes out as
-  // "American English" and Spanish as "español de España". The languages below
-  // are the ones where it does.
+  // QLocale cannot name a language on its own: it picks a territory first, and
+  // the name of the locale it lands on can carry that territory. English comes
+  // out as "American English" and Spanish as "español de España". The two
+  // below are the languages where that happens.
   static const QHash<QLocale::Language, QString> withoutTerritory {
     {QLocale::English, "English"},
     {QLocale::Spanish, "Español"},
