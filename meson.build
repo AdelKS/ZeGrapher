@@ -36,7 +36,9 @@ add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', l
 
 subdir('translations')
 subdir('website')
-subdir('src')
+# icons/ names the files that appdata/ installs. src/ compiles the resource
+# files that translations/ and website/ write, and the one that appdata/ holds
 subdir('icons')
 subdir('appdata')
+subdir('src')
 subdir('test')

@@ -2,6 +2,8 @@
 # reads. The build writes it out of ZeGrapher.metainfo.xml.in, release-notes.md
 # and the panels of the site, and the repository holds none of what it writes.
 
+release_notes_qrc = files('release-notes.qrc')
+
 if host_machine.system() == 'darwin' # macos
     install_data(app_icon_icns, install_dir : 'Contents/Resources')
     install_data('Info.plist', install_dir : 'Contents')

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/releases">
+        <file alias="notes.md">release-notes.md</file>
+    </qresource>
+</RCC>
