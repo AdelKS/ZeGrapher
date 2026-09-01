@@ -92,7 +92,9 @@ that line with markup that markdown cannot write:
                    'downloads' mapping of that file holds the words of the
                    source tile
   {{ donation }}   the 'donation' of content/<lang>/strings.yaml, and one big
-                   centered icon under it that links the donation page
+                   centered icon under it that links the donation page. The app
+                   embeds the same file and shows the same words, so that string
+                   holds markdown alone
 
 The download tiles
 ------------------

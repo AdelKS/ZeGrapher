@@ -3,6 +3,7 @@
 
     content.py qrc          prints the <file> entries of the website.qrc that
                             website/meson.build writes
+    content.py donate-url   prints the address of the donation page
     content.py repository   prints the address of the GitHub repository
 
 website/content/ holds one folder per language. English is the source: a
@@ -28,7 +29,7 @@ SOURCE = "en"
 PICTURES = "images"
 
 # The short strings of a language that no panel holds, such as the words of the
-# footer.
+# footer. The app embeds the same file, and reads the donation out of it.
 STRINGS = "strings.yaml"
 
 # The documentation panel of the site is the manual of the app. The app reads it
@@ -114,10 +115,10 @@ def repository_url(conf: dict) -> str:
 def qrc_entries() -> list[str]:
     """The files of the site that the app embeds, under ':/website/<lang>/'.
 
-    Every language gets the manual and the pictures that the manual shows, the
-    English file standing in for one that the language leaves out. A picture that
-    only the site shows, such as the one of the landing panel, stays out of the
-    app.
+    Every language gets the manual, the strings file and the pictures that the
+    manual shows, the English file standing in for one that the language leaves
+    out. A picture that only the site shows, such as the one of the landing
+    panel, stays out of the app.
     """
     def entry(alias: str, path: Path) -> str:
         return f'<file alias="{alias}">{path}</file>'
@@ -127,6 +128,7 @@ def qrc_entries() -> list[str]:
         manual = file_of(lang, MANUAL)
         shown = set(SHOWN_PICTURE.findall(manual.read_text(encoding="utf-8")))
         entries.append(entry(f"{lang}/{APP_MANUAL}", manual))
+        entries.append(entry(f"{lang}/{STRINGS}", file_of(lang, STRINGS)))
         entries += [entry(f"{lang}/{PICTURES}/{name}", path)
                     for name, path in pictures(lang).items() if name in shown]
     return entries
@@ -135,6 +137,7 @@ def qrc_entries() -> list[str]:
 def main() -> int:
     commands = {
         "qrc": lambda: "\n".join(qrc_entries()),
+        "donate-url": lambda: donate_url(read_conf()),
         "repository": lambda: repository_url(read_conf()),
     }
     if len(sys.argv) != 2 or sys.argv[1] not in commands:
