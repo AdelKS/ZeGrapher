@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 """The releases of ZeGrapher, out of appdata/release-notes.md.
 
-    releases.py (--version | --release-type | --yaml OUTPUT)
+    releases.py (--version | --summary | --start-tag | --release-type
+                 | --yaml OUTPUT)
 
 --version prints the version in meson.build, such as '4.0.0_rc0-dev'.
+
+--summary prints what the notes file writes about the release under work, which
+is the body that the workflow gives to 'gh release create'. GitHub writes the
+list of changes under it.
+
+--start-tag prints the release that those changes are counted from, and nothing
+when the heading of the release under work names no span.
 
 --release-type prints what the version in meson.build is: 'dev' between two
 releases, 'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
@@ -154,6 +162,29 @@ def notes(root: Path) -> list[Span]:
     return found
 
 
+def summary_of(spans: list[Span], tag: str) -> str:
+    """What the notes file writes about one release, empty when it writes none."""
+    key = version_key(tag)
+
+    return next((span.summary for span in spans if span.covers(key)), "")
+
+
+def start_tag_of(spans: list[Span], tag: str) -> str:
+    """The release that the changes of one release are counted from.
+
+    GitHub counts the changes of a release from the release before it, which for
+    the one that closes a span is its own release candidate. A span names the
+    tag to count from, and this returns it.
+
+    A heading of one tag names no span, and this returns nothing: the release
+    before is then the right place to count from.
+    """
+    key = version_key(tag)
+    span = next((span for span in spans if span.covers(key)), None)
+
+    return "" if span is None or span.after == span.newest else span.after_tag
+
+
 def announced(root: Path) -> list[Release]:
     """The releases that a software centre shows, the newest one first.
 
@@ -246,6 +277,8 @@ def main() -> int:
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--version", action="store_true")
+    action.add_argument("--summary", action="store_true")
+    action.add_argument("--start-tag", action="store_true")
     action.add_argument("--release-type", action="store_true")
     action.add_argument("--yaml", metavar="OUTPUT")
     args = parser.parse_args()
@@ -258,6 +291,9 @@ def main() -> int:
         print(project_version(root))
     elif args.release_type:
         print(release_type(project_version(root)))
+    else:
+        spans, tag = notes(root), pending_tag(root)
+        print(summary_of(spans, tag) if args.summary else start_tag_of(spans, tag))
 
     return 0
 
