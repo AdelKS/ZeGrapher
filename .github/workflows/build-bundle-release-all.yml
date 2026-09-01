@@ -85,9 +85,13 @@ jobs:
           fi
           echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
 
+          # the tag comes with the release below, so release-notes.md names
+          # this version as the release under work
+          notes=$(python3 appdata/releases.py --summary)
+
           files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
           gh release create "v$version" $files_list \
-          --title "v$version" $prerelease
+          --title "v$version" --notes "$notes" --generate-notes $prerelease
 
   deploy-website:
     needs: make-release

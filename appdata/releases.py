@@ -1,8 +1,13 @@
 """The releases of ZeGrapher, out of appdata/release-notes.md.
 
-appdata/generate-metainfo reads them, and so does the step of the release
-workflow that writes the notes of a GitHub release. Both check the file the same
-way, so that check lives here.
+    releases.py [repository root] --summary
+
+--summary prints what the notes file writes about the release under work, which
+is the body that the workflow gives to 'gh release create'. GitHub writes the
+list of changes under it.
+
+appdata/generate-metainfo reads the same releases, and both check the file the
+same way, so that check lives here.
 
 A heading of the notes file names one release, as '## v4.0.0 (2026-09-01)', or a
 span of releases, as '## v3.1.1 - v4.0.0 (2026-09-01)'. The span holds every
@@ -16,6 +21,7 @@ heading can name a release that has no tag yet. The tree between two releases
 carries the version of meson.build, and pending_tag() reads it.
 """
 
+import argparse
 import re
 import sys
 from dataclasses import dataclass
@@ -187,3 +193,25 @@ def pending_tag(root: Path) -> str:
                  f"tag of a release")
 
     return tag
+
+
+def main() -> int:
+    """Print what the notes file writes about the release under work."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("root", nargs="?")
+    parser.add_argument("--summary", action="store_true")
+    args, rest = parser.parse_known_args()
+
+    if rest or not args.summary:
+        sys.exit(__doc__)
+
+    root = Path(args.root).resolve() if args.root \
+        else Path(__file__).resolve().parent.parent
+
+    print(summary_of(notes(root), pending_tag(root)))
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
