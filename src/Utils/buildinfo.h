@@ -21,6 +21,7 @@
 ****************************************************************************/
 
 #include <QObject>
+#include <QUrl>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/releasenotes.h"
@@ -29,13 +30,12 @@
 
 namespace zg {
 
-/// @brief the facts about this build that QML cannot read on its own
+/// @brief the build info that QML cannot read on its own
 ///
-/// QML reads the version of the app from Qt.application, but Qt gives its own
-/// version to C++ only. The license of the bundled font and the release notes
-/// are files inside the resources, which QML cannot read either. The site, the
-/// GitHub repository and the contact address are the ones that
-/// website/build-config/build.yaml names.
+/// QML reads the app version from Qt.application, but Qt only gives its own
+/// version to C++. The bundled font license and the release notes are resource
+/// files, which QML cannot read either. The site, GitHub repository, contact
+/// address and donation page come from website/build-config/build.yaml.
 class BuildInfo : public QObject
 {
   Q_OBJECT
@@ -61,6 +61,9 @@ class BuildInfo : public QObject
 
   /// @brief the author's email address, 'contact@zegrapher.com'
   Q_PROPERTY(QString contact READ getContact CONSTANT)
+
+  /// @brief the donation page, the 'donate' link in the site footer
+  Q_PROPERTY(QUrl donationPage READ getDonationPage CONSTANT)
 
 public:
   explicit BuildInfo(QObject* parent = nullptr): QObject(parent) {}
@@ -91,6 +94,8 @@ public:
   QString getRepository() const { return REPOSITORY_URL; }
 
   QString getContact() const { return CONTACT_ADDRESS; }
+
+  QUrl getDonationPage() const { return QUrl(DONATE_URL); }
 
 private:
   /// @brief appdata/releases.yaml, which appdata/meson.build embeds

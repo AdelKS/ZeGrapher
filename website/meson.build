@@ -1,8 +1,8 @@
-# The manual of the app is the documentation panel of the website, and content/
-# holds one per language. scripts/content.py lists the manuals and their
-# pictures, with the English file standing in for one that a language leaves
-# out. The list is made at configure time, so run meson again after you add or
-# remove a language or a picture.
+# The app shares two files with the site, and content/ holds one of each per
+# language: the documentation panel, which is the app manual, and the donation
+# appeal. scripts/content.py lists them and the manual's pictures, falling back
+# to the English file when a language lacks one. The list is made at configure
+# time, so rerun meson after adding or removing a language or picture.
 content_py = files('scripts' / 'content.py')
 
 website_qrc = configure_file(
@@ -14,9 +14,9 @@ website_qrc = configure_file(
   },
 )
 
-# BuildInfo gives QML the site, the GitHub repository and the contact address
-# that build.yaml names, so no other file writes them. The C++ code reads them
-# and the version of the app from buildconfig.h. meson writes that header again
+# BuildInfo gives QML the site, GitHub repository, contact address and
+# donation page from build.yaml, so no other file hardcodes them. The C++ code
+# reads them and the app version from buildconfig.h, which meson regenerates
 # when build.yaml or the version changes
 configure_file(
   input: 'build-config' / 'build.yaml',
