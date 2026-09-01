@@ -40,5 +40,6 @@ qrc_template = files('generated.qrc.in')
 
 subdir('translations')
 subdir('src')
+subdir('icons')
 subdir('appdata')
 subdir('test')
