@@ -12,6 +12,10 @@ content = meson.current_source_dir() / 'content'
 website_manual = '4-documentation.md'
 app_manual = 'documentation.md'
 
+# appdata/generate-metainfo reads this panel of every language, and writes the
+# <description> of the metainfo file out of it
+features_panel = '2-features.md'
+
 langs = run_command(
   'sh', '-c', 'cd "$0" && ls -1 */' + website_manual + ' | cut -d/ -f1', content,
   check: true,
@@ -47,3 +51,14 @@ website_qrc = configure_file(
   output: 'website.qrc',
   configuration: {'FILES': '\n'.join(files_entries)},
 )
+
+# what appdata/generate-metainfo reads, so that the metainfo file is written
+# again when one of these files changes
+website_features = []
+foreach lang: langs
+  if fs.is_file(content / lang / features_panel)
+    website_features += files('content' / lang / features_panel)
+  endif
+endforeach
+
+website_build_conf = files('build-config' / 'build.yaml')
