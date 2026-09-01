@@ -8,5 +8,5 @@ footer:
   theme-based-on: Based on
 
 # the markdown that asks for a donation. The site shows it in the download
-# panel
+# panel, and the app shows it above its Donate button
 donation: If ZeGrapher is useful to you, please consider a donation to support it.
