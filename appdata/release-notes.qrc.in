@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/releases">
+        <file alias="notes.yaml">@NOTES@</file>
+    </qresource>
+</RCC>

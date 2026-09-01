@@ -2,6 +2,22 @@
 # reads. It builds that file from ZeGrapher.metainfo.xml.in, release-notes.md
 # and the panels of the site. The repository holds none of its output.
 
+# appdata/releases.py reads release-notes.md and writes its headings to a YAML
+# file, which the app embeds and WhatsNew reads. meson writes the file again
+# when release-notes.md changes
+release_notes_yaml = configure_file(
+    input : 'release-notes.md',
+    output : 'release-notes.yaml',
+    command : [python, files('releases.py'), meson.project_source_root(),
+               '--yaml', '@OUTPUT@'],
+)
+
+release_notes_qrc = configure_file(
+    input : 'release-notes.qrc.in',
+    output : 'release-notes.qrc',
+    configuration : {'NOTES' : release_notes_yaml.full_path()},
+)
+
 if host_machine.system() == 'darwin' # macos
     install_data(app_icon_icns, install_dir : 'Contents/Resources')
     install_data('Info.plist', install_dir : 'Contents')

@@ -1,5 +1,9 @@
 """The releases of ZeGrapher, out of appdata/release-notes.md.
 
+    releases.py [repository root] --yaml OUTPUT
+
+--yaml writes the headings of the notes file to OUTPUT, which the app embeds.
+
 The grammar of a tag and the check of the notes file live here, and every
 script that reads a version or a release goes through this file.
 
@@ -14,6 +18,7 @@ heading can name a release that has no tag yet. Between two releases the tree
 carries the version written in meson.build, and pending_tag() reads it.
 """
 
+import argparse
 import re
 import sys
 from dataclasses import dataclass
@@ -69,6 +74,9 @@ class Span:
 
     after: tuple
     """the key of '<from>', the release that the span counts its changes from"""
+
+    after_tag: str
+    """'<from>' the way the heading writes it"""
 
     newest: tuple
     """the key of '<to>', the newest release that the span holds"""
@@ -126,9 +134,9 @@ def notes(root: Path) -> list[Span]:
                      f"tags of a span, such as "
                      f"'## v3.1.1 - v4.0.0 (2026-09-01)'")
 
-        span = Span(after=version_key(tags[0]), newest=version_key(tags[-1]),
-                    newest_tag=tags[-1], date=dated["date"],
-                    summary=body.strip())
+        span = Span(after=version_key(tags[0]), after_tag=tags[0],
+                    newest=version_key(tags[-1]), newest_tag=tags[-1],
+                    date=dated["date"], summary=body.strip())
 
         if span.after > span.newest:
             sys.exit(f"{path}: '## {heading}' opens on the newer tag. A span "
@@ -202,3 +210,51 @@ def release_type(version: str) -> str:
                  f"or '4.0.0_rc1'")
 
     return match["stage"] or "full"
+
+
+def write_app_notes(spans: list[Span], path: Path) -> None:
+    """Write the headings of the notes file to the YAML file that the app embeds.
+
+    src/Utils/whatsnew.h reads each heading as {after, newest, summary}: the two
+    tags of the span, which are the same tag for a heading of one release, and
+    the markdown under the heading. The headings come newest first.
+    """
+    import yaml
+
+    # a summary of several lines goes in a literal block, so it reads the way
+    # the notes file writes it
+    class Dumper(yaml.SafeDumper):
+        pass
+
+    Dumper.add_representer(str, lambda dumper, value: dumper.represent_scalar(
+        "tag:yaml.org,2002:str", value, style="|" if "\n" in value else None))
+
+    text = yaml.dump([{"after": span.after_tag, "newest": span.newest_tag,
+                       "summary": span.summary} for span in spans],
+                     Dumper=Dumper, sort_keys=False, allow_unicode=True, width=1000)
+
+    # a write that changes nothing still moves the date of the file, and every
+    # step that reads it then runs again
+    if not path.is_file() or path.read_text(encoding="utf-8") != text:
+        path.write_text(text, encoding="utf-8")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("root", nargs="?")
+    parser.add_argument("--yaml", metavar="OUTPUT")
+    args, rest = parser.parse_known_args()
+
+    if rest or args.yaml is None:
+        sys.exit(__doc__)
+
+    root = Path(args.root).resolve() if args.root \
+        else Path(__file__).resolve().parent.parent
+
+    write_app_notes(notes(root), Path(args.yaml))
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
