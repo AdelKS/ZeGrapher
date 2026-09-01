@@ -1,0 +1,315 @@
+#!/usr/bin/env python3
+"""Write the metainfo file of ZeGrapher, which a software centre reads.
+
+    generate-metainfo [repository root] [--output PATH]
+
+Without --output the file goes to the standard output. appdata/meson.build runs
+the script during the build, and installs what it writes. Nothing generated
+lives in the repository, and the script reads no git history, so a build from a
+release tarball writes the same file as a build from a clone.
+
+appdata/ZeGrapher.metainfo.xml.in holds the identity of the app and the releases
+before 4.0, and three blocks of it come from elsewhere:
+
+  {{ description }}  website/content/en/2-features.md, and the translation of
+                     that file that every other language folder of
+                     website/content/ holds. AppStream takes one element per
+                     paragraph and per list item, and the translations follow
+                     each element, so a translation that holds another number
+                     of them stops this script.
+  {{ screenshots }}  one <screenshot> per picture that the 'gallery' list of
+                     website/build-config/build.yaml names, and one <image> per
+                     language whose own website/content/<lang>/images/ holds
+                     that picture.
+  {{ releases }}     one <release> per release that appdata/release-notes.md
+                     names, the newest one first, with the text of that file.
+                     A pre-release stays out.
+
+Every URL of a picture names the GitHub repository, and the tag of the release
+under work. A tree between two releases carries a '-dev' version, and its URLs
+name the branch instead.
+"""
+
+import argparse
+import html
+import re
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import releases
+
+PARSER = argparse.ArgumentParser(add_help=False)
+PARSER.add_argument("root", nargs="?")
+PARSER.add_argument("--output")
+ARGS, REST = PARSER.parse_known_args()
+
+if REST:
+    sys.exit(__doc__)
+
+ROOT = Path(ARGS.root).resolve() if ARGS.root \
+    else Path(__file__).resolve().parent.parent
+
+APPDATA = ROOT / "appdata"
+TEMPLATE = APPDATA / "ZeGrapher.metainfo.xml.in"
+CONTENT = ROOT / "website" / "content"
+FEATURES_NAME = "2-features.md"
+BUILD_CONF = ROOT / "website" / "build-config" / "build.yaml"
+IMAGES_NAME = "images"
+
+REPO_RAW = "https://raw.githubusercontent.com/AdelKS/ZeGrapher"
+BRANCH = "master"
+
+
+def languages():
+    """Every language that holds a features panel, English first."""
+    english = CONTENT / "en" / FEATURES_NAME
+    if not english.is_file():
+        sys.exit(f"{english} does not exist, and it holds the English text "
+                 f"that every other language follows")
+
+    found = {"en": english}
+    for path in sorted(CONTENT.glob(f"*/{FEATURES_NAME}")):
+        found.setdefault(path.parent.name, path)
+
+    return found
+
+
+def inline(text):
+    """The markup that AppStream takes inside an element, out of markdown."""
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)  # a link keeps its words
+    text = html.escape(text)
+    text = re.sub(r"\*\*(.+?)\*\*", r"<em>\1</em>", text)
+    text = re.sub(r"`(.+?)`", r"<code>\1</code>", text)
+    return " ".join(text.split())
+
+
+def blocks_of(markdown):
+    """The paragraphs and the list items of one markdown text, in order.
+
+    A list holds no list of its own in AppStream, so an indented item joins the
+    item above it. The '# ' heading names the panel of the site and says nothing
+    here, so it goes.
+    """
+    blocks, kind, buffer = [], None, []
+
+    def flush():
+        if buffer:
+            blocks.append((kind, inline(" ".join(buffer))))
+            buffer.clear()
+
+    for line in markdown.splitlines():
+        stripped = line.strip()
+
+        if stripped.startswith("#"):
+            flush()
+            kind = None
+        elif not stripped:
+            flush()
+            kind = None
+        elif re.match(r"^[-*] ", stripped):
+            indented = len(line) - len(line.lstrip()) > 0
+            if indented and blocks and blocks[-1][0] == "li" and not buffer:
+                # an item under an item: it goes on with the item above
+                kind, buffer[:] = "li", [blocks.pop()[1], re.sub(r"^[-*] ", "", stripped)]
+            else:
+                flush()
+                kind, buffer[:] = "li", [re.sub(r"^[-*] ", "", stripped)]
+        else:
+            if kind is None:
+                flush()
+                kind = "p"
+            buffer.append(stripped)
+
+    flush()
+    return blocks
+
+
+def markup(blocks, indent, translations=None):
+    """The AppStream markup of those blocks, one element per line.
+
+    A run of list items opens a <ul>, which AppStream asks for and markdown does
+    not write. translations pairs a language with the blocks of that language,
+    and each element carries the ones of every language under it.
+    """
+    lines, in_list = [], False
+
+    for i, (kind, text) in enumerate(blocks):
+        if kind == "li" and not in_list:
+            lines.append(f"{indent}<ul>")
+            in_list = True
+        elif kind == "p" and in_list:
+            lines.append(f"{indent}</ul>")
+            in_list = False
+
+        pad = indent + "  " if kind == "li" else indent
+        lines.append(f"{pad}<{kind}>{text}</{kind}>")
+
+        for lang, other in (translations or {}).items():
+            lines.append(f'{pad}<{kind} xml:lang="{lang}">{other[i][1]}</{kind}>')
+
+    if in_list:
+        lines.append(f"{indent}</ul>")
+
+    return lines
+
+
+def description():
+    """<description>, one element per block, every language under each element."""
+    per_lang = {lang: blocks_of(path.read_text(encoding="utf-8"))
+                for lang, path in languages().items()}
+    english = per_lang.pop("en")
+
+    for lang, blocks in per_lang.items():
+        if [kind for kind, _ in blocks] != [kind for kind, _ in english]:
+            sys.exit(f"website/content/{lang}/{FEATURES_NAME} holds "
+                     f"{len(blocks)} paragraphs and items, and the English file "
+                     f"holds {len(english)}. AppStream pairs them one by one, so "
+                     f"a translation follows the shape of the English text.")
+
+    return "\n".join(["  <description>"]
+                     + markup(english, "    ", per_lang)
+                     + ["  </description>"])
+
+
+def gallery_names():
+    """The pictures that the 'gallery' list of build.yaml shows, in that order.
+
+    The list holds one name per line, and reading those lines takes no YAML
+    parser, which would be one more thing to install to build the app.
+    """
+    if not BUILD_CONF.is_file():
+        sys.exit(f"{BUILD_CONF} does not exist, and it names the pictures of "
+                 f"the gallery")
+
+    names, inside = [], False
+
+    for line in BUILD_CONF.read_text(encoding="utf-8").splitlines():
+        if re.match(r"^gallery:[ \t]*$", line):
+            inside = True
+        elif inside:
+            item = re.match(r"^[ \t]+-[ \t]+(\S+)[ \t]*$", line)
+            if item:
+                names.append(item.group(1))
+            elif line.strip() and not line.startswith((" ", "\t")):
+                break
+
+    if not names:
+        sys.exit(f"{BUILD_CONF}: 'gallery' holds no picture")
+
+    return names
+
+
+def image_ref():
+    """The revision that every URL of a picture names.
+
+    A build of a release names the tag of that release, so each URL keeps
+    showing the picture as the release shipped it. A tree between two releases
+    has no tag of its own, and it names the branch.
+    """
+    version = releases.project_version(ROOT)
+
+    return BRANCH if version.endswith("-dev") else f"v{version}"
+
+
+def screenshots():
+    """<screenshots>, every translation of a picture and the English one last.
+
+    The pictures are the ones build.yaml lists for the gallery, in that order.
+    The languages are the ones languages() finds, and a language whose own
+    website/content/<lang>/images/ does not hold one of them drops out of that
+    picture.
+
+    The DEP-11 catalog of a distribution holds one image per screenshot, and it
+    keeps the last one, so the last one is the image that carries no language.
+    """
+    english_images = CONTENT / "en" / IMAGES_NAME
+    if not english_images.is_dir():
+        sys.exit(f"{english_images} does not exist, so the file shows no picture")
+
+    ref = image_ref()
+    names = gallery_names()
+    others = sorted(lang for lang in languages() if lang != "en")
+
+    lines = ["  <screenshots>"]
+
+    for i, name in enumerate(names):
+        if not (english_images / name).is_file():
+            sys.exit(f"{english_images / name} does not exist, and build.yaml "
+                     f"names it in the gallery")
+
+        lines.append(f'    <screenshot{" type=\"default\"" if i == 0 else ""}>')
+        for lang in others + ["en"]:
+            if not (CONTENT / lang / IMAGES_NAME / name).is_file():
+                continue
+            tag = "" if lang == "en" else f' xml:lang="{lang}"'
+            lines.append(f"      <image{tag}>{REPO_RAW}/{ref}/website/content/"
+                         f"{lang}/{IMAGES_NAME}/{name}</image>")
+        lines.append("    </screenshot>")
+
+    lines.append("  </screenshots>")
+    return "\n".join(lines)
+
+
+def releases_xml():
+    """One <release> per release of the notes file, the newest one first.
+
+    A heading of appdata/release-notes.md can cover a span of releases, and the
+    <release> of each one then carries the same text. The newest release of the
+    span keeps it, and the ones under it drop it.
+    """
+    lines = []
+    above = None
+
+    for release in releases.announced(ROOT):
+        summary = "" if release.summary == above else release.summary
+        above = release.summary
+
+        blocks = markup(blocks_of(summary), "        ")
+        opening = f'    <release version="{release.version}" date="{release.date}"'
+
+        if not blocks:
+            lines.append(opening + "/>")
+            continue
+
+        lines.append(opening + ">")
+        lines.append("      <description>")
+        lines += blocks
+        lines.append("      </description>")
+        lines.append("    </release>")
+
+    return "\n".join(lines)
+
+
+def metainfo():
+    """The whole metainfo file, the three blocks of the template filled in."""
+    blocks = {"description": description(),
+              "screenshots": screenshots(),
+              "releases": releases_xml()}
+
+    template = TEMPLATE.read_text(encoding="utf-8")
+    # a name stands on a line of its own, so the one in the header comment of
+    # the template stays a name and does not take a block
+    return re.sub(r"^{{\s*(\w+)\s*}}$", lambda m: blocks[m.group(1)],
+                  template, flags=re.M)
+
+
+def main():
+    text = metainfo()
+
+    if ARGS.output is None:
+        sys.stdout.write(text)
+        return 0
+
+    path = Path(ARGS.output)
+    # a write that changes nothing still moves the date of the file, and every
+    # step that reads it then runs again
+    if not path.is_file() or path.read_text(encoding="utf-8") != text:
+        path.write_text(text, encoding="utf-8")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
