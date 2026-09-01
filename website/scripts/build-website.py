@@ -128,10 +128,11 @@ import yaml
 SITE = Path(__file__).resolve().parents[1]
 ROOT = SITE.parent
 
-# content.py finds the files of each language
-sys.path.insert(0, str(SITE / "scripts"))
+# content.py finds the files of each language, and releases.py reads a version
+sys.path[:0] = [str(SITE / "scripts"), str(ROOT / "appdata")]
 
 import content  # noqa: E402
+import releases  # noqa: E402
 from content import CONF_FILE, CONTENT, PICTURES, SOURCE, STRINGS  # noqa: E402
 
 TEMPLATES = SITE / "templates"
@@ -183,10 +184,7 @@ TOOLCHAINS = {"MINGW64": "x86_64", "UCRT64": "x86_64", "CLANG64": "x86_64",
 # bundle is the name of a tag, and the site drops the 'v' in front of it. The
 # match runs on the stem, and a stem drops the last suffix only: the version of
 # a '.tar.gz' bundle then ends in '.tar', which no name of that shape matches.
-BUNDLE_NAME = re.compile(r"ZeGrapher-(\w+)-(\w+)-v?(\d+(?:\.\d+)*(?:_\w+)?)")
-
-# '4.0.0_beta1' and '4.0.0_rc2' are pre-releases, and the site carries none
-PRE_RELEASE = re.compile(r"_(alpha|beta|rc)", re.I)
+BUNDLE_NAME = re.compile(r"ZeGrapher-(\w+)-(\w+)-v?([\w.]+)")
 
 # '4-documentation.md' -> the place of the panel in the page, and its fragment
 PANEL_NAME = re.compile(r"(\d+)-([a-z0-9-]+)\.md")
@@ -467,7 +465,7 @@ def read_bundles(folder: Path, no_bundles: bool) -> tuple[str, dict] | None:
     bundles, versions = {}, {}
     for path in files:
         parts = BUNDLE_NAME.fullmatch(path.stem)
-        if parts is None:
+        if parts is None or releases.version_key(f"v{parts.group(3)}") is None:
             sys.exit(f"{path}: a bundle is named "
                      f"'ZeGrapher-<platform>-<architecture>-<version>' and an "
                      f"extension, such as ZeGrapher-Linux-x86_64-v4.0.1.AppImage")
@@ -494,7 +492,7 @@ def read_bundles(folder: Path, no_bundles: bool) -> tuple[str, dict] | None:
                  f"shows one platform, so the site needs the four bundles")
 
     version = next(iter(versions))
-    if PRE_RELEASE.search(version):
+    if releases.release_type(version) != "full":
         sys.exit(f"{folder} holds {version}, which is a pre-release. The site "
                  f"names one version to every user of the app, in 'latest' and "
                  f"'latest_tag', so the build stops here. Pass --no-bundles to "
