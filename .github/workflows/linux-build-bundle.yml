@@ -24,7 +24,10 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt install python3-pip libfuse2 libxcb-cursor0 g++-15
-          pip3 install --user meson ninja
+          # install-qt-action puts its own Python first on PATH, and pip3 installs
+          # meson for that Python. meson imports PyYAML from the Python it runs
+          # on, so PyYAML comes from pip3 too
+          pip3 install --user meson ninja pyyaml
 
       - name: Build & Bundle
         run: ./deploy/linux-bundle-appimage.sh

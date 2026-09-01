@@ -102,6 +102,14 @@ def donate_url(conf: dict) -> str:
     return link_url(link)
 
 
+def homepage_url(conf: dict) -> str:
+    """The address of the site, the 'homepage' of build.yaml."""
+    url = conf.get("homepage")
+    if not url:
+        sys.exit(f"{CONF_FILE}: 'homepage' names no address")
+    return url
+
+
 def repository_url(conf: dict) -> str:
     """The GitHub repository of ZeGrapher, the 'repository' of build.yaml."""
     url = conf.get("repository")

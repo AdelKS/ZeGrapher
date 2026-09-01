@@ -1,5 +1,8 @@
 # The settings that build-website.py reads to build the site
 
+# the site address, which the app build also reads
+homepage: https://zegrapher.com
+
 # ZeGrapher's GitHub repository. The download panel links its releases and
 # issues, and the app build reads it too
 repository: https://github.com/AdelKS/ZeGrapher

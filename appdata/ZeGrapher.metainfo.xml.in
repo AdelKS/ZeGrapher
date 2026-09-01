@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  appdata/generate-metainfo writes the metainfo file out of this template, and
+  appdata/meson.build installs what it writes.
+-->
+<component type="desktop-application">
+  <id>com.zegrapher.ZeGrapher</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <name>ZeGrapher</name>
+  <summary>Math plotting software</summary>
+  <summary xml:lang="de">Programm zum Zeichnen mathematischer Graphen</summary>
+  <summary xml:lang="es">Programa para trazar gráficas matemáticas</summary>
+  <summary xml:lang="fr">Logiciel de tracé de courbes</summary>
+  <summary xml:lang="it">Software per tracciare grafici matematici</summary>
+  <summary xml:lang="ja">数学グラフ作成ソフト</summary>
+  <summary xml:lang="pt">Programa para traçar gráficos matemáticos</summary>
+  <summary xml:lang="ru">Программа для построения математических графиков</summary>
+  <summary xml:lang="zh">数学绘图软件</summary>
+{{ description }}
+{{ screenshots }}
+  <launchable type="desktop-id">ZeGrapher.desktop</launchable>
+  <provides>
+    <mediatype>application/x-zegrapher</mediatype>
+  </provides>
+{{ urls }}
+  <developer id="com.zegrapher">
+    <name>Adel Kara Slimane</name>
+  </developer>
+  <update_contact>adel.ks@zegrapher.com</update_contact>
+  <content_rating type="oars-1.1"/>
+  <releases>
+{{ releases }}
+  </releases>
+</component>

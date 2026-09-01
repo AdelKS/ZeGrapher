@@ -1,0 +1,56 @@
+# The releases of ZeGrapher, and what the author writes about them.
+#
+# 'releases' lists each release tag with the day it went out, newest first. For
+# the release under work, the date is the day the release is due. A
+# pre-release can be left out, since nothing reads its date.
+#
+# 'announcements' and 'changes' hold markdown 'text' about a span of releases:
+# every release after 'from', up to 'to'. 'from' stays out of the span, since
+# the changes count from it. An entry without 'from' is about 'to' alone. An
+# announcement presents a release, and a changes entry lists what changed, for
+# example between two release candidates. Each list runs newest first, and no
+# two spans in the same list overlap. A tag can be one that doesn't exist yet.
+#
+# appdata/generate-metainfo gives the metainfo file, which software centers
+# show, one <release> per full release in 'releases'. It takes the text of the
+# announcement that ends on that release, or else the text of the changes
+# entry.
+
+releases:
+  - tag: v4.0.0
+    date: 2026-10-14
+  - tag: v3.1.1
+    date: 2020-07-20
+  - tag: v3.1
+    date: 2020-01-04
+  - tag: v3.0.2
+    date: 2017-10-09
+  - tag: v3.0.1
+    date: 2017-03-06
+  - tag: v3.0
+    date: 2016-04-15
+
+announcements:
+  - from: v3.1.1
+    to: v4.0.0
+    text: |
+      It took a long time, it took A LOT of work: I am happy to announce version 4.0!
+
+      - Modern-looking & GPU-accelerated interface, written in [Qt QML](https://doc.qt.io/qt-6/qtqml-index.html)
+      - A new math parsing library, [ZeCalculator](https://github.com/AdelKS/ZeCalculator)
+        - Useful error messages that point at what is wrong in the expression
+        - An arbitrary number of objects
+        - Every object can be called in the expression of any other
+      - Constants that slide between two bounds, by hand or as an animation, or that
+        take several values at once to draw a whole family of curves
+      - Data sheets: CSV import and export, a table to edit the values, and columns
+        filled from any object
+      - Improved parametric plots
+      - Export to SVG, PDF and image formats, exactly as it looks on the screen
+      - Save your work. Your latest work is also automatically saved and restored on the next start
+      - The manual of the website, inside the app
+      - Support for new languages (AI translated): French, German, Spanish, Italian, Portuguese,
+        Russian, Japanese and Chinese
+      - Near-complete rewrite of the code base
+
+changes: []
