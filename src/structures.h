@@ -73,7 +73,8 @@ inline QString readTextFile(const QString& path)
 
 /// @brief the embedded website folder of a language, ':/website/fr'. It falls
 ///        back to ':/website/en' when the build embedded no such folder
-/// @note website/meson.build embeds the manual, which the app and the site share
+/// @note website/meson.build embeds the two files that the app and the site
+///       share: the manual and the donation text
 inline QString websiteFolder(QLocale::Language lang)
 {
   const QString folder = ":/website/" + langToShortString(lang);

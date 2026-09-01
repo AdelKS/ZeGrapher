@@ -46,4 +46,5 @@ footer entry is missing, the page shows the English one instead.
 
 `strings.yaml` is not a panel. It holds the short strings that no panel carries:
 the words of each entry of the footer, and the words that ask for a donation.
-Translate the values, and keep the names in front of them.
+Translate the values, and keep the names in front of them. The app reads the
+donation out of the same file, so those words hold markdown and nothing else.

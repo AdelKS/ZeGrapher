@@ -87,7 +87,9 @@ that line with markup that markdown cannot write:
   {{ gallery }}    the pictures that build.yaml names, in a lightbox grid
   {{ downloads }}  one tile per platform, under the line that names the version
   {{ donation }}   the 'donation' of content/<lang>/strings.yaml, and one big
-                   centered icon under it that links the donation page
+                   centered icon under it that links the donation page. The app
+                   embeds the same file and shows the same words, so that string
+                   holds markdown alone
 
 The download tiles
 ------------------
