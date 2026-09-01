@@ -2,9 +2,11 @@
 
 set -e
 
-# Install dependencies if not already present
+# Install dependencies if not already present. meson, ninja and PyYAML come from
+# pip, because Homebrew has no PyYAML formula: see
+# .github/workflows/macos-build-bundle.yml
 echo "Checking and installing dependencies..."
-brew install coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools meson pkg-config create-dmg glaze
+brew install coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools pkg-config create-dmg glaze
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 version=$(bash "${deploy_dir}"/../version.sh)
