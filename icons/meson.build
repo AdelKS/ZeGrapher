@@ -1,0 +1,11 @@
+# ZeGrapher.svg is the icon of the app, and the PNG files next to it are its
+# rasters. appdata/meson.build installs the files that this file names.
+app_icon_sizes = [16, 32, 64, 128, 256]
+
+app_icon_svg = files('ZeGrapher.svg')
+app_icon_icns = files('ZeGrapher.icns')
+
+app_icon_pngs = []
+foreach size : app_icon_sizes
+    app_icon_pngs += files('ZeGrapher_@0@.png'.format(size))
+endforeach

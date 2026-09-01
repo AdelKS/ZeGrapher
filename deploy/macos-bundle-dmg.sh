@@ -58,7 +58,7 @@ fi
 # Build create-dmg command with options
 dmg_opts=(
     --volname "ZeGrapher $version"
-    --volicon "${deploy_dir}/../appdata/ZeGrapher.icns"
+    --volicon "${deploy_dir}/../icons/ZeGrapher.icns"
     --window-pos 200 120
     --window-size 660 450
     --icon-size 128
