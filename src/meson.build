@@ -47,6 +47,7 @@ source_files = [
   'Utils/state.cpp',
   'Utils/themedcolor.cpp',
   'Utils/updatecheck.cpp',
+  'Utils/whatsnew.cpp',
   'Utils/zc-utils.cpp',
 ]
 
@@ -136,6 +137,7 @@ qmlcpp_files = [
   'Utils/textdocumenttools.h',
   'Utils/themedcolor.h',
   'Utils/updatecheck.h',
+  'Utils/whatsnew.h',
 ]
 
 # END AUTOGEN SRC-LIST
@@ -179,7 +181,7 @@ foreach qt6_mod: qt6_modules
 endforeach
 
 compiled_resources = qt6.compile_resources(
-  sources: files('../resources.qrc') + translations_qrc + website_qrc
+  sources: files('../resources.qrc') + translations_qrc + website_qrc + release_notes_qrc
 )
 
 # --- Qt RHI shader compilation -----------------------------------------------
