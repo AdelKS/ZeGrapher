@@ -36,5 +36,6 @@ add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', l
 
 subdir('translations')
 subdir('src')
+subdir('icons')
 subdir('appdata')
 subdir('test')
