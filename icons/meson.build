@@ -1,5 +1,5 @@
-# ZeGrapher.svg is the icon of the app, and the PNG files next to it are its
-# rasters. appdata/meson.build installs the files that this file names.
+# ZeGrapher.svg is the icon of the app, and make-icons.py writes the rasters of
+# it. appdata/meson.build installs the files that this file names.
 app_icon_sizes = [16, 32, 64, 128, 256]
 
 app_icon_svg = files('ZeGrapher.svg')
