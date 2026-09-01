@@ -96,5 +96,6 @@
         <file>icons/check-light.svg</file>
         <file>icons/sample-dark.svg</file>
         <file>icons/sample-light.svg</file>
+        <file>icons/hand-holding-heart.svg</file>
     </qresource>
 </RCC>

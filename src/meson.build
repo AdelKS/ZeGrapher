@@ -68,6 +68,7 @@ qml_files = [
   'QML/DataPane.qml',
   'QML/DataSheetEdit.qml',
   'QML/DataTable.qml',
+  'QML/DonationBox.qml',
   'QML/DocPane.qml',
   'QML/EquationEdit.qml',
   'QML/GraphSettings.qml',
