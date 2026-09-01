@@ -13,6 +13,9 @@ QtObject {
   /// @brief the width of one level of indent in a markdown list, in pixels
   readonly property real listIndent: 14
 
+  /// @brief the thickness of a line that separates two blocks, in pixels
+  readonly property real separatorThickness: 3
+
   /// @brief the color of a link, the same color as a valid expression
   readonly property color linkColor: Information.appSettings.validSyntax.current
 

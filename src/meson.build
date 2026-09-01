@@ -87,6 +87,7 @@ qml_files = [
   'QML/ObjectStyle.qml',
   'QML/ParametricEdit.qml',
   'QML/RangeAdjust.qml',
+  'QML/ReleaseNotes.qml',
   'QML/SamplingEdit.qml',
   'QML/TextTumbler.qml',
   'QML/UserInputPanel.qml',
