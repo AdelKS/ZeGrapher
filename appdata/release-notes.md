@@ -13,7 +13,8 @@ heading can name a tag that does not exist yet, and the date is then the day the
 release is due.
 
 appdata/generate-metainfo turns this file into the `<releases>` of the metainfo
-file, which is what a software centre shows.
+file, which is what a software centre shows. The app shows a span as one entry,
+with a link to the page of that release on GitHub.
 
 ## v3.1.1 - v4.0.0 (2026-09-01)
 
