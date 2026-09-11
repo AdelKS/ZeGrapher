@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """The releases of ZeGrapher, out of appdata/release-notes.md.
 
-    releases.py --yaml OUTPUT
+    releases.py (--version | --release-type | --yaml OUTPUT)
+
+--version prints the version in meson.build, such as '4.0.0_rc0-dev'.
+
+--release-type prints what the version in meson.build is: 'dev' between two
+releases, 'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
 
 --yaml writes the headings of the notes file to OUTPUT, which the app embeds.
 
@@ -240,12 +245,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     action = parser.add_mutually_exclusive_group(required=True)
+    action.add_argument("--version", action="store_true")
+    action.add_argument("--release-type", action="store_true")
     action.add_argument("--yaml", metavar="OUTPUT")
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
 
-    write_app_notes(notes(root), Path(args.yaml))
+    if args.yaml is not None:
+        write_app_notes(notes(root), Path(args.yaml))
+    elif args.version:
+        print(project_version(root))
+    elif args.release_type:
+        print(release_type(project_version(root)))
 
     return 0
 

@@ -49,20 +49,18 @@ jobs:
           merge-multiple: true
           path: deploy
 
-      - name: Install Dependencies
-        run: |
-          sudo apt install python3-pip jq
-          pip3 install --user meson ninja
-
       - name: Make new release or prerelease
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -e
-          version=$(./version.sh)
+          version=$(python3 appdata/releases.py --version)
 
-          # a '-dev' suffix marks a commit between two releases
-          if [[ "$version" == *-dev ]]; then
+          # dev, alpha, beta, rc or full. appdata/releases.py holds the grammar
+          # of a version
+          release_type=$(python3 appdata/releases.py --release-type)
+
+          if [[ "$release_type" == dev ]]; then
             echo "$version is a development version, not making a release"
             exit 0
           fi
@@ -72,9 +70,8 @@ jobs:
             exit 0
           fi
 
-          # alpha, beta and rc are the keywords of a version that is not final
           prerelease=""
-          if [[ "$version" =~ (alpha|beta|rc) ]]; then
+          if [[ "$release_type" != full ]]; then
             prerelease="--prerelease"
           fi
 
