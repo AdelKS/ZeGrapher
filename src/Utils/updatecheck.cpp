@@ -36,23 +36,20 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
   qDebug() << "[Update check] current version: " << currentVersion;
   qDebug() << "[Update check] remote version: " << latestVersion;
 
-  if (latestVersion == currentVersion)
+  // the site writes a tag, 'v4.0.0', and SOFTWARE_VERSION is a version,
+  // '4.0.0', so the two strings never match. parse_version_string() takes both
+  // forms, and equal parts read as up to date
+  const static auto current_version_parsing = parse_version_string(currentVersion);
+  auto latest_version_parsing = parse_version_string(latestVersion);
+
+  if (current_version_parsing and latest_version_parsing)
   {
-    status = UP_TO_DATE;
+    if (std::ranges::lexicographical_compare(*current_version_parsing, *latest_version_parsing, std::ranges::less{}))
+      status = UPDATE_AVAILABLE;
+    else status = UP_TO_DATE;
   }
   else
-  {
-    const static auto current_version_parsing = parse_version_string(currentVersion);
-    auto latest_version_parsing = parse_version_string(latestVersion);
-
-    if (current_version_parsing and latest_version_parsing)
-    {
-      if (std::ranges::lexicographical_compare(*current_version_parsing, *latest_version_parsing, std::ranges::less{}))
-        status = UPDATE_AVAILABLE;
-      else status = UP_TO_DATE;
-    }
-    else status = UPDATE_MAYBE_AVAILABLE;
-  }
+    status = UPDATE_MAYBE_AVAILABLE;
 
   emit statusChanged();
 
