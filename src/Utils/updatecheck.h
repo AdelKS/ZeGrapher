@@ -32,7 +32,6 @@ signals:
   void statusChanged();
 
 protected:
-  const static QString currentVersion;
   QString latestVersion;
   Status status = IDLE;
   QNetworkAccessManager manager;
