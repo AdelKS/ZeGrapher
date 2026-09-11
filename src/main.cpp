@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
   Information info;
   information = &info;
 
-  // an imported workbook can override it
+  // an imported document can override it
   info.appSettings.language = systemLanguage();
 
   QCommandLineParser parser;
