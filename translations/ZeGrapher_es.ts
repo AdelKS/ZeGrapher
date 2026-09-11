@@ -737,6 +737,10 @@
 <context>
     <name>QObject</name>
     <message>
+        <source>2D math plotter</source>
+        <translation>Trazador de gráficas en el plano</translation>
+    </message>
+    <message>
         <source>file</source>
         <translation>archivo</translation>
     </message>

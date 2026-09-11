@@ -737,6 +737,10 @@
 <context>
     <name>QObject</name>
     <message>
+        <source>2D math plotter</source>
+        <translation>平面の数学グラフ作成ソフト</translation>
+    </message>
+    <message>
         <source>file</source>
         <translation>ファイル</translation>
     </message>

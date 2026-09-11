@@ -737,6 +737,10 @@
 <context>
     <name>QObject</name>
     <message>
+        <source>2D math plotter</source>
+        <translation>平面数学绘图软件</translation>
+    </message>
+    <message>
         <source>file</source>
         <translation>文件</translation>
     </message>

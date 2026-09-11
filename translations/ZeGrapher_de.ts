@@ -737,6 +737,10 @@
 <context>
     <name>QObject</name>
     <message>
+        <source>2D math plotter</source>
+        <translation>Zeichenprogramm für Graphen in der Ebene</translation>
+    </message>
+    <message>
         <source>file</source>
         <translation>Datei</translation>
     </message>

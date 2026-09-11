@@ -68,18 +68,6 @@ int main(int argc, char *argv[])
   // an imported document can override it
   info.appSettings.language = systemLanguage();
 
-  QCommandLineParser parser;
-  parser.setApplicationDescription("2D math plotter");
-  parser.addHelpOption();
-  parser.addVersionOption();
-  parser.addPositionalArgument(QObject::tr("file"), QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
-  parser.process(a);
-
-  if (not parser.positionalArguments().isEmpty())
-    info.openStartupDocuments(parser.positionalArguments());
-  else if (not info.restoreLastDocument())
-    info.loadExampleDocument();
-
   QTranslator translator;
   QQmlApplicationEngine engine;
 
@@ -103,6 +91,25 @@ int main(int argc, char *argv[])
     engine.retranslate();
   };
 
+  // QCommandLineParser::process() prints the help and exits, so the tr()
+  // strings under it need the translator installed already
+  applyLanguage();
+
+  QCommandLineParser parser;
+  parser.setApplicationDescription(QObject::tr("2D math plotter"));
+  parser.addHelpOption();
+  parser.addVersionOption();
+  parser.addPositionalArgument(QObject::tr("file"),
+                               QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
+  parser.process(a);
+
+  if (not parser.positionalArguments().isEmpty())
+    info.openStartupDocuments(parser.positionalArguments());
+  else if (not info.restoreLastDocument())
+    info.loadExampleDocument();
+
+  // a document carries the language it was written with, so this reads the
+  // language again once the documents are in
   applyLanguage();
   QObject::connect(&info.appSettings, &ZeAppSettings::languageChanged, &engine, applyLanguage);
 
