@@ -65,8 +65,11 @@ jobs:
           set -e
           version=$(./version.sh)
 
-          # a '-dev' suffix marks a commit between two releases
-          if [[ "$version" == *-dev ]]; then
+          # dev, alpha, beta, rc or full. appdata/releases.py holds the grammar
+          # of a version
+          release_type=$(python3 appdata/releases.py --release-type)
+
+          if [[ "$release_type" == dev ]]; then
             echo "$version is a development version, not making a release"
             exit 0
           fi
@@ -76,12 +79,9 @@ jobs:
             exit 0
           fi
 
-          # alpha, beta and rc are the keywords of a version that is not final
           prerelease=""
-          release_type="full"
-          if [[ "$version" =~ (alpha|beta|rc) ]]; then
+          if [[ "$release_type" != full ]]; then
             prerelease="--prerelease"
-            release_type="${BASH_REMATCH[1]}"
           fi
           echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
 

@@ -1,6 +1,7 @@
 """The releases of ZeGrapher, out of appdata/release-notes.md.
 
-    releases.py [repository root] (--summary | --start-tag | --yaml OUTPUT)
+    releases.py [repository root] (--summary | --start-tag | --release-type
+                                   | --yaml OUTPUT)
 
 --summary prints what the notes file writes about the release under work, which
 is the body that the workflow gives to 'gh release create'. GitHub writes the
@@ -8,6 +9,9 @@ list of changes under it.
 
 --start-tag prints the release that those changes are counted from, and nothing
 when the heading of the release under work names no span.
+
+--release-type prints what the version in meson.build is: 'dev' between two
+releases, 'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
 
 --yaml writes the headings of the notes file to OUTPUT, which the app embeds.
 
@@ -274,10 +278,11 @@ def main() -> int:
     parser.add_argument("root", nargs="?")
     parser.add_argument("--summary", action="store_true")
     parser.add_argument("--start-tag", action="store_true")
+    parser.add_argument("--release-type", action="store_true")
     parser.add_argument("--yaml", metavar="OUTPUT")
     args, rest = parser.parse_known_args()
 
-    chosen = [args.summary, args.start_tag, args.yaml is not None]
+    chosen = [args.summary, args.start_tag, args.release_type, args.yaml is not None]
     if rest or chosen.count(True) != 1:
         sys.exit(__doc__)
 
@@ -286,6 +291,8 @@ def main() -> int:
 
     if args.yaml is not None:
         write_app_notes(notes(root), Path(args.yaml))
+    elif args.release_type:
+        print(release_type(project_version(root)))
     else:
         spans, tag = notes(root), pending_tag(root)
         print(summary_of(spans, tag) if args.summary else start_tag_of(spans, tag))
