@@ -101,7 +101,12 @@ jobs:
           fi
 
           files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
+
+          # --target puts the tag on the commit whose bundles this run built.
+          # Without it the tag lands on whatever the default branch points at
+          # when the command runs
           gh release create "v$version" $files_list \
+          --target "$GITHUB_SHA" \
           --title "v$version" --notes "$notes" --generate-notes $notes_start $prerelease
 
   deploy-website:
