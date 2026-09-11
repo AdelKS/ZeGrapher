@@ -165,5 +165,10 @@ jobs:
           fi
 
           files_list=$(find deploy -maxdepth 1 -name 'ZeGrapher*' -type f | paste -sd' ')
+
+          # --target tags the commit this run built the bundles from. Without
+          # it, the tag lands wherever the default branch points when the
+          # command runs
           gh release create "v$version" $files_list \
+          --target "$GITHUB_SHA" \
           --title "v$version" --notes "$notes" --generate-notes $notes_start $prerelease
