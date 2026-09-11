@@ -36,16 +36,29 @@ Corrections and new languages are welcome.
 
 ### Download
 
-ZeGrapher is available in the official repositories of Debian, Fedora, Ubuntu, FreeBSD. In the Archlinux (AUR). An [AppImage](https://appimage.org/) is otherwise available, along with Windows and Mac versions in Zegrapher's [Github releases page](https://github.com/AdelKS/ZeGrapher/releases) or at [zegrapher.com](https://zegrapher.com/).
+Debian, Fedora, Ubuntu and FreeBSD carry ZeGrapher in their official
+repositories, and Arch Linux has it in the [AUR](https://aur.archlinux.org/packages/zegrapher).
+A distribution takes a while to pick up a new release, so its package can be
+older than the newest one.
+
+The [releases page on GitHub](https://github.com/AdelKS/ZeGrapher/releases)
+and [zegrapher.com](https://zegrapher.com/) both carry an
+[AppImage](https://appimage.org/) for Linux, and bundles for Windows and macOS.
 
 ### Compile from sources
 
 To compile from sources, ZeGrapher needs the following tools and libraries:
 
-- C++ compiler: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
-- [Qt](https://www.qt.io)
-- [meson](mesonbuild.com)
-- [glaze](https://github.com/stephenberry/glaze)
+- a C++ compiler that takes C++23: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
+- [Qt](https://www.qt.io) 6.10 or newer
+- [meson](https://mesonbuild.com) 1.7 or newer
+- [Python](https://www.python.org/) 3.10 or newer, with [PyYAML](https://pyyaml.org/)
+- [glaze](https://github.com/stephenberry/glaze) 7.7 or newer
+- [ZeCalculator](https://github.com/AdelKS/ZeCalculator) 0.13.2 or newer
+
+meson fetches glaze and ZeCalculator itself when the system holds neither, so
+a build from a git clone needs only the first four. The source tarball of a
+release carries no subproject, and a build from it needs all six.
 
 To build
 
@@ -61,7 +74,7 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 #### Packaging
 
 - Linux
-  - `meson install` should now be fully XDG compliant. Issues and/PRs welcome if something is missing.
+  - `meson install` follows the XDG directory specification. Open an issue or a pull request if something is missing.
   - Use [deploy/linux-bundle-appimage.sh](./deploy/linux-bundle-appimage.sh) to create an [AppImage](https://appimage.org/).
 - macOS
   - Use [deploy/macos-bundle-dmg.sh](deploy/macos-bundle-dmg.sh) to create an installer.
