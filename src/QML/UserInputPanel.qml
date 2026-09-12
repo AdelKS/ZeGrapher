@@ -247,7 +247,7 @@ Item {
           Layout.topMargin: 0
           Layout.bottomMargin: 0
 
-          id: saveWorkspace
+          id: saveDocument
           implicitWidth: 35
           implicitHeight: 35
           Layout.alignment: Qt.AlignRight
@@ -264,7 +264,7 @@ Item {
           Layout.topMargin: 0
           Layout.bottomMargin: 0
 
-          id: loadWorkspace
+          id: loadDocument
           implicitWidth: 35
           implicitHeight: 35
           Layout.alignment: Qt.AlignRight
