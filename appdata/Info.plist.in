@@ -25,6 +25,56 @@
 	<string>@RELEASE@</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<!--
+	  The '.zg' document, which appdata/ZeGrapher.mime.xml declares to a
+	  freedesktop desktop. macOS hands a document to a running app as a
+	  QFileOpenEvent, and src/main.cpp reads it.
+	-->
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>ZeGrapher document</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleTypeIconFile</key>
+			<string>ZeGrapher.icns</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.zegrapher.zg</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>com.zegrapher.zg</string>
+			<key>UTTypeDescription</key>
+			<string>ZeGrapher document</string>
+			<key>UTTypeIconFile</key>
+			<string>ZeGrapher.icns</string>
+			<!-- a document is a YAML file, and public.yaml is younger than the
+			     oldest macOS this app runs on -->
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>zg</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>application/x-zegrapher</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 	<key>IFMajorVersion</key>
 	<integer>@MAJOR@</integer>
 	<key>IFMinorVersion</key>

@@ -23,6 +23,8 @@
 #include "structures.h"
 
 #include <QCommandLineParser>
+#include <QEvent>
+#include <QFileOpenEvent>
 #include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
@@ -30,6 +32,39 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QTranslator>
+
+#ifdef Q_OS_MACOS
+namespace {
+
+/// @brief opens the documents that macOS hands to the app
+///
+/// Every other desktop passes a document on the command line. macOS sends a
+/// QFileOpenEvent to the application instead, both when a document starts the
+/// app and when one is opened while it runs. The event carries one document, so
+/// opening several sends several events.
+class DocumentOpener: public QObject
+{
+public:
+  explicit DocumentOpener(Information& info): info(info) {}
+
+protected:
+  bool eventFilter(QObject* watched, QEvent* event) override
+  {
+    if (event->type() != QEvent::FileOpen)
+      return QObject::eventFilter(watched, event);
+
+    // the same call the 'Load a ZeGrapher document' button makes, so a
+    // document opens the same way whichever of the two asked for it
+    info.importYaml(static_cast<QFileOpenEvent*>(event)->url());
+    return true;
+  }
+
+private:
+  Information& info;
+};
+
+}
+#endif
 
 
 int main(int argc, char *argv[])
@@ -64,6 +99,14 @@ int main(int argc, char *argv[])
   // define after QGuiApp and QCoreApp::set* because it will use stuff from them
   Information info;
   information = &info;
+
+#ifdef Q_OS_MACOS
+  // macOS sends the document of a double click as an event, and the event
+  // waits in the queue until exec() below runs. The filter goes in here so
+  // that none is missed
+  DocumentOpener opener(info);
+  a.installEventFilter(&opener);
+#endif
 
   // an imported document can override it
   info.appSettings.language = systemLanguage();
