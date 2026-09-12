@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """The releases of ZeGrapher, out of appdata/releases.yaml.
 
-    releases.py (--version | --summary | --start-tag | --date
+    releases.py (--version | --release | --summary | --start-tag | --date
                  | --release-type | --yaml OUTPUT)
 
 --version prints the version in meson.build, such as '4.0.0_rc0-dev'.
+
+--release prints the release that this version leads to, in digits and dots
+only, such as '4.0.0'.
 
 --summary prints what the release file writes about the release under work: the
 announcement, then the changes entry. It is the body that the workflow gives to
@@ -301,6 +304,13 @@ def pending_tag() -> str:
     return tag
 
 
+def release_numbers() -> str:
+    """The release that the version in meson.build leads to, '4.0.0' for
+    '4.0.0_rc0-dev'."""
+    match = TAG.match(pending_tag())
+    return f"{match['major']}.{match['minor']}.{match['patch'] or 0}"
+
+
 def release_type(version: str) -> str:
     """What a version is: 'dev', 'alpha', 'beta', 'rc' or 'full'.
 
@@ -335,6 +345,7 @@ def main() -> int:
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--version", action="store_true")
+    action.add_argument("--release", action="store_true")
     action.add_argument("--summary", action="store_true")
     action.add_argument("--start-tag", action="store_true")
     action.add_argument("--date", action="store_true")
@@ -346,6 +357,8 @@ def main() -> int:
         write_app_file(Path(args.yaml))
     elif args.version:
         print(project_version())
+    elif args.release:
+        print(release_numbers())
     elif args.release_type:
         print(release_type(project_version()))
     else:
