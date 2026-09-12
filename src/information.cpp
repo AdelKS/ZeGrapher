@@ -163,9 +163,6 @@ void Information::exportYaml(QUrl filename)
   }
 }
 
-template <typename T>
-struct P {};
-
 void Information::importYaml(QUrl filename)
 {
   qInfo() << "Importing from " << filename.toLocalFile();
