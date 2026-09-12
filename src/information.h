@@ -101,6 +101,13 @@ public:
   /// @brief loads the objects that a first start shows
   void loadExampleDocument();
 
+  /// @brief reports that the graph could not be written to a file
+  ///
+  /// The classes that draw the graph write their own files, and the reader
+  /// sees what they report through the same dialog as a document that fails.
+  /// @param details  what went wrong
+  void exportFailed(const QString& file, const QString& details = {});
+
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
