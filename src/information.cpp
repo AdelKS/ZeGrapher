@@ -210,6 +210,7 @@ void Information::importYaml(QUrl filename)
                  .file = path,
                  .text = tr("Could not read the whole file."),
                  .details = file.errorString()});
+    return;
   }
 
   const std::string_view content(bytes.data(), bytes.size());
