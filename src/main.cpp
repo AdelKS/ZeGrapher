@@ -23,6 +23,8 @@
 #include "structures.h"
 
 #include <QCommandLineParser>
+#include <QEvent>
+#include <QFileOpenEvent>
 #include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
@@ -30,6 +32,52 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QTranslator>
+
+#ifdef Q_OS_MACOS
+namespace {
+
+/// @brief opens the documents that macOS hands to the app
+///
+/// Every other desktop passes a document on the command line. macOS sends a
+/// QFileOpenEvent to the application instead, both when a document starts the
+/// app and when one is opened while it runs. The event carries one document, so
+/// opening several sends several events.
+class DocumentOpener: public QObject
+{
+public:
+  explicit DocumentOpener(Information& info): info(info) {}
+
+  /// @brief the documents that arrived before main() picked what to open at
+  ///        startup. They take the place of the command line arguments
+  QStringList startupDocuments;
+
+  /// @brief false until main() read startupDocuments
+  bool started = false;
+
+protected:
+  bool eventFilter(QObject* watched, QEvent* event) override
+  {
+    if (event->type() != QEvent::FileOpen)
+      return QObject::eventFilter(watched, event);
+
+    const QUrl url = static_cast<QFileOpenEvent*>(event)->url();
+
+    // once the app runs, a document opens with the same call as the 'Load a
+    // ZeGrapher document' button
+    if (started)
+      info.importYaml(url);
+    else
+      startupDocuments.append(url.toLocalFile());
+
+    return true;
+  }
+
+private:
+  Information& info;
+};
+
+}
+#endif
 
 
 int main(int argc, char *argv[])
@@ -64,6 +112,13 @@ int main(int argc, char *argv[])
   // define after QGuiApp and QCoreApp::set* because it will use stuff from them
   Information info;
   information = &info;
+
+#ifdef Q_OS_MACOS
+  // macOS sends the document of a double click as an event. The filter goes in
+  // before the first call that processes events, so that none is missed
+  DocumentOpener opener(info);
+  a.installEventFilter(&opener);
+#endif
 
   // an imported document can override it
   info.appSettings.language = systemLanguage();
@@ -103,8 +158,19 @@ int main(int argc, char *argv[])
                                QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
   parser.process(a);
 
-  if (not parser.positionalArguments().isEmpty())
-    info.openStartupDocuments(parser.positionalArguments());
+  QStringList documents = parser.positionalArguments();
+
+#ifdef Q_OS_MACOS
+  // processEvents() makes QCocoaEventDispatcher run [NSApp finishLaunching].
+  // AppKit hands over the documents that started the app during that call, and
+  // Qt turns them into QFileOpenEvents
+  QCoreApplication::processEvents();
+  documents += opener.startupDocuments;
+  opener.started = true;
+#endif
+
+  if (not documents.isEmpty())
+    info.openStartupDocuments(documents);
   else if (not info.restoreLastDocument())
     info.loadExampleDocument();
 
