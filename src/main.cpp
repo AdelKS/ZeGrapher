@@ -24,6 +24,8 @@
 #include "buildconfig.h"
 
 #include <QCommandLineParser>
+#include <QEvent>
+#include <QFileOpenEvent>
 #include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
@@ -32,6 +34,42 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QTranslator>
+
+#ifdef Q_OS_MACOS
+namespace {
+
+/// @brief opens the documents that macOS sends as QFileOpenEvents instead of
+///        command line arguments
+class DocumentOpener: public QObject
+{
+public:
+  explicit DocumentOpener(Information& info): info(info) {}
+
+  QStringList startupDocuments;
+  bool started = false;
+
+protected:
+  bool eventFilter(QObject* watched, QEvent* event) override
+  {
+    if (event->type() != QEvent::FileOpen)
+      return QObject::eventFilter(watched, event);
+
+    const QUrl url = static_cast<QFileOpenEvent*>(event)->url();
+
+    if (started)
+      info.importYaml(url);
+    else
+      startupDocuments.append(url.toLocalFile());
+
+    return true;
+  }
+
+private:
+  Information& info;
+};
+
+}
+#endif
 
 
 int main(int argc, char *argv[])
@@ -103,8 +141,21 @@ int main(int argc, char *argv[])
                                QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
   parser.process(a);
 
-  if (not parser.positionalArguments().isEmpty())
-    for (const QString& document: parser.positionalArguments())
+  QStringList documents = parser.positionalArguments();
+
+#ifdef Q_OS_MACOS
+  DocumentOpener opener(info);
+  a.installEventFilter(&opener);
+
+  // processEvents() runs [NSApp finishLaunching], which sends a QFileOpenEvent
+  // for each document that started the app
+  QCoreApplication::processEvents();
+  documents += opener.startupDocuments;
+  opener.started = true;
+#endif
+
+  if (not documents.isEmpty())
+    for (const QString& document: documents)
       info.importYaml(QUrl::fromLocalFile(document));
   else if (not info.restoreLastDocument())
     info.loadExampleDocument();
