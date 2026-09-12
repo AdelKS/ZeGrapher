@@ -536,6 +536,14 @@
 <context>
     <name>Information</name>
     <message>
+        <source>Could not export the graph</source>
+        <translation>グラフを書き出せませんでした</translation>
+    </message>
+    <message>
+        <source>Could not write the file.</source>
+        <translation>ファイルを書き込めませんでした。</translation>
+    </message>
+    <message>
         <source>Internal bug</source>
         <translation>内部エラー</translation>
     </message>

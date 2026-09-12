@@ -536,6 +536,14 @@
 <context>
     <name>Information</name>
     <message>
+        <source>Could not export the graph</source>
+        <translation>Der Graph ließ sich nicht ausgeben</translation>
+    </message>
+    <message>
+        <source>Could not write the file.</source>
+        <translation>Die Datei ließ sich nicht schreiben.</translation>
+    </message>
+    <message>
         <source>Internal bug</source>
         <translation>Interner Fehler</translation>
     </message>

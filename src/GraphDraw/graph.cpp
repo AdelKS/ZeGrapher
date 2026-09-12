@@ -27,6 +27,7 @@
 #include <QQuickWindow>
 #include <QSvgGenerator>
 #include <QFile>
+#include <QFileInfo>
 #include <QBuffer>
 #include <QDomDocument>
 
@@ -389,11 +390,14 @@ void Graph::drawGraphRect()
 
 void Graph::exportImage(QUrl filename)
 {
-  QImage image((size() * window()->devicePixelRatio()).toSize(), QImage::Format_RGB32);
+  const QString path = filename.toLocalFile();
+  const QSize pixels = (size() * window()->devicePixelRatio()).toSize();
+  QImage image(pixels, QImage::Format_RGB32);
 
   if (image.isNull())
   {
-    qWarning() << "exportImage: could not allocate image, aborting";
+    information->exportFailed(path, QString("%1x%2 pixels do not fit in memory")
+                                      .arg(pixels.width()).arg(pixels.height()));
     return;
   }
 
@@ -405,7 +409,14 @@ void Graph::exportImage(QUrl filename)
   paint(&imagePainter);
   paintType = GPU_RENDER;
 
-  image.save(filename.toLocalFile(), nullptr, 100);
+  // QImage::save() picks the format from the suffix of the name, and it
+  // reports nothing beyond this bool
+  if (not image.save(path, nullptr, 100))
+    information->exportFailed(path, QFileInfo(path).suffix().isEmpty()
+                                      ? QString("the name carries no suffix, "
+                                                "so no image format matches it")
+                                      : QString("no image format writes '%1'")
+                                          .arg(QFileInfo(path).suffix()));
 }
 
 void Graph::drawSupport()
@@ -521,16 +532,20 @@ void Graph::exportPDF(QUrl fileName)
   );
 
   if (not layout.isValid()) {
-    qWarning() << "exportPDF: invalid page layout, aborting";
+    const QSizeF sheet = settings.getSize().cmSheetSize;
+    information->exportFailed(fileName.toLocalFile(),
+                              QString("a page of %1x%2 cm is not a valid size")
+                                .arg(sheet.width()).arg(sheet.height()));
     return;
   }
 
   pdfWriter.setPageLayout(layout);
   QPainter pdfPainter(&pdfWriter);
 
+  // QPdfWriter opens the file, and the painter stays inactive when it could not
   if (not pdfPainter.isActive())
   {
-    qWarning() << "exportPDF: painter not active, aborting";
+    information->exportFailed(fileName.toLocalFile());
     return;
   }
 
@@ -561,7 +576,7 @@ void Graph::exportSVG(QUrl fileName)
 
   if (not svgPainter.isActive())
   {
-    qWarning() << "exportSVG: painter not active, aborting";
+    information->exportFailed(fileName.toLocalFile());
     return;
   }
 
@@ -576,9 +591,16 @@ void Graph::exportSVG(QUrl fileName)
 
   injectClipPath(svgData);    // edit the SVG in memory
 
-  QFile file(fileName.toLocalFile());
-  if (file.open(QIODevice::WriteOnly))
-    file.write(svgData);
+  const QString path = fileName.toLocalFile();
+  QFile file(path);
+  if (not file.open(QIODevice::WriteOnly))
+  {
+    information->exportFailed(path, file.errorString());
+    return;
+  }
+
+  if (file.write(svgData) != svgData.size())
+    information->exportFailed(path, file.errorString());
 }
 
 void Graph::injectClipPath(QByteArray& svg)
