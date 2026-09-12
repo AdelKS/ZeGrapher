@@ -83,7 +83,10 @@ signals:
 
 protected:
   void splitCsvFile();
-  void readCsvFile();
+
+  /// @returns why the file could not be opened, empty when it was read or when
+  ///          no file is set
+  QString readCsvFile();
 
   LoadingState loadingState = FREE;
   int progressPercentage = 0;

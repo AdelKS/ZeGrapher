@@ -148,6 +148,14 @@ void Information::exportFailed(const QString& file, const QString& details)
                .details = details});
 }
 
+void Information::readFailed(const QString& file, const QString& details)
+{
+  appendIoErr({.title = tr("Could not read the file"),
+               .file = file,
+               .text = tr("Could not open the file for reading."),
+               .details = details});
+}
+
 void Information::exportYaml(QUrl filename)
 {
   writeYaml(filename, POD{.zegrapher = SOFTWARE_VERSION,

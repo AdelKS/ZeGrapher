@@ -99,6 +99,10 @@ public:
   /// @param details  what went wrong
   void exportFailed(const QString& file, const QString& details = {});
 
+  /// @brief reports that a file could not be read
+  /// @param details  what went wrong, as the system words it
+  void readFailed(const QString& file, const QString& details = {});
+
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
