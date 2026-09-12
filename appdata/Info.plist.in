@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  appdata/meson.build fills in the version and installs the result. Apple takes
+  only digits and dots in a version, so a pre-release such as '4.0.0_rc0' gives
+  the release it leads to, and CFBundleGetInfoString carries the whole version.
+-->
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>ZeGrapher</string>
+	<key>CFBundleIconFile</key>
+	<string>ZeGrapher.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.zegrapher.www</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>ZeGrapher @VERSION@, math plotting software</string>
+	<key>CFBundleName</key>
+	<string>ZeGrapher</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@RELEASE@</string>
+	<key>CFBundleVersion</key>
+	<string>@RELEASE@</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>IFMajorVersion</key>
+	<integer>@MAJOR@</integer>
+	<key>IFMinorVersion</key>
+	<integer>@MINOR@</integer>
+</dict>
+</plist>
