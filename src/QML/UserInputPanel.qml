@@ -21,12 +21,16 @@ Item {
     title: qsTr("Graph export")
     currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.SaveFile
-    defaultSuffix: "pdf"
     nameFilters: [
       qsTr("Portable Document Format (%1)").arg("*.pdf"),
       qsTr("Scalable Vector Graphics (%1)").arg("*.svg"),
       qsTr("Image format (%1)").arg("*.png *.jpeg *.jpg *.bmp *.ppm") // supported formats: https://doc.qt.io/qt-6.11/qimage.html#reading-and-writing-image-files
     ]
+    // MainWindow reads the format off the suffix of the name, so a name typed
+    // without one takes the first extension of the filter that is open.
+    // 'extensions' holds them without their dot: '*.pdf' gives 'pdf'
+    defaultSuffix: selectedNameFilter.extensions.length > 0
+                   ? selectedNameFilter.extensions[0] : "pdf"
     visible: false
     onAccepted: userInputPanel.exportGraph(selectedFile)
   }
