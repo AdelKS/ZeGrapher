@@ -544,6 +544,10 @@
         <translation>Не удалось записать файл.</translation>
     </message>
     <message>
+        <source>Could not read the file</source>
+        <translation>Не удалось прочитать файл</translation>
+    </message>
+    <message>
         <source>Internal bug</source>
         <translation>Внутренняя ошибка</translation>
     </message>

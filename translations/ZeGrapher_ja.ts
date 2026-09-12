@@ -544,6 +544,10 @@
         <translation>ファイルを書き込めませんでした。</translation>
     </message>
     <message>
+        <source>Could not read the file</source>
+        <translation>ファイルを読み込めませんでした</translation>
+    </message>
+    <message>
         <source>Internal bug</source>
         <translation>内部エラー</translation>
     </message>

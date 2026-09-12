@@ -544,6 +544,10 @@
         <translation>Die Datei ließ sich nicht schreiben.</translation>
     </message>
     <message>
+        <source>Could not read the file</source>
+        <translation>Die Datei ließ sich nicht lesen</translation>
+    </message>
+    <message>
         <source>Internal bug</source>
         <translation>Interner Fehler</translation>
     </message>
