@@ -215,9 +215,6 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
   }
 }
 
-template <typename T>
-struct P {};
-
 void Information::importYaml(QUrl filename)
 {
   qInfo() << "Importing from " << filename.toLocalFile();
