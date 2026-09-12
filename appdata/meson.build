@@ -20,7 +20,26 @@ release_notes_qrc = configure_file(
 
 if host_machine.system() == 'darwin' # macos
     install_data(app_icon_icns, install_dir : 'Contents/Resources')
-    install_data('Info.plist', install_dir : 'Contents')
+
+    # '4.0.0_rc0-dev' -> release '4.0.0', major '4', minor '0'. Apple takes only
+    # digits and dots in CFBundleShortVersionString, so the keys that hold a
+    # number carry the release that a pre-release leads to
+    zg_release = meson.project_version().split('_')[0].split('-')[0]
+    zg_release_parts = zg_release.split('.')
+
+    install_data(
+        configure_file(
+            input : 'Info.plist.in',
+            output : 'Info.plist',
+            configuration : {
+                'VERSION' : meson.project_version(),
+                'RELEASE' : zg_release,
+                'MAJOR' : zg_release_parts[0],
+                'MINOR' : zg_release_parts[1],
+            },
+        ),
+        install_dir : 'Contents',
+    )
 elif host_machine.system() == 'windows'
     # TODO: can we actually properly install stuff on windows ?
 else
