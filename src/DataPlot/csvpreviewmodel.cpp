@@ -102,12 +102,16 @@ void CsvPreviewModel::setCsvFile(QUrl file)
 
   csvFile = file;
 
-  readCsvFile();
+  // the setters of the preview options read the file again, and only this
+  // setter reports a failure, so the reader sees one error per file
+  if (const QString error = readCsvFile(); not error.isEmpty())
+    information->readFailed(csvFile.toLocalFile(), error);
 }
 
-void CsvPreviewModel::readCsvFile()
+QString CsvPreviewModel::readCsvFile()
 {
   QFile file(csvFile.toLocalFile());
+  QString error;
 
   if(not csvFile.isEmpty() and file.open(QFile::ReadOnly | QFile::Text))
   {
@@ -124,8 +128,14 @@ void CsvPreviewModel::readCsvFile()
 
     file.close();
   }
+  // an empty path is the state before the reader picks a file, and it is no
+  // fault of its own
+  else if (not csvFile.isEmpty())
+    error = file.errorString();
 
   splitCsvFile();
+
+  return error;
 }
 
 void CsvPreviewModel::setSeparator(QString sep)
@@ -298,7 +308,7 @@ void CsvPreviewModel::loadIntoWorld()
 
     emit loadingStateChanged();
   }
-
+  else information->readFailed(csvFile.toLocalFile(), file.errorString());
 }
 
 QStringList CsvPreviewModel::splitCsvLine(QStringView line, QStringView sep)
