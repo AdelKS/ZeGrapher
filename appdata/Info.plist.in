@@ -12,7 +12,7 @@
 	<key>CFBundleIconFile</key>
 	<string>ZeGrapher.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.zegrapher.www</string>
+	<string>com.zegrapher.ZeGrapher</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleGetInfoString</key>
