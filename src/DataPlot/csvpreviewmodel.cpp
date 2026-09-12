@@ -124,6 +124,10 @@ void CsvPreviewModel::readCsvFile()
 
     file.close();
   }
+  // an empty path is the state before the reader picks a file, and it is no
+  // fault of its own
+  else if (not csvFile.isEmpty())
+    information->readFailed(csvFile.toLocalFile(), file.errorString());
 
   splitCsvFile();
 }
@@ -298,7 +302,7 @@ void CsvPreviewModel::loadIntoWorld()
 
     emit loadingStateChanged();
   }
-
+  else information->readFailed(csvFile.toLocalFile(), file.errorString());
 }
 
 QStringList CsvPreviewModel::splitCsvLine(QStringView line, QStringView sep)
