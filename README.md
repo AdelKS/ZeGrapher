@@ -11,54 +11,28 @@ ZeGrapher is a free, open source and easy to use software for plotting mathemati
 
 **Official website:** [https://zegrapher.com/](https://zegrapher.com/)
 
-------------------------------------
-
 ### Features
 
-- Visualize functions by giving their "natural" equations (e.g. `f(x) = 2+cos(x)`)
-  - All the standard mathematical functions (`cos` `cosh` `exp` ...etc) can be used.
-  - Any user defined function can be used.
-- Visualize numerical sequences through specific equations
-  - Defined by giving a list of expressions separated with `,` or `;`
-    - The last expression is the "generic" expression that is used for any other index that the first values.
-    - If more than one expression is provided, the first expressions are considered as the first values of the sequence
-  - Example: Fibonacci sequence `u(n) = 0 ; 1 ; u(n-2) + u(n-1)`
-    - First values: `0`, `1`
-    - Generic expression: `u(n-2) + u(n-1)`
-- Can define "global constants", i.e. a variable that has an explicit numeric value without depending on any other object
-  - Example `pi = 3.14`
-  - Can be used for parametric plots of functions, sequences and parametric equations.
-  - Can be made into "Schrodinger Constants" (Schrodinger cat icon): take many values at once and all dependent math objects will be plotted simultaneously for each value taken
-- Can define "global variables", i.e. a function without input variables that can arbitrarily depend on other objects.
-- Plotting of 2D data
-  - Data can be imported from/exported to a CSV file.
-    - Tested with CSV files with millions of cells
-  - Excel-style table editing
-    - Insert / (bulk) delete of rows
-- Extensive tools for exports that look identical to the graph being previewed
-  - Scalable (`svg`, `pdf`) and image (`png`, `jpeg`, `bmp` and `ppm`) formats
-- Navigate on the graph
-  - Select a curve to display the coordinates of its points.
-  - Zoom/un-zoom
-    - Globally using the scroll wheel
-    - On each axis separately using CTRL + vertical/horizontal scroll
-      - CTRL + SHIFT swaps vertical/horizontal scroll so regular (vertical) scroll can zoom the x axis only.
-  - Move the graph.
-- Customization
-  - Change the grid ticks to be multiples of a given expression
-    - e.g. multiples of `π`
-  - Change colors: axes, background, functions...
-  - Adjust the plotting precision (affects rendering speed);
-  - Independent X/Y grid and sub-grid settings
-    - Show / hide
-    - Define number of subdivisions
-  - Plot the graph on an orthonormal basis.
-  - Set custom graph size
-    - In _real_ centimeters: can be measured on-screen and in exported vector medium (PDF and SVG)
-    - In pixels
-  - A global scaling factor to change how big everything is
+ZeGrapher plots functions, sequences, parametric equations and data. Objects
+can share constants and variables. It imports and exports CSV, and it exports
+the graph as an image or a vector file, identical to what you see on screen.
 
-------------------------------------------
+For more information, see [the feature list](./website/content/en/2-features.md) and
+[the user documentation](./website/content/en/4-documentation.md).
+
+### Translations
+
+ZeGrapher and its website are translated into several languages:
+
+- The app: one `.ts` file per language in [`translations/`](./translations).
+  Open it with [Qt Linguist](https://doc.qt.io/qt-6/qtlinguist-index.html), or
+  edit the XML by hand.
+- The website: one folder per language under
+  [`website/content/`](./website/content).
+  [`website/README.md`](./website/README.md) says how to add one.
+
+Corrections and new languages are welcome.
+
 
 ### Download
 
@@ -101,4 +75,3 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 ZeGrapher is licensed under the [GNU Affero General Public License v3](./LICENSE) or later.
 
 The unmodified bundled [Latin Modern Math font](./fonts/latinmodern-math.otf), is (re)distributed under the [GUST font license](./fonts/latinmodern-math-license.txt)
-
