@@ -200,8 +200,8 @@ Item {
         Layout.maximumWidth: 30
 
         id: loopButton
-        lightThemeIcon: checked ? "qrc:/icons/loop-dark.svg" : "qrc:/icons/loop-dark.svg"
-        darkThemeIcon: checked ? "qrc:/icons/loop-light.svg" : "qrc:/icons/loop-light.svg"
+        lightThemeIcon: "qrc:/icons/loop-dark.svg"
+        darkThemeIcon: "qrc:/icons/loop-light.svg"
         checkable: true
 
         ToolTip.text: qsTr("Loop: at max, the constant jumps back to min and starts again")
@@ -221,8 +221,8 @@ Item {
         Layout.maximumWidth: 30
 
         id: pingPongButton
-        lightThemeIcon: checked ? "qrc:/icons/ping-pong-dark.svg" : "qrc:/icons/ping-pong-dark.svg"
-        darkThemeIcon: checked ? "qrc:/icons/ping-pong-light.svg" : "qrc:/icons/ping-pong-light.svg"
+        lightThemeIcon: "qrc:/icons/ping-pong-dark.svg"
+        darkThemeIcon: "qrc:/icons/ping-pong-light.svg"
         checkable: true
 
         ToolTip.text: qsTr("Ping pong: at max, the constant moves back to min, then to max again")
