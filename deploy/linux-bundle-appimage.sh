@@ -4,7 +4,7 @@ set -e
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
-version=$(bash "${deploy_dir}"/../version.sh)
+version=$(python3 "${deploy_dir}"/../appdata/releases.py --version)
 
 [[ -d "${deploy_dir}/appdir-linux" ]] && rm -rf "${deploy_dir}/appdir-linux"
 

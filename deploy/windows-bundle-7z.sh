@@ -3,11 +3,11 @@
 
 set -e
 
-pacboy -S --noconfirm gcc meson python-yaml qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations qt6-shadertools 7zip glaze jq
+pacboy -S --noconfirm gcc meson python-yaml qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations qt6-shadertools 7zip glaze
 
 deploy_script_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
-version=$(bash "${deploy_script_dir}"/../version.sh)
+version=$(python3 "${deploy_script_dir}"/../appdata/releases.py --version)
 # msys2 names the architecture 'aarch64', and the other bundles name it 'arm64'
 arch=${MSYSTEM_CARCH:?run this script inside an msys2 shell}
 arch=${arch/aarch64/arm64}
