@@ -8,10 +8,6 @@ Item {
   property int spacing: 5
   implicitHeight: yminEdit.y + yminEdit.height
 
-  onImplicitWidthChanged: {
-    console.log("RangeAdjust: implicitWidth: ", implicitWidth);
-  }
-
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
 

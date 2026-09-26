@@ -63,7 +63,6 @@ ApplicationWindow {
   onHeightChanged: Information.appSettings.windowSize = Qt.size(width, height)
 
   onScreenChanged: {
-    console.log("Moved to screen:", screen.name);
     Information.graphSettings.screenChanged(win); // converted from (px per mm) to (px per cm)
   }
 
@@ -318,24 +317,14 @@ ApplicationWindow {
     contentHeight: interactiveGraph.implicitHeight
     contentWidth: interactiveGraph.implicitWidth
 
-    onContentHeightChanged: {
-      console.log("Graph scrollview content height: ", contentHeight);
-    }
-
-    onContentWidthChanged: {
-      console.log("Graph scrollview content width: ", contentWidth);
-    }
-
     onAvailableHeightChanged: {
       interactiveGraph.settings.setAvailableSizePx( Qt.size(availableWidth, availableHeight));
       interactiveGraph.updateImplicitSize();
-      console.log("Graph available height: ", availableHeight);
     }
 
     onAvailableWidthChanged: {
       interactiveGraph.settings.setAvailableSizePx( Qt.size(availableWidth, availableHeight));
       interactiveGraph.updateImplicitSize();
-      console.log("Graph available width: ", availableWidth);
     }
 
     Behavior on x {
@@ -359,28 +348,15 @@ ApplicationWindow {
         target: interactiveGraph.settings
 
         function onZoomSettingsChanged() {
-          console.log("zoom settings change: updating implicit sizes");
           interactiveGraph.updateImplicitSize();
         }
 
         function onSizeSettingsChanged() {
-          console.log("size settings change: updating implicit sizes");
           interactiveGraph.updateImplicitSize();
         }
       }
 
-      onHeightChanged: {
-        console.log("Graph width: ", width);
-        console.log("Graph height: ", height);
-      }
-
-      onWidthChanged: {
-        console.log("Graph width: ", width);
-        console.log("Graph height: ", height);
-      }
-
       function updateImplicitSize() {
-        console.log("Updating graph implicit size")
         if (interactiveGraph.settings.size.sheetFillsWindow || interactiveGraph.settings.zoom.zoomingType === ZoomingType.FITSHEET ) {
           implicitWidth = graphScrollView.availableWidth;
           implicitHeight = graphScrollView.availableHeight;

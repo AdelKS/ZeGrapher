@@ -182,8 +182,6 @@ Item {
                 value: root.pixelUnits ? root.graphSettings.size.pxSheetSize.height : root.graphSettings.size.cmSheetSize.height
 
                 onValueModified: (value) => {
-
-                  console.log("Updating sheet size");
                   if (root.pixelUnits) {
                     root.graphSettings.size.pxSheetSize.height = value;
                     root.graphSettings.size.cmSheetSize.height = value / root.graphSettings.pixelDensity;
