@@ -122,7 +122,6 @@ Item {
             implicitName: "xMultiplier"
             expression: root.graphSettings.axes.x.linear.constantMultiplierStr
             onValueChanged: {
-              console.log("new x multiplier: ", value);
               root.graphSettings.axes.x.linear.constantMultiplier = value;
             }
             onExpressionChanged: root.graphSettings.axes.x.linear.constantMultiplierStr = expression;

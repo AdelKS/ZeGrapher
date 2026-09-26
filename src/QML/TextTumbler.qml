@@ -37,17 +37,13 @@ RowLayout {
       for (var i = 0; i != model.count; i++) {
         textMetrics.text = model.get(i).txt;
         if (textMetrics.width > newImplicitWidth) {
-          console.debug("TextTumbler: changing longest text to", model.get(i).txt)
           newImplicitWidth = textMetrics.width;
         }
         if (textMetrics.height > biggestHeight) {
-          console.debug("TextTumbler: changing Biggest height to", textMetrics.height)
           biggestHeight = textMetrics.height;
         }
       }
-      console.debug("TextTumbler: changing implicitWidth to ", newImplicitWidth);
       tumbler.implicitWidth = newImplicitWidth;
-      console.debug("TextTumbler: changing implicitHeigh to ", Math.round(biggestHeight*2.5));
       tumbler.implicitHeight = Math.round(biggestHeight*2.2);
     }
 

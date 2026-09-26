@@ -8,17 +8,12 @@ Item {
   property int spacing: 5
   implicitHeight: yminEdit.y + yminEdit.height
 
-  onImplicitWidthChanged: {
-    console.log("RangeAdjust: implicitWidth: ", implicitWidth);
-  }
-
   SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
 
 
   Connections {
     target: root.range.y
     function onStateChanged() {
-      console.debug("Y range state change: ", root.range.y.state)
       if (root.range.y.state) {
         yminEdit.customErrorMsg = "";
         ymaxEdit.customErrorMsg = "";
@@ -39,7 +34,6 @@ Item {
   Connections {
     target: root.range.x
     function onStateChanged() {
-      console.debug("X range state change: ", root.range.x.state)
       if (root.range.x.state) {
         xminEdit.customErrorMsg = "";
         xmaxEdit.customErrorMsg = "";

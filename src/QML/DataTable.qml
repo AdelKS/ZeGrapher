@@ -73,7 +73,6 @@ Item {
       TapHandler {
         acceptedModifiers: Qt.NoModifier
         onTapped: {
-          console.debug("Clear&Select column: ", column)
           tableView.selectionModel.select(
             tableView.index(0, column),
             ItemSelectionModel.Columns | ItemSelectionModel.ClearAndSelect
@@ -85,7 +84,6 @@ Item {
       TapHandler {
         acceptedModifiers: Qt.ShiftModifier
         onTapped: {
-          console.debug("Select column: ", column)
           tableView.selectionModel.select(
             tableView.index(0, column),
             ItemSelectionModel.Columns | ItemSelectionModel.Select
@@ -124,7 +122,6 @@ Item {
       TapHandler {
         acceptedModifiers: Qt.NoModifier
         onTapped: {
-          console.debug("Clear&Select row: ", row)
           tableView.selectionModel.select(
             tableView.index(row, 0),
             ItemSelectionModel.Rows | ItemSelectionModel.ClearAndSelect
@@ -136,7 +133,6 @@ Item {
       TapHandler {
         acceptedModifiers: Qt.ShiftModifier
         onTapped: {
-          console.debug("Select row: ", row)
           tableView.selectionModel.select(
             tableView.index(row, 0),
             ItemSelectionModel.Rows | ItemSelectionModel.Select
@@ -193,7 +189,6 @@ Item {
 
       function clearSelection() {
         const currentIndex = selectionModel.currentIndex;
-        console.debug("TableEdit: clearing selection: ", selectionModel.selectedIndexes, " current index: ", currentIndex);
         if (selectionModel.hasSelection)
           root.model.clearCells(selectionModel.selectedIndexes);
         if (currentIndex.valid)
@@ -204,8 +199,6 @@ Item {
         const currentIndex = selectionModel.currentIndex;
         if (!selectionModel.hasSelection && !currentIndex.valid)
           return;
-
-        console.debug("TableEdit: deleting selection");
 
         // Save selected stuff before we start deleting
         const fullColumns = selectionModel.selectedColumns().map(index => index.column);
@@ -243,7 +236,6 @@ Item {
       }
 
       Keys.onPressed: (event)=> {
-        console.debug("TableEdit: key pressed, ID=0x", event.key.toString(16));
         if (event.key === Qt.Key_Delete) {
           deleteSelection();
           event.accepted = true;
@@ -273,11 +265,6 @@ Item {
         // as `item.row`/`item.column` from the sibling editDelegate Component.
         required property int row
         required property int column
-
-        onSelectedChanged: {
-          let selection = selected ? "selected" : "deselected"
-          console.debug("Cell ", selection, ": row=", row, " column=", column);
-        }
 
         implicitWidth: 100
         implicitHeight: displayWidget.implicitHeight

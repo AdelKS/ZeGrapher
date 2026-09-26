@@ -106,10 +106,6 @@ Item {
 
       implicitWidth: mathTabButton.implicitWidth + graphTabButton.implicitWidth + appTabButton.implicitWidth
 
-      onImplicitWidthChanged: {
-        console.log("UserInputPanel: TabBar: implicitWidth: ", implicitWidth);
-      }
-
       ZeTabButton {
         id: mathTabButton
         text: qsTr("Math")
@@ -140,10 +136,6 @@ Item {
       implicitWidth: Math.max(mathObjectsTab.implicitWidth, gridSettings.implicitWidth, graphSettingsTab.implicitWidth, appSettings.implicitWidth)
 
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
-
-      onImplicitWidthChanged: {
-        console.log("UserInputPanel: SwipeView: implicitWidth: ", implicitWidth);
-      }
 
       MathObjects {
         id: mathObjectsTab

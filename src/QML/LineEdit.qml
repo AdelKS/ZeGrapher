@@ -53,10 +53,8 @@ Rectangle {
       onTextEdited: rec.textEdited()
 
       Keys.onPressed: (event)=> {
-        console.debug("LineEdit: key pressed, ID=0x", event.key.toString(16));
         if ([Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab].includes(event.key)) {
           // filter linebreaks events
-          console.debug("LineEdit: ignoring Enter or Tab");
           event.accepted = true;
         }
       }

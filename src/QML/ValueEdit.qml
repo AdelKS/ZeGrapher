@@ -37,7 +37,6 @@ Item {
   }
 
   Component.onCompleted: {
-    console.debug("ValueEdit: backend=", backend);
     refresh();
   }
 }

@@ -182,8 +182,6 @@ Item {
                 value: root.pixelUnits ? root.graphSettings.size.pxSheetSize.height : root.graphSettings.size.cmSheetSize.height
 
                 onValueModified: (value) => {
-
-                  console.log("Updating sheet size");
                   if (root.pixelUnits) {
                     root.graphSettings.size.pxSheetSize.height = value;
                     root.graphSettings.size.cmSheetSize.height = value / root.graphSettings.pixelDensity;
@@ -309,10 +307,7 @@ Item {
             value: root.graphSettings.minPointsLg2
             to: maxPointsLg2.value
 
-            onValueModified: {
-              root.graphSettings.minPointsLg2 = value;
-              console.debug("Min points changed: ", value);
-            }
+            onValueModified: root.graphSettings.minPointsLg2 = value
           }
 
           ZeLabel {
@@ -329,10 +324,7 @@ Item {
             stepSize: 1
             to: 16
 
-            onValueModified: {
-              root.graphSettings.maxPointsLg2 = value;
-              console.debug("Max points changed: ", value);
-            }
+            onValueModified: root.graphSettings.maxPointsLg2 = value
           }
         }
       }

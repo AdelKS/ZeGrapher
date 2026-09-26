@@ -311,7 +311,6 @@ Item {
 
 
   Component.onCompleted: {
-    console.debug("backendEdit: backend=", backend);
     AnimationConductor.track(wrapped_backend);
   }
 

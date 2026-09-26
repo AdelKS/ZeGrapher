@@ -103,7 +103,6 @@ Item {
     height: textEdit.length > 0 ? implicitHeight + 4 : 0
 
     function setErrorMsg(msg: string) {
-      console.debug("ZcExprEdit: new error message: ", msg);
       errorLbl.textEdit.text = msg;
     }
 
