@@ -58,6 +58,10 @@ class Information: public QObject
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
   Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
+  /// @brief the version of ZeGrapher that wrote the settings file, empty when
+  ///        no run wrote one
+  Q_PROPERTY(QString lastRunVersion MEMBER lastRunVersion CONSTANT)
+
 public:
   Information(QObject* parent = nullptr);
   ~Information();
@@ -76,7 +80,12 @@ signals:
   void ioErrorCountChanged();
 
 public slots:
+  /// @brief writes the objects and the settings of the graph to a document
   void exportYaml(QUrl filename);
+
+  /// @brief adds the objects of a document to the open ones, and takes the
+  ///        settings of the graph from it
+  /// @note the settings of the app come from the settings file alone
   void importYaml(QUrl filename);
 
 public:
@@ -92,8 +101,14 @@ public:
   ZeAppSettings appSettings;
   ZeGraphSettings graphSettings;
 
+  /// @brief read from the settings file when Information is built
+  QString lastRunVersion;
+
   /// @brief the name of the file saveLastDocument() writes, under AppConfigLocation
   static constexpr auto lastDocumentName = "last-document.zg";
+
+  /// @brief the name of the file saveSettings() writes, under AppConfigLocation
+  static constexpr auto settingsName = "settings.yaml";
 
   struct POD {
     /// @brief version of ZeGrapher that wrote the document, always serialized
@@ -102,12 +117,29 @@ public:
     std::optional<std::string> zegrapher;
     std::optional<zg::MathWorld::POD> math_objects;
     std::optional<ZeGraphSettings::POD> graph;
+
+    /// @brief the settings of the app, which only the settings file holds. A
+    ///        document of ZeGrapher 4.0.0_beta3 or older holds them too, and
+    ///        importYaml() leaves them out
     std::optional<ZeAppSettings::POD> app;
   };
 
 protected:
   /// @brief writes the document that the next run opens again
   void saveLastDocument();
+
+  /// @brief writes the settings of the app, which the next run reads again
+  void saveSettings();
+
+  /// @brief reads the settings that the last run wrote
+  /// @note the app writes the settings file on every close. If the file cannot
+  ///       be read, the app keeps its defaults, and the next close writes the
+  ///       file again
+  void restoreSettings();
+
+  /// @brief writes a POD to a file, and reports a failure as a document that
+  ///        could not be saved
+  void writeYaml(QUrl filename, const POD& pod);
 
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
