@@ -67,6 +67,10 @@ inline std::optional<double> not_nan(double v)
   return not std::isnan(v) ? v : std::optional<double>{};
 }
 
+/// @brief read options that skip unknown keys, such as the ones a newer
+///        ZeGrapher writes
+inline constexpr glz::yaml::yaml_opts skip_unknown_keys{.error_on_unknown_keys = false};
+
 struct QSizePOD {
   std::optional<int> width;
   std::optional<int> height;

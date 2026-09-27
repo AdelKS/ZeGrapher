@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "information.h"
+#include "structures.h"
 
 #include <QDir>
 #include <QFile>
@@ -31,6 +32,9 @@ namespace {
 
 /// @brief the name of the file saveLastDocument() writes, under AppConfigLocation
 constexpr auto lastDocumentName = "last-document.zg";
+
+/// @brief the name of the file saveSettings() writes, under AppConfigLocation
+constexpr auto settingsName = "settings.yaml";
 
 /// @brief the document of the last run, empty when no run wrote one
 QString lastDocumentPath()
@@ -48,11 +52,47 @@ QString lastDocumentPath()
 
 Information::Information(QObject* parent):
   QObject(parent), appSettings(this), graphSettings(this)
-{}
+{
+  // the settings file can name another language
+  appSettings.language = ZeAppSettings::Language(systemLanguage());
+
+  restoreSettings();
+}
 
 Information::~Information()
 {
+  saveSettings();
   saveLastDocument();
+}
+
+void Information::saveSettings()
+{
+  const QString folder = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+  if (not folder.isEmpty())
+    writeYaml(QUrl::fromLocalFile(folder + '/' + settingsName),
+              SettingsPOD{.zegrapher = SOFTWARE_VERSION, .app = appSettings.exportPod()});
+}
+
+void Information::restoreSettings()
+{
+  const QString path = QStandardPaths::locate(QStandardPaths::AppConfigLocation, settingsName);
+  if (path.isEmpty())
+    return;
+
+  QFile file(path);
+  if (not file.open(QIODevice::ReadOnly))
+    return;
+
+  const QByteArray bytes = file.readAll();
+
+  SettingsPOD settings;
+  if (glz::read_yaml<zg::yml::skip_unknown_keys>(settings, std::string_view(bytes.data(), bytes.size())))
+    return;
+
+  lastRunVersion = QString::fromStdString(settings.zegrapher.value_or(""));
+
+  if (settings.app)
+    appSettings.importPod(std::move(*settings.app));
 }
 
 void Information::saveLastDocument()
@@ -101,13 +141,15 @@ void Information::appendIoErr(IOError err)
 
 void Information::exportYaml(QUrl filename)
 {
+  writeYaml(filename, POD{.zegrapher = SOFTWARE_VERSION,
+                          .math_objects = zg::mathWorld.exportPod(),
+                          .graph = graphSettings.exportPod()});
+}
+
+template <class Pod>
+void Information::writeYaml(QUrl filename, const Pod& pod)
+{
   qDebug() << "Exporting to " << filename.toLocalFile();
-  POD pod = {
-    .zegrapher = SOFTWARE_VERSION,
-    .math_objects = zg::mathWorld.exportPod(),
-    .graph = graphSettings.exportPod(),
-    .app = appSettings.exportPod()
-  };
 
   auto exp_content = glz::write_yaml(pod);
   if (not exp_content)
@@ -216,8 +258,10 @@ void Information::importYaml(QUrl filename)
 
   const std::string_view content(bytes.data(), bytes.size());
 
+  // documents from ZeGrapher 4.0.0_beta3 or older hold the app settings under
+  // 'app', which this read skips
   POD pod;
-  auto read_error = glz::read_yaml(pod, content);
+  auto read_error = glz::read_yaml<zg::yml::skip_unknown_keys>(pod, content);
   if (read_error)
     appendIoErr({.title = tr("Could not load the document"),
                  .file = path,
@@ -225,7 +269,6 @@ void Information::importYaml(QUrl filename)
                  .details = QString::fromStdString(glz::format_error(read_error, content))});
 
   else {
-    if (pod.app) appSettings.importPod(std::move(*pod.app));
     if (pod.graph) graphSettings.importPod(std::move(*pod.graph));
     if (pod.math_objects) zg::mathWorld.importPod(std::move(*pod.math_objects));
   }
