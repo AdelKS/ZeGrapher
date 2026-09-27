@@ -24,6 +24,11 @@
 #include <QMetaType>
 #include <QtQmlIntegration/qqmlintegration.h>
 
+/// @brief true when the app draws its dark theme
+/// @note the FluentWinUI3 style draws dark when QStyleHints::colorScheme() is
+///       not Light, and so does the app: an Unknown scheme counts as dark
+bool isDarkTheme();
+
 struct ThemedColor
 {
   Q_GADGET

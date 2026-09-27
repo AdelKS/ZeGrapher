@@ -4,16 +4,21 @@
 #include <QGuiApplication>
 #include <QStyleHints>
 
+bool isDarkTheme()
+{
+  return qGuiApp->styleHints()->colorScheme() != Qt::ColorScheme::Light;
+}
+
 const QColor& ThemedColor::getCurrent() const
 {
-  if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+  if (isDarkTheme())
     return dark;
   else return light;
 }
 
 void ThemedColor::setCurrent(QColor c)
 {
-  if (qGuiApp->styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+  if (isDarkTheme())
     dark = c;
   else
     light = c;
