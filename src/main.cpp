@@ -66,19 +66,6 @@ int main(int argc, char *argv[])
   Information info;
   information = &info;
 
-  QCommandLineParser parser;
-  parser.setApplicationDescription("2D math plotter");
-  parser.addHelpOption();
-  parser.addVersionOption();
-  parser.addPositionalArgument(QObject::tr("file"), QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
-  parser.process(a);
-
-  if (not parser.positionalArguments().isEmpty())
-    for (const QString& document: parser.positionalArguments())
-      info.importYaml(QUrl::fromLocalFile(document));
-  else if (not info.restoreLastDocument())
-    info.loadExampleDocument();
-
   QTranslator translator;
   QQmlApplicationEngine engine;
 
@@ -102,8 +89,24 @@ int main(int argc, char *argv[])
     engine.retranslate();
   };
 
+  // QCommandLineParser::process() prints the help and exits, so the tr()
+  // strings under it need the translator installed already
   applyLanguage();
   QObject::connect(&info.appSettings, &ZeAppSettings::languageChanged, &engine, applyLanguage);
+
+  QCommandLineParser parser;
+  parser.setApplicationDescription(QObject::tr("2D math plotter"));
+  parser.addHelpOption();
+  parser.addVersionOption();
+  parser.addPositionalArgument(QObject::tr("file"),
+                               QObject::tr("ZeGrapher (.zg) document(s) to open on startup"));
+  parser.process(a);
+
+  if (not parser.positionalArguments().isEmpty())
+    for (const QString& document: parser.positionalArguments())
+      info.importYaml(QUrl::fromLocalFile(document));
+  else if (not info.restoreLastDocument())
+    info.loadExampleDocument();
 
   engine.load("qrc:///qt/qml/ZeGrapher/MainWindow.qml");
 
