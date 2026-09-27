@@ -26,6 +26,7 @@
 #include <QFontDatabase>
 #include <QGuiApplication>
 #include <QIcon>
+#include <QLocale>
 #include <QLoggingCategory>
 #include <QObject>
 #include <QQmlApplicationEngine>
@@ -95,7 +96,7 @@ int main(int argc, char *argv[])
 
     const auto lang = QLocale::Language(info.appSettings.language);
     if (lang != QLocale::English
-        and translator.load(":/translations/ZeGrapher_" + langToShortString(lang) + ".qm"))
+        and translator.load(":/translations/ZeGrapher_" + QLocale::languageToCode(lang) + ".qm"))
       a.installTranslator(&translator);
 
     engine.retranslate();
