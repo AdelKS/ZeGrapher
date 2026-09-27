@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "information.h"
-#include "structures.h"
+#include "Utils/languages.h"
 
 #include <QDir>
 #include <QFile>
@@ -54,7 +54,7 @@ Information::Information(QObject* parent):
   QObject(parent), appSettings(this), graphSettings(this)
 {
   // the settings file can name another language
-  appSettings.language = ZeAppSettings::Language(systemLanguage());
+  appSettings.language = systemLanguage();
 
   restoreSettings();
 }
