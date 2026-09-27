@@ -180,10 +180,8 @@ Item {
     height: implicitHeight
     width: implicitWidth
 
-    SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
     background: Rectangle {
-      color: myPalette.light
+      color: ZeStyle.palette.light
       radius: 5
       opacity: 0.95
     }

@@ -23,8 +23,17 @@ done
 echo "]"
 echo
 
+# qt6.qml_module() takes singletons in a separate list, so files that start
+# with 'pragma Singleton' go in qml_singleton_files instead of qml_files
 echo "qml_files = ["
 for f in $(find . -type f -name "*.qml" | sort); do
+    grep -q "^pragma Singleton" "$f" || echo "  '${f#./}',"
+done
+echo "]"
+echo
+
+echo "qml_singleton_files = ["
+for f in $(grep -l -r --include=*.qml "^pragma Singleton" . | sort); do
     echo "  '${f#./}',"
 done
 echo "]"

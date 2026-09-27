@@ -99,6 +99,10 @@ qml_files = [
   'QML/ZoomSettings.qml',
 ]
 
+qml_singleton_files = [
+  'QML/ZeStyle.qml',
+]
+
 qmlcpp_files = [
   'Animation/animatedconstant.h',
   'Animation/animationconductor.h',
@@ -225,6 +229,7 @@ moc_files = qt6.compile_moc(
 qml_mods = qt6.qml_module(
   'ZeGrapher',
   qml_sources: qml_files,
+  qml_singletons: qml_singleton_files,
   moc_headers: qmlcpp_files,
   include_directories: qmlcpp_inc_dirs,
   dependencies: [qt6_dep],

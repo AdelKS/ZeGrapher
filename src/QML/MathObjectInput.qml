@@ -282,7 +282,7 @@ Item {
           Layout.preferredHeight: Layout.preferredWidth
           Layout.preferredWidth: 30
 
-          source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/schrodinger-cat-dark.svg" : "qrc:/icons/schrodinger-cat-light.svg"
+          source: ZeStyle.dark ? "qrc:/icons/schrodinger-cat-light.svg" : "qrc:/icons/schrodinger-cat-dark.svg"
           fillMode: Image.PreserveAspectFit
           mipmap: true
 
@@ -323,7 +323,7 @@ Item {
 
           Image {
             anchors.fill: parent
-            source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/drag-handle-dark.svg" : "qrc:/icons/drag-handle-light.svg"
+            source: ZeStyle.dark ? "qrc:/icons/drag-handle-light.svg" : "qrc:/icons/drag-handle-dark.svg"
             fillMode: Image.PreserveAspectFit
             mipmap: true
           }

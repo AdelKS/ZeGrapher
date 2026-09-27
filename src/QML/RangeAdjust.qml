@@ -8,8 +8,6 @@ Item {
   property int spacing: 5
   implicitHeight: yminEdit.y + yminEdit.height
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
 
   Connections {
     target: root.range.y
@@ -60,7 +58,7 @@ Item {
     textFormat: TextEdit.RichText
     horizontalAlignment: TextEdit.AlignHCenter
     verticalAlignment: TextEdit.AlignBottom
-    color: myPalette.text
+    color: ZeStyle.palette.text
     anchors.top: root.top
     anchors.horizontalCenter: root.horizontalCenter
     width: parent.width/3
@@ -81,7 +79,7 @@ Item {
     selectByMouse: false
     activeFocusOnPress: false
     textFormat: TextEdit.RichText
-    color: myPalette.text
+    color: ZeStyle.palette.text
     horizontalAlignment: TextEdit.AlignHCenter
     verticalAlignment: TextEdit.AlignBottom
     anchors.horizontalCenter: xminEdit.horizontalCenter
@@ -105,7 +103,7 @@ Item {
     selectByMouse: false
     activeFocusOnPress: false
     textFormat: TextEdit.RichText
-    color: myPalette.text
+    color: ZeStyle.palette.text
     horizontalAlignment: TextEdit.AlignHCenter
     verticalAlignment: TextEdit.AlignBottom
     anchors.horizontalCenter: xmaxEdit.horizontalCenter
@@ -128,7 +126,7 @@ Item {
     selectByMouse: false
     activeFocusOnPress: false
     textFormat: TextEdit.RichText
-    color: myPalette.text
+    color: ZeStyle.palette.text
     horizontalAlignment: TextEdit.AlignHCenter
     verticalAlignment: TextEdit.AlignBottom
     anchors.bottom: yminEdit.top

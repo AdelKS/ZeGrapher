@@ -15,7 +15,7 @@ RoundButton {
   bottomPadding: 0
 
   contentItem: Image {
-    source: Application.styleHints.colorScheme === Qt.Light ? root.lightThemeIcon : root.darkThemeIcon
+    source: ZeStyle.dark ? root.darkThemeIcon : root.lightThemeIcon
     fillMode: Image.PreserveAspectFit
     mipmap: true
   }

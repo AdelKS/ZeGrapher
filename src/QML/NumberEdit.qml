@@ -23,8 +23,6 @@ Rectangle {
 
   clip: true
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
   border.width: 1.5
   radius: 4
 
@@ -32,7 +30,7 @@ Rectangle {
 
   implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 10 + 2*border.width
 
-  color: myPalette.base
+  color: ZeStyle.palette.base
 
   TextInput {
     id: edit
@@ -40,7 +38,7 @@ Rectangle {
     anchors.fill: parent
     anchors.leftMargin: 6
     anchors.rightMargin: 6
-    color: myPalette.text
+    color: ZeStyle.palette.text
     focus: true
     font: Information.appSettings.font
     text: ""
