@@ -3,6 +3,8 @@
 The scripts in this folder read and write the other folders of `website/`.
 Run each command below from this folder.
 
+- `content.py` — finds the files of each language, for the build of the app and
+  for the scripts here
 - `make-images.py` — takes the pictures of the app
 
 # Pictures

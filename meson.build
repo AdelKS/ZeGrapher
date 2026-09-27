@@ -38,7 +38,11 @@ add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', l
 # lists at configure time
 qrc_template = files('generated.qrc.in')
 
+# website/scripts/content.py lists the content of the site for the build
+python = import('python').find_installation()
+
 subdir('translations')
+subdir('website')
 subdir('src')
 subdir('icons')
 subdir('appdata')
