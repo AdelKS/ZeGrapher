@@ -36,6 +36,7 @@ source_files = [
   'structures.cpp',
   'Utils/appsettings.cpp',
   'Utils/axissettings.cpp',
+  'Utils/documentation.cpp',
   'Utils/graphrange.cpp',
   'Utils/graphsettings.cpp',
   'Utils/gridsettings.cpp',
@@ -121,6 +122,7 @@ qmlcpp_files = [
   'Utils/appsettings.h',
   'Utils/axissettings.h',
   'Utils/curvestyle.h',
+  'Utils/documentation.h',
   'Utils/graphrange.h',
   'Utils/graphsettings.h',
   'Utils/gridsettings.h',
@@ -173,7 +175,7 @@ foreach qt6_mod: qt6_modules
 endforeach
 
 compiled_resources = qt6.compile_resources(
-  sources: files('../resources.qrc') + translations_qrc
+  sources: files('../resources.qrc') + translations_qrc + website_qrc
 )
 
 # --- Qt RHI shader compilation -----------------------------------------------

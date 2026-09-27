@@ -38,10 +38,12 @@ add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', l
 # it lists at configure time
 qrc_template = files('generated.qrc.in')
 
-# translations/ lists its .ts files with Python
+# translations/ lists its .ts files with Python, and website/scripts/content.py
+# lists the content of the site for the build
 python = import('python').find_installation()
 
 subdir('translations')
+subdir('website')
 # icons/ compiles the Windows resource that src/ links
 subdir('icons')
 subdir('src')
