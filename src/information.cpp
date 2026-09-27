@@ -157,9 +157,9 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
   {
     appendIoErr(
       {.title = tr("Internal bug"),
-       .text = tr("Please report this bug to "
-                  "contact@zegrapher.com or "
-                  "https://github.com/AdelKS/ZeGrapher/issues, with a way to reproduce it."),
+       //: %1 is the email address of the author, and %2 the page of the issues on GitHub
+       .text = tr("Please report this bug to %1 or %2, with a way to reproduce it.")
+                 .arg(CONTACT_ADDRESS, REPOSITORY_URL "/issues"),
        .details = tr("Could not serialize ZeGrapher's state")});
     return;
   }
