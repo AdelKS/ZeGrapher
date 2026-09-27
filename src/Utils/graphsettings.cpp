@@ -24,12 +24,6 @@
 
 #include <QPalette>
 #include <QGuiApplication>
-#include <QStyleHints>
-
-bool isDarkTheme()
-{
-  return QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark;
-}
 
 QColor getWindowColor()
 {
