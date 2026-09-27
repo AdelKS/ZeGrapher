@@ -12,9 +12,7 @@ Rectangle {
   readonly property int margin: 10
   readonly property int iconSize: Math.max(30, zoom.implicitHeight)
 
-  color: myPalette.window
-
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
+  color: ZeStyle.palette.window
 
   implicitHeight: layout.implicitHeight + 2*margin
   implicitWidth: layout.implicitWidth + 2*margin

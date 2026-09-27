@@ -14,8 +14,6 @@ ApplicationWindow {
 
   color: Information.graphSettings.backgroundColor.current
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
   component ResizeHandle: Item {
     width: 5
     anchors.top: parent.top
@@ -53,7 +51,7 @@ ApplicationWindow {
         width: 3
         height: parent.height / 2
         radius: width / 2
-        color: handleArea.pressed || handleArea.containsMouse ? myPalette.highlight : myPalette.mid
+        color: handleArea.pressed || handleArea.containsMouse ? ZeStyle.palette.highlight : ZeStyle.palette.mid
       }
     }
   }
@@ -90,7 +88,7 @@ ApplicationWindow {
     blur: 10
     spread: 0
     offset.x: 0
-    color: myPalette.shadow
+    color: ZeStyle.palette.shadow
     opacity: drawer.width > 0 ? Math.max(0, 1 + drawer.x / drawer.width) : 1
   }
 
@@ -102,7 +100,7 @@ ApplicationWindow {
     anchors.bottom: parent.bottom
     width: row.width
 
-    color: myPalette.window
+    color: ZeStyle.palette.window
 
     states: [
       State {
@@ -260,7 +258,7 @@ ApplicationWindow {
       radius: drawer_button.radius
       blur: 10
       spread: 0
-      color: myPalette.shadow
+      color: ZeStyle.palette.shadow
     }
 
     Rectangle {
@@ -268,7 +266,7 @@ ApplicationWindow {
       width: 25
       height: width
       radius: 8
-      color: myPalette.window
+      color: ZeStyle.palette.window
       z: +1
 
       property int apparentWidth: 2.*width/3.
@@ -290,7 +288,7 @@ ApplicationWindow {
           NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
         }
 
-        source: Application.styleHints.colorScheme === Qt.Light ? "qrc:/icons/selector.svg" : "qrc:/icons/selector-light.svg"
+        source: ZeStyle.dark ? "qrc:/icons/selector-light.svg" : "qrc:/icons/selector.svg"
         fillMode: Image.PreserveAspectFit
         mipmap: true
 

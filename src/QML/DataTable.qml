@@ -10,8 +10,6 @@ Item {
   required property var model
   property bool interactive: false
 
-  SystemPalette { id: myPalette; colorGroup: SystemPalette.Active }
-
   // Only contribute an implicit size when the table actually has laid-out
   // content. Otherwise we'd report just the header padding, which causes
   // widthWhenVisible (in MainWindow) to settle to a nonsensical value while
@@ -66,7 +64,7 @@ Item {
     delegate: Rectangle {
 
       implicitHeight: 25
-      color: myPalette.base
+      color: ZeStyle.palette.base
       topLeftRadius: 5
       topRightRadius: 5
 
@@ -115,7 +113,7 @@ Item {
 
     delegate: Rectangle {
 
-      color: myPalette.base
+      color: ZeStyle.palette.base
       topLeftRadius: 5
       bottomLeftRadius: 5
       implicitHeight: verticalHeaderLabel.implicitHeight + 3

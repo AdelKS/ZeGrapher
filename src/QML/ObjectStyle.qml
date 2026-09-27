@@ -97,7 +97,7 @@ Loader {
           Layout.alignment: Qt.AlignHCenter
           Layout.maximumWidth: 100
           Layout.preferredHeight: 50
-          model: Application.styleHints.colorScheme === Qt.Light ? dashPatternModel : dashPatternModelLight
+          model: ZeStyle.dark ? dashPatternModelLight : dashPatternModel
 
           currentIndex: indexFromModelValue(dashPatternModel, root.style.lineStyle)
 

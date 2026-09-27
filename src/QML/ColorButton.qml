@@ -9,7 +9,7 @@ Shape {
 
   signal selectedColorModified()
 
-  property bool darkMode: Application.styleHints.colorScheme === Qt.ColorScheme.Dark
+  property bool darkMode: ZeStyle.dark
 
   onDarkModeChanged: {
     console.info("ColorButton: theme changed, current color: ", disk.selectedColor.current)
