@@ -4,7 +4,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Dialogs
-import QtCore
 
 Item {
   id: root
@@ -114,23 +113,17 @@ Item {
     }
   }
 
-  FileDialog {
+  CsvFileDialog {
     id: importDialog
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.OpenFile
     options: FileDialog.ReadOnly
-    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
-    visible: false
     onAccepted: root.importCSV(selectedFile, root.sheet)
   }
 
-  FileDialog {
+  CsvFileDialog {
     id: exportDialog
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.SaveFile
     defaultSuffix: "csv"
-    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
-    visible: false
     onAccepted: root.sheet.exportCSV(selectedFile)
   }
 

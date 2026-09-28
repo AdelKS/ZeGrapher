@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Dialogs
-import QtCore
 
 Item {
   id: root
@@ -72,13 +71,10 @@ Item {
     }
   }
 
-  FileDialog {
+  CsvFileDialog {
     id: fileDialog
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
     fileMode: FileDialog.OpenFile
     options: FileDialog.ReadOnly
-    nameFilters: [qsTr("CSV") + " (*.csv)", qsTr("Text") + " (*.txt)", qsTr("Any") + " (*)"]
-    visible: false
     onAccepted: root.importCSV(selectedFile, null)
   }
 

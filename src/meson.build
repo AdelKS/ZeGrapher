@@ -62,6 +62,7 @@ qml_files = [
   'QML/AppSettings.qml',
   'QML/ColorButton.qml',
   'QML/ConstantEdit.qml',
+  'QML/CsvFileDialog.qml',
   'QML/CsvImportSettings.qml',
   'QML/CurvesOverlay.qml',
   'QML/DataColumnEdit.qml',
