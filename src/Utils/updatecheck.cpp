@@ -11,7 +11,8 @@ UpdateCheck::UpdateCheck(QObject *parent) : QObject(parent)
 
 void UpdateCheck::refresh()
 {
-  QNetworkRequest request(QUrl("https://zegrapher.com/latest_tag"));
+  // website/scripts/build-website.py writes this file at the site root
+  QNetworkRequest request(QUrl(HOMEPAGE_URL "/latest_tag"));
   manager.get(request);
   status = CHECKING;
   emit statusChanged();
