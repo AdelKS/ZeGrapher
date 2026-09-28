@@ -42,7 +42,8 @@ qrc_template = files('generated.qrc.in')
 python = import('python').find_installation()
 
 subdir('translations')
-subdir('src')
+# icons/ compiles the Windows resource that src/ links
 subdir('icons')
+subdir('src')
 subdir('appdata')
 subdir('test')

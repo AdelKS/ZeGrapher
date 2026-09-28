@@ -13,3 +13,6 @@ They are generated from `ZeGrapher.svg`. To re-generate them, run:
 The docstring at the top of
 [rasterize-zegrapher-svg.py](./rasterize-zegrapher-svg.py) lists the files it
 writes.
+
+On Windows, `meson.build` compiles `ZeGrapher.rc`, which puts `ZeGrapher.ico`
+into `ZeGrapher.exe`.

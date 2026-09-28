@@ -242,7 +242,8 @@ zecalculator_dep = dependency('zecalculator', version: '>=0.13.2')
 glaze_dep = dependency('glaze', version: '>=7.7')
 
 executable('ZeGrapher',
-  sources: ['main.cpp', source_files, compiled_resources, shaders_resources_cpp, moc_files, qml_mods],
+  sources: ['main.cpp', source_files, compiled_resources, shaders_resources_cpp, moc_files, qml_mods,
+            app_icon_windows],
   include_directories: [inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, zecalculator_dep, glaze_dep],
   win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
