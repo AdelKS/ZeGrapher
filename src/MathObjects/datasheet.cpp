@@ -20,6 +20,7 @@
 
 #include "MathObjects/datasheet.h"
 #include "Utils/yaml.h"
+#include "information.h"
 
 #include <QFile>
 #include <QSaveFile>
@@ -137,9 +138,13 @@ bool DataSheet::isValid() const
 
 void DataSheet::exportCSV(QUrl fileName) const
 {
-  QSaveFile file(fileName.toLocalFile());
+  const QString path = fileName.toLocalFile();
+  QSaveFile file(path);
   if (not file.open(QFile::WriteOnly | QFile::Text))
+  {
+    information->exportFailed(path, file.errorString());
     return;
+  }
 
   auto write = [&](std::string_view s) { file.write(s.data(), s.size()); };
 
@@ -185,7 +190,9 @@ void DataSheet::exportCSV(QUrl fileName) const
       return row < values.size() ? values[row] : std::string_view();
     });
 
-  file.commit();
+  // QSaveFile::commit() also returns false when one of the write() calls failed
+  if (not file.commit())
+    information->exportFailed(path, file.errorString());
 }
 
 DataSheet::POD DataSheet::exportPod() const
