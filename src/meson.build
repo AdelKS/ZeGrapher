@@ -69,6 +69,7 @@ qml_files = [
   'QML/DataSheetEdit.qml',
   'QML/DataTable.qml',
   'QML/DocPane.qml',
+  'QML/DragHandle.qml',
   'QML/EdgeButton.qml',
   'QML/EquationEdit.qml',
   'QML/GraphSettings.qml',

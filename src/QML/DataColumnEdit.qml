@@ -116,20 +116,9 @@ Item {
           onSelectedColorModified: root.backend.style.color = selectedColor
         }
 
-        Item {
+        DragHandle {
           id: dragHandle
-          Layout.minimumWidth: 20
-          Layout.maximumWidth: 30
-          Layout.preferredHeight: Layout.preferredWidth
-          Layout.preferredWidth: 30
           Layout.alignment: Qt.AlignVCenter
-
-          Image {
-            anchors.fill: parent
-            source: ZeStyle.icon("drag-handle")
-            fillMode: Image.PreserveAspectFit
-            mipmap: true
-          }
         }
       }
 
