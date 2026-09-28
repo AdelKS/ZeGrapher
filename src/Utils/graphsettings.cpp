@@ -237,39 +237,31 @@ std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
 
 void ZeGraphSettings::importPod(POD p)
 {
+  // exportPod() leaves out settings at their default, so reset each missing
+  // setting to its default. Every document holds the range
   if (p.range) range.importPod(std::move(*p.range));
 
-  if (p.zoom)
-  {
-    zoom.zoomingType = ZoomingType::CUSTOM;
-    zoom.zoom = *p.zoom;
-    emit zoomSettingsChanged();
-  }
+  zoom = p.zoom ? ZeZoomSettings{.zoomingType = ZoomingType::CUSTOM, .zoom = *p.zoom}
+                : ZeZoomSettings{};
+  emit zoomSettingsChanged();
 
-  if (p.size)
-  {
-    size.importPod(std::move(*p.size));
-    emit sizeSettingsChanged();
-  }
+  size = {};
+  if (p.size) size.importPod(std::move(*p.size));
+  emit sizeSettingsChanged();
 
-  if (p.axes)
-  {
-    axes.importPod(std::move(*p.axes));
-    emit axesSettingsChanged();
-  }
+  axes = {};
+  if (p.axes) axes.importPod(std::move(*p.axes));
+  emit axesSettingsChanged();
 
-  if (p.grid)
-  {
-    grid.importPod(std::move(*p.grid));
-    emit gridSettingsChanged();
-  }
+  grid = {};
+  if (p.grid) grid.importPod(std::move(*p.grid));
+  emit gridSettingsChanged();
 
-  if (p.subgrid)
-  {
-    subgrid.importPod(std::move(*p.subgrid));
-    emit subgridSettingsChanged();
-  }
+  subgrid = {};
+  if (p.subgrid) subgrid.importPod(std::move(*p.subgrid));
+  emit subgridSettingsChanged();
 
+  font = zg::mathFont();
   if (p.font)
   {
     if (p.font->name)
@@ -280,28 +272,23 @@ void ZeGraphSettings::importPod(POD p)
 
     if (p.font->weight)
       font.setWeight(p.font->weight.value());
-
-    emit fontChanged();
   }
+  emit fontChanged();
 
-  if (p.background)
-  {
-    backgroundColor.importPod(std::move(*p.background));
-    emit backgroundColorChanged();
-  }
+  backgroundColor = defaultBgColor;
+  if (p.background) backgroundColor.importPod(std::move(*p.background));
+  emit backgroundColorChanged();
 
-  if (p.min_points)
-  {
-    minPointsLg2 = p.min_points.value();
-    emit minPointsLg2Changed();
-  }
+  minPointsLg2 = p.min_points.value_or(defaultMinPoints);
+  emit minPointsLg2Changed();
 
-  if (p.max_points)
-  {
-    maxPointsLg2 = p.max_points.value();
-    emit maxPointsLg2Changed();
-  }
+  maxPointsLg2 = p.max_points.value_or(defaultMaxPoints);
+  emit maxPointsLg2Changed();
+
+  // the POD gives the sheet size in one unit only
+  updateSizes();
+  computeZoom();
+  emit totalScaleFactorChanged();
 
   qDebug() << "Done loading graph settings";
-
 }

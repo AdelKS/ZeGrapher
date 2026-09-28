@@ -269,7 +269,7 @@ void Information::importYaml(QUrl filename)
                  .details = QString::fromStdString(glz::format_error(read_error, content))});
 
   else {
-    if (pod.graph) graphSettings.importPod(std::move(*pod.graph));
+    graphSettings.importPod(std::move(pod.graph).value_or(ZeGraphSettings::POD{}));
     if (pod.math_objects) zg::mathWorld.importPod(std::move(*pod.math_objects));
   }
 }
