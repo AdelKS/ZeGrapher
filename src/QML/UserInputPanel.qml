@@ -41,6 +41,10 @@ Item {
 
     onAccepted: showNextIfAny()
 
+    // main() reads the startup documents before it loads the QML, so the
+    // Connections below never receives their ioErrorCountChanged()
+    Component.onCompleted: Qt.callLater(ioErrorDialog.showNextIfAny)
+
     function showNextIfAny() {
       if (Information.ioErrorCount > 0) {
         currentError = Information.popIoError();
