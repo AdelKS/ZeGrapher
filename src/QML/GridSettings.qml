@@ -11,8 +11,6 @@ Item {
   required property ZeGraphSettings graphSettings
   required property size globalMenuSize
 
-  implicitWidth: scrollView.implicitWidth
-
   enum Selection { X_Y, X, Y }
 
   ScrollView {
@@ -20,7 +18,6 @@ Item {
     anchors.fill: parent
     anchors.margins: 5
     leftPadding: Math.max((width - mainLayout.implicitWidth)/2, 0)
-    implicitWidth: mainLayout.implicitWidth + ScrollBar.vertical.width + anchors.margins * 2
 
     contentHeight: mainLayout.implicitHeight + root.globalMenuSize.height + 10
 

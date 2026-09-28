@@ -14,8 +14,6 @@ Item {
 
   property alias mathObjectsTab: mathObjectsTab
 
-  implicitWidth: colLayout.implicitWidth
-
   FileDialog {
     id: exportDialog
     title: qsTr("Export the graph")
@@ -87,7 +85,6 @@ Item {
   }
 
   ColumnLayout {
-    id: colLayout
     anchors.fill: parent
 
     RangeAdjust {
@@ -130,8 +127,6 @@ Item {
 
       Layout.fillWidth: true
       Layout.fillHeight: true
-
-      implicitWidth: Math.max(mathObjectsTab.implicitWidth, gridSettings.implicitWidth, graphSettingsTab.implicitWidth, appSettings.implicitWidth)
 
       onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
 

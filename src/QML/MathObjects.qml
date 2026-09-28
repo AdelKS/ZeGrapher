@@ -10,10 +10,6 @@ Item {
 
   signal importCSV(file: url, dataSheet: DataSheet)
 
-  property real objectsImplicitWidth: 0
-
-  implicitWidth: objectsImplicitWidth + verticalScrollBar.width * verticalScrollBar.visible
-
   ListView {
     id: listView
     anchors.fill: parent
@@ -62,9 +58,6 @@ Item {
       MathObjectInput {
         id: input
         mathObj: dragWrapper.modelData
-
-        Component.onCompleted: root.objectsImplicitWidth = Math.max(root.objectsImplicitWidth, implicitWidth)
-        onImplicitWidthChanged: root.objectsImplicitWidth = Math.max(root.objectsImplicitWidth, implicitWidth)
 
         onImportCSV: (file, dataSheet) => { root.importCSV(file, dataSheet); }
       }
