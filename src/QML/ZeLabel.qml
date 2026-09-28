@@ -5,8 +5,6 @@ Label {
 
   property string tooltipText: ""
 
-  font: Information.appSettings.font
-
   MouseArea {
     id: mouseArea
     anchors.fill: parent

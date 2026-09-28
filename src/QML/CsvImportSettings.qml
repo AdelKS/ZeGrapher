@@ -63,8 +63,6 @@ Item {
       Layout.leftMargin: 5
       Layout.fillWidth: true
       readOnly: true
-
-      font: Information.appSettings.font
     }
 
     GroupBox {

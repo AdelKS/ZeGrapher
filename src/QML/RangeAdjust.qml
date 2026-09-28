@@ -51,7 +51,6 @@ Item {
   ZeTextEdit {
     id: ymaxLbl
     text: "<b>y</b><sub>max</sub>"
-    font: Information.appSettings.font
     readOnly: true
     selectByMouse: false
     activeFocusOnPress: false

@@ -49,7 +49,6 @@ Item {
       id: notes
       Layout.fillWidth: true
 
-      font: Information.appSettings.font
       placeholderText: qsTr("your comment on this sheet")
 
       text: root.sheet.notes

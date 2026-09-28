@@ -46,7 +46,6 @@ Item {
   SpinBox {
     id: spinBox
     anchors.fill: parent
-    font: Information.appSettings.font
 
     property string suffix: ''
     property string prefix: ''

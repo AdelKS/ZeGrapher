@@ -22,7 +22,7 @@ TabButton {
 
   contentItem: Text {
     text: root.text
-    font: Information.appSettings.font
+    font: root.font
     color: root.palette.text
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
