@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """The releases of ZeGrapher, out of appdata/releases.yaml.
 
-    releases.py (--version | --summary | --start-tag | --release-type
-                 | --yaml OUTPUT)
+    releases.py (--version | --summary | --start-tag | --date
+                 | --release-type | --yaml OUTPUT)
 
 --version prints the version in meson.build, such as '4.0.0_rc0-dev'.
 
@@ -12,6 +12,9 @@ announcement, then the changes entry. It is the body that the workflow gives to
 
 --start-tag prints the release that those changes are counted from, and nothing
 when GitHub can count from the release before.
+
+--date prints the day of the release under work, such as '2026-09-01'. It
+prints nothing when the release file doesn't date that release.
 
 --release-type prints what the version in meson.build is: 'dev' between two
 releases, 'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
@@ -334,6 +337,7 @@ def main() -> int:
     action.add_argument("--version", action="store_true")
     action.add_argument("--summary", action="store_true")
     action.add_argument("--start-tag", action="store_true")
+    action.add_argument("--date", action="store_true")
     action.add_argument("--release-type", action="store_true")
     action.add_argument("--yaml", metavar="OUTPUT")
     args = parser.parse_args()
@@ -352,8 +356,10 @@ def main() -> int:
 
         if args.summary:
             print(summary_of(announcement, changes))
-        else:
+        elif args.start_tag:
             print(start_tag_of(tag, announcement, changes))
+        else:
+            print(found.dates.get(tag, ""))
 
     return 0
 

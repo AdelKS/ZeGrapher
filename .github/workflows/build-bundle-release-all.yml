@@ -71,6 +71,18 @@ jobs:
             exit 0
           fi
 
+          # the metainfo file takes each release date from releases.yaml, so
+          # that date must match the release commit. Pre-releases are not
+          # checked: the metainfo file leaves them out
+          if [[ "$release_type" == full ]]; then
+            notes_date=$(python3 appdata/releases.py --date)
+            commit_date=$(git log -1 --format=%cs)
+            if [[ "$notes_date" != "$commit_date" ]]; then
+              echo "::error::appdata/releases.yaml dates v$version '$notes_date', and the release commit is from $commit_date"
+              exit 1
+            fi
+          fi
+
           echo "release_type=$release_type" >> "$GITHUB_OUTPUT"
 
   deploy-website:

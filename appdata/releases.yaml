@@ -1,8 +1,9 @@
 # The releases of ZeGrapher, and what the author writes about them.
 #
 # 'releases' lists each release tag with the day it went out, newest first. For
-# the release under work, the date is the day the release is due. A
-# pre-release can be left out, since nothing reads its date.
+# the release under work, the date is the day the release is due. Before CI
+# makes a full release, it checks that this date is the day of the release
+# commit. A pre-release can be left out, since nothing reads its date.
 #
 # 'announcements' and 'changes' hold markdown 'text' about a span of releases:
 # every release after 'from', up to 'to'. 'from' stays out of the span, since
