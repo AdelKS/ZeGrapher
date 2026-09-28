@@ -73,10 +73,6 @@ public:
   Q_INVOKABLE IOError popIoError();
 
 signals:
-  void appSettingsChanged();
-  void availableSheetSizePxChanged();
-  void availableSheetSizeCmChanged();
-  void graphSettingsChanged();
   void ioErrorCountChanged();
 
 public slots:
@@ -140,9 +136,6 @@ protected:
 
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
-
-  QSize availableSheetSizePx;
-  QSizeF availableSheetSizeCm;
 };
 
 ///@note defined in the main() to come after QGuiApplication

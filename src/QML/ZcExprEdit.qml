@@ -61,13 +61,6 @@ Item {
 
   }
 
-  Connections {
-    target: Information
-    function onAppSettingsChanged() {
-      root.refresh();
-    }
-  }
-
   Highlighter {
     id: mhighlighter
     state: root.state
