@@ -26,7 +26,7 @@ Rectangle {
   border.width: 1.5
   radius: 4
 
-  border.color: edit.text === "" ? "grey" : Information.appSettings.validSyntax.current;
+  border.color: edit.text === "" ? "grey" : ZeStyle.themed(Information.appSettings.validSyntax)
 
   implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 10 + 2*border.width
 

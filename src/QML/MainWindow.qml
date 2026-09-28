@@ -12,7 +12,7 @@ ApplicationWindow {
   visible: true
   font: Information.appSettings.font
 
-  color: Information.graphSettings.backgroundColor.current
+  color: ZeStyle.themed(Information.graphSettings.backgroundColor)
 
   component ResizeHandle: Item {
     width: 5

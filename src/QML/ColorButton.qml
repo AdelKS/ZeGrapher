@@ -9,15 +9,13 @@ Shape {
 
   signal selectedColorModified()
 
-  property bool darkMode: Application.styleHints.colorScheme === Qt.ColorScheme.Dark
+  /// @brief selectedColor in the app's current theme
+  readonly property color shownColor: ZeStyle.themed(selectedColor)
 
-  onDarkModeChanged: {
-    console.info("ColorButton: theme changed, current color: ", disk.selectedColor.current)
-    shape_path.set_color(disk.selectedColor.current)
-    colorDialog.selectedColor = disk.selectedColor.current
+  onShownColorChanged: {
+    shape_path.set_color(shownColor);
+    colorDialog.selectedColor = shownColor;
   }
-
-  onSelectedColorChanged: shape_path.set_color(selectedColor.current);
 
   horizontalAlignment: Shape.AlignHCenter
   verticalAlignment: Shape.AlignVCenter
@@ -125,7 +123,7 @@ Shape {
   }
 
   Component.onCompleted: {
-    shape_path.set_color(disk.selectedColor.current);
-    colorDialog.selectedColor = disk.selectedColor.current;
+    shape_path.set_color(shownColor);
+    colorDialog.selectedColor = shownColor;
   }
 }

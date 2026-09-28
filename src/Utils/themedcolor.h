@@ -34,7 +34,6 @@ struct ThemedColor
   Q_GADGET
   QML_VALUE_TYPE(themedColor)
 
-  Q_PROPERTY(QColor current READ getCurrent WRITE setCurrent)
   Q_PROPERTY(QColor dark MEMBER dark)
   Q_PROPERTY(QColor light MEMBER light)
 
@@ -45,8 +44,10 @@ public:
   /// @brief color for light theme
   QColor light;
 
-  /// @brief returns the color according to current system theme
-  Q_INVOKABLE const QColor& getCurrent() const;
+  /// @brief returns the color for the current system theme
+  /// @note QML reads a ThemedColor through ZeStyle.themed(), which follows
+  ///       color scheme changes
+  const QColor& getCurrent() const;
 
   /// @brief sets the color for the current system theme
   /// @note  the color for the other theme is also updated using HSV
