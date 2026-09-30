@@ -93,17 +93,17 @@ void Data::importPod(Data::POD p)
   if (p.name)
     setName(QString::fromStdString(*p.name));
 
-  if (p.start)
-    setStart(QString::fromStdString(*p.start));
-
-  if (p.end)
-    setEnd(QString::fromStdString(*p.end));
-
   if (p.values)
     setData(std::move(*p.values));
 
   if (p.coordinates)
     setCoordinateSystem(*p.coordinates);
+
+  if (p.start)
+    setStart(QString::fromStdString(*p.start));
+
+  if (p.end)
+    setEnd(QString::fromStdString(*p.end));
 
   if (p.style)
     style.importPod(std::move(*p.style));

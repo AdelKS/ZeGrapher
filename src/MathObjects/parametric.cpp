@@ -65,14 +65,14 @@ void Parametric::importPod(Parametric::POD p)
   if (p.second)
     setSecond(QString::fromStdString(*p.second));
 
+  if (p.coordinates)
+    setCoordinateSystem(*p.coordinates);
+
   if (p.start)
     setStart(QString::fromStdString(*p.start));
 
   if (p.end)
     setEnd(QString::fromStdString(*p.end));
-
-  if (p.coordinates)
-    setCoordinateSystem(*p.coordinates);
 
   if (p.style)
     style.importPod(std::move(*p.style));
