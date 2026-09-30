@@ -42,9 +42,6 @@ public:
 
   const auto& getCurves() const { return curves_list; }
 
-  /// @brief clears the saved points of functions whose name is in 'objectNames'
-  void clearCache(QStringList objectNames);
-
   /// @brief refreshes 'curves' for the currently valid objects
   void refresh_valid_objects();
 
@@ -80,8 +77,6 @@ protected:
   std::unordered_map<double, CurveMap> schrodinger_curves_map;
 
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;
-
-  zg::Range1D<zg::u<zg::view>> viewRange;
 
   ///@brief vector to hold temporary sampling data
   std::vector<size_t> indices;

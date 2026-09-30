@@ -282,19 +282,3 @@ void Sampler::update_discontinuities(zg::SampledCurve& data)
 
   qDebug() << "  and has " << data.discontinuities.size() << " discontinuities.";
 }
-
-void Sampler::clearCache(QStringList objectNames)
-{
-  refresh_valid_objects();
-  refresh_schrodinger_keys();
-
-  auto searchAndClear = [&objectNames](CurveMap& c) {
-    for (auto& [p, curve]: c)
-      if (std::visit([&](auto* f) { return objectNames.contains(f->getName()); }, p))
-        curve.clear();
-  };
-
-  searchAndClear(curves);
-  for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
-    searchAndClear(schrodinger_curves);
-}

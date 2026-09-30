@@ -118,14 +118,11 @@ public:
   double lineWidth = defaultLineWith;
 
   QFont titleFont = zg::mathFont();
-  QFont defaultTitleFont = zg::mathFont();
 
   ///@brief spacing between different things in the graph
   ///       currently: between the axis and the coordinates
   ///                  between the coordinates and the axis titles
   static constexpr zg::pixel_unit spacing = {6};
-
-  void setDefaultTitleFont(QFont);
 
   static const ThemedColor defaultColor;
   static constexpr double defaultLineWith = 2.0;

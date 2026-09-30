@@ -42,7 +42,6 @@ public:
   explicit Equation(QObject *parent = nullptr);
 
   Q_INVOKABLE void setEquation(QString eq);
-  Q_INVOKABLE QString getName() const;
   State sync();
   void setState(State s);
 

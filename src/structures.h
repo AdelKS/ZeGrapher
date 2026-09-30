@@ -30,18 +30,8 @@
 #include <QSizeF>
 #include <QtQmlIntegration/qqmlintegration.h>
 
-#define NORMAL 0
-#define ZOOMER 1
-#define DEZOOMER 2
-#define ZOOMBOX 3
-#define DEPLACER 4
-#define NO_CURSOR 5
-
 #define MIN_AMPLITUDE 100 * DBL_EPSILON
 #define MAX_AMPLITUDE DBL_MAX / 100
-
-#define NUM_PREC 7 // default precision while displaying decimal numbers
-#define MAX_NUM_PREC 8 // the maximum precision in decimal come from imprecision on integration and derivation
 
 #define MAX_NUM_PREC_DEC 1E-8
 
@@ -51,17 +41,6 @@
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 
 enum struct ZeAxisName {X, Y};
-
-struct ZeCoordinateDisplayFormat
-{
-    bool decimalGlobalConstant, decimalBase;
-
-    bool operator !=(const ZeCoordinateDisplayFormat &other)
-    {
-        return decimalGlobalConstant != other.decimalGlobalConstant or
-                decimalBase != other.decimalBase;
-    }
-};
 
 
 struct SizeUnit: QObject

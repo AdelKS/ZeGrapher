@@ -65,16 +65,13 @@ struct Ze1DSubgridSettings: Ze1DGridCommonSettings
   Q_GADGET
 
   Q_PROPERTY(int subdivs MEMBER subdivs)
-  Q_PROPERTY(bool showCoordinates MEMBER showCoordinates)
 
 public:
   Ze1DSubgridSettings(): Ze1DGridCommonSettings({.show = defaultShow, .lineWidth = defaultLineWidth, .color = defaultColor}) {}
 
   int subdivs = defaultSubdivs;
-  bool showCoordinates = defaultShowCoordinates;
 
   static constexpr int defaultSubdivs = 2;
-  static constexpr bool defaultShowCoordinates = false;
   static constexpr bool defaultShow = true;
   static constexpr double defaultLineWidth = 0.6;
   static const ThemedColor defaultColor;

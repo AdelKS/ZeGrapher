@@ -27,21 +27,6 @@ ZeAxisRange::ZeAxisRange(QObject *parent)
   : QObject(parent), min(this), max(this)
 {}
 
-real_range1d ZeAxisRange::getSnapshot()
-{
-  real_range1d newSnapshot = {.min = {min.getValue()}, .max = {max.getValue()}};
-  bool old_state = state;
-
-  state = newSnapshot.is_valid();
-  if (state)
-    latestValidSnapshot = newSnapshot;
-
-  if (state != old_state)
-    emit stateChanged();
-
-  return newSnapshot;
-}
-
 real_range1d ZeAxisRange::getLatestValidSnapshot()
 {
   real_range1d newSnapshot = {.min = {min.getValue()}, .max = {max.getValue()}};
@@ -79,25 +64,10 @@ GraphRange::GraphRange(QObject* parent)
   y.max.setExpression("10");
 };
 
-QRectF GraphRange::getLatestValidRect()
-{
-  real_range1d xSnapshot = x.getLatestValidSnapshot();
-  real_range1d ySnapshot = y.getLatestValidSnapshot();
-
-  QRectF graphWin;
-  graphWin.setBottom(ySnapshot.min.v);
-  graphWin.setTop(ySnapshot.max.v);
-  graphWin.setLeft(xSnapshot.min.v);
-  graphWin.setRight(xSnapshot.max.v);
-  return graphWin;
-}
-
 void GraphRange::interactiveUpdate(const real_range2d& range)
 {
   x.update(range.x);
   y.update(range.y);
-
-  emit interactiveUpdate();
 }
 
 real_range2d GraphRange::getLatestValidSnapshot()

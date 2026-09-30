@@ -49,9 +49,6 @@ public:
   /// @note converts it to the range returned by getRange<plane::pixel>()
   ZeViewMapper& setGraphRect(const QRectF& rect);
 
-  /// @note converts it to the range returned by getRange<plane::pixel>()
-  QRectF getGraphRect() const;
-
   template <plane p>
   bool isInView(point<u<p>> pt) const;
 
@@ -110,13 +107,4 @@ inline double sq_dist_to_ray(const QPointF& A, const QPointF& B, const QPointF& 
   double sq_AB = QPointF::dotProduct(AB, AB);
 
   return dot <= 0 ? sq_AP : sq_AP - dot*dot / sq_AB;
-}
-
-/// @brief returns the squared distance from P to the segment [AB] in pixel space
-inline double sq_dist_to_segment(const QPointF& A, const QPointF& P, const QPointF& B)
-{
-  const QPointF AB = B - A;
-  const QPointF AP = P - A;
-  const double t = std::max(0., std::min(QPointF::dotProduct(AP, AB) / QPointF::dotProduct(AB, AB), 1.));
-  return QPointF::dotProduct(AP - t * AB, AP - t * AB);
 }

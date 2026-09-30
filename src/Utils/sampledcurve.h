@@ -16,10 +16,6 @@ struct SampledCurve {
 
   SampledCurve() = default;
 
-  const std::vector<real_unit>& get_input() const { return input; };
-
-  const std::vector<real_pt>& get_curve() const { return curve; };
-
   size_t size() const;
 
   void clear();

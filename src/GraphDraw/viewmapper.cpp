@@ -33,13 +33,6 @@ ZeViewMapper& ZeViewMapper::setGraphRect(const QRectF &rect)
   return *this;
 }
 
-QRectF ZeViewMapper::getGraphRect() const
-{
-  const auto& xr = x.getRange<plane::pixel>();
-  const auto& yr = y.getRange<plane::pixel>();
-  return QRectF(xr.min.v, yr.min.v, xr.amplitude().v, yr.amplitude().v);
-}
-
 void ZeViewMapper::setGraphRange(const real_range2d& range)
 {
   x.setRange(range.x);

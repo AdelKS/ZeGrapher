@@ -224,24 +224,6 @@ bool MathObject::isValid() const
   }, backend);
 }
 
-QString MathObject::getName() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const auto* e) {
-        return e->getName();
-      },
-      [](const mathobj::Parametric*) {
-        return QString();
-      },
-      [](const mathobj::DataSheet*) {
-        return QString();
-      },
-    },
-    backend
-  );
-}
-
 void MathObject::sync()
 {
   std::visit(zc::utils::overloaded{

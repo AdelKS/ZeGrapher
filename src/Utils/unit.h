@@ -75,14 +75,6 @@ struct Range1D
   Range1D& operator /= (double c) { min /= c; max /= c; return *this; }
   Range1D& operator *= (double c) { min *= c; max *= c; return *this; }
   Range1D& operator -= (unit<U> c) { min -= c; max -= c; return *this; }
-  std::optional<Range1D> intersection(const Range1D& other) const
-  {
-    if (other.max <= min or max <= other.min)
-      return {};
-    else
-      return Range1D{.min = std::max(min, other.min), .max = std::min(max, other.max)};
-  }
-
   bool is_valid() const { return not std::isnan(min.v) and not std::isnan(max.v) and min < max; }
 
   bool operator == (const Range1D&) const = default;
@@ -105,16 +97,9 @@ struct point
     return x.v * other.x.v + y.v * other.y.v;
   }
 
-  double square_length() const { return x.v*x.v + y.v*y.v; };
-
   static point from(const QPointF& pt)
   {
     return point{unit<U>{pt.x()}, unit<U>{pt.y()}};
-  }
-
-  static point from(const Point& pt)
-  {
-    return point{unit<U>{pt.x}, unit<U>{pt.y}};
   }
 
   explicit operator QPointF () const

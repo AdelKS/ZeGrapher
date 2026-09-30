@@ -49,11 +49,6 @@ void Equation::setState(State s)
   emit stateChanged();
 }
 
-QString Equation::getName() const
-{
-  return QString::fromStdString(std::string(zcMathObj.get_name()));
-}
-
 State Equation::sync()
 {
   setState(State::from(zcMathObj.status()));

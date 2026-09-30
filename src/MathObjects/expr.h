@@ -52,8 +52,6 @@ public:
   Q_INVOKABLE bool isValid();
   const State& getState() const { return state; }
 
-  QString getName() const { return implicitName; };
-
   void updateValue();
 
   void setSchrodinger(bool);

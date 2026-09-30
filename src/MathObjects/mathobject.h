@@ -65,7 +65,6 @@ public:
   Q_INVOKABLE Type getType() const;
 
   bool isValid() const;
-  QString getName() const;
 
   size_t getRevision() const;
 

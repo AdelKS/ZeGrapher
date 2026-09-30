@@ -24,10 +24,6 @@ public:
   Q_INVOKABLE void setDocument(QQuickTextDocument* doc);
   Q_INVOKABLE void setState(zg::State state);
 
-signals:
-  void valueChanged(double);
-  void errorMsgChanged(QString);
-
 protected:
   QQuickTextDocument* textDocument = nullptr;
   zg::State state;

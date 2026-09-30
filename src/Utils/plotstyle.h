@@ -43,9 +43,6 @@ struct PlotStyle: QObject {
 
 public:
 
-  enum ObjectType { NonRepresentable, Continuous, Discrete };
-  Q_ENUM(ObjectType);
-
   enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
   Q_ENUM(PointStyle);
 
@@ -117,15 +114,10 @@ signals:
   void pointStyleChanged();
   void pointWidthChanged();
   void lineStyleChanged();
-  void drawLineChanged();
-  void backendChanged();
-  void rangeChanged();
   void secondColorChanged();
 
 protected:
   bool discrete = false;
-
-  friend class MathWorld;
 };
 
 inline const ThemedColor PlotStyle::defaultColor = {.dark = Qt::lightGray, .light = Qt::black};

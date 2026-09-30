@@ -46,8 +46,6 @@ public:
   mathobj::Expr min;
   mathobj::Expr max;
 
-  real_range1d getSnapshot();
-
   real_range1d getLatestValidSnapshot();
 
   void update(const real_range1d& range);
@@ -86,7 +84,6 @@ public:
   ZeAxisRange x;
   ZeAxisRange y;
 
-  QRectF getLatestValidRect();
   real_range2d getLatestValidSnapshot();
 
   void interactiveUpdate(const real_range2d& range);
@@ -98,9 +95,6 @@ public:
 
   void importPod(POD);
   std::optional<POD> exportPod() const;
-
-signals:
-  void interactiveUpdate();
 };
 
 } // namespace zg

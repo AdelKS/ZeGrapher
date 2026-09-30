@@ -37,22 +37,13 @@ std::optional<ZeAxesSettings::POD> ZeAxesSettings::exportPod() const
     .line_width = zg::yml::not_default(lineWidth, defaultLineWith),
     .x = x.exportPod(),
     .y = y.exportPod(),
-    .title_font = zg::yml::QFontPOD::from(titleFont, defaultTitleFont)
+    .title_font = zg::yml::QFontPOD::from(titleFont, zg::mathFont())
   };
 
   if (p)
     return p;
   else return {};
 }
-
-void ZeAxesSettings::setDefaultTitleFont(QFont f)
-{
-  if (titleFont == defaultTitleFont)
-    titleFont = f;
-
-  defaultTitleFont = f;
-}
-
 
 void ZeAxesSettings::importPod(ZeAxesSettings::POD p)
 {

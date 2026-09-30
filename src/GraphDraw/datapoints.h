@@ -48,9 +48,6 @@ class DataPoints : public QQuickItem
 public:
   explicit DataPoints(QQuickItem *parent = nullptr);
 
-signals:
-  void graphChanged();
-
 protected:
   QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *) override;
 
