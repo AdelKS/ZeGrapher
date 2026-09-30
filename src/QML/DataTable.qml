@@ -208,8 +208,8 @@ Item {
 
         if (currentIndex.valid &&
             !fullColumns.includes(currentIndex.column) &&
-            !fullColumns.includes(currentIndex.row) &&
-            !looseCells.includes(currentIndex))
+            !fullRows.includes(currentIndex.row) &&
+            !looseCells.some(index => index.row === currentIndex.row && index.column === currentIndex.column))
           looseCells.push(currentIndex);
 
         // merge full rows with individual cells in same container, so we can sort it by row
