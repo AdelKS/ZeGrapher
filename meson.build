@@ -32,8 +32,6 @@ if (get_option('b_ndebug') == 'if-release' and get_option('buildtype') == 'relea
     add_project_arguments('-D QT_NO_DEBUG', language : 'cpp')
 endif
 
-add_project_arguments('-D SOFTWARE_VERSION="' + meson.project_version() + '"', language : 'cpp')
-
 # a resource file with a single prefix. A meson.build fills it with the files
 # it lists at configure time
 qrc_template = files('generated.qrc.in')

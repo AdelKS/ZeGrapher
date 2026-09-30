@@ -21,6 +21,7 @@
 #include "GraphDraw/graph.h"
 #include "Animation/animationconductor.h"
 #include "information.h"
+#include "buildconfig.h"
 
 #include <QPdfWriter>
 #include <QStyleHints>

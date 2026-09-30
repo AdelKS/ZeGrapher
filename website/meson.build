@@ -16,11 +16,12 @@ website_qrc = configure_file(
 
 # BuildInfo gives QML the site, the GitHub repository and the contact address
 # that build.yaml names, so no other file writes them. The C++ code reads them
-# from buildconfig.h, and meson writes that header again when build.yaml changes
+# and the version of the app from buildconfig.h. meson writes that header again
+# when build.yaml or the version changes
 configure_file(
   input: 'build-config' / 'build.yaml',
   output: 'buildconfig.h',
-  command: [python, content_py, 'header'],
+  command: [python, content_py, 'header', meson.project_version()],
   capture: true,
 )
 buildconfig_inc = include_directories('.')

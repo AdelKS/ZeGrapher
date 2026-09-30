@@ -3,9 +3,10 @@
 
     content.py qrc          prints the <file> entries of the website.qrc that
                             website/meson.build writes
-    content.py header       prints buildconfig.h, the C++ header of the site, of
-                            the GitHub repository and of the email address of
-                            the author
+    content.py header VERSION
+                            prints buildconfig.h, the C++ header of the
+                            version of the app, of the site, of the GitHub
+                            repository and of the email address of the author
 
 website/content/ holds one folder per language. English is the source: a
 language that leaves out a file or a picture takes the English one. The build
@@ -157,27 +158,28 @@ def cpp_string(value: str) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
-def header(conf: dict) -> str:
-    """buildconfig.h, the addresses of build.yaml as C++ macros."""
-    macros = {"HOMEPAGE_URL": homepage_url(conf),
+def header(conf: dict, version: str) -> str:
+    """buildconfig.h, the version of the app and the addresses of build.yaml as
+    C++ macros."""
+    macros = {"SOFTWARE_VERSION": version,
+              "HOMEPAGE_URL": homepage_url(conf),
               "REPOSITORY_URL": repository_url(conf),
               "CONTACT_ADDRESS": contact_address(conf)}
-    lines = ["// website/scripts/content.py writes this file out of "
-             "website/build-config/build.yaml",
+    lines = ["// website/scripts/content.py writes this file out of the version "
+             "of meson.build and website/build-config/build.yaml",
              "#pragma once"]
     lines += [f"#define {name} {cpp_string(value)}" for name, value in macros.items()]
     return "\n".join(lines)
 
 
 def main() -> int:
-    commands = {
-        "qrc": lambda: "\n".join(qrc_entries()),
-        "header": lambda: header(read_conf()),
-    }
-    if len(sys.argv) != 2 or sys.argv[1] not in commands:
-        sys.exit(__doc__)
-
-    print(commands[sys.argv[1]]())
+    match sys.argv[1:]:
+        case ["qrc"]:
+            print("\n".join(qrc_entries()))
+        case ["header", version]:
+            print(header(read_conf(), version))
+        case _:
+            sys.exit(__doc__)
     return 0
 
 

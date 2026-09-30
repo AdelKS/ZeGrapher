@@ -1,5 +1,7 @@
 #pragma once
 
+#include "buildconfig.h"
+
 #include <QRegularExpression>
 #include <QString>
 #include <QStringList>

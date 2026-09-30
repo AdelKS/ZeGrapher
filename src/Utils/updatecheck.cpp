@@ -1,5 +1,6 @@
 #include "Utils/updatecheck.h"
 #include "Utils/versionparser.h"
+#include "buildconfig.h"
 
 #include <QMetaEnum>
 

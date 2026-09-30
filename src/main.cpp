@@ -21,6 +21,7 @@
 #include "Utils/palettewatcher.h"
 #include "information.h"
 #include "structures.h"
+#include "buildconfig.h"
 
 #include <QCommandLineParser>
 #include <QFontDatabase>

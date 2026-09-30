@@ -20,6 +20,7 @@
 
 #include "information.h"
 #include "Utils/languages.h"
+#include "buildconfig.h"
 
 #include <QDir>
 #include <QFile>

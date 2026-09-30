@@ -15,7 +15,7 @@ if get_option('test')
       test_exe = executable(
         fs.stem(test_src), # name executable after source file without .cpp extension
         test_src,
-        include_directories: inc,
+        include_directories: [inc, buildconfig_inc],
         dependencies: [qt6_dep, zecalculator_dep, glaze_dep]
       )
 

@@ -1,4 +1,5 @@
 #include "Utils/versionparser.h"
+#include "buildconfig.h"
 
 #include "utils.h"
 
