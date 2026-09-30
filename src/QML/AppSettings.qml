@@ -130,8 +130,7 @@ Item {
         Layout.maximumHeight: 25
         Layout.maximumWidth: 25
 
-        lightThemeIcon: 'qrc:/icons/loop.svg'
-        darkThemeIcon: 'qrc:/icons/loop-light.svg'
+        iconName: "loop"
 
         onReleased: checker.refresh()
       }

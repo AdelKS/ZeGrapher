@@ -180,8 +180,7 @@ Item {
         Layout.maximumHeight: 30
         Layout.maximumWidth: 30
 
-        lightThemeIcon: checked ? "qrc:/icons/pause-dark.svg" : "qrc:/icons/play-dark.svg"
-        darkThemeIcon: checked ? "qrc:/icons/pause-light.svg" : "qrc:/icons/play-light.svg"
+        iconName: checked ? "pause" : "play"
         checkable: true
 
         checked: wrapped_backend.playing
@@ -193,8 +192,7 @@ Item {
         Layout.maximumWidth: 30
 
         id: loopButton
-        lightThemeIcon: checked ? "qrc:/icons/loop-dark.svg" : "qrc:/icons/loop-dark.svg"
-        darkThemeIcon: checked ? "qrc:/icons/loop-light.svg" : "qrc:/icons/loop-light.svg"
+        iconName: "loop"
         checkable: true
 
         onCheckedChanged: {
@@ -212,8 +210,7 @@ Item {
         Layout.maximumWidth: 30
 
         id: pingPongButton
-        lightThemeIcon: checked ? "qrc:/icons/ping-pong-dark.svg" : "qrc:/icons/ping-pong-dark.svg"
-        darkThemeIcon: checked ? "qrc:/icons/ping-pong-light.svg" : "qrc:/icons/ping-pong-light.svg"
+        iconName: "ping-pong"
         checkable: true
 
         onCheckedChanged: {

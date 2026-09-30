@@ -34,8 +34,7 @@ Rectangle {
         zoom.increase();
       }
 
-      lightThemeIcon: 'qrc:/icons/zoom-in-icon.svg'
-      darkThemeIcon: 'qrc:/icons/zoom-in-icon-light.svg'
+      iconName: "zoom-in-icon"
     }
 
     ZeDoubleSpinBox {
@@ -64,8 +63,7 @@ Rectangle {
         zoom.decrease();
       }
 
-      lightThemeIcon: 'qrc:/icons/zoom-out-icon.svg'
-      darkThemeIcon: 'qrc:/icons/zoom-out-icon-light.svg'
+      iconName: "zoom-out-icon"
     }
 
     IconButton {
@@ -82,8 +80,7 @@ Rectangle {
         root.graphSettings.computeZoom();
       }
 
-      lightThemeIcon: 'qrc:/icons/size.svg'
-      darkThemeIcon: 'qrc:/icons/size-light.svg'
+      iconName: "size"
     }
   }
 

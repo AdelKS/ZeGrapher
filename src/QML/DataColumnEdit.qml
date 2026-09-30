@@ -57,8 +57,7 @@ Item {
           checkable: true
           checked: !root.backend.style.visible
 
-          lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
-          darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
+          iconName: checked ? "closed-eye" : "open-eye"
 
           onToggled: root.backend.style.visible = !checked
         }
@@ -74,8 +73,7 @@ Item {
           checkable: true
           checked: false
 
-          lightThemeIcon: "qrc:/icons/brush.svg"
-          darkThemeIcon: "qrc:/icons/brush-light.svg"
+          iconName: "brush"
         }
 
         IconRoundButton {
@@ -89,8 +87,7 @@ Item {
           checkable: true
           checked: false
 
-          lightThemeIcon: "qrc:/icons/sample-dark.svg"
-          darkThemeIcon: "qrc:/icons/sample-light.svg"
+          iconName: "sample"
         }
 
         IconRoundButton {
@@ -103,8 +100,7 @@ Item {
 
           checkable: true
           checked: root.backend.showInTable
-          lightThemeIcon: "qrc:/icons/table.svg"
-          darkThemeIcon: "qrc:/icons/table-light.svg"
+          iconName: "table"
 
           onToggled: root.backend.showInTable = checked;
         }
@@ -130,7 +126,7 @@ Item {
 
           Image {
             anchors.fill: parent
-            source: ZeStyle.dark ? "qrc:/icons/drag-handle-light.svg" : "qrc:/icons/drag-handle-dark.svg"
+            source: ZeStyle.icon("drag-handle")
             fillMode: Image.PreserveAspectFit
             mipmap: true
           }
@@ -164,8 +160,7 @@ Item {
     anchors.verticalCenterOffset: 2
     z: 1
 
-    lightThemeIcon: "qrc:/icons/delete-dark.svg"
-    darkThemeIcon: "qrc:/icons/delete-light.svg"
+    iconName: "delete"
 
     onReleased: root.deleteRequested();
   }

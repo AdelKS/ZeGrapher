@@ -208,8 +208,7 @@ Item {
           implicitHeight: 35
           Layout.alignment: Qt.AlignRight
 
-          lightThemeIcon: "qrc:/icons/export-graph-dark.svg"
-          darkThemeIcon: "qrc:/icons/export-graph-light.svg"
+          iconName: "export-graph"
 
           onReleased: exportDialog.visible = true;
         }
@@ -223,8 +222,7 @@ Item {
           implicitHeight: 35
           Layout.alignment: Qt.AlignRight
 
-          lightThemeIcon: "qrc:/icons/save-dark.svg"
-          darkThemeIcon: "qrc:/icons/save-light.svg"
+          iconName: "save"
 
           onReleased: saveDialog.visible = true;
         }
@@ -238,8 +236,7 @@ Item {
           implicitHeight: 35
           Layout.alignment: Qt.AlignRight
 
-          lightThemeIcon: "qrc:/icons/load-dark.svg"
-          darkThemeIcon: "qrc:/icons/load-light.svg"
+          iconName: "load"
 
           onReleased: loadDialog.visible = true;
         }

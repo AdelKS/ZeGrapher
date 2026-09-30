@@ -14,15 +14,14 @@ diff --git a/src/QML/DataColumnEdit.qml b/src/QML/DataColumnEdit.qml
 index 66c3b9b7..b17eae29 100644
 --- a/src/QML/DataColumnEdit.qml
 +++ b/src/QML/DataColumnEdit.qml
-@@ -87,7 +87,7 @@ Item {
+@@ -87,6 +87,6 @@ Item {
            Layout.alignment: Qt.AlignVCenter
  
            checkable: true
 -          checked: false
 +          checked: true // SCREENSHOT PATCH: sampling form unfolded
  
-           lightThemeIcon: "qrc:/icons/sample-dark.svg"
-           darkThemeIcon: "qrc:/icons/sample-light.svg"
+           iconName: "sample"
 diff --git a/src/QML/DataPane.qml b/src/QML/DataPane.qml
 index 9fa88300..7adc4cbd 100644
 --- a/src/QML/DataPane.qml
@@ -66,15 +65,14 @@ diff --git a/src/QML/MathObjectInput.qml b/src/QML/MathObjectInput.qml
 index ef920c98..9d00a556 100644
 --- a/src/QML/MathObjectInput.qml
 +++ b/src/QML/MathObjectInput.qml
-@@ -131,7 +131,7 @@ Item {
+@@ -131,6 +131,6 @@ Item {
            Layout.preferredWidth: 30
  
            checkable: true
 -          checked: false
 +          checked: true // SCREENSHOT PATCH: plot style unfolded
  
-           lightThemeIcon: "qrc:/icons/brush.svg"
-           darkThemeIcon: "qrc:/icons/brush-light.svg"
+           iconName: "brush"
 diff --git a/src/QML/SamplingEdit.qml b/src/QML/SamplingEdit.qml
 index 7a1e81f7..0a9177b0 100644
 --- a/src/QML/SamplingEdit.qml

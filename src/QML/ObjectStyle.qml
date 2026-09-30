@@ -272,19 +272,19 @@ Loader {
     ListModel {
       id: dashPatternModel
       ListElement {
-        path: "qrc:/icons/solid-line.svg"
+        path: "qrc:/icons/solid-line-dark.svg"
         type: PlotStyle.Solid
       }
       ListElement {
-        path: "qrc:/icons/dash-line.svg"
+        path: "qrc:/icons/dash-line-dark.svg"
         type: PlotStyle.Dash
       }
       ListElement {
-        path: "qrc:/icons/dash-dot-line.svg"
+        path: "qrc:/icons/dash-dot-line-dark.svg"
         type: PlotStyle.DashDot
       }
       ListElement {
-        path: "qrc:/icons/dot-line.svg"
+        path: "qrc:/icons/dot-line-dark.svg"
         type: PlotStyle.Dot
       }
       ListElement {

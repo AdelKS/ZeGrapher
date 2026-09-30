@@ -4,8 +4,8 @@ import QtQuick.Controls.FluentWinUI3
 Button {
   id: root
 
-  required property url lightThemeIcon
-  required property url darkThemeIcon
+  /// @brief an icon from icons/, without its '-dark' or '-light' suffix
+  required property string iconName
 
   display: Button.IconOnly
   leftPadding: 0
@@ -14,7 +14,7 @@ Button {
   bottomPadding: 0
 
   contentItem: Image {
-    source: ZeStyle.dark ? root.darkThemeIcon : root.lightThemeIcon
+    source: ZeStyle.icon(root.iconName)
     fillMode: Image.PreserveAspectFit
     mipmap: true
   }

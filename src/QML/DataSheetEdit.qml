@@ -165,8 +165,7 @@ Item {
         Layout.preferredHeight: 30
         Layout.preferredWidth: 30
 
-        lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
-        darkThemeIcon: "qrc:/icons/csv-import-light.svg"
+        iconName: "csv-import"
 
         onReleased: importDialog.visible = true;
       }
@@ -176,8 +175,7 @@ Item {
         Layout.preferredHeight: 30
         Layout.preferredWidth: 30
 
-        lightThemeIcon: "qrc:/icons/csv-export-dark.svg"
-        darkThemeIcon: "qrc:/icons/csv-export-light.svg"
+        iconName: "csv-export"
 
         onReleased: exportDialog.visible = true;
       }
@@ -187,8 +185,7 @@ Item {
         Layout.preferredHeight: 30
         Layout.preferredWidth: 30
 
-        darkThemeIcon: "qrc:/icons/add-light.svg"
-        lightThemeIcon: "qrc:/icons/add.svg"
+        iconName: "add"
 
         onReleased: root.sheet.addColumn();
       }

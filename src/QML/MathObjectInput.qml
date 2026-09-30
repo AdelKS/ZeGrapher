@@ -114,8 +114,7 @@ Item {
           checkable: true
           checked: !(root.mathObj.style?.visible ?? true)
 
-          lightThemeIcon: checked ? "qrc:/icons/closed-eye.svg" : "qrc:/icons/open-eye.svg"
-          darkThemeIcon: checked ? "qrc:/icons/closed-eye-light.svg" : "qrc:/icons/open-eye-light.svg"
+          iconName: checked ? "closed-eye" : "open-eye"
 
           onToggled: {
             if (root.mathObj.style)
@@ -133,8 +132,7 @@ Item {
           checkable: true
           checked: false
 
-          lightThemeIcon: "qrc:/icons/brush.svg"
-          darkThemeIcon: "qrc:/icons/brush-light.svg"
+          iconName: "brush"
         }
 
         ColorButton {
@@ -245,8 +243,7 @@ Item {
 
           checked: isConstant && root.mathObj.schrodinger
 
-          lightThemeIcon: "qrc:/icons/schrodinger-cat-dark.svg"
-          darkThemeIcon: "qrc:/icons/schrodinger-cat-light.svg"
+          iconName: "schrodinger-cat"
 
           onToggled: {
             root.mathObj.getConstant().deadAndAlive = checked;
@@ -282,7 +279,7 @@ Item {
           Layout.preferredHeight: Layout.preferredWidth
           Layout.preferredWidth: 30
 
-          source: ZeStyle.dark ? "qrc:/icons/schrodinger-cat-light.svg" : "qrc:/icons/schrodinger-cat-dark.svg"
+          source: ZeStyle.icon("schrodinger-cat")
           fillMode: Image.PreserveAspectFit
           mipmap: true
 
@@ -323,7 +320,7 @@ Item {
 
           Image {
             anchors.fill: parent
-            source: ZeStyle.dark ? "qrc:/icons/drag-handle-light.svg" : "qrc:/icons/drag-handle-dark.svg"
+            source: ZeStyle.icon("drag-handle")
             fillMode: Image.PreserveAspectFit
             mipmap: true
           }
@@ -429,8 +426,7 @@ Item {
     anchors.verticalCenterOffset: 2
     z: 1
 
-    lightThemeIcon: "qrc:/icons/delete-dark.svg"
-    darkThemeIcon: "qrc:/icons/delete-light.svg"
+    iconName: "delete"
 
     onReleased: root.mathObj.requestUiInitiatedDelete();
   }

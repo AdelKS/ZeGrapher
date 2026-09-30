@@ -122,8 +122,7 @@ Item {
           Layout.preferredHeight: 35
           Layout.preferredWidth: 35
 
-          lightThemeIcon: "qrc:/icons/csv-import-dark.svg"
-          darkThemeIcon: "qrc:/icons/csv-import-light.svg"
+          iconName: "csv-import"
 
           onReleased: fileDialog.visible = true;
         }
@@ -133,8 +132,7 @@ Item {
           Layout.preferredHeight: 35
           Layout.preferredWidth: 35
 
-          darkThemeIcon: "qrc:/icons/add-light.svg"
-          lightThemeIcon: "qrc:/icons/add.svg"
+          iconName: "add"
 
           onReleased: MathWorld.addMathObject();
         }

@@ -153,8 +153,7 @@ Loader {
           // center on the edit line, below the labels
           Layout.topMargin: sourceEdit.exprY + (sourceEdit.exprHeight - height) / 2
 
-          lightThemeIcon: "qrc:/icons/check-dark.svg"
-          darkThemeIcon: "qrc:/icons/check-light.svg"
+          iconName: "check"
 
           onReleased: {
             const issueText = sampling.apply();

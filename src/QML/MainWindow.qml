@@ -288,7 +288,7 @@ ApplicationWindow {
           NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
         }
 
-        source: ZeStyle.dark ? "qrc:/icons/selector-light.svg" : "qrc:/icons/selector.svg"
+        source: ZeStyle.icon("selector")
         fillMode: Image.PreserveAspectFit
         mipmap: true
 

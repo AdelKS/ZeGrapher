@@ -20,4 +20,10 @@ QtObject {
   function themed(c: themedColor): color {
     return dark ? c.dark : c.light;
   }
+
+  /// @brief the path of an icon from icons/ in the app's current theme: the
+  ///        '-light' file on a dark window, the '-dark' file on a light one
+  function icon(name: string): string {
+    return "qrc:/icons/" + name + (dark ? "-light" : "-dark") + ".svg";
+  }
 }
