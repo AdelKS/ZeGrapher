@@ -11,17 +11,18 @@ index f0d57d41..e5a0baaa 100644
              // the spacing, so take the implicit size from the indicator itself
              implicitWidth: implicitIndicatorWidth
 diff --git a/src/QML/DataColumnEdit.qml b/src/QML/DataColumnEdit.qml
-index 66c3b9b7..b17eae29 100644
+index 55fcabce..02726d23 100644
 --- a/src/QML/DataColumnEdit.qml
 +++ b/src/QML/DataColumnEdit.qml
-@@ -87,6 +87,6 @@ Item {
-           Layout.alignment: Qt.AlignVCenter
+@@ -73,7 +73,7 @@ ObjectCard {
+         Layout.alignment: Qt.AlignVCenter
  
-           checkable: true
--          checked: false
-+          checked: true // SCREENSHOT PATCH: sampling form unfolded
+         checkable: true
+-        checked: false
++        checked: true // SCREENSHOT PATCH: sampling form unfolded
  
-           iconName: "sample"
+         iconName: "sample"
+ 
 diff --git a/src/QML/DataPane.qml b/src/QML/DataPane.qml
 index 9fa88300..7adc4cbd 100644
 --- a/src/QML/DataPane.qml
@@ -62,17 +63,18 @@ index 3cd9b18a..7dd9d934 100644
    /// @brief height the user dragged the box to, zero as long as they haven't
    property real userHeight: 0
 diff --git a/src/QML/MathObjectInput.qml b/src/QML/MathObjectInput.qml
-index ef920c98..9d00a556 100644
+index 35527aed..01f3967c 100644
 --- a/src/QML/MathObjectInput.qml
 +++ b/src/QML/MathObjectInput.qml
-@@ -131,6 +131,6 @@ Item {
-           Layout.preferredWidth: 30
+@@ -120,7 +120,7 @@ ObjectCard {
+         Layout.preferredWidth: 30
  
-           checkable: true
--          checked: false
-+          checked: true // SCREENSHOT PATCH: plot style unfolded
+         checkable: true
+-        checked: false
++        checked: true // SCREENSHOT PATCH: plot style unfolded
  
-           iconName: "brush"
+         iconName: "brush"
+ 
 diff --git a/src/QML/SamplingEdit.qml b/src/QML/SamplingEdit.qml
 index 7a1e81f7..0a9177b0 100644
 --- a/src/QML/SamplingEdit.qml

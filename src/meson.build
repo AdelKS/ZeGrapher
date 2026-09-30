@@ -89,6 +89,7 @@ qml_files = [
   'QML/MathObjects.qml',
   'QML/NameEdit.qml',
   'QML/NumberEdit.qml',
+  'QML/ObjectCard.qml',
   'QML/ObjectStyle.qml',
   'QML/ParametricEdit.qml',
   'QML/RangeAdjust.qml',
