@@ -56,6 +56,8 @@ Graph::Graph(QQuickItem *parent)
 
   connect(&settings, &ZeGraphSettings::minPointsLg2Changed, this, &Graph::minMaxPointsChanged);
   connect(&settings, &ZeGraphSettings::maxPointsLg2Changed, this, &Graph::minMaxPointsChanged);
+  // main() loads the documents before QML creates the graph
+  minMaxPointsChanged();
 
   connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
   connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
