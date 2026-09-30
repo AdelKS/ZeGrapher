@@ -17,11 +17,6 @@ Shape {
   /// @brief selectedColor in the app's current theme
   readonly property color shownColor: ZeStyle.themed(selectedColor)
 
-  onShownColorChanged: {
-    shape_path.set_color(shownColor);
-    colorDialog.selectedColor = shownColor;
-  }
-
   horizontalAlignment: Shape.AlignHCenter
   verticalAlignment: Shape.AlignVCenter
   preferredRendererType: Shape.CurveRenderer
@@ -35,9 +30,9 @@ Shape {
     id: shape_path
     strokeWidth: -1
 
-    property real h: 0
-    property real s: 0
-    property real v: 0
+    property real h: disk.shownColor.hsvHue
+    property real s: disk.shownColor.hsvSaturation
+    property real v: disk.shownColor.hsvValue
 
     Behavior on h {
       NumberAnimation { duration: 500 }
@@ -51,7 +46,8 @@ Shape {
       NumberAnimation { duration: 500 }
     }
 
-    property bool hovered: false
+    readonly property bool hovered: mouse_area.containsMouse
+      && (mouse_area.mouseX - disk.width/2)**2 + (mouse_area.mouseY - disk.height/2)**2 <= disk.radius**2
 
     property real deltaV: hovered ? 0.7 : 0.5
 
@@ -61,20 +57,6 @@ Shape {
 
     readonly property real stop0_v: Math.min(v + deltaV, 1.0)
     readonly property real stop1_v: stop0_v - deltaV
-
-    function lighter(nv: real, factor: real): real {
-      return Math.min( (nv === 0 ? 0.1*factor : nv * factor), 1.0);
-    }
-
-    function set_color(col: color) {
-      shape_path.h = col.hsvHue;
-      shape_path.s = col.hsvSaturation;
-      shape_path.v = col.hsvValue;
-    }
-
-    function get_color(): color {
-      return Qt.hsva(shape_path.h, shape_path.s, shape_path.v, 1.0)
-    }
 
     PathAngleArc {
       centerX: disk.radius
@@ -97,6 +79,7 @@ Shape {
 
   ColorDialog {
     id: colorDialog
+    selectedColor: disk.shownColor
     onAccepted: {
       disk.selectedColor.setCurrent(selectedColor);
       disk.selectedColorChanged();
@@ -109,26 +92,6 @@ Shape {
     anchors.fill: parent
     hoverEnabled: true
 
-    property bool entered: false
-
-    onPositionChanged: {
-      if ((mouseX - disk.width/2)**2 + (mouseY - disk.height/2)**2 <= disk.radius * disk.radius)
-      {
-        if(!shape_path.hovered)
-          shape_path.hovered = true
-      }
-      else if (shape_path.hovered)
-        shape_path.hovered  = false
-    }
-    onExited: {
-      if (shape_path.hovered)
-        shape_path.hovered = false
-    }
     onReleased: colorDialog.open()
-  }
-
-  Component.onCompleted: {
-    shape_path.set_color(shownColor);
-    colorDialog.selectedColor = shownColor;
   }
 }
