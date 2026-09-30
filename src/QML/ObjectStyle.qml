@@ -6,44 +6,15 @@ import ZeGrapher as ZG
 
 // The plot style settings of an object, unfolding and folding back on demand
 
-Loader {
+Foldable {
   id: root
 
   required property Base base
   required property PlotStyle style
 
-  /// @brief whether the settings are unfolded
-  property bool open: false
-
-  /// @brief the height currently given to the settings, animated
-  property real shownHeight: 0
-
   readonly property bool available: root.base !== null && root.style !== null
 
   active: available && (open || shownHeight > 0)
-
-  Layout.fillWidth: true
-  Layout.preferredHeight: shownHeight
-
-  clip: true
-
-  visible: shownHeight > 0
-
-  Behavior on shownHeight { SmoothedAnimation { duration: 200 } }
-
-  states: [
-    State {
-      name: "folded"; when: !root.open
-      PropertyChanges { root.shownHeight: 0 }
-    },
-    State {
-      name: "unfolded"; when: root.open
-      PropertyChanges {
-        explicit: false
-        root.shownHeight: root.implicitHeight
-      }
-    }
-  ]
 
   sourceComponent: Item {
     implicitHeight: mainLayout.implicitHeight

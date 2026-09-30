@@ -6,43 +6,12 @@ import QtQuick.Controls.FluentWinUI3
 
 import ZeGrapher as ZG
 
-Loader {
+Foldable {
   id: root
 
   required property Data column
 
-  /// @brief whether the form is unfolded
-  property bool open: false
-
-  /// @brief the height currently given to the form, animated
-  property real shownHeight: 0
-
   signal applied()
-
-  active: open || shownHeight > 0
-
-  Layout.fillWidth: true
-  Layout.preferredHeight: shownHeight
-
-  clip: true
-
-  visible: shownHeight > 0
-
-  Behavior on shownHeight { SmoothedAnimation { duration: 200 } }
-
-  states: [
-    State {
-      name: "folded"; when: !root.open
-      PropertyChanges { root.shownHeight: 0 }
-    },
-    State {
-      name: "unfolded"; when: root.open
-      PropertyChanges {
-        explicit: false
-        root.shownHeight: root.implicitHeight
-      }
-    }
-  ]
 
   sourceComponent: Frame {
     id: frame

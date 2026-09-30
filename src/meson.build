@@ -74,6 +74,7 @@ qml_files = [
   'QML/DragHandle.qml',
   'QML/EdgeButton.qml',
   'QML/EquationEdit.qml',
+  'QML/Foldable.qml',
   'QML/GraphSettings.qml',
   'QML/GridSettings.qml',
   'QML/IconButton.qml',
