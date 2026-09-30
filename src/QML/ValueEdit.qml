@@ -15,11 +15,6 @@ Item {
 
   implicitHeight: zcExprEdit.implicitHeight
 
-
-  function refresh() {
-    zcExprEdit.refresh();
-  }
-
   ZcExprEdit {
     id: zcExprEdit
 
@@ -37,10 +32,5 @@ Item {
     highlighter.offset: root.backend.implicitName.length + 1
 
     state: root.backend.state
-
-  }
-
-  Component.onCompleted: {
-    refresh();
   }
 }

@@ -1,4 +1,5 @@
-// A line edit where the user enters an expression that evaluates to a value
+// A line edit for an expression: its border color shows the expression's
+// state, and its error message shows below
 
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
@@ -27,18 +28,12 @@ Item {
 
   implicitHeight: lineEdit.height + errorLbl.height
 
-  onCustomErrorMsgChanged: refresh()
-  onStateChanged: refresh()
-  onNanValueChanged: refresh()
-
-  function refresh() {
-    if (customErrorMsg.length !== 0)
-      errorLbl.setErrorMsg(customErrorMsg);
-    else {
-      if (root.state.errorMsg.length === 0 && root.state.status !== ZG.State.NEUTRAL && nanValue)
-        errorLbl.setErrorMsg("NaN");
-      else errorLbl.setErrorMsg(root.state.errorMsg);
-    }
+  readonly property string errorMsg: {
+    if (root.customErrorMsg.length !== 0)
+      return root.customErrorMsg;
+    if (root.state.errorMsg.length === 0 && root.state.status !== ZG.State.NEUTRAL && root.nanValue)
+      return "NaN";
+    return root.state.errorMsg;
   }
 
   LineEdit {
@@ -71,9 +66,7 @@ Item {
     id: errorLbl
     height: textEdit.length > 0 ? implicitHeight + 4 : 0
 
-    function setErrorMsg(msg: string) {
-      errorLbl.textEdit.text = msg;
-    }
+    text: root.errorMsg
 
     Behavior on height { SmoothedAnimation { duration: 200 } }
 
