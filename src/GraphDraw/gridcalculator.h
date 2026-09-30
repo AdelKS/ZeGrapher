@@ -140,8 +140,6 @@ template <ZeAxisName axis>
 ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &axis_mapper,
                                                   const QFontMetricsF &metrics)
 {
-  // qDebug() << "New tick spacing calculation";
-
   auto previousMultiplier = [](double baseMultiplier)
   {
     if (baseMultiplier == 2)
@@ -271,12 +269,6 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     baseStep = int_pow(10.0, targetPower);
     realStep = baseStep * baseMultiplier;
   }
-
-  // int maxRangePower = max(lrint(log10(fabs(scaledOffsetRange.max))), lrint(log10(fabs(scaledOffsetRange.min))));
-
-  // QStringView axisNameStr = axis == ZeAxisName::X ? "x axis" : "y axis";
-  // qDebug() << axisNameStr << " Max range power " << maxRangePower;
-  // qDebug() << axisNameStr << " step power " << targetPower;
 
   double multiplier = (floor(scaledOffsetRange.min.v / realStep) - 1) * realStep;
   double power_offset = int_pow(10.0, axisTicks.offset.basePowerOffset);

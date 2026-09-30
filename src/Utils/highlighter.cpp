@@ -20,11 +20,8 @@ void Highlighter::setState(zg::State s)
   }
 }
 
-void Highlighter::highlightBlock(const QString &text)
+void Highlighter::highlightBlock(const QString&)
 {
-  qDebug() << "Highlighting string: " << text << "\n"
-           << "Highlighter address: " << this;
-
   QTextCharFormat invalidFormat;
   invalidFormat.setForeground(information->appSettings.invalidSyntax.getCurrent());
   invalidFormat.setFontUnderline(true);
@@ -34,9 +31,6 @@ void Highlighter::highlightBlock(const QString &text)
   if (auto opt_err_tok = state.getErrToken(); opt_err_tok)
   {
     setFormat(opt_err_tok->begin - offset, opt_err_tok->substr.size(), invalidFormat);
-
-    qDebug() << "Highlighted token: '" + QString::fromStdString(opt_err_tok->substr) + "' at "
-                  + QString::number(opt_err_tok->begin - offset);
   };
 }
 

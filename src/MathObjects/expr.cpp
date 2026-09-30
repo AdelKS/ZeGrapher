@@ -36,14 +36,10 @@ State Expr::setImplicitName(QString name)
   implicitName = name;
   zcMathObj.set_name(implicitName.toStdString());
 
-  qDebug() << "Setting implicit name: " << implicitName;
-
   auto name_status = zcMathObj.name_status();
   while (not name_status and name_status.error().type == zc::Error::NAME_ALREADY_TAKEN)
   {
-    qDebug() << "implicit name taken: " << implicitName;
     implicitName = name + QString::number(i++);
-    qDebug() << "Setting new implicit name: " << implicitName;
     zcMathObj.set_name(implicitName.toStdString());
     name_status = zcMathObj.name_status();
   }
@@ -90,8 +86,6 @@ State Expr::setExpression(QString expr)
   }
 
   fullExpression = fullExpr;
-
-  qDebug() << "[backend] Expr: setting expression: " << fullExpression;
 
   if (not expression.isEmpty())
     zcMathObj = fullExpression;

@@ -166,8 +166,6 @@ void Information::exportYaml(QUrl filename)
 template <class Pod>
 void Information::writeYaml(QUrl filename, const Pod& pod)
 {
-  qDebug() << "Exporting to " << filename.toLocalFile();
-
   auto exp_content = glz::write_yaml(pod);
   if (not exp_content)
   {
@@ -233,8 +231,6 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
 
 void Information::importYaml(QUrl filename)
 {
-  qInfo() << "Importing from " << filename.toLocalFile();
-
   const QString path = filename.toLocalFile();
   if (path.isEmpty())
   {

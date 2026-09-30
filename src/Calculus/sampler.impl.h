@@ -130,23 +130,6 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
                          [&](const auto& pt) { return QPointF(mapper.to<zg::pixel>(pt)); });
   // ######################################
 
-  // debug message
-  std::string obj_name = zc::utils::overloaded{
-    [&](const zc::DynMathObject<zc_t>* f)
-    {
-      return std::string(f->get_name());
-    },
-    [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f)
-    {
-      return std::string(f.first->get_name()) + "," + std::string(f.second->get_name());
-    },
-  }(handle);
-
-  qDebug() << "Object caching: " << obj_name
-    << " sampling range: min=" << QString::number(range.min.v, 'g', 14)
-    << " max=" << QString::number(range.max.v, 'g', 14);
-  // ######################################
-
   const zg::real_unit max_step = [&]{
     if constexpr (discrete)
       return zg::real_unit{std::max(std::round(range.amplitude().v / double(min_points)), 1.0)};
@@ -436,6 +419,4 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   } while(insertion_happened and data.size() < max_points);
   // ######################################
-
-  qDebug() << "Object caching: " << obj_name << " curve has " << curve.size() << " points";
 }

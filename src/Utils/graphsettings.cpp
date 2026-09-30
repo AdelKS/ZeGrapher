@@ -74,14 +74,10 @@ void ZeGraphSettings::screenChanged(QWindow* win)
   QSizeF pixelSize = win->screen()->size().toSizeF();
   QSizeF cmSize = win->screen()->physicalSize() / 10;
 
-  qDebug() << "Monitor pixel size: " << pixelSize;
-  qDebug() << "Monitor cm size: " << cmSize;
-
   double px_per_cm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
 
   if (pixelDensity != px_per_cm)
   {
-    qDebug() << "pixel density " << px_per_cm << "px per cm";
     pixelDensity = px_per_cm;
     availableSizeCm = availableSizePx.toSizeF() / pixelDensity;
     updateSizes();
@@ -176,8 +172,6 @@ void ZeGraphSettings::updateSizes()
 
 void ZeGraphSettings::computeZoom()
 {
-  qDebug() << "Recomputing zoom";
-
   if (zoom.zoomingType != ZoomingType::FITSHEET)
     return;
 
@@ -283,6 +277,4 @@ void ZeGraphSettings::importPod(POD p)
   updateSizes();
   computeZoom();
   emit totalScaleFactorChanged();
-
-  qDebug() << "Done loading graph settings";
 }

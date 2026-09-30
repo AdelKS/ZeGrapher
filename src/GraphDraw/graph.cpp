@@ -74,7 +74,6 @@ void Graph::updateGraphRect()
   graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
   graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
   graphRectScaled.moveTopLeft(QPointF(0, 0)); // because painter is translated to its top-left corner
-  qDebug() << "Graph rect scaled " << graphRectScaled;
   viewMapper.setGraphRect(graphRectScaled);
 }
 
@@ -147,8 +146,6 @@ void Graph::paint(QPainter *p)
     scaledSize = p->window().size().toSizeF();
   else scaledSize = p->window().size().toSizeF() / window()->effectiveDevicePixelRatio();
 
-  qDebug() << "Original scaled size: " << scaledSize;
-
   scaleView();
   drawSupport();
 
@@ -197,13 +194,9 @@ void Graph::drawAll()
 
   sampler.update();
 
-  const auto start = std::chrono::high_resolution_clock::now();
-
   if (paintType == GPU_RENDER)
     updateQmlData();
   else drawObjects();
-
-  const auto end = std::chrono::high_resolution_clock::now();
 
   if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
       and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
@@ -234,16 +227,11 @@ void Graph::drawAll()
   drawGraphRect();
   writeAxisTitles();
 
-  qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
   painter->translate(centre);
 }
 
 void Graph::scaleView()
 {
-  qDebug() << "Scaling: " << settings.getSize().scalingFactor;
-  qDebug() << "Zoom: " << settings.getZoom().zoom;
-
   totalScaleFactor = paintType == VECTOR_EXPORT ? settings.getSize().scalingFactor
                                                 : settings.getTotalScaleFactor();
 
@@ -256,9 +244,6 @@ void Graph::scaleView()
 
   // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
   scaledSize /= totalScaleFactor;
-
-  qDebug() << "Painter viewport: " << painter->viewport();
-  qDebug() << "Painter window: " << painter->window();
 }
 
 void Graph::writeAxisTitles()
@@ -457,16 +442,12 @@ void Graph::computeSupportRect()
     }
   }
 
-  qDebug() << "Support rect: " << rect;
-
   supportRect = rect;
 }
 
 void Graph::updateQmlData()
 {
   qmlData.clear();
-
-  const auto start = std::chrono::high_resolution_clock::now();
 
   for (const zg::SampledCurve& f_curve : sampler.getCurves())
   {
@@ -496,10 +477,6 @@ void Graph::updateQmlData()
                      (figureRectScaled.y() + topMargin) * totalScaleFactor,
                      graphRectScaled.width() * totalScaleFactor,
                      graphRectScaled.height() * totalScaleFactor);
-
-  const auto end = std::chrono::high_resolution_clock::now();
-
-  qDebug() << "Preparing QML data took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
   emit qmlDataChanged();
   emit graphRectChanged();

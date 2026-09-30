@@ -201,8 +201,6 @@ void Sampler::update()
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
 
-  const auto start = std::chrono::high_resolution_clock::now();
-
   auto eval_handle = [](auto* f) {
     return f->getZcObject();
   };
@@ -236,11 +234,6 @@ void Sampler::update()
     }
     schrodinger_constant->zcMathObj = std::nan("");
   }
-
-  const auto end = std::chrono::high_resolution_clock::now();
-
-  qDebug() << "Sampling took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
 }
 
 void Sampler::update_discontinuities(zg::SampledCurve& data)
@@ -253,9 +246,6 @@ void Sampler::update_discontinuities(zg::SampledCurve& data)
   auto is_nan_pt = [](const zg::real_pt& pt) {
     return std::isnan(pt.x.v) or std::isnan(pt.y.v);
   };
-
-  size_t label = 1;
-  qDebug() << "Object caching: curve has " << curve.size() << " points";
 
   for (size_t i = 0; i + 2 < input_vals.size(); i++)
   {
@@ -275,10 +265,5 @@ void Sampler::update_discontinuities(zg::SampledCurve& data)
       continue;
 
     data.discontinuities.insert(i+2);
-    qDebug() << "- Discontinuity " << label++ << ": between ( " << B.x.v << ", " << B.y.v
-              << " ) and (" << C.x.v << ", " << C.y.v << " )";
-
   }
-
-  qDebug() << "  and has " << data.discontinuities.size() << " discontinuities.";
 }

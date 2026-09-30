@@ -2,8 +2,6 @@
 #include "Utils/versionparser.h"
 #include "buildconfig.h"
 
-#include <QMetaEnum>
-
 UpdateCheck::UpdateCheck(QObject *parent) : QObject(parent)
 {
   connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
@@ -24,7 +22,6 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
   {
     status = ERROR;
     emit statusChanged();
-    qDebug() << "[Update check] return error: " << QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(reply->error());
 
     reply->deleteLater();
     return;
@@ -32,9 +29,6 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
 
   QTextStream reader(reply);
   latestVersion = reader.readAll().trimmed();
-
-  qDebug() << "[Update check] current version: " << SOFTWARE_VERSION;
-  qDebug() << "[Update check] remote version: " << latestVersion;
 
   // the site writes a tag, 'v4.0.0', and SOFTWARE_VERSION is a version, '4.0.0'.
   // parse_version_string() reads both forms, so compare their parts

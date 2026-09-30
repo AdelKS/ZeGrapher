@@ -43,9 +43,6 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 
 void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 {
-  qDebug() << "################################";
-  qDebug() << "Mouse move event " << event->pos();
-
   QPoint dr = event->pos() - lastMousePos;
 
   if (dragging)

@@ -91,14 +91,8 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
 
 void MathObjectDraw::drawObjects()
 {
-  const auto start = std::chrono::high_resolution_clock::now();
-
   for (const auto& f_curve: sampler.getCurves())
     drawSampledCurve(f_curve);
-
-  const auto end = std::chrono::high_resolution_clock::now();
-
-  qDebug() << "Plotting curves took: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 }
 
 QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale)
@@ -170,14 +164,8 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
     const QList<QPolygonF> curve = buildFinalCurve(f_curve);
 
-    size_t plotted_points = 0;
     for (const QPolygonF& seg : curve)
-    {
       painter->drawPolyline(seg);
-      plotted_points += seg.size();
-    }
-
-    qDebug() << "Plotted continuous curve with" << plotted_points << "points.";
   }
 
   if (f_curve.discrete)
