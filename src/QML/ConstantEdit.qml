@@ -10,8 +10,6 @@ Item {
 
   required property Constant backend
 
-  property alias animatedConstant: wrapped_backend
-
   // the name editor (left) and the value/slider/animation column (right) are
   // parallel columns; the row is as tall as the taller one.
   implicitHeight: Math.max(mainLayout.implicitHeight, nameLayout.implicitHeight)

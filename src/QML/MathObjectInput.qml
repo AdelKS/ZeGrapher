@@ -16,6 +16,9 @@ ObjectCard {
 
   frame.bottomPadding: 10
 
+  /// @brief true for the objects that draw a curve
+  readonly property bool plotted: root.mathObj.style !== null
+
   ColumnLayout {
     id: layout
     anchors.fill: parent
@@ -33,58 +36,22 @@ ObjectCard {
         valueRole: "type"
         background.implicitWidth: implicitContentWidth
 
-        model: ListModel {
-          id: eqTypeModel
-          ListElement {
-            text: qsTr("Equation")
-            type: MathObject.EQUATION
-            has_graph: true
-          }
-          ListElement {
-            text: qsTr("Constant")
-            type: MathObject.CONSTANT
-            has_graph: false
-          }
-          ListElement {
-            text: qsTr("Parametric")
-            type: MathObject.PARAMETRIC
-            has_graph: true
-          }
-          ListElement {
-            text: qsTr("Data")
-            type: MathObject.DATASHEET
-            has_graph: false
-          }
-        }
+        model: [
+          { text: qsTr("Equation"), type: MathObject.EQUATION },
+          { text: qsTr("Constant"), type: MathObject.CONSTANT },
+          { text: qsTr("Parametric"), type: MathObject.PARAMETRIC },
+          { text: qsTr("Data"), type: MathObject.DATASHEET },
+        ]
 
-        Connections {
-          target: mathObj
-          function onTypeChanged() {
-            objectTypeTumbler.sync();
-          }
-        }
-
-        function sync() {
-          let currentType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
-          if (mathObj.type !== currentType)
-          {
-            for (var i = 0; i != eqTypeModel.count; i++) {
-              if (mathObj.type === model.get(i).type) {
-                currentIndex = i;
-                break;
-              }
-            }
-          }
-        }
+        currentIndex: model.findIndex((entry) => entry.type === root.mathObj.type)
 
         onActivated: {
-          let newType = eqTypeModel.get(objectTypeTumbler.currentIndex).type
-          if (mathObj.type !== newType)
-          {
-            mathObj.type = newType;
-            if (mathObj.type == MathObject.DATASHEET)
-              mathObj.getDataSheet().addColumn();
-          }
+          if (currentValue === root.mathObj.type)
+            return;
+
+          root.mathObj.type = currentValue;
+          if (currentValue === MathObject.DATASHEET)
+            root.mathObj.getDataSheet().addColumn();
         }
       }
 
@@ -206,17 +173,6 @@ ObjectCard {
         }
       }
 
-      Connections {
-        target: root.mathObj
-
-        function onSchrodingerChanged() {
-          if (loader.item && loader.item.animatedConstant)
-          {
-            schrodingerCatButton.checked = root.mathObj.schrodinger;
-          }
-        }
-      }
-
       CardButton {
         id: schrodingerCatButton
 
@@ -270,8 +226,6 @@ ObjectCard {
 
         id: schrodingerObject
 
-        readonly property bool isSchrodingerObject: false
-
         states: [
           State {
             name: "hidden";
@@ -305,7 +259,7 @@ ObjectCard {
       states: [
         State {
           name: "hidden";
-          when: ! eqTypeModel.get(objectTypeTumbler.currentIndex).has_graph
+          when: !root.plotted
           PropertyChanges {
             colorButton.opacity: 0.
             colorButton.radius: 0
@@ -324,7 +278,7 @@ ObjectCard {
         },
         State {
           name: "shown";
-          when: eqTypeModel.get(objectTypeTumbler.currentIndex).has_graph
+          when: root.plotted
           PropertyChanges {
             colorButton.opacity: 1.
             colorButton.radius: 12
@@ -353,46 +307,42 @@ ObjectCard {
       open: styleButton.checked && styleButton.visible
     }
 
+    // getEquation() and the other getters have no notify signal, so each type
+    // gets a new item
     Loader {
-      id: loader
       Layout.fillWidth: true
 
-      property int currentType: -1
-
-      Connections {
-        target: mathObj
-        function onTypeChanged() {
-          loader.sync();
+      sourceComponent: {
+        switch (root.mathObj.type) {
+          case MathObject.EQUATION: return equationEdit;
+          case MathObject.CONSTANT: return constantEdit;
+          case MathObject.PARAMETRIC: return parametricEdit;
+          case MathObject.DATASHEET: return dataSheetEdit;
         }
       }
 
-      function sync() {
-        if (currentType !== mathObj.type)
-        {
-          currentType = mathObj.type
-          if (currentType === MathObject.EQUATION) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/EquationEdit.qml", {"backend": mathObj.getEquation()});
-          } else if (currentType === MathObject.CONSTANT) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/ConstantEdit.qml", {"backend": mathObj.getConstant()});
-          } else if (currentType === MathObject.PARAMETRIC) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/ParametricEdit.qml", {"backend": mathObj.getParametric()});
-          } else if (currentType === MathObject.DATASHEET) {
-            loader.setSource("qrc:/qt/qml/ZeGrapher/DataSheetEdit.qml", {"sheet": mathObj.getDataSheet()});
-          }
+      Component {
+        id: equationEdit
+        EquationEdit { backend: root.mathObj.getEquation() }
+      }
+
+      Component {
+        id: constantEdit
+        ConstantEdit { backend: root.mathObj.getConstant() }
+      }
+
+      Component {
+        id: parametricEdit
+        ParametricEdit { backend: root.mathObj.getParametric() }
+      }
+
+      Component {
+        id: dataSheetEdit
+        DataSheetEdit {
+          sheet: root.mathObj.getDataSheet()
+          onImportCSV: (file, dataSheet) => root.importCSV(file, dataSheet)
         }
       }
     }
-
-    Connections {
-      target: loader.item
-      ignoreUnknownSignals: true
-      function onImportCSV(file: url, dataSheet: DataSheet) { root.importCSV(file, dataSheet); }
-    }
   }
-
-  Component.onCompleted: {
-    loader.sync();
-    objectTypeTumbler.sync();
-  }
-
 }
