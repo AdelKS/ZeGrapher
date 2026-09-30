@@ -128,6 +128,8 @@ void Constant::setDuration(double d)
   if (seconds(d) == duration) return;
 
   duration = seconds(d);
+
+  emit durationChanged();
 }
 
 bool Constant::isValid()
