@@ -23,7 +23,7 @@
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
-#include <glaze/glaze.hpp>
+#include <glaze/yaml.hpp>
 
 namespace zg {
 
