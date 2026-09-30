@@ -19,14 +19,29 @@ Foldable {
   sourceComponent: Item {
     implicitHeight: mainLayout.implicitHeight
 
-    function indexFromModelValue(model: var, val: int) : int {
-      for (var i = 0; i !== model.count; i++) {
-        if (model.get(i).type === val)
-          return i;
-      }
-      console.warn("Value not in model: ", val)
-      return -1;
-    }
+    readonly property var coordinateSystems: [
+      //: cartesian coordinates
+      { text: qsTr("Cartesian"), type: ZG.Base.Cartesian },
+      //: polar coordinates
+      { text: qsTr("Polar"), type: ZG.Base.Polar },
+    ]
+
+    readonly property var lineStyles: [
+      { icon: "solid-line", type: PlotStyle.Solid },
+      { icon: "dash-line", type: PlotStyle.Dash },
+      { icon: "dash-dot-line", type: PlotStyle.DashDot },
+      { icon: "dot-line", type: PlotStyle.Dot },
+      { path: "qrc:/icons/noLine.png", type: PlotStyle.NoLine },
+    ]
+
+    readonly property var pointStyles: [
+      { path: "qrc:/icons/squarePoint.png", type: PlotStyle.Square },
+      { path: "qrc:/icons/trianglePoint.png", type: PlotStyle.Triangle },
+      { path: "qrc:/icons/roundPoint.png", type: PlotStyle.Disc },
+      { path: "qrc:/icons/noPoint.png", type: PlotStyle.None },
+      { path: "qrc:/icons/crossPoint.png", type: PlotStyle.Cross },
+      { path: "qrc:/icons/rhombusPoint.png", type: PlotStyle.Rhombus },
+    ]
 
     GridLayout {
       id: mainLayout
@@ -35,7 +50,6 @@ Foldable {
       anchors.fill: parent
 
       ColumnLayout {
-        // Layout.fillHeight: true
         Layout.alignment: Qt.AlignHCenter
         Layout.maximumWidth: implicitWidth
         Layout.preferredHeight: implicitHeight
@@ -50,13 +64,11 @@ Foldable {
           valueRole: "type"
           background.implicitWidth: implicitContentWidth
 
-          model: coordinateType
+          model: coordinateSystems
 
-          currentIndex: indexFromModelValue(coordinateType, root.base.coordinateSystem)
+          currentIndex: model.findIndex((entry) => entry.type === root.base.coordinateSystem)
 
-          onCurrentValueChanged: {
-            root.base.coordinateSystem = currentValue
-          }
+          onActivated: root.base.coordinateSystem = currentValue
         }
       }
 
@@ -68,13 +80,11 @@ Foldable {
           Layout.alignment: Qt.AlignHCenter
           Layout.maximumWidth: 100
           Layout.preferredHeight: 50
-          model: ZeStyle.dark ? dashPatternModelLight : dashPatternModel
+          model: lineStyles
 
-          currentIndex: indexFromModelValue(dashPatternModel, root.style.lineStyle)
+          currentIndex: model.findIndex((entry) => entry.type === root.style.lineStyle)
 
-          onCurrentIndexChanged: {
-            root.style.lineStyle = model.get(currentIndex).type;
-          }
+          onCurrentIndexChanged: root.style.lineStyle = model[currentIndex].type
         }
 
         ZeSpinBox {
@@ -103,14 +113,12 @@ Foldable {
           Layout.alignment: Qt.AlignHCenter
           Layout.maximumWidth: 60
           Layout.preferredHeight: 50
-          model: pointStyleModel
+          model: pointStyles
           fillMode: Image.PreserveAspectFit
 
-          currentIndex: indexFromModelValue(pointStyleModel, root.style.pointStyle)
+          currentIndex: model.findIndex((entry) => entry.type === root.style.pointStyle)
 
-          onCurrentIndexChanged: {
-            root.style.pointStyle = pointStyleModel.get(currentIndex).type
-          }
+          onCurrentIndexChanged: root.style.pointStyle = model[currentIndex].type
         }
         ZeSpinBox {
           id: pointWidthSpinBox
@@ -130,12 +138,11 @@ Foldable {
         }
       }
 
-     RowLayout {
+      RowLayout {
         Layout.columnSpan: 3
         Layout.fillWidth: true
         Layout.preferredHeight: implicitHeight
         Layout.minimumHeight: implicitHeight
-
 
         states: [
           State {
@@ -233,97 +240,6 @@ Foldable {
         Item {
           Layout.maximumWidth: 10
         }
-      }
-    }
-
-    ListModel {
-      id: coordinateType
-      ListElement {
-        //: cartesian coordinates
-        text: qsTr("Cartesian")
-        type: ZG.Base.Cartesian
-      }
-      ListElement {
-        //: polar coordinates
-        text: qsTr("Polar")
-        type: ZG.Base.Polar
-      }
-    }
-
-    ListModel {
-      id: dashPatternModel
-      ListElement {
-        path: "qrc:/icons/solid-line-dark.svg"
-        type: PlotStyle.Solid
-      }
-      ListElement {
-        path: "qrc:/icons/dash-line-dark.svg"
-        type: PlotStyle.Dash
-      }
-      ListElement {
-        path: "qrc:/icons/dash-dot-line-dark.svg"
-        type: PlotStyle.DashDot
-      }
-      ListElement {
-        path: "qrc:/icons/dot-line-dark.svg"
-        type: PlotStyle.Dot
-      }
-      ListElement {
-        path: "qrc:/icons/noLine.png"
-        type: PlotStyle.NoLine
-      }
-    }
-
-    ListModel {
-      id: dashPatternModelLight
-       ListElement {
-        path: "qrc:/icons/solid-line-light.svg"
-        type: PlotStyle.Solid
-      }
-      ListElement {
-        path: "qrc:/icons/dash-line-light.svg"
-        type: PlotStyle.Dash
-      }
-      ListElement {
-        path: "qrc:/icons/dash-dot-line-light.svg"
-        type: PlotStyle.DashDot
-      }
-      ListElement {
-        path: "qrc:/icons/dot-line-light.svg"
-        type: PlotStyle.Dot
-      }
-      ListElement {
-        path: "qrc:/icons/noLine.png"
-        type: PlotStyle.NoLine
-      }
-    }
-
-    ListModel {
-      id: pointStyleModel
-
-      ListElement {
-        path: "qrc:/icons/squarePoint.png"
-        type: PlotStyle.Square
-      }
-      ListElement {
-        path: "qrc:/icons/trianglePoint.png"
-        type: PlotStyle.Triangle
-      }
-      ListElement {
-        path: "qrc:/icons/roundPoint.png"
-        type: PlotStyle.Disc
-      }
-      ListElement {
-        path: "qrc:/icons/noPoint.png"
-        type: PlotStyle.None
-      }
-      ListElement {
-        path: "qrc:/icons/crossPoint.png"
-        type: PlotStyle.Cross
-      }
-      ListElement {
-        path: "qrc:/icons/rhombusPoint.png"
-        type: PlotStyle.Rhombus
       }
     }
   }
