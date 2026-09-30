@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QFont>
 #include <QColor>
+#include <QTimer>
 
 #include "Utils/axissettings.h"
 #include "Utils/fonts.h"
@@ -129,8 +130,13 @@ signals:
 public slots:
   void screenChanged(QWindow* win);
 
-protected slots:
-  void onSystemPaletteChange();
+protected:
+  bool eventFilter(QObject* watched, QEvent* event) override;
+
+  /// @brief a default background follows the window color in the dark theme
+  void followWindowColor();
+
+  QTimer paletteTimer;
 
 public:
   zg::GraphRange range;

@@ -20,41 +20,51 @@
 
 #include "graphsettings.h"
 #include "information.h"
-#include "Utils/palettewatcher.h"
 
 #include <QPalette>
 #include <QGuiApplication>
 
-QColor getWindowColor()
+namespace {
+
+QColor windowColor()
 {
   return QGuiApplication::palette().color(QPalette::Active, QPalette::Window);
+}
+
 }
 
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
   : QObject(parent),
     range(this),
     defaultBgColor(
-      ThemedColor{.dark = isDarkTheme() ? getWindowColor() : "#202326", .light = Qt::white}),
+      ThemedColor{.dark = isDarkTheme() ? windowColor() : "#202326", .light = Qt::white}),
     backgroundColor(defaultBgColor)
 {
-  connect(paletteWatcher, &PaletteWatcher::paletteChanged, this, &ZeGraphSettings::onSystemPaletteChange);
-};
+  paletteTimer.setInterval(500);
+  paletteTimer.setSingleShot(true);
+  connect(&paletteTimer, &QTimer::timeout, this, &ZeGraphSettings::followWindowColor);
 
-void ZeGraphSettings::onSystemPaletteChange()
+  qGuiApp->installEventFilter(this);
+}
+
+bool ZeGraphSettings::eventFilter(QObject* watched, QEvent* event)
+{
+  if (watched == qGuiApp and event->type() == QEvent::ApplicationPaletteChange)
+    paletteTimer.start();
+
+  return QObject::eventFilter(watched, event);
+}
+
+void ZeGraphSettings::followWindowColor()
 {
   if (isDarkTheme())
   {
-    QColor newDarkBgColor = getWindowColor();
-    if (backgroundColor.dark == defaultBgColor.dark
-        and newDarkBgColor != defaultBgColor.dark)
-    {
-      defaultBgColor.dark = newDarkBgColor;
-      backgroundColor.dark = newDarkBgColor;
-    }
+    if (backgroundColor.dark == defaultBgColor.dark)
+      backgroundColor.dark = windowColor();
 
-    else if (newDarkBgColor != defaultBgColor.dark)
-      defaultBgColor.dark = newDarkBgColor;
+    defaultBgColor.dark = windowColor();
   }
+
   emit backgroundColorChanged();
 }
 

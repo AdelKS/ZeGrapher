@@ -18,7 +18,6 @@
 **
 ****************************************************************************/
 
-#include "Utils/palettewatcher.h"
 #include "information.h"
 #include "structures.h"
 #include "buildconfig.h"
@@ -75,9 +74,6 @@ private:
 int main(int argc, char *argv[])
 {
   QGuiApplication a(argc, argv);
-
-  PaletteWatcher watcher;
-  paletteWatcher = &watcher;
 
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));
 
