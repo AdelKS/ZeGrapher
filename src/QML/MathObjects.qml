@@ -86,22 +86,10 @@ Item {
       Layout.minimumWidth: root.globalMenuSize.width
     }
 
-    Frame {
+    ButtonTray {
       id: buttonsFrame
-      z: 100
 
       Layout.alignment: Qt.AlignRight
-
-      leftPadding: 5
-      rightPadding: 5
-      topPadding: 5
-      bottomPadding: 5
-
-      background: Rectangle {
-        color: ZeStyle.palette.light
-        radius: 5
-        opacity: 0.95
-      }
 
       RowLayout {
         spacing: 5

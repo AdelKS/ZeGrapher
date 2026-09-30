@@ -126,27 +126,15 @@ Item {
     onAccepted: root.sheet.exportCSV(selectedFile)
   }
 
-  Frame {
+  ButtonTray {
     id: buttonsFrame
-    z: 100
 
     anchors.right: parent.right
     anchors.bottom: resizeHandle.top
     anchors.margins: 5
 
-    leftPadding: 5
-    rightPadding: 5
-    topPadding: 5
-    bottomPadding: 5
-
     height: implicitHeight
     width: implicitWidth
-
-    background: Rectangle {
-      color: ZeStyle.palette.light
-      radius: 5
-      opacity: 0.95
-    }
 
     RowLayout {
       id: buttons

@@ -172,15 +172,8 @@ Item {
     }
   }
 
-  Frame {
+  ButtonTray {
     id: globalMenu
-
-    z: 100
-
-    leftPadding: 5
-    rightPadding: 5
-    topPadding: 5
-    bottomPadding: 5
 
     anchors.left: userInputPanel.left
     anchors.leftMargin: 10
@@ -190,12 +183,6 @@ Item {
 
     height: implicitHeight
     width: implicitWidth
-
-    background: Rectangle {
-      color: ZeStyle.palette.light
-      radius: 5
-      opacity: 0.95
-    }
 
     ScrollView {
       contentWidth: availableWidth
