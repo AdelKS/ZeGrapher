@@ -204,14 +204,8 @@ Item {
 
         ToolTip.text: qsTr("Loop: at max, the constant jumps back to min and starts again")
 
-        onCheckedChanged: {
-          if (checked && pingPongButton.checked)
-            pingPongButton.checked = false;
-          if(checked)
-            root.backend.loopType = Constant.REPEAT;
-          else if (!pingPongButton.checked)
-            root.backend.loopType = Constant.ONESHOT;
-        }
+        checked: root.backend.loopType === Constant.REPEAT
+        onToggled: root.backend.loopType = checked ? Constant.REPEAT : Constant.ONESHOT
       }
 
       IconButton {
@@ -224,14 +218,8 @@ Item {
 
         ToolTip.text: qsTr("Ping pong: at max, the constant moves back to min, then to max again")
 
-        onCheckedChanged: {
-          if (checked && loopButton.checked)
-            loopButton.checked = false;
-          if(checked)
-            root.backend.loopType = Constant.PING_PONG;
-          else if (!loopButton.checked)
-            root.backend.loopType = Constant.ONESHOT;
-        }
+        checked: root.backend.loopType === Constant.PING_PONG
+        onToggled: root.backend.loopType = checked ? Constant.PING_PONG : Constant.ONESHOT
       }
 
       ZeDoubleSpinBox {
