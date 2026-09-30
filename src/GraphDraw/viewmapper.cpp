@@ -17,7 +17,7 @@ void ZeViewMapper::translateView(point<u<plane::pixel>> vec)
 void ZeViewMapper::setAxesSettings(const ZeAxesSettings &axesSettings)
 {
   x.setAxisSettings(axesSettings.x.axisType, axesSettings.x.logSettings.base);
-  x.setAxisSettings(axesSettings.y.axisType, axesSettings.y.logSettings.base);
+  y.setAxisSettings(axesSettings.y.axisType, axesSettings.y.logSettings.base);
   orthonormal = axesSettings.orthonormal;
 }
 
