@@ -267,7 +267,9 @@ void CsvPreviewModel::loadIntoWorld()
       line_num++;
     }
 
-    assert(data.size() == size_t(names.size()));
+    // a header wider than every row, or a file with a header and no row
+    if (data.size() < size_t(names.size()))
+      data.resize(names.size(), std::vector<std::string>(data.empty() ? 0 : data.front().size()));
 
     loadingState = ADDING_TO_WORLD;
     emit loadingStateChanged();
