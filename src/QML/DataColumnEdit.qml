@@ -29,12 +29,8 @@ ObjectCard {
         Layout.alignment: Qt.AlignVCenter
       }
 
-      IconRoundButton {
+      CardButton {
         id: displayButton
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
         Layout.alignment: Qt.AlignVCenter
 
         checkable: true
@@ -48,12 +44,8 @@ ObjectCard {
         onToggled: root.backend.style.visible = !checked
       }
 
-      IconRoundButton {
+      CardButton {
         id: styleButton
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
         Layout.alignment: Qt.AlignVCenter
 
         checkable: true
@@ -64,12 +56,8 @@ ObjectCard {
         ToolTip.text: qsTr("Plot style")
       }
 
-      IconRoundButton {
+      CardButton {
         id: sampleButton
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
         Layout.alignment: Qt.AlignVCenter
 
         checkable: true
@@ -80,12 +68,8 @@ ObjectCard {
         ToolTip.text: qsTr("Fill this column by sampling an object")
       }
 
-      IconRoundButton {
+      CardButton {
         id: showInTable
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
         Layout.alignment: Qt.AlignVCenter
 
         checkable: true

@@ -92,12 +92,8 @@ ObjectCard {
         Layout.fillWidth: true
       }
 
-      IconRoundButton {
+      CardButton {
         id: displayButton
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
 
         checkable: true
         checked: !(root.mathObj.style?.visible ?? true)
@@ -112,12 +108,8 @@ ObjectCard {
         }
       }
 
-      IconRoundButton {
+      CardButton {
         id: styleButton
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
 
         checkable: true
         checked: false
@@ -225,13 +217,8 @@ ObjectCard {
         }
       }
 
-      IconRoundButton {
+      CardButton {
         id: schrodingerCatButton
-
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
 
         readonly property bool isConstant: root.mathObj.type === MathObject.CONSTANT
 

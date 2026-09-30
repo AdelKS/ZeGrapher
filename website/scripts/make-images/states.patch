@@ -63,11 +63,11 @@ index 3cd9b18a..7dd9d934 100644
    /// @brief height the user dragged the box to, zero as long as they haven't
    property real userHeight: 0
 diff --git a/src/QML/MathObjectInput.qml b/src/QML/MathObjectInput.qml
-index 35527aed..01f3967c 100644
+index c8f1d4a5..d07c2a95 100644
 --- a/src/QML/MathObjectInput.qml
 +++ b/src/QML/MathObjectInput.qml
-@@ -120,7 +120,7 @@ ObjectCard {
-         Layout.preferredWidth: 30
+@@ -112,7 +112,7 @@ ObjectCard {
+         id: styleButton
  
          checkable: true
 -        checked: false

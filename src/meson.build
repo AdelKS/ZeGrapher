@@ -60,6 +60,7 @@ moc_header_files = [
 qml_files = [
   'QML/About.qml',
   'QML/AppSettings.qml',
+  'QML/CardButton.qml',
   'QML/ColorButton.qml',
   'QML/ConstantEdit.qml',
   'QML/CsvFileDialog.qml',
