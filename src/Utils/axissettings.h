@@ -51,14 +51,9 @@ struct ZeLinAxisSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(QString constantMultiplierStr MEMBER constantMultiplierStr)
-  Q_PROPERTY(double constantMultiplier MEMBER constantMultiplier)
   Q_PROPERTY(int maxDigitsNum MEMBER maxDigitsNum)
 
 public:
-  QString constantMultiplierStr;
-  double constantMultiplier = std::nan("");
-
   int maxDigitsNum = 3;
 
   bool operator == (const ZeLinAxisSettings &other) const = default;
@@ -90,12 +85,15 @@ public:
     std::optional<std::string> title;
     std::optional<int> tick_spacing;
     std::optional<int> max_digits;
+    /// @brief the expression of ZeGraphSettings::xMultiplier or yMultiplier,
+    ///        which ZeGraphSettings reads
     std::optional<std::string> multiplier;
 
     operator bool () const { return title or tick_spacing or max_digits or multiplier; }
   };
 
-  std::optional<POD> exportPod() const;
+  /// @param multiplier  the axis multiplier's expression
+  std::optional<POD> exportPod(const QString& multiplier) const;
   void importPod(POD);
 
   bool operator == (const ZeAxisSettings &other) const = default;
@@ -138,7 +136,7 @@ public:
     operator bool () const { return color or line_width or x or y or title_font; }
   };
 
-  std::optional<POD> exportPod() const;
+  std::optional<POD> exportPod(const QString& xMultiplier, const QString& yMultiplier) const;
   void importPod(POD);
 };
 

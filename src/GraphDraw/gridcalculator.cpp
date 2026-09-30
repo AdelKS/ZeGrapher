@@ -1,23 +1,14 @@
 #include "gridcalculator.h"
 
-using namespace std;
-
-GridCalculator::GridCalculator(const ZeAxesSettings& axesSettings, QObject *parent)
-  : QObject(parent),
-    axesSettings(axesSettings)
-{
-  targetTicksNum = TARGET_TICKS_NUM;
-}
-
 QString GridCalculator::get_coordinate_string(const ZeLinAxisSettings &axisSettings,
+                                              const QString& multiplierStr,
                                               double multiplier)
 {
   QString posStr;
 
-  if (not std::isnan(axisSettings.constantMultiplier)
-      and not axisSettings.constantMultiplierStr.isEmpty())
+  if (not multiplierStr.isEmpty())
   {
-    QString expr = axisSettings.constantMultiplierStr;
+    const QString& expr = multiplierStr;
     if (fabs(multiplier + 1.0) <= MAX_NUM_PREC_DEC)
       posStr = "-" + expr;
     else if (fabs(multiplier - 1.0) <= MAX_NUM_PREC_DEC)

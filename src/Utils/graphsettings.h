@@ -46,6 +46,8 @@ struct ZeGraphSettings: QObject
   Q_PROPERTY(ZeGridSettings grid WRITE setGridSettings MEMBER grid NOTIFY gridSettingsChanged)
   Q_PROPERTY(ZeSubgridSettings subgrid WRITE setSubgridSettings MEMBER subgrid NOTIFY subgridSettingsChanged)
   Q_PROPERTY(zg::GraphRange* range READ getRangePtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* xMultiplier READ getXMultiplierPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* yMultiplier READ getYMultiplierPtr CONSTANT)
 
   Q_PROPERTY(QSize availableSizePx WRITE setAvailableSizePx MEMBER availableSizePx NOTIFY availableSizePxChanged)
   Q_PROPERTY(QSizeF availableSizeCm READ getAvailableSizeCm NOTIFY availableSizeCmChanged)
@@ -65,6 +67,18 @@ public:
   const ZeGridSettings& getGrid() const { return grid; };
   const ZeSubgridSettings& getSubgrid() const { return subgrid; };
   zg::GraphRange* getRangePtr() { return &range; }
+  zg::mathobj::Expr* getXMultiplierPtr() { return &xMultiplier; }
+  zg::mathobj::Expr* getYMultiplierPtr() { return &yMultiplier; }
+
+  /// @brief the expression that an axis's ticks are multiples of, such as
+  ///        'pi'
+  template <ZeAxisName axis>
+  zg::mathobj::Expr& multiplier()
+  {
+    if constexpr (axis == ZeAxisName::X)
+      return xMultiplier;
+    else return yMultiplier;
+  }
   QFont getFont() const { return font; };
   const ThemedColor& getBackgroundColor() const { return backgroundColor; };
   Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
@@ -140,6 +154,7 @@ protected:
 
 public:
   zg::GraphRange range;
+  zg::mathobj::Expr xMultiplier, yMultiplier;
 
 protected:
   // log2 for adaptive sampling

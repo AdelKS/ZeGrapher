@@ -1,13 +1,13 @@
 #include "axissettings.h"
 #include "Utils/yaml.h"
 
-std::optional<ZeAxisSettings::POD> ZeAxisSettings::exportPod() const
+std::optional<ZeAxisSettings::POD> ZeAxisSettings::exportPod(const QString& multiplier) const
 {
   POD p {
     .title = zg::yml::not_default(title),
     .tick_spacing = zg::yml::not_default(tickRelSpacing, 0),
     .max_digits = zg::yml::not_default(linSettings.maxDigitsNum, 3),
-    .multiplier = zg::yml::not_default(linSettings.constantMultiplierStr)
+    .multiplier = zg::yml::not_default(multiplier),
   };
 
   if (p)
@@ -20,9 +20,6 @@ void ZeAxisSettings::importPod(ZeAxisSettings::POD p)
   if (p.tick_spacing)
     tickRelSpacing = *p.tick_spacing;
 
-  if (p.multiplier)
-    linSettings.constantMultiplierStr = QString::fromStdString(*p.multiplier);
-
   if (p.max_digits)
     linSettings.maxDigitsNum = *p.max_digits;
 
@@ -30,13 +27,14 @@ void ZeAxisSettings::importPod(ZeAxisSettings::POD p)
     title = QString::fromStdString(*p.title);
 }
 
-std::optional<ZeAxesSettings::POD> ZeAxesSettings::exportPod() const
+std::optional<ZeAxesSettings::POD> ZeAxesSettings::exportPod(const QString& xMultiplier,
+                                                            const QString& yMultiplier) const
 {
   POD p {
     .color = color.exportPod(defaultColor),
     .line_width = zg::yml::not_default(lineWidth, defaultLineWith),
-    .x = x.exportPod(),
-    .y = y.exportPod(),
+    .x = x.exportPod(xMultiplier),
+    .y = y.exportPod(yMultiplier),
     .title_font = zg::yml::QFontPOD::from(titleFont, zg::mathFont())
   };
 

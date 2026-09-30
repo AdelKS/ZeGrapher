@@ -21,13 +21,11 @@
 ****************************************************************************/
 
 #include <QFontMetricsF>
-#include <QObject>
 #include <QRectF>
 
 #include "axismapper.h"
 #include "structures.h"
-
-#define TARGET_TICKS_NUM 20
+#include "Utils/graphsettings.h"
 
 struct ZeLogAxisTick
 {
@@ -83,11 +81,10 @@ struct ZeLinAxisTicks
   std::vector<ZeLinAxisTick> ticks;
 };
 
-class GridCalculator : public QObject
+class GridCalculator
 {
-  Q_OBJECT
 public:
-  explicit GridCalculator(const ZeAxesSettings& axesSettings, QObject *parent = nullptr);
+  explicit GridCalculator(ZeGraphSettings& settings): settings(settings) {}
 
   template <ZeAxisName axis>
   ZeLinAxisTicks getLinearAxisTicks(const zg::ZeAxisMapper<axis> &mapper,
@@ -95,20 +92,27 @@ public:
 
 protected:
   template <ZeAxisName axis>
-  double getMaxStrPxSize(const zg::real_range1d &range, double realStep, const QFontMetricsF &metrics);
+  double getMaxStrPxSize(const zg::real_range1d &range, double realStep,
+                         const QString& multiplierStr, const QFontMetricsF &metrics);
 
-  QString get_coordinate_string(const ZeLinAxisSettings &axisSettings, double multiplier);
+  /// @param multiplierStr  the expression that the ticks are multiples of, empty
+  ///                       when they are plain numbers
+  static QString get_coordinate_string(const ZeLinAxisSettings &axisSettings,
+                                       const QString& multiplierStr, double multiplier);
 
-  double targetTicksNum;
+  static constexpr double targetTicksNum = 20;
   static constexpr int minDistBetweenCoordinates = 5;
-  const ZeAxesSettings& axesSettings;
+  ZeGraphSettings& settings;
 };
 
 template <ZeAxisName axis>
 double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
                                        double realStep,
+                                       const QString& multiplierStr,
                                        const QFontMetricsF &metrics)
 {
+  const ZeAxesSettings& axesSettings = settings.getAxes();
+
   // get the next tick value _within_ the range
   double multiplier = std::ceil(scaled_range.min.v / realStep) * realStep;
   double maxStrPxSize = 0, currentStrPxSize = 0;
@@ -118,12 +122,12 @@ double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
   {
     if constexpr (axis == ZeAxisName::X)
     {
-      posStr = get_coordinate_string(axesSettings.x.linSettings, multiplier);
+      posStr = get_coordinate_string(axesSettings.x.linSettings, multiplierStr, multiplier);
       currentStrPxSize = metrics.boundingRect(posStr).width();
     }
     else
     {
-      posStr = get_coordinate_string(axesSettings.y.linSettings, multiplier);
+      posStr = get_coordinate_string(axesSettings.y.linSettings, multiplierStr, multiplier);
       currentStrPxSize = metrics.boundingRect(posStr).height();
     }
 
@@ -180,16 +184,22 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
   ZeLinAxisTicks axisTicks;
 
+  const ZeAxesSettings& axesSettings = settings.getAxes();
   const ZeLinAxisSettings &axisSettings = axis == ZeAxisName::X
                                             ? axesSettings.x.linSettings
                                             : axesSettings.y.linSettings;
 
-  double constantMultiplier = axisSettings.constantMultiplier;
-  if (std::isnan(constantMultiplier) or constantMultiplier == 0)
-    constantMultiplier = 1.0;
-
+  // a multiplier without a value leaves the ticks on plain numbers, and so does
+  // one that doesn't leave a valid range, such as zero or a negative number
+  const double multiplierValue = settings.multiplier<axis>().getValue();
   zg::real_range1d scaledOffsetRange(range);
-  scaledOffsetRange /= constantMultiplier;
+  scaledOffsetRange /= multiplierValue;
+
+  const bool multiplied = scaledOffsetRange.is_valid();
+  const QString multiplierStr = multiplied ? settings.multiplier<axis>().getExpression() : QString();
+  const double constantMultiplier = multiplied ? multiplierValue : 1.0;
+  if (not multiplied)
+    scaledOffsetRange = range;
 
   double baseStep;
   double realStep;
@@ -243,7 +253,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     baseStep = int_pow(10.0, targetPower);
     realStep = baseStep * baseMultiplier;
 
-    double maxStrPxSize = getMaxStrPxSize<axis>(scaledOffsetRange, realStep, metrics);
+    double maxStrPxSize = getMaxStrPxSize<axis>(scaledOffsetRange, realStep, multiplierStr, metrics);
 
     if (maxStrPxSize + minDistBetweenCoordinates >= realStep * pxPerUnit)
     {
@@ -289,7 +299,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     if (fabs(px_pos.v - zero_pt.v) <= 1.)
       multiplier = 0;
     tick.pos = getPos();
-    tick.posStr = get_coordinate_string(axisSettings, multiplier);
+    tick.posStr = get_coordinate_string(axisSettings, multiplierStr, multiplier);
 
     // only ticks within the range get drawn, take only those into consideration
     if (scaledOffsetRange.min.v < multiplier and multiplier < scaledOffsetRange.max.v)

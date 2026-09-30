@@ -36,10 +36,15 @@ QColor windowColor()
 ZeGraphSettings::ZeGraphSettings(QObject* parent)
   : QObject(parent),
     range(this),
+    xMultiplier(this),
+    yMultiplier(this),
     defaultBgColor(
       ThemedColor{.dark = isDarkTheme() ? windowColor() : "#202326", .light = Qt::white}),
     backgroundColor(defaultBgColor)
 {
+  xMultiplier.setImplicitName("xMultiplier");
+  yMultiplier.setImplicitName("yMultiplier");
+
   paletteTimer.setInterval(500);
   paletteTimer.setSingleShot(true);
   connect(&paletteTimer, &QTimer::timeout, this, &ZeGraphSettings::followWindowColor);
@@ -220,7 +225,7 @@ std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
     .range = range.exportPod(),
     .zoom = zoom.zoomingType == ZoomingType::CUSTOM ? zoom.zoom : std::optional<double>{},
     .size = size.exportPod(),
-    .axes = axes.exportPod(),
+    .axes = axes.exportPod(xMultiplier.getExpression(), yMultiplier.getExpression()),
     .grid = grid.exportPod(),
     .subgrid = subgrid.exportPod(),
     .font = zg::yml::QFontPOD::from(font, zg::mathFont()),
@@ -246,6 +251,15 @@ void ZeGraphSettings::importPod(POD p)
   size = {};
   if (p.size) size.importPod(std::move(*p.size));
   emit sizeSettingsChanged();
+
+  auto multiplierOf = [&p](std::optional<ZeAxisSettings::POD> ZeAxesSettings::POD::* axis)
+  {
+    return p.axes and (*p.axes).*axis and ((*p.axes).*axis)->multiplier
+             ? QString::fromStdString(*((*p.axes).*axis)->multiplier) : QString();
+  };
+
+  xMultiplier.setExpression(multiplierOf(&ZeAxesSettings::POD::x));
+  yMultiplier.setExpression(multiplierOf(&ZeAxesSettings::POD::y));
 
   axes = {};
   if (p.axes) axes.importPod(std::move(*p.axes));

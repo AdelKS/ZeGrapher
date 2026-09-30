@@ -38,7 +38,7 @@ Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent),
     MathObjectDraw(),
     settings(information->graphSettings),
-    gridCalculator(settings.getAxes(), this),
+    gridCalculator(settings),
     fontMetrics(settings.getFont())
 {
   leftMargin = 30;

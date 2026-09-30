@@ -129,30 +129,14 @@ Item {
             text: qsTr('Multiplier')
             tooltipText: qsTr("Ticks and their labels become multiples of this expression, for example math::pi.")
           }
-          Expr {
-            id: xMultiplierBackend
-            implicitName: "xMultiplier"
-            expression: root.graphSettings.axes.x.linear.constantMultiplierStr
-            onValueChanged: {
-              root.graphSettings.axes.x.linear.constantMultiplier = value;
-            }
-            onExpressionChanged: root.graphSettings.axes.x.linear.constantMultiplierStr = expression;
-          }
           ValueEdit {
             Layout.fillWidth: true
-            backend: xMultiplierBackend
+            backend: root.graphSettings.xMultiplier
             ToolTip.text: multiplierLabel.tooltipText
           }
-          Expr {
-            id: yMultiplierBackend
-            implicitName: "yMultiplier"
-            expression: root.graphSettings.axes.y.linear.constantMultiplierStr
-            onValueChanged: root.graphSettings.axes.y.linear.constantMultiplier = value;
-            onExpressionChanged: root.graphSettings.axes.y.linear.constantMultiplierStr = expression;
-          }
           ValueEdit {
             Layout.fillWidth: true
-            backend: yMultiplierBackend
+            backend: root.graphSettings.yMultiplier
             ToolTip.text: multiplierLabel.tooltipText
           }
         }
