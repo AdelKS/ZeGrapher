@@ -18,7 +18,6 @@ void ZeViewMapper::setAxesSettings(const ZeAxesSettings &axesSettings)
 {
   x.setAxisSettings(axesSettings.x.axisType, axesSettings.x.logSettings.base);
   y.setAxisSettings(axesSettings.y.axisType, axesSettings.y.logSettings.base);
-  orthonormal = axesSettings.orthonormal;
 }
 
 ZeViewMapper& ZeViewMapper::setGraphRect(const QRectF &rect)
@@ -45,19 +44,6 @@ void ZeViewMapper::setGraphRange(const real_range2d& range)
 {
   x.setRange(range.x);
   y.setRange(range.y);
-}
-
-void ZeViewMapper::enforceOrthonormality()
-{
-  double uniteY = std::as_const(y).getRange<plane::pixel>().amplitude().v
-                  / std::as_const(y).getRange<plane::view>().amplitude().v;
-
-  double uniteX = std::as_const(x).getRange<plane::pixel>().amplitude().v
-                  / std::as_const(x).getRange<plane::view>().amplitude().v;
-
-  double sqrt_ratio = std::sqrt(uniteX / uniteY);
-  y.zoomView(sqrt_ratio);
-  x.zoomView(1. / sqrt_ratio);
 }
 
 } // namespace zg

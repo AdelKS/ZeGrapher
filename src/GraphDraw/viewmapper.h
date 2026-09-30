@@ -63,11 +63,6 @@ public:
 
   void setGraphRange(const real_range2d& range);
   void setAxesSettings(const ZeAxesSettings& axesSettings);
-
-protected:
-  void enforceOrthonormality();
-
-  bool orthonormal = false;
 };
 
 template <plane p>

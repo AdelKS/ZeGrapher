@@ -113,7 +113,6 @@ struct ZeAxesSettings
 
 public:
   ZeAxisSettings x, y;
-  bool orthonormal = false;
 
   ThemedColor color = defaultColor;
   double lineWidth = defaultLineWith;
