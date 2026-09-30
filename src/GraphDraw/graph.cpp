@@ -23,6 +23,7 @@
 #include "information.h"
 #include "buildconfig.h"
 
+#include <QPageLayout>
 #include <QPdfWriter>
 #include <QStyleHints>
 #include <QQuickWindow>
@@ -47,12 +48,6 @@ Graph::Graph(QQuickItem *parent)
   pen.setCapStyle(Qt::RoundCap);
 
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
-
-  minRelSize = RELATIVE_MIN_SIZE;
-
-  relFigRect.setHeight(1);
-  relFigRect.setWidth(1);
-  relFigRect.moveTopLeft(QPointF(0, 0));
 
   connect(&settings, &ZeGraphSettings::minPointsLg2Changed, this, &Graph::minMaxPointsChanged);
   connect(&settings, &ZeGraphSettings::maxPointsLg2Changed, this, &Graph::minMaxPointsChanged);
@@ -156,7 +151,10 @@ void Graph::paint(QPainter *p)
 
   scaleView();
   drawSupport();
-  drawGraph();
+
+  figureRectScaled = supportRect;
+  painter->translate(figureRectScaled.topLeft());
+  drawAll();
 
   painter = nullptr;
 }
@@ -263,24 +261,6 @@ void Graph::scaleView()
   qDebug() << "Painter window: " << painter->window();
 }
 
-void Graph::drawGraph()
-{
-  qDebug() << "Support rect " << supportRect;
-
-  sheetRectScaled = supportRect;
-
-  qDebug() << "Sheet rect scaled " << sheetRectScaled;
-
-  figureRectScaled = sheetRectScaled;
-
-  qDebug() << "Figure rect scaled " << figureRectScaled;
-
-  painter->translate(figureRectScaled.topLeft());
-
-  drawAll();
-}
-
-
 void Graph::writeAxisTitles()
 {
   painter->setFont(settings.getAxes().titleFont);
@@ -320,6 +300,7 @@ void Graph::writeAxisTitles()
 
 void Graph::writeAxisOffsetX()
 {
+  painter->setFont(settings.getFont());
   pen.setColor(settings.getAxes().color.getCurrent());
   pen.setWidthF(settings.getAxes().lineWidth);
   painter->setPen(pen);
@@ -353,8 +334,8 @@ void Graph::writeAxisOffsetX()
 
 void Graph::writeAxisOffsetY()
 {
+  painter->setFont(settings.getFont());
   double powerOffset_size = 0;
-  double offset_margin = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
   {
     QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
@@ -366,10 +347,6 @@ void Graph::writeAxisOffsetY()
   if (yAxisTicks.offset.sumOffset != 0)
   {
     QString sum_offset = yAxisTicks.offset.sumOffsetStr();
-
-    double new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
-    if (new_offsetmargin > offset_margin)
-      offset_margin = new_offsetmargin;
 
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->drawText(QPointF(powerOffset_size + 5, -4), sum_offset);

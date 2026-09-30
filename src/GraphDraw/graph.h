@@ -20,7 +20,6 @@
 
 #pragma once
 
-#include <QPageLayout>
 #include <QQuickPaintedItem>
 #include <QImage>
 #include <QVariantList>
@@ -28,12 +27,6 @@
 #include "gridcalculator.h"
 #include "mathobjectdraw.h"
 #include "Utils/graphsettings.h"
-
-enum SheetSizeType
-{
-  NORMALISED,
-  CUSTOM
-};
 
 class Graph : public QQuickPaintedItem, public MathObjectDraw
 {
@@ -56,7 +49,6 @@ public:
   /// Live view of the sampler's curves, used by DataPoints for direct
   /// scenegraph rendering without a QVariantList round-trip.
   const auto& curves() const { return sampler.getCurves(); }
-  double getScaleFactor() const { return totalScaleFactor; }
 
 public slots:
   void exportPDF(QUrl fileName);
@@ -76,10 +68,7 @@ protected slots:
 protected:
   void scaleView();
   void drawSupport();
-  void drawGraph();
   void computeSupportRect();
-  void updateCenterPosAndScaling();
-  void drawBaseGraph();
   void drawGraphRect();
   void drawAll();
   void updateGraphRect();
@@ -123,7 +112,6 @@ protected:
   template <ZeAxisName axis>
   void drawLinGrid();
 
-  void updateMarginsForAxisOffsetY();
   void writeAxisOffsetY();
 
   void calculateTicksAndMargins();
@@ -138,20 +126,14 @@ protected:
   double leftMargin, rightMargin, topMargin, bottomMargin;
   QRectF figureRectScaled, graphRectScaled;
 
-  double minRelSize;
   double totalScaleFactor;
 
   // pixel position of the (0,0) coordinate in the graph
   QPointF centre;
 
-  // margin to the sheet where the graph can be, this value is used for the smaller edge of the sheet
-  // the other margin is scaled accordingly
-  QRectF figureRect, supportRect, sheetRectScaled;
+  QRectF supportRect;
 
   QSizeF scaledSize;
-  QRectF relFigRect;
-
-  QPageLayout::Orientation orientation;
 
   enum PaintType {GPU_RENDER, VECTOR_EXPORT, IMAGE_EXPORT};
 
@@ -243,9 +225,6 @@ void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 template <ZeAxisName axis>
 void Graph::drawLinCoordinateTicks()
 {
-  painter->setFont(settings.getFont());
-  QFontMetricsF fontMetrics = painter->fontMetrics();
-
   const ZeAxesSettings &axesSettings = settings.getAxes();
 
   pen.setCapStyle(Qt::FlatCap);
@@ -322,8 +301,6 @@ void Graph::drawLinSubgrid()
   if (not subgridSettings.show)
     return;
 
-  painter->setFont(settings.getFont());
-
   pen.setCapStyle(Qt::FlatCap);
   bool first_tick = true;
   zg::real_unit previous_pos;
@@ -367,8 +344,6 @@ void Graph::drawLinGrid()
 
   if (not gridSettings.show)
     return;
-
-  painter->setFont(settings.getFont());
 
   pen.setCapStyle(Qt::FlatCap);
 

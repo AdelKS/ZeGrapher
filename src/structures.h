@@ -45,8 +45,6 @@
 
 #define MAX_NUM_PREC_DEC 1E-8
 
-#define RELATIVE_MIN_SIZE 0.25 // How much the graph can be smaller than its container sheet/background
-
 #define CM_PER_INCH 2.54
 
 /// @brief type of math objects to use in ZeCalculator

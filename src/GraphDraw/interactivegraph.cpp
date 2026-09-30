@@ -24,8 +24,6 @@
 InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 {
   setKeepMouseGrab(true);
-  orientation = QPageLayout::Landscape;
-  moveType = NOTHING;
   setAcceptHoverEvents(true);
   setAcceptedMouseButtons(Qt::LeftButton);
 }
@@ -35,12 +33,12 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 {
   if (event->buttons() == Qt::LeftButton and boundingRect().contains(event->pos()))
   {
-    moveType = MOVE_VIEW;
+    dragging = true;
     lastMousePos = event->pos();
     event->accept();
   }
   else
-    moveType = NOTHING;
+    dragging = false;
 }
 
 void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
@@ -50,18 +48,14 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 
   QPoint dr = event->pos() - lastMousePos;
 
-  switch (moveType)
+  if (dragging)
   {
-  case MOVE_VIEW:
     // the view goes in the opposite direction
     viewMapper.translateView({
       .x = zg::pixel_unit{double(-dr.x() / totalScaleFactor)},
       .y = zg::pixel_unit{double(-dr.y() / totalScaleFactor)},
     });
     settings.range.interactiveUpdate(viewMapper.getRange<zg::real>());
-    break;
-  case NOTHING:
-    break;
   }
 
   lastMousePos = event->pos();
@@ -72,7 +66,7 @@ void InteractiveGraph::mouseReleaseEvent(QMouseEvent *event)
 {
   Q_UNUSED(event);
   setCursor(Qt::ArrowCursor);
-  moveType = NOTHING;
+  dragging = false;
 }
 
 void InteractiveGraph::wheelEvent(QWheelEvent *event)

@@ -22,15 +22,6 @@
 #define MAINVIEW_H
 
 #include "graph.h"
-#include <QPageLayout>
-#include <QPdfWriter>
-#include <QSvgGenerator>
-
-enum MouseActionType
-{
-  NOTHING,
-  MOVE_VIEW
-};
 
 class InteractiveGraph : public Graph
 {
@@ -49,7 +40,7 @@ public slots:
 protected:
 
   QPoint lastMousePos;
-  MouseActionType moveType;
+  bool dragging = false;
 };
 
 #endif // MAINVIEW_H

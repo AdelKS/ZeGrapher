@@ -28,8 +28,6 @@ MathObjectDraw::MathObjectDraw()
 {
   pen.setCapStyle(Qt::RoundCap);
   brush.setStyle(Qt::SolidPattern);
-
-  moving = false;
 }
 
 void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& style)

@@ -46,13 +46,10 @@ protected:
 
   QPainter* painter = nullptr;
 
-  QPolygonF polygon;
   QPen pen;
   QBrush brush;
   zg::ZeViewMapper viewMapper;
   Sampler sampler;
-
-  bool moving, recalculate, recalculateRegs;
 };
 
 #endif // GRAPHDRAW_H
