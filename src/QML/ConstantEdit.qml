@@ -21,12 +21,6 @@ Item {
     backend: root.backend
   }
 
-  function removeObj() {
-    root.opacity = 0;
-    root.height = 0;
-    root.destroy(200);
-  }
-
   RowLayout {
     id: nameLayout
 

@@ -11,14 +11,6 @@ Item {
   implicitHeight: layout.implicitHeight
   implicitWidth:  layout.implicitWidth + 2 * layout.spacing
 
-  Behavior on height { SmoothedAnimation { duration: 200 } }
-
-  function removeObj() {
-    root.opacity = 0;
-    root.height = 0;
-    root.destroy(200);
-  }
-
   RowLayout {
     id: layout
 

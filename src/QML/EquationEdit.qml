@@ -7,26 +7,14 @@ Item {
 
   required property Equation backend
 
-  property alias expression: zcExprEdit.expression
-  property alias exprEdit: zcExprEdit
-  readonly property alias exprHeight: zcExprEdit.exprHeight
-
   implicitHeight: zcExprEdit.implicitHeight
-
-  Behavior on height { SmoothedAnimation { duration: 200 } }
-
-  function removeObj() {
-    root.opacity = 0;
-    root.height = 0;
-    root.destroy(200);
-  }
 
   ZcExprEdit {
     id: zcExprEdit
 
     state: root.backend.state
 
-    expression: backend.equation
+    expression: root.backend.equation
     onTextEdited: (expression) => root.backend.setEquation(expression)
 
     anchors.left: parent.left

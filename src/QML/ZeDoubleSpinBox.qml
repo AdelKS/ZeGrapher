@@ -22,10 +22,6 @@ Item {
   onValueChanged: spinBox.set_value(value)
   Component.onCompleted: spinBox.set_value(value)
 
-  function setValue(val: real) {
-    value = val;
-  }
-
   function increase() {
     spinBox.increase();
     root.valueModified(spinBox.value / spinBox.decimalFactor);
