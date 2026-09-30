@@ -74,8 +74,6 @@ Item {
 
     onValueModified: root.valueModified(value / decimalFactor)
 
-    readonly property regexp numberExtractionRegExp: /\*?(\d+(\.\d+)?)\*?/
-
     validator: DoubleValidator {
       bottom: Math.min(root.from, root.to)
       top:  Math.max(root.from, root.to)
@@ -88,7 +86,17 @@ Item {
     }
 
     valueFromText: function(text, locale) {
-      return Math.round(Number.fromLocaleString(locale, numberExtractionRegExp.exec(text)[1]) * decimalFactor)
+      let number = text.trim();
+      if (prefix.trim() && number.startsWith(prefix.trim()))
+        number = number.slice(prefix.trim().length);
+      if (suffix.trim() && number.endsWith(suffix.trim()))
+        number = number.slice(0, -suffix.trim().length);
+
+      try {
+        return Math.round(Number.fromLocaleString(locale, number.trim()) * decimalFactor);
+      } catch (error) {
+        return value;
+      }
     }
   }
 }
