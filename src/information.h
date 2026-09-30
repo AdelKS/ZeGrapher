@@ -22,6 +22,8 @@
 
 #include <QtQmlIntegration/qqmlintegration.h>
 
+#include "Utils/qmlsingleton.h"
+
 #include <zecalculator/zecalculator.h>
 
 #include "MathObjects/mathworld.h"
@@ -52,7 +54,8 @@ public:
 class Information: public QObject
 {
   Q_OBJECT
-  QML_ANONYMOUS
+  QML_ELEMENT
+  QML_SINGLETON
 
   Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
@@ -63,7 +66,10 @@ class Information: public QObject
   Q_PROPERTY(QString lastRunVersion MEMBER lastRunVersion CONSTANT)
 
 public:
-  Information(QObject* parent = nullptr);
+  /// @brief QML uses the global instance instead of creating one
+  static Information* create(QQmlEngine*, QJSEngine*);
+
+  explicit Information(QObject* parent);
   ~Information();
 
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
@@ -152,38 +158,7 @@ protected:
 ///@note defined in the main() to come after QGuiApplication
 inline Information* information = nullptr;
 
-/// @brief register the 'information' global variable with QML
-/// @note  see https://doc.qt.io/qt-6/qml-singleton.html#exposing-an-existing-object-as-a-singleton
-
-struct InformationForeign
+inline Information* Information::create(QQmlEngine*, QJSEngine*)
 {
-  Q_GADGET
-  QML_FOREIGN(Information)
-  QML_SINGLETON
-  QML_NAMED_ELEMENT(Information)
-
-public:
-
-  static Information *create(QQmlEngine *, QJSEngine *engine)
-  {
-    // pointer should be non nullptr by now
-    Q_ASSERT(information);
-    // The engine has to have the same thread affinity as the singleton.
-    Q_ASSERT(engine->thread() == information->thread());
-
-    // There can only be one engine accessing the singleton.
-    if (s_engine)
-      Q_ASSERT(engine == s_engine);
-    else
-      s_engine = engine;
-
-    // Explicitly specify C++ ownership so that the engine doesn't delete
-    // the instance.
-    QJSEngine::setObjectOwnership(information,
-                                  QJSEngine::CppOwnership);
-    return information;
-  }
-
-private:
-  inline static QJSEngine *s_engine = nullptr;
-};
+  return zg::qmlSingleton(information);
+}

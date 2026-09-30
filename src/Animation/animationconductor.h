@@ -25,6 +25,8 @@
 #include <QAbstractListModel>
 #include <QtQmlIntegration/qqmlintegration.h>
 
+#include "Utils/qmlsingleton.h"
+
 #include <vector>
 #include <chrono>
 
@@ -38,12 +40,16 @@ using time_point = std::chrono::time_point<std::chrono::high_resolution_clock>;
 class AnimationConductor: public QObject
 {
   Q_OBJECT
-  QML_ANONYMOUS
+  QML_ELEMENT
+  QML_SINGLETON
 
   Q_PROPERTY(bool animating READ isAnimating NOTIFY animatingChanged)
 
 public:
-  AnimationConductor(QObject *parent = nullptr): QObject(parent) {}
+  /// @brief QML uses the global instance instead of creating one
+  static AnimationConductor* create(QQmlEngine*, QJSEngine*);
+
+  explicit AnimationConductor(QObject *parent): QObject(parent) {}
 
   Q_INVOKABLE void track(zg::AnimatedConstant*);
   Q_INVOKABLE void untrack(zg::AnimatedConstant*);
@@ -70,40 +76,11 @@ protected:
   std::optional<time_point> last_step_timestamp;
 };
 
-inline AnimationConductor animationConductor;
+inline AnimationConductor animationConductor(nullptr);
 
-/// @brief register the 'information' global variable with QML
-/// @note  see https://doc.qt.io/qt-6/qml-singleton.html#exposing-an-existing-object-as-a-singleton
-
-struct AnimationConductorForeign
+inline AnimationConductor* AnimationConductor::create(QQmlEngine*, QJSEngine*)
 {
-  Q_GADGET
-  QML_FOREIGN(AnimationConductor)
-  QML_SINGLETON
-  QML_NAMED_ELEMENT(AnimationConductor)
-
-public:
-
-  static AnimationConductor *create(QQmlEngine *, QJSEngine *engine)
-  {
-    // The engine has to have the same thread affinity as the singleton.
-    Q_ASSERT(engine->thread() == animationConductor.thread());
-
-    // There can only be one engine accessing the singleton.
-    if (s_engine)
-      Q_ASSERT(engine == s_engine);
-    else
-      s_engine = engine;
-
-    // Explicitly specify C++ ownership so that the engine doesn't delete
-    // the instance.
-    QJSEngine::setObjectOwnership(&animationConductor,
-                                  QJSEngine::CppOwnership);
-    return &animationConductor;
-  }
-
-private:
-  inline static QJSEngine *s_engine = nullptr;
-};
+  return qmlSingleton(&animationConductor);
+}
 
 } // namespace zg

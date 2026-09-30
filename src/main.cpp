@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
 
   // define after QGuiApp and QCoreApp::set* because it will use stuff from them
-  Information info;
+  Information info(nullptr);
   information = &info;
 
   QTranslator translator;

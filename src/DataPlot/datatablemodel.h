@@ -25,6 +25,8 @@
 #include <QAbstractTableModel>
 
 #include <QtQmlIntegration/qqmlintegration.h>
+
+#include "Utils/qmlsingleton.h"
 #include <string>
 #include <vector>
 
@@ -33,12 +35,16 @@ namespace zg {
 class DataTableModel: public QAbstractTableModel
 {
   Q_OBJECT
-  QML_ANONYMOUS
+  QML_ELEMENT
+  QML_SINGLETON
 
   Q_PROPERTY(int columns READ columnCount NOTIFY columnCountChanged)
 
 public:
-  DataTableModel(QObject *parent = nullptr);
+  /// @brief QML uses the global instance instead of creating one
+  static DataTableModel* create(QQmlEngine*, QJSEngine*);
+
+  explicit DataTableModel(QObject *parent);
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   int columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -84,40 +90,11 @@ protected:
 
 };
 
-inline DataTableModel dataTableModel;
+inline DataTableModel dataTableModel(nullptr);
 
-/// @brief register the 'information' global variable with QML
-/// @note  see https://doc.qt.io/qt-6/qml-singleton.html#exposing-an-existing-object-as-a-singleton
-
-struct DataTableModelForeign
+inline DataTableModel* DataTableModel::create(QQmlEngine*, QJSEngine*)
 {
-  Q_GADGET
-  QML_FOREIGN(DataTableModel)
-  QML_SINGLETON
-  QML_NAMED_ELEMENT(DataTableModel)
-
-public:
-
-  static DataTableModel *create(QQmlEngine *, QJSEngine *engine)
-  {
-    // The engine has to have the same thread affinity as the singleton.
-    Q_ASSERT(engine->thread() == dataTableModel.thread());
-
-    // There can only be one engine accessing the singleton.
-    if (s_engine)
-      Q_ASSERT(engine == s_engine);
-    else
-      s_engine = engine;
-
-    // Explicitly specify C++ ownership so that the engine doesn't delete
-    // the instance.
-    QJSEngine::setObjectOwnership(&dataTableModel,
-                                  QJSEngine::CppOwnership);
-    return &dataTableModel;
-  }
-
-private:
-  inline static QJSEngine *s_engine = nullptr;
-};
+  return qmlSingleton(&dataTableModel);
+}
 
 } // namespace zg
