@@ -14,7 +14,6 @@ source_files = [
   'Calculus/sampler.cpp',
   'DataPlot/csvpreviewmodel.cpp',
   'DataPlot/datatablemodel.cpp',
-  'GraphDraw/axismapper.cpp',
   'GraphDraw/datapoints.cpp',
   'GraphDraw/graph.cpp',
   'GraphDraw/gridcalculator.cpp',
