@@ -16,18 +16,7 @@ Item {
   required property ZeGraphSettings graphSettings
   required property size globalMenuSize
 
-  enum SizeType { Fill, Custom }
-
   readonly property bool pixelUnits: root.graphSettings.size.sizeUnit === SizeUnit.PIXEL
-
-  function indexFromModelValue(model: var, val: int) : int {
-    for (var i = 0; i !== model.count; i++) {
-      if (model.get(i).value === val)
-        return i;
-    }
-    console.warn("Value not in model: ", val)
-    return -1;
-  }
 
   FontDialog {
     id: graphFontDialog
@@ -92,30 +81,18 @@ Item {
 
             implicitContentWidthPolicy: ComboBox.WidestText
             background.implicitWidth: implicitContentWidth
-            textRole: "text"
-            valueRole: "value"
+            model: [
+              qsTr("Fill window"),
+              //: give the graph a custom size, instead of making it fill the window
+              qsTr("Custom"),
+            ]
 
-            model: sheetSizeModel
-
-            ListModel {
-              id: sheetSizeModel
-              ListElement {
-                text: qsTr("Fill window")
-                value: GraphSettings.SizeType.Fill
-              }
-              ListElement {
-                //: give the graph a custom size, instead of making it fill the window
-                text: qsTr("Custom")
-                value: GraphSettings.SizeType.Custom
-              }
-            }
-
-            currentIndex: root.indexFromModelValue(sheetSizeModel, root.graphSettings.size.sheetFillsWindow ? GraphSettings.SizeType.Fill : GraphSettings.SizeType.Custom)
+            currentIndex: root.graphSettings.size.sheetFillsWindow ? 0 : 1
 
             onActivated: (index) => {
-              root.graphSettings.size.sheetFillsWindow = ( sheetSizeModel.get(index).value === GraphSettings.SizeType.Fill);
+              root.graphSettings.size.sheetFillsWindow = index === 0;
 
-              if (currentValue === GraphSettings.SizeType.Fill) {
+              if (index === 0) {
                 root.graphSettings.zoom.zoom = 1.0;
                 root.graphSettings.zoom.zoomingType = ZoomingType.FITSHEET;
               }
@@ -157,25 +134,14 @@ Item {
                 textRole: "text"
                 valueRole: "value"
 
-                currentIndex: root.indexFromModelValue(unitModel, root.graphSettings.size.sizeUnit)
+                model: [
+                  { text: qsTr("Pixels"), value: SizeUnit.PIXEL },
+                  { text: qsTr("Centimeters"), value: SizeUnit.CENTIMETER },
+                ]
 
-                onActivated: (index) => {
-                  root.graphSettings.size.sizeUnit = unitModel.get(index).value;
-                }
+                currentIndex: model.findIndex((entry) => entry.value === root.graphSettings.size.sizeUnit)
 
-                model: unitModel
-
-                ListModel {
-                  id: unitModel
-                  ListElement {
-                    text: qsTr("Pixels")
-                    value: SizeUnit.PIXEL
-                  }
-                  ListElement {
-                    text: qsTr("Centimeters")
-                    value: SizeUnit.CENTIMETER
-                  }
-                }
+                onActivated: root.graphSettings.size.sizeUnit = currentValue
               }
 
               ZeLabel {
@@ -236,7 +202,7 @@ Item {
               states: [
                 State {
                   name: "hidden";
-                  when: sheetSizeSettings.currentValue === GraphSettings.SizeType.Fill
+                  when: root.graphSettings.size.sheetFillsWindow
                   PropertyChanges {
                     customSizeGroupBox.Layout.maximumHeight: 0
                     customSizeGroupBox.visible: false
@@ -245,7 +211,7 @@ Item {
                 },
                 State {
                   name: "shown";
-                  when: sheetSizeSettings.currentValue !== GraphSettings.SizeType.Fill
+                  when: !root.graphSettings.size.sheetFillsWindow
                   PropertyChanges {
                     customSizeGroupBox.Layout.maximumHeight: customSizeGroupBox.implicitHeight
                     customSizeGroupBox.visible: true
