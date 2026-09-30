@@ -31,6 +31,7 @@ void Expr::setState(State s)
 
 State Expr::setImplicitName(QString name)
 {
+  const QString oldName = implicitName;
   size_t i = 1;
   implicitName = name;
   zcMathObj.set_name(implicitName.toStdString());
@@ -47,7 +48,7 @@ State Expr::setImplicitName(QString name)
     name_status = zcMathObj.name_status();
   }
 
-  if (implicitName != name)
+  if (implicitName != oldName)
     emit implicitNameChanged();
 
   return setExpression(expression);
