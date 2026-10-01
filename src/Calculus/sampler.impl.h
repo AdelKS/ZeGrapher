@@ -13,43 +13,30 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
       return zg::real_unit{std::round(std::max(0., x.v))};
     else return x;
   };
+  // the value of an object at x, NaN where it has none
+  auto eval = [](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
+  {
+    const std::expected<double, zc::Error> res = (*f)({x.v}, &information->mathObjectCache);
+    return res ? *res : std::nan("");
+  };
+
+  // the point (a, b) in the object's coordinate system
+  auto to_point = [](double a, double b)
+  {
+    if constexpr (coordinates == zg::CoordinateSystem::Polar)
+      return zg::real_pt{std::cos(a) * zg::real_unit{b}, std::sin(a) * zg::real_unit{b}};
+    else return zg::real_pt{zg::real_unit{a}, zg::real_unit{b}};
+  };
+
   auto dispatcher = zc::utils::overloaded{
     [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
-      requires (coordinates == zg::CoordinateSystem::Cartesian)
     {
-      std::expected<double, zc::Error> exp_res = (*f)({x.v}, &information->mathObjectCache);
-      double res = exp_res ? *exp_res : std::nan("");
-      return zg::real_pt{x, zg::real_unit{res}};
-    },
-    [&](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
-      requires (coordinates == zg::CoordinateSystem::Polar)
-    {
-      std::expected<double, zc::Error> exp_res = (*f)({x.v}, &information->mathObjectCache);
-      double res = exp_res ? *exp_res : std::nan("");
-      return zg::real_pt{std::cos(x.v) * zg::real_unit{res}, std::sin(x.v) * zg::real_unit{res}};
+      return to_point(x.v, eval(f, x));
     },
     [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
-      requires (coordinates == zg::CoordinateSystem::Cartesian)
     {
-      std::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information->mathObjectCache);
-      double res1 = exp_res1 ? *exp_res1 : std::nan("");
-
-      std::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information->mathObjectCache);
-      double res2 = exp_res2 ? *exp_res2 : std::nan("");
-
-      return zg::real_pt{zg::real_unit{res1}, zg::real_unit{res2}};
+      return to_point(eval(f.first, x), eval(f.second, x));
     },
-    [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> f, zg::real_unit x)
-      requires (coordinates == zg::CoordinateSystem::Polar)
-    {
-      std::expected<double, zc::Error> exp_res1 = (*(f.first))({x.v}, &information->mathObjectCache);
-      double res1 = exp_res1 ? *exp_res1 : std::nan("");
-
-      std::expected<double, zc::Error> exp_res2 = (*(f.second))({x.v}, &information->mathObjectCache);
-      double res2 = exp_res2 ? *exp_res2 : std::nan("");
-
-      return zg::real_pt{std::cos(res1) * zg::real_unit{res2}, std::sin(res1) * zg::real_unit{res2}};
-    }
   };
 
   auto get_f_pt = [&](zg::real_unit x)
