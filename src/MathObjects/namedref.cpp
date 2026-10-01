@@ -48,9 +48,9 @@ State NamedRef::sync()
     {
       if (*zcObj)
         newState.setValid();
-      else newState.setInvalid(tr("Math object in invalid state."));
+      else newState.setInvalid(QObject::tr("Object \"%1\" is in an invalid state").arg(input_name));
     }
-    else newState.setInvalid(tr("Math object doesn't exist."));
+    else newState.setInvalid(QObject::tr("Object not defined"));
   }
 
   setState(newState);
