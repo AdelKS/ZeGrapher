@@ -20,9 +20,10 @@
 **
 ****************************************************************************/
 
-#include <vector>
-#include <unordered_set>
+#include <algorithm>
 #include <cmath>
+#include <unordered_set>
+#include <vector>
 
 namespace zg {
 namespace utils {
@@ -64,6 +65,18 @@ void move_elements_right(std::vector<T>& vec, const int distance)
     for (int i = orig_size - 1 ; i >= distance ; i--)
       vec[i] = std::move(vec[i - distance]);
   }
+}
+
+/// @brief moves the element at 'from' to 'to', and shifts the elements between
+///        them one slot toward 'from'
+template <typename T>
+void move_element(std::vector<T>& vec, size_t from, size_t to)
+{
+  const auto it = vec.begin();
+  if (from < to)
+    std::rotate(it + from, it + from + 1, it + to + 1);
+  else if (to < from)
+    std::rotate(it + to, it + from, it + from + 1);
 }
 
 /// @brief erase elements from a set according the predicate

@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "MathObjects/datasheet.h"
+#include "Utils/algos.h"
 #include "Utils/yaml.h"
 #include "information.h"
 
@@ -118,7 +119,7 @@ void DataSheet::moveColumn(int from, int to)
   if (not beginMoveRows(QModelIndex(), from, from, QModelIndex(), qmlTo))
     return;
 
-  std::swap(columns[from], columns[to]);
+  utils::move_element(columns, from, to);
 
   endMoveRows();
 

@@ -1,4 +1,5 @@
 #include "mathworld.h"
+#include "Utils/algos.h"
 #include "Utils/yaml.h"
 
 namespace zg {
@@ -74,7 +75,7 @@ void MathWorld::moveMathObject(int from, int to)
   if (not beginMoveRows(QModelIndex(), from, from, QModelIndex(), qmlTo))
     return;
 
-  std::swap(mathObjects[from], mathObjects[to]);
+  utils::move_element(mathObjects, from, to);
 
   endMoveRows();
 
