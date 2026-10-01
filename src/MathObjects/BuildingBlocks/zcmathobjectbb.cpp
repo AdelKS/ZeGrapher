@@ -17,16 +17,12 @@ ZcMathObjectBB::~ZcMathObjectBB()
 
 bool ZcMathObjectBB::isContinuous() const
 {
-  if (zcMathObj)
-    return not(zcMathObj.holds(zc::ObjectType::DATA) or zcMathObj.holds(zc::ObjectType::SEQUENCE));
-  else return false;
+  return zcMathObj and not holdsDiscrete(zcMathObj);
 }
 
 bool ZcMathObjectBB::isDiscrete() const
 {
-  if (zcMathObj)
-    return zcMathObj.holds(zc::ObjectType::DATA) or zcMathObj.holds(zc::ObjectType::SEQUENCE);
-  else return false;
+  return zcMathObj and holdsDiscrete(zcMathObj);
 }
 
 }

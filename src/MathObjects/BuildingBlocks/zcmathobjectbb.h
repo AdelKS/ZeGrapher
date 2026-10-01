@@ -28,6 +28,12 @@ namespace zg {
 namespace mathobj {
 namespace shared {
 
+/// @brief true for an object that takes integer inputs: data and sequences
+inline bool holdsDiscrete(const zc::DynMathObject<zc_t>& o)
+{
+  return o.holds(zc::ObjectType::DATA) or o.holds(zc::ObjectType::SEQUENCE);
+}
+
 /// @brief Shared base class for backends that use zc::DynMathObject
 ///        creates a new handle on instantiation, and releases it on destruction
 struct ZcMathObjectBB {

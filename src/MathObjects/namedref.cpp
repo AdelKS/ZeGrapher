@@ -1,4 +1,5 @@
 #include "namedref.h"
+#include "BuildingBlocks/zcmathobjectbb.h"
 #include "information.h"
 
 namespace zg {
@@ -59,16 +60,14 @@ State NamedRef::sync()
 
 bool NamedRef::isContinuous() const
 {
-  if (const auto* zcMathObj = getZcObject(); zcMathObj and *zcMathObj)
-    return not(zcMathObj->holds(zc::ObjectType::DATA) or zcMathObj->holds(zc::ObjectType::SEQUENCE));
-  else return false;
+  const auto* zcMathObj = getZcObject();
+  return zcMathObj and *zcMathObj and not shared::holdsDiscrete(*zcMathObj);
 }
 
 bool NamedRef::isDiscrete() const
 {
-  if (const auto* zcMathObj = getZcObject(); zcMathObj and *zcMathObj)
-    return zcMathObj->holds(zc::ObjectType::DATA) or zcMathObj->holds(zc::ObjectType::SEQUENCE);
-  else return false;
+  const auto* zcMathObj = getZcObject();
+  return zcMathObj and *zcMathObj and shared::holdsDiscrete(*zcMathObj);
 }
 
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
