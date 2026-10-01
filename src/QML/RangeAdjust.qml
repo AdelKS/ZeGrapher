@@ -1,3 +1,6 @@
+// The bounds of the view: xmin and xmax side by side, between ymax above and
+// ymin below
+
 import QtQuick
 
 Item {
@@ -8,49 +11,30 @@ Item {
   property int spacing: 5
   implicitHeight: yminEdit.y + yminEdit.height
 
-
-  Connections {
-    target: root.range.y
-    function onStateChanged() {
-      if (root.range.y.state) {
-        yminEdit.customErrorMsg = "";
-        ymaxEdit.customErrorMsg = "";
-      }
-      else {
-        if (!isNaN(root.range.y.min.value) && !isNaN(root.range.y.max.value) &&
-            root.range.y.min.value >= root.range.y.max.value) {
-          const ymin = "<b>y</b><sub>min</sub>", ymax = "<b>y</b><sub>max</sub>";
-          //: %1 and %2 are the names of two bounds, for example ymin and ymax
-          yminEdit.customErrorMsg = qsTr("%1 must be smaller than %2").arg(ymin).arg(ymax);
-          //: %1 and %2 are the names of two bounds, for example ymax and ymin
-          ymaxEdit.customErrorMsg = qsTr("%1 must be greater than %2").arg(ymax).arg(ymin);
-        }
-      }
-    }
+  /// @brief the name of a bound as rich text, 'x' and 'min' give xmin
+  function boundName(axis: string, bound: string): string {
+    return "<b>" + axis + "</b><sub>" + bound + "</sub>";
   }
 
-  Connections {
-    target: root.range.x
-    function onStateChanged() {
-      if (root.range.x.state) {
-        xminEdit.customErrorMsg = "";
-        xmaxEdit.customErrorMsg = "";
-      }
-      else {
-        if (!isNaN(root.range.x.min.value) && !isNaN(root.range.x.max.value) &&
-            root.range.x.min.value >= root.range.x.max.value) {
-          const xmin = "<b>x</b><sub>min</sub>", xmax = "<b>x</b><sub>max</sub>";
-          xminEdit.customErrorMsg = qsTr("%1 must be smaller than %2").arg(xmin).arg(xmax);
-          xmaxEdit.customErrorMsg = qsTr("%1 must be greater than %2").arg(xmax).arg(xmin);
-        }
-      }
-    }
+  /// @brief the error under a bound when its axis bounds are inverted
+  /// @param axisRange  root.range.x or root.range.y
+  /// @param lower  true for the min of the axis
+  function inversionError(axisRange, axis: string, lower: bool): string {
+    // NaN compares false, so a bound without a value gives no error
+    if (!(axisRange.min.value >= axisRange.max.value))
+      return "";
+
+    const min = boundName(axis, "min"), max = boundName(axis, "max");
+
+    if (lower)
+      //: %1 and %2 are the names of two bounds, for example ymin and ymax
+      return qsTr("%1 must be smaller than %2").arg(min).arg(max);
+
+    //: %1 and %2 are the names of two bounds, for example ymax and ymin
+    return qsTr("%1 must be greater than %2").arg(max).arg(min);
   }
 
-
-  ZeTextEdit {
-    id: ymaxLbl
-    text: "<b>y</b><sub>max</sub>"
+  component BoundLabel: ZeTextEdit {
     readOnly: true
     selectByMouse: false
     activeFocusOnPress: false
@@ -58,6 +42,11 @@ Item {
     horizontalAlignment: TextEdit.AlignHCenter
     verticalAlignment: TextEdit.AlignBottom
     color: ZeStyle.palette.text
+  }
+
+  BoundLabel {
+    id: ymaxLbl
+    text: root.boundName("y", "max")
     anchors.top: root.top
     anchors.horizontalCenter: root.horizontalCenter
     width: parent.width/3
@@ -67,20 +56,14 @@ Item {
     id: ymaxEdit
     anchors.top: ymaxLbl.bottom
     anchors.horizontalCenter: root.horizontalCenter
-    anchors.margins: spacing
+    anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
     backend: root.range.y.max
+    customErrorMsg: root.inversionError(root.range.y, "y", false)
   }
 
-  ZeTextEdit {
-    text: "<b>x</b><sub>min</sub>"
-    readOnly: true
-    selectByMouse: false
-    activeFocusOnPress: false
-    textFormat: TextEdit.RichText
-    color: ZeStyle.palette.text
-    horizontalAlignment: TextEdit.AlignHCenter
-    verticalAlignment: TextEdit.AlignBottom
+  BoundLabel {
+    text: root.boundName("x", "min")
     anchors.horizontalCenter: xminEdit.horizontalCenter
     anchors.bottomMargin: 5
     anchors.bottom: xminEdit.top
@@ -90,21 +73,14 @@ Item {
     id: xminEdit
     anchors.left: root.left
     anchors.top: ymaxEdit.bottom
-    anchors.margins: spacing
+    anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
     backend: root.range.x.min
+    customErrorMsg: root.inversionError(root.range.x, "x", true)
   }
 
-
-  ZeTextEdit {
-    text: "<b>x</b><sub>max</sub>"
-    readOnly: true
-    selectByMouse: false
-    activeFocusOnPress: false
-    textFormat: TextEdit.RichText
-    color: ZeStyle.palette.text
-    horizontalAlignment: TextEdit.AlignHCenter
-    verticalAlignment: TextEdit.AlignBottom
+  BoundLabel {
+    text: root.boundName("x", "max")
     anchors.horizontalCenter: xmaxEdit.horizontalCenter
     anchors.bottomMargin: 5
     anchors.bottom: xmaxEdit.top
@@ -114,32 +90,26 @@ Item {
     id: xmaxEdit
     anchors.right: root.right
     anchors.top: ymaxEdit.bottom
-    anchors.margins: spacing
+    anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
     backend: root.range.x.max
+    customErrorMsg: root.inversionError(root.range.x, "x", false)
   }
 
-  ZeTextEdit {
-    text: "<b>y</b><sub>min</sub>"
-    readOnly: true
-    selectByMouse: false
-    activeFocusOnPress: false
-    textFormat: TextEdit.RichText
-    color: ZeStyle.palette.text
-    horizontalAlignment: TextEdit.AlignHCenter
-    verticalAlignment: TextEdit.AlignBottom
+  BoundLabel {
+    text: root.boundName("y", "min")
     anchors.bottom: yminEdit.top
     anchors.bottomMargin: 5
     anchors.horizontalCenter: root.horizontalCenter
-
   }
 
   ValueEdit {
     id: yminEdit
-    y: xminEdit.y + xminEdit.exprHeight + spacing
+    y: xminEdit.y + xminEdit.exprHeight + root.spacing
     anchors.horizontalCenter: root.horizontalCenter
     anchors.margins: root.spacing
     width: parent.width/3 - 2*anchors.margins
     backend: root.range.y.min
+    customErrorMsg: root.inversionError(root.range.y, "y", true)
   }
 }

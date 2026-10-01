@@ -33,7 +33,6 @@ struct ZeAxisRange: QObject
   QML_ELEMENT
   Q_PROPERTY(mathobj::Expr* min READ getMinPtr CONSTANT)
   Q_PROPERTY(mathobj::Expr* max READ getMaxPtr CONSTANT)
-  Q_PROPERTY(bool state READ getState NOTIFY stateChanged)
 
 public:
 
@@ -41,7 +40,6 @@ public:
 
   mathobj::Expr* getMinPtr() { return &min; }
   mathobj::Expr* getMaxPtr() { return &max; }
-  bool getState() const { return state; }
 
   mathobj::Expr min;
   mathobj::Expr max;
@@ -58,13 +56,7 @@ public:
   void importPod(POD);
   std::optional<POD> exportPod() const;
 
-signals:
-  void stateChanged();
-
 protected:
-  /// @brief tells whether the latest requested snapshot was valid
-  bool state = false;
-
   real_range1d latestValidSnapshot = real_range1d{.min = {-10.}, .max = {10.}};
 };
 

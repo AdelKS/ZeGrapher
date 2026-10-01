@@ -29,15 +29,9 @@ ZeAxisRange::ZeAxisRange(QObject *parent)
 
 real_range1d ZeAxisRange::getLatestValidSnapshot()
 {
-  real_range1d newSnapshot = {.min = {min.getValue()}, .max = {max.getValue()}};
-  bool old_state = state;
-
-  state = newSnapshot.is_valid();
-  if (state)
+  const real_range1d newSnapshot = {.min = {min.getValue()}, .max = {max.getValue()}};
+  if (newSnapshot.is_valid())
     latestValidSnapshot = newSnapshot;
-
-  if (state != old_state)
-    emit stateChanged();
 
   return latestValidSnapshot;
 }
