@@ -32,7 +32,9 @@ Rectangle {
     anchors.fill: parent
     anchors.leftMargin: 6
     anchors.rightMargin: 6
-    contentWidth: Math.max(edit.contentWidth, parent.width)
+    // a wrapped text takes the width it is given, and its contentWidth follows
+    // that width
+    contentWidth: edit.wrapMode === TextEdit.NoWrap ? Math.max(edit.contentWidth, width) : width
     contentHeight: Math.max(edit.contentHeight, parent.height)
     clip: true
     interactive: false
