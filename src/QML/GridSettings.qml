@@ -1,8 +1,9 @@
 // The grid and axis settings, in the panel's Grid tab
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import QtQuick.Controls.FluentWinUI3
 
 Item {
@@ -11,7 +12,118 @@ Item {
   required property ZeGraphSettings graphSettings
   required property size globalMenuSize
 
-  enum Selection { X_Y, X, Y }
+  /// @brief a box of settings: one row per setting, one column per axis. Each
+  ///        row is a label, then a Repeater over the axes
+  component AxesBox: GroupBox {
+    default property alias rows: grid.data
+
+    Layout.fillWidth: true
+    spacing: 0
+
+    GridLayout {
+      id: grid
+      anchors.fill: parent
+      columnSpacing: 10
+      columns: 3
+
+      Behavior on implicitWidth {
+        NumberAnimation { duration: 500 }
+      }
+
+      Item {}
+      ZeLabel {
+        Layout.alignment: Qt.AlignHCenter
+        text: 'X'
+      }
+      ZeLabel {
+        Layout.alignment: Qt.AlignHCenter
+        text: 'Y'
+      }
+    }
+  }
+
+  /// @brief the line settings of the grid or sub-grid
+  component LinesBox: AxesBox {
+    id: box
+
+    required property ZeGraphSettings graphSettings
+
+    /// @brief 'grid' or 'subgrid', the property of ZeGraphSettings to edit
+    required property string lines
+
+    ZeLabel {
+      Layout.alignment: Qt.AlignRight
+      text: qsTr('Enabled')
+    }
+    Repeater {
+      model: ["x", "y"]
+      ZeCheckBox {
+        required property string modelData
+        Layout.alignment: Qt.AlignCenter
+        display: AbstractButton.IconOnly
+        checked: box.graphSettings[box.lines][modelData].show
+        onToggled: box.graphSettings[box.lines][modelData].show = checked
+      }
+    }
+
+    ZeLabel {
+      Layout.alignment: Qt.AlignRight
+      text: qsTr('Color')
+    }
+    Repeater {
+      model: ["x", "y"]
+      ColorButton {
+        required property string modelData
+        Layout.alignment: Qt.AlignCenter
+        selectedColor: box.graphSettings[box.lines][modelData].color
+        onSelectedColorModified: box.graphSettings[box.lines][modelData].color = selectedColor
+      }
+    }
+
+    ZeLabel {
+      Layout.alignment: Qt.AlignRight
+      visible: box.lines === "subgrid"
+      text: qsTr('Subdivisions')
+    }
+    Repeater {
+      model: box.lines === "subgrid" ? ["x", "y"] : []
+      ZeSpinBox {
+        required property string modelData
+        Layout.fillWidth: true
+        Layout.minimumWidth: 85
+        implicitWidth: 85
+
+        from: 1
+        value: box.graphSettings.subgrid[modelData].subdivs
+        stepSize: 1
+        to: 20
+
+        onValueModified: box.graphSettings.subgrid[modelData].subdivs = value
+      }
+    }
+
+    ZeLabel {
+      Layout.alignment: Qt.AlignRight
+      text: qsTr('Line width')
+    }
+    Repeater {
+      model: ["x", "y"]
+      ZeDoubleSpinBox {
+        required property string modelData
+        Layout.fillWidth: true
+        Layout.minimumWidth: 95
+        implicitWidth: 95
+
+        from: 0.1
+        step: 0.1
+        to: 2.0
+        decimals: 1
+
+        value: box.graphSettings[box.lines][modelData].lineWidth
+        onValueModified: (value) => box.graphSettings[box.lines][modelData].lineWidth = value
+      }
+    }
+  }
 
   ScrollView {
     id: scrollView
@@ -25,40 +137,19 @@ Item {
       id: mainLayout
       width: parent.width
 
-      GroupBox {
-        Layout.columnSpan: 2
-        Layout.fillWidth: true
-        spacing: 0
-
+      AxesBox {
         title: qsTr("Coordinates")
 
-        GridLayout {
-          anchors.fill: parent
-          columnSpacing: 10
-          columns: 3
-
-          Behavior on implicitWidth {
-            NumberAnimation { duration: 500 }
-          }
-
-          Item {}
-          ZeLabel {
-            Layout.alignment: Qt.AlignHCenter
-            text: 'X'
-          }
-          ZeLabel {
-            Layout.alignment: Qt.AlignHCenter
-            text: 'Y'
-          }
-
-
-          ZeLabel {
-            id: spacingLabel
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Spacing')
-            tooltipText: qsTr("Spreads the ticks further apart. Zero is the tightest spacing the app draws.")
-          }
+        ZeLabel {
+          id: spacingLabel
+          Layout.alignment: Qt.AlignRight
+          text: qsTr('Spacing')
+          tooltipText: qsTr("Spreads the ticks further apart. Zero is the tightest spacing the app draws.")
+        }
+        Repeater {
+          model: ["x", "y"]
           ZeSpinBox {
+            required property string modelData
             Layout.fillWidth: true
             Layout.minimumWidth: 85
             implicitWidth: 85
@@ -66,34 +157,24 @@ Item {
             ToolTip.text: spacingLabel.tooltipText
 
             from: 0
-            value: root.graphSettings.axes.x.tickSpacing
+            value: root.graphSettings.axes[modelData].tickSpacing
             stepSize: 1
             to: 5
 
-            onValueModified: root.graphSettings.axes.x.tickSpacing = value
+            onValueModified: root.graphSettings.axes[modelData].tickSpacing = value
           }
-         ZeSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 85
-            implicitWidth: 85
+        }
 
-            ToolTip.text: spacingLabel.tooltipText
-
-            from: 0
-            value: root.graphSettings.axes.y.tickSpacing
-            stepSize: 1
-            to: 5
-
-            onValueModified: root.graphSettings.axes.y.tickSpacing = value
-          }
-
-          ZeLabel {
-            id: maxDigitsLabel
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Max digits')
-            tooltipText: qsTr("The number of digits a tick label can use before the app writes a power of ten.")
-          }
+        ZeLabel {
+          id: maxDigitsLabel
+          Layout.alignment: Qt.AlignRight
+          text: qsTr('Max digits')
+          tooltipText: qsTr("The number of digits a tick label can use before the app writes a power of ten.")
+        }
+        Repeater {
+          model: ["x", "y"]
           ZeSpinBox {
+            required property string modelData
             Layout.fillWidth: true
             Layout.minimumWidth: 85
             implicitWidth: 85
@@ -101,276 +182,42 @@ Item {
             ToolTip.text: maxDigitsLabel.tooltipText
 
             from: 2
-            value: root.graphSettings.axes.x.linear.maxDigitsNum
+            value: root.graphSettings.axes[modelData].linear.maxDigitsNum
             stepSize: 1
             to: 10
 
-            onValueModified: root.graphSettings.axes.x.linear.maxDigitsNum = value
+            onValueModified: root.graphSettings.axes[modelData].linear.maxDigitsNum = value
           }
-         ZeSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 85
-            implicitWidth: 85
+        }
 
-            ToolTip.text: maxDigitsLabel.tooltipText
-
-            from: 2
-            value: root.graphSettings.axes.y.linear.maxDigitsNum
-            stepSize: 1
-            to: 10
-
-            onValueModified: root.graphSettings.axes.y.linear.maxDigitsNum = value
-          }
-
-          ZeLabel {
-            id: multiplierLabel
-            Layout.alignment: Qt.AlignRight
-            //: the ticks become multiples of this expression
-            text: qsTr('Multiplier')
-            tooltipText: qsTr("Ticks and their labels become multiples of this expression, for example math::pi.")
-          }
+        ZeLabel {
+          id: multiplierLabel
+          Layout.alignment: Qt.AlignRight
+          //: the ticks become multiples of this expression
+          text: qsTr('Multiplier')
+          tooltipText: qsTr("Ticks and their labels become multiples of this expression, for example math::pi.")
+        }
+        Repeater {
+          model: ["x", "y"]
           ValueEdit {
+            required property string modelData
             Layout.fillWidth: true
-            backend: root.graphSettings.xMultiplier
-            ToolTip.text: multiplierLabel.tooltipText
-          }
-          ValueEdit {
-            Layout.fillWidth: true
-            backend: root.graphSettings.yMultiplier
+            backend: root.graphSettings[modelData + "Multiplier"]
             ToolTip.text: multiplierLabel.tooltipText
           }
         }
       }
 
-
-      GroupBox {
-        Layout.columnSpan: 2
-        Layout.fillWidth: true
-        spacing: 0
-
+      LinesBox {
         title: qsTr("Grid")
-
-        GridLayout {
-          anchors.fill: parent
-          columnSpacing: 10
-          columns: 3
-
-          Behavior on implicitWidth {
-            NumberAnimation { duration: 500 }
-          }
-
-          Item {}
-          ZeLabel {
-            Layout.alignment: Qt.AlignHCenter
-            text: 'X'
-          }
-          ZeLabel {
-            Layout.alignment: Qt.AlignHCenter
-            text: 'Y'
-          }
-
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Enabled')
-          }
-          ZeCheckBox {
-            Layout.alignment: Qt.AlignCenter
-            display: AbstractButton.IconOnly
-            checked: root.graphSettings.grid.x.show
-
-            onCheckedChanged: {
-              root.graphSettings.grid.x.show = checked;
-            }
-          }
-          ZeCheckBox {
-            Layout.alignment: Qt.AlignCenter
-            display: AbstractButton.IconOnly
-            checked: root.graphSettings.grid.y.show
-
-            onCheckedChanged: {
-              root.graphSettings.grid.y.show = checked;
-            }
-          }
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Color')
-          }
-          ColorButton {
-            Layout.alignment: Qt.AlignCenter
-            selectedColor: root.graphSettings.grid.x.color
-
-            onSelectedColorModified: root.graphSettings.grid.x.color = selectedColor
-          }
-          ColorButton {
-            Layout.alignment: Qt.AlignCenter
-            selectedColor: root.graphSettings.grid.y.color
-
-            onSelectedColorModified: root.graphSettings.grid.y.color = selectedColor
-          }
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Line width')
-          }
-          ZeDoubleSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 95
-            implicitWidth: 95
-            decimals: 1
-
-            from: 0.1
-            step: 0.1
-            to: 2.0
-
-            value: root.graphSettings.grid.x.lineWidth
-            onValueModified: (value) => root.graphSettings.grid.x.lineWidth = value
-          }
-          ZeDoubleSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 95
-            implicitWidth: 95
-
-            from: 0.1
-            step: 0.1
-            to: 2.0
-            decimals: 1
-
-            value: root.graphSettings.grid.y.lineWidth
-            onValueModified: (value) => root.graphSettings.grid.y.lineWidth = value
-          }
-
-        }
+        graphSettings: root.graphSettings
+        lines: "grid"
       }
 
-      GroupBox {
-        Layout.columnSpan: 2
-        Layout.fillWidth: true
-        spacing: 0
-
+      LinesBox {
         title: qsTr("Sub-grid")
-
-        GridLayout {
-          anchors.fill: parent
-          columnSpacing: 10
-          columns: 3
-
-          Behavior on implicitWidth {
-            NumberAnimation { duration: 500 }
-          }
-
-          Item {}
-          ZeLabel {
-            Layout.alignment: Qt.AlignHCenter
-            text: 'X'
-          }
-          ZeLabel {
-            Layout.alignment: Qt.AlignHCenter
-            text: 'Y'
-          }
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Enabled')
-          }
-          ZeCheckBox {
-            Layout.alignment: Qt.AlignCenter
-            display: AbstractButton.IconOnly
-            checked: root.graphSettings.subgrid.x.show
-
-            onCheckedChanged: {
-              root.graphSettings.subgrid.x.show = checked;
-            }
-          }
-          ZeCheckBox {
-            Layout.alignment: Qt.AlignCenter
-            display: AbstractButton.IconOnly
-            checked: root.graphSettings.subgrid.y.show
-
-            onCheckedChanged: {
-              root.graphSettings.subgrid.y.show = checked;
-            }
-          }
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Color')
-          }
-          ColorButton {
-            Layout.alignment: Qt.AlignCenter
-            selectedColor: root.graphSettings.subgrid.x.color
-
-            onSelectedColorModified: root.graphSettings.subgrid.x.color = selectedColor
-          }
-          ColorButton {
-            Layout.alignment: Qt.AlignCenter
-            selectedColor: root.graphSettings.subgrid.y.color
-
-            onSelectedColorModified: root.graphSettings.subgrid.y.color = selectedColor
-          }
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Subdivisions')
-          }
-          ZeSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 85
-            implicitWidth: 85
-
-            from: 1
-            value: root.graphSettings.subgrid.x.subdivs
-            stepSize: 1
-            to: 20
-
-            onValueModified: root.graphSettings.subgrid.x.subdivs = value
-          }
-          ZeSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 85
-            implicitWidth: 85
-
-            from: 1
-            value: root.graphSettings.subgrid.y.subdivs
-            stepSize: 1
-            to: 20
-
-            onValueModified: root.graphSettings.subgrid.y.subdivs = value
-          }
-
-          ZeLabel {
-            Layout.alignment: Qt.AlignRight
-            text: qsTr('Line width')
-          }
-          ZeDoubleSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 95
-            implicitWidth: 95
-            decimals: 1
-
-            from: 0.1
-            step: 0.1
-            to: 2.0
-
-            value: root.graphSettings.subgrid.x.lineWidth
-            onValueModified: (value) => root.graphSettings.subgrid.x.lineWidth = value
-          }
-          ZeDoubleSpinBox {
-            Layout.fillWidth: true
-            Layout.minimumWidth: 95
-            implicitWidth: 95
-
-            from: 0.1
-            step: 0.1
-            to: 2.0
-            decimals: 1
-
-            value: root.graphSettings.subgrid.y.lineWidth
-            onValueModified: (value) => root.graphSettings.subgrid.y.lineWidth = value
-          }
-
-        }
+        graphSettings: root.graphSettings
+        lines: "subgrid"
       }
     }
   }
