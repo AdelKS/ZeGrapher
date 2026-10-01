@@ -46,16 +46,16 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
 
   switch (style.pointStyle)
   {
-  case zg::CurveStyle::Cross:
+  case zg::PlotStyle::Cross:
   {
     painter->drawLine(pt + QPointF(0, w), pt + QPointF(0, -w));
     painter->drawLine(pt + QPointF(-w, 0), pt + QPointF(w, 0));
     break;
   }
-  case zg::CurveStyle::Disc:
+  case zg::PlotStyle::Disc:
     painter->drawEllipse(pt, w, w);
     break;
-  case zg::CurveStyle::Rhombus:
+  case zg::PlotStyle::Rhombus:
   {
     QPolygonF polygon(
       {pt + QPointF(-w, 0), pt + QPointF(0, w), pt + QPointF(w, 0), pt + QPointF(0, -w)});
@@ -63,7 +63,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
     painter->drawPolygon(polygon);
     break;
   }
-  case zg::CurveStyle::Square:
+  case zg::PlotStyle::Square:
   {
     QRectF rect;
     rect.setTopLeft(pt + QPointF(-w, -w));
@@ -72,7 +72,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
     painter->drawRect(rect);
     break;
   }
-  case zg::CurveStyle::Triangle:
+  case zg::PlotStyle::Triangle:
   {
     QPolygonF polygon;
     constexpr double coef = 0.86602540378443864676; // sqrt(3) / 2;
@@ -84,7 +84,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
     painter->drawPolygon(polygon);
     break;
   }
-  case zg::CurveStyle::None:
+  case zg::PlotStyle::None:
     break;
   }
 }
@@ -170,7 +170,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
   if (f_curve.discrete)
   {
-    if (style.pointStyle != zg::CurveStyle::PointStyle::None)
+    if (style.pointStyle != zg::PlotStyle::None)
       for (const QPointF& P: f_curve.px_curve)
       {
         if (not std::isnan(P.x()) and not std::isnan(P.y()))

@@ -20,7 +20,7 @@
 **
 ****************************************************************************/
 
-#include "Utils/themedcolor.h"
+#include "Utils/plotstyle.h"
 
 #include <QMetaType>
 #include <QPen>
@@ -39,19 +39,16 @@ struct CurveStyle {
   Q_PROPERTY(QList<qreal> dashPattern MEMBER dashPattern)
   Q_PROPERTY(bool drawLine MEMBER drawLine)
   Q_PROPERTY(double pointWidth MEMBER pointWidth)
-  Q_PROPERTY(PointStyle pointStyle MEMBER pointStyle)
+  Q_PROPERTY(zg::PlotStyle::PointStyle pointStyle MEMBER pointStyle)
 
 public:
-  enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
-  Q_ENUM(PointStyle)
-
   bool visible = true;
   QColor color = Qt::black;
   double lineWidth = 1.0;
   QList<qreal> dashPattern;
   bool drawLine = true;
   double pointWidth = 1.0;
-  PointStyle pointStyle = None;
+  PlotStyle::PointStyle pointStyle = PlotStyle::None;
 };
 
 }

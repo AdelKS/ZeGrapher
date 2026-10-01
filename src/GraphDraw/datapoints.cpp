@@ -89,7 +89,7 @@ public:
   float  glSize      = 0.f;   // Quad side incl. AA padding (logical pixels)
   float  radius      = 0.f;   // Visible half-extent for the SDF (logical pixels)
   float  strokeWidth = 0.f;   // Cross arm half-thickness (logical pixels; ignored otherwise)
-  int    markerType  = 0;     // matches zg::CurveStyle::PointStyle
+  int    markerType  = 0;     // matches zg::PlotStyle::PointStyle
 };
 
 class MarkersMaterialShader : public QSGMaterialShader
@@ -154,7 +154,7 @@ QSGNode *DataPoints::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
   if (not curve) return root;
   if (not curve->style.visible) return root;
   if (not curve->discrete)      return root;
-  if (curve->style.pointStyle == zg::CurveStyle::None) return root;
+  if (curve->style.pointStyle == zg::PlotStyle::None) return root;
   if (curve->px_curve.empty())  return root;
 
   // Count first so we can allocate the QSGGeometry exactly. Skipping

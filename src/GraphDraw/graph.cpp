@@ -464,7 +464,7 @@ void Graph::updateQmlData()
 
     }
 
-    if (f_curve.discrete and f_curve.style.pointStyle != zg::CurveStyle::None)
+    if (f_curve.discrete and f_curve.style.pointStyle != zg::PlotStyle::None)
       curve[QStringLiteral("markers")] = QVariant::fromValue(&f_curve);
     else curve[QStringLiteral("markers")] = QVariant::fromValue(static_cast<const zg::SampledCurve*>(nullptr));
 
