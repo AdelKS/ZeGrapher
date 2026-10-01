@@ -6,7 +6,7 @@ QString GridCalculator::get_coordinate_string(const ZeLinAxisSettings &axisSetti
 {
   QString posStr;
 
-  if (not multiplierStr.isEmpty())
+  if (not multiplierStr.isEmpty() and multiplier != 0)
   {
     const QString& expr = multiplierStr;
     if (fabs(multiplier + 1.0) <= MAX_NUM_PREC_DEC)
