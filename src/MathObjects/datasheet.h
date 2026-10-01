@@ -38,7 +38,6 @@ namespace mathobj {
 ///        reaches them through it
 struct DataSheet: QAbstractListModel {
   Q_OBJECT
-  // 'DataTable' is taken by DataTable.qml
   QML_ELEMENT
 
   Q_PROPERTY(int columns READ rowCount NOTIFY columnsChanged)

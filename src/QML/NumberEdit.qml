@@ -1,6 +1,6 @@
 import QtQuick
 
-// A line edit without borders, that follows its content
+// A line edit for a number, whose border shows whether the text is a number
 
 Rectangle {
   id: rec

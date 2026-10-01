@@ -50,8 +50,6 @@ public:
   const QColor& getCurrent() const;
 
   /// @brief sets the color for the current system theme
-  /// @note  the color for the other theme is also updated using HSV
-  //         where the value is set to 255 - value of the set color
   Q_INVOKABLE void setCurrent(QColor);
 
   bool operator == (const ThemedColor&) const = default;

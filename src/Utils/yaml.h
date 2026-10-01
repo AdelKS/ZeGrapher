@@ -98,7 +98,7 @@ struct QFontPOD {
 
   operator bool () const { return name or size or weight; }
 
-  /// @brief creates an instance from a color and a default (to tell which fields to leave empty)
+  /// @brief creates an instance from a font and a default (to tell which fields to leave empty)
   static std::optional<QFontPOD> from(QFont c, QFont def)
   {
     QFontPOD p {

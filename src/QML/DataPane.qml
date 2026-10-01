@@ -27,9 +27,8 @@ Item {
     anchors.right: parent.right
     anchors.margins: 5
 
-    // 0 when hidden, capped natural size when shown. The cap leaves
-    // minDataTableHeight px for the data table below so both stay visible.
-    // Height animation comes from `Behavior on height` inside this component.
+    // 0 when hidden, and never taller than the pane. The animation is the
+    // `Behavior on height` of CsvImportSettings
     height: root.importingCSV ? Math.min(implicitHeight, root.height) : 0
 
     onDone: { root.importingCSV = false; }

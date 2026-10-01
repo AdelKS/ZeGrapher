@@ -65,7 +65,7 @@ ApplicationWindow {
   onHeightChanged: Information.appSettings.windowSize = Qt.size(width, height)
 
   onScreenChanged: {
-    Information.graphSettings.screenChanged(win); // converted from (px per mm) to (px per cm)
+    Information.graphSettings.screenChanged(win);
   }
 
   Connections {
