@@ -243,18 +243,15 @@ MathWorld::POD MathWorld::exportPod() const
 
 void MathWorld::importPod(POD math_objects)
 {
+  // MathObject::POD lists its alternatives in MathObject::Type order
+  using T = MathObject::POD;
+  static_assert(std::is_same_v<std::variant_alternative_t<MathObject::EQUATION, T>, mathobj::Equation::POD>
+                and std::is_same_v<std::variant_alternative_t<MathObject::CONSTANT, T>, mathobj::Constant::POD>
+                and std::is_same_v<std::variant_alternative_t<MathObject::PARAMETRIC, T>, mathobj::Parametric::POD>
+                and std::is_same_v<std::variant_alternative_t<MathObject::DATASHEET, T>, mathobj::DataSheet::POD>);
+
   for (MathObject::POD& o: math_objects)
-  {
-    std::visit(
-      zc::utils::overloaded{
-        [this](mathobj::Constant::POD&& p) { addMathObject(MathObject::CONSTANT)->getConstant()->importPod(std::move(p)); },
-        [this](mathobj::Equation::POD&& p) { addMathObject(MathObject::EQUATION)->getEquation()->importPod(std::move(p)); },
-        [this](mathobj::Parametric::POD&& p) { addMathObject(MathObject::PARAMETRIC)->getParametric()->importPod(std::move(p)); },
-        [this](mathobj::DataSheet::POD&& p) { addMathObject(MathObject::DATASHEET)->getDataSheet()->importPod(std::move(p)); },
-      },
-      std::move(o)
-    );
-  }
+    addMathObject(MathObject::Type(o.index()))->importPod(std::move(o));
 }
 
 }
