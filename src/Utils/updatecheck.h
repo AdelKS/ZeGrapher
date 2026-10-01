@@ -15,7 +15,7 @@ class UpdateCheck : public QObject
   Q_PROPERTY(QString latestVersion READ getLatestVersion NOTIFY statusChanged)
 
 public:
-  explicit UpdateCheck(QObject *parent = 0);
+  explicit UpdateCheck(QObject *parent = nullptr);
 
   enum Status {IDLE, CHECKING, ERROR, UPDATE_MAYBE_AVAILABLE, UPDATE_AVAILABLE, UP_TO_DATE};
   Q_ENUM(Status);

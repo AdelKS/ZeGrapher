@@ -4,7 +4,7 @@
 
 UpdateCheck::UpdateCheck(QObject *parent) : QObject(parent)
 {
-  connect(&manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
+  connect(&manager, &QNetworkAccessManager::finished, this, &UpdateCheck::downloadFinished);
 }
 
 void UpdateCheck::refresh()
