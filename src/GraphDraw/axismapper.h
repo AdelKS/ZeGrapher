@@ -269,7 +269,6 @@ void ZeAxisMapper<axis>::translateView(unit<u<plane::pixel>> vec)
     vec = -vec;
 
   setRange(view_range.translated(vec / pixel_range.amplitude() * view_range.amplitude()));
-  pixel_range.translate(vec);
 }
 
 template <ZeAxisName axis>
