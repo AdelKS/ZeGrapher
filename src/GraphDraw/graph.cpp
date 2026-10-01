@@ -34,6 +34,8 @@
 #include <QBuffer>
 #include <QDomDocument>
 
+#include <array>
+
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent),
     MathObjectDraw(),
@@ -162,9 +164,15 @@ void Graph::drawAll()
   fontMetrics = painter->fontMetrics();
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
-  calculateTicksAndMargins();
-  calculateTicksAndMargins();
-  calculateTicksAndMargins();
+  // the margins hold the tick labels, and the labels depend on the room that
+  // the margins leave to the graph
+  for (int pass = 0; pass != 3; pass++)
+  {
+    const std::array margins = {leftMargin, rightMargin, topMargin, bottomMargin};
+    calculateTicksAndMargins();
+    if (margins == std::array{leftMargin, rightMargin, topMargin, bottomMargin})
+      break;
+  }
 
   centre = QPointF(viewMapper.to<zg::plane::pixel>(zg::view_pt{{0},{0}}));
 
