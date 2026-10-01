@@ -170,7 +170,7 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
   if (not exp_content)
   {
     appendIoErr(
-      {.title = tr("Internal bug"),
+      {.title = tr("Internal error"),
        //: %1 is the email address of the author, and %2 the page of the issues on GitHub
        .text = tr("Please report this bug to %1 or %2, with a way to reproduce it.")
                  .arg(CONTACT_ADDRESS, REPOSITORY_URL "/issues"),
