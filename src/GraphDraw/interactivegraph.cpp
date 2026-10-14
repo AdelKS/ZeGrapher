@@ -31,10 +31,10 @@ InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 
 void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 {
-  if (event->buttons() == Qt::LeftButton and boundingRect().contains(event->pos()))
+  if (event->buttons() == Qt::LeftButton and boundingRect().contains(event->position()))
   {
     dragging = true;
-    lastMousePos = event->pos();
+    lastMousePos = event->position();
     event->accept();
   }
   else
@@ -43,19 +43,19 @@ void InteractiveGraph::mousePressEvent(QMouseEvent *event)
 
 void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 {
-  QPoint dr = event->pos() - lastMousePos;
+  const QPointF dr = event->position() - lastMousePos;
 
   if (dragging)
   {
     // the view goes in the opposite direction
     viewMapper.translateView({
-      .x = zg::pixel_unit{double(-dr.x() / totalScaleFactor)},
-      .y = zg::pixel_unit{double(-dr.y() / totalScaleFactor)},
+      .x = zg::pixel_unit{-dr.x() / totalScaleFactor},
+      .y = zg::pixel_unit{-dr.y() / totalScaleFactor},
     });
     settings.range.interactiveUpdate(viewMapper.getRange<zg::real>());
   }
 
-  lastMousePos = event->pos();
+  lastMousePos = event->position();
   event->accept();
 }
 

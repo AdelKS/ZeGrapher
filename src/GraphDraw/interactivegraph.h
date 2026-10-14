@@ -39,7 +39,7 @@ public slots:
 
 protected:
 
-  QPoint lastMousePos;
+  QPointF lastMousePos;
   bool dragging = false;
 };
 
