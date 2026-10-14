@@ -183,14 +183,7 @@ void ZeGraphSettings::updateSizes()
   ZeSizeSettings oldSize = size;
 
   if (size.sheetFillsWindow)
-  {
-    size.pxSheetSize = availableSizePx;
-    size.cmSheetSize = availableSizePx.toSizeF() / pixelDensity;
-  }
-
-  if (size.sizeUnit == SizeUnit::CENTIMETER)
-    size.pxSheetSize = (size.cmSheetSize * pixelDensity).toSize();
-  else size.cmSheetSize = size.pxSheetSize.toSizeF() / pixelDensity;
+    size.cmSheetSize = availableSizeCm;
 
   if (size != oldSize)
     emit sizeSettingsChanged();

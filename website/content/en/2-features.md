@@ -23,7 +23,7 @@ parametric equations and data — and exports exactly what you see.
 - **Customization down to the grid**: ticks as multiples of an expression such
   as `π`, and separate subdivisions and colors for x and y.
 - **Exports identical to the preview**, vector (`svg`, `pdf`) or image (`png`,
-  `jpeg`, `bmp`, `ppm`). You give the size in real centimeters or in pixels.
+  `jpeg`, `bmp`, `ppm`). You give the size in real centimeters.
 - **Pick up where you left off**: the app saves your work when you close it, and
   brings it back at the next start. You can also save it to a file of your own,
   and open it whenever you want.

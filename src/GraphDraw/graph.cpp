@@ -216,14 +216,8 @@ void Graph::computeSupportRect()
   }
   else if (settings.getZoom().zoomingType == ZoomingType::FITSHEET)
   {
-    double ratio, targetRatio;
-    ratio = scaledSize.height() / scaledSize.width();
-
-    if (settings.getSize().sizeUnit == SizeUnit::CENTIMETER)
-      targetRatio = settings.getSize().cmSheetSize.height() / settings.getSize().cmSheetSize.width();
-    else
-      targetRatio = double(settings.getSize().pxSheetSize.height())
-                    / double(settings.getSize().pxSheetSize.width());
+    const double ratio = scaledSize.height() / scaledSize.width();
+    const double targetRatio = settings.getSize().cmSheetSize.height() / settings.getSize().cmSheetSize.width();
 
     if (ratio <= targetRatio)
     {

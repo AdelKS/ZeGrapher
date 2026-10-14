@@ -43,37 +43,21 @@ inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 enum struct ZeAxisName {X, Y};
 
 
-struct SizeUnit: QObject
-{
-  Q_OBJECT
-  QML_ELEMENT
-
-public:
-  SizeUnit(QObject *parent = nullptr): QObject(parent) {}
-
-  enum Unit {PIXEL, CENTIMETER};
-  Q_ENUM(Unit)
-};
-
 struct ZeSizeSettings
 {
   Q_GADGET
 
-  Q_PROPERTY(SizeUnit::Unit sizeUnit MEMBER sizeUnit)
   Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
   Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
-  Q_PROPERTY(QSize pxSheetSize MEMBER pxSheetSize)
   Q_PROPERTY(QSizeF cmSheetSize MEMBER cmSheetSize)
 
 
 public:
 
-  SizeUnit::Unit sizeUnit = SizeUnit::PIXEL;
   bool sheetFillsWindow = true;
 
   double scalingFactor = 1.0;
 
-  QSize pxSheetSize;
   QSizeF cmSheetSize;
 
   bool operator == (const ZeSizeSettings &other) const = default;
@@ -81,24 +65,14 @@ public:
   struct POD
   {
     std::optional<double> scaling;
-    std::optional<SizeUnit::Unit> unit;
     std::optional<double> width;
     std::optional<double> height;
 
-    operator bool () const { return scaling or unit or width or height; }
+    operator bool () const { return scaling or width or height; }
   };
 
   std::optional<POD> exportPod() const;
   void importPod(POD);
-};
-
-template <>
-struct glz::meta<SizeUnit::Unit>
-{
-   using enum SizeUnit::Unit;
-   static constexpr auto value = glz::enumerate(
-    "centimeter", CENTIMETER,
-    "pixel", PIXEL);
 };
 
 struct ZoomingType: QObject

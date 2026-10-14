@@ -156,7 +156,7 @@ captures:
     patch: website/scripts/make-images/states.patch
     images:
       - output: website/content/{lang}/images/graph-tab.png
-        rect: 785x1249+112+394
+        rect: 785x1184+112+394
         frame: "the Graph tab: the size, drawing and axes boxes"
 
   - name: tab-app

@@ -19,17 +19,8 @@ std::optional<ZeSizeSettings::POD> ZeSizeSettings::exportPod() const
 
   if (not sheetFillsWindow)
   {
-    p.unit = sizeUnit;
-    if (sizeUnit == SizeUnit::PIXEL)
-    {
-      p.width = pxSheetSize.width();
-      p.height = pxSheetSize.height();
-    }
-    else
-    {
-      p.width = cmSheetSize.width();
-      p.height = cmSheetSize.height();
-    }
+    p.width = cmSheetSize.width();
+    p.height = cmSheetSize.height();
   }
 
   if (p)
@@ -45,22 +36,7 @@ void ZeSizeSettings::importPod(POD p)
   if (p.width or p.height)
   {
     sheetFillsWindow = false;
-    if (p.unit)
-      sizeUnit = *p.unit;
-    else sizeUnit = SizeUnit::PIXEL;
-
-    if (sizeUnit == SizeUnit::PIXEL)
-    {
-      if (p.width) pxSheetSize.setWidth(*p.width);
-      if (p.height) pxSheetSize.setHeight(*p.height);
-    }
-    else
-    {
-      if (p.width) cmSheetSize.setWidth(*p.width);
-      if (p.height) cmSheetSize.setHeight(*p.height);
-    }
+    if (p.width) cmSheetSize.setWidth(*p.width);
+    if (p.height) cmSheetSize.setHeight(*p.height);
   }
-
-  if (p.unit)
-    sizeUnit = *p.unit;
 }

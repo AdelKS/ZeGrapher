@@ -336,6 +336,10 @@ ApplicationWindow {
         function onSizeSettingsChanged() {
           interactiveGraph.updateImplicitSize();
         }
+
+        function onPixelDensityChanged() {
+          interactiveGraph.updateImplicitSize();
+        }
       }
 
       function updateImplicitSize() {
@@ -343,8 +347,9 @@ ApplicationWindow {
           implicitWidth = graphScrollView.availableWidth;
           implicitHeight = graphScrollView.availableHeight;
         } else {
-          implicitWidth = interactiveGraph.settings.size.pxSheetSize.width * interactiveGraph.settings.zoom.zoom;
-          implicitHeight = interactiveGraph.settings.size.pxSheetSize.height * interactiveGraph.settings.zoom.zoom;
+          const pxPerCm = interactiveGraph.settings.pixelDensity * interactiveGraph.settings.zoom.zoom;
+          implicitWidth = interactiveGraph.settings.size.cmSheetSize.width * pxPerCm;
+          implicitHeight = interactiveGraph.settings.size.cmSheetSize.height * pxPerCm;
         }
       }
     }

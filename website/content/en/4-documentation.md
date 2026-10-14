@@ -312,8 +312,8 @@ takes the number of parts it cuts each cell into.
 
 By default the graph fills the window. Set **Graph size** to *Custom*, in the
 **Size** box at the top, and the graph becomes a sheet of the size you give.
-That size is in pixels, or in **real centimeters**. A centimeter is a real
-centimeter on the screen, and stays one in an exported `pdf` or `svg`.
+That size is in **real centimeters**. A centimeter is a real centimeter on the
+screen, and stays one in an exported `pdf` or `svg`.
 
 **Scaling**, in the same box, resizes everything the app draws at once: the
 lines, the text and the ticks.

@@ -9,14 +9,10 @@ Item {
   id: root
 
   readonly property double cm_increment: 1.0;
-  readonly property double px_increment: 50;
-  readonly property double max_px_size: 10000
   readonly property double max_cm_size: 1000
 
   required property ZeGraphSettings graphSettings
   required property size globalMenuSize
-
-  readonly property bool pixelUnits: root.graphSettings.size.sizeUnit === SizeUnit.PIXEL
 
   FontDialog {
     id: graphFontDialog
@@ -115,36 +111,6 @@ Item {
               columns: 2
 
               ZeLabel {
-                id: unitLabel
-                Layout.alignment: Qt.AlignRight
-                text: qsTr('Unit')
-                tooltipText: qsTr("Centimeters give the graph a real size, on the screen and in PDF or SVG exports.")
-              }
-              ComboBox {
-                Layout.fillWidth: true
-
-                id: unitComboBox
-
-                ToolTip.delay: ZeStyle.tooltipDelay
-                ToolTip.text: unitLabel.tooltipText
-                ToolTip.visible: hovered
-
-                implicitContentWidthPolicy: ComboBox.WidestText
-                background.implicitWidth: implicitContentWidth
-                textRole: "text"
-                valueRole: "value"
-
-                model: [
-                  { text: qsTr("Pixels"), value: SizeUnit.PIXEL },
-                  { text: qsTr("Centimeters"), value: SizeUnit.CENTIMETER },
-                ]
-
-                currentIndex: model.findIndex((entry) => entry.value === root.graphSettings.size.sizeUnit)
-
-                onActivated: root.graphSettings.size.sizeUnit = currentValue
-              }
-
-              ZeLabel {
                 Layout.alignment: Qt.AlignRight
 
                 id: sheetHeightLabel
@@ -153,23 +119,13 @@ Item {
               }
               ZeDoubleSpinBox {
                 id: sheetHeight
-                //: shorthand for pixels or centimeters, the size of the graph
-                suffix: root.pixelUnits ? qsTr(" px") : qsTr(" cm")
-                to: root.pixelUnits ? root.max_px_size : root.max_cm_size
-                step: root.pixelUnits ? root.px_increment : root.cm_increment
+                //: shorthand for centimeters, the size of the graph
+                suffix: qsTr(" cm")
+                to: root.max_cm_size
+                step: root.cm_increment
 
-                value: root.pixelUnits ? root.graphSettings.size.pxSheetSize.height : root.graphSettings.size.cmSheetSize.height
-
-                onValueModified: (value) => {
-                  if (root.pixelUnits) {
-                    root.graphSettings.size.pxSheetSize.height = value;
-                    root.graphSettings.size.cmSheetSize.height = value / root.graphSettings.pixelDensity;
-                  } else {
-                    root.graphSettings.size.pxSheetSize.height = value * root.graphSettings.pixelDensity;
-                    root.graphSettings.size.cmSheetSize.height = value;
-                  }
-
-                }
+                value: root.graphSettings.size.cmSheetSize.height
+                onValueModified: (value) => root.graphSettings.size.cmSheetSize.height = value
               }
 
               ZeLabel {
@@ -181,22 +137,13 @@ Item {
               ZeDoubleSpinBox {
 
                 id: sheetWidth
-                //: shorthand for pixels or centimeters, the size of the graph
-                suffix: root.pixelUnits ? qsTr(" px") : qsTr(" cm")
-                to: root.pixelUnits ? root.max_px_size : root.max_cm_size
-                step: root.pixelUnits ? root.px_increment : root.cm_increment
+                //: shorthand for centimeters, the size of the graph
+                suffix: qsTr(" cm")
+                to: root.max_cm_size
+                step: root.cm_increment
 
-                value: root.pixelUnits ? root.graphSettings.size.pxSheetSize.width : root.graphSettings.size.cmSheetSize.width
-
-                onValueModified: (value) => {
-                  if (root.pixelUnits) {
-                    root.graphSettings.size.pxSheetSize.width = value;
-                    root.graphSettings.size.cmSheetSize.width = value / root.graphSettings.pixelDensity;
-                  } else {
-                    root.graphSettings.size.pxSheetSize.width = value * root.graphSettings.pixelDensity;
-                    root.graphSettings.size.cmSheetSize.width = value;
-                  }
-                }
+                value: root.graphSettings.size.cmSheetSize.width
+                onValueModified: (value) => root.graphSettings.size.cmSheetSize.width = value
               }
 
               states: [

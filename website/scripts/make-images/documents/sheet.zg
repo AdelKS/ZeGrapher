@@ -2,7 +2,7 @@ math_objects:
   - type: equation
     equation: f(x) = 2 + cos(x)
 graph:
-  size: {unit: centimeter, width: 16, height: 10}
+  size: {width: 16, height: 10}
   range:
     x: {min: '-4', max: '4'}
     y: {min: '0', max: '3.5'}
