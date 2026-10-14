@@ -81,7 +81,7 @@ void Graph::calculateTicksAndMargins()
 {
   updateGraphRect();
 
-  painter->setFont(settings.getFont());
+  setPainterFont(settings.getFont());
   fontMetrics = painter->fontMetrics();
 
   xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
@@ -122,7 +122,7 @@ void Graph::calculateTicksAndMargins()
   const double gap = settings.getAxes().spacing.v;
 
   double xLegendMargin = 0, yLegendMargin = 0;
-  painter->setFont(settings.getAxes().titleFont);
+  setPainterFont(settings.getAxes().titleFont);
   const QFontMetricsF titleMetrics = painter->fontMetrics();
   if (not settings.getAxes().y.title.isEmpty())
     yLegendMargin = titleMetrics.tightBoundingRect(settings.getAxes().y.title).height() + gap;
@@ -136,6 +136,15 @@ void Graph::calculateTicksAndMargins()
   topMargin = std::max(20., 5. + offset_margin);
 
   updateGraphRect();
+}
+
+void Graph::setPainterFont(QFont font)
+{
+  // QPainter turns points into pixels with the logicalDpiY of its device:
+  // rescale so text keeps its size next to the geometry on every device
+  font.setPointSizeF(font.pointSizeF() * ZeGraphSettings::targetPixelDensity * CM_PER_INCH
+                     / painter->device()->logicalDpiY());
+  painter->setFont(font);
 }
 
 void Graph::paint(QPainter *p)
@@ -158,7 +167,7 @@ void Graph::paint(QPainter *p)
 
 void Graph::drawAll()
 {
-  painter->setFont(settings.getFont());
+  setPainterFont(settings.getFont());
   fontMetrics = painter->fontMetrics();
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
@@ -240,7 +249,7 @@ void Graph::scaleView()
 
 void Graph::writeAxisTitles()
 {
-  painter->setFont(settings.getAxes().titleFont);
+  setPainterFont(settings.getAxes().titleFont);
   const QFontMetricsF metrics = painter->fontMetrics();
   const double gap = settings.getAxes().spacing.v;
 
@@ -277,7 +286,7 @@ void Graph::writeAxisTitles()
 
 void Graph::writeAxisOffsetX()
 {
-  painter->setFont(settings.getFont());
+  setPainterFont(settings.getFont());
   pen.setColor(settings.getAxes().color.getCurrent());
   pen.setWidthF(settings.getAxes().lineWidth);
   painter->setPen(pen);
@@ -311,7 +320,7 @@ void Graph::writeAxisOffsetX()
 
 void Graph::writeAxisOffsetY()
 {
-  painter->setFont(settings.getFont());
+  setPainterFont(settings.getFont());
   double powerOffset_size = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
   {

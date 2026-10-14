@@ -67,6 +67,7 @@ protected slots:
 
 protected:
   void scaleView();
+  void setPainterFont(QFont font);
   void drawSupport();
   void computeSupportRect();
   void drawGraphRect();
@@ -191,7 +192,7 @@ void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
 template <ZeAxisName axis>
 void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
 {
-  painter->setFont(settings.getFont());
+  setPainterFont(settings.getFont());
   pen.setColor(settings.getAxes().color.getCurrent());
   painter->setPen(pen);
   fontMetrics = painter->fontMetrics();
