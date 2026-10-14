@@ -36,7 +36,7 @@ Item {
             readonly property var style: curveDelegate.modelData.style
 
             strokeColor:  style.color
-            strokeWidth:  style.lineWidth
+            strokeWidth:  style.lineWidth * root.totalScaleFactor
             fillColor:  "transparent"
             capStyle:   ShapePath.RoundCap
             joinStyle:  ShapePath.RoundJoin

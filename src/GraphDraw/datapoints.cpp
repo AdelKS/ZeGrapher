@@ -182,9 +182,9 @@ QSGNode *DataPoints::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
 
   auto *material = new MarkersMaterial;
   material->color       = curve->style.color;
-  material->glSize      = 4.0f * float(curve->style.pointWidth) + 2.0f * k_aa_pad;
-  material->radius      = float(curve->style.pointWidth);
-  material->strokeWidth = float(curve->style.lineWidth);
+  material->glSize      = 4.0f * float(curve->style.pointWidth) * totalScaleFactor + 2.0f * k_aa_pad;
+  material->radius      = float(curve->style.pointWidth) * totalScaleFactor;
+  material->strokeWidth = float(curve->style.lineWidth) * totalScaleFactor;
   material->markerType  = int(curve->style.pointStyle);
 
   auto *node = new QSGGeometryNode;
