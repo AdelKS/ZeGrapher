@@ -24,6 +24,7 @@
 #include "buildconfig.h"
 
 #include <QPageLayout>
+#include <QPainterPath>
 #include <QPdfWriter>
 #include <QStyleHints>
 #include <QQuickWindow>
@@ -114,7 +115,7 @@ void Graph::paint(QPainter* p, Export target)
 
   painter->setClipping(false);
 
-  drawLabels();
+  drawLabels(target == Export::Svg);
   drawLines(layout.border);
 
   painter = nullptr;
@@ -135,7 +136,7 @@ void Graph::drawLines(const LineBatch& batch)
   painter->drawLines(batch.lines.data(), int(batch.lines.size()));
 }
 
-void Graph::drawLabels()
+void Graph::drawLabels(bool asPaths)
 {
   painter->setPen(layout.textColor);
 
@@ -145,7 +146,13 @@ void Graph::drawLabels()
     painter->save();
     painter->translate(label.origin);
     painter->rotate(label.angle);
-    painter->drawText(QPointF(), label.text);
+    if (asPaths)
+    {
+      QPainterPath path;
+      path.addText(QPointF(), painter->font(), label.text);
+      painter->fillPath(path, layout.textColor);
+    }
+    else painter->drawText(QPointF(), label.text);
     painter->restore();
   }
 }

@@ -92,7 +92,9 @@ protected:
   void drawSupport();
   void computeSupportRect();
   void drawLines(const LineBatch& batch);
-  void drawLabels();
+  /// @param asPaths: draw text as glyph outlines, because an SVG names its
+  ///        font without embedding it
+  void drawLabels(bool asPaths);
 
   ZeGraphSettings& settings;
   GraphLayoutEngine layoutEngine;
