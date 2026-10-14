@@ -233,8 +233,10 @@ void Graph::drawAll()
 
 void Graph::scaleView()
 {
-  totalScaleFactor = paintType == VECTOR_EXPORT ? settings.getSize().scalingFactor
-                                                : settings.getTotalScaleFactor();
+  totalScaleFactor = paintType == VECTOR_EXPORT
+    ? settings.getSize().scalingFactor * painter->device()->logicalDpiX()
+        / (ZeGraphSettings::targetPixelDensity * CM_PER_INCH)
+    : settings.getTotalScaleFactor();
 
   // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
   // this is just telling it to draw everything bigger and translate coordinates accordingly
@@ -490,8 +492,7 @@ void Graph::exportPDF(QUrl fileName)
   pdfWriter.setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
   pdfWriter.setTitle(tr("Exported graph"));
 
-  // resolution is set in DPI, pixels per inch
-  pdfWriter.setResolution(int(ZeGraphSettings::targetPixelDensity * CM_PER_INCH));
+  pdfWriter.setResolution(1200);
 
   QPageLayout layout(
     QPageSize(settings.getSize().cmSheetSize * 10., QPageSize::Millimeter, "", QPageSize::ExactMatch),
