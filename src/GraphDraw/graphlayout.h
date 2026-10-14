@@ -39,6 +39,8 @@ struct LineBatch
   double width = 1;
   Qt::PenCapStyle cap = Qt::FlatCap;
   std::vector<QLineF> lines = {};
+
+  bool operator==(const LineBatch&) const = default;
 };
 
 enum class TextRole { Tick, Title };
@@ -51,6 +53,8 @@ struct Label
   TextRole role = TextRole::Tick;
   QPointF origin;
   double angle = 0;
+
+  bool operator==(const Label&) const = default;
 };
 
 /// @brief everything around a graph's curves: the grid, axes, ticks, border
@@ -77,6 +81,8 @@ struct GraphLayout
   QColor textColor;
 
   const QFont& font(TextRole role) const { return role == TextRole::Title ? titleFont : tickFont; }
+
+  bool operator==(const GraphLayout&) const = default;
 };
 
 /// @brief lays a graph out from its settings

@@ -14,11 +14,12 @@ source_files = [
   'Calculus/sampler.cpp',
   'DataPlot/csvpreviewmodel.cpp',
   'DataPlot/datatablemodel.cpp',
-  'GraphDraw/datapoints.cpp',
   'GraphDraw/graph.cpp',
   'GraphDraw/graphlayout.cpp',
   'GraphDraw/gridcalculator.cpp',
   'GraphDraw/interactivegraph.cpp',
+  'GraphDraw/linenode.cpp',
+  'GraphDraw/markernode.cpp',
   'GraphDraw/mathobjectdraw.cpp',
   'GraphDraw/viewmapper.cpp',
   'information.cpp',
@@ -66,7 +67,6 @@ qml_files = [
   'QML/ConstantEdit.qml',
   'QML/CsvFileDialog.qml',
   'QML/CsvImportSettings.qml',
-  'QML/CurvesOverlay.qml',
   'QML/DataColumnEdit.qml',
   'QML/DataPane.qml',
   'QML/DataSheetEdit.qml',
@@ -123,7 +123,6 @@ qmlcpp_files = [
   'Animation/animationconductor.h',
   'DataPlot/csvpreviewmodel.h',
   'DataPlot/datatablemodel.h',
-  'GraphDraw/datapoints.h',
   'GraphDraw/graph.h',
   'GraphDraw/interactivegraph.h',
   'information.h',
@@ -210,6 +209,8 @@ rcc = find_program('rcc-qt6', 'rcc', dirs: [qt_libexec, qt_bindir], required: tr
 shader_sources = [
   'GraphDraw/shaders/markers.vert',
   'GraphDraw/shaders/markers.frag',
+  'GraphDraw/shaders/lines.vert',
+  'GraphDraw/shaders/lines.frag',
 ]
 
 shader_qsb_files = []
@@ -229,6 +230,8 @@ shaders_qrc = configure_file(
   configuration: {
     'MARKERS_VERT_QSB': shader_qsb_files[0].full_path(),
     'MARKERS_FRAG_QSB': shader_qsb_files[1].full_path(),
+    'LINES_VERT_QSB': shader_qsb_files[2].full_path(),
+    'LINES_FRAG_QSB': shader_qsb_files[3].full_path(),
   },
 )
 

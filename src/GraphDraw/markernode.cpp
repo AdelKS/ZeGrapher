@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "GraphDraw/datapoints.h"
+#include "GraphDraw/markernode.h"
 
 #include <QColor>
 #include <QSGGeometry>
@@ -26,13 +26,16 @@
 #include <QSGMaterial>
 #include <QSGMaterialShader>
 #include <QSGNode>
+#include <algorithm>
+#include <cmath>
 #include <cstring>
+#include <ranges>
 
 namespace {
 
 // Lateral padding past the SDF iso-line so the fragment shader's coverage
-// gradient has somewhere to render. ~1 logical px is enough for a 1-pixel
-// AA band; the extra absorbs slight gradient anisotropy at oblique angles.
+// gradient has somewhere to render, in device pixels. ~1 px is enough for a
+// 1-pixel AA band; the extra absorbs slight gradient anisotropy at oblique angles.
 constexpr float k_aa_pad = 1.5f;
 
 // Typed std140 building blocks. The alignas attribute encodes the std140
@@ -86,9 +89,9 @@ public:
 
   // Per-curve uniform state. Read by the shader at the std140 offsets above.
   QColor color       = Qt::black;
-  float  glSize      = 0.f;   // Quad side incl. AA padding (logical pixels)
-  float  radius      = 0.f;   // Visible half-extent for the SDF (logical pixels)
-  float  strokeWidth = 0.f;   // Cross arm half-thickness (logical pixels; ignored otherwise)
+  float  glSize      = 0.f;   // Quad side incl. AA padding (drawing units)
+  float  radius      = 0.f;   // Visible half-extent for the SDF (drawing units)
+  float  strokeWidth = 0.f;   // Cross arm half-thickness (drawing units; ignored otherwise)
   int    markerType  = 0;     // matches zg::PlotStyle::PointStyle
 };
 
@@ -135,66 +138,38 @@ QSGMaterialShader *MarkersMaterial::createShader(QSGRendererInterface::RenderMod
 
 } // namespace
 
-DataPoints::DataPoints(QQuickItem *parent)
-  : QQuickItem(parent)
+MarkerNode::MarkerNode()
 {
-  setFlag(ItemHasContents, true);
+  auto* g = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
+  g->setDrawingMode(QSGGeometry::DrawTriangles);
+  g->setVertexDataPattern(QSGGeometry::StreamPattern);
+  setGeometry(g);
+  setFlag(OwnsGeometry);
+  setMaterial(new MarkersMaterial);
+  setFlag(OwnsMaterial);
 }
 
-QSGNode *DataPoints::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *)
+void MarkerNode::set(const MarkerGeometry& markers)
 {
-  QSGNode *root = oldNode ? oldNode : new QSGNode;
+  // NaN centers mark the breaks in the curve
+  auto centers = markers.centers | std::views::filter([](const QPointF& p) {
+    return not std::isnan(p.x()) and not std::isnan(p.y());
+  });
 
-  while (QSGNode *c = root->firstChild())
-  {
-    root->removeChildNode(c);
-    delete c;
-  }
+  QSGGeometry* g = geometry();
+  g->allocate(int(std::ranges::distance(centers) * 6));
 
-  if (not curve) return root;
-  if (not curve->style.visible) return root;
-  if (not curve->discrete)      return root;
-  if (curve->style.pointStyle == zg::PlotStyle::None) return root;
-  if (curve->px_curve.empty())  return root;
+  QSGGeometry::Point2D* points = g->vertexDataAsPoint2D();
+  for (const QPointF& p : centers)
+    points = std::ranges::fill_n(points, 6, QSGGeometry::Point2D{float(p.x()), float(p.y())});
+  markDirty(DirtyGeometry);
 
-  // Count first so we can allocate the QSGGeometry exactly. Skipping
-  // NaNs keeps disconnected sample slots out of the geometry.
-  qsizetype n = 0;
-  for (const QPointF& p : curve->px_curve)
-    if (not std::isnan(p.x()) and not std::isnan(p.y()))
-      ++n;
-  if (n == 0) return root;
-
-  auto *geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), int(n * 6));
-  geometry->setDrawingMode(QSGGeometry::DrawTriangles);
-
-  auto *points = geometry->vertexDataAsPoint2D();
-  qsizetype i = 0;
-  for (const QPointF& p : curve->px_curve)
-  {
-    if (std::isnan(p.x()) or std::isnan(p.y()))
-      continue;
-    float fx = float(p.x() * totalScaleFactor);
-    float fy = float(p.y() * totalScaleFactor);
-    for (int j = 0; j < 6; j++)
-      points[i++].set(fx, fy);
-  }
-
-  auto *material = new MarkersMaterial;
-  material->color       = curve->style.color;
-  material->glSize      = 4.0f * float(curve->style.pointWidth) * totalScaleFactor + 2.0f * k_aa_pad;
-  material->radius      = float(curve->style.pointWidth) * totalScaleFactor;
-  material->strokeWidth = float(curve->style.lineWidth) * totalScaleFactor;
-  material->markerType  = int(curve->style.pointStyle);
-
-  auto *node = new QSGGeometryNode;
-  node->setGeometry(geometry);
-  node->setFlag(QSGNode::OwnsGeometry);
-  node->setMaterial(material);
-  node->setFlag(QSGNode::OwnsMaterial);
-
-  root->appendChildNode(node);
-
-
-  return root;
+  const zg::CurveStyle& style = markers.style;
+  auto* m = static_cast<MarkersMaterial*>(material());
+  m->color       = style.color;
+  m->glSize      = 4.0f * float(style.pointWidth) + 2.0f * k_aa_pad / markers.pxPerUnit;
+  m->radius      = float(style.pointWidth);
+  m->strokeWidth = float(style.lineWidth);
+  m->markerType  = int(style.pointStyle);
+  markDirty(DirtyMaterial);
 }

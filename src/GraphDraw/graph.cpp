@@ -31,13 +31,23 @@
 #include <QSaveFile>
 #include <QFileInfo>
 #include <QImageWriter>
+#include <QSGClipNode>
+#include <QSGRectangleNode>
+#include <QSGTextNode>
+#include <QSGTransformNode>
+#include <QTextLayout>
+
+#include <map>
+#include <ranges>
+#include <tuple>
 
 Graph::Graph(QQuickItem *parent)
-  : QQuickPaintedItem(parent),
+  : QQuickItem(parent),
     MathObjectDraw(),
     settings(information->graphSettings),
     layoutEngine(settings, viewMapper)
 {
+  setFlag(ItemHasContents);
   pen.setCapStyle(Qt::RoundCap);
 
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
@@ -47,17 +57,17 @@ Graph::Graph(QQuickItem *parent)
   // main() loads the documents before QML creates the graph
   minMaxPointsChanged();
 
-  connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::subgridSettingsChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ update(); });
-  connect(&settings, &ZeGraphSettings::pixelDensityChanged, this, [this]{ update(); });
-  connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ update(); });
-  connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ update(); });
-  connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ update(); });
+  connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::subgridSettingsChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ polish(); });
+  connect(&settings, &ZeGraphSettings::pixelDensityChanged, this, [this]{ polish(); });
+  connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ polish(); });
+  connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ polish(); });
+  connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ polish(); });
 
   emit settingsChanged();
 }
@@ -70,24 +80,23 @@ void Graph::setPainterFont(QFont font)
   painter->setFont(font);
 }
 
-void Graph::paint(QPainter *p)
+void Graph::paint(QPainter* p, Export target)
 {
   painter = p;
 
-  if (paintType == VECTOR_EXPORT)
-    scaledSize = p->window().size().toSizeF();
-  else scaledSize = p->window().size().toSizeF() / window()->effectiveDevicePixelRatio();
+  const bool vector = target != Export::Image;
+  const double dpr = vector ? 1. : window()->effectiveDevicePixelRatio();
 
-  scaleView();
+  const double scale = vector
+    ? settings.getSize().scalingFactor * p->device()->logicalDpiX()
+        / (ZeGraphSettings::targetPixelDensity * CM_PER_INCH)
+    : settings.getTotalScaleFactor();
+
+  painter->scale(scale * dpr, scale * dpr);
+  scaledSize = p->window().size().toSizeF() / dpr / scale;
+  supportRect = QRectF(QPointF(), scaledSize);
   drawSupport();
 
-  drawAll();
-
-  painter = nullptr;
-}
-
-void Graph::drawAll()
-{
   layout = layoutEngine.compute(supportRect);
 
   painter->translate(layout.graph.topLeft());
@@ -98,9 +107,7 @@ void Graph::drawAll()
 
   sampler.update();
 
-  if (paintType == GPU_RENDER)
-    updateQmlData();
-  else drawObjects();
+  drawObjects();
 
   for (const LineBatch& batch : layout.aboveCurves)
     drawLines(batch);
@@ -109,6 +116,11 @@ void Graph::drawAll()
 
   drawLabels();
   drawLines(layout.border);
+
+  painter = nullptr;
+
+  // the export moved the view mapper and samples to its own sheet
+  polish();
 }
 
 void Graph::drawLines(const LineBatch& batch)
@@ -138,24 +150,6 @@ void Graph::drawLabels()
   }
 }
 
-void Graph::scaleView()
-{
-  totalScaleFactor = paintType == VECTOR_EXPORT
-    ? settings.getSize().scalingFactor * painter->device()->logicalDpiX()
-        / (ZeGraphSettings::targetPixelDensity * CM_PER_INCH)
-    : settings.getTotalScaleFactor();
-
-  // the qpainter is still drawing to the actual buffer-size that's given by painter-viewport
-  // this is just telling it to draw everything bigger and translate coordinates accordingly
-  painter->scale(totalScaleFactor, totalScaleFactor);
-
-  if (paintType == IMAGE_EXPORT)
-    painter->scale(window()->devicePixelRatio(), window()->devicePixelRatio());
-
-  // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
-  scaledSize /= totalScaleFactor;
-}
-
 void Graph::exportImage(QUrl filename)
 {
   const QString path = filename.toLocalFile();
@@ -173,9 +167,7 @@ void Graph::exportImage(QUrl filename)
 
   QPainter imagePainter(&image);
 
-  paintType = IMAGE_EXPORT;
-  paint(&imagePainter);
-  paintType = GPU_RENDER;
+  paint(&imagePainter, Export::Image);
 
   // QImageWriter picks the format from the file suffix. error() tells an
   // unknown suffix apart from a failed write, such as to a read-only folder
@@ -201,8 +193,6 @@ void Graph::drawSupport()
 { // draws the sheet on an untransformed view
   painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
 
-  computeSupportRect();
-
   pen.setStyle(Qt::NoPen);
   painter->setPen(pen);
 
@@ -213,7 +203,7 @@ void Graph::computeSupportRect()
 {
   QRectF rect;
 
-  if (paintType != GPU_RENDER or settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
+  if (settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
   {
     rect.setSize(scaledSize);
   }
@@ -245,41 +235,6 @@ void Graph::computeSupportRect()
   }
 
   supportRect = rect;
-}
-
-void Graph::updateQmlData()
-{
-  qmlData.clear();
-
-  for (const zg::SampledCurve& f_curve : sampler.getCurves())
-  {
-    if (not f_curve.style.visible) continue;
-    if (f_curve.curve.empty()) continue;
-
-    QVariantMap curve;
-    if (f_curve.style.drawLine)
-    {
-      const QList<QPolygonF> segments = buildFinalCurve(f_curve, totalScaleFactor);
-
-      curve[QStringLiteral("segments")] = QVariant::fromValue(std::move(segments));
-      curve[QStringLiteral("style")]    = QVariant::fromValue(f_curve.style);
-
-    }
-
-    if (f_curve.discrete and f_curve.style.pointStyle != zg::PlotStyle::None)
-      curve[QStringLiteral("markers")] = QVariant::fromValue(&f_curve);
-    else curve[QStringLiteral("markers")] = QVariant::fromValue(static_cast<const zg::SampledCurve*>(nullptr));
-
-    if (not curve.isEmpty())
-      qmlData.append(std::move(curve));
-  }
-
-  // Graph rect position in item pixel coordinates
-  graphRect = QRectF(layout.graph.topLeft() * totalScaleFactor,
-                     layout.graph.size() * totalScaleFactor);
-
-  emit qmlDataChanged();
-  emit graphRectChanged();
 }
 
 void Graph::exportPDF(QUrl fileName)
@@ -316,9 +271,7 @@ void Graph::exportPDF(QUrl fileName)
     return;
   }
 
-  paintType = VECTOR_EXPORT;
-  paint(&pdfPainter);
-  paintType = GPU_RENDER;
+  paint(&pdfPainter, Export::Pdf);
 }
 
 void Graph::exportSVG(QUrl fileName)
@@ -353,9 +306,7 @@ void Graph::exportSVG(QUrl fileName)
     return;
   }
 
-  paintType = VECTOR_EXPORT;
-  paint(&svgPainter);
-  paintType = GPU_RENDER;
+  paint(&svgPainter, Export::Svg);
 
   // QSvgGenerator writes the file when its painter ends.
   // QSaveFile::commit() also returns false when a write failed
@@ -369,5 +320,276 @@ void Graph::minMaxPointsChanged()
   sampler.min_points = 1ULL << settings.getMinPointsLg2();
   sampler.max_points = 1ULL << settings.getMaxPointsLg2();
 
+  polish();
+}
+
+void Graph::geometryChange(const QRectF& newGeometry, const QRectF& oldGeometry)
+{
+  QQuickItem::geometryChange(newGeometry, oldGeometry);
+  if (newGeometry.size() != oldGeometry.size())
+    polish();
+}
+
+void Graph::itemChange(ItemChange change, const ItemChangeData& value)
+{
+  QQuickItem::itemChange(change, value);
+  if (change == ItemDevicePixelRatioHasChanged or change == ItemSceneChange)
+    polish();
+}
+
+void Graph::updatePolish()
+{
+  if (width() <= 0 or height() <= 0 or not window())
+    return;
+
+  totalScaleFactor = settings.getTotalScaleFactor();
+  scaledSize = size() / totalScaleFactor;
+  computeSupportRect();
+
+  Frame::Source source{
+    .scale = float(totalScaleFactor),
+    .pxPerUnit = float(totalScaleFactor * window()->effectiveDevicePixelRatio()),
+    .background = settings.getBackgroundColor().getCurrent(),
+    .layout = layoutEngine.compute(supportRect),
+  };
+  const float pxPerUnit = source.pxPerUnit;
+
+  sampler.update();
+
+  // an animation only moves the curves
+  if (source != frame.source)
+  {
+    auto lines = [&](const LineBatch& batch) {
+      LineGeometry g(batch.color, batch.width, {}, pxPerUnit);
+      g.addSegments(batch.lines);
+      return g;
+    };
+
+    frame.belowCurves = source.layout.belowCurves | std::views::transform(lines) | std::ranges::to<std::vector>();
+    frame.aboveCurves = source.layout.aboveCurves | std::views::transform(lines) | std::ranges::to<std::vector>();
+    frame.border = lines(source.layout.border);
+    frame.source = std::move(source);
+    frame.layoutDirty = true;
+  }
+
+  frame.curves.clear();
+  frame.markers.clear();
+  for (const zg::SampledCurve& curve : sampler.getCurves())
+  {
+    const zg::CurveStyle& style = curve.style;
+    if (not style.visible or curve.curve.empty())
+      continue;
+
+    if (style.drawLine)
+    {
+      LineGeometry g(style.color, style.lineWidth, style.dashPattern, pxPerUnit);
+      for (const QPolygonF& polyline : buildFinalCurve(curve))
+        g.addPolyline(polyline);
+      frame.curves.push_back(std::move(g));
+    }
+
+    if (curve.discrete and style.pointStyle != zg::PlotStyle::None)
+      frame.markers.push_back(MarkerGeometry{curve.px_curve, style, pxPerUnit});
+  }
+  frame.curvesDirty = true;
+
   update();
+}
+
+namespace {
+
+/// @brief a label's text node, kept while its text, font and color don't change
+class LabelNode : public QSGTransformNode
+{
+public:
+  using Key = std::tuple<QString, QFont, QRgb>;
+
+  explicit LabelNode(Key key) : key(std::move(key)) {}
+
+  const Key key;
+};
+
+/// @brief the graph's scene graph, kept from frame to frame
+///
+/// root (scale) -> background
+///              -> origin (top left corner of the graph) -> clip -> lines and markers
+///                                                       -> border
+///                                                       -> labels (unscaled)
+class GraphNode : public QSGTransformNode
+{
+public:
+  explicit GraphNode(QQuickWindow* window)
+    : window(window)
+  {
+    background = window->createRectangleNode();
+    appendChildNode(background);
+
+    appendChildNode(origin);
+
+    clip->setIsRectangular(true);
+    clip->setGeometry(new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 4));
+    clip->setFlag(OwnsGeometry);
+    origin->appendChildNode(clip);
+    for (QSGNode* layer : {below, curves, markers, above})
+      clip->appendChildNode(layer);
+
+    origin->appendChildNode(border);
+    origin->appendChildNode(labels);
+  }
+
+  void sync(const Graph::Frame& f)
+  {
+    if (f.curvesDirty)
+    {
+      syncChildren<LineNode>(curves, f.curves);
+      syncChildren<MarkerNode>(markers, f.markers);
+    }
+
+    if (not f.layoutDirty)
+      return;
+
+    const Graph::Frame::Source& source = f.source;
+    const GraphLayout& layout = source.layout;
+
+    QMatrix4x4 scale;
+    scale.scale(source.scale);
+    setMatrix(scale);
+
+    background->setRect(layout.figure);
+    background->setColor(source.background);
+
+    QMatrix4x4 translation;
+    translation.translate(float(layout.graph.x()), float(layout.graph.y()));
+    origin->setMatrix(translation);
+
+    const QRectF clipRect(QPointF(), layout.graph.size());
+    QSGGeometry::updateRectGeometry(clip->geometry(), clipRect);
+    clip->setClipRect(clipRect);
+    clip->markDirty(DirtyGeometry);
+
+    syncChildren<LineNode>(below, f.belowCurves);
+    syncChildren<LineNode>(above, f.aboveCurves);
+    border->set(f.border);
+
+    syncLabels(layout, source.scale);
+  }
+
+protected:
+  /// @brief one child node per item in 'data', reusing existing children
+  template <class Node, class Data>
+  static void syncChildren(QSGNode* parent, const std::vector<Data>& data)
+  {
+    QSGNode* child = parent->firstChild();
+    for (const Data& d : data)
+    {
+      if (not child)
+      {
+        child = new Node;
+        parent->appendChildNode(child);
+      }
+      static_cast<Node*>(child)->set(d);
+      child = child->nextSibling();
+    }
+
+    while (child)
+    {
+      QSGNode* next = child->nextSibling();
+      parent->removeChildNode(child);
+      delete child;
+      child = next;
+    }
+  }
+
+  /// @brief a label keeps its text node while its text doesn't change, and
+  ///        only moves
+  ///
+  /// Native text rasterizes each glyph at its font size, so a label undoes the
+  /// root's scale and scales its font instead.
+  void syncLabels(const GraphLayout& layout, float scale)
+  {
+    std::multimap<LabelNode::Key, LabelNode*> unused;
+    for (QSGNode* child = labels->firstChild(); child; child = child->nextSibling())
+    {
+      auto* node = static_cast<LabelNode*>(child);
+      unused.emplace(node->key, node);
+    }
+
+    for (const Label& label : layout.labels)
+    {
+      QFont font = layout.font(label.role);
+      font.setPointSizeF(font.pointSizeF() * scale);
+      // native glyphs are cached unrotated, so a turned label would get its
+      // subpixel color fringes along the wrong axis
+      if (label.angle != 0)
+        font.setStyleStrategy(QFont::NoSubpixelAntialias);
+      LabelNode::Key key{label.text, font, layout.textColor.rgba()};
+      LabelNode* node;
+      if (auto it = unused.find(key); it != unused.end())
+      {
+        node = it->second;
+        unused.erase(it);
+      }
+      else
+      {
+        node = new LabelNode(std::move(key));
+        node->appendChildNode(textNode(label, font, layout.textColor));
+        labels->appendChildNode(node);
+      }
+
+      QMatrix4x4 m;
+      m.translate(float(label.origin.x()), float(label.origin.y()));
+      m.rotate(float(label.angle), 0, 0, 1);
+      m.scale(1.f / scale);
+      node->setMatrix(m);
+    }
+
+    for (LabelNode* node : unused | std::views::values)
+    {
+      labels->removeChildNode(node);
+      delete node;
+    }
+  }
+
+  /// @brief the text of 'label', its baseline starting at (0, 0)
+  QSGTextNode* textNode(const Label& label, const QFont& font, QColor color) const
+  {
+    QTextLayout text(label.text, font, GraphLayoutEngine::referenceDevice());
+    text.beginLayout();
+    QTextLine line = text.createLine();
+    line.setNumColumns(int(label.text.size()));
+    text.endLayout();
+
+    QSGTextNode* node = window->createTextNode();
+    node->setRenderType(QSGTextNode::NativeRendering);
+    node->setColor(color);
+    node->addTextLayout(QPointF(0, -line.ascent()), &text);
+    return node;
+  }
+
+  QQuickWindow* window;
+  QSGRectangleNode* background;
+  QSGTransformNode* origin = new QSGTransformNode;
+  QSGClipNode* clip = new QSGClipNode;
+  QSGNode* below = new QSGNode;
+  QSGNode* curves = new QSGNode;
+  QSGNode* markers = new QSGNode;
+  QSGNode* above = new QSGNode;
+  LineNode* border = new LineNode;
+  QSGNode* labels = new QSGNode;
+};
+
+} // namespace
+
+QSGNode* Graph::updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*)
+{
+  auto* root = static_cast<GraphNode*>(oldNode);
+  if (not root)
+  {
+    root = new GraphNode(window());
+    frame.layoutDirty = frame.curvesDirty = true;
+  }
+
+  root->sync(frame);
+  frame.layoutDirty = frame.curvesDirty = false;
+  return root;
 }
