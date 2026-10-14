@@ -24,7 +24,7 @@
 #include <QImage>
 #include <QVariantList>
 
-#include "gridcalculator.h"
+#include "graphlayout.h"
 #include "mathobjectdraw.h"
 #include "Utils/graphsettings.h"
 
@@ -70,66 +70,17 @@ protected:
   void setPainterFont(QFont font);
   void drawSupport();
   void computeSupportRect();
-  void drawGraphRect();
   void drawAll();
-  void updateGraphRect();
-  void writeAxisTitles();
-
-  /// @brief draw a line that spans the whole graph width or height
-  /// @tparam axis: the line will be perpendicular to this axis
-  /// @param pos: the lines intersects 'axis' at position 'pos'
-  /// @param col: color of the line
-  /// @param lineWidth: width of the line
-  template <ZeAxisName axis>
-  void drawLine(zg::pixel_unit pos, const QColor& col, double lineWidth);
-
-  /// @brief draws a "tick" on 'axis' at position 'pos'
-  /// @tparam axis: the line will be perpendicular to this axis
-  /// @param pos: position of the 'tick'
-  /// @param col: color of the 'tick'
-  /// @param lineWidth: width of the 'tick'
-  template <ZeAxisName axis>
-  void drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth);
-
-  /// @brief either writes and abscissa or an ordinate next to 'axis'
-  template <ZeAxisName axis>
-  void writeCoordinate(zg::pixel_unit pos, const QString& txt);
-
-  void writeAxisOffsetX();
-
-  template <ZeAxisName axis>
-  void drawLinCoordinateTicks();
-
-  template <ZeAxisName axis>
-  void writeCoordinates();
-
-  template <ZeAxisName axis>
-  void drawLinAxis();
-
-  template <ZeAxisName axis>
-  void drawLinSubgrid();
-
-  template <ZeAxisName axis>
-  void drawLinGrid();
-
-  void writeAxisOffsetY();
-
-  void calculateTicksAndMargins();
+  void drawLines(const LineBatch& batch);
+  void drawLabels();
 
   void updateQmlData();
 
   ZeGraphSettings& settings;
-
-  GridCalculator gridCalculator;
-  QFontMetricsF fontMetrics;
-  ZeLinAxisTicks xAxisTicks, yAxisTicks;
-  double leftMargin, rightMargin, topMargin, bottomMargin;
-  QRectF figureRectScaled, graphRectScaled;
+  GraphLayoutEngine layoutEngine;
+  GraphLayout layout;
 
   double totalScaleFactor;
-
-  // pixel position of the (0,0) coordinate in the graph
-  QPointF centre;
 
   QRectF supportRect;
 
@@ -147,214 +98,3 @@ protected:
   /// @note we need to tell QML exactly where to draw the curves
   QRectF graphRect;
 };
-
-template <ZeAxisName axis>
-void Graph::drawLine(zg::pixel_unit pos, const QColor& col, double lineWidth)
-{
-  pen.setColor(col);
-  pen.setWidthF(lineWidth);
-  pen.setStyle(Qt::SolidLine);
-  pen.setCapStyle(Qt::PenCapStyle::FlatCap);
-  painter->setPen(pen);
-  painter->setRenderHint(QPainter::Antialiasing, true);
-
-  if constexpr (axis == ZeAxisName::X)
-    painter->drawLine(QPointF(pos.v, 0.), QPointF(pos.v, graphRectScaled.height()));
-  else
-    painter->drawLine(QPointF(0., pos.v), QPointF(graphRectScaled.width(), pos.v));
-}
-
-template <ZeAxisName axis>
-void Graph::drawTick(zg::pixel_unit pos, const QColor& col, double lineWidth)
-{
-  pen.setColor(col);
-  pen.setWidthF(lineWidth);
-  pen.setCapStyle(Qt::PenCapStyle::RoundCap);
-  painter->setPen(pen);
-  painter->setRenderHint(QPainter::Antialiasing, true);
-
-  constexpr double tickLength = 3;
-
-  if constexpr (axis == ZeAxisName::X)
-  {
-    painter->drawLine(QPointF(pos.v, tickLength), QPointF(pos.v, 0));
-    painter->drawLine(QPointF(pos.v, graphRectScaled.height() - tickLength),
-                      QPointF(pos.v, graphRectScaled.height()));
-  }
-  else
-  {
-    painter->drawLine(QPointF(tickLength, pos.v), QPointF(0, pos.v));
-    painter->drawLine(QPointF(graphRectScaled.width() - tickLength, pos.v),
-                      QPointF(graphRectScaled.width(), pos.v));
-  }
-};
-
-template <ZeAxisName axis>
-void Graph::writeCoordinate(zg::pixel_unit pos, const QString& txt)
-{
-  setPainterFont(settings.getFont());
-  pen.setColor(settings.getAxes().color.getCurrent());
-  painter->setPen(pen);
-  fontMetrics = painter->fontMetrics();
-
-  qreal txtWidth = fontMetrics.horizontalAdvance(txt);
-  const double gap = settings.getAxes().spacing.v;
-  if constexpr (axis == ZeAxisName::X)
-  {
-    double space;
-    if (txt.startsWith('-'))
-      space = fontMetrics.horizontalAdvance(txt.mid(1)) / 2.
-              + fontMetrics.horizontalAdvance('-');
-    else
-      space = txtWidth / 2.;
-
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawText(QPointF(pos.v - space, graphRectScaled.height() + gap + xAxisTicks.maxPxAscent),
-                      txt);
-  }
-  else
-  {
-    const QRectF ink = fontMetrics.tightBoundingRect(txt);
-    painter->drawText(QPointF(- txtWidth - gap, pos.v - ink.top()/2.), txt);
-  }
-};
-
-template <ZeAxisName axis>
-void Graph::drawLinCoordinateTicks()
-{
-  const ZeAxesSettings &axesSettings = settings.getAxes();
-
-  pen.setCapStyle(Qt::FlatCap);
-
-  const auto& [axisMapper, axisTicks] = [this]{
-    if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
-  }();
-
-
-  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
-
-  for (const ZeLinAxisTick &axisTick : axisTicks)
-  {
-    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
-            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
-      continue;
-
-    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
-
-    if (fabs(px_pos.v - zero_pt.v) > 1.)
-      drawTick<axis>(px_pos, axesSettings.color.getCurrent(), axesSettings.lineWidth);
-  }
-}
-
-template <ZeAxisName axis>
-void Graph::writeCoordinates()
-{
-  const auto& [axisMapper, axisTicks] = [this]{
-    if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks);
-  }();
-
-  for (const ZeLinAxisTick &axisTick : axisTicks)
-  {
-    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
-            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
-      continue;
-
-    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
-    writeCoordinate<axis>(px_pos, axisTick.posStr);
-  }
-}
-
-template <ZeAxisName axis>
-void Graph::drawLinAxis()
-{
-  const ZeAxesSettings &axesSettings = settings.getAxes();
-
-  const auto& axisMapper = [this]{
-    if constexpr (axis == ZeAxisName::X)
-      return viewMapper.x;
-    else return viewMapper.y;
-  }();
-
-  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
-
-  if (axisMapper.isInView(zero_pt))
-    drawLine<axis>(zero_pt, axesSettings.color.getCurrent(), axesSettings.lineWidth);
-}
-
-template <ZeAxisName axis>
-void Graph::drawLinSubgrid()
-{
-  const auto& [axisMapper, axisTicks, subgridSettings] = [&]()
-  {
-    if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getSubgrid().x);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getSubgrid().y);
-  }();
-
-  if (not subgridSettings.show)
-    return;
-
-  pen.setCapStyle(Qt::FlatCap);
-  bool first_tick = true;
-  zg::real_unit previous_pos;
-
-  for (const ZeLinAxisTick &axisTick : axisTicks)
-  {
-    if (not first_tick)
-    {
-      for (int mul = 1; mul <= subgridSettings.subdivs; mul++)
-      {
-        const zg::real_unit cur_pos = double(mul) / double(subgridSettings.subdivs + 1)
-                                         * previous_pos
-                                       + double(subgridSettings.subdivs + 1 - mul)
-                                           / double(subgridSettings.subdivs + 1) * axisTick.pos;
-
-        if (not(axisMapper.template getRange<zg::real>().min < cur_pos
-                && cur_pos < axisMapper.template getRange<zg::real>().max))
-          continue;
-
-        drawLine<axis>(axisMapper.template to<zg::pixel>(cur_pos),
-                       subgridSettings.color.getCurrent(),
-                       subgridSettings.lineWidth);
-      }
-    }
-
-    previous_pos = axisTick.pos;
-    first_tick = false;
-  }
-}
-
-template <ZeAxisName axis>
-void Graph::drawLinGrid()
-{
-  auto getAxisData = [&]()
-  {
-    if constexpr (axis == ZeAxisName::X)
-      return std::tie(std::as_const(viewMapper.x), xAxisTicks.ticks, settings.getGrid().x, settings.getSubgrid().x);
-    else return std::tie(std::as_const(viewMapper.y), yAxisTicks.ticks, settings.getGrid().y, settings.getSubgrid().y);
-  };
-  const auto& [axisMapper, axisTicks, gridSettings, subgridSettings] = getAxisData();
-
-  if (not gridSettings.show)
-    return;
-
-  pen.setCapStyle(Qt::FlatCap);
-
-  const zg::pixel_unit zero_pt = axisMapper.template to<zg::pixel>(zg::real_unit{0.});
-
-  for (const ZeLinAxisTick &axisTick : axisTicks)
-  {
-    if (not(axisMapper.template getRange<zg::real>().min < axisTick.pos
-            && axisTick.pos < axisMapper.template getRange<zg::real>().max))
-      continue;
-
-    zg::pixel_unit px_pos = axisMapper.template to<zg::pixel>(axisTick.pos);
-
-    if (fabs(px_pos.v - zero_pt.v) > 1.)
-      drawLine<axis>(px_pos, gridSettings.color.getCurrent(), gridSettings.lineWidth);
-  }
-}

@@ -32,19 +32,12 @@
 #include <QFileInfo>
 #include <QImageWriter>
 
-#include <array>
-
 Graph::Graph(QQuickItem *parent)
   : QQuickPaintedItem(parent),
     MathObjectDraw(),
     settings(information->graphSettings),
-    gridCalculator(settings),
-    fontMetrics(settings.getFont())
+    layoutEngine(settings, viewMapper)
 {
-  leftMargin = 30;
-  rightMargin = 30;
-  topMargin = 20;
-  bottomMargin = 30;
   pen.setCapStyle(Qt::RoundCap);
 
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
@@ -69,81 +62,11 @@ Graph::Graph(QQuickItem *parent)
   emit settingsChanged();
 }
 
-void Graph::updateGraphRect()
-{
-  graphRectScaled.setWidth(figureRectScaled.width() - leftMargin - rightMargin);
-  graphRectScaled.setHeight(figureRectScaled.height() - topMargin - bottomMargin);
-  graphRectScaled.moveTopLeft(QPointF(0, 0)); // because painter is translated to its top-left corner
-  viewMapper.setGraphRect(graphRectScaled);
-}
-
-void Graph::calculateTicksAndMargins()
-{
-  updateGraphRect();
-
-  setPainterFont(settings.getFont());
-  fontMetrics = painter->fontMetrics();
-
-  xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, fontMetrics);
-  yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, fontMetrics);
-
-  if(xAxisTicks.offset.sumOffset != 0)
-  {
-    double margin = fontMetrics.boundingRect(xAxisTicks.offset.sumOffsetStr()).width() + 5;
-    if(rightMargin < margin)
-      rightMargin = 10 + margin;
-  }
-
-  if(xAxisTicks.offset.basePowerOffset != 0)
-  {
-    double margin = fontMetrics.boundingRect(xAxisTicks.offset.basePowerOffsetStr()).width() + 5;
-    rightMargin = 10 + margin;
-  }
-
-  if(xAxisTicks.offset.basePowerOffset == 0 && xAxisTicks.offset.sumOffset == 0)
-    rightMargin = 10;
-
-  double offset_margin = 0;
-  if (yAxisTicks.offset.basePowerOffset != 0)
-  {
-    QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
-
-    offset_margin = fontMetrics.boundingRect(power_offset).height();
-  }
-  if (yAxisTicks.offset.sumOffset != 0)
-  {
-    QString sum_offset = yAxisTicks.offset.sumOffsetStr();
-
-    double new_offsetmargin = fontMetrics.boundingRect(sum_offset).height();
-    if (new_offsetmargin > offset_margin)
-      offset_margin = new_offsetmargin;
-  }
-
-  const double gap = settings.getAxes().spacing.v;
-
-  double xLegendMargin = 0, yLegendMargin = 0;
-  setPainterFont(settings.getAxes().titleFont);
-  const QFontMetricsF titleMetrics = painter->fontMetrics();
-  if (not settings.getAxes().y.title.isEmpty())
-    yLegendMargin = titleMetrics.tightBoundingRect(settings.getAxes().y.title).height() + gap;
-
-  if (not settings.getAxes().x.title.isEmpty())
-    xLegendMargin = titleMetrics.tightBoundingRect(settings.getAxes().x.title).height() + gap;
-
-  // layout: graph edge | gap | coordinates | gap | title | gap | figure edge
-  bottomMargin = gap + xAxisTicks.maxPxHeight() + xLegendMargin + gap;
-  leftMargin = gap + yAxisTicks.maxPxWidth + yLegendMargin + gap;
-  topMargin = std::max(20., 5. + offset_margin);
-
-  updateGraphRect();
-}
-
 void Graph::setPainterFont(QFont font)
 {
-  // QPainter turns points into pixels with the logicalDpiY of its device:
-  // rescale so text keeps its size next to the geometry on every device
-  font.setPointSizeF(font.pointSizeF() * ZeGraphSettings::targetPixelDensity * CM_PER_INCH
-                     / painter->device()->logicalDpiY());
+  // QPainter converts points to pixels with its device's logicalDpiY, and the
+  // layout sizes its fonts for 72 dpi
+  font.setPointSizeF(font.pointSizeF() * 72. / painter->device()->logicalDpiY());
   painter->setFont(font);
 }
 
@@ -158,8 +81,6 @@ void Graph::paint(QPainter *p)
   scaleView();
   drawSupport();
 
-  figureRectScaled = supportRect;
-  painter->translate(figureRectScaled.topLeft());
   drawAll();
 
   painter = nullptr;
@@ -167,38 +88,13 @@ void Graph::paint(QPainter *p)
 
 void Graph::drawAll()
 {
-  setPainterFont(settings.getFont());
-  fontMetrics = painter->fontMetrics();
-  viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
+  layout = layoutEngine.compute(supportRect);
 
-  // the margins hold the tick labels, and the labels depend on the room that
-  // the margins leave to the graph
-  for (int pass = 0; pass != 3; pass++)
-  {
-    const std::array margins = {leftMargin, rightMargin, topMargin, bottomMargin};
-    calculateTicksAndMargins();
-    if (margins == std::array{leftMargin, rightMargin, topMargin, bottomMargin})
-      break;
-  }
+  painter->translate(layout.graph.topLeft());
+  painter->setClipRect(QRectF(QPointF(), layout.graph.size()));
 
-  centre = QPointF(viewMapper.to<zg::plane::pixel>(zg::view_pt{{0},{0}}));
-
-  painter->translate(leftMargin, topMargin);
-
-  painter->setClipRect(graphRectScaled);
-
-  if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
-      and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
-  {
-    drawLinSubgrid<ZeAxisName::Y>();
-    drawLinSubgrid<ZeAxisName::X>();
-
-    drawLinGrid<ZeAxisName::Y>();
-    drawLinGrid<ZeAxisName::X>();
-
-    drawLinAxis<ZeAxisName::Y>();
-    drawLinAxis<ZeAxisName::X>();
-  }
+  for (const LineBatch& batch : layout.belowCurves)
+    drawLines(batch);
 
   sampler.update();
 
@@ -206,29 +102,40 @@ void Graph::drawAll()
     updateQmlData();
   else drawObjects();
 
-  if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
-      and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
-  {
-    drawLinCoordinateTicks<ZeAxisName::Y>();
-    drawLinCoordinateTicks<ZeAxisName::X>();
-  }
+  for (const LineBatch& batch : layout.aboveCurves)
+    drawLines(batch);
 
   painter->setClipping(false);
 
-  if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
-      and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
+  drawLabels();
+  drawLines(layout.border);
+}
+
+void Graph::drawLines(const LineBatch& batch)
+{
+  pen.setColor(batch.color);
+  pen.setWidthF(batch.width);
+  pen.setStyle(Qt::SolidLine);
+  pen.setCapStyle(batch.cap);
+  pen.setJoinStyle(Qt::RoundJoin);
+  painter->setPen(pen);
+  painter->setRenderHint(QPainter::Antialiasing, true);
+  painter->drawLines(batch.lines.data(), int(batch.lines.size()));
+}
+
+void Graph::drawLabels()
+{
+  painter->setPen(layout.textColor);
+
+  for (const Label& label : layout.labels)
   {
-    writeAxisOffsetY();
-    writeAxisOffsetX();
-
-    writeCoordinates<ZeAxisName::Y>();
-    writeCoordinates<ZeAxisName::X>();
+    setPainterFont(layout.font(label.role));
+    painter->save();
+    painter->translate(label.origin);
+    painter->rotate(label.angle);
+    painter->drawText(QPointF(), label.text);
+    painter->restore();
   }
-
-  drawGraphRect();
-  writeAxisTitles();
-
-  painter->translate(centre);
 }
 
 void Graph::scaleView()
@@ -247,114 +154,6 @@ void Graph::scaleView()
 
   // this is the new "view size": i.e. the whole widget spans that size, drawing anything above goes out
   scaledSize /= totalScaleFactor;
-}
-
-void Graph::writeAxisTitles()
-{
-  setPainterFont(settings.getAxes().titleFont);
-  const QFontMetricsF metrics = painter->fontMetrics();
-  const double gap = settings.getAxes().spacing.v;
-
-  const auto& xTitle = settings.getAxes().x.title;
-
-  if (!xTitle.isEmpty())
-  {
-    // ink rect is relative to the baseline start point: top() < 0, bottom() = descender ink
-    const QRectF ink = metrics.tightBoundingRect(xTitle);
-
-    QPointF startDrawPoint;
-    startDrawPoint.setX((graphRectScaled.width() - ink.width()) / 2 - ink.left());
-    startDrawPoint.setY(graphRectScaled.height() + bottomMargin - gap - ink.bottom());
-
-    painter->drawText(startDrawPoint, xTitle);
-  }
-
-  const auto& yTitle = settings.getAxes().y.title;
-
-  if (!yTitle.isEmpty())
-  {
-    painter->rotate(-90);
-    const QRectF ink = metrics.tightBoundingRect(yTitle);
-
-    QPointF startDrawPoint;
-    startDrawPoint.setX(-(graphRectScaled.height() + ink.width()) / 2 - ink.left());
-    startDrawPoint.setY(-leftMargin + gap - ink.top());
-
-    painter->drawText(startDrawPoint, yTitle);
-
-    painter->rotate(90);
-  }
-}
-
-void Graph::writeAxisOffsetX()
-{
-  setPainterFont(settings.getFont());
-  pen.setColor(settings.getAxes().color.getCurrent());
-  pen.setWidthF(settings.getAxes().lineWidth);
-  painter->setPen(pen);
-  painter->setRenderHint(QPainter::Antialiasing, true);
-
-  const auto& offset = xAxisTicks.offset;
-
-  if(offset.sumOffset != 0)
-  {
-    QString sum_offset = offset.sumOffsetStr();
-
-    painter->drawText(QPointF(graphRectScaled.width() + 5,
-                             graphRectScaled.height()
-                               - fontMetrics.boundingRect(sum_offset).height() - 10),
-                     sum_offset);
-
-    double margin = fontMetrics.boundingRect(sum_offset).width() + 5;
-    Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
-  }
-
-  if(offset.basePowerOffset != 0)
-  {
-    QString power_offset = offset.basePowerOffsetStr();
-
-    painter->drawText(QPointF(graphRectScaled.width() + 5, graphRectScaled.height()), power_offset);
-
-    double margin = fontMetrics.boundingRect(power_offset).width() + 5;
-    Q_ASSERT(rightMargin >= margin); // Should be handled with calculateTicksAndMargins
-  }
-}
-
-void Graph::writeAxisOffsetY()
-{
-  setPainterFont(settings.getFont());
-  double powerOffset_size = 0;
-  if (yAxisTicks.offset.basePowerOffset != 0)
-  {
-    QString power_offset = yAxisTicks.offset.basePowerOffsetStr();
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawText(QPointF(0, -4), power_offset);
-
-    powerOffset_size = fontMetrics.boundingRect(power_offset).width() + 5;
-  }
-  if (yAxisTicks.offset.sumOffset != 0)
-  {
-    QString sum_offset = yAxisTicks.offset.sumOffsetStr();
-
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->drawText(QPointF(powerOffset_size + 5, -4), sum_offset);
-  }
-}
-
-void Graph::drawGraphRect()
-{
-  const auto &axesSettings = settings.getAxes();
-
-  painter->setRenderHint(QPainter::Antialiasing, true);
-  painter->setBrush(QBrush(Qt::NoBrush));
-
-  pen.setWidthF(axesSettings.lineWidth);
-  pen.setColor(axesSettings.color.getCurrent());
-  pen.setStyle(Qt::SolidLine);
-  pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);
-  painter->setPen(pen);
-
-  painter->drawRect(graphRectScaled);
 }
 
 void Graph::exportImage(QUrl filename)
@@ -476,10 +275,8 @@ void Graph::updateQmlData()
   }
 
   // Graph rect position in item pixel coordinates
-  graphRect = QRectF((figureRectScaled.x() + leftMargin) * totalScaleFactor,
-                     (figureRectScaled.y() + topMargin) * totalScaleFactor,
-                     graphRectScaled.width() * totalScaleFactor,
-                     graphRectScaled.height() * totalScaleFactor);
+  graphRect = QRectF(layout.graph.topLeft() * totalScaleFactor,
+                     layout.graph.size() * totalScaleFactor);
 
   emit qmlDataChanged();
   emit graphRectChanged();

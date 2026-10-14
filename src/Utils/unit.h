@@ -72,6 +72,7 @@ struct Range1D
   Range1D& translate(unit<U> vec) { min += vec; max += vec; return *this; }
   Range1D translated(unit<U> vec) const { return Range1D{.min = min + vec, .max = max + vec}; }
   bool contains(unit<U> x) const { return min <= x and x <= max; }
+  bool strictlyContains(unit<U> x) const { return min < x and x < max; }
   Range1D& operator /= (double c) { min /= c; max /= c; return *this; }
   Range1D& operator *= (double c) { min *= c; max *= c; return *this; }
   Range1D& operator -= (unit<U> c) { min -= c; max -= c; return *this; }

@@ -16,6 +16,7 @@ source_files = [
   'DataPlot/datatablemodel.cpp',
   'GraphDraw/datapoints.cpp',
   'GraphDraw/graph.cpp',
+  'GraphDraw/graphlayout.cpp',
   'GraphDraw/gridcalculator.cpp',
   'GraphDraw/interactivegraph.cpp',
   'GraphDraw/mathobjectdraw.cpp',
