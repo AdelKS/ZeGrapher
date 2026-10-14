@@ -23,6 +23,7 @@
 
 #include <QPalette>
 #include <QGuiApplication>
+#include <QScreen>
 
 namespace {
 
@@ -85,9 +86,20 @@ void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
 
 void ZeGraphSettings::screenChanged(QWindow* win)
 {
+  if (screen)
+    disconnect(screen, nullptr, this, nullptr);
 
-  QSizeF pixelSize = win->screen()->size().toSizeF();
-  QSizeF cmSize = win->screen()->physicalSize() / 10;
+  screen = win->screen();
+  connect(screen, &QScreen::geometryChanged, this, &ZeGraphSettings::updatePixelDensity);
+  connect(screen, &QScreen::physicalSizeChanged, this, &ZeGraphSettings::updatePixelDensity);
+
+  updatePixelDensity();
+}
+
+void ZeGraphSettings::updatePixelDensity()
+{
+  QSizeF pixelSize = screen->size().toSizeF();
+  QSizeF cmSize = screen->physicalSize() / 10;
 
   double px_per_cm = sqrt(pixelSize.width() * pixelSize.height() / (cmSize.width() * cmSize.height()));
 

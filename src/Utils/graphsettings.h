@@ -25,6 +25,7 @@
 #include <QFont>
 #include <QColor>
 #include <QTimer>
+#include <QPointer>
 
 #include "Utils/axissettings.h"
 #include "Utils/fonts.h"
@@ -150,7 +151,11 @@ protected:
   /// @brief a default background follows the window color in the dark theme
   void followWindowColor();
 
+  void updatePixelDensity();
+
   QTimer paletteTimer;
+
+  QPointer<QScreen> screen;
 
 public:
   zg::GraphRange range;
