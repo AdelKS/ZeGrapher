@@ -31,8 +31,6 @@
 #include <QSaveFile>
 #include <QFileInfo>
 #include <QImageWriter>
-#include <QBuffer>
-#include <QDomDocument>
 
 #include <array>
 
@@ -178,13 +176,6 @@ void Graph::drawAll()
 
   painter->translate(leftMargin, topMargin);
 
-  // SVG workaround, generate <g> block and add recognizable first element
-  if (svgExport)
-  {
-    painter->setPen(Qt::black);
-    painter->drawText(centre, "QTCLIP_BEGIN");
-  }
-
   painter->setClipRect(graphRectScaled);
 
   if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
@@ -214,13 +205,6 @@ void Graph::drawAll()
   }
 
   painter->setClipping(false);
-
-  // end of SVG export workaround
-  if (svgExport)
-  {
-    painter->setPen(Qt::black);
-    painter->drawText(centre, "QTCLIP_END");
-  }
 
   if (settings.getAxes().y.axisType == ZeAxisSettings::LINEAR
       and settings.getAxes().x.axisType == ZeAxisSettings::LINEAR)
@@ -532,12 +516,17 @@ void Graph::exportPDF(QUrl fileName)
 
 void Graph::exportSVG(QUrl fileName)
 {
-  QByteArray svgData;
-  QBuffer buffer(&svgData);
-  buffer.open(QIODevice::WriteOnly);
+  const QString path = fileName.toLocalFile();
+  QSaveFile file(path);
+  if (not file.open(QIODevice::WriteOnly))
+  {
+    information->exportFailed(path, file.errorString());
+    return;
+  }
 
-  QSvgGenerator svgGenerator;
-  svgGenerator.setOutputDevice(&buffer);
+  // SVG Tiny 1.2, the default, has no clipping
+  QSvgGenerator svgGenerator(QSvgGenerator::SvgVersion::Svg11);
+  svgGenerator.setOutputDevice(&file);
 
   svgGenerator.setTitle(tr("Exported graph"));
   //: %1 is the version of ZeGrapher, for example 4.0
@@ -552,83 +541,19 @@ void Graph::exportSVG(QUrl fileName)
 
   if (not svgPainter.isActive())
   {
-    information->exportFailed(fileName.toLocalFile());
+    information->exportFailed(path);
     return;
   }
 
-  svgExport = true;
   paintType = VECTOR_EXPORT;
   paint(&svgPainter);
   paintType = GPU_RENDER;
-  svgExport = false;
 
-  svgPainter.end();           // flush QSvgGenerator into the buffer
-  buffer.close();
-
-  injectClipPath(svgData);    // edit the SVG in memory
-
-  const QString path = fileName.toLocalFile();
-  QSaveFile file(path);
-  if (not file.open(QIODevice::WriteOnly))
-  {
-    information->exportFailed(path, file.errorString());
-    return;
-  }
-
-  // QSaveFile::commit() also returns false when write() failed
-  file.write(svgData);
+  // QSvgGenerator writes the file when its painter ends.
+  // QSaveFile::commit() also returns false when a write failed
+  svgPainter.end();
   if (not file.commit())
     information->exportFailed(path, file.errorString());
-}
-
-void Graph::injectClipPath(QByteArray& svg)
-{
-  QDomDocument doc;
-  if (not doc.setContent(svg))
-    return;
-
-  // find the two sentinel <g> wrappers via their <text> children
-  // inserted when generating the SVG
-  QDomElement begin, end;
-  const QDomNodeList texts = doc.elementsByTagName("text");
-  for (int i = 0; i < texts.count(); ++i)
-  {
-    const QDomElement t = texts.at(i).toElement();
-    if (t.text() == "QTCLIP_BEGIN")
-      begin = t.parentNode().toElement();
-    else if (t.text() == "QTCLIP_END")
-      end = t.parentNode().toElement();
-  }
-  if (begin.isNull() or end.isNull())
-    return;
-
-  // <clipPath> into <defs> — page space: graphRectScaled is at (0,0), shifted by margins
-  QDomElement rect = doc.createElement("rect");
-  rect.setAttribute("x", leftMargin);
-  rect.setAttribute("y", topMargin);
-  rect.setAttribute("width", graphRectScaled.width());
-  rect.setAttribute("height", graphRectScaled.height());
-
-  QDomElement clip = doc.createElement("clipPath");
-  clip.setAttribute("id", "zeclip");
-  clip.appendChild(rect);
-  doc.elementsByTagName("defs").at(0).appendChild(clip);
-
-  // re-parent every sibling between the sentinels into the clipped group
-  QDomElement group = doc.createElement("g");
-  group.setAttribute("clip-path", "url(#zeclip)");
-  QDomNode parent = begin.parentNode();
-  parent.insertBefore(group, begin);
-  for (QDomNode n = begin.nextSibling(); not n.isNull() and n != end; )
-  {
-    QDomNode next = n.nextSibling();
-    group.appendChild(n);
-    n = next;
-  }
-  parent.removeChild(begin);
-  parent.removeChild(end);
-
-  svg = doc.toByteArray(2);
 }
 
 void Graph::minMaxPointsChanged()

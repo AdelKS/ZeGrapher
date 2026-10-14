@@ -171,7 +171,6 @@ qt6_modules = [
   'Gui',
   'Network',
   'Svg',
-  'Xml',
   'Quick',
   'Qml',
   'QmlIntegration',
