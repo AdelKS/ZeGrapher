@@ -144,8 +144,8 @@ GraphLayout GraphLayoutEngine::compute(const QRectF& figure)
   layout.figure = figure;
   layout.tickFont = font(TextRole::Tick);
   layout.titleFont = font(TextRole::Title);
-  metrics = QFontMetricsF(layout.tickFont, referenceDevice());
-  titleMetrics = QFontMetricsF(layout.titleFont, referenceDevice());
+  metrics.setFont(layout.tickFont);
+  titleMetrics.setFont(layout.titleFont);
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
   // the margins hold the tick labels, and the labels depend on the room that

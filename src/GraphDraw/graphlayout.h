@@ -22,7 +22,6 @@
 
 #include <QColor>
 #include <QFont>
-#include <QFontMetricsF>
 #include <QLineF>
 #include <QMarginsF>
 #include <QRectF>
@@ -149,7 +148,7 @@ protected:
   zg::ZeViewMapper& viewMapper;
   GridCalculator gridCalculator;
 
-  QFontMetricsF metrics, titleMetrics;
+  TextMetrics metrics, titleMetrics;
   ZeLinAxisTicks xAxisTicks, yAxisTicks;
   QMarginsF margins{30, 20, 30, 30};
 

@@ -20,10 +20,10 @@
 **
 ****************************************************************************/
 
-#include <QFontMetricsF>
 #include <QRectF>
 
 #include "axismapper.h"
+#include "textmetrics.h"
 #include "structures.h"
 #include "Utils/graphsettings.h"
 
@@ -88,12 +88,12 @@ public:
 
   template <ZeAxisName axis>
   ZeLinAxisTicks getLinearAxisTicks(const zg::ZeAxisMapper<axis> &mapper,
-                                    const QFontMetricsF &metrics);
+                                    const TextMetrics &metrics);
 
 protected:
   template <ZeAxisName axis>
   double getMaxStrPxSize(const zg::real_range1d &range, double realStep,
-                         const QString& multiplierStr, const QFontMetricsF &metrics);
+                         const QString& multiplierStr, const TextMetrics &metrics);
 
   /// @param multiplierStr  the expression that the ticks are multiples of, empty
   ///                       when they are plain numbers
@@ -109,7 +109,7 @@ template <ZeAxisName axis>
 double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
                                        double realStep,
                                        const QString& multiplierStr,
-                                       const QFontMetricsF &metrics)
+                                       const TextMetrics &metrics)
 {
   const ZeAxesSettings& axesSettings = settings.getAxes();
 
@@ -142,7 +142,7 @@ double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
 
 template <ZeAxisName axis>
 ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &axis_mapper,
-                                                  const QFontMetricsF &metrics)
+                                                  const TextMetrics &metrics)
 {
   auto previousMultiplier = [](double baseMultiplier)
   {
