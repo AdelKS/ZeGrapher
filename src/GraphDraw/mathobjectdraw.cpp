@@ -35,7 +35,7 @@ void MathObjectDraw::drawDataPoint(const QPointF& pt, const zg::CurveStyle& styl
   double w = style.pointWidth;
 
   pen.setColor(style.color);
-  pen.setWidth(style.lineWidth);
+  pen.setWidthF(style.lineWidth);
   pen.setCapStyle(Qt::PenCapStyle::RoundCap);
   pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);
   brush.setColor(style.color);
@@ -151,7 +151,7 @@ void MathObjectDraw::drawSampledCurve(const zg::SampledCurve& f_curve)
 
   if (style.drawLine)
   {
-    pen.setWidth(style.lineWidth);
+    pen.setWidthF(style.lineWidth);
     pen.setColor(style.color);
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
     pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);

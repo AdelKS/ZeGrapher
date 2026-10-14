@@ -348,7 +348,7 @@ void Graph::drawGraphRect()
   painter->setRenderHint(QPainter::Antialiasing, true);
   painter->setBrush(QBrush(Qt::NoBrush));
 
-  pen.setWidth(axesSettings.lineWidth);
+  pen.setWidthF(axesSettings.lineWidth);
   pen.setColor(axesSettings.color.getCurrent());
   pen.setStyle(Qt::SolidLine);
   pen.setJoinStyle(Qt::PenJoinStyle::RoundJoin);
