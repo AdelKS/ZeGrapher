@@ -542,10 +542,11 @@ void Graph::exportSVG(QUrl fileName)
   //: %1 is the version of ZeGrapher, for example 4.0
   svgGenerator.setDescription(tr("Created with ZeGrapher %1").arg(SOFTWARE_VERSION));
 
-  svgGenerator.setResolution(int(ZeGraphSettings::targetPixelDensity * CM_PER_INCH));
+  svgGenerator.setResolution(96);
 
-  svgGenerator.setSize(size().toSize());
-  svgGenerator.setViewBox(QRect(QPoint(0, 0), size().toSize()));
+  const QSize sheet = (settings.getSize().cmSheetSize / CM_PER_INCH * svgGenerator.resolution()).toSize();
+  svgGenerator.setSize(sheet);
+  svgGenerator.setViewBox(QRect(QPoint(0, 0), sheet));
 
   QPainter svgPainter(&svgGenerator);
 
