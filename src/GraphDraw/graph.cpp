@@ -88,10 +88,9 @@ void Graph::paint(QPainter* p, Export target)
   const bool vector = target != Export::Image;
   const double dpr = vector ? 1. : window()->effectiveDevicePixelRatio();
 
-  const double scale = vector
-    ? settings.getSize().scalingFactor * p->device()->logicalDpiX()
-        / (ZeGraphSettings::targetPixelDensity * CM_PER_INCH)
-    : settings.getTotalScaleFactor();
+  // exports draw at 100% zoom
+  const double pxPerCm = vector ? p->device()->logicalDpiX() / CM_PER_INCH : settings.pixelDensity;
+  const double scale = settings.getSize().scalingFactor * pxPerCm / ZeGraphSettings::targetPixelDensity;
 
   painter->scale(scale * dpr, scale * dpr);
   scaledSize = p->window().size().toSizeF() / dpr / scale;
@@ -160,7 +159,8 @@ void Graph::drawLabels(bool asPaths)
 void Graph::exportImage(QUrl filename)
 {
   const QString path = filename.toLocalFile();
-  const QSize pixels = (size() * window()->devicePixelRatio()).toSize();
+  const QSize pixels = (settings.getSize().cmSheetSize * settings.pixelDensity
+                        * window()->devicePixelRatio()).toSize();
   QImage image(pixels, QImage::Format_RGB32);
 
   if (image.isNull())
