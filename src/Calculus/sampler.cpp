@@ -69,7 +69,10 @@ void Sampler::refresh_schrodinger_keys()
   assert(schrodinger_constant->getSteps() > 0);
 
   if (std::isnan(schrodinger_constant->getFrom()) or std::isnan(schrodinger_constant->getTo()))
+  {
+    schrodinger_curves_map.clear();
     return;
+  }
 
   std::unordered_set<double> current_values;
   for (int i = 0 ; i <= schrodinger_constant->getSteps(); i++)
@@ -226,6 +229,8 @@ void Sampler::update()
       double t = amplitude != 0 ? (v - schrodinger_constant->getFrom()) / amplitude : 1.0;
       for (auto& [p, data]: schrodinger_curves)
         std::visit([&](auto* f) {
+          if (not data.style.visible)
+            return;
           data.style.color = f->getStyle()->colorLerp(t);
           dispatch(eval_handle(f), data);
           if (f->isContinuous())
