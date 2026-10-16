@@ -20,17 +20,15 @@
 #pragma once
 
 #include <QFont>
-#include <QGuiApplication>
 
 namespace zg {
 
 /// @brief the bundled font, registered in main() before any settings object
-/// @note keeps the platform's point size, only the family differs
+/// @note its size doesn't follow the platform, so documents have the same
+///       layout everywhere
 inline QFont mathFont()
 {
-  QFont font = qGuiApp->font();
-  font.setFamily("Latin Modern Math");
-  return font;
+  return QFont("Latin Modern Math", 10);
 }
 
 }
