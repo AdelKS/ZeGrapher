@@ -36,12 +36,12 @@ class Graph : public QQuickItem, public MathObjectDraw
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(ZeGraphSettings* settings READ getGraphSettings NOTIFY settingsChanged)
+  Q_PROPERTY(ZeGraphSettings* settings READ getGraphSettings CONSTANT)
 
 public:
   explicit Graph(QQuickItem* parent = nullptr);
 
-  Q_INVOKABLE ZeGraphSettings* getGraphSettings() { return &settings; }
+  ZeGraphSettings* getGraphSettings() { return &settings; }
 
   /// @brief what updatePolish() prepares for updatePaintNode(), in drawing units
   struct Frame
@@ -71,9 +71,6 @@ public slots:
   void exportPDF(QUrl fileName);
   void exportSVG(QUrl fileName);
   void exportImage(QUrl filename);
-
-signals:
-  void settingsChanged();
 
 protected slots:
   void minMaxPointsChanged();

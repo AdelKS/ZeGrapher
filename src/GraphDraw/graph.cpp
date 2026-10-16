@@ -69,8 +69,6 @@ Graph::Graph(QQuickItem *parent)
   connect(zg::mathWorld, &zg::MathWorld::updated, this, [this]{ polish(); });
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ polish(); });
   connect(zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ polish(); });
-
-  emit settingsChanged();
 }
 
 void Graph::setPainterFont(QFont font)
