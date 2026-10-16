@@ -18,8 +18,7 @@
 **
 ****************************************************************************/
 
-#ifndef MAINVIEW_H
-#define MAINVIEW_H
+#pragma once
 
 #include "graph.h"
 
@@ -31,16 +30,12 @@ class InteractiveGraph : public Graph
 public:
   explicit InteractiveGraph(QQuickItem *parent = nullptr);
 
-public slots:
-  virtual void mousePressEvent(QMouseEvent *event) override;
-  virtual void mouseMoveEvent(QMouseEvent *event) override;
-  virtual void mouseReleaseEvent(QMouseEvent *event) override;
-  virtual void wheelEvent(QWheelEvent *event) override;
-
 protected:
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+  void wheelEvent(QWheelEvent *event) override;
 
   QPointF lastMousePos;
   bool dragging = false;
 };
-
-#endif // MAINVIEW_H

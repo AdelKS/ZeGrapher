@@ -24,7 +24,6 @@
 InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 {
   setKeepMouseGrab(true);
-  setAcceptHoverEvents(true);
   setAcceptedMouseButtons(Qt::LeftButton);
 }
 
@@ -62,7 +61,6 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 void InteractiveGraph::mouseReleaseEvent(QMouseEvent *event)
 {
   Q_UNUSED(event);
-  setCursor(Qt::ArrowCursor);
   dragging = false;
 }
 

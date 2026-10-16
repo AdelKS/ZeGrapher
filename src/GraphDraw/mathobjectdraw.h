@@ -18,8 +18,7 @@
 **
 ****************************************************************************/
 
-#ifndef GRAPHDRAW_H
-#define GRAPHDRAW_H
+#pragma once
 
 #include <QBrush>
 #include <QPainter>
@@ -51,5 +50,3 @@ protected:
   zg::ZeViewMapper viewMapper;
   Sampler sampler;
 };
-
-#endif // GRAPHDRAW_H
