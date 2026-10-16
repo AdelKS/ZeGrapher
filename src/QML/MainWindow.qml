@@ -7,9 +7,10 @@ import QtQuick.Window
 
 ApplicationWindow {
   id: win
-  width: Information.appSettings.windowSize.width
-  height: Information.appSettings.windowSize.height
-  visible: true
+  // a size saved on a larger screen
+  width: Math.min(Information.appSettings.windowSize.width, Screen.desktopAvailableWidth)
+  height: Math.min(Information.appSettings.windowSize.height, Screen.desktopAvailableHeight)
+  visibility: Information.appSettings.maximized ? Window.Maximized : Window.Windowed
   font: Information.appSettings.font
 
   title: Information.documentName.length !== 0 ? Information.documentName + " — ZeGrapher" : "ZeGrapher"
@@ -62,9 +63,20 @@ ApplicationWindow {
     }
   }
 
-  onWidthChanged: Information.appSettings.windowSize = Qt.size(width, height)
+  // a maximized window keeps its previous size. The platform can report the new
+  // size before the new visibility, so read the size a moment later
+  function saveSize() {
+    if (win.visibility === Window.Windowed)
+      Information.appSettings.windowSize = Qt.size(width, height);
+  }
 
-  onHeightChanged: Information.appSettings.windowSize = Qt.size(width, height)
+  onWidthChanged: Qt.callLater(saveSize)
+  onHeightChanged: Qt.callLater(saveSize)
+
+  onVisibilityChanged: (visibility) => {
+    if (visibility === Window.Windowed || visibility === Window.Maximized)
+      Information.appSettings.maximized = visibility === Window.Maximized;
+  }
 
   onScreenChanged: {
     Information.graphSettings.screenChanged(win);

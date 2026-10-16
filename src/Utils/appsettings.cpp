@@ -51,6 +51,7 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
                             QLocale::languageToCode(systemLanguage())),
     .font = zg::yml::QFontPOD::from(font, defaultFont),
     .window_size = zg::yml::QSizePOD::from(windowSize, defaultWindowSize),
+    .maximized = not_default(maximized, false),
     .pane_width = not_default(paneWidth, defaultPaneWidth),
     .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
     .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
@@ -95,6 +96,12 @@ void ZeAppSettings::importPod(POD p)
     if (p.window_size->height)
       windowSize.setHeight(*p.window_size->height);
     emit windowSizeChanged();
+  }
+
+  if (p.maximized and maximized != *p.maximized)
+  {
+    maximized = *p.maximized;
+    emit maximizedChanged();
   }
 
   if (p.pane_width and paneWidth != *p.pane_width)

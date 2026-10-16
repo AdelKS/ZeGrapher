@@ -37,7 +37,9 @@ struct ZeAppSettings: QObject
   Q_PROPERTY(int language MEMBER language NOTIFY languageChanged)
   Q_PROPERTY(QVariantList languages READ languages CONSTANT)
   Q_PROPERTY(QFont font MEMBER font WRITE setFont NOTIFY fontChanged)
+  /// @brief the size of the window when it is not maximized
   Q_PROPERTY(QSize windowSize MEMBER windowSize NOTIFY windowSizeChanged)
+  Q_PROPERTY(bool maximized MEMBER maximized NOTIFY maximizedChanged)
   Q_PROPERTY(int paneWidth MEMBER paneWidth NOTIFY paneWidthChanged)
   Q_PROPERTY(ThemedColor validSyntax MEMBER validSyntax NOTIFY validSyntaxChanged)
   Q_PROPERTY(ThemedColor invalidSyntax MEMBER invalidSyntax NOTIFY invalidSyntaxChanged)
@@ -54,6 +56,7 @@ public:
   int language = QLocale::English;
   QFont font;
   QSize windowSize = defaultWindowSize;
+  bool maximized = false;
   int paneWidth = defaultPaneWidth;
 
   ThemedColor validSyntax = defaultValidSyntax;
@@ -76,6 +79,7 @@ public:
     std::optional<std::string> language;
     std::optional<zg::yml::QFontPOD> font;
     std::optional<zg::yml::QSizePOD> window_size;
+    std::optional<bool> maximized;
     std::optional<int> pane_width;
     std::optional<ThemedColor::POD> valid_syntax;
     std::optional<ThemedColor::POD> invalid_syntax;
@@ -83,7 +87,7 @@ public:
 
     operator bool () const
     {
-      return language or font or window_size or pane_width
+      return language or font or window_size or maximized or pane_width
              or valid_syntax or invalid_syntax or warning_syntax;
     }
   };
@@ -98,6 +102,7 @@ signals:
   void fontChanged();
   void languageChanged();
   void windowSizeChanged();
+  void maximizedChanged();
   void paneWidthChanged();
 
 };
