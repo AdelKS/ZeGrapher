@@ -47,8 +47,12 @@ State Equation::sync()
 {
   setState(State::from(zcMathObj.status()));
 
-  Base::setDiscrete(shared::ZcMathObjectBB::isDiscrete());
-  style.setDiscrete(Base::isDiscrete());
+  // on a syntax error, the object keeps its kind and that kind's plot style
+  if (const std::optional<bool> discrete = shared::parsedDiscrete(zcMathObj))
+  {
+    Base::setDiscrete(*discrete);
+    style.setDiscrete(*discrete);
+  }
 
   return getState();
 };

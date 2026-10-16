@@ -34,6 +34,15 @@ inline bool holdsDiscrete(const zc::DynMathObject<zc_t>& o)
   return o.holds(zc::ObjectType::DATA) or o.holds(zc::ObjectType::SEQUENCE);
 }
 
+/// @brief holdsDiscrete(), or nothing when a syntax error leaves 'o' without
+///        a type. A sequence that calls an undefined object is still a sequence
+inline std::optional<bool> parsedDiscrete(const zc::DynMathObject<zc_t>& o)
+{
+  if (o.holds(zc::ObjectType::BAD_EQUATION))
+    return {};
+  return holdsDiscrete(o);
+}
+
 /// @brief Shared base class for backends that use zc::DynMathObject
 ///        creates a new handle on instantiation, and releases it on destruction
 struct ZcMathObjectBB {
