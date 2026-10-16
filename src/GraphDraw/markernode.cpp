@@ -19,80 +19,58 @@
 ****************************************************************************/
 
 #include "GraphDraw/markernode.h"
+#include "GraphDraw/styledmaterial.h"
 
-#include <QColor>
+#include <QRgba64>
 #include <QSGGeometry>
 #include <QSGGeometryNode>
-#include <QSGMaterial>
-#include <QSGMaterialShader>
 #include <QSGNode>
 #include <algorithm>
 #include <cmath>
-#include <cstring>
 #include <ranges>
 
 namespace {
 
-// Lateral padding past the SDF iso-line so the fragment shader's coverage
-// gradient has somewhere to render, in device pixels. ~1 px is enough for a
-// 1-pixel AA band; the extra absorbs slight gradient anisotropy at oblique angles.
-constexpr float k_aa_pad = 1.5f;
+/// @brief the margin past the shape where markers.frag fades the edge out, in
+///        device pixels
+constexpr float aaPad = 1.5f;
 
-// Typed std140 building blocks. The alignas attribute encodes the std140
-// rule that vec4 / mat4 must sit on a 16-byte boundary, so adding or
-// reordering members in UniformBlock below doesn't require manual padding
-// bookkeeping — the compiler inserts the right padding automatically.
-struct alignas(16) Vec4 { float x, y, z, w; };
-struct alignas(16) Mat4 { float m[16]; };
-
-// Mirrors the std140 uniform block in markers.{vert,frag}. Scalars (float
-// / int) follow C++ natural alignment, which matches std140's scalar
-// packing rule; Vec4 / Mat4 carry their own 16-byte alignment.
+// the uniform block of markers.vert and markers.frag
 struct UniformBlock {
-  Mat4  qtMatrix;
+  Std140Mat4 qtMatrix;
   float qtOpacity;
-  Vec4  markerColor;
+  Std140Vec4 markerColor;
   float glSize;
   float radius;
   float strokeWidth;
   int   markerType;
 };
 
-/// One material instance per curve. Each draw call writes its style fields
-/// into the std140 uniform block alongside qt_Matrix / qt_Opacity.
-class MarkersMaterial : public QSGMaterial
+/// @brief the markers.frag uniforms: markers with the same style share a material
+struct MarkerStyle
+{
+  QRgba64 color = {};
+
+  /// @brief the side of a marker's quad, fading edge included
+  float glSize = 0;
+
+  /// @brief the half extent of the shape
+  float radius = 0;
+
+  float strokeWidth = 0;
+
+  /// @brief a zg::PlotStyle::PointStyle
+  int markerType = 0;
+
+  auto operator<=>(const MarkerStyle&) const = default;
+};
+
+class MarkersMaterial : public StyledMaterial<MarkerStyle>
 {
 public:
   MarkersMaterial() { setFlag(Blending, true); }
 
-  QSGMaterialType   *type() const override
-  {
-    static QSGMaterialType t;
-    return &t;
-  }
-
-  QSGMaterialShader *createShader(QSGRendererInterface::RenderMode) const override;
-
-  int compare(const QSGMaterial *other) const override
-  {
-    // Field-by-field comparison so the batched renderer can merge curves
-    // that share style into a single draw call. compare() must be a strict
-    // ordering, hence the cascading lexicographic checks.
-    const auto *o = static_cast<const MarkersMaterial *>(other);
-    if (markerType   != o->markerType)   return markerType   < o->markerType   ? -1 : 1;
-    if (glSize       != o->glSize)       return glSize       < o->glSize       ? -1 : 1;
-    if (radius       != o->radius)       return radius       < o->radius       ? -1 : 1;
-    if (strokeWidth  != o->strokeWidth)  return strokeWidth  < o->strokeWidth  ? -1 : 1;
-    if (color.rgba() != o->color.rgba()) return color.rgba() < o->color.rgba() ? -1 : 1;
-    return 0;
-  }
-
-  // Per-curve uniform state. Read by the shader at the std140 offsets above.
-  QColor color       = Qt::black;
-  float  glSize      = 0.f;   // Quad side incl. AA padding (drawing units)
-  float  radius      = 0.f;   // Visible half-extent for the SDF (drawing units)
-  float  strokeWidth = 0.f;   // Cross arm half-thickness (drawing units; ignored otherwise)
-  int    markerType  = 0;     // matches zg::PlotStyle::PointStyle
+  QSGMaterialShader* createShader(QSGRendererInterface::RenderMode) const override;
 };
 
 class MarkersMaterialShader : public QSGMaterialShader
@@ -104,34 +82,22 @@ public:
     setShaderFileName(FragmentStage, QStringLiteral(":/zegrapher/shaders/markers.frag.qsb"));
   }
 
-  bool updateUniformData(RenderState& state, QSGMaterial *newMat, QSGMaterial *) override
+  bool updateUniformData(RenderState& state, QSGMaterial* newMaterial, QSGMaterial*) override
   {
-    QByteArray *buf = state.uniformData();
-    Q_ASSERT(buf->size() >= qsizetype(sizeof(UniformBlock)));
-    auto *u = reinterpret_cast<UniformBlock *>(buf->data());
+    UniformBlock& u = uniformBlock<UniformBlock>(state);
 
-    if (state.isMatrixDirty())
-      memcpy(u->qtMatrix.m, state.combinedMatrix().constData(), sizeof(u->qtMatrix));
-    if (state.isOpacityDirty())
-      u->qtOpacity = state.opacity();
-
-    // Style fields are written every call: cheap, and the framework only
-    // calls updateUniformData when state actually changed.
-    const auto *mat = static_cast<const MarkersMaterial *>(newMat);
-    u->markerColor.x  = float(mat->color.redF());
-    u->markerColor.y  = float(mat->color.greenF());
-    u->markerColor.z  = float(mat->color.blueF());
-    u->markerColor.w  = float(mat->color.alphaF());
-    u->glSize         = mat->glSize;
-    u->radius         = mat->radius;
-    u->strokeWidth    = mat->strokeWidth;
-    u->markerType     = mat->markerType;
+    const MarkerStyle& style = static_cast<const MarkersMaterial*>(newMaterial)->style;
+    u.markerColor = toStd140(style.color);
+    u.glSize = style.glSize;
+    u.radius = style.radius;
+    u.strokeWidth = style.strokeWidth;
+    u.markerType = style.markerType;
 
     return true;
   }
 };
 
-QSGMaterialShader *MarkersMaterial::createShader(QSGRendererInterface::RenderMode) const
+QSGMaterialShader* MarkersMaterial::createShader(QSGRendererInterface::RenderMode) const
 {
   return new MarkersMaterialShader;
 }
@@ -167,11 +133,12 @@ void MarkerNode::set(const MarkerGeometry& markers)
   markDirty(DirtyGeometry);
 
   const zg::CurveStyle& style = markers.style;
-  auto* m = static_cast<MarkersMaterial*>(material());
-  m->color       = style.color;
-  m->glSize      = 4.0f * float(style.pointWidth) + 2.0f * k_aa_pad / markers.pxPerUnit;
-  m->radius      = float(style.pointWidth);
-  m->strokeWidth = float(style.lineWidth);
-  m->markerType  = int(style.pointStyle);
+  static_cast<MarkersMaterial*>(material())->style = MarkerStyle{
+    .color = style.color.rgba64(),
+    .glSize = 4.0f * float(style.pointWidth) + 2.0f * aaPad / markers.pxPerUnit,
+    .radius = float(style.pointWidth),
+    .strokeWidth = float(style.lineWidth),
+    .markerType = int(style.pointStyle),
+  };
   markDirty(DirtyMaterial);
 }

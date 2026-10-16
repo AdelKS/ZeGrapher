@@ -19,16 +19,13 @@
 ****************************************************************************/
 
 #include "GraphDraw/linenode.h"
-
-#include <QSGMaterial>
-#include <QSGMaterialShader>
+#include "GraphDraw/styledmaterial.h"
 
 #include <algorithm>
 #include <array>
 #include <bit>
 #include <cmath>
 #include <cstddef>
-#include <cstring>
 #include <numeric>
 #include <ranges>
 
@@ -36,45 +33,27 @@ namespace {
 
 constexpr int maxDashes = 8;
 
-// std140 layout of the lines.vert and lines.frag uniform block: alignas puts
-// each vec4 and mat4 on a 16 byte boundary
-struct alignas(16) Vec4 { float x, y, z, w; };
-struct alignas(16) Mat4 { float m[16]; };
-
+// the uniform block of lines.vert and lines.frag
 struct UniformBlock {
-  Mat4  qtMatrix;
+  Std140Mat4 qtMatrix;
   float qtOpacity;
-  Vec4  lineColor;
+  Std140Vec4 lineColor;
   float halfWidth;
   float alphaScale;
   float pxPerUnit;
   int   dashCount;
   float dashPeriod;
-  std::array<Vec4, maxDashes / 4> dashes;
+  std::array<Std140Vec4, maxDashes / 4> dashes;
 };
 
 static_assert(offsetof(UniformBlock, dashes) == 128 and sizeof(UniformBlock) == 160);
 
-class LineMaterial : public QSGMaterial
+class LineMaterial : public StyledMaterial<LineStyle>
 {
 public:
   LineMaterial() { setFlag(Blending, true); }
 
-  QSGMaterialType* type() const override
-  {
-    static QSGMaterialType t;
-    return &t;
-  }
-
   QSGMaterialShader* createShader(QSGRendererInterface::RenderMode) const override;
-
-  int compare(const QSGMaterial* other) const override
-  {
-    const auto order = style <=> static_cast<const LineMaterial*>(other)->style;
-    return order < 0 ? -1 : order > 0;
-  }
-
-  LineStyle style;
 };
 
 class LineMaterialShader : public QSGMaterialShader
@@ -88,28 +67,19 @@ public:
 
   bool updateUniformData(RenderState& state, QSGMaterial* newMaterial, QSGMaterial*) override
   {
-    QByteArray* buf = state.uniformData();
-    Q_ASSERT(buf->size() >= qsizetype(sizeof(UniformBlock)));
-    auto* u = reinterpret_cast<UniformBlock*>(buf->data());
-
-    if (state.isMatrixDirty())
-      std::memcpy(u->qtMatrix.m, state.combinedMatrix().constData(), sizeof(u->qtMatrix));
-    if (state.isOpacityDirty())
-      u->qtOpacity = state.opacity();
+    UniformBlock& u = uniformBlock<UniformBlock>(state);
 
     const LineStyle& style = static_cast<const LineMaterial*>(newMaterial)->style;
-    const QColor color = QColor::fromRgba64(style.color);
-    u->lineColor = Vec4{float(color.redF()), float(color.greenF()),
-                        float(color.blueF()), float(color.alphaF())};
-    u->halfWidth = style.halfWidth;
-    u->alphaScale = style.alphaScale;
-    u->pxPerUnit = style.pxPerUnit;
-    u->dashCount = int(style.dashes.size());
-    u->dashPeriod = style.dashPeriod;
+    u.lineColor = toStd140(style.color);
+    u.halfWidth = style.halfWidth;
+    u.alphaScale = style.alphaScale;
+    u.pxPerUnit = style.pxPerUnit;
+    u.dashCount = int(style.dashes.size());
+    u.dashPeriod = style.dashPeriod;
 
     std::array<float, maxDashes> dashes = {};
     std::ranges::copy(style.dashes, dashes.begin());
-    u->dashes = std::bit_cast<decltype(u->dashes)>(dashes);
+    u.dashes = std::bit_cast<decltype(u.dashes)>(dashes);
 
     return true;
   }
