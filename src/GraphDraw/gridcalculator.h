@@ -51,11 +51,15 @@ struct ZeOffset
     const QString sign = sumOffset < 0 ? " - " : " + ";
     const double offset = std::abs(sumOffset);
 
-    if(sumPowerOffset == 0)
-      return sign + QString::number(offset, 'g', 11);
-    else
-      return sign + QString::number(offset * int_pow(10.0, -sumPowerOffset), 'g', 11) + "×10^"
-             + QString::number(sumPowerOffset);
+    QString str = sumPowerOffset == 0
+                    ? QString::number(offset, 'g', 11)
+                    : QString::number(offset * int_pow(10.0, -sumPowerOffset), 'g', 11) + "×10^"
+                        + QString::number(sumPowerOffset);
+
+    if (not multiplierStr.isEmpty())
+      str += (multiplierStr[0].isDigit() ? "×" : "") + multiplierStr;
+
+    return sign + str;
   }
 
   QString basePowerOffsetStr() const
@@ -66,8 +70,13 @@ struct ZeOffset
     return "×10^" + QString::number(basePowerOffset);
   }
 
+  /// @brief in multiples of 'multiplierStr' when it is not empty
   double sumOffset = 0;
   int sumPowerOffset = 0, basePowerOffset = 0;
+
+  /// @brief the expression that the ticks are multiples of, empty when they
+  ///        are plain numbers
+  QString multiplierStr;
 };
 
 struct ZeLogAxisTicks
@@ -209,6 +218,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   double baseMultiplier = 1;
 
   axisTicks.offset.sumOffset = 0;
+  axisTicks.offset.multiplierStr = multiplierStr;
   axisTicks.offset.sumPowerOffset = 0;
   axisTicks.offset.basePowerOffset = 0;
 
@@ -290,8 +300,8 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
   auto getPos = [&]
   {
-    return zg::real_unit{multiplier * constantMultiplier * power_offset
-                         + axisTicks.offset.sumOffset};
+    return zg::real_unit{(multiplier * power_offset + axisTicks.offset.sumOffset)
+                         * constantMultiplier};
   };
 
   do
