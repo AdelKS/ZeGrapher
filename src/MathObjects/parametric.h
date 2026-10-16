@@ -45,9 +45,6 @@ public:
 
   bool isValid() const;
 
-  bool isDiscrete() const;
-  bool isContinuous() const;
-
   NamedRef* getObj1Ptr() { return &obj1; }
   NamedRef* getObj2Ptr() { return &obj2; }
 

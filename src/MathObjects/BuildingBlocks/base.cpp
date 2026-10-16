@@ -91,4 +91,13 @@ std::optional<zg::real_range1d> Base::getValidSnapshot() const
   return range;
 }
 
+std::optional<SamplingSettings> Base::getSamplingSettings(size_t revision) const
+{
+  const auto range = getValidSnapshot();
+  if (not range)
+    return {};
+
+  return SamplingSettings{.range = *range, .coordinateSystem = coordinateSystem, .revision = revision};
+}
+
 } // namespace zg

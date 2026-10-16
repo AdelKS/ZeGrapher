@@ -31,6 +31,8 @@ namespace zg {
     = std::variant<const zc::DynMathObject<zc_t>*,
                    std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
 
+struct SamplingSettings;
+
 struct StringRange {
   QString start, end;
   bool operator == (const StringRange&) const = default;
@@ -78,6 +80,11 @@ public:
 
   /// @brief getSnapshot, but checks its validity
   std::optional<zg::real_range1d> getValidSnapshot() const;
+
+  /// @brief the object's sampling settings, nothing when its range is
+  ///        invalid
+  /// @param revision  the revision of what the object evaluates
+  std::optional<SamplingSettings> getSamplingSettings(size_t revision) const;
 
   bool isDefaultStart() const;
   bool isDefaultEnd() const;

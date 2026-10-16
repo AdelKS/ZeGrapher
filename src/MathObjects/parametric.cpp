@@ -35,16 +35,6 @@ bool Parametric::isValid() const
   return obj1.isValid() and obj2.isValid();
 }
 
-bool Parametric::isDiscrete() const
-{
-  return obj1.isDiscrete() or obj2.isDiscrete();
-}
-
-bool Parametric::isContinuous() const
-{
-  return obj1.isContinuous() and obj2.isContinuous();
-}
-
 Parametric::POD Parametric::exportPod() const {
 
   return POD {

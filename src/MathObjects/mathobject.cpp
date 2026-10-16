@@ -246,19 +246,11 @@ bool MathObject::isDiscrete() const
 
 std::optional<SamplingSettings> MathObject::getSamplingSettings()
 {
-  auto* base = getBase();
+  const Base* base = getBase();
   if (not base) [[unlikely]]
     return {};
 
-  const auto opt_range = base->getValidSnapshot();
-  if (not opt_range)
-    return {};
-
-  return SamplingSettings {
-    .range = *opt_range,
-    .coordinateSystem = getCoordinateSystem(),
-    .revision = getRevision(),
-  };
+  return base->getSamplingSettings(getRevision());
 }
 
 void MathObject::setSchrodinger(bool s)
