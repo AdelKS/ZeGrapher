@@ -24,6 +24,8 @@ jobs:
     uses: ./.github/workflows/macos-build-bundle.yml
     with:
       runner: macos-26-intel
+      # Metal setup hangs in this runner's VM, before Qt reports a backend
+      render-test: false
 
   build-macos-arm64:
     uses: ./.github/workflows/macos-build-bundle.yml

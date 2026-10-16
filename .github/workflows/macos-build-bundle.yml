@@ -5,6 +5,9 @@ on:
       runner:
         required: true
         type: string
+      render-test:
+        type: boolean
+        default: true
 
 
 jobs:
@@ -28,8 +31,11 @@ jobs:
       - name: Install meson
         run: pip3 install meson ninja pyyaml
 
-      - name: Build & Bundle
+      # the render test draws with Metal
+      - name: Build, test & bundle
         run: ./deploy/macos-bundle-dmg.sh
+        env:
+          ZG_RENDER_TEST: ${{ inputs.render-test && 1 || 0 }}
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v5

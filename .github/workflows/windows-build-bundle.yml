@@ -22,7 +22,10 @@ jobs:
           update: true
           install: git pactoys
 
-      - name: Build & Bundle
+      # the render test draws with Direct3D 11
+      - name: Build, test & bundle
+        env:
+          ZG_RENDER_TEST: 1
         run: |
           echo 'Running in MSYS2!'
           ./deploy/windows-bundle-7z.sh

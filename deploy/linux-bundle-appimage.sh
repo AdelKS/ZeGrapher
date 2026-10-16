@@ -14,12 +14,14 @@ meson setup \
   -D b_ndebug=true \
   -D loglevel=off \
   -D b_lto=true \
+  -D test=true \
   -D prefix="${deploy_dir}/appdir-linux/usr" \
   "${deploy_dir}/build-linux" \
   "${deploy_dir}/.."
 
 cd "${deploy_dir}/build-linux"
 meson compile
+meson test --print-errorlogs
 meson install
 cd ..
 

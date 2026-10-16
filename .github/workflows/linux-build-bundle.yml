@@ -24,15 +24,20 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt install python3-pip libfuse2 libxcb-cursor0 g++-15
+          # the xcb platform of Qt, under xvfb, for the render test
+          sudo apt install xvfb libgl1-mesa-dri libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 \
+            libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xkb1
           # install-qt-action puts its own Python first on PATH, and pip3 installs
           # meson for that Python. meson imports PyYAML from the Python it runs
           # on, so PyYAML comes from pip3 too
           pip3 install --user meson ninja pyyaml
 
-      - name: Build & Bundle
-        run: ./deploy/linux-bundle-appimage.sh
+      # the render test draws in an xvfb-run window, with Mesa's OpenGL
+      - name: Build, test & bundle
+        run: xvfb-run -a ./deploy/linux-bundle-appimage.sh
         env:
           CXX: g++-15
+          ZG_RENDER_TEST: 1
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v5

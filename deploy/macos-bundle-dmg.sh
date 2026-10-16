@@ -23,6 +23,7 @@ meson setup \
   -D b_ndebug=true \
   -D loglevel=off \
   -D b_lto=true \
+  -D test=true \
   --prefix="${deploy_dir}/$app_name" \
   --bindir="Contents/MacOS" \
   "${deploy_dir}/build-macos" \
@@ -30,6 +31,7 @@ meson setup \
 
 cd "${deploy_dir}/build-macos"
 meson compile
+meson test --print-errorlogs
 meson install
 cd ..
 

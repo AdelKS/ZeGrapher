@@ -22,11 +22,13 @@ meson setup \
   -D b_ndebug=true \
   -D loglevel=off \
   -D b_lto=true \
+  -D test=true \
   "${deploy_script_dir}/build-windows" \
   "${deploy_script_dir}/.."
 
 cd "${deploy_script_dir}/build-windows"
 meson compile
+meson test --print-errorlogs
 cd ..
 
 mkdir "${deploy_dir}"
