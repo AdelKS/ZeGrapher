@@ -22,7 +22,7 @@ meson setup \
 cd "${deploy_dir}/build-linux"
 meson compile
 meson test --print-errorlogs
-meson install
+meson install --skip-subprojects
 cd ..
 
 wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"

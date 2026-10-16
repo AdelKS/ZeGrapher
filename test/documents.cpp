@@ -113,6 +113,13 @@ int main(int argc, char* argv[])
   test(object(1).isValid());
   test(object(2).isValid());
 
+  // a function whose expression is a number
+  test(app.load(R"(math_objects:
+  - type: equation
+    equation: f(x) = 2
+)"));
+  test(object(0).isValid());
+
   // save() writes to the last saveAs() file, and nothing else changes it
   app.restart();
   test(information->getDocumentName().isEmpty());

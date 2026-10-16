@@ -264,7 +264,7 @@ if compiler.get_id() == 'clang'
   add_project_arguments('-Wno-c++26-extensions', language: 'cpp')
 endif
 
-zecalculator_dep = dependency('zecalculator', version: '>=0.13.2')
+zecalculator_dep = dependency('zecalculator', version: '>=0.13.6')
 glaze_dep = dependency('glaze', version: '>=7.7')
 
 # the app without main(), which the tests link too

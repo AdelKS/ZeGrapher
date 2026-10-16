@@ -32,7 +32,7 @@ meson setup \
 cd "${deploy_dir}/build-macos"
 meson compile
 meson test --print-errorlogs
-meson install
+meson install --skip-subprojects
 cd ..
 
 echo "Running macdeployqt to bundle Qt frameworks..."
