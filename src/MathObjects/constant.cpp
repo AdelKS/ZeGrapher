@@ -167,10 +167,11 @@ void Constant::setLerpValue(double a)
 
 Constant::POD Constant::exportPod() const
 {
+  // set_value() puts the edges at lowerMul and upperMul times the value
   auto get_opt_edge = [this](double edge, double multiplier) -> std::optional<double> {
-    if (std::isnan(value) or (not std::isnan(edge) and edge * multiplier != value))
-      return edge;
-    else return {};
+    if (std::isnan(edge) or edge == multiplier * value)
+      return {};
+    return edge;
   };
 
   return POD {
