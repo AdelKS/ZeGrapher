@@ -176,15 +176,35 @@ void Information::readFailed(const QString& file, const QString& details)
                .details = details});
 }
 
-void Information::exportYaml(QUrl filename)
+bool Information::exportYaml(QUrl filename)
 {
-  writeYaml(filename, POD{.zegrapher = SOFTWARE_VERSION,
+  return writeYaml(filename, POD{.zegrapher = SOFTWARE_VERSION,
                           .math_objects = zg::mathWorld->exportPod(),
                           .graph = graphSettings.exportPod()});
 }
 
+void Information::saveAs(QUrl filename)
+{
+  if (exportYaml(filename) and filename != documentFile)
+  {
+    documentFile = filename;
+    emit documentFileChanged();
+  }
+}
+
+void Information::save()
+{
+  if (not documentFile.isEmpty())
+    exportYaml(documentFile);
+}
+
+QString Information::getDocumentName() const
+{
+  return documentFile.fileName();
+}
+
 template <class Pod>
-void Information::writeYaml(QUrl filename, const Pod& pod)
+bool Information::writeYaml(QUrl filename, const Pod& pod)
 {
   auto exp_content = glz::write_yaml(pod);
   if (not exp_content)
@@ -195,7 +215,7 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
        .text = tr("Please report this bug to %1 or %2, with a way to reproduce it.")
                  .arg(CONTACT_ADDRESS, REPOSITORY_URL "/issues"),
        .details = tr("Could not serialize ZeGrapher's state")});
-    return;
+    return false;
   }
 
   const QString path = filename.toLocalFile();
@@ -206,7 +226,7 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
       .file = filename.toString(),
       .text = tr("The target file path is invalid."),
     });
-    return;
+    return false;
   }
 
   QFileInfo info(path);
@@ -216,7 +236,7 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
                  .file = path,
                  .text = tr("Could not create the folder."),
                  .details = info.absolutePath()});
-    return;
+    return false;
   }
 
   QSaveFile file(path);
@@ -226,7 +246,7 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
                  .file = path,
                  .text = tr("Could not open the file for writing."),
                  .details = file.errorString()});
-    return;
+    return false;
   }
 
   qint64 written = file.write(exp_content->data(), exp_content->size());
@@ -236,7 +256,7 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
                  .file = path,
                  .text = tr("The write did not finish. The file is left unchanged."),
                  .details = file.errorString()});
-    return;
+    return false;
   }
 
   if (not file.commit())
@@ -245,8 +265,10 @@ void Information::writeYaml(QUrl filename, const Pod& pod)
                  .file = path,
                  .text = tr("Could not replace the file with the new version."),
                  .details = file.errorString()});
-    return;
+    return false;
   }
+
+  return true;
 }
 
 void Information::importYaml(QUrl filename)

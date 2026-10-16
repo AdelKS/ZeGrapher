@@ -12,6 +12,8 @@ ApplicationWindow {
   visible: true
   font: Information.appSettings.font
 
+  title: Information.documentName.length !== 0 ? Information.documentName + " — ZeGrapher" : "ZeGrapher"
+
   color: ZeStyle.themed(Information.graphSettings.backgroundColor)
 
   component ResizeHandle: Item {

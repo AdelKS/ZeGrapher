@@ -76,7 +76,43 @@ Item {
       qsTr("ZeGrapher document (%1)").arg("*.zg"),
     ]
     visible: false
-    onAccepted: Information.exportYaml(selectedFile)
+    onAccepted: Information.saveAs(selectedFile)
+  }
+
+  function save() {
+    if (Information.documentName.length !== 0)
+      Information.save();
+    else
+      saveDialog.open();
+  }
+
+  /// @brief a hint followed by a shortcut's keys, in the platform's notation
+  function withKeys(hint: string, shortcut: Shortcut): string {
+    return hint + " (" + shortcut.nativeText + ")";
+  }
+
+  Shortcut {
+    id: exportShortcut
+    sequence: "Ctrl+E"
+    onActivated: exportDialog.open()
+  }
+
+  Shortcut {
+    id: saveShortcut
+    sequences: [StandardKey.Save]
+    onActivated: userInputPanel.save()
+  }
+
+  // StandardKey.SaveAs has no keys on Windows
+  Shortcut {
+    sequence: "Ctrl+Shift+S"
+    onActivated: saveDialog.open()
+  }
+
+  Shortcut {
+    id: loadShortcut
+    sequences: [StandardKey.Open]
+    onActivated: loadDialog.open()
   }
 
   FileDialog {
@@ -208,9 +244,10 @@ Item {
 
           iconName: "export-graph"
 
-          ToolTip.text: qsTr("Export the graph: vector graphics (PDF, SVG) or images (PNG, JPG)")
+          ToolTip.text: userInputPanel.withKeys(
+            qsTr("Export the graph: vector graphics (PDF, SVG) or images (PNG, JPG)"), exportShortcut)
 
-          onReleased: exportDialog.visible = true;
+          onReleased: exportDialog.open()
         }
 
         IconRoundButton {
@@ -224,9 +261,14 @@ Item {
 
           iconName: "save"
 
-          ToolTip.text: qsTr("Save as a ZeGrapher document")
+          ToolTip.text: userInputPanel.withKeys(
+            Information.documentName.length !== 0
+              //: %1 is the name of the file of the document
+              ? qsTr("Save to %1").arg(Information.documentName)
+              : qsTr("Save as a ZeGrapher document"),
+            saveShortcut)
 
-          onReleased: saveDialog.visible = true;
+          onReleased: userInputPanel.save()
         }
 
         IconRoundButton {
@@ -240,9 +282,9 @@ Item {
 
           iconName: "load"
 
-          ToolTip.text: qsTr("Load a ZeGrapher document")
+          ToolTip.text: userInputPanel.withKeys(qsTr("Load a ZeGrapher document"), loadShortcut)
 
-          onReleased: loadDialog.visible = true;
+          onReleased: loadDialog.open()
         }
       }
     }

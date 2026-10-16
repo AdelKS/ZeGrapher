@@ -113,6 +113,17 @@ int main(int argc, char* argv[])
   test(object(1).isValid());
   test(object(2).isValid());
 
+  // save() writes to the last saveAs() file, and nothing else changes it
+  app.restart();
+  test(information->getDocumentName().isEmpty());
+  information->saveAs(QUrl::fromLocalFile(app.path("named.zg")));
+  test(information->getDocumentName() == "named.zg");
+  information->exportYaml(QUrl::fromLocalFile(app.path("other.zg")));
+  zg::mathWorld->addMathObject(zg::MathObject::EQUATION)->getEquation()->setEquation("h(x) = x");
+  information->save();
+  test(information->getDocumentName() == "named.zg");
+  test(readFile(app.path("named.zg")).contains("h(x) = x"));
+
   // a document can't set a value outside the panel's range
   test(app.load(R"(graph:
   min_points: 30

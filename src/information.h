@@ -61,6 +61,10 @@ class Information: public QObject
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
   Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
+  /// @brief the file of the last saveAs(), which save() writes to. Empty until
+  ///        the first saveAs(): loading a document adds to the open one
+  Q_PROPERTY(QString documentName READ getDocumentName NOTIFY documentFileChanged)
+
   /// @brief the ZeGrapher version that wrote the settings file, empty if no
   ///        run wrote one
   Q_PROPERTY(QString lastRunVersion MEMBER lastRunVersion CONSTANT)
@@ -75,15 +79,24 @@ public:
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
   int getIoErrorCount() const { return ioErrors.size(); }
+  QString getDocumentName() const;
 
   Q_INVOKABLE IOError popIoError();
 
 signals:
   void ioErrorCountChanged();
+  void documentFileChanged();
 
 public slots:
   /// @brief writes the objects and graph settings to a document
-  void exportYaml(QUrl filename);
+  /// @returns false when it reported an error
+  bool exportYaml(QUrl filename);
+
+  /// @brief exportYaml(), and save() writes to the same file afterwards
+  void saveAs(QUrl filename);
+
+  /// @brief writes the document to the file of the last saveAs()
+  void save();
 
   /// @brief adds a document's objects to the open ones, and takes its graph
   ///        settings
@@ -153,10 +166,12 @@ protected:
   /// @brief writes a POD or a SettingsPOD to a file, and reports a failure as a
   ///        document that could not be saved
   template <class Pod>
-  void writeYaml(QUrl filename, const Pod& pod);
+  bool writeYaml(QUrl filename, const Pod& pod);
 
   void appendIoErr(IOError err);
   QList<IOError> ioErrors;
+
+  QUrl documentFile;
 };
 
 /// @brief set by Globals

@@ -85,12 +85,17 @@ The three buttons at the bottom left of the panel are, in order:
 
 1. **Export the graph** you see, in a vector format (`svg`, `pdf`) or as an
    image (`png`, `jpeg`, `bmp`, `ppm`). The export looks exactly like the graph
-   on the screen.
+   on the screen. Shortcut: `Ctrl` + `E`.
 2. **Save** the objects, the data, the view and the settings of the Grid and
-   Graph tabs as a ZeGrapher document (`.zg`). The settings of the App tab stay
-   out of documents.
+   Graph tabs as a ZeGrapher document (`.zg`). The first save asks for a file,
+   and the next ones write to it. The settings of the App tab stay out of
+   documents. Shortcuts: `Ctrl` + `S`, and `Ctrl` + `Shift` + `S` to save to
+   another file.
 3. **Load** such a document. The app adds its objects to the ones already open,
-   and takes the view and the settings from the document.
+   and takes the view and the settings from the document. Shortcut: `Ctrl` +
+   `O`.
+
+On macOS, the shortcuts use `Cmd` instead of `Ctrl`.
 
 At the next start, ZeGrapher opens your last work again. If you give a `.zg`
 file on the command line, the app opens that file instead.
