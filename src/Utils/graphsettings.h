@@ -98,8 +98,8 @@ public:
   static constexpr double targetPixelDensity = 35;
 
   /// @brief the pixel densities a screen can have, 25 to 400 dpi
-  static constexpr double minPixelDensity = 25 / CM_PER_INCH;
-  static constexpr double maxPixelDensity = 400 / CM_PER_INCH;
+  static constexpr double minPixelDensity = 25 / cmPerInch;
+  static constexpr double maxPixelDensity = 400 / cmPerInch;
 
   struct POD {
     std::optional<zg::GraphRange::POD> range;

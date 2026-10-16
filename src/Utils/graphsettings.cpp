@@ -106,7 +106,7 @@ void ZeGraphSettings::updatePixelDensity()
   // a screen without a physical size, or with a wrong one, gives a density
   // outside the range, NaN or infinity included
   if (not (minPixelDensity <= px_per_cm and px_per_cm <= maxPixelDensity))
-    px_per_cm = screen->logicalDotsPerInch() / CM_PER_INCH;
+    px_per_cm = screen->logicalDotsPerInch() / cmPerInch;
 
   if (pixelDensity != px_per_cm)
   {

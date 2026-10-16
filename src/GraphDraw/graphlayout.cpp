@@ -80,7 +80,7 @@ const QPaintDevice* GraphLayoutEngine::referenceDevice()
 QFont GraphLayoutEngine::font(TextRole role) const
 {
   QFont f = role == TextRole::Title ? settings.getAxes().titleFont : settings.getFont();
-  f.setPointSizeF(f.pointSizeF() * ZeGraphSettings::targetPixelDensity * CM_PER_INCH / 72.);
+  f.setPointSizeF(f.pointSizeF() * ZeGraphSettings::targetPixelDensity * cmPerInch / 72.);
   f.setHintingPreference(QFont::PreferNoHinting);
   return f;
 }

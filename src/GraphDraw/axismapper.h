@@ -25,6 +25,8 @@
 #include "structures.h"
 #include <zecalculator/utils/utils.h>
 
+#include <cfloat>
+
 namespace zg {
 
 template <ZeAxisName axis>
@@ -74,6 +76,9 @@ public:
   Range1D<u<q>> to(const Range1D<u<p>>& r) const;
 
 protected:
+  static constexpr double minAmplitude = 100 * DBL_EPSILON;
+  static constexpr double maxAmplitude = DBL_MAX / 100;
+
   template <plane p>
   Range1D<u<p>>& getRange();
 
@@ -234,9 +239,9 @@ void ZeAxisMapper<axis>::zoomView(unit<u<plane::pixel>> center, double ratio)
 
   // each pixel needs distinct doubles between the bounds
   const double magnitude = std::max(std::abs(view_range.min.v), std::abs(view_range.max.v));
-  const double min_amplitude = std::max(MIN_AMPLITUDE, 1e4 * DBL_EPSILON * magnitude);
+  const double min_amplitude = std::max(minAmplitude, 1e4 * DBL_EPSILON * magnitude);
 
-  if(MAX_AMPLITUDE > new_amplitude and new_amplitude > min_amplitude)
+  if(maxAmplitude > new_amplitude and new_amplitude > min_amplitude)
     setRange(
       Range1D<u<plane::view>>{.min = view_range.min - (1 - ratio) * (view_range.min - view_center),
                               .max = view_range.max - (1 - ratio) * (view_range.max - view_center)});

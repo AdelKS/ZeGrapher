@@ -112,6 +112,9 @@ protected:
   static QString get_coordinate_string(const ZeLinAxisSettings &axisSettings,
                                        const QString& multiplierStr, double multiplier);
 
+  /// @brief how close to 1 a multiple must be to show as the multiplier alone
+  static constexpr double unitTolerance = 1e-8;
+
   static constexpr double targetTicksNum = 20;
   static constexpr int minDistBetweenCoordinates = 5;
   ZeGraphSettings& settings;

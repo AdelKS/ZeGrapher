@@ -9,9 +9,9 @@ QString GridCalculator::get_coordinate_string(const ZeLinAxisSettings &axisSetti
   if (not multiplierStr.isEmpty() and multiplier != 0)
   {
     const QString& expr = multiplierStr;
-    if (fabs(multiplier + 1.0) <= MAX_NUM_PREC_DEC)
+    if (fabs(multiplier + 1.0) <= unitTolerance)
       posStr = "-" + expr;
-    else if (fabs(multiplier - 1.0) <= MAX_NUM_PREC_DEC)
+    else if (fabs(multiplier - 1.0) <= unitTolerance)
       posStr = expr;
     else
     {

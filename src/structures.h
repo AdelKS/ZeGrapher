@@ -21,7 +21,6 @@
 #pragma once
 
 #include "zecalculator/parsing/types.h"
-#include <cfloat>
 #include <glaze/yaml.hpp>
 
 #include <QMetaType>
@@ -30,12 +29,7 @@
 #include <QSizeF>
 #include <QtQmlIntegration/qqmlintegration.h>
 
-#define MIN_AMPLITUDE 100 * DBL_EPSILON
-#define MAX_AMPLITUDE DBL_MAX / 100
-
-#define MAX_NUM_PREC_DEC 1E-8
-
-#define CM_PER_INCH 2.54
+inline constexpr double cmPerInch = 2.54;
 
 /// @brief type of math objects to use in ZeCalculator
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
