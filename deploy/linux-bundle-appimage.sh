@@ -25,11 +25,13 @@ meson test --print-errorlogs
 meson install --skip-subprojects
 cd ..
 
-wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
-chmod a+x linuxdeploy-x86_64.AppImage
+arch=$(uname -m)
 
-wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
-chmod a+x linuxdeploy-plugin-qt-x86_64.AppImage
+wget -c -nv "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-$arch.AppImage"
+chmod a+x linuxdeploy-$arch.AppImage
+
+wget -c -nv "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-$arch.AppImage"
+chmod a+x linuxdeploy-plugin-qt-$arch.AppImage
 
 export QMAKE=`which qmake6`
 export EXTRA_QT_PLUGINS="waylandcompositor"
@@ -39,8 +41,8 @@ export NO_STRIP=1
 # the AppImages of linuxdeploy run without FUSE, which CI runners lack
 export APPIMAGE_EXTRACT_AND_RUN=1
 
+# ./linuxdeploy-$arch.AppImage --list-plugins
+./linuxdeploy-$arch.AppImage --appdir appdir-linux --plugin qt --output appimage
 
-# ./linuxdeploy-x86_64.AppImage --list-plugins
-./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage
-
-mv ZeGrapher-x86_64.AppImage ZeGrapher-Linux-x86_64-$version.AppImage
+# the other bundles name the architecture 'arm64'
+mv ZeGrapher-$arch.AppImage ZeGrapher-Linux-${arch/aarch64/arm64}-$version.AppImage
