@@ -23,12 +23,12 @@ void AnimationConductor::animationStep()
 {
   if (not last_step_timestamp)
   {
-    last_step_timestamp = std::chrono::high_resolution_clock::now();
+    last_step_timestamp = std::chrono::steady_clock::now();
     return;
   }
   else
   {
-    auto now = std::chrono::high_resolution_clock::now();
+    auto now = std::chrono::steady_clock::now();
 
     for (auto* constant: constants)
       if (constant->isPlaying())

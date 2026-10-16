@@ -32,7 +32,7 @@
 
 namespace zg {
 
-using time_point = std::chrono::time_point<std::chrono::high_resolution_clock>;
+using time_point = std::chrono::time_point<std::chrono::steady_clock>;
 
 
 /// @brief singleton class that handles incrementing every animated variable altogether

@@ -232,7 +232,7 @@ void CsvPreviewModel::loadIntoWorld()
     emit loadingStateChanged();
     QCoreApplication::processEvents();
 
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::steady_clock::now();
 
     while (not in.atEnd())
     {
@@ -247,7 +247,7 @@ void CsvPreviewModel::loadIntoWorld()
         progressPercentage = qMin(progressPercentage, 50);
       }
 
-      auto now = std::chrono::high_resolution_clock::now();
+      auto now = std::chrono::steady_clock::now();
 
       using namespace std::chrono_literals;
       if (now - start > 10ms)
