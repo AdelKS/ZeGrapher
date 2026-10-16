@@ -13,13 +13,24 @@ Rectangle {
   //   onNumberEdited: (value) => backend.foo = value
   signal numberEdited(real value);
 
-  // mirror external/programmatic value changes into the field, but leave the
-  // text alone while the user is mid-edit (e.g. typing "1." parses to 1)
-  onValueChanged: {
-    if (parseFloat(edit.text) !== value)
-      edit.text = isNaN(value) ? "" : value.toString();
+  function parse(text: string): real {
+    return text.length === 0 ? NaN : Number(text);
   }
-  Component.onCompleted: edit.text = isNaN(value) ? "" : value.toString();
+
+  // 15 significant digits hide the rounding error of a product: 0.2 * 1.5 shows 0.3
+  function format(number: real): string {
+    return isNaN(number) ? "" : String(Number(number.toPrecision(15)));
+  }
+
+  // mirror external/programmatic value changes into the field, but leave the
+  // text alone while the user is mid-edit (for example, "1." parses to 1, and
+  // "-" to NaN)
+  onValueChanged: {
+    const typed = parse(edit.text);
+    if (typed !== value && !(isNaN(typed) && isNaN(value)))
+      edit.text = format(value);
+  }
+  Component.onCompleted: edit.text = format(value);
 
   clip: true
 
@@ -42,9 +53,12 @@ Rectangle {
     focus: true
     font: Information.appSettings.font
     text: ""
-    validator: DoubleValidator{}
+    // DoubleValidator follows the locale, and expressions use a dot
+    validator: RegularExpressionValidator {
+      regularExpression: /[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)([eE][+-]?[0-9]+)?/
+    }
 
-    onTextEdited: rec.numberEdited(parseFloat(text));
+    onTextEdited: rec.numberEdited(rec.parse(text));
   }
 
   TextMetrics {
