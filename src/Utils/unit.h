@@ -76,7 +76,8 @@ struct Range1D
   Range1D& operator /= (double c) { min /= c; max /= c; return *this; }
   Range1D& operator *= (double c) { min *= c; max *= c; return *this; }
   Range1D& operator -= (unit<U> c) { min -= c; max -= c; return *this; }
-  bool is_valid() const { return not std::isnan(min.v) and not std::isnan(max.v) and min < max; }
+  /// @note false when the width overflows to infinity
+  bool is_valid() const { return min < max and std::isfinite((max - min).v); }
 
   bool operator == (const Range1D&) const = default;
 };

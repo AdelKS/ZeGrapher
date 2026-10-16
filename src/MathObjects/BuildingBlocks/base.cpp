@@ -85,10 +85,7 @@ std::optional<zg::real_range1d> Base::getValidSnapshot()
 {
   const zg::real_range1d range = getSnapshot();
 
-  if (std::isnan(range.min.v) or std::isnan(range.max.v)) [[unlikely]]
-    return {};
-
-  if (range.max <= range.min)
+  if (not range.is_valid())
     return {};
 
   return range;
