@@ -51,9 +51,15 @@ public:
   void setState(State s);
 
   State sync();
-  Q_INVOKABLE double getValue();
+  double getValue() const { return value; }
+
+  /// @brief the expression's value, without the signals of sync()
+  /// @note the sampler sets each value of a Schrödinger constant between two
+  ///       syncs
+  double evaluate() const;
+
   Q_INVOKABLE QString getExpression() const { return expression; }
-  Q_INVOKABLE bool isValid();
+  bool isValid() const { return state.isValid(); }
   const State& getState() const { return state; }
 
   void updateValue();

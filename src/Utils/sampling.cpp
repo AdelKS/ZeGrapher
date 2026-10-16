@@ -50,6 +50,7 @@ QString Sampling::apply()
   if (not column)
     return tr("No column to fill.");
 
+  source.sync();
   const zc::DynMathObject<zc_t>* zcObj = source.getZcObject();
 
   if (not source.isValid() or not zcObj

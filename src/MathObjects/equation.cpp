@@ -35,12 +35,6 @@ void Equation::setEquation(QString eq)
   emit updated();
 }
 
-bool Equation::isValid()
-{
-  sync();
-  return getState().isValid();
-}
-
 void Equation::setState(State s)
 {
   if (state == s) return;

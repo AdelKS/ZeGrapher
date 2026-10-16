@@ -74,10 +74,10 @@ public:
   bool isDiscrete() const { return discrete; }
   bool isSchrodinger() const { return schrodinger; }
 
-  zg::real_range1d getSnapshot();
+  zg::real_range1d getSnapshot() const;
 
   /// @brief getSnapshot, but checks its validity
-  std::optional<zg::real_range1d> getValidSnapshot();
+  std::optional<zg::real_range1d> getValidSnapshot() const;
 
   bool isDefaultStart() const;
   bool isDefaultEnd() const;

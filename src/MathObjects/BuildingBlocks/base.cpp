@@ -76,12 +76,12 @@ void Base::setSchrodinger(bool s)
   emit schrodingerChanged();
 }
 
-zg::real_range1d Base::getSnapshot()
+zg::real_range1d Base::getSnapshot() const
 {
-  return zg::real_range1d{.min = {start.getValue()}, .max = {end.getValue()}};
+  return zg::real_range1d{.min = {start.evaluate()}, .max = {end.evaluate()}};
 }
 
-std::optional<zg::real_range1d> Base::getValidSnapshot()
+std::optional<zg::real_range1d> Base::getValidSnapshot() const
 {
   const zg::real_range1d range = getSnapshot();
 

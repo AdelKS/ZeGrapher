@@ -59,7 +59,7 @@ public:
   const std::vector<std::string>& getData() const;
 
   State sync();
-  Q_INVOKABLE bool isValid();
+  bool isValid() const { return state.isValid(); }
 
   using Base::isDiscrete;
   const State& getState() const { return state; }

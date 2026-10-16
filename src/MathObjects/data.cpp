@@ -60,12 +60,6 @@ const std::vector<std::string>& Data::getData() const
   else return empty;
 }
 
-bool Data::isValid()
-{
-  sync();
-  return getState().isValid();
-}
-
 State Data::sync() {
   setState(State::from(zcMathObj.name_status()));
 

@@ -32,12 +32,6 @@ void NamedRef::setState(State s)
   emit stateChanged();
 }
 
-bool NamedRef::isValid()
-{
-  sync();
-  return getState().isValid();
-}
-
 State NamedRef::sync()
 {
   State newState;

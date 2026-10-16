@@ -86,7 +86,7 @@ public:
   bool isDeadAndAlive() const { return deadAndAlive; }
   const State& getState() const { return state; }
 
-  Q_INVOKABLE bool isValid();
+  bool isValid() const { return state.isValid(); }
 
   double get_value() const { return value; }
 

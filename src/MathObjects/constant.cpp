@@ -132,12 +132,6 @@ void Constant::setDuration(double d)
   emit durationChanged();
 }
 
-bool Constant::isValid()
-{
-  sync();
-  return getState().isValid();
-}
-
 State Constant::sync() {
   setState(State::from(zcMathObj.name_status()));
 

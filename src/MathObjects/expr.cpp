@@ -15,12 +15,6 @@ Expr::~Expr()
   mathWorld->untrackExprObject(this);
 }
 
-bool Expr::isValid()
-{
-  sync();
-  return getState().isValid();
-}
-
 void Expr::setState(State s)
 {
   if (state == s) return;
@@ -45,24 +39,21 @@ State Expr::setImplicitName(QString name)
   return setExpression(expression);
 }
 
+double Expr::evaluate() const
+{
+  const std::expected<double, zc::Error> res = zcMathObj({}, &zg::mathWorld->cache);
+  return res ? *res : std::nan("");
+}
+
 void Expr::updateValue()
 {
-  std::expected<double, zc::Error> exp_res = zcMathObj({}, &zg::mathWorld->cache);
-  double old_value = value;
-  if (exp_res)
-    value = zg::real_unit{*exp_res}.v;
-  else value = std::nan("");
+  const double old_value = value;
+  value = evaluate();
 
   if (std::isnan(old_value) != std::isnan(value)
       or (not std::isnan(old_value) and not std::isnan(value) and old_value != value))
     emit valueChanged();
 }
-
-double Expr::getValue()
-{
-  sync();
-  return value;
-};
 
 State Expr::setExpression(QString expr)
 {

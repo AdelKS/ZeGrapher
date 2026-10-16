@@ -48,7 +48,7 @@ public:
   bool isDiscrete() const;
   bool isContinuous() const;
 
-  Q_INVOKABLE bool isValid();
+  bool isValid() const { return state.isValid(); }
 
   State sync();
 

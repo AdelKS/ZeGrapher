@@ -45,7 +45,7 @@ public:
 
   State sync();
 
-  bool isValid();
+  bool isValid() const;
 
   bool isDiscrete() const;
   bool isContinuous() const;

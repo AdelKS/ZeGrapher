@@ -45,7 +45,7 @@ public:
   State sync();
   void setState(State s);
 
-  Q_INVOKABLE bool isValid();
+  bool isValid() const { return state.isValid(); }
   const State& getState() const { return state; }
   QString getEquation() const { return equation; }
 
