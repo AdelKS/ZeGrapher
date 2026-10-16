@@ -43,7 +43,7 @@ jobs:
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Install PyYAML
         run: |
@@ -126,7 +126,7 @@ jobs:
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Download release artifacts
         uses: actions/download-artifact@v5
