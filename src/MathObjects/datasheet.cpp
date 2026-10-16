@@ -149,10 +149,11 @@ void DataSheet::exportCSV(QUrl fileName) const
 
   auto write = [&](std::string_view s) { file.write(s.data(), s.size()); };
 
-  // a field that holds a separator or a quote goes between quotes, its own quotes doubled
+  // quote fields that contain a separator, a quote or a line break, and double
+  // their quotes
   auto escape_cell = [](std::string_view field)
   {
-    if (field.find_first_of(",\"") == std::string_view::npos)
+    if (field.find_first_of(",\"\r\n") == std::string_view::npos)
       return std::string(field);
 
     std::string escaped = "\"";
