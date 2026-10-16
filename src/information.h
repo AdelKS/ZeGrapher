@@ -126,6 +126,11 @@ public:
     std::optional<ZeGraphSettings::POD> graph;
   };
 
+  /// @brief the first key of a document, read alone for the version
+  struct HeaderPOD {
+    std::optional<std::string> zegrapher;
+  };
+
   /// @brief the settings file, which holds the app settings
   struct SettingsPOD {
     /// @brief version of ZeGrapher that wrote the file

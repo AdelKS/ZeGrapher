@@ -113,5 +113,26 @@ int main(int argc, char* argv[])
   test(object(1).isValid());
   test(object(2).isValid());
 
+  // a document from a newer version loads, and the app suggests updating
+  test(not app.load(R"(zegrapher: 99.0.0
+math_objects:
+  - type: equation
+    equation: f(x) = x
+    shiny: true
+)"));
+  test(zg::mathWorld->getMathObjects().size() == 1);
+  test(information->popIoError().text.contains("99.0.0"));
+
+  // and when it can't load, the app suggests updating too
+  test(not app.load(R"(zegrapher: 99.0.0
+math_objects:
+  - type: equation
+    equation: f(x) = x
+    style: {point_style: star}
+)"));
+  test(zg::mathWorld->getMathObjects().empty());
+  test(information->popIoError().text.contains("99.0.0"));
+  test(information->getIoErrorCount() == 0);
+
   return 0;
 }

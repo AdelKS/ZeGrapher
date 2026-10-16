@@ -20,6 +20,7 @@
 
 #include "information.h"
 #include "Utils/languages.h"
+#include "Utils/versionparser.h"
 #include "buildconfig.h"
 
 #include <QDir>
@@ -47,6 +48,25 @@ QString lastDocumentPath()
     path = QStandardPaths::locate(QStandardPaths::AppConfigLocation, "last-workbook.zg");
 
   return path;
+}
+
+/// @brief the ZeGrapher version that wrote a document, when newer than this
+///        build. A patch release keeps its minor release's format
+std::optional<QString> newerWriter(std::string_view content)
+{
+  Information::HeaderPOD header;
+
+  if (glz::read_yaml<zg::yml::skip_unknown_keys>(header, content) or not header.zegrapher)
+    return {};
+
+  const QString writer = QString::fromStdString(*header.zegrapher);
+  const auto version = parse_version_string(writer);
+  const auto build = build_version();
+  if (not version or not build
+      or std::pair((*version)[0], (*version)[1]) <= std::pair((*build)[0], (*build)[1]))
+    return {};
+
+  return writer;
 }
 
 }
@@ -272,15 +292,32 @@ void Information::importYaml(QUrl filename)
   // documents from ZeGrapher 4.0.0_beta3 or older hold the app settings under
   // 'app', which this read skips
   POD pod;
-  auto read_error = glz::read_yaml<zg::yml::skip_unknown_keys>(pod, content);
+  const auto read_error = glz::read_yaml<zg::yml::skip_unknown_keys>(pod, content);
+  const std::optional<QString> writer = newerWriter(content);
+
   if (read_error)
+  {
     appendIoErr({.title = tr("Could not load the document"),
                  .file = path,
-                 .text = tr("The file is not a valid ZeGrapher document."),
+                 .text = writer
+                   //: %1 and %2 are versions of ZeGrapher, %3 the address of its website
+                   ? tr("ZeGrapher %1 wrote this document, and this is version %2. Get "
+                        "the latest version from %3 to open it.")
+                       .arg(*writer, SOFTWARE_VERSION, HOMEPAGE_URL)
+                   : tr("The file is not a valid ZeGrapher document."),
                  .details = QString::fromStdString(glz::format_error(read_error, content))});
-
-  else {
-    graphSettings.importPod(std::move(pod.graph).value_or(ZeGraphSettings::POD{}));
-    if (pod.math_objects) zg::mathWorld->importPod(std::move(*pod.math_objects));
+    return;
   }
+
+  graphSettings.importPod(std::move(pod.graph).value_or(ZeGraphSettings::POD{}));
+  if (pod.math_objects) zg::mathWorld->importPod(std::move(*pod.math_objects));
+
+  // the read skips unknown keys, which a newer version can write
+  if (writer)
+    appendIoErr({.title = tr("Document from a newer version"),
+                 .file = path,
+                 //: %1 and %2 are versions of ZeGrapher, %3 the address of its website
+                 .text = tr("ZeGrapher %1 wrote this document, and this is version %2. Get "
+                            "the latest version from %3 to open all of it.")
+                           .arg(*writer, SOFTWARE_VERSION, HOMEPAGE_URL)});
 }
