@@ -13,6 +13,7 @@ if get_option('test')
     'documents',
     'sampler',
     'datatablemodel',
+    'csv',
   ]
   test_args = {
     'documents': [meson.project_source_root() / 'website/scripts/make-images/documents'],
