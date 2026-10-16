@@ -51,5 +51,14 @@ int main()
   mapper.setGraphRange({.x = {.min = {-10.}, .max = {10.}}, .y = {.min = {-5.}, .max = {5.}}});
   test(mapper.getRange<zg::real>().x == zg::real_range1d{.min = {-10.}, .max = {10.}});
 
+  // zooming stops before neighboring pixels map to the same double
+  mapper.setGraphRect(QRectF(0, 0, 1000, 600));
+  mapper.setGraphRange({.x = {.min = {1e6}, .max = {1e6 + 1}}, .y = {.min = {-5.}, .max = {5.}}});
+  for (int i = 0; i != 200; i++)
+    mapper.x.zoomView(zg::pixel_unit{500}, 0.5);
+  const zg::real_range1d zoomed = mapper.getRange<zg::real>().x;
+  test(zoomed.is_valid());
+  test(zoomed.amplitude().v > 1e3 * DBL_EPSILON * 1e6);
+
   return 0;
 }

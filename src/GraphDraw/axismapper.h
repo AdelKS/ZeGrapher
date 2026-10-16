@@ -232,7 +232,11 @@ void ZeAxisMapper<axis>::zoomView(unit<u<plane::pixel>> center, double ratio)
 
   const auto view_center = to<plane::view>(center);
 
-  if(MAX_AMPLITUDE > new_amplitude and new_amplitude > MIN_AMPLITUDE)
+  // each pixel needs distinct doubles between the bounds
+  const double magnitude = std::max(std::abs(view_range.min.v), std::abs(view_range.max.v));
+  const double min_amplitude = std::max(MIN_AMPLITUDE, 1e4 * DBL_EPSILON * magnitude);
+
+  if(MAX_AMPLITUDE > new_amplitude and new_amplitude > min_amplitude)
     setRange(
       Range1D<u<plane::view>>{.min = view_range.min - (1 - ratio) * (view_range.min - view_center),
                               .max = view_range.max - (1 - ratio) * (view_range.max - view_center)});
