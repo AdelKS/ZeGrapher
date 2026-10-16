@@ -98,21 +98,13 @@ void GraphLayoutEngine::computeTicksAndMargins()
   xAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.x, metrics);
   yAxisTicks = gridCalculator.getLinearAxisTicks(viewMapper.y, metrics);
 
-  if (xAxisTicks.offset.sumOffset != 0)
-  {
-    double margin = metrics.boundingRect(xAxisTicks.offset.sumOffsetStr()).width() + 5;
-    if (margins.right() < margin)
-      margins.setRight(10 + margin);
-  }
-
-  if (xAxisTicks.offset.basePowerOffset != 0)
-  {
-    double margin = metrics.boundingRect(xAxisTicks.offset.basePowerOffsetStr()).width() + 5;
-    margins.setRight(10 + margin);
-  }
-
-  if (xAxisTicks.offset.basePowerOffset == 0 and xAxisTicks.offset.sumOffset == 0)
-    margins.setRight(10);
+  // addOffsets() writes both x axis offsets to the right of the graph, one
+  // above the other
+  double xOffsetWidth = 0;
+  for (const QString& text : {xAxisTicks.offset.sumOffsetStr(), xAxisTicks.offset.basePowerOffsetStr()})
+    if (not text.isEmpty())
+      xOffsetWidth = std::max(xOffsetWidth, metrics.boundingRect(text).width() + 5);
+  margins.setRight(10 + xOffsetWidth);
 
   double offsetMargin = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
