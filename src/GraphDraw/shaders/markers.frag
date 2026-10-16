@@ -34,9 +34,8 @@ float sdBox(vec2 p, vec2 b )
   return length(max(d,0.0)) + min(max(d.x,d.y),0.0);
 }
 
-// Equilateral triangle, apex at the sprite top. 'r' is the circumradius.
-// Adapted from iquilezles.org/articles/distfunctions2d (y-up); we flip
-// p.y first so apex aligns with gl_PointCoord.y = 0.
+// Equilateral triangle, apex up, 'r' half its side. Adapted from
+// iquilezles.org/articles/distfunctions2d, whose y axis points up
 float sdTriangle(vec2 p, float r) {
   p.y = -p.y;
   const float k = sqrt(3.0);
@@ -48,12 +47,13 @@ float sdTriangle(vec2 p, float r) {
   return -length(p) * sign(p.y);
 }
 
+// Plus sign, 'w' the length of each arm and 'r' half its thickness
 float sdRoundedCross(vec2 p, float w, in float r)
 {
   float coef = sqrt(2.0)/2.0;
   p = vec2(p.x * coef - p.y * coef, p.x * coef + p.y * coef);
   p = abs(p);
-  return length(p-min(p.x+p.y,w)*0.5) - r;
+  return length(p-min(p.x+p.y,w*sqrt(2.0))*0.5) - r;
 }
 
 void main() {
@@ -65,8 +65,8 @@ void main() {
   if      (markerType == 1) sdf = sdRhombus(p, vec2(radius, radius)) - strokeWidth/2.0;
   else if (markerType == 2) sdf = sdDisc(p, radius) - strokeWidth/2.0;
   else if (markerType == 3) sdf = sdBox(p, vec2(radius, radius)) - strokeWidth/2.0;
-  else if (markerType == 4) sdf = sdTriangle(p, radius) - strokeWidth/2.0;
-  else if (markerType == 5) sdf = sdRoundedCross(p, radius + strokeWidth, strokeWidth/2.0);
+  else if (markerType == 4) sdf = sdTriangle(p, radius * sqrt(3.0) / 2.0) - strokeWidth/2.0;
+  else if (markerType == 5) sdf = sdRoundedCross(p, radius, strokeWidth/2.0);
   else discard;
 
   float aa = length(vec2(dFdx(sdf), dFdy(sdf)));
