@@ -49,9 +49,6 @@ public:
   /// @note converts it to the range returned by getRange<plane::pixel>()
   ZeViewMapper& setGraphRect(const QRectF& rect);
 
-  template <plane p>
-  bool isInView(point<u<p>> pt) const;
-
   template <plane q, plane p>
   point<u<q>> to(point<u<p>> pt) const;
 
@@ -61,12 +58,6 @@ public:
   void setGraphRange(const real_range2d& range);
   void setAxesSettings(const ZeAxesSettings& axesSettings);
 };
-
-template <plane p>
-bool ZeViewMapper::isInView(point<u<p>> pt) const
-{
-  return x.isInView(pt.x) and y.isInView(pt.y);
-}
 
 template <plane p>
 Range2D<u<p>> ZeViewMapper::getRange() const

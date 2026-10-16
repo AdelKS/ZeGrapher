@@ -115,21 +115,6 @@ void Constant::setSteps(int v)
   emit updated();
 }
 
-void Constant::constrainValue()
-{
-  if (std::isnan(from) or std::isnan(to))
-    return;
-
-  const double min = std::min(from, to);
-  const double max = std::max(from, to);
-
-  if (value < min)
-    set_value(min);
-
-  else if (max < value)
-    set_value(max);
-}
-
 void Constant::setDuration(double d)
 {
   if (seconds(d) == duration) return;

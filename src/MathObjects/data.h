@@ -30,8 +30,6 @@
 
 namespace zg {
 
-struct MathObject;
-
 namespace mathobj {
 
 /// @brief ZeGrapher math objects that are entirely defined by a single math expression

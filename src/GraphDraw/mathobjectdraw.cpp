@@ -95,7 +95,7 @@ void MathObjectDraw::drawObjects()
     drawSampledCurve(f_curve);
 }
 
-QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale)
+QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve)
 {
   QList<QPolygonF> finalCurve;
   const auto& curve = sampledCurve.px_curve;
@@ -132,7 +132,7 @@ QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double sc
     if (sampledCurve.discontinuities.contains(i))
       flush(curve.size() - i);
 
-    currentSection.append(pt * scale);
+    currentSection.append(pt);
   }
 
   flush(0);

@@ -123,8 +123,6 @@ protected:
   /// @brief follows MathWorld::setSchrodingerConstant()
   void schrodingerSwitched();
 
-  void constrainValue();
-
   double from = std::nan("");
   double value = std::nan("");
   double to = std::nan("");

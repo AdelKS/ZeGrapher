@@ -29,8 +29,6 @@
 namespace zg {
 namespace mathobj {
 
-struct ZcMathObject;
-
 /// @brief holds the names of the two objects used to plot a parametric equation
 struct Parametric: Base {
   Q_OBJECT

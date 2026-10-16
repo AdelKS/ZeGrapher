@@ -29,8 +29,6 @@
 
 namespace zg {
 
-struct MathObject;
-
 namespace mathobj {
 
 /// @brief ZeGrapher math object that gathers Data objects as the columns of a table

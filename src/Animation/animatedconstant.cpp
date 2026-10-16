@@ -24,7 +24,6 @@ AnimatedConstant::~AnimatedConstant()
 
 void AnimatedConstant::animationStep(seconds T)
 {
-  // in case the step took too long
   phase = (phase * backend->duration.count() + T.count() ) / backend->duration.count();
 
   if (backend->loopType == mathobj::Constant::ONESHOT and (phase > 1.0 or phase < 0.))

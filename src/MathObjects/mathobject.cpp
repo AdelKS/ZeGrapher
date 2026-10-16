@@ -25,7 +25,6 @@ namespace zg {
 MathObject::MathObject(QObject *parent, Type type)
   : QObject(parent), backend(createBackend(type))
 {
-  setType(type);
   connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
 }
 

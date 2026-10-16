@@ -30,7 +30,7 @@
 #include "GraphDraw/viewmapper.h"
 #include "Utils/curvestyle.h"
 
-QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve, double scale = 1.0);
+QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve);
 
 class MathObjectDraw
 {

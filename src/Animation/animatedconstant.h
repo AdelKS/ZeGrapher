@@ -62,7 +62,7 @@ signals:
   void playingChanged();
 
 protected slots:
-  /// @brief ensure value is between from and to
+  /// @brief follows the constant's value and range
   void backendUpdate();
 
 protected:
