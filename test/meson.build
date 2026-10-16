@@ -17,6 +17,7 @@ if get_option('test')
     'gridcalculator',
     'schrodinger',
     'graphrange',
+    'export',
     'render',
   ]
   test_args = {

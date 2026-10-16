@@ -157,6 +157,21 @@ void Graph::drawLabels(bool asPaths)
 void Graph::exportImage(QUrl filename)
 {
   const QString path = filename.toLocalFile();
+
+  // QImageWriter picks the format from the file suffix
+  const QString suffix = QFileInfo(path).suffix();
+  const QByteArray format = suffix.toLower().toLatin1();
+  if (not QImageWriter::supportedImageFormats().contains(format))
+  {
+    if (suffix.isEmpty())
+      information->exportFailed(path, tr("The file name has no extension, so no "
+                                         "image format matches it."));
+    else
+      information->exportFailed(path, tr("No image format matches the extension '%1'.")
+                                        .arg(suffix));
+    return;
+  }
+
   const double pxPerCm = settings.pixelDensity * window()->effectiveDevicePixelRatio();
   const QSize pixels = (settings.getSize().cmSheetSize * pxPerCm).toSize();
   QImage image(pixels, QImage::Format_RGB32);
@@ -177,25 +192,27 @@ void Graph::exportImage(QUrl filename)
   QPainter imagePainter(&image);
 
   paint(&imagePainter, Export::Image);
+  imagePainter.end();
 
-  // QImageWriter picks the format from the file suffix. error() tells an
-  // unknown suffix apart from a failed write, such as to a read-only folder
-  QImageWriter writer(path);
+  QSaveFile file(path);
+  if (not file.open(QIODevice::WriteOnly))
+  {
+    information->exportFailed(path, file.errorString());
+    return;
+  }
+
+  QImageWriter writer(&file, format);
   writer.setQuality(100);
 
   if (not writer.write(image))
   {
-    const QString suffix = QFileInfo(path).suffix();
-
-    if (writer.error() != QImageWriter::UnsupportedFormatError)
-      information->exportFailed(path, writer.errorString());
-    else if (suffix.isEmpty())
-      information->exportFailed(path, tr("The file name has no extension, so no "
-                                         "image format matches it."));
-    else
-      information->exportFailed(path, tr("No image format matches the extension '%1'.")
-                                        .arg(suffix));
+    information->exportFailed(path, writer.errorString());
+    return;
   }
+
+  // QSaveFile::commit() also returns false when a write failed
+  if (not file.commit())
+    information->exportFailed(path, file.errorString());
 }
 
 void Graph::drawSupport()
@@ -242,12 +259,7 @@ void Graph::computeSupportRect()
 
 void Graph::exportPDF(QUrl fileName)
 {
-  QPdfWriter pdfWriter(fileName.toLocalFile());
-
-  pdfWriter.setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
-  pdfWriter.setTitle(tr("Exported graph"));
-
-  pdfWriter.setResolution(1200);
+  const QString path = fileName.toLocalFile();
 
   QPageLayout layout(
     QPageSize(settings.getSize().cmSheetSize * 10., QPageSize::Millimeter, "", QPageSize::ExactMatch),
@@ -258,23 +270,39 @@ void Graph::exportPDF(QUrl fileName)
 
   if (not layout.isValid()) {
     const QSizeF sheet = settings.getSize().cmSheetSize;
-    information->exportFailed(fileName.toLocalFile(),
-                              tr("A page of %1×%2 cm is not a valid page size.")
-                                .arg(sheet.width()).arg(sheet.height()));
+    information->exportFailed(path, tr("A page of %1×%2 cm is not a valid page size.")
+                                      .arg(sheet.width()).arg(sheet.height()));
     return;
   }
 
-  pdfWriter.setPageLayout(layout);
-  QPainter pdfPainter(&pdfWriter);
+  QSaveFile file(path);
+  if (not file.open(QIODevice::WriteOnly))
+  {
+    information->exportFailed(path, file.errorString());
+    return;
+  }
 
-  // QPdfWriter opens the file, and the painter stays inactive when it could not
+  QPdfWriter pdfWriter(&file);
+
+  pdfWriter.setCreator(QString("ZeGrapher ") + SOFTWARE_VERSION);
+  pdfWriter.setTitle(tr("Exported graph"));
+  pdfWriter.setResolution(1200);
+  pdfWriter.setPageLayout(layout);
+
+  QPainter pdfPainter(&pdfWriter);
   if (not pdfPainter.isActive())
   {
-    information->exportFailed(fileName.toLocalFile());
+    information->exportFailed(path);
     return;
   }
 
   paint(&pdfPainter, Export::Pdf);
+
+  // QPdfWriter writes the end of the file when its painter ends.
+  // QSaveFile::commit() also returns false when a write failed
+  pdfPainter.end();
+  if (not file.commit())
+    information->exportFailed(path, file.errorString());
 }
 
 void Graph::exportSVG(QUrl fileName)
