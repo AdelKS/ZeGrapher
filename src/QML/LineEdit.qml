@@ -57,14 +57,19 @@ Rectangle {
       anchors.fill: parent
       color: palette.text
       focus: true
+      activeFocusOnTab: !readOnly
       text: ""
       onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
       onTextEdited: rec.textEdited()
 
       Keys.onPressed: (event)=> {
-        if ([Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab].includes(event.key)) {
+        if ([Qt.Key_Enter, Qt.Key_Return].includes(event.key)) {
           // filter linebreaks events
+          event.accepted = true;
+        } else if ([Qt.Key_Tab, Qt.Key_Backtab].includes(event.key)) {
+          // TextEdit writes a tab character instead of moving the focus
+          nextItemInFocusChain(event.key === Qt.Key_Tab).forceActiveFocus(Qt.TabFocusReason);
           event.accepted = true;
         }
       }

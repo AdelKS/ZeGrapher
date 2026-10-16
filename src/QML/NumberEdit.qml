@@ -51,6 +51,7 @@ Rectangle {
     anchors.rightMargin: 6
     color: ZeStyle.palette.text
     focus: true
+    activeFocusOnTab: true
     font: Information.appSettings.font
     text: ""
     // DoubleValidator follows the locale, and expressions use a dot
