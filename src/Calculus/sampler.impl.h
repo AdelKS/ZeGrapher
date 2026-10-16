@@ -130,13 +130,19 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     std::vector<zg::real_unit> input;
 
     assert(start <= end);
-    const size_t reserve = std::max((end - start) / max_step, 0.0);
-    points.reserve(reserve);
-    input.reserve(reserve);
-    px_points.reserve(reserve);
+    // a step below the precision of 'start' leaves 'start + max_step' at 'start',
+    // so the loop counts the points instead of comparing positions
+    const size_t count = size_t(std::clamp((end - start) / max_step, 0.0, double(max_points))) + 1;
+    points.reserve(count);
+    input.reserve(count);
+    px_points.reserve(count);
 
-    for (auto pos = start; pos <= end; pos += max_step)
+    for (size_t i = 0 ; i != count ; i++)
     {
+      const zg::real_unit pos = start + double(i) * max_step;
+      if (not input.empty() and pos <= input.back())
+        continue;
+
       input.push_back(pos);
       points.push_back(get_f_pt(pos));
       px_points.push_back(QPointF(mapper.to<zg::pixel>(points.back())));
