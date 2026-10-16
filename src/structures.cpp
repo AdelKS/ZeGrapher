@@ -33,10 +33,10 @@ void ZeSizeSettings::importPod(POD p)
   if (p.scaling)
     scalingFactor = *p.scaling;
 
-  if (p.width or p.height)
+  // a sheet without a positive size fills the window
+  if (p.width.value_or(0) > 0 and p.height.value_or(0) > 0)
   {
     sheetFillsWindow = false;
-    if (p.width) cmSheetSize.setWidth(*p.width);
-    if (p.height) cmSheetSize.setHeight(*p.height);
+    cmSheetSize = QSizeF(*p.width, *p.height);
   }
 }

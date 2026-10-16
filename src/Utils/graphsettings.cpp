@@ -197,7 +197,8 @@ void ZeGraphSettings::updateSizes()
 
 void ZeGraphSettings::computeZoom()
 {
-  if (zoom.zoomingType != ZoomingType::FITSHEET)
+  if (zoom.zoomingType != ZoomingType::FITSHEET or size.cmSheetSize.isEmpty()
+      or availableSizeCm.isEmpty())
     return;
 
   double ratio = availableSizeCm.height() / availableSizeCm.width();

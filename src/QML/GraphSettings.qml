@@ -9,6 +9,7 @@ Item {
   id: root
 
   readonly property double cm_increment: 1.0;
+  readonly property double min_cm_size: 1
   readonly property double max_cm_size: 1000
 
   required property ZeGraphSettings graphSettings
@@ -121,6 +122,7 @@ Item {
                 id: sheetHeight
                 //: shorthand for centimeters, the size of the graph
                 suffix: qsTr(" cm")
+                from: root.min_cm_size
                 to: root.max_cm_size
                 step: root.cm_increment
 
@@ -139,6 +141,7 @@ Item {
                 id: sheetWidth
                 //: shorthand for centimeters, the size of the graph
                 suffix: qsTr(" cm")
+                from: root.min_cm_size
                 to: root.max_cm_size
                 step: root.cm_increment
 
