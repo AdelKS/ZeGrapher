@@ -27,7 +27,7 @@
 
 #include "Utils/themedcolor.h"
 
-struct Ze1DGridCommonSettings
+struct Ze1DGridSettings
 {
   Q_GADGET
 
@@ -56,20 +56,24 @@ public:
   std::optional<POD> exportPod() const;
   void importPod(POD);
 
-  bool operator == (const Ze1DGridCommonSettings&) const = default;
+  bool operator == (const Ze1DGridSettings&) const = default;
 };
 
-inline const ThemedColor Ze1DGridCommonSettings::defaultColor = {.dark = "#6f6f6f", .light = "#717171"};
+inline const ThemedColor Ze1DGridSettings::defaultColor = {.dark = "#6f6f6f", .light = "#717171"};
 
-struct Ze1DSubgridSettings: Ze1DGridCommonSettings
+struct Ze1DSubgridSettings
 {
   Q_GADGET
 
+  Q_PROPERTY(bool show MEMBER show)
+  Q_PROPERTY(double lineWidth MEMBER lineWidth)
+  Q_PROPERTY(ThemedColor color MEMBER color)
   Q_PROPERTY(int subdivs MEMBER subdivs)
 
 public:
-  Ze1DSubgridSettings(): Ze1DGridCommonSettings({.show = defaultShow, .lineWidth = defaultLineWidth, .color = defaultColor}) {}
-
+  bool show = defaultShow;
+  double lineWidth = defaultLineWidth;
+  ThemedColor color = defaultColor;
   int subdivs = defaultSubdivs;
 
   static constexpr int defaultSubdivs = 2;
@@ -77,6 +81,8 @@ public:
   static constexpr bool defaultShow = true;
   static constexpr double defaultLineWidth = 0.6;
   static const ThemedColor defaultColor;
+  static constexpr double minLineWidth = Ze1DGridSettings::minLineWidth;
+  static constexpr double maxLineWidth = Ze1DGridSettings::maxLineWidth;
 
   struct POD {
     std::optional<bool> show;
@@ -95,7 +101,6 @@ public:
 
 inline const ThemedColor Ze1DSubgridSettings::defaultColor = {.dark = "#434343", .light = "#d1d1d1"};
 
-using Ze1DGridSettings = Ze1DGridCommonSettings;
 
 struct ZeGridSettings
 {

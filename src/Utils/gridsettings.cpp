@@ -30,7 +30,7 @@ void Ze1DSubgridSettings::importPod(POD p)
     subdivs = zg::yml::clamped(*p.subdivs, 1, maxSubdivs);
 }
 
-std::optional<Ze1DGridCommonSettings::POD> Ze1DGridCommonSettings::exportPod() const
+std::optional<Ze1DGridSettings::POD> Ze1DGridSettings::exportPod() const
 {
   POD p {
     .show = zg::yml::not_default(show, defaultShow),
@@ -43,7 +43,7 @@ std::optional<Ze1DGridCommonSettings::POD> Ze1DGridCommonSettings::exportPod() c
   else return {};
 }
 
-void Ze1DGridCommonSettings::importPod(POD p)
+void Ze1DGridSettings::importPod(POD p)
 {
   if (p.show)
     show = *p.show;
