@@ -97,6 +97,10 @@ The three buttons at the bottom left of the panel are, in order:
 
 On macOS, the shortcuts use `Cmd` instead of `Ctrl`.
 
+A `.zg` document dropped on the window loads like **Load** does, and a CSV file
+dropped on it opens the [CSV import](#353-importing-a-csv-file) into a new
+sheet.
+
 At the next start, ZeGrapher opens your last work again. If you give a `.zg`
 file on the command line, the app opens that file instead.
 

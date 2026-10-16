@@ -447,6 +447,32 @@ ApplicationWindow {
     id: releaseNotesDialog
   }
 
+  // a document or a CSV file dropped on the window loads as if picked in a dialog
+  DropArea {
+    id: dropArea
+    anchors.fill: parent
+
+    function suffix(url: url): string {
+      return url.toString().toLowerCase().split(".").pop();
+    }
+
+    onEntered: (drag) => drag.accepted = drag.hasUrls
+                         && drag.urls.some((url) => ["zg", "csv"].includes(dropArea.suffix(url)))
+
+    onDropped: (drop) => {
+      for (const url of drop.urls)
+        if (dropArea.suffix(url) === "zg")
+          Information.importYaml(url);
+
+      // the import settings take one file at a time
+      const csv = drop.urls.find((url) => dropArea.suffix(url) === "csv");
+      if (csv)
+        dataPane.loadCSV(csv, null);
+
+      drop.accept(Qt.CopyAction);
+    }
+  }
+
   Component.onCompleted: {
     Information.graphSettings.screenChanged(win);
 
