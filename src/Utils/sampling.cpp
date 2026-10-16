@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 #include "Utils/sampling.h"
-#include "DataPlot/datatablemodel.h"
 #include "information.h"
 
 #include <cmath>
@@ -87,7 +86,7 @@ QString Sampling::apply()
     values.push_back(res and std::isfinite(*res) ? std::format("{}", *res) : std::string());
   }
 
-  dataTableModel->replaceColumnData(column, std::move(values));
+  column->setData(std::move(values));
 
   return {};
 }

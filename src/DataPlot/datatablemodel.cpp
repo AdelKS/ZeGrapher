@@ -33,13 +33,11 @@ int DataTableModel::rowCount(const QModelIndex& parent) const
   if (parent.isValid())
     return 0;
 
-  size_t data_size = 0;
+  size_t rows = 0;
   for (const zg::mathobj::Data* data: tableColumns)
-      if (std::optional<size_t> opt_size = data->zcMathObj.get_data_size())
-        if (*opt_size > data_size)
-          data_size = *opt_size;
+    rows = std::max(rows, data->getData().size());
 
-  return int(data_size);
+  return int(rows);
 }
 
 int DataTableModel::columnCount(const QModelIndex& parent) const
@@ -55,11 +53,8 @@ QVariant DataTableModel::data(const QModelIndex& index, int role) const
   if (not index.isValid() or (role != Qt::DisplayRole and role != Qt::EditRole))
     return {};
 
-  const mathobj::Data* dataObj = tableColumns.at(index.column());
-  std::optional<std::string> opt_str = dataObj->zcMathObj.get_data_point(index.row());
-  if (opt_str)
-    return QString::fromStdString(*opt_str);
-  else return QString();
+  const std::vector<std::string>& values = tableColumns.at(index.column())->getData();
+  return size_t(index.row()) < values.size() ? QString::fromStdString(values[index.row()]) : QString();
 }
 
 bool DataTableModel::setData(const QModelIndex &index, const QVariant &value, int)
@@ -68,8 +63,7 @@ bool DataTableModel::setData(const QModelIndex &index, const QVariant &value, in
 
   const std::string str = value.toString().toStdString();
 
-  const mathobj::Data* dataObj = tableColumns.at(index.column());
-  dataObj->zcMathObj.set_data_point(index.row(), str);
+  tableColumns.at(index.column())->setValue(index.row(), str);
 
   emit dataChanged(index, index);
 
@@ -88,14 +82,14 @@ bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
   if (parent.isValid())
     return false;
 
-  auto empty_cells = std::vector<std::string>(count);
-
   int old_row_count = rowCount();
 
   beginInsertRows(parent, row, row + count - 1);
 
+  // a column that ends above 'row' keeps its length, unless it is the longest
   for (mathobj::Data* dataObj: tableColumns)
-    dataObj->zcMathObj.insert_data_points(row, empty_cells);
+    if (const size_t size = dataObj->getData().size(); size_t(row) < size or int(size) == old_row_count)
+      dataObj->insertValues(row, count);
 
   endInsertRows();
 
@@ -123,7 +117,7 @@ void DataTableModel::removeRow(int row)
   beginRemoveRows(QModelIndex(), row, row);
 
   for (mathobj::Data* dataObj: tableColumns)
-    dataObj->zcMathObj.remove_data_point(row);
+    dataObj->removeValue(row);
 
   endRemoveRows();
 
@@ -150,16 +144,15 @@ void DataTableModel::removeCell(const QModelIndex& cell)
   if (size_t(cell.column()) >= tableColumns.size())
     return;
 
-  auto& column = tableColumns[cell.column()]->zcMathObj;
-  if (size_t(cell.row()) >= column.get_data_size().value_or(0))
+  mathobj::Data* column = tableColumns[cell.column()];
+  if (size_t(cell.row()) >= column->getData().size())
     return;
 
   // rowCount() is the size of the longest column, so it drops when no other
   // column is as long as this one
   size_t remaining = 0;
   for (const zg::mathobj::Data* data: tableColumns)
-    if (std::optional<size_t> size = data->zcMathObj.get_data_size())
-      remaining = std::max(remaining, *size - (&data->zcMathObj == &column));
+    remaining = std::max(remaining, data->getData().size() - (data == column));
 
   const int rows = rowCount();
   const bool shrinks = int(remaining) < rows;
@@ -167,7 +160,7 @@ void DataTableModel::removeCell(const QModelIndex& cell)
   if (shrinks)
     beginRemoveRows(QModelIndex(), rows - 1, rows - 1);
 
-  column.remove_data_point(cell.row());
+  column->removeValue(cell.row());
 
   if (shrinks)
     endRemoveRows();
@@ -200,6 +193,11 @@ void DataTableModel::registerTableColumn(zg::mathobj::Data* d)
   connect(d, &mathobj::Data::nameChanged, this, [this, d] { refreshColumnName(d); });
   connect(d, &mathobj::Data::stateChanged, this, [this, d] { refreshColumnName(d); });
 
+  // a column length change affects the rows of every column, which a single
+  // reset covers
+  connect(d, &mathobj::Data::dataAboutToBeReplaced, this, &DataTableModel::beginResetModel);
+  connect(d, &mathobj::Data::dataReplaced, this, &DataTableModel::endResetModel);
+
   emit columnCountChanged();
 }
 
@@ -224,21 +222,6 @@ QString DataTableModel::headerName(const zg::mathobj::Data* d)
 {
   // a column whose name doesn't hold up has no header to show
   return d->getState().isValid() ? d->getName() : QString();
-}
-
-void DataTableModel::replaceColumnData(zg::mathobj::Data* d, std::vector<std::string> values)
-{
-  if (std::ranges::find(tableColumns, d) == tableColumns.end())
-  {
-    d->setData(std::move(values));
-    return;
-  }
-
-  // can't do insert/delete rows + dataChanged, Qt doesn't handle it well
-  // se we use reset model instead
-  beginResetModel();
-  d->setData(std::move(values));
-  endResetModel();
 }
 
 void DataTableModel::refreshColumnName(const zg::mathobj::Data* d)

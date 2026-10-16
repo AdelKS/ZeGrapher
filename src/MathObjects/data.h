@@ -53,10 +53,20 @@ public:
   Q_INVOKABLE void setName(QString name);
   QString getName() const { return input_name; }
 
-  void setData(std::vector<std::string> values);
   void setState(State s);
 
+  /// @brief the expression of each row, empty for an empty cell
   const std::vector<std::string>& getData() const;
+
+  /// @brief replaces every value, between dataAboutToBeReplaced() and
+  ///        dataReplaced()
+  void setData(std::vector<std::string> values);
+
+  /// @brief single-row edits, which DataTableModel makes and announces to its
+  ///        views itself
+  void setValue(size_t row, std::string value);
+  void insertValues(size_t row, size_t count);
+  void removeValue(size_t row);
 
   State sync();
   bool isValid() const { return state.isValid(); }
@@ -92,11 +102,15 @@ public slots:
 
 signals:
   void updated();
+  void dataAboutToBeReplaced();
+  void dataReplaced();
   void nameChanged();
   void stateChanged();
   void showInTableChanged();
 
 protected:
+  void valuesEdited();
+
   QString input_name;
   State state;
   bool showInTable = false;

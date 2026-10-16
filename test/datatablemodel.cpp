@@ -74,7 +74,19 @@ int main()
   model.clearCells({model.index(0, 0), model.index(1, 1)});
   test(model.data(model.index(0, 0)).toString().isEmpty());
 
-  model.replaceColumnData(b, std::vector<std::string>(10, "0"));
+  // table edits reach the graph through MathWorld
+  int updates = 0;
+  QObject::connect(zg::mathWorld, &zg::MathWorld::updated, [&] { updates++; });
+  test(model.setData(model.index(0, 0), "5"));
+  test(updates == 1);
+  test(a->getData().front() == "5");
+
+  // removing a row past the end of a column doesn't change its length
+  b->setData({"1", "2"});
+  model.removeRow(model.rowCount() - 1);
+  test(b->getData().size() == 2);
+
+  b->setData(std::vector<std::string>(10, "0"));
   test(model.rowCount() == 10);
 
   a->setShowInTable(false);

@@ -45,10 +45,38 @@ void Data::setState(State s)
 
 void Data::setData(std::vector<std::string> values)
 {
+  emit dataAboutToBeReplaced();
   zcMathObj.set_data(std::move(values));
+  emit dataReplaced();
 
+  valuesEdited();
+}
+
+void Data::setValue(size_t row, std::string value)
+{
+  zcMathObj.set_data_point(row, std::move(value));
+  valuesEdited();
+}
+
+void Data::insertValues(size_t row, size_t count)
+{
+  zcMathObj.insert_data_points(row, std::vector<std::string>(count));
+  valuesEdited();
+}
+
+void Data::removeValue(size_t row)
+{
+  // remove_data_point() grows a column that ends before 'row'
+  if (row >= getData().size())
+    return;
+
+  zcMathObj.remove_data_point(row);
+  valuesEdited();
+}
+
+void Data::valuesEdited()
+{
   sync();
-
   emit updated();
 }
 

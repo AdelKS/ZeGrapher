@@ -69,10 +69,6 @@ public:
   Q_INVOKABLE void registerTableColumn(zg::mathobj::Data*);
   Q_INVOKABLE void deregisterTableColumn(zg::mathobj::Data*);
 
-  /// @brief replaces a column's values, and notifies the views
-  /// @note  Data::setData notifies no one, go through here for a shown column
-  void replaceColumnData(zg::mathobj::Data*, std::vector<std::string> values);
-
 public slots:
   void requestUiInitiatedDelete(size_t column);
 
