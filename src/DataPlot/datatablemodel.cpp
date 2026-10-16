@@ -149,11 +149,30 @@ void DataTableModel::removeCell(const QModelIndex& cell)
   if (size_t(cell.column()) >= tableColumns.size())
     return;
 
-  tableColumns[cell.column()]->zcMathObj.remove_data_point(cell.row());
+  auto& column = tableColumns[cell.column()]->zcMathObj;
+  if (size_t(cell.row()) >= column.get_data_size().value_or(0))
+    return;
 
-  QModelIndex topLeft = cell;
-  QModelIndex bottomRight = index(rowCount() - 1, cell.column());
-  emit dataChanged(topLeft, bottomRight);
+  // rowCount() is the size of the longest column, so it drops when no other
+  // column is as long as this one
+  size_t remaining = 0;
+  for (const zg::mathobj::Data* data: tableColumns)
+    if (std::optional<size_t> size = data->zcMathObj.get_data_size())
+      remaining = std::max(remaining, *size - (&data->zcMathObj == &column));
+
+  const int rows = rowCount();
+  const bool shrinks = int(remaining) < rows;
+
+  if (shrinks)
+    beginRemoveRows(QModelIndex(), rows - 1, rows - 1);
+
+  column.remove_data_point(cell.row());
+
+  if (shrinks)
+    endRemoveRows();
+
+  if (cell.row() < rowCount())
+    emit dataChanged(cell, index(rowCount() - 1, cell.column()));
 }
 
 QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int) const
