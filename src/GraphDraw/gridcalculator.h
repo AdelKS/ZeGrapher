@@ -48,10 +48,13 @@ struct ZeOffset
     if (sumOffset == 0)
       return QString();
 
+    const QString sign = sumOffset < 0 ? " - " : " + ";
+    const double offset = std::abs(sumOffset);
+
     if(sumPowerOffset == 0)
-      return  " + " + QString::number(sumOffset, 'g', 11);
+      return sign + QString::number(offset, 'g', 11);
     else
-      return " + " + QString::number(sumOffset * int_pow(10.0, -sumPowerOffset), 'g', 11) + "×10^"
+      return sign + QString::number(offset * int_pow(10.0, -sumPowerOffset), 'g', 11) + "×10^"
              + QString::number(sumPowerOffset);
   }
 
