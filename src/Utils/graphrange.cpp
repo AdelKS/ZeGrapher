@@ -21,6 +21,10 @@
 #include "Utils/graphrange.h"
 #include "information.h"
 
+#include <QLocale>
+
+#include <cmath>
+
 namespace zg {
 
 ZeAxisRange::ZeAxisRange(QObject *parent)
@@ -36,10 +40,25 @@ real_range1d ZeAxisRange::getLatestValidSnapshot()
   return latestValidSnapshot;
 }
 
-void ZeAxisRange::update(const real_range1d& range)
+void ZeAxisRange::update(const real_range1d& range, double pixels)
 {
-  min.setExpression(QString::number(range.min.v, 'g', 12));
-  max.setExpression(QString::number(range.max.v, 'g', 12));
+  const double power = std::round(std::log10(range.amplitude().v)) - std::round(std::log10(pixels));
+
+  // powers of ten are exact up to 1e22, and dividing by one rounds the bound to
+  // the double closest to its decimal, which then prints with few digits
+  auto rounded = [power](double v) {
+    if (not std::isfinite(power))
+      return v;
+    return power < 0 ? std::round(v * std::pow(10., -power)) / std::pow(10., -power)
+                     : std::round(v / std::pow(10., power)) * std::pow(10., power);
+  };
+
+  auto text = [&](double v) {
+    return QString::number(rounded(v), 'g', QLocale::FloatingPointShortest);
+  };
+
+  min.setExpression(text(range.min.v));
+  max.setExpression(text(range.max.v));
 }
 
 GraphRange::GraphRange(QObject* parent)
@@ -58,10 +77,10 @@ GraphRange::GraphRange(QObject* parent)
   y.max.setExpression("10");
 };
 
-void GraphRange::interactiveUpdate(const real_range2d& range)
+void GraphRange::interactiveUpdate(const real_range2d& range, QSizeF pixels)
 {
-  x.update(range.x);
-  y.update(range.y);
+  x.update(range.x, pixels.width());
+  y.update(range.y, pixels.height());
 }
 
 real_range2d GraphRange::getLatestValidSnapshot()

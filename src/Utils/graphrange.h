@@ -46,7 +46,9 @@ public:
 
   real_range1d getLatestValidSnapshot();
 
-  void update(const real_range1d& range);
+  /// @brief writes the bounds of 'range', rounded to about one of the 'pixels'
+  ///        that the range spans
+  void update(const real_range1d& range, double pixels);
 
   struct POD {
     std::optional<std::string> min, max;
@@ -78,7 +80,9 @@ public:
 
   real_range2d getLatestValidSnapshot();
 
-  void interactiveUpdate(const real_range2d& range);
+  /// @brief writes the range of a view that the user moved
+  /// @param pixels  the size of the view, in pixels
+  void interactiveUpdate(const real_range2d& range, QSizeF pixels);
 
   struct POD {
     std::optional<ZeAxisRange::POD> x, y;
