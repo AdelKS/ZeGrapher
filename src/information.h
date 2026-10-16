@@ -110,7 +110,6 @@ public:
   void readFailed(const QString& file, const QString& details = {});
 
 public:
-  zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;
   ZeGraphSettings graphSettings;
 

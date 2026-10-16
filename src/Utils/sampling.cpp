@@ -80,7 +80,7 @@ QString Sampling::apply()
   for (size_t i = 0 ; i != pointCount ; i++)
   {
     const std::expected<double, zc::Error> res
-      = (*zcObj)({from + double(i) * by}, &information->mathObjectCache);
+      = (*zcObj)({from + double(i) * by}, &zg::mathWorld->cache);
 
     // ZeCalculator cannot read 'inf' or 'nan' back, such points stay empty
     values.push_back(res and std::isfinite(*res) ? std::format("{}", *res) : std::string());

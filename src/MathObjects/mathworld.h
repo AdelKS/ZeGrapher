@@ -77,6 +77,9 @@ public:
   POD exportPod() const;
   void importPod(POD);
 
+  /// @brief the sequence values cached across evaluations
+  zc::eval::Cache cache;
+
 signals:
   void updated();
   void schrodingerConstantChanged();

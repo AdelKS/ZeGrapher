@@ -16,7 +16,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   // the value of an object at x, NaN where it has none
   auto eval = [](const zc::DynMathObject<zc_t>* f, zg::real_unit x)
   {
-    const std::expected<double, zc::Error> res = (*f)({x.v}, &information->mathObjectCache);
+    const std::expected<double, zc::Error> res = (*f)({x.v}, &zg::mathWorld->cache);
     return res ? *res : std::nan("");
   };
 
@@ -71,7 +71,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   auto increase_seq_cache = [&](const zc::DynMathObject<zc_t>* f){
     if (f->holds(zc::ObjectType::SEQUENCE))
     {
-      auto& objectCache = information->mathObjectCache[f->get_slot()];
+      auto& objectCache = zg::mathWorld->cache[f->get_slot()];
       size_t current_max = std::max(0., max.v);
       objectCache.set_buffer_size(std::min(std::max(current_max, objectCache.get_buffer_size()), size_t(1'000'000)));
     }
