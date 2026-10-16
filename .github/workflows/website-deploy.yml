@@ -15,7 +15,7 @@ jobs:
   deploy:
     # a job with uses: can't set environment, so the called job sets it to get its secrets
     environment: Website-Deploy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         shell: bash

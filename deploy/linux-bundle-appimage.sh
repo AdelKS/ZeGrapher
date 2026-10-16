@@ -36,6 +36,9 @@ export EXTRA_QT_PLUGINS="waylandcompositor"
 export EXTRA_PLATFORM_PLUGINS="libqwayland.so"
 export QML_SOURCES_PATHS="${deploy_dir}/../src/"
 export NO_STRIP=1
+# the AppImages of linuxdeploy run without FUSE, which CI runners lack
+export APPIMAGE_EXTRACT_AND_RUN=1
+
 
 # ./linuxdeploy-x86_64.AppImage --list-plugins
 ./linuxdeploy-x86_64.AppImage --appdir appdir-linux --plugin qt --output appimage

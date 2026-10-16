@@ -4,7 +4,7 @@ on:
 
 jobs:
   build-bundle:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         shell: bash
@@ -12,21 +12,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      # Ubuntu's Qt packages leave out the FluentWinUI3 style
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.11.*'
           modules: 'qtshadertools'
 
-      - name: Enable gcc testing repo
-        run: sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-
       - name: Install Dependencies
         run: |
-          sudo apt install python3-pip libfuse2 libxcb-cursor0 g++-15
+          sudo apt-get update
+          sudo apt-get install -y g++ libxcb-cursor0
           # the xcb platform of Qt, under xvfb, for the render test
-          sudo apt install xvfb libgl1-mesa-dri libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 \
-            libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xkb1
+          sudo apt-get install -y xvfb libgl1-mesa-dri libxkbcommon-x11-0 libxcb-icccm4 \
+            libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
+            libxcb-xkb1
           # install-qt-action puts its own Python first on PATH, and pip3 installs
           # meson for that Python. meson imports PyYAML from the Python it runs
           # on, so PyYAML comes from pip3 too
@@ -36,7 +36,6 @@ jobs:
       - name: Build, test & bundle
         run: xvfb-run -a ./deploy/linux-bundle-appimage.sh
         env:
-          CXX: g++-15
           ZG_RENDER_TEST: 1
 
       - name: Upload binary artifact
