@@ -140,7 +140,9 @@ QSGMaterialShader *MarkersMaterial::createShader(QSGRendererInterface::RenderMod
 
 MarkerNode::MarkerNode()
 {
-  auto* g = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
+  // the batch renderer merges 16-bit indexed geometry and regenerates 16-bit
+  // indices, which wrap past 65535 vertices
+  auto* g = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0, 0, QSGGeometry::UnsignedIntType);
   g->setDrawingMode(QSGGeometry::DrawTriangles);
   g->setVertexDataPattern(QSGGeometry::StreamPattern);
   setGeometry(g);
