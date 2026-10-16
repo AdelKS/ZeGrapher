@@ -18,7 +18,7 @@ jobs:
   build-windows-x64:
     uses: ./.github/workflows/windows-build-bundle.yml
     with:
-      msystem: UCRT64
+      msystem: CLANG64
 
   build-macos-x64:
     uses: ./.github/workflows/macos-build-bundle.yml
