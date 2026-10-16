@@ -31,16 +31,16 @@ Foldable {
       { icon: "dash-line", type: PlotStyle.Dash },
       { icon: "dash-dot-line", type: PlotStyle.DashDot },
       { icon: "dot-line", type: PlotStyle.Dot },
-      { path: "qrc:/icons/noLine.png", type: PlotStyle.NoLine },
+      { type: PlotStyle.NoLine },
     ]
 
     readonly property var pointStyles: [
-      { path: "qrc:/icons/squarePoint.png", type: PlotStyle.Square },
-      { path: "qrc:/icons/trianglePoint.png", type: PlotStyle.Triangle },
-      { path: "qrc:/icons/roundPoint.png", type: PlotStyle.Disc },
-      { path: "qrc:/icons/noPoint.png", type: PlotStyle.None },
-      { path: "qrc:/icons/crossPoint.png", type: PlotStyle.Cross },
-      { path: "qrc:/icons/rhombusPoint.png", type: PlotStyle.Rhombus },
+      { icon: "square-point", type: PlotStyle.Square },
+      { icon: "triangle-point", type: PlotStyle.Triangle },
+      { icon: "disc-point", type: PlotStyle.Disc },
+      { type: PlotStyle.None },
+      { icon: "cross-point", type: PlotStyle.Cross },
+      { icon: "rhombus-point", type: PlotStyle.Rhombus },
     ]
 
     GridLayout {

@@ -1,10 +1,5 @@
  <RCC>
     <qresource prefix="/">
-        <file>icons/roundPoint.png</file>
-        <file>icons/squarePoint.png</file>
-        <file>icons/rhombusPoint.png</file>
-        <file>icons/trianglePoint.png</file>
-        <file>icons/crossPoint.png</file>
         <file>icons/zoom-in-icon-dark.svg</file>
         <file>icons/zoom-out-icon-dark.svg</file>
         <file>icons/size-dark.svg</file>
@@ -12,8 +7,6 @@
         <file>icons/add-light.svg</file>
         <file>icons/delete-dark.svg</file>
         <file>icons/delete-light.svg</file>
-        <file>icons/noLine.png</file>
-        <file>icons/noPoint.png</file>
         <file>icons/selector-dark.svg</file>
         <file>icons/selector-light.svg</file>
         <file>icons/selector-flipped-dark.svg</file>
@@ -68,6 +61,16 @@
         <file>icons/check-light.svg</file>
         <file>icons/sample-dark.svg</file>
         <file>icons/sample-light.svg</file>
+        <file>icons/square-point-dark.svg</file>
+        <file>icons/square-point-light.svg</file>
+        <file>icons/disc-point-dark.svg</file>
+        <file>icons/disc-point-light.svg</file>
+        <file>icons/rhombus-point-dark.svg</file>
+        <file>icons/rhombus-point-light.svg</file>
+        <file>icons/triangle-point-dark.svg</file>
+        <file>icons/triangle-point-light.svg</file>
+        <file>icons/cross-point-dark.svg</file>
+        <file>icons/cross-point-light.svg</file>
         <file alias="icons/hand-holding-heart.svg">website/assets/icons/hand-holding-heart.svg</file>
     </qresource>
 </RCC>

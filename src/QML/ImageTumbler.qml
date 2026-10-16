@@ -5,8 +5,8 @@ import QtQuick.Controls.FluentWinUI3
 RowLayout {
   id: root
 
-  /// @brief the images to pick from, each one {icon}, an icon of icons/ in the
-  ///        theme of the app, or {path}, the path of a picture
+  /// @brief the images to pick from: {icon}, an icon from icons/ in the app's
+  ///        theme, or {} for a blank entry
   property alias model: tumbler.model
   property int fillMode: Image.PreserveAspectFit
   property alias currentIndex: tumbler.currentIndex
@@ -34,7 +34,7 @@ RowLayout {
     delegate: Image {
       required property var modelData
 
-      source: modelData.icon ? ZeStyle.icon(modelData.icon) : modelData.path
+      source: modelData.icon ? ZeStyle.icon(modelData.icon) : ""
       opacity: 0.4 + Math.max(0, 1 - Math.abs(Tumbler.displacement)) * (0.1 + 0.5 * enabled)
       fillMode: root.fillMode
     }
