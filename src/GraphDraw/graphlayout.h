@@ -156,7 +156,10 @@ protected:
 
   TextMetrics metrics, titleMetrics;
   ZeLinAxisTicks xAxisTicks, yAxisTicks;
-  QMarginsF margins{30, 20, 30, 30};
+  /// @brief the margins that every compute() starts from, so the layout does
+  ///        not depend on the one before
+  static constexpr QMarginsF initialMargins{30, 20, 30, 30};
+  QMarginsF margins = initialMargins;
 
   /// @brief the layout that compute() builds
   GraphLayout layout;

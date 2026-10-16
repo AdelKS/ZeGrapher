@@ -150,6 +150,7 @@ GraphLayout GraphLayoutEngine::compute(const QRectF& figure)
 
   // the margins hold the tick labels, and the labels depend on the room that
   // the margins leave to the graph
+  margins = initialMargins;
   for (int pass = 0; pass != 3; pass++)
   {
     const QMarginsF before = margins;
