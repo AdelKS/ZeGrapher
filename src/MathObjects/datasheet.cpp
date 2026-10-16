@@ -43,7 +43,7 @@ int DataSheet::rowCount(const QModelIndex &parent) const
 
 QVariant DataSheet::data(const QModelIndex &index, int role) const
 {
-  if (role != Qt::DisplayRole)
+  if (not index.isValid() or role != Qt::UserRole)
     return QVariant();
 
   return QVariant::fromValue(columns.at(index.row()));
@@ -51,7 +51,7 @@ QVariant DataSheet::data(const QModelIndex &index, int role) const
 
 QHash<int, QByteArray> DataSheet::roleNames() const
 {
-  return { {Qt::DisplayRole, "dataPtr"} };
+  return { {Qt::UserRole, "dataPtr"} };
 }
 
 int DataSheet::indexOfColumn(const Data* d) const

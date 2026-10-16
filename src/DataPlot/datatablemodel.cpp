@@ -50,9 +50,10 @@ int DataTableModel::columnCount(const QModelIndex& parent) const
   return tableColumns.size();
 }
 
-QVariant DataTableModel::data(const QModelIndex& index, int) const
+QVariant DataTableModel::data(const QModelIndex& index, int role) const
 {
-  Q_ASSERT(index.column() < columnCount());
+  if (not index.isValid() or (role != Qt::DisplayRole and role != Qt::EditRole))
+    return {};
 
   const mathobj::Data* dataObj = tableColumns.at(index.column());
   std::optional<std::string> opt_str = dataObj->zcMathObj.get_data_point(index.row());
@@ -175,8 +176,11 @@ void DataTableModel::removeCell(const QModelIndex& cell)
     emit dataChanged(cell, index(rowCount() - 1, cell.column()));
 }
 
-QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int) const
+QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+  if (role != Qt::DisplayRole)
+    return {};
+
   if (orientation == Qt::Orientation::Horizontal)
     return columnNames.at(section);
   else
@@ -211,7 +215,8 @@ void DataTableModel::deregisterTableColumn(zg::mathobj::Data* d)
     columnNames.erase(columnNames.begin() + index);
     endRemoveColumns();
     emit columnCountChanged();
-    emit headerDataChanged(Qt::Orientation::Horizontal, index, columnCount()-1);
+    if (index < columnCount())
+      emit headerDataChanged(Qt::Orientation::Horizontal, index, columnCount()-1);
   }
 }
 
@@ -251,8 +256,11 @@ void DataTableModel::refreshColumnName(const zg::mathobj::Data* d)
   emit headerDataChanged(Qt::Orientation::Horizontal, index, index);
 }
 
-Qt::ItemFlags DataTableModel::flags(const QModelIndex &) const
+Qt::ItemFlags DataTableModel::flags(const QModelIndex& index) const
 {
+  if (not index.isValid())
+    return Qt::NoItemFlags;
+
   return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemNeverHasChildren;
 }
 

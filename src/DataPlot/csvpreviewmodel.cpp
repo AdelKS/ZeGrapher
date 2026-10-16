@@ -52,24 +52,30 @@ int CsvPreviewModel::columnCount(const QModelIndex& parent) const
   return csvData.isEmpty() ? 0 : csvData.front().size();
 }
 
-QVariant CsvPreviewModel::data(const QModelIndex& index, int) const
+QVariant CsvPreviewModel::data(const QModelIndex& index, int role) const
 {
-  Q_ASSERT(index.column() < columnCount());
-  Q_ASSERT(index.row() < rowCount());
+  if (not index.isValid() or role != Qt::DisplayRole)
+    return {};
 
   return csvData.at(index.row()).at(index.column());
 }
 
-QVariant CsvPreviewModel::headerData(int section, Qt::Orientation orientation, int) const
+QVariant CsvPreviewModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+  if (role != Qt::DisplayRole)
+    return {};
+
   if (orientation == Qt::Orientation::Horizontal)
     return columnNames.at(section);
   else
     return section;
 }
 
-Qt::ItemFlags CsvPreviewModel::flags(const QModelIndex &) const
+Qt::ItemFlags CsvPreviewModel::flags(const QModelIndex& index) const
 {
+  if (not index.isValid())
+    return Qt::NoItemFlags;
+
   return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
 }
 

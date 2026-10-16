@@ -28,7 +28,7 @@ int MathWorld::rowCount(const QModelIndex &parent) const
 
 QVariant MathWorld::data(const QModelIndex &index, int role) const
 {
-  if (role != Qt::DisplayRole)
+  if (not index.isValid() or role != Qt::UserRole)
     return QVariant();
 
   return QVariant::fromValue(mathObjects.at(index.row()));
@@ -123,7 +123,8 @@ void MathWorld::objectUpdated()
 
 QHash<int, QByteArray> MathWorld::roleNames() const
 {
-  return { {Qt::DisplayRole, "mathObjPtr"} };
+  // views read DisplayRole as text, so the pointer gets its own role
+  return { {Qt::UserRole, "mathObjPtr"} };
 }
 
 void MathWorld::setSchrodingerConstant(zg::mathobj::Constant* c)
