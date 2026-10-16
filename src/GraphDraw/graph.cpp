@@ -159,8 +159,8 @@ void Graph::drawLabels(bool asPaths)
 void Graph::exportImage(QUrl filename)
 {
   const QString path = filename.toLocalFile();
-  const QSize pixels = (settings.getSize().cmSheetSize * settings.pixelDensity
-                        * window()->devicePixelRatio()).toSize();
+  const double pxPerCm = settings.pixelDensity * window()->effectiveDevicePixelRatio();
+  const QSize pixels = (settings.getSize().cmSheetSize * pxPerCm).toSize();
   QImage image(pixels, QImage::Format_RGB32);
 
   if (image.isNull())
@@ -171,6 +171,10 @@ void Graph::exportImage(QUrl filename)
   }
 
   image.fill(settings.getBackgroundColor().getCurrent().rgb());
+
+  // so the file prints at the size of the sheet
+  image.setDotsPerMeterX(qRound(pxPerCm * 100));
+  image.setDotsPerMeterY(qRound(pxPerCm * 100));
 
   QPainter imagePainter(&image);
 
