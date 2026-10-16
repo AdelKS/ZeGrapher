@@ -31,9 +31,9 @@ namespace mathobj {
 Sampling::Sampling(QObject *parent)
   : QObject(parent), source(this), start(this), end(this), step(this)
 {
-  start.setImplicitName("sampling_start");
-  end.setImplicitName("sampling_end");
-  step.setImplicitName("sampling_step");
+  start.setImplicitName("zg_internal_sampling_start");
+  end.setImplicitName("zg_internal_sampling_end");
+  step.setImplicitName("zg_internal_sampling_step");
 
   start.setExpression("0");
   end.setExpression("10");

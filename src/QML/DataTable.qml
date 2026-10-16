@@ -276,7 +276,7 @@ Item {
 
         Expr {
           id: cellBackend
-          implicitName: "tableCell"
+          implicitName: "zg_internal_table_cell"
           expression: display
         }
 
@@ -305,7 +305,7 @@ Item {
 
           Expr {
             id: editCellBackend
-            implicitName: "editCell"
+            implicitName: "zg_internal_edit_cell"
             expression: display
           }
 

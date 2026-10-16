@@ -42,6 +42,10 @@ public:
   explicit Expr(QObject *parent = nullptr);
   ~Expr();
 
+  /// @brief the prefix of internal implicit names, which share the namespace
+  ///        of user objects. setImplicitName() gives each one its own number
+  static inline const QString internalPrefix = "zg_internal_";
+
   Q_INVOKABLE State setExpression(QString);
   Q_INVOKABLE State setImplicitName(QString name);
   void setState(State s);

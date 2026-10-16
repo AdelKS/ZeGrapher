@@ -43,8 +43,8 @@ ZeGraphSettings::ZeGraphSettings(QObject* parent)
       ThemedColor{.dark = isDarkTheme() ? windowColor() : "#202326", .light = Qt::white}),
     backgroundColor(defaultBgColor)
 {
-  xMultiplier.setImplicitName("xMultiplier");
-  yMultiplier.setImplicitName("yMultiplier");
+  xMultiplier.setImplicitName("zg_internal_x_multiplier");
+  yMultiplier.setImplicitName("zg_internal_y_multiplier");
 
   paletteTimer.setInterval(500);
   paletteTimer.setSingleShot(true);

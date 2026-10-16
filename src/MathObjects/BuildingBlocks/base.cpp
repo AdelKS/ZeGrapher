@@ -5,8 +5,8 @@ namespace zg {
 Base::Base(DefaultStringRangeProvider p, QObject* parent)
   : QObject(parent), start(this), end(this), defaultStringRangeProvider(p)
 {
-  start.setImplicitName("start");
-  end.setImplicitName("end");
+  start.setImplicitName("zg_internal_start");
+  end.setImplicitName("zg_internal_end");
   resetStart();
   resetEnd();
 }

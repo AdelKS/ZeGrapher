@@ -31,21 +31,16 @@ void Expr::setState(State s)
 
 State Expr::setImplicitName(QString name)
 {
-  const QString oldName = implicitName;
-  size_t i = 1;
-  implicitName = name;
-  zcMathObj.set_name(implicitName.toStdString());
+  static size_t internalCount = 0;
+  if (name.startsWith(internalPrefix))
+    name += '_' + QString::number(internalCount++);
 
-  auto name_status = zcMathObj.name_status();
-  while (not name_status and name_status.error().type == zc::Error::NAME_ALREADY_TAKEN)
+  if (name != implicitName)
   {
-    implicitName = name + QString::number(i++);
+    implicitName = name;
     zcMathObj.set_name(implicitName.toStdString());
-    name_status = zcMathObj.name_status();
-  }
-
-  if (implicitName != oldName)
     emit implicitNameChanged();
+  }
 
   return setExpression(expression);
 }
