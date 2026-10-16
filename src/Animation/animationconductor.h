@@ -76,11 +76,12 @@ protected:
   std::optional<time_point> last_step_timestamp;
 };
 
-inline AnimationConductor animationConductor(nullptr);
+/// @brief set by Globals
+inline AnimationConductor* animationConductor = nullptr;
 
 inline AnimationConductor* AnimationConductor::create(QQmlEngine*, QJSEngine*)
 {
-  return qmlSingleton(&animationConductor);
+  return qmlSingleton(animationConductor);
 }
 
 } // namespace zg

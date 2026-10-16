@@ -124,16 +124,16 @@ void Data::setShowInTable(bool s)
 
   showInTable = s;
   if (showInTable)
-    dataTableModel.registerTableColumn(this);
+    dataTableModel->registerTableColumn(this);
   else
-    dataTableModel.deregisterTableColumn(this);
+    dataTableModel->deregisterTableColumn(this);
 
   emit showInTableChanged();
 }
 
 Data::~Data()
 {
-  dataTableModel.deregisterTableColumn(this);
+  dataTableModel->deregisterTableColumn(this);
 }
 
 std::optional<zg::SamplingSettings> Data::getSamplingSettings()

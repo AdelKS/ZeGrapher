@@ -46,7 +46,7 @@ static std::vector<Sampler::Plottable> plottables()
 {
   std::vector<Sampler::Plottable> objects;
 
-  for (zg::MathObject* o: zg::mathWorld.getMathObjects())
+  for (zg::MathObject* o: zg::mathWorld->getMathObjects())
   {
     if (zg::mathobj::DataSheet* dataSheet = o->getDataSheet())
       for (zg::mathobj::Data* column: dataSheet->getColumns())
@@ -59,7 +59,7 @@ static std::vector<Sampler::Plottable> plottables()
 
 void Sampler::refresh_schrodinger_keys()
 {
-  schrodinger_constant = zg::mathWorld.getSchrodingerConstant();
+  schrodinger_constant = zg::mathWorld->getSchrodingerConstant();
   if (not schrodinger_constant)
   {
     schrodinger_curves_map.clear();

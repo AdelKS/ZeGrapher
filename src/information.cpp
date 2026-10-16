@@ -116,14 +116,14 @@ bool Information::restoreLastDocument()
 
 void Information::loadExampleDocument()
 {
-  auto* cst = zg::mathWorld.addMathObject(zg::MathObject::CONSTANT)->getConstant();
+  auto* cst = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT)->getConstant();
   cst->set_value(2);
   cst->setName("a");
 
-  auto* cos = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+  auto* cos = zg::mathWorld->addMathObject(zg::MathObject::EQUATION)->getEquation();
   cos->setEquation("f(x) = a * cos(x)");
 
-  auto* fibo = zg::mathWorld.addMathObject(zg::MathObject::EQUATION)->getEquation();
+  auto* fibo = zg::mathWorld->addMathObject(zg::MathObject::EQUATION)->getEquation();
   fibo->setEquation("u(n) = a ; a ; u(n-2) + u(n-1)");
 }
 
@@ -159,7 +159,7 @@ void Information::readFailed(const QString& file, const QString& details)
 void Information::exportYaml(QUrl filename)
 {
   writeYaml(filename, POD{.zegrapher = SOFTWARE_VERSION,
-                          .math_objects = zg::mathWorld.exportPod(),
+                          .math_objects = zg::mathWorld->exportPod(),
                           .graph = graphSettings.exportPod()});
 }
 
@@ -281,6 +281,6 @@ void Information::importYaml(QUrl filename)
 
   else {
     graphSettings.importPod(std::move(pod.graph).value_or(ZeGraphSettings::POD{}));
-    if (pod.math_objects) zg::mathWorld.importPod(std::move(*pod.math_objects));
+    if (pod.math_objects) zg::mathWorld->importPod(std::move(*pod.math_objects));
   }
 }

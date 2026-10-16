@@ -102,11 +102,12 @@ protected:
   friend struct mathobj::NamedRef;
 };
 
-inline MathWorld mathWorld(nullptr);
+/// @brief set by Globals
+inline MathWorld* mathWorld = nullptr;
 
 inline MathWorld* MathWorld::create(QQmlEngine*, QJSEngine*)
 {
-  return qmlSingleton(&mathWorld);
+  return qmlSingleton(mathWorld);
 }
 
 } // namespace zg

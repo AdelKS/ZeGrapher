@@ -6,13 +6,13 @@ namespace mathobj {
 namespace shared {
 
 ZcMathObjectBB::ZcMathObjectBB()
-  : zcMathObj(zg::mathWorld.backend.new_object())
+  : zcMathObj(zg::mathWorld->backend.new_object())
 {
 }
 
 ZcMathObjectBB::~ZcMathObjectBB()
 {
-  std::ignore = zg::mathWorld.backend.erase(zcMathObj);
+  std::ignore = zg::mathWorld->backend.erase(zcMathObj);
 }
 
 bool ZcMathObjectBB::isContinuous() const

@@ -287,7 +287,7 @@ void CsvPreviewModel::loadIntoWorld()
         return QString::fromStdString(in_home ? ("~" / rel).string() : path.string());
       };
 
-      dataSheet = mathWorld.addMathObject(MathObject::DATASHEET)->getDataSheet();
+      dataSheet = mathWorld->addMathObject(MathObject::DATASHEET)->getDataSheet();
       dataSheet->setNotes(tr("imported from %1").arg(display_path(csvFile)));
     }
 

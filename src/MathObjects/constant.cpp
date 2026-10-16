@@ -11,7 +11,7 @@ Constant::Constant(QObject *parent): QObject(parent)
 
 Constant::~Constant()
 {
-  mathWorld.unsetSchrodingerConstant(this);
+  mathWorld->unsetSchrodingerConstant(this);
 }
 
 void Constant::setState(State s)
@@ -49,14 +49,14 @@ void Constant::setDeadAndAlive(bool s)
   /// @brief give a NaN value so Exprs that depend on it get a warning color
   if (deadAndAlive)
   {
-    mathWorld.setSchrodingerConstant(this);
+    mathWorld->setSchrodingerConstant(this);
     zcMathObj = std::nan("");
     value = std::nan("");
     emit valueChanged();
   }
   else
   {
-    mathWorld.unsetSchrodingerConstant(this);
+    mathWorld->unsetSchrodingerConstant(this);
     if (not std::isnan(from) and not std::isnan(to))
     {
       const double val = (from + to) / 2.;

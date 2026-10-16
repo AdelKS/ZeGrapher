@@ -66,9 +66,9 @@ Graph::Graph(QQuickItem *parent)
   connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ polish(); });
   connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ polish(); });
   connect(&settings, &ZeGraphSettings::pixelDensityChanged, this, [this]{ polish(); });
-  connect(&zg::mathWorld, &zg::MathWorld::updated, this, [this]{ polish(); });
+  connect(zg::mathWorld, &zg::MathWorld::updated, this, [this]{ polish(); });
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ polish(); });
-  connect(&zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ polish(); });
+  connect(zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ polish(); });
 
   emit settingsChanged();
 }

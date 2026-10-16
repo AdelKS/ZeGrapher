@@ -90,11 +90,12 @@ protected:
 
 };
 
-inline DataTableModel dataTableModel(nullptr);
+/// @brief set by Globals
+inline DataTableModel* dataTableModel = nullptr;
 
 inline DataTableModel* DataTableModel::create(QQmlEngine*, QJSEngine*)
 {
-  return qmlSingleton(&dataTableModel);
+  return qmlSingleton(dataTableModel);
 }
 
 } // namespace zg

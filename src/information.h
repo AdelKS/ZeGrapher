@@ -155,7 +155,7 @@ protected:
   QList<IOError> ioErrors;
 };
 
-///@note defined in the main() to come after QGuiApplication
+/// @brief set by Globals
 inline Information* information = nullptr;
 
 inline Information* Information::create(QQmlEngine*, QJSEngine*)

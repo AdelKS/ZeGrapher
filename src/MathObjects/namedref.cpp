@@ -72,7 +72,7 @@ bool NamedRef::isDiscrete() const
 
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
 {
-  return zg::mathWorld.backend.get(input_name.toStdString());
+  return zg::mathWorld->backend.get(input_name.toStdString());
 }
 
 } // namespace mathobj

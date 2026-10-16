@@ -86,7 +86,7 @@ QString Sampling::apply()
     values.push_back(res and std::isfinite(*res) ? std::format("{}", *res) : std::string());
   }
 
-  dataTableModel.replaceColumnData(column, std::move(values));
+  dataTableModel->replaceColumnData(column, std::move(values));
 
   return {};
 }

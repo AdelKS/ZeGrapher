@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "information.h"
+#include "globals.h"
 #include "structures.h"
 #include "buildconfig.h"
 
@@ -98,8 +98,8 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
 
   // define after QGuiApp and QCoreApp::set* because it will use stuff from them
-  Information info(nullptr);
-  information = &info;
+  Globals globals;
+  Information& info = *information;
 
   QTranslator translator;
   QQmlApplicationEngine engine;

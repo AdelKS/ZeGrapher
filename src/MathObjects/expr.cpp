@@ -7,12 +7,12 @@ namespace mathobj {
 Expr::Expr(QObject *parent)
   : QObject(parent), shared::ZcMathObjectBB()
 {
-  mathWorld.trackExprObject(this);
+  mathWorld->trackExprObject(this);
 }
 
 Expr::~Expr()
 {
-  mathWorld.untrackExprObject(this);
+  mathWorld->untrackExprObject(this);
 }
 
 bool Expr::isValid()
