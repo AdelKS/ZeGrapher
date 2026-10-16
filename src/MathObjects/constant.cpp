@@ -1,6 +1,9 @@
 #include "MathObjects/constant.h"
 #include "Utils/yaml.h"
 #include "information.h"
+
+#include <QSignalBlocker>
+
 namespace zg {
 namespace mathobj {
 
@@ -11,7 +14,10 @@ Constant::Constant(QObject *parent): QObject(parent)
 
 Constant::~Constant()
 {
-  mathWorld->unsetSchrodingerConstant(this);
+  // setSchrodingerConstant() updates the constant it unsets
+  const QSignalBlocker blocker(this);
+  if (isDeadAndAlive())
+    mathWorld->setSchrodingerConstant(nullptr);
 }
 
 void Constant::setState(State s)
@@ -39,33 +45,34 @@ void Constant::setName(QString new_input_name)
   sync();
 }
 
+bool Constant::isDeadAndAlive() const
+{
+  return mathWorld->getSchrodingerConstant() == this;
+}
+
 void Constant::setDeadAndAlive(bool s)
 {
-  if (s == deadAndAlive)
-    return;
-
-  deadAndAlive = s;
-
-  /// @brief give a NaN value so Exprs that depend on it get a warning color
-  if (deadAndAlive)
-  {
+  if (s)
     mathWorld->setSchrodingerConstant(this);
+  else if (isDeadAndAlive())
+    mathWorld->setSchrodingerConstant(nullptr);
+}
+
+void Constant::schrodingerSwitched()
+{
+  // a NaN value gives the expressions that use the constant a warning color
+  if (isDeadAndAlive())
+  {
     zcMathObj = std::nan("");
     value = std::nan("");
-    emit valueChanged();
   }
-  else
+  else if (not std::isnan(from) and not std::isnan(to))
   {
-    mathWorld->unsetSchrodingerConstant(this);
-    if (not std::isnan(from) and not std::isnan(to))
-    {
-      const double val = (from + to) / 2.;
-      zcMathObj = val;
-      value = val;
-      emit valueChanged();
-    }
+    value = (from + to) / 2.;
+    zcMathObj = value;
   }
 
+  emit valueChanged();
   emit deadAndAliveChanged();
   emit updated();
 }
@@ -181,7 +188,7 @@ Constant::POD Constant::exportPod() const
     .to = get_opt_edge(to, upperMul),
     .steps = yml::not_default(steps, defaultSteps),
     .loop_type = yml::not_default(loopType, defaultLoopType),
-    .dead_and_alive = yml::not_default(deadAndAlive, false),
+    .dead_and_alive = yml::not_default(isDeadAndAlive(), false),
     .duration = yml::not_default(duration.count(), defaultDuration.count())
   };
 }

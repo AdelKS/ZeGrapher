@@ -33,7 +33,7 @@ void AnimatedConstant::setPlaying(bool p)
   if (p == playing)
     return;
 
-  if (p and backend->deadAndAlive)
+  if (p and backend->isDeadAndAlive())
     return;
 
   playing = p;
@@ -46,7 +46,7 @@ void AnimatedConstant::setSliderPos(double v)
   if (sliderPos == v)
     return;
 
-  if (backend->deadAndAlive)
+  if (backend->isDeadAndAlive())
     return;
 
   assert(0. <= v);
@@ -64,7 +64,7 @@ void AnimatedConstant::setSliderPos(double v)
 
 void AnimatedConstant::backendUpdate()
 {
-  if (std::isnan(backend->from) or std::isnan(backend->to) or backend->deadAndAlive)
+  if (std::isnan(backend->from) or std::isnan(backend->to) or backend->isDeadAndAlive())
     setPlaying(false);
 
   updateSliderPosFromRange();

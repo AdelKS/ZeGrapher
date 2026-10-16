@@ -59,8 +59,8 @@ public:
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
   Q_INVOKABLE void moveMathObject(int from, int to);
 
+  /// @brief the constant that takes all its values at once, nullptr for none
   Q_INVOKABLE void setSchrodingerConstant(zg::mathobj::Constant* c);
-  Q_INVOKABLE void unsetSchrodingerConstant(zg::mathobj::Constant* c);
   zg::mathobj::Constant* getSchrodingerConstant() { return schrodingerConstant; }
 
   /// @brief add Expr object that is not part of the model because its widget is elsewhere

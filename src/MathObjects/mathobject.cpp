@@ -104,6 +104,8 @@ MathObject::variant_t MathObject::createBackend(Type t)
           connect(n, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
           connect(n, &Base::discreteChanged, this, &MathObject::discreteChanged);
         }
+        else if constexpr (std::same_as<T, mathobj::Constant>)
+          connect(n, &mathobj::Constant::deadAndAliveChanged, this, &MathObject::schrodingerChanged);
       },
     },
     newBackend
@@ -264,7 +266,7 @@ void MathObject::setSchrodinger(bool s)
 {
   std::visit(
     zc::utils::overloaded{
-      [s](mathobj::Constant* c) { c->setDeadAndAlive(s); },
+      [](mathobj::Constant*) {},
       [](mathobj::DataSheet*) {},
       [s](auto* v) { v->setSchrodinger(s); }
     },

@@ -132,28 +132,15 @@ void MathWorld::setSchrodingerConstant(zg::mathobj::Constant* c)
   if (schrodingerConstant == c)
     return;
 
-  // make any eventual already shrodinger constant lose its status
-  if (schrodingerConstant)
-    schrodingerConstant->setDeadAndAlive(false);
+  if (zg::mathobj::Constant* old = std::exchange(schrodingerConstant, c))
+    old->schrodingerSwitched();
 
-  schrodingerConstant = c;
-
-  updateSchrodingerStatus();
-
-  emit schrodingerConstantChanged();
-}
-
-void MathWorld::unsetSchrodingerConstant(zg::mathobj::Constant* c)
-{
-  if (schrodingerConstant != c or c == nullptr)
-    return;
-
-  schrodingerConstant = nullptr;
+  if (c)
+    c->schrodingerSwitched();
 
   updateSchrodingerStatus();
 
   emit schrodingerConstantChanged();
-  emit updated();
 }
 
 void MathWorld::updateSchrodingerStatus()

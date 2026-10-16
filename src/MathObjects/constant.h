@@ -30,6 +30,7 @@ namespace zg {
 using seconds = std::chrono::duration<double>;
 
 class AnimatedConstant;
+class MathWorld;
 
 namespace mathobj {
 
@@ -45,7 +46,7 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   Q_PROPERTY(double to WRITE setTo MEMBER to NOTIFY toChanged)
   Q_PROPERTY(int steps WRITE setSteps MEMBER steps NOTIFY stepsChanged)
   Q_PROPERTY(LoopType loopType WRITE setLoopType MEMBER loopType NOTIFY loopTypeChanged)
-  Q_PROPERTY(bool deadAndAlive WRITE setDeadAndAlive MEMBER deadAndAlive NOTIFY deadAndAliveChanged)
+  Q_PROPERTY(bool deadAndAlive WRITE setDeadAndAlive READ isDeadAndAlive NOTIFY deadAndAliveChanged)
   Q_PROPERTY(double duration WRITE setDuration READ getDuration NOTIFY durationChanged)
   Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
@@ -83,7 +84,8 @@ public:
   double getTo() const { return to; }
   int getSteps() const { return steps; }
   double getDuration() const { return duration.count(); }
-  bool isDeadAndAlive() const { return deadAndAlive; }
+  /// @brief true when it is the Schrödinger constant of MathWorld
+  bool isDeadAndAlive() const;
   const State& getState() const { return state; }
 
   bool isValid() const { return state.isValid(); }
@@ -119,6 +121,9 @@ signals:
   void stateChanged();
 
 protected:
+  /// @brief follows MathWorld::setSchrodingerConstant()
+  void schrodingerSwitched();
+
   void constrainValue();
 
   double from = std::nan("");
@@ -128,7 +133,6 @@ protected:
 
   LoopType loopType = defaultLoopType;
   seconds duration = defaultDuration;
-  bool deadAndAlive = false;
 
   static constexpr int defaultSteps = 5;
   static constexpr LoopType defaultLoopType = ONESHOT;
@@ -143,6 +147,7 @@ protected:
   /// @brief so value can be changed without triggering signals
   ///        used in animations
   friend class zg::AnimatedConstant;
+  friend class zg::MathWorld;
 };
 
 }
