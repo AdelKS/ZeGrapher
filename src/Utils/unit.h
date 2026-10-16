@@ -141,7 +141,6 @@ struct Range2D
 
   point<U> amplitude() const { return point<U>{.x = x.amplitude(), .y = y.amplitude()}; }
   Range2D& translate(point<U> vec) { x.translate(vec.x); y.translate(vec.y); return *this; }
-  Range2D translated(point<U> vec) const { return Range1D{.x = x.translated(vec.x), .y = y.translated(vec.y)}; }
   bool contains(point<U> pt) const { return x.contains(pt.x) and y.contains(pt.y); }
 };
 
