@@ -123,6 +123,10 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     else return range.amplitude() / double(min_points);
   }();
 
+  // lines sample one point past each end to reach the range edges, but
+  // discrete objects have no values there
+  const zg::real_unit margin = discrete ? zg::real_unit{0.} : max_step;
+
   // add uniformly sampled points
   auto uniform_sample = [&](zg::real_unit start, zg::real_unit end) {
     std::vector<QPointF> px_points;
@@ -153,14 +157,14 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   if (curve.empty())
   {
-    std::tie(input_vals, curve, px_curve) = uniform_sample(get_acceptable_input(range.min - max_step), range.max + max_step);
+    std::tie(input_vals, curve, px_curve) = uniform_sample(get_acceptable_input(range.min - margin), range.max + margin);
   }
   else
   {
     const auto min = get_acceptable_input(range.min);
     if (input_vals.front() - min >= max_step)
     {
-      auto&& [x, f_x, px_f_x] = uniform_sample(min - max_step, input_vals.front() - max_step);
+      auto&& [x, f_x, px_f_x] = uniform_sample(min - margin, input_vals.front() - max_step);
       data.insert_chunk(0, x, f_x, px_f_x);
       assert(std::ranges::is_sorted(input_vals));
     }
@@ -168,7 +172,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     const auto max = get_acceptable_input(range.max);
     if (max - input_vals.back() >= max_step)
     {
-      auto&& [x, f_x, px_f_x] = uniform_sample(input_vals.back() + max_step, max + max_step);
+      auto&& [x, f_x, px_f_x] = uniform_sample(input_vals.back() + max_step, max + margin);
       data.insert_chunk(input_vals.size(), x, f_x, px_f_x);
       assert(std::ranges::is_sorted(input_vals));
     }

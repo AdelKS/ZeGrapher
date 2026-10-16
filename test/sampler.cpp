@@ -26,8 +26,8 @@ namespace {
 
 /// @brief samples the app's objects in a 1000x600 pixel view, with the y axis
 ///        over [-1.5, 1.5]
-/// @returns the size of each curve
-std::vector<size_t> sample(const QString& xmin, const QString& xmax, size_t maxPoints)
+/// @returns the inputs of each curve
+std::vector<std::vector<zg::real_unit>> sample(const QString& xmin, const QString& xmax, size_t maxPoints)
 {
   zg::GraphRange& range = information->graphSettings.range;
   range.x.min.setExpression(xmin);
@@ -43,14 +43,14 @@ std::vector<size_t> sample(const QString& xmin, const QString& xmax, size_t maxP
   sampler.max_points = maxPoints;
   sampler.update();
 
-  std::vector<size_t> sizes;
+  std::vector<std::vector<zg::real_unit>> inputs;
   for (const zg::SampledCurve& curve: sampler.getCurves())
   {
     // the inputs grow strictly, which the refinement and the drawing rely on
     test(std::ranges::adjacent_find(curve.input, std::greater_equal{}) == curve.input.end());
-    sizes.push_back(curve.size());
+    inputs.push_back(curve.input);
   }
-  return sizes;
+  return inputs;
 }
 
 }
@@ -74,19 +74,28 @@ int main()
       app.restart();
       zg::mathWorld->addMathObject()->getEquation()->setEquation(equation);
 
-      const std::vector<size_t> sizes = sample(xmin, xmax, maxPoints);
-      test(sizes.size() == 1);
-      test(sizes[0] >= 2);
+      const auto inputs = sample(xmin, xmax, maxPoints);
+      test(inputs.size() == 1);
+      test(inputs[0].size() >= 2);
 
       // the refinement stops once a pass ends above max_points, and each pass
       // at most doubles the points
-      test(sizes[0] < 2 * maxPoints);
+      test(inputs[0].size() < 2 * maxPoints);
     }
 
   // a range of infinite width is invalid, and gives no curve
   app.restart();
   zg::mathWorld->addMathObject()->getEquation()->setEquation("f(x) = x");
   test(sample("-1e308", "1e308", maxPoints).empty());
+
+  // a sequence has no values past its end
+  app.restart();
+  auto* sequence = zg::mathWorld->addMathObject()->getEquation();
+  sequence->setEquation("u(n) = 0 ; n");
+  sequence->setEnd("3");
+  const auto inputs = sample("-10", "10", maxPoints);
+  test(inputs.size() == 1);
+  test(inputs[0].back().v == 3);
 
   return 0;
 }
