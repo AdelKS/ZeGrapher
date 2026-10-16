@@ -20,6 +20,7 @@
 **
 ****************************************************************************/
 
+#include "Animation/animatedconstant.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
@@ -27,9 +28,6 @@
 
 namespace zg {
 
-using seconds = std::chrono::duration<double>;
-
-class AnimatedConstant;
 class MathWorld;
 
 namespace mathobj {
@@ -49,6 +47,7 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   Q_PROPERTY(bool deadAndAlive WRITE setDeadAndAlive READ isDeadAndAlive NOTIFY deadAndAliveChanged)
   Q_PROPERTY(double duration WRITE setDuration READ getDuration NOTIFY durationChanged)
   Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::AnimatedConstant* animation MEMBER animation CONSTANT)
 
 public:
 
@@ -142,6 +141,8 @@ protected:
 
   QString input_name;
   State state;
+
+  AnimatedConstant* animation;
 
   static constexpr double lowerMul = 0.5;
   static constexpr double upperMul = 1.5;

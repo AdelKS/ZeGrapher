@@ -51,8 +51,8 @@ public:
 
   explicit AnimationConductor(QObject *parent): QObject(parent) {}
 
-  Q_INVOKABLE void track(zg::AnimatedConstant*);
-  Q_INVOKABLE void untrack(zg::AnimatedConstant*);
+  void track(zg::AnimatedConstant*);
+  void untrack(zg::AnimatedConstant*);
   Q_INVOKABLE void animationStep();
 
   Q_INVOKABLE bool isAnimating() const {return animating; }

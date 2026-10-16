@@ -14,11 +14,6 @@ Item {
   // parallel columns; the row is as tall as the taller one.
   implicitHeight: Math.max(mainLayout.implicitHeight, nameLayout.implicitHeight)
 
-  AnimatedConstant {
-    id: wrapped_backend
-    backend: root.backend
-  }
-
   RowLayout {
     id: nameLayout
 
@@ -129,11 +124,11 @@ Item {
           id: slider
           anchors.fill: parent
 
-          onMoved: wrapped_backend.sliderPos = value
+          onMoved: root.backend.animation.sliderPos = value
 
           from: 0.
           stepSize: 0.01
-          value: wrapped_backend.sliderPos
+          value: root.backend.animation.sliderPos
           to: 1.
           enabled: !root.backend.deadAndAlive
         }
@@ -182,8 +177,8 @@ Item {
         ToolTip.text: checked ? qsTr("Pause the animation")
                               : qsTr("Start the animation")
 
-        checked: wrapped_backend.playing
-        onClicked: wrapped_backend.playing = checked;
+        checked: root.backend.animation.playing
+        onClicked: root.backend.animation.playing = checked;
       }
 
       IconButton {
@@ -299,14 +294,4 @@ Item {
       easing.type: Easing.InOutQuad
     }
   }
-
-
-  Component.onCompleted: {
-    AnimationConductor.track(wrapped_backend);
-  }
-
-  Component.onDestruction: {
-    AnimationConductor.untrack(wrapped_backend);
-  }
-
 }

@@ -7,7 +7,7 @@
 namespace zg {
 namespace mathobj {
 
-Constant::Constant(QObject *parent): QObject(parent)
+Constant::Constant(QObject *parent): QObject(parent), animation(new AnimatedConstant(this))
 {
   zcMathObj = std::nan("");
 }

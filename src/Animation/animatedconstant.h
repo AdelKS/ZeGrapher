@@ -20,29 +20,35 @@
 **
 ****************************************************************************/
 
-#include "MathObjects/constant.h"
+#include <QObject>
+#include <QtQmlIntegration/qqmlintegration.h>
 
-#include <cmath>
 #include <chrono>
 
 namespace zg {
 
-/// @brief Wrapper around zg::mathobj::Constant with animation knobs added
+using seconds = std::chrono::duration<double>;
+
+namespace mathobj {
+  struct Constant;
+}
+
+/// @brief a constant's animation, which sweeps its value from 'from' to 'to'
+/// @note the constant owns it, so it keeps playing while the constant's card
+///       is scrolled out of the list
 class AnimatedConstant: public QObject {
   Q_OBJECT
   QML_ELEMENT
+  QML_UNCREATABLE("the animation of a Constant, which creates it")
 
-  Q_PROPERTY(mathobj::Constant* backend WRITE setBackend MEMBER backend)
   Q_PROPERTY(bool playing WRITE setPlaying MEMBER playing NOTIFY playingChanged)
   Q_PROPERTY(double sliderPos WRITE setSliderPos MEMBER sliderPos NOTIFY sliderPosChanged)
 
 public:
-
-  explicit AnimatedConstant(QObject *parent = nullptr): QObject(parent) {};
+  explicit AnimatedConstant(mathobj::Constant* backend);
+  ~AnimatedConstant();
 
   bool isPlaying() const {return playing;}
-
-  zg::mathobj::Constant* getBackend() { return backend; }
 
 public slots:
   /// @brief make step, knowing that 'T' time has passed since the last step
@@ -50,8 +56,6 @@ public slots:
 
   void setSliderPos(double);
   void setPlaying(bool);
-
-  void setBackend(mathobj::Constant*);
 
 signals:
   void sliderPosChanged();
@@ -65,7 +69,7 @@ protected:
   void updateSliderPosFromRange();
   void updateSliderPosFromPhase();
 
-  mathobj::Constant* backend = nullptr;
+  mathobj::Constant* backend;
   bool playing = false;
   double sliderPos = 0.5;
 

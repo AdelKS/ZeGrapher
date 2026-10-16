@@ -1,14 +1,25 @@
 #include "animatedconstant.h"
+#include "animationconductor.h"
+#include "MathObjects/constant.h"
+
+#include <cmath>
 
 namespace zg {
 
-void AnimatedConstant::setBackend(mathobj::Constant* b)
+AnimatedConstant::AnimatedConstant(mathobj::Constant* backend)
+  : QObject(backend), backend(backend)
 {
-  backend = b;
-  connect(b, &mathobj::Constant::fromChanged, this, &AnimatedConstant::backendUpdate);
-  connect(b, &mathobj::Constant::toChanged, this, &AnimatedConstant::backendUpdate);
-  connect(b, &mathobj::Constant::valueChanged, this, &AnimatedConstant::backendUpdate);
-  connect(b, &mathobj::Constant::deadAndAliveChanged, this, &AnimatedConstant::backendUpdate);
+  connect(backend, &mathobj::Constant::fromChanged, this, &AnimatedConstant::backendUpdate);
+  connect(backend, &mathobj::Constant::toChanged, this, &AnimatedConstant::backendUpdate);
+  connect(backend, &mathobj::Constant::valueChanged, this, &AnimatedConstant::backendUpdate);
+  connect(backend, &mathobj::Constant::deadAndAliveChanged, this, &AnimatedConstant::backendUpdate);
+
+  animationConductor->track(this);
+}
+
+AnimatedConstant::~AnimatedConstant()
+{
+  animationConductor->untrack(this);
 }
 
 void AnimatedConstant::animationStep(seconds T)
