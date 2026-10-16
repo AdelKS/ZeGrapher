@@ -21,6 +21,7 @@
 #pragma once
 
 #include <QAbstractTableModel>
+#include <QPointer>
 #include <QUrl>
 
 #include <QtQmlIntegration/qqmlintegration.h>
@@ -40,7 +41,7 @@ class CsvPreviewModel: public QAbstractTableModel
   Q_PROPERTY(QUrl csvFile WRITE setCsvFile MEMBER csvFile)
   Q_PROPERTY(LoadingState loadingState READ getLoadingState NOTIFY loadingStateChanged)
   Q_PROPERTY(int progressPercentage READ getProgressPercentage NOTIFY progressPercentageChanged)
-  Q_PROPERTY(mathobj::DataSheet* dataSheet MEMBER dataSheet)
+  Q_PROPERTY(mathobj::DataSheet* dataSheet READ getDataSheet WRITE setDataSheet)
 
 public:
   CsvPreviewModel(QObject *parent = nullptr);
@@ -68,6 +69,9 @@ public:
 
   Q_INVOKABLE LoadingState getLoadingState() const { return loadingState; }
   Q_INVOKABLE int getProgressPercentage() const { return progressPercentage; }
+
+  mathobj::DataSheet* getDataSheet() const { return dataSheet; }
+  void setDataSheet(mathobj::DataSheet* sheet) { dataSheet = sheet; }
 
 public slots:
   void setMaxRowCount(size_t);
@@ -104,7 +108,9 @@ protected:
   /// @brief split csv data, rows[columns]
   QList<QStringList> csvData;
 
-  mathobj::DataSheet* dataSheet = nullptr;
+  /// @brief the sheet to load the columns into, a new one when empty
+  /// @note the user can delete the sheet while the import settings are open
+  QPointer<mathobj::DataSheet> dataSheet;
 
 };
 
