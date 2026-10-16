@@ -88,17 +88,21 @@ void InteractiveGraph::wheelEvent(QWheelEvent *event)
   // if CTRL is pressed, handle x and y separately
   const bool xy_separate = event->modifiers() & Qt::ControlModifier;
 
+  // the view mapper counts pixels from the graph's top left corner, inside the
+  // label margins
+  const zg::pixel_pt center = zg::pixel_pt::from(event->position() / totalScaleFactor
+                                                 - frame.source.layout.graph.topLeft());
+
   if (xy_separate)
   {
     if (x_delta != 0)
-      viewMapper.x.zoomView(zg::pixel_unit{event->position().x() / totalScaleFactor}, x_factor);
+      viewMapper.x.zoomView(center.x, x_factor);
 
     if (y_delta != 0)
-      viewMapper.y.zoomView(zg::pixel_unit{event->position().y() / totalScaleFactor}, y_factor);
+      viewMapper.y.zoomView(center.y, y_factor);
   }
   else
-    viewMapper.zoomView(zg::pixel_pt::from(event->position() / totalScaleFactor),
-                        y_delta != 0 ? y_factor : x_factor);
+    viewMapper.zoomView(center, y_delta != 0 ? y_factor : x_factor);
 
   settings.range.interactiveUpdate(viewMapper.getRange<zg::real>());
   event->accept();
