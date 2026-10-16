@@ -37,9 +37,13 @@
 class TestApp
 {
 public:
-  TestApp()
+  /// @brief where the windows of a test go
+  enum Platform { Offscreen, Native };
+
+  explicit TestApp(Platform platform = Offscreen)
   {
-    qputenv("QT_QPA_PLATFORM", "offscreen");
+    if (platform == Offscreen)
+      qputenv("QT_QPA_PLATFORM", "offscreen");
     // Information writes its files under AppConfigLocation when it is destroyed
     qputenv("XDG_CONFIG_HOME", folder.path().toUtf8());
     app = std::make_unique<QGuiApplication>(argc, argv);

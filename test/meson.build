@@ -17,6 +17,7 @@ if get_option('test')
     'gridcalculator',
     'schrodinger',
     'graphrange',
+    'render',
   ]
   test_args = {
     'documents': [meson.project_source_root() / 'website/scripts/make-images/documents'],
