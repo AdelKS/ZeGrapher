@@ -11,6 +11,8 @@ void UpdateCheck::refresh()
 {
   // website/scripts/build-website.py writes this file at the site root
   QNetworkRequest request(QUrl(HOMEPAGE_URL "/latest_tag"));
+  // without a timeout, a missing reply would keep the status at CHECKING
+  request.setTransferTimeout();
   manager.get(request);
   status = CHECKING;
   emit statusChanged();
