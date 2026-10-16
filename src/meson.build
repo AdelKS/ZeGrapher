@@ -24,6 +24,7 @@ source_files = [
   'GraphDraw/mathobjectdraw.cpp',
   'GraphDraw/viewmapper.cpp',
   'information.cpp',
+  'initresources.cpp',
   'MathObjects/BuildingBlocks/base.cpp',
   'MathObjects/BuildingBlocks/zcmathobjectbb.cpp',
   'MathObjects/constant.cpp',
@@ -266,9 +267,15 @@ endif
 zecalculator_dep = dependency('zecalculator', version: '>=0.13.2')
 glaze_dep = dependency('glaze', version: '>=7.7')
 
+# the app without main(), which the tests link too
+zegrapher_lib = static_library('zegrapher',
+  sources: [source_files, compiled_resources, shaders_resources_cpp, moc_files, qml_mods],
+  include_directories: [inc, buildconfig_inc] + qmlcpp_inc_dirs,
+  dependencies: [qt6_dep, zecalculator_dep, glaze_dep])
+
 executable('ZeGrapher',
-  sources: ['main.cpp', source_files, compiled_resources, shaders_resources_cpp, moc_files, qml_mods,
-            app_icon_windows],
+  sources: ['main.cpp', app_icon_windows],
+  link_with: zegrapher_lib,
   include_directories: [inc, buildconfig_inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, zecalculator_dep, glaze_dep],
   win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning

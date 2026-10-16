@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "globals.h"
+#include "initresources.h"
 #include "structures.h"
 #include "buildconfig.h"
 
@@ -73,6 +74,8 @@ private:
 
 int main(int argc, char *argv[])
 {
+  initResources();
+
   QGuiApplication a(argc, argv);
 
   a.setWindowIcon(QIcon(":/icons/ZeGrapher.svg"));

@@ -1,25 +1,25 @@
 inc = include_directories('../src')
 
-test_sources = files(
-  'algo_move_element.cpp',
-  'algo_move_elements_right.cpp',
-  'algo_erase.cpp',
-  'binomial_coefficient.cpp',
-  'versionparser.cpp',
-  'releasenotes.cpp'
-)
-
-fs = import('fs')
-
 if get_option('test')
-  foreach test_src: test_sources
-      test_exe = executable(
-        fs.stem(test_src), # name executable after source file without .cpp extension
-        test_src,
-        include_directories: [inc, buildconfig_inc],
-        dependencies: [qt6_dep, zecalculator_dep, glaze_dep]
-      )
+  tests = [
+    'algo_move_element',
+    'algo_move_elements_right',
+    'algo_erase',
+    'binomial_coefficient',
+    'versionparser',
+    'releasenotes',
+    'documents',
+  ]
+  test_args = {
+    'documents': [meson.project_source_root() / 'website/scripts/make-images/documents'],
+  }
 
-      test(fs.stem(test_src), test_exe) # register as a test
+  foreach name: tests
+    test_exe = executable(name, name + '.cpp',
+      link_with: zegrapher_lib,
+      include_directories: [inc, buildconfig_inc] + qmlcpp_inc_dirs,
+      dependencies: [qt6_dep, zecalculator_dep, glaze_dep])
+
+    test(name, test_exe, args: test_args.get(name, []))
   endforeach
 endif
