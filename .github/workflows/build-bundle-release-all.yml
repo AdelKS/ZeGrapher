@@ -14,11 +14,25 @@ jobs:
 
   build-linux-x64:
     uses: ./.github/workflows/linux-build-bundle.yml
+    with:
+      runner: ubuntu-26.04
+
+  build-linux-arm64:
+    uses: ./.github/workflows/linux-build-bundle.yml
+    with:
+      runner: ubuntu-26.04-arm
 
   build-windows-x64:
     uses: ./.github/workflows/windows-build-bundle.yml
     with:
+      runner: windows-2025
       msystem: CLANG64
+
+  build-windows-arm64:
+    uses: ./.github/workflows/windows-build-bundle.yml
+    with:
+      runner: windows-11-arm
+      msystem: CLANGARM64
 
   build-macos-x64:
     uses: ./.github/workflows/macos-build-bundle.yml
@@ -91,7 +105,9 @@ jobs:
     needs:
       - check-release
       - build-linux-x64
+      - build-linux-arm64
       - build-windows-x64
+      - build-windows-arm64
       - build-macos-x64
       - build-macos-arm64
     # Running ZeGrapher instances read 'latest' and 'latest_tag' from the site
@@ -119,7 +135,9 @@ jobs:
       - check-release
       - deploy-website
       - build-linux-x64
+      - build-linux-arm64
       - build-windows-x64
+      - build-windows-arm64
       - build-macos-x64
       - build-macos-arm64
 

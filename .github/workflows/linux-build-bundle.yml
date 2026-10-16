@@ -1,10 +1,14 @@
 name: linux build & bundle
 on:
   workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
 
 jobs:
   build-bundle:
-    runs-on: ubuntu-26.04
+    runs-on: ${{ inputs.runner }}
     defaults:
       run:
         shell: bash
@@ -41,5 +45,5 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v7
         with:
-          name: linux-artifact-x64
+          name: linux-artifact-${{ inputs.runner }}
           path: deploy/ZeGrapher*AppImage

@@ -3,13 +3,16 @@ name: Windows build & bundle
 on:
   workflow_call:
     inputs:
+      runner:
+        required: true
+        type: string
       msystem:
         required: true
         type: string
 
 jobs:
   build-bundle:
-    runs-on: windows-latest
+    runs-on: ${{ inputs.runner }}
     defaults:
       run:
         shell: msys2 {0}
