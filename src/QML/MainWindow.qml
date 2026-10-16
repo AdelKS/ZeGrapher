@@ -155,10 +155,10 @@ ApplicationWindow {
         onExportGraph: function (file: url)
         {
           if (file.toString().toLowerCase().endsWith(".pdf"))
-            interactiveGraph.graph.exportPDF(file);
+            interactiveGraph.exportPDF(file);
           else if (file.toString().toLowerCase().endsWith(".svg"))
-            interactiveGraph.graph.exportSVG(file);
-          else interactiveGraph.graph.exportImage(file);
+            interactiveGraph.exportSVG(file);
+          else interactiveGraph.exportImage(file);
         }
       }
 
@@ -317,14 +317,12 @@ ApplicationWindow {
       NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
     }
 
-    InteractiveGraphView {
+    InteractiveGraph {
       id: interactiveGraph
       anchors.centerIn: parent
 
       width: implicitWidth
       height: implicitHeight
-
-      hoverEnabled: true
 
       Connections {
         target: interactiveGraph.settings

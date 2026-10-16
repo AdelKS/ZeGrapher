@@ -83,7 +83,6 @@ qml_files = [
   'QML/IconButton.qml',
   'QML/IconRoundButton.qml',
   'QML/ImageTumbler.qml',
-  'QML/InteractiveGraphView.qml',
   'QML/LineEdit.qml',
   'QML/LinkLabel.qml',
   'QML/ListViewItem.qml',
