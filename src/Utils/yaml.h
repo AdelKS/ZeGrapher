@@ -25,6 +25,9 @@
 #include <QSize>
 #include <glaze/yaml.hpp>
 
+#include <algorithm>
+#include <cmath>
+
 template <>
 struct glz::meta<QString>
 {
@@ -65,6 +68,16 @@ std::optional<U> not_default(T s, T d = T())
 inline std::optional<double> not_nan(double v)
 {
   return not std::isnan(v) ? v : std::optional<double>{};
+}
+
+/// @brief 'v' within [lo, hi], a NaN at 'lo': a document can hold any number
+template <class T>
+T clamped(T v, T lo, T hi)
+{
+  if constexpr (std::is_floating_point_v<T>)
+    if (std::isnan(v))
+      return lo;
+  return std::clamp(v, lo, hi);
 }
 
 /// @brief read options that skip unknown keys, such as the ones a newer

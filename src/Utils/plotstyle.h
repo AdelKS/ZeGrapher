@@ -81,6 +81,8 @@ public:
 
   static constexpr double defaultLineWidth = 2.0;
   static constexpr double defaultPointWidth = 5.0;
+  static constexpr double minLineWidth = 0.1, maxLineWidth = 10;
+  static constexpr double minPointWidth = 0.25, maxPointWidth = 25;
 
   LineStyle defaultLineStyle() const;
   PointStyle defaultPointStyle() const;

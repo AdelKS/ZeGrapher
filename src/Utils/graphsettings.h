@@ -172,6 +172,7 @@ protected:
 
   static constexpr int defaultMinPoints = 7;
   static constexpr int defaultMaxPoints = 14;
+  static constexpr int lowestPointsLg2 = 2, highestPointsLg2 = 16;
 
   QFont font = zg::mathFont();
 

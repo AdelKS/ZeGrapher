@@ -21,13 +21,13 @@ void Ze1DSubgridSettings::importPod(POD p)
     show = *p.show;
 
   if (p.line_width)
-    lineWidth = *p.line_width;
+    lineWidth = zg::yml::clamped(*p.line_width, minLineWidth, maxLineWidth);
 
   if (p.color)
     color.importPod(std::move(*p.color));
 
-  if (p.subdivs and *p.subdivs >= 1)
-    subdivs = *p.subdivs;
+  if (p.subdivs)
+    subdivs = zg::yml::clamped(*p.subdivs, 1, maxSubdivs);
 }
 
 std::optional<Ze1DGridCommonSettings::POD> Ze1DGridCommonSettings::exportPod() const
@@ -49,7 +49,7 @@ void Ze1DGridCommonSettings::importPod(POD p)
     show = *p.show;
 
   if (p.line_width)
-    lineWidth = *p.line_width;
+    lineWidth = zg::yml::clamped(*p.line_width, minLineWidth, maxLineWidth);
 
   if (p.color)
     color.importPod(std::move(*p.color));

@@ -255,7 +255,9 @@ void ZeGraphSettings::importPod(POD p)
   // setting to its default. Every document holds the range
   if (p.range) range.importPod(std::move(*p.range));
 
-  zoom = p.zoom ? ZeZoomSettings{.zoomingType = ZoomingType::CUSTOM, .zoom = *p.zoom}
+  zoom = p.zoom ? ZeZoomSettings{.zoomingType = ZoomingType::CUSTOM,
+                                 .zoom = zg::yml::clamped(*p.zoom, ZeZoomSettings::minZoom,
+                                                          ZeZoomSettings::maxZoom)}
                 : ZeZoomSettings{};
   emit zoomSettingsChanged();
 
@@ -302,11 +304,11 @@ void ZeGraphSettings::importPod(POD p)
   if (p.background) backgroundColor.importPod(std::move(*p.background));
   emit backgroundColorChanged();
 
-  minPointsLg2 = p.min_points.value_or(defaultMinPoints);
-  emit minPointsLg2Changed();
-
-  maxPointsLg2 = p.max_points.value_or(defaultMaxPoints);
+  maxPointsLg2 = zg::yml::clamped(p.max_points.value_or(defaultMaxPoints), lowestPointsLg2, highestPointsLg2);
   emit maxPointsLg2Changed();
+
+  minPointsLg2 = zg::yml::clamped(p.min_points.value_or(defaultMinPoints), lowestPointsLg2, maxPointsLg2);
+  emit minPointsLg2Changed();
 
   // the POD gives the sheet size in one unit only
   updateSizes();

@@ -113,6 +113,34 @@ int main(int argc, char* argv[])
   test(object(1).isValid());
   test(object(2).isValid());
 
+  // a document can't set a value outside the panel's range
+  test(app.load(R"(graph:
+  min_points: 30
+  max_points: 70
+  zoom: -3
+  size: {scaling: .nan, width: 1e9, height: 5}
+  axes:
+    line_width: 0
+    x: {tick_spacing: 1000000000, max_digits: 0}
+  subgrid:
+    y: {subdivs: 100000}
+math_objects:
+  - type: constant
+    steps: 1000000000
+)"));
+  {
+    const ZeGraphSettings& s = information->graphSettings;
+    test(s.getMaxPointsLg2() == 16 and s.getMinPointsLg2() == 16);
+    test(s.getZoom().zoom == ZeZoomSettings::minZoom);
+    test(s.getSize().scalingFactor == ZeSizeSettings::minScaling);
+    test(s.getSize().cmSheetSize == QSizeF(ZeSizeSettings::maxCm, 5));
+    test(s.getAxes().lineWidth == ZeAxesSettings::minLineWidth);
+    test(s.getAxes().x.tickRelSpacing == ZeAxisSettings::maxTickSpacing);
+    test(s.getAxes().x.linSettings.maxDigitsNum == ZeAxisSettings::minDigits);
+    test(s.getSubgrid().y.subdivs == Ze1DSubgridSettings::maxSubdivs);
+    test(object(0).getConstant()->getSteps() == 100);
+  }
+
   // a document from a newer version loads, and the app suggests updating
   test(not app.load(R"(zegrapher: 99.0.0
 math_objects:

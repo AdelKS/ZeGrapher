@@ -92,6 +92,9 @@ public:
     operator bool () const { return title or tick_spacing or max_digits or multiplier; }
   };
 
+  static constexpr int maxTickSpacing = 5;
+  static constexpr int minDigits = 2, maxDigits = 10;
+
   /// @param multiplier  the axis multiplier's expression
   std::optional<POD> exportPod(const QString& multiplier) const;
   void importPod(POD);
@@ -124,6 +127,7 @@ public:
 
   static const ThemedColor defaultColor;
   static constexpr double defaultLineWith = 2.0;
+  static constexpr double minLineWidth = 0.1, maxLineWidth = 5;
 
   bool operator == (const ZeAxesSettings &other) const = default;
 

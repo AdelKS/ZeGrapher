@@ -31,12 +31,13 @@ std::optional<ZeSizeSettings::POD> ZeSizeSettings::exportPod() const
 void ZeSizeSettings::importPod(POD p)
 {
   if (p.scaling)
-    scalingFactor = *p.scaling;
+    scalingFactor = zg::yml::clamped(*p.scaling, minScaling, maxScaling);
 
   // a sheet without a positive size fills the window
   if (p.width.value_or(0) > 0 and p.height.value_or(0) > 0)
   {
     sheetFillsWindow = false;
-    cmSheetSize = QSizeF(*p.width, *p.height);
+    cmSheetSize = QSizeF(zg::yml::clamped(*p.width, minCm, maxCm),
+                         zg::yml::clamped(*p.height, minCm, maxCm));
   }
 }

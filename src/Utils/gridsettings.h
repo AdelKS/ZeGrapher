@@ -43,6 +43,7 @@ public:
   static constexpr bool defaultShow = true;
   static constexpr double defaultLineWidth = 0.6;
   static const ThemedColor defaultColor;
+  static constexpr double minLineWidth = 0.1, maxLineWidth = 2;
 
   struct POD {
     std::optional<bool> show;
@@ -72,6 +73,7 @@ public:
   int subdivs = defaultSubdivs;
 
   static constexpr int defaultSubdivs = 2;
+  static constexpr int maxSubdivs = 20;
   static constexpr bool defaultShow = true;
   static constexpr double defaultLineWidth = 0.6;
   static const ThemedColor defaultColor;

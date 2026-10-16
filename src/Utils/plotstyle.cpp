@@ -155,13 +155,13 @@ void PlotStyle::importPod(POD p)
   }
 
   if (p.line_width)
-    setLineWidth(*p.line_width);
+    setLineWidth(yml::clamped(*p.line_width, minLineWidth, maxLineWidth));
 
   if (p.line_style)
     setLineStyle(*p.line_style);
 
   if (p.point_width)
-    setPointWidth(*p.point_width);
+    setPointWidth(yml::clamped(*p.point_width, minPointWidth, maxPointWidth));
 
   if (p.point_style)
     setPointStyle(*p.point_style);

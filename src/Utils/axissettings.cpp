@@ -18,10 +18,10 @@ std::optional<ZeAxisSettings::POD> ZeAxisSettings::exportPod(const QString& mult
 void ZeAxisSettings::importPod(ZeAxisSettings::POD p)
 {
   if (p.tick_spacing)
-    tickRelSpacing = *p.tick_spacing;
+    tickRelSpacing = zg::yml::clamped(*p.tick_spacing, 0, maxTickSpacing);
 
   if (p.max_digits)
-    linSettings.maxDigitsNum = *p.max_digits;
+    linSettings.maxDigitsNum = zg::yml::clamped(*p.max_digits, minDigits, maxDigits);
 
   if (p.title)
     title = QString::fromStdString(*p.title);
@@ -49,7 +49,7 @@ void ZeAxesSettings::importPod(ZeAxesSettings::POD p)
     color.importPod(*p.color);
 
   if (p.line_width)
-    lineWidth = *p.line_width;
+    lineWidth = zg::yml::clamped(*p.line_width, minLineWidth, maxLineWidth);
 
   if (p.x)
     x.importPod(std::move(*p.x));

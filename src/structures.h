@@ -73,6 +73,9 @@ public:
 
   std::optional<POD> exportPod() const;
   void importPod(POD);
+
+  static constexpr double minScaling = 0.1, maxScaling = 5;
+  static constexpr double minCm = 1, maxCm = 1000;
 };
 
 struct ZoomingType: QObject
@@ -98,6 +101,8 @@ public:
 
   ZoomingType::Type zoomingType = ZoomingType::FITSHEET;
   double zoom = 1.0;
+
+  static constexpr double minZoom = 0.05, maxZoom = 10;
 
   bool operator == (const ZeZoomSettings &other) const = default;
 };

@@ -208,7 +208,7 @@ void Constant::importPod(Constant::POD p)
     setTo(*p.to);
 
   if (p.steps)
-    setSteps(*p.steps);
+    setSteps(yml::clamped(*p.steps, 1, maxSteps));
 
   if (p.loop_type)
     setLoopType(*p.loop_type);
@@ -217,7 +217,7 @@ void Constant::importPod(Constant::POD p)
     setDeadAndAlive(*p.dead_and_alive);
 
   if (p.duration)
-    setDuration(*p.duration);
+    setDuration(yml::clamped(*p.duration, minDuration, maxDuration));
 }
 
 }
