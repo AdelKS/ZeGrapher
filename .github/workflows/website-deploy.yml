@@ -28,8 +28,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc lftp python3-yaml
 
-      # The build takes the four bundles of the meson.build version from
-      # deploy/. It stops when one of them is missing.
+      # The build takes the six bundles for the meson.build version from
+      # deploy/, and stops if one is missing.
       - name: Download the bundles
         uses: actions/download-artifact@v5
         with:

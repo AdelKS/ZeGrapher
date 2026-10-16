@@ -102,7 +102,7 @@ The download tiles
 ------------------
 ../appdata/releases.py reads the version of the site from meson.build.
 The scripts of deploy/ name every bundle after that version, and write it to
-deploy/. The build takes the four bundles of that version from deploy/, copies
+deploy/. The build takes the six bundles of that version from deploy/, copies
 each one into <out>/download/, and links the tile to it. The date under the
 tiles is the day of the build.
 
@@ -176,7 +176,9 @@ BLOCKS = ("donation", "downloads", "gallery")
 # scripts name bundles 'ZeGrapher-<platform>-<architecture>-<version>'
 BUNDLES = {
     ("Linux", "x86_64"): ".AppImage",
+    ("Linux", "arm64"): ".AppImage",
     ("Windows", "x86_64"): ".7z",
+    ("Windows", "arm64"): ".7z",
     ("macOS", "arm64"): ".dmg",
     ("macOS", "x86_64"): ".dmg",
 }
@@ -418,7 +420,7 @@ def read_bundles(folder: Path, version: str) -> dict:
     missing = [path.name for path in bundles.values() if not path.is_file()]
     if missing:
         sys.exit(f"{folder} holds no {', '.join(missing)}. Every tile shows one "
-                 f"platform, so the site needs the four bundles of {version}")
+                 f"platform, so the site needs the six bundles of {version}")
 
     return bundles
 
@@ -465,10 +467,15 @@ def downloads_html(repo: str, release: dict | None, lang: str) -> str:
     source = {key: translated(lang, "downloads", key)[0]
               for key in ("source", "releases", "issues")}
     tiles = [
-        download_tile("linux", "Linux", links["Linux", "x86_64"], []),
-        download_tile("windows", "Windows", links["Windows", "x86_64"], []),
+        download_tile("linux", "Linux", links["Linux", "x86_64"],
+                      [("x64", links["Linux", "x86_64"]),
+                       ("arm64", links["Linux", "arm64"])]),
+        download_tile("windows", "Windows", links["Windows", "x86_64"],
+                      [("x64", links["Windows", "x86_64"]),
+                       ("arm64", links["Windows", "arm64"])]),
         download_tile("apple", "macOS", links["macOS", "arm64"],
-                      [("Intel", links["macOS", "x86_64"])]),
+                      [("Apple Silicon", links["macOS", "arm64"]),
+                       ("Intel", links["macOS", "x86_64"])]),
         download_tile("github", source["source"], repo,
                       [(source["releases"], f"{repo}/releases"),
                        (source["issues"], f"{repo}/issues")]),
