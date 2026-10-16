@@ -9,6 +9,7 @@ if get_option('test')
     'versionparser',
     'releasenotes',
     'documents',
+    'sampler',
   ]
   test_args = {
     'documents': [meson.project_source_root() / 'website/scripts/make-images/documents'],
