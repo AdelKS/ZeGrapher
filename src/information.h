@@ -92,6 +92,13 @@ public:
   /// @brief loads the objects that a first start shows
   void loadExampleDocument();
 
+  /// @brief reports that an export could not write its file
+  ///
+  /// The classes that export a file write it themselves, and their errors
+  /// show in the same dialog as document errors.
+  /// @param details  what went wrong
+  void exportFailed(const QString& file, const QString& details = {});
+
 public:
   zc::eval::Cache mathObjectCache;
   ZeAppSettings appSettings;

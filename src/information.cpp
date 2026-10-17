@@ -140,6 +140,14 @@ void Information::appendIoErr(IOError err)
   emit ioErrorCountChanged();
 }
 
+void Information::exportFailed(const QString& file, const QString& details)
+{
+  appendIoErr({.title = tr("Could not export the file"),
+               .file = file,
+               .text = tr("Could not write the file."),
+               .details = details});
+}
+
 void Information::exportYaml(QUrl filename)
 {
   writeYaml(filename, POD{.zegrapher = SOFTWARE_VERSION,
