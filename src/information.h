@@ -106,6 +106,8 @@ public slots:
 public:
   /// @brief reads the document of the last run
   /// @returns false when no run has written one yet
+  /// @note a document that this build can't read in full gets the date in its
+  ///       name, so the next close doesn't overwrite it
   bool restoreLastDocument();
 
   /// @brief loads the objects that a first start shows

@@ -22,6 +22,7 @@
 #include "utils.h"
 
 #include <QDir>
+#include <QStandardPaths>
 
 namespace {
 
@@ -223,6 +224,26 @@ math_objects:
   test(zg::mathWorld->getMathObjects().empty());
   test(information->popIoError().text.contains("99.0.0"));
   test(information->getIoErrorCount() == 0);
+
+  // the next close writes the last document, and an unreadable one stays aside
+  {
+    app.restart();
+
+    const QDir config(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    test(config.mkpath("."));
+
+    const QByteArray unreadable = "zegrapher: 99.0.0\nmath_objects: 3\n";
+    QFile last(config.filePath("last-document.zg"));
+    test(last.open(QIODevice::WriteOnly) and last.write(unreadable) == unreadable.size());
+    last.close();
+
+    test(information->restoreLastDocument());
+    const QString kept = information->popIoError().file;
+    app.restart();
+
+    test(kept != last.fileName() and readFile(kept) == unreadable);
+    test(readFile(last.fileName()) != unreadable);
+  }
 
   return 0;
 }

@@ -23,6 +23,7 @@
 #include "Utils/versionparser.h"
 #include "buildconfig.h"
 
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -129,7 +130,18 @@ bool Information::restoreLastDocument()
   if (path.isEmpty())
     return false;
 
+  const qsizetype errorCount = ioErrors.size();
   importYaml(QUrl::fromLocalFile(path));
+
+  if (ioErrors.size() != errorCount)
+  {
+    const QFileInfo info(path);
+    const QString kept = info.dir().filePath(
+      info.completeBaseName() + QDateTime::currentDateTime().toString("-yyyyMMdd-hhmmss.") + info.suffix());
+
+    if (QFile::rename(path, kept))
+      ioErrors.back().file = kept;
+  }
 
   return true;
 }
