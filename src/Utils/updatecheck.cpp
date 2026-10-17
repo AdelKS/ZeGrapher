@@ -37,7 +37,13 @@ void UpdateCheck::downloadFinished(QNetworkReply *reply)
   const auto current = build_version();
   const auto latest = parse_version_string(latestVersion);
 
-  if (current and latest)
+  // a captive portal answers with its own page instead of the tag
+  if (not latest)
+  {
+    latestVersion.clear();
+    status = ERROR;
+  }
+  else if (current)
     status = *current < *latest ? UPDATE_AVAILABLE : UP_TO_DATE;
   else
     status = UPDATE_MAYBE_AVAILABLE;
