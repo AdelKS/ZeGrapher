@@ -199,6 +199,11 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
 
   ZeLinAxisTicks axisTicks;
 
+  // the spacing search below never ends on an axis without pixels, such as in
+  // a figure smaller than its margins
+  if (not (windowWidth > 0))
+    return axisTicks;
+
   const ZeAxesSettings& axesSettings = settings.getAxes();
   const ZeLinAxisSettings &axisSettings = axis == ZeAxisName::X
                                             ? axesSettings.x.linSettings

@@ -77,6 +77,11 @@ int main()
   settings.multiplier<ZeAxisName::X>().setExpression("");
   test(ticksOver(-1e9 - 1, -1e9).offset.sumOffsetStr() == " - 1000000000");
 
+  // a figure smaller than its margins gives the graph a negative size
+  zg::ZeViewMapper mapper;
+  GraphLayoutEngine engine(settings, mapper);
+  test(engine.compute(QRectF(0, 0, 10, 10)).graph.width() < 0);
+
   // a range of infinite width keeps the view on the last valid range
   zg::ZeAxisRange& x = settings.range.x;
   x.min.setExpression("-1e308");
