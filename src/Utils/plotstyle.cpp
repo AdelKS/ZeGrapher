@@ -17,7 +17,7 @@ PlotStyle::PlotStyle(QObject* parent)
 
 QList<qreal> PlotStyle::getDashPattern() const
 {
-  switch (lineStyle)
+  switch (getLineStyle())
   {
     case Dash: return {4., 2.};
     case DashDot: return {4., 2., 2., 2.};
@@ -63,33 +63,17 @@ PlotStyle::PointStyle PlotStyle::defaultPointStyle() const
 void PlotStyle::setDiscrete(bool d)
 {
   if (d == discrete) return;
-  if (d)
-  {
-    if (lineStyle != LineStyle::NoLine)
-    {
-      lineStyle = LineStyle::NoLine;
-      emit lineStyleChanged();
-    }
-    if (pointStyle == PointStyle::None)
-    {
-      pointStyle = PointStyle::Square;
-      emit pointStyleChanged();
-    }
-  }
-  else
-  {
-    if (lineStyle == LineStyle::NoLine)
-    {
-      lineStyle = LineStyle::Solid;
-      emit lineStyleChanged();
-    }
-    if (pointStyle != PointStyle::None)
-    {
-      pointStyle = PointStyle::None;
-      emit pointStyleChanged();
-    }
-  }
+
+  const LineStyle oldLineStyle = getLineStyle();
+  const PointStyle oldPointStyle = getPointStyle();
+
   discrete = d;
+
+  if (getLineStyle() != oldLineStyle)
+    emit lineStyleChanged();
+
+  if (getPointStyle() != oldPointStyle)
+    emit pointStyleChanged();
 }
 
 void PlotStyle::setLineWidth(double s)
@@ -101,15 +85,16 @@ void PlotStyle::setLineWidth(double s)
 
 void PlotStyle::setLineStyle(LineStyle s)
 {
-  if (lineStyle == s) return;
-  lineStyle = s;
+  if (getLineStyle() == s) return;
+  // picking the default of the object's kind follows that kind again
+  lineStyle = s == defaultLineStyle() ? std::nullopt : std::optional(s);
   emit lineStyleChanged();
 }
 
 void PlotStyle::setPointStyle(PointStyle s)
 {
-  if (pointStyle == s) return;
-  pointStyle = s;
+  if (getPointStyle() == s) return;
+  pointStyle = s == defaultPointStyle() ? std::nullopt : std::optional(s);
   emit pointStyleChanged();
 }
 
@@ -127,9 +112,9 @@ std::optional<PlotStyle::POD> PlotStyle::exportPod() const
     .color = color.exportPod(defaultColor),
     .second_color = secondColor.exportPod(defaultSecondColor),
     .line_width = yml::not_default(lineWidth, defaultLineWidth),
-    .line_style = yml::not_default(lineStyle, defaultLineStyle()),
+    .line_style = lineStyle,
     .point_width = yml::not_default(pointWidth, defaultPointWidth),
-    .point_style = yml::not_default(pointStyle, defaultPointStyle()),
+    .point_style = pointStyle,
   };
 
   if (pod)
@@ -157,14 +142,22 @@ void PlotStyle::importPod(POD p)
   if (p.line_width)
     setLineWidth(yml::clamped(*p.line_width, minLineWidth, maxLineWidth));
 
+  // the object's kind can change once the objects it uses load, so keep the
+  // style even when it is the current default
   if (p.line_style)
-    setLineStyle(*p.line_style);
+  {
+    lineStyle = *p.line_style;
+    emit lineStyleChanged();
+  }
 
   if (p.point_width)
     setPointWidth(yml::clamped(*p.point_width, minPointWidth, maxPointWidth));
 
   if (p.point_style)
-    setPointStyle(*p.point_style);
+  {
+    pointStyle = *p.point_style;
+    emit pointStyleChanged();
+  }
 }
 
 }

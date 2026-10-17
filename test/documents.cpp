@@ -79,8 +79,29 @@ int main(int argc, char* argv[])
   - type: equation
     equation: v(n) = 0 ; n
 )"));
-  test(object(0).getStyle()->lineStyle == zg::PlotStyle::Solid);
-  test(object(0).getStyle()->pointStyle == zg::PlotStyle::Disc);
+  test(object(0).getStyle()->getLineStyle() == zg::PlotStyle::Solid);
+  test(object(0).getStyle()->getPointStyle() == zg::PlotStyle::Disc);
+
+  // a parametric listed before its sequences keeps its plot style
+  test(app.load(R"(math_objects:
+  - type: parametric
+    first: u
+    second: v
+    style: {line_style: solid}
+  - type: equation
+    equation: u(n) = 0 ; u(n - 1) + 1
+  - type: equation
+    equation: v(n) = 1 ; v(n - 1) * 2
+)"));
+  test(object(0).isDiscrete());
+  test(object(0).getStyle()->getLineStyle() == zg::PlotStyle::Solid);
+
+  // a style picked by hand stays when the object changes kind
+  zg::mathobj::Equation* equation = object(1).getEquation();
+  equation->style.setLineStyle(zg::PlotStyle::Dash);
+  equation->setEquation("u(x) = x");
+  test(equation->style.getLineStyle() == zg::PlotStyle::Dash);
+  test(equation->style.getPointStyle() == zg::PlotStyle::None);
 
   // the bounds that set_value() gives a constant aren't saved
   test(app.load(R"(math_objects:

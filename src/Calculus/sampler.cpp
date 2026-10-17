@@ -35,9 +35,9 @@ static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
     .color = ps.color.getCurrent(),
     .lineWidth = ps.lineWidth,
     .dashPattern = ps.getDashPattern(),
-    .drawLine = ps.lineStyle != zg::PlotStyle::LineStyle::NoLine,
+    .drawLine = ps.getLineStyle() != zg::PlotStyle::LineStyle::NoLine,
     .pointWidth = ps.pointWidth,
-    .pointStyle = ps.pointStyle,
+    .pointStyle = ps.getPointStyle(),
   };
 }
 

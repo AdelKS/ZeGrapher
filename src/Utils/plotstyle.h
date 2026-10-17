@@ -37,8 +37,8 @@ struct PlotStyle: QObject {
   Q_PROPERTY(ThemedColor color MEMBER color NOTIFY colorChanged)
   Q_PROPERTY(ThemedColor secondColor MEMBER secondColor NOTIFY secondColorChanged)
   Q_PROPERTY(double lineWidth WRITE setLineWidth MEMBER lineWidth NOTIFY lineWidthChanged)
-  Q_PROPERTY(LineStyle lineStyle WRITE setLineStyle MEMBER lineStyle NOTIFY lineStyleChanged)
-  Q_PROPERTY(PointStyle pointStyle WRITE setPointStyle MEMBER pointStyle NOTIFY pointStyleChanged)
+  Q_PROPERTY(LineStyle lineStyle READ getLineStyle WRITE setLineStyle NOTIFY lineStyleChanged)
+  Q_PROPERTY(PointStyle pointStyle READ getPointStyle WRITE setPointStyle NOTIFY pointStyleChanged)
   Q_PROPERTY(double pointWidth WRITE setPointWidth MEMBER pointWidth NOTIFY pointWidthChanged)
 
 public:
@@ -68,9 +68,11 @@ public:
   QColor colorLerp(double t) const;
 
   double lineWidth = defaultLineWidth;
-  LineStyle lineStyle = Solid;
   double pointWidth = defaultPointWidth;
-  PointStyle pointStyle = None;
+
+  /// @brief the style the user picked, or the default of the object's kind
+  LineStyle getLineStyle() const { return lineStyle.value_or(defaultLineStyle()); }
+  PointStyle getPointStyle() const { return pointStyle.value_or(defaultPointStyle()); }
 
   QList<qreal> getDashPattern() const;
 
@@ -87,7 +89,7 @@ public:
   LineStyle defaultLineStyle() const;
   PointStyle defaultPointStyle() const;
 
-  /// @brief only used for determining defaults
+  /// @brief picks the default line and point styles
   void setDiscrete(bool d);
 
   struct POD {
@@ -120,6 +122,10 @@ signals:
 
 protected:
   bool discrete = false;
+
+  /// @brief the styles the user picked, nothing to follow the object's kind
+  std::optional<LineStyle> lineStyle;
+  std::optional<PointStyle> pointStyle;
 };
 
 inline const ThemedColor PlotStyle::defaultColor = {.dark = Qt::lightGray, .light = Qt::black};
