@@ -288,16 +288,7 @@ void ZeGraphSettings::importPod(POD p)
 
   font = zg::mathFont();
   if (p.font)
-  {
-    if (p.font->name)
-      font.setFamily(QString::fromStdString(*p.font->name));
-
-    if (p.font->size)
-      font.setPointSize(p.font->size.value());
-
-    if (p.font->weight)
-      font.setWeight(p.font->weight.value());
-  }
+    p.font->applyTo(font);
   emit fontChanged();
 
   backgroundColor = defaultBgColor;

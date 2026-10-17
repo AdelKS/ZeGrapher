@@ -111,6 +111,17 @@ struct QFontPOD {
 
   operator bool () const { return name or size or weight; }
 
+  /// @brief sets the fields that the document holds on 'font'
+  void applyTo(QFont& font) const
+  {
+    if (name)
+      font.setFamily(QString::fromStdString(*name));
+    if (size)
+      font.setPointSize(*size);
+    if (weight)
+      font.setWeight(*weight);
+  }
+
   /// @brief creates an instance from a font and a default (to tell which fields to leave empty)
   static std::optional<QFontPOD> from(QFont c, QFont def)
   {

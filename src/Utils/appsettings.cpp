@@ -80,12 +80,7 @@ void ZeAppSettings::importPod(POD p)
 
   if (p.font)
   {
-    if (p.font->name)
-      font.setFamily(QString::fromStdString(*p.font->name));
-    if (p.font->weight)
-      font.setWeight(*p.font->weight);
-    if (p.font->size)
-      font.setPointSize(*p.font->size);
+    p.font->applyTo(font);
     emit fontChanged();
   }
 

@@ -58,12 +58,5 @@ void ZeAxesSettings::importPod(ZeAxesSettings::POD p)
     y.importPod(std::move(*p.y));
 
   if (p.title_font)
-  {
-    if (p.title_font->name)
-      titleFont.setFamily(QString::fromStdString(*p.title_font->name));
-    if (p.title_font->weight)
-      titleFont.setWeight(*p.title_font->weight);
-    if (p.title_font->size)
-      titleFont.setPointSize(*p.title_font->size);
-  }
+    p.title_font->applyTo(titleFont);
 }
