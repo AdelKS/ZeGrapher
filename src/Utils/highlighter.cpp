@@ -20,18 +20,26 @@ void Highlighter::setState(zg::State s)
   }
 }
 
-void Highlighter::highlightBlock(const QString&)
+void Highlighter::highlightBlock(const QString& text)
 {
+  const auto token = state.getErrToken();
+  if (not token or token->begin < size_t(offset))
+    return;
+
   QTextCharFormat invalidFormat;
   invalidFormat.setForeground(information->appSettings.invalidSyntax.getCurrent());
   invalidFormat.setFontUnderline(true);
   invalidFormat.setUnderlineColor(information->appSettings.invalidSyntax.getCurrent());
   invalidFormat.setUnderlineStyle(QTextCharFormat::UnderlineStyle::WaveUnderline);
 
-  if (auto opt_err_tok = state.getErrToken(); opt_err_tok)
-  {
-    setFormat(opt_err_tok->begin - offset, opt_err_tok->substr.size(), invalidFormat);
-  };
+  // ZeCalculator counts UTF-8 bytes, and setFormat() counts UTF-16 code units
+  const QByteArray utf8 = text.toUtf8();
+  const qsizetype begin = std::min(qsizetype(token->begin) - offset, utf8.size());
+  const qsizetype end = std::min(begin + qsizetype(token->substr.size()), utf8.size());
+
+  setFormat(QString::fromUtf8(utf8.first(begin)).size(),
+            QString::fromUtf8(utf8.sliced(begin, end - begin)).size(),
+            invalidFormat);
 }
 
 void Highlighter::setDocument(QQuickTextDocument* doc)

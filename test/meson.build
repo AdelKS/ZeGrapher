@@ -15,6 +15,7 @@ if get_option('test')
     'datatablemodel',
     'csv',
     'gridcalculator',
+    'highlighter',
     'schrodinger',
     'graphrange',
     'export',
