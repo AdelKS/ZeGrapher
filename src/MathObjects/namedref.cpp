@@ -42,7 +42,7 @@ State NamedRef::sync()
     {
       if (*zcObj)
         newState.setValid();
-      else newState.setInvalid(QObject::tr("Object \"%1\" is in an invalid state").arg(input_name));
+      else newState.setInvalid(QObject::tr("Object \"%1\" is in an invalid state").arg(input_name.toHtmlEscaped()));
     }
     else newState.setInvalid(QObject::tr("Object not defined"));
   }

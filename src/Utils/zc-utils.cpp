@@ -8,7 +8,7 @@ QString zcErrorToStr(const zc::Error& err)
 {
   // the piece of the expression the error is about. The parser fills it in for
   // every error below that names it, and leaves it empty for the others
-  const QString token = QString::fromStdString(err.token.substr);
+  const QString token = QString::fromStdString(err.token.substr).toHtmlEscaped();
 
   switch (err.type)
   {
