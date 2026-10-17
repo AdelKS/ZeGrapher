@@ -154,5 +154,28 @@ int main()
     test(kept(before) < 0.1);
   }
 
+  // a parametric curve that switches to another object at the same revision
+  // samples it, as when the user selects a name and types another one
+  {
+    test(app.load("zegrapher: '4.0.0'\n"
+                  "math_objects:\n"
+                  "  - {type: equation, equation: 'f(t) = cos(t)'}\n"
+                  "  - {type: equation, equation: 'g(t) = sin(t)'}\n"
+                  "  - {type: equation, equation: 'h(t) = t'}\n"
+                  "  - {type: parametric, first: f, second: g}\n"));
+
+    zg::ZeViewMapper mapper;
+    mapper.setGraphRect(QRectF(0, 0, 1000, 600));
+    mapper.setGraphRange(information->graphSettings.range.getLatestValidSnapshot());
+    Sampler sampler(mapper);
+    sampler.update();
+
+    zg::mathWorld->getMathObjects().back()->getParametric()->setFirst("h");
+    sampler.update();
+
+    const zg::SampledCurve& curve = sampler.getCurves().front();
+    test(std::ranges::equal(curve.input, curve.curve, {}, {}, [](const zg::real_pt& pt) { return pt.x; }));
+  }
+
   return 0;
 }

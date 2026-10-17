@@ -66,7 +66,7 @@ public:
 
   bool isValid() const;
 
-  size_t getRevision() const;
+  Revision getRevision() const;
 
   EvalHandle getZcObject() const;
 

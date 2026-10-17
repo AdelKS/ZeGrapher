@@ -195,23 +195,22 @@ EvalHandle MathObject::getZcObject() const
 
 }
 
-size_t MathObject::getRevision() const
+Revision MathObject::getRevision() const
 {
+  auto of = [](const zc::DynMathObject<zc_t>* o) {
+    return std::pair(o, o ? o->get_revision() : 0);
+  };
+
   return std::visit(
     zc::utils::overloaded{
-      [](const auto* e) {
-        return e->zcMathObj.get_revision();
+      [&](const auto* e) -> Revision {
+        return {of(&e->zcMathObj)};
       },
-      [](const mathobj::Parametric* p) {
-        size_t rev1 = 0, rev2 = 0;
-        if (const auto* o1 = p->obj1.getZcObject())
-          rev1 = o1->get_revision();
-        if (const auto* o2 = p->obj2.getZcObject())
-          rev2 = o2->get_revision();
-        return rev1 + rev2;
+      [&](const mathobj::Parametric* p) -> Revision {
+        return {of(p->obj1.getZcObject()), of(p->obj2.getZcObject())};
       },
-      [](const mathobj::DataSheet*) -> size_t {
-        return 0;
+      [](const mathobj::DataSheet*) -> Revision {
+        return {};
       }
     },
     backend

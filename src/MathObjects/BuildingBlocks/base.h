@@ -25,11 +25,18 @@
 
 #include <glaze/yaml.hpp>
 
+#include <array>
+
 namespace zg {
 
   using EvalHandle
     = std::variant<const zc::DynMathObject<zc_t>*,
                    std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*>>;
+
+  /// @brief the objects that a curve evaluates, each with its revision
+  /// @note ZeCalculator counts revisions per object, so a curve that switches to
+  ///       another object can keep the same numbers
+  using Revision = std::array<std::pair<const zc::DynMathObject<zc_t>*, size_t>, 2>;
 
 struct SamplingSettings;
 
@@ -84,7 +91,7 @@ public:
   /// @brief the object's sampling settings, nothing when its range is
   ///        invalid
   /// @param revision  the revision of what the object evaluates
-  std::optional<SamplingSettings> getSamplingSettings(size_t revision) const;
+  std::optional<SamplingSettings> getSamplingSettings(Revision revision) const;
 
   bool isDefaultStart() const;
   bool isDefaultEnd() const;
@@ -114,7 +121,7 @@ using CoordinateSystem = Base::CoordinateSystem;
 struct SamplingSettings {
   zg::real_range1d range = {.min = {0.}, .max = {0.}};
   CoordinateSystem coordinateSystem = CoordinateSystem::Cartesian;
-  size_t revision = 0;
+  Revision revision = {};
 
   bool operator == (const SamplingSettings&) const = default;
 };

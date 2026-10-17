@@ -91,7 +91,7 @@ std::optional<zg::real_range1d> Base::getValidSnapshot() const
   return range;
 }
 
-std::optional<SamplingSettings> Base::getSamplingSettings(size_t revision) const
+std::optional<SamplingSettings> Base::getSamplingSettings(Revision revision) const
 {
   const auto range = getValidSnapshot();
   if (not range)

@@ -73,7 +73,7 @@ public:
   const State& getState() const { return state; }
 
   std::optional<SamplingSettings> getSamplingSettings();
-  size_t getRevision() const { return zcMathObj.get_revision(); }
+  Revision getRevision() const { return {std::pair(&zcMathObj, zcMathObj.get_revision())}; }
   EvalHandle getZcObject() { return &zcMathObj; }
 
   Q_INVOKABLE void setShowInTable(bool);

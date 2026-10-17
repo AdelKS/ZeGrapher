@@ -164,7 +164,7 @@ Data::~Data()
 
 std::optional<zg::SamplingSettings> Data::getSamplingSettings()
 {
-  return Base::getSamplingSettings(zcMathObj.get_revision());
+  return Base::getSamplingSettings(getRevision());
 }
 
 }
