@@ -114,6 +114,29 @@ int main(int argc, char* argv[])
   test(not object(0).getConstant()->exportPod().from);
   test(not object(0).getConstant()->exportPod().to);
 
+  // keys and values of several words use underscores
+  test(app.load(R"(graph:
+  min_points_log2: 5
+  font: {weight: demi_bold}
+math_objects:
+  - type: constant
+    name: a
+    value: 1
+    schrodinger: true
+  - type: equation
+    equation: f(x) = a * x
+    style: {line_style: dash_dot}
+  - type: datasheet
+    columns:
+      - name: c
+        show_in_table: true
+)"));
+  test(information->graphSettings.getMinPointsLg2() == 5);
+  test(information->graphSettings.getFont().weight() == QFont::DemiBold);
+  test(zg::mathWorld->getSchrodingerConstant() == object(0).getConstant());
+  test(object(1).getStyle()->getLineStyle() == zg::PlotStyle::DashDot);
+  test(zg::dataTableModel->columnCount() == 1);
+
   // a sheet without a positive size fills the window
   test(app.load(R"(graph:
   size: {width: 0, height: 10}
@@ -154,8 +177,8 @@ int main(int argc, char* argv[])
 
   // a document can't set a value outside the panel's range
   test(app.load(R"(graph:
-  min_points: 30
-  max_points: 70
+  min_points_log2: 30
+  max_points_log2: 70
   zoom: -3
   size: {scaling: .nan, width: 1e9, height: 5}
   axes:

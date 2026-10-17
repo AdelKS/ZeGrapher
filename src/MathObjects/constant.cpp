@@ -173,7 +173,7 @@ Constant::POD Constant::exportPod() const
     .to = get_opt_edge(to, upperMul),
     .steps = yml::not_default(steps, defaultSteps),
     .loop_type = yml::not_default(loopType, defaultLoopType),
-    .dead_and_alive = yml::not_default(isDeadAndAlive(), false),
+    .schrodinger = yml::not_default(isDeadAndAlive(), false),
     .duration = yml::not_default(duration.count(), defaultDuration.count())
   };
 }
@@ -198,8 +198,8 @@ void Constant::importPod(Constant::POD p)
   if (p.loop_type)
     setLoopType(*p.loop_type);
 
-  if (p.dead_and_alive)
-    setDeadAndAlive(*p.dead_and_alive);
+  if (p.schrodinger)
+    setDeadAndAlive(*p.schrodinger);
 
   if (p.duration)
     setDuration(yml::clamped(*p.duration, minDuration, maxDuration));

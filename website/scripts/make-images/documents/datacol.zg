@@ -6,7 +6,7 @@ math_objects:
     columns:
       - name: samples
         values: ['3', '1.46', '1.16', '2.01']
-        showInTable: true
+        show_in_table: true
 graph:
   range:
     x: {min: '-1', max: '5'}

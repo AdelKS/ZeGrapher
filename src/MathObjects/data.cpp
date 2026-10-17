@@ -110,7 +110,7 @@ Data::POD Data::exportPod() const
     .coordinates = yml::not_default(coordinateSystem, Cartesian),
     .values = yml::not_default(getData()),
     .style = style.exportPod(),
-    .showInTable = yml::not_default(showInTable, false)
+    .show_in_table = yml::not_default(showInTable, false)
   };
 }
 
@@ -134,8 +134,8 @@ void Data::importPod(Data::POD p)
   if (p.style)
     style.importPod(std::move(*p.style));
 
-  if (p.showInTable)
-    setShowInTable(*p.showInTable);
+  if (p.show_in_table)
+    setShowInTable(*p.show_in_table);
 }
 
 void Data::requestUiInitiatedDelete()

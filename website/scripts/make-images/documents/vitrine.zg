@@ -3,7 +3,7 @@ math_objects:
     name: a
     from: 0.5
     to: 1.5
-    dead_and_alive: true
+    schrodinger: true
   - type: equation
     equation: f(t) = exp(sin(t)) - 2*cos(4*t) + sin(2*t/24)^5
     style:

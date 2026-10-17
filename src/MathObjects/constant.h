@@ -98,7 +98,7 @@ public:
     std::optional<double> to;
     std::optional<int> steps;
     std::optional<LoopType> loop_type;
-    std::optional<bool> dead_and_alive;
+    std::optional<bool> schrodinger;
     std::optional<double> duration;
 
     auto operator<=>(const POD&) const = default;

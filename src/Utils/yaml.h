@@ -43,13 +43,13 @@ struct glz::meta<QFont::Weight>
    using enum QFont::Weight;
    static constexpr auto value = glz::enumerate(
     "thin", QFont::Thin,
-    "extra light", QFont::ExtraLight,
+    "extra_light", QFont::ExtraLight,
     "light", QFont::Light,
     "normal", QFont::Normal,
     "medium", QFont::Medium,
-    "demi bold", QFont::DemiBold,
+    "demi_bold", QFont::DemiBold,
     "bold", QFont::Bold,
-    "extra bold", QFont::ExtraBold,
+    "extra_bold", QFont::ExtraBold,
     "black", QFont::Black);
 };
 

@@ -4,7 +4,7 @@ math_objects:
     from: 0.5
     to: 1.5
     steps: 5
-    dead_and_alive: true
+    schrodinger: true
   - type: equation
     equation: f(x) = a*exp(-x^2/2)
 graph:

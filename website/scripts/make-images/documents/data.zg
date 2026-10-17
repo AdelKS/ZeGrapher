@@ -4,10 +4,10 @@ math_objects:
     columns:
       - name: time
         values: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5']
-        showInTable: true
+        show_in_table: true
       - name: height
         values: ['109.9', '108.9', '105.1', '98.6', '90.0', '79.0', '65.8', '49.7']
-        showInTable: true
+        show_in_table: true
 graph:
   range:
     x: {min: '-0.2', max: '8'}

@@ -151,9 +151,9 @@ struct glz::meta<zg::PlotStyle::LineStyle>
 {
    using enum zg::PlotStyle::LineStyle;
    static constexpr auto value = glz::enumerate(
-      "noline",  NoLine,
-      "solid",   Solid,
-      "dash",    Dash,
-      "dot",     Dot,
-      "dashdot", DashDot);
+      "no_line",  NoLine,
+      "solid",    Solid,
+      "dash",     Dash,
+      "dot",      Dot,
+      "dash_dot", DashDot);
 };

@@ -241,8 +241,8 @@ std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
     .subgrid = subgrid.exportPod(),
     .font = zg::yml::QFontPOD::from(font, zg::mathFont()),
     .background = backgroundColor.exportPod(defaultBgColor),
-    .min_points = zg::yml::not_default(minPointsLg2, defaultMinPoints),
-    .max_points = zg::yml::not_default(maxPointsLg2, defaultMaxPoints)
+    .min_points_log2 = zg::yml::not_default(minPointsLg2, defaultMinPoints),
+    .max_points_log2 = zg::yml::not_default(maxPointsLg2, defaultMaxPoints)
   };
 
   if (p) return p;
@@ -304,10 +304,10 @@ void ZeGraphSettings::importPod(POD p)
   if (p.background) backgroundColor.importPod(std::move(*p.background));
   emit backgroundColorChanged();
 
-  maxPointsLg2 = zg::yml::clamped(p.max_points.value_or(defaultMaxPoints), lowestPointsLg2, highestPointsLg2);
+  maxPointsLg2 = zg::yml::clamped(p.max_points_log2.value_or(defaultMaxPoints), lowestPointsLg2, highestPointsLg2);
   emit maxPointsLg2Changed();
 
-  minPointsLg2 = zg::yml::clamped(p.min_points.value_or(defaultMinPoints), lowestPointsLg2, maxPointsLg2);
+  minPointsLg2 = zg::yml::clamped(p.min_points_log2.value_or(defaultMinPoints), lowestPointsLg2, maxPointsLg2);
   emit minPointsLg2Changed();
 
   // the POD gives the sheet size in one unit only
