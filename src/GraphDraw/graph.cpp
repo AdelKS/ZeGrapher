@@ -27,7 +27,7 @@
 #include <QStyleHints>
 #include <QQuickWindow>
 #include <QSvgGenerator>
-#include <QFile>
+#include <QSaveFile>
 #include <QFileInfo>
 #include <QImageWriter>
 #include <QBuffer>
@@ -603,9 +603,18 @@ void Graph::exportSVG(QUrl fileName)
 
   injectClipPath(svgData);    // edit the SVG in memory
 
-  QFile file(fileName.toLocalFile());
-  if (file.open(QIODevice::WriteOnly))
-    file.write(svgData);
+  const QString path = fileName.toLocalFile();
+  QSaveFile file(path);
+  if (not file.open(QIODevice::WriteOnly))
+  {
+    information->exportFailed(path, file.errorString());
+    return;
+  }
+
+  // QSaveFile::commit() also returns false when write() failed
+  file.write(svgData);
+  if (not file.commit())
+    information->exportFailed(path, file.errorString());
 }
 
 void Graph::injectClipPath(QByteArray& svg)
