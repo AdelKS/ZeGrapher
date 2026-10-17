@@ -141,7 +141,7 @@ Item {
 
           from: 1
           value: root.backend.steps
-          stepSize: 5
+          stepSize: 1
           to: 100
 
           onValueModified: root.backend.steps = value
