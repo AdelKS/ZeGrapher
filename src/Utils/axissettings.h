@@ -116,7 +116,7 @@ public:
   ZeAxisSettings x, y;
 
   ThemedColor color = defaultColor;
-  double lineWidth = defaultLineWith;
+  double lineWidth = defaultLineWidth;
 
   QFont titleFont = zg::mathFont();
 
@@ -126,7 +126,7 @@ public:
   static constexpr zg::pixel_unit spacing = {6};
 
   static const ThemedColor defaultColor;
-  static constexpr double defaultLineWith = 2.0;
+  static constexpr double defaultLineWidth = 2.0;
   static constexpr double minLineWidth = 0.1, maxLineWidth = 5;
 
   bool operator == (const ZeAxesSettings &other) const = default;

@@ -32,7 +32,7 @@ std::optional<ZeAxesSettings::POD> ZeAxesSettings::exportPod(const QString& xMul
 {
   POD p {
     .color = color.exportPod(defaultColor),
-    .line_width = zg::yml::not_default(lineWidth, defaultLineWith),
+    .line_width = zg::yml::not_default(lineWidth, defaultLineWidth),
     .x = x.exportPod(xMultiplier),
     .y = y.exportPod(yMultiplier),
     .title_font = zg::yml::QFontPOD::from(titleFont, zg::mathFont())
