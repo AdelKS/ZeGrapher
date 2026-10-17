@@ -72,8 +72,10 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     if (f->holds(zc::ObjectType::SEQUENCE))
     {
       auto& objectCache = zg::mathWorld->cache[f->get_slot()];
-      size_t current_max = std::max(0., max.v);
-      objectCache.set_buffer_size(std::min(std::max(current_max, objectCache.get_buffer_size()), size_t(1'000'000)));
+      constexpr size_t max_size = 1'000'000;
+      // converting a double above SIZE_MAX to size_t is undefined, so clamp first
+      const size_t current_max = std::clamp(max.v, 0., double(max_size));
+      objectCache.set_buffer_size(std::min(std::max(current_max, objectCache.get_buffer_size()), max_size));
     }
   };
 
