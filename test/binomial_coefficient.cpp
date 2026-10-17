@@ -6,7 +6,7 @@ int main()
 {
   using zg::utils::binomial_coefficient;
 
-  constexpr uint validity_limit = 47;
+  constexpr unsigned validity_limit = 47;
 
   // symmetry C(n, k) == C(n, n - k)
   for (unsigned n = 0; n <= validity_limit; n++)
