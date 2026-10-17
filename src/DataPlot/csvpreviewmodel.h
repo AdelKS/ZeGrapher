@@ -63,6 +63,10 @@ public:
   //        Quotes spanning several lines are not supported: one line is always one row.
   static QStringList splitCsvLine(QStringView line, QStringView sep);
 
+  /// @brief a file's path as the user writes it: native separators, and '~' for
+  ///        the home folder outside Windows
+  Q_INVOKABLE QString displayPath(const QUrl& file) const;
+
   enum LoadingState {FREE, READING_CSV_FILE, ADDING_TO_WORLD};
 
   Q_ENUM(LoadingState);

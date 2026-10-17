@@ -26,7 +26,6 @@
 #include <QDir>
 #include <QCoreApplication>
 
-#include <filesystem>
 
 namespace zg {
 
@@ -282,19 +281,8 @@ void CsvPreviewModel::loadIntoWorld()
 
     if (not dataSheet)
     {
-      auto display_path = [](const QUrl& url)
-      {
-        const std::filesystem::path path = url.toLocalFile().toStdString();
-        const auto rel = path.lexically_relative(QDir::homePath().toStdString());
-
-        // outside of home, 'rel' is empty or climbs back up with ".."
-        const bool in_home = not rel.empty() and *rel.begin() != "..";
-
-        return QString::fromStdString(in_home ? ("~" / rel).string() : path.string());
-      };
-
       dataSheet = mathWorld->addMathObject(MathObject::DATASHEET)->getDataSheet();
-      dataSheet->setNotes(tr("imported from %1").arg(display_path(csvFile)));
+      dataSheet->setNotes(tr("imported from %1").arg(displayPath(csvFile)));
     }
 
     for (size_t i = 0 ; i != data.size() ; i++)
@@ -316,6 +304,18 @@ void CsvPreviewModel::loadIntoWorld()
     emit loadingStateChanged();
   }
   else information->readFailed(csvFile.toLocalFile(), file.errorString());
+}
+
+QString CsvPreviewModel::displayPath(const QUrl& url) const
+{
+  const QString path = url.toLocalFile();
+
+#ifndef Q_OS_WIN
+  if (const QString rel = QDir::home().relativeFilePath(path); not rel.startsWith("../"))
+    return "~/" + rel;
+#endif
+
+  return QDir::toNativeSeparators(path);
 }
 
 QStringList CsvPreviewModel::splitCsvLine(QStringView line, QStringView sep)
