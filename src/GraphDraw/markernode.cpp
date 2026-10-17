@@ -68,7 +68,9 @@ struct MarkerStyle
 class MarkersMaterial : public StyledMaterial<MarkerStyle>
 {
 public:
-  MarkersMaterial() { setFlag(Blending, true); }
+  // markers.vert offsets the corners in item units, which a merged batch would
+  // already have transformed
+  MarkersMaterial() { setFlag(Blending | RequiresFullMatrix, true); }
 
   QSGMaterialShader* createShader(QSGRendererInterface::RenderMode) const override;
 };
