@@ -250,7 +250,7 @@ void Graph::computeSupportRect()
       rect.setHeight(scaledSize.width() * targetRatio);
       rect.setWidth(scaledSize.width());
 
-      rect.moveTopLeft(QPoint(0, (scaledSize.height() - rect.height()) / 2));
+      rect.moveTopLeft(QPointF(0, (scaledSize.height() - rect.height()) / 2));
     }
   }
 
