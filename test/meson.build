@@ -17,6 +17,7 @@ if get_option('test')
     'gridcalculator',
     'highlighter',
     'schrodinger',
+    'sparse_insert',
     'graphrange',
     'export',
     'render',

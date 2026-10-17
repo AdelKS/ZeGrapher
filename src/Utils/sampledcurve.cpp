@@ -62,9 +62,10 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
 {
   discontinuities.clear();
 
-  assert(indices.size() <= curve.size()); // can only insert as many points as there are originally in  'curve'
+  assert(indices.size() <= curve.size() + 1); // can only insert as many points as there are originally in  'curve' + 1 (eventually append too)
   assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
   assert(indices.size() == x.size() and x.size() == f_x.size() and f_x.size() == px_f_x.size());
+  assert(indices.empty() or indices.back() <= curve.size());
 
   const size_t new_size = curve.size() + indices.size();
 
@@ -96,9 +97,18 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
     }
   }
 
-  new_input.insert(new_input.end(), input.begin() + curve_index, input.end());
-  new_curve.insert(new_curve.end(), curve.begin() + curve_index, curve.end());
-  new_px_curve.insert(new_px_curve.end(), px_curve.begin() + curve_index, px_curve.end());
+  if (curve_index != curve.size())
+  {
+    new_input.insert(new_input.end(), input.begin() + curve_index, input.end());
+    new_curve.insert(new_curve.end(), curve.begin() + curve_index, curve.end());
+    new_px_curve.insert(new_px_curve.end(), px_curve.begin() + curve_index, px_curve.end());
+  }
+  else if (indices_metaindex != indices.size())
+  {
+    new_input.insert(new_input.end(), x.begin() + indices_metaindex, x.end());
+    new_curve.insert(new_curve.end(), f_x.begin() + indices_metaindex, f_x.end());
+    new_px_curve.insert(new_px_curve.end(), px_f_x.begin() + indices_metaindex, px_f_x.end());
+  }
 
   input = std::move(new_input);
   curve = std::move(new_curve);
@@ -111,7 +121,7 @@ void SampledCurve::sparse_delete(const std::vector<size_t>& indices)
 
   assert(indices.size() <= curve.size()); // can only delete as many points as there are originally in  'curve'
   assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
-  assert(indices.back() < curve.size()); // biggest index to delete should be within the range
+  assert(indices.empty() or indices.back() < curve.size()); // biggest index to delete should be within the range
   assert(input.size() == curve.size() and curve.size() == px_curve.size());
 
   const size_t new_size = curve.size() - indices.size();
