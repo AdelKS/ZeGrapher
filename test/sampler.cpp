@@ -97,5 +97,62 @@ int main()
   test(inputs.size() == 1);
   test(inputs[0].back().v == 3);
 
+  // a pan keeps the samples of Schrödinger curves, and an edit drops them
+  {
+    app.restart();
+    auto* a = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT)->getConstant();
+    a->setName("a");
+    a->set_value(1);
+    auto* f = zg::mathWorld->addMathObject()->getEquation();
+    f->setEquation("f(x) = a * sin(x)");
+    a->setDeadAndAlive(true);
+
+    zg::GraphRange& range = information->graphSettings.range;
+    zg::ZeViewMapper mapper;
+    mapper.setGraphRect(QRectF(0, 0, 1000, 600));
+
+    auto pan = [&](const QString& xmin, const QString& xmax) {
+      range.x.min.setExpression(xmin);
+      range.x.max.setExpression(xmax);
+      mapper.setGraphRange(range.getLatestValidSnapshot());
+    };
+
+    pan("-10", "10");
+    Sampler sampler(mapper);
+    sampler.update();
+    test(sampler.getCurves().size() == 6);
+
+    auto inputs = [&] {
+      std::vector<std::vector<zg::real_unit>> all;
+      for (const zg::SampledCurve& curve: sampler.getCurves())
+        all.push_back(curve.input);
+      return all;
+    };
+
+    // the share of the previous inputs, within the new range, that each curve kept
+    auto kept = [&](const std::vector<std::vector<zg::real_unit>>& before) {
+      size_t shared = 0, total = 0;
+      for (const auto& [curve, old]: std::views::zip(sampler.getCurves(), before))
+        for (zg::real_unit x: old)
+          if (curve.get().input.front() <= x and x <= curve.get().input.back())
+          {
+            total++;
+            shared += std::ranges::binary_search(curve.get().input, x);
+          }
+      return double(shared) / double(total);
+    };
+
+    auto before = inputs();
+    pan("-9.7", "10.3");
+    sampler.update();
+    test(kept(before) > 0.9);
+
+    // sampling from scratch over the new range lands on other inputs
+    before = inputs();
+    f->setEquation("f(x) = a * sin(x) + 0.1");
+    sampler.update();
+    test(kept(before) < 0.1);
+  }
+
   return 0;
 }

@@ -74,6 +74,11 @@ protected:
 
   zg::mathobj::Constant* schrodinger_constant = nullptr;
 
+  /// @brief each object's revision when update() last finished
+  /// @note update() writes each value of the Schrödinger constant, which
+  ///       increments the revisions of the objects that use it
+  std::unordered_map<Plottable, size_t> settled_revisions;
+
   std::unordered_map<double, CurveMap> schrodinger_curves_map;
 
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;

@@ -103,7 +103,18 @@ void Sampler::refresh_valid_objects()
     else static_assert(zc::utils::dependent_false_v<T>, "Case not covered");
   };
 
-  auto update = [&](auto* f, CurveMap& c, bool good)
+  const std::vector<Plottable> objects = plottables();
+
+  // the Schrödinger values written below increment the revisions too, so the
+  // Schrödinger curves compare with the revisions that update() left
+  std::unordered_set<Plottable> edited;
+  for (Plottable p: objects)
+    std::visit([&](auto* f) {
+      if (auto it = settled_revisions.find(p); it == settled_revisions.end() or it->second != f->getRevision())
+        edited.insert(p);
+    }, p);
+
+  auto update = [&](auto* f, CurveMap& c, bool good, bool schrodinger)
   {
     const auto opt_sampling_settings = sampling_settings(f);
     if (good && bool(opt_sampling_settings))
@@ -111,8 +122,8 @@ void Sampler::refresh_valid_objects()
       auto& new_settings = *opt_sampling_settings;
       auto& curve = c[f];
       curve.discrete = f->isDiscrete();
-      if (curve.settings.coordinateSystem != new_settings.coordinateSystem or
-          curve.settings.revision != new_settings.revision)
+      const bool stale = schrodinger ? edited.contains(f) : curve.settings.revision != new_settings.revision;
+      if (curve.settings.coordinateSystem != new_settings.coordinateSystem or stale)
         curve.clear();
       curve.settings = new_settings;
     }
@@ -120,16 +131,14 @@ void Sampler::refresh_valid_objects()
       c.erase(f);
   };
 
-  const std::vector<Plottable> objects = plottables();
-
   for (Plottable p: objects)
-    std::visit([&](auto* f) { update(f, curves, is_plottable(f) and not f->isSchrodinger()); }, p);
+    std::visit([&](auto* f) { update(f, curves, is_plottable(f) and not f->isSchrodinger(), false); }, p);
 
   for (auto& [v, schrodinger_curves]: schrodinger_curves_map)
   {
     schrodinger_constant->zcMathObj = v;
     for (Plottable p: objects)
-      std::visit([&](auto* f) { update(f, schrodinger_curves, is_plottable(f) and f->isSchrodinger()); }, p);
+      std::visit([&](auto* f) { update(f, schrodinger_curves, is_plottable(f) and f->isSchrodinger(), true); }, p);
   }
 
   auto clearDeletedObjects = [&](CurveMap& c) {
@@ -239,6 +248,10 @@ void Sampler::update()
     }
     schrodinger_constant->zcMathObj = std::nan("");
   }
+
+  settled_revisions.clear();
+  for (Plottable p: plottables())
+    std::visit([&](auto* f) { settled_revisions[p] = f->getRevision(); }, p);
 }
 
 void Sampler::update_discontinuities(zg::SampledCurve& data)
