@@ -48,6 +48,12 @@ void AnimatedConstant::setPlaying(bool p)
 
   playing = p;
 
+  if (playing and backend->loopType == mathobj::Constant::ONESHOT and phase >= 1.)
+  {
+    phase = 0;
+    updateSliderPosFromPhase();
+  }
+
   emit playingChanged();
 }
 
