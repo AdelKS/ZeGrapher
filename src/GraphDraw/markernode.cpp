@@ -137,7 +137,8 @@ void MarkerNode::set(const MarkerGeometry& markers)
   const zg::CurveStyle& style = markers.style;
   static_cast<MarkersMaterial*>(material())->style = MarkerStyle{
     .color = style.color.rgba64(),
-    .glSize = 4.0f * float(style.pointWidth) + 2.0f * aaPad / markers.pxPerUnit,
+    // every shape reaches the radius plus half the stroke from its center
+    .glSize = 2.0f * (float(style.pointWidth) + float(style.lineWidth) / 2.0f + aaPad / markers.pxPerUnit),
     .radius = float(style.pointWidth),
     .strokeWidth = float(style.lineWidth),
     .markerType = int(style.pointStyle),
