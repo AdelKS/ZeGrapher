@@ -35,6 +35,12 @@ namespace shared {
   struct ZcMathObjectBB;
 }}
 
+/// @brief a backend that draws one curve. A sheet draws one per column
+using Plottable = std::variant<mathobj::Equation*, mathobj::Parametric*, mathobj::Data*>;
+
+static_assert(PlottableBackend<mathobj::Equation> and PlottableBackend<mathobj::Parametric>
+              and PlottableBackend<mathobj::Data>);
+
 class MathWorld: public QAbstractListModel
 {
   Q_OBJECT
@@ -55,6 +61,11 @@ public:
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
   const auto& getMathObjects() const { return mathObjects; }
+
+  /// @brief the backends that draw a curve, in list order, with each sheet
+  ///        replaced by its columns
+  std::vector<Plottable> plottables() const;
+
   Q_INVOKABLE void removeMathObject(MathObject*);
   Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
   Q_INVOKABLE void moveMathObject(int from, int to);

@@ -41,7 +41,6 @@ struct MathObject: QObject {
   QML_ELEMENT
 
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
-  Q_PROPERTY(bool discrete READ isDiscrete NOTIFY discreteChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem READ getCoordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(zg::Base* base READ getBase NOTIFY baseChanged)
@@ -64,10 +63,6 @@ public:
   Q_INVOKABLE void setType(Type);
   Q_INVOKABLE Type getType() const;
 
-  bool isValid() const;
-
-  Revision getRevision() const;
-
   EvalHandle getZcObject() const;
 
   void setSchrodinger(bool);
@@ -77,21 +72,15 @@ public:
   Q_INVOKABLE mathobj::Parametric* getParametric();
   Q_INVOKABLE mathobj::DataSheet* getDataSheet();
 
-  bool isContinuous() const { return not isDiscrete(); };
-
-  Q_INVOKABLE bool isDiscrete() const;
   Q_INVOKABLE bool isSchrodinger() const;
 
   Q_INVOKABLE void setCoordinateSystem(CoordinateSystem);
   CoordinateSystem getCoordinateSystem() const;
 
-  Base* getBase();
+  /// @brief the backend that draws a curve, nullptr for a constant or a sheet
+  Base* getBase() const;
 
-  PlotStyle* getStyle();
-
-  const PlotStyle* getStyle() const;
-
-  std::optional<SamplingSettings> getSamplingSettings();
+  PlotStyle* getStyle() const;
 
   /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
   template <class T>
@@ -116,7 +105,6 @@ public slots:
 signals:
   void updated();
   void typeChanged();
-  void discreteChanged();
   void schrodingerChanged();
   void coordinateSystemChanged();
   void baseChanged();
@@ -130,8 +118,6 @@ protected:
                                  mathobj::DataSheet*>;
 
   variant_t createBackend(Type);
-
-  static Base* getBase(variant_t&);
 
   variant_t backend;
 

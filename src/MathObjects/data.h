@@ -22,7 +22,6 @@
 
 #include "BuildingBlocks/base.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
-#include "Utils/plotstyle.h"
 #include "Utils/state.h"
 
 #include <string>
@@ -41,7 +40,6 @@ struct Data: Base, shared::ZcMathObjectBB {
   Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
   Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
   Q_PROPERTY(bool showInTable WRITE setShowInTable MEMBER showInTable NOTIFY showInTableChanged )
-  Q_PROPERTY(PlotStyle* style READ getStyle CONSTANT)
 
 public:
 
@@ -69,17 +67,12 @@ public:
   State sync();
   bool isValid() const { return state.isValid(); }
 
-  using Base::isDiscrete;
   const State& getState() const { return state; }
 
-  std::optional<SamplingSettings> getSamplingSettings();
   Revision getRevision() const { return {std::pair(&zcMathObj, zcMathObj.get_revision())}; }
-  EvalHandle getZcObject() { return &zcMathObj; }
+  EvalHandle getZcObject() const { return &zcMathObj; }
 
   Q_INVOKABLE void setShowInTable(bool);
-
-  PlotStyle style;
-  PlotStyle* getStyle() { return &style; }
 
   struct POD {
     std::optional<std::string> name;

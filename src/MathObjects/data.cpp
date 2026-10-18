@@ -113,10 +113,7 @@ State Data::sync() {
 
   // on a syntax error, the object keeps its kind and that kind's plot style
   if (const std::optional<bool> discrete = shared::parsedDiscrete(zcMathObj))
-  {
     Base::setDiscrete(*discrete);
-    style.setDiscrete(*discrete);
-  }
 
   return getState();
 };
@@ -180,11 +177,6 @@ void Data::setShowInTable(bool s)
 Data::~Data()
 {
   dataTableModel->deregisterTableColumn(this);
-}
-
-std::optional<zg::SamplingSettings> Data::getSamplingSettings()
-{
-  return Base::getSamplingSettings(getRevision());
 }
 
 }

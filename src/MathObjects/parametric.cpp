@@ -45,7 +45,6 @@ State Parametric::sync()
     return obj2.getState();
 
   Base::setDiscrete(obj1.isDiscrete() or obj2.isDiscrete());
-  style.setDiscrete(Base::isDiscrete());
 
   return obj1.getState();
 }
@@ -53,6 +52,20 @@ State Parametric::sync()
 bool Parametric::isValid() const
 {
   return obj1.isValid() and obj2.isValid();
+}
+
+EvalHandle Parametric::getZcObject() const
+{
+  return std::pair(obj1.getZcObject(), obj2.getZcObject());
+}
+
+Revision Parametric::getRevision() const
+{
+  auto of = [](const zc::DynMathObject<zc_t>* o) {
+    return std::pair(o, o ? o->get_revision() : 0);
+  };
+
+  return {of(obj1.getZcObject()), of(obj2.getZcObject())};
 }
 
 Parametric::POD Parametric::exportPod() const {

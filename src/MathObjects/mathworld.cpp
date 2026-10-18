@@ -102,6 +102,23 @@ void MathWorld::moveMathObject(int from, int to)
   emit updated();
 }
 
+std::vector<Plottable> MathWorld::plottables() const
+{
+  std::vector<Plottable> objects;
+
+  for (const MathObject* o: mathObjects)
+    std::visit(zc::utils::overloaded{
+      [](mathobj::Constant*) {},
+      [&](mathobj::DataSheet* sheet) {
+        for (mathobj::Data* column: sheet->getColumns())
+          objects.push_back(column);
+      },
+      [&](auto* b) { objects.push_back(b); },
+    }, o->backend);
+
+  return objects;
+}
+
 MathObject* MathWorld::addMathObject(MathObject::Type type)
 {
   beginInsertRows(QModelIndex(), mathObjects.size(), mathObjects.size());

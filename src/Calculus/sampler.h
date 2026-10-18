@@ -21,7 +21,7 @@
 #pragma once
 
 #include "GraphDraw/viewmapper.h"
-#include "MathObjects/mathobject.h"
+#include "MathObjects/mathworld.h"
 #include "Utils/sampledcurve.h"
 
 #include <zecalculator/zecalculator.h>
@@ -33,7 +33,7 @@ namespace zg {
 class Sampler
 {
 public:
-  using Plottable = std::variant<zg::MathObject*, zg::mathobj::Data*>;
+  using Plottable = zg::Plottable;
   using CurveMap = std::unordered_map<Plottable, zg::SampledCurve>;
 
   Sampler(const zg::ZeViewMapper& mapper);

@@ -22,7 +22,6 @@
 
 #include "BuildingBlocks/base.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
-#include "Utils/plotstyle.h"
 #include "Utils/state.h"
 
 namespace zg {
@@ -49,7 +48,8 @@ public:
   const State& getState() const { return state; }
   QString getEquation() const { return equation; }
 
-  PlotStyle style;
+  EvalHandle getZcObject() const { return &zcMathObj; }
+  Revision getRevision() const { return {std::pair(&zcMathObj, zcMathObj.get_revision())}; }
 
  struct POD {
     std::optional<std::string> equation;

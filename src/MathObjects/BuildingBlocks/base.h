@@ -21,11 +21,13 @@
 ****************************************************************************/
 
 #include "MathObjects/expr.h"
+#include "Utils/plotstyle.h"
 #include "Utils/unit.h"
 
 #include <glaze/yaml.hpp>
 
 #include <array>
+#include <concepts>
 
 namespace zg {
 
@@ -45,8 +47,8 @@ struct StringRange {
   bool operator == (const StringRange&) const = default;
 };
 
-/// @brief Shared base class for backends that use zc::DynMathObject
-///        creates a new handle on instantiation, and releases it on destruction
+/// @brief the shared base of the backends that draw a curve: equations,
+///        parametric equations and data columns
 struct Base: QObject {
   Q_OBJECT
   QML_ELEMENT
@@ -57,6 +59,7 @@ struct Base: QObject {
   Q_PROPERTY(bool discrete WRITE setDiscrete MEMBER discrete NOTIFY discreteChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(bool schrodinger WRITE setSchrodinger MEMBER schrodinger NOTIFY schrodingerChanged)
+  Q_PROPERTY(PlotStyle* style READ getStylePtr CONSTANT)
 
 public:
   enum CoordinateSystem {Cartesian, Polar};
@@ -68,6 +71,7 @@ public:
 
   mathobj::Expr* getStartPtr() { return &start; }
   mathobj::Expr* getEndPtr() { return &end; }
+  PlotStyle* getStylePtr() { return &style; }
 
   void setCoordinateSystem(CoordinateSystem);
   void setDiscrete(bool);
@@ -101,6 +105,8 @@ public:
 
   StringRange getDefaultStringRange() const;
 
+  PlotStyle style;
+
 signals:
   void coordinateSystemChanged();
   void discreteChanged();
@@ -124,6 +130,14 @@ struct SamplingSettings {
   Revision revision = {};
 
   bool operator == (const SamplingSettings&) const = default;
+};
+
+/// @brief a backend that the sampler draws
+template <class T>
+concept PlottableBackend = std::derived_from<T, Base> and requires(const T& t) {
+  { t.getZcObject() } -> std::same_as<EvalHandle>;
+  { t.getRevision() } -> std::same_as<Revision>;
+  { t.isValid() } -> std::same_as<bool>;
 };
 
 }

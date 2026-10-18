@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
   - type: equation
     equation: v(n) = 1 ; v(n - 1) * 2
 )"));
-  test(object(0).isDiscrete());
+  test(object(0).getBase()->isDiscrete());
   test(object(0).getStyle()->getLineStyle() == zg::PlotStyle::Solid);
 
   // a style picked by hand stays when the object changes kind
@@ -155,15 +155,15 @@ math_objects:
     name: end
     value: 2
 )"));
-  test(object(1).isValid());
-  test(object(2).isValid());
+  test(object(1).getConstant()->isValid());
+  test(object(2).getConstant()->isValid());
 
   // a function whose expression is a number
   test(app.load(R"(math_objects:
   - type: equation
     equation: f(x) = 2
 )"));
-  test(object(0).isValid());
+  test(object(0).getEquation()->isValid());
 
   // save() writes to the last saveAs() file, and nothing else changes it
   app.restart();

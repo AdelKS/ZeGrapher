@@ -21,7 +21,6 @@
 ****************************************************************************/
 
 #include "BuildingBlocks/base.h"
-#include "Utils/plotstyle.h"
 #include "namedref.h"
 
 #include <zecalculator/zecalculator.h>
@@ -45,13 +44,14 @@ public:
 
   bool isValid() const;
 
+  EvalHandle getZcObject() const;
+  Revision getRevision() const;
+
   NamedRef* getObj1Ptr() { return &obj1; }
   NamedRef* getObj2Ptr() { return &obj2; }
 
   NamedRef obj1;
   NamedRef obj2;
-
-  PlotStyle style;
 
   void setFirst(QString name) { obj1.setName(name); }
   QString getFirst() const { return obj1.getName(); }

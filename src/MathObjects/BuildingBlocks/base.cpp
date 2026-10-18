@@ -80,6 +80,7 @@ void Base::setDiscrete(bool b)
   const bool defEnd = isDefaultEnd();
 
   discrete = b;
+  style.setDiscrete(b);
 
   if (defStart) resetStart();
   if (defEnd) resetEnd();

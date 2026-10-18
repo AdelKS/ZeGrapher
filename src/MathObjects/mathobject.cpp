@@ -52,7 +52,7 @@ CoordinateSystem MathObject::getCoordinateSystem() const
   );
 }
 
-Base* MathObject::getBase()
+Base* MathObject::getBase() const
 {
   return std::visit(zc::utils::overloaded{
     [](Base* b) -> Base* { return b; },
@@ -61,18 +61,10 @@ Base* MathObject::getBase()
   }, backend);
 }
 
-PlotStyle* MathObject::getStyle()
+PlotStyle* MathObject::getStyle() const
 {
-  return const_cast<PlotStyle*>(std::as_const(*this).getStyle());
-}
-
-const PlotStyle* MathObject::getStyle() const
-{
-  return std::visit(zc::utils::overloaded{
-    [](auto* b) -> PlotStyle* { return &b->style; },
-    [](mathobj::Constant*) -> PlotStyle* { return nullptr; },
-    [](mathobj::DataSheet*) -> PlotStyle* { return nullptr; },
-  }, backend);
+  Base* base = getBase();
+  return base ? &base->style : nullptr;
 }
 
 
@@ -101,7 +93,6 @@ MathObject::variant_t MathObject::createBackend(Type t)
         {
           connect(n, &Base::schrodingerChanged, this, &MathObject::schrodingerChanged);
           connect(n, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
-          connect(n, &Base::discreteChanged, this, &MathObject::discreteChanged);
         }
         else if constexpr (std::same_as<T, mathobj::Constant>)
           connect(n, &mathobj::Constant::deadAndAliveChanged, this, &MathObject::schrodingerChanged);
@@ -195,61 +186,11 @@ EvalHandle MathObject::getZcObject() const
 
 }
 
-Revision MathObject::getRevision() const
-{
-  auto of = [](const zc::DynMathObject<zc_t>* o) {
-    return std::pair(o, o ? o->get_revision() : 0);
-  };
-
-  return std::visit(
-    zc::utils::overloaded{
-      [&](const auto* e) -> Revision {
-        return {of(&e->zcMathObj)};
-      },
-      [&](const mathobj::Parametric* p) -> Revision {
-        return {of(p->obj1.getZcObject()), of(p->obj2.getZcObject())};
-      },
-      [](const mathobj::DataSheet*) -> Revision {
-        return {};
-      }
-    },
-    backend
-  );
-}
-
-bool MathObject::isValid() const
-{
-  return std::visit(zc::utils::overloaded{
-    [](auto* e) { return e->isValid(); },
-  }, backend);
-}
-
 void MathObject::sync()
 {
   std::visit(zc::utils::overloaded{
     [](auto* e) { e->sync(); },
   }, backend);
-}
-
-bool MathObject::isDiscrete() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const mathobj::Constant* c) { return c->isDiscrete(); },
-      [](const mathobj::DataSheet*) { return false; },
-      [](const Base* v) { return v->isDiscrete(); }
-    },
-    backend
-  );
-}
-
-std::optional<SamplingSettings> MathObject::getSamplingSettings()
-{
-  const Base* base = getBase();
-  if (not base) [[unlikely]]
-    return {};
-
-  return base->getSamplingSettings(getRevision());
 }
 
 void MathObject::setSchrodinger(bool s)

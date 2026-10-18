@@ -41,22 +41,6 @@ static zg::CurveStyle make_curve_style(const zg::PlotStyle& ps)
   };
 }
 
-/// @brief the objects to sample, in the order they are listed in
-static std::vector<Sampler::Plottable> plottables()
-{
-  std::vector<Sampler::Plottable> objects;
-
-  for (zg::MathObject* o: zg::mathWorld->getMathObjects())
-  {
-    if (zg::mathobj::DataSheet* dataSheet = o->getDataSheet())
-      for (zg::mathobj::Data* column: dataSheet->getColumns())
-        objects.push_back(column);
-    else objects.push_back(o);
-  }
-
-  return objects;
-}
-
 void Sampler::refresh_schrodinger_keys()
 {
   schrodinger_constant = zg::mathWorld->getSchrodingerConstant();
@@ -91,19 +75,7 @@ void Sampler::refresh_schrodinger_keys()
 
 void Sampler::refresh_valid_objects()
 {
-  auto sampling_settings = [](auto* f) {
-    return f->getSamplingSettings();
-  };
-
-  auto is_plottable = []<typename T>(T* f) {
-    if constexpr (std::is_same_v<T, zg::MathObject>)
-      return f->isValid() and f->getType() != zg::MathObject::CONSTANT;
-    else if constexpr (std::is_same_v<T, zg::mathobj::Data>)
-      return f->isValid();
-    else static_assert(zc::utils::dependent_false_v<T>, "Case not covered");
-  };
-
-  const std::vector<Plottable> objects = plottables();
+  const std::vector<Plottable> objects = zg::mathWorld->plottables();
 
   // the Schrödinger values written below increment the revisions too, so the
   // Schrödinger curves compare with the revisions that update() left
@@ -116,7 +88,7 @@ void Sampler::refresh_valid_objects()
 
   auto update = [&](auto* f, CurveMap& c, bool good, bool schrodinger)
   {
-    const auto opt_sampling_settings = sampling_settings(f);
+    const auto opt_sampling_settings = f->getSamplingSettings(f->getRevision());
     if (good && bool(opt_sampling_settings))
     {
       auto& new_settings = *opt_sampling_settings;
@@ -132,13 +104,13 @@ void Sampler::refresh_valid_objects()
   };
 
   for (Plottable p: objects)
-    std::visit([&](auto* f) { update(f, curves, is_plottable(f) and not f->isSchrodinger(), false); }, p);
+    std::visit([&](auto* f) { update(f, curves, f->isValid() and not f->isSchrodinger(), false); }, p);
 
   for (auto& [v, schrodinger_curves]: schrodinger_curves_map)
   {
     schrodinger_constant->zcMathObj = v;
     for (Plottable p: objects)
-      std::visit([&](auto* f) { update(f, schrodinger_curves, is_plottable(f) and f->isSchrodinger(), true); }, p);
+      std::visit([&](auto* f) { update(f, schrodinger_curves, f->isValid() and f->isSchrodinger(), true); }, p);
   }
 
   auto clearDeletedObjects = [&](CurveMap& c) {
@@ -156,14 +128,14 @@ void Sampler::refresh_valid_objects()
 
 void Sampler::refresh_curve_styles()
 {
-  for (Plottable p : plottables())
+  for (Plottable p : zg::mathWorld->plottables())
     std::visit([this](auto* f) {
       if (auto it = curves.find(f); it != curves.end())
-        it->second.style = make_curve_style(*f->getStyle());
+        it->second.style = make_curve_style(f->style);
 
       for (auto& [_, schrodinger_curves]: schrodinger_curves_map)
         if (auto it = schrodinger_curves.find(f); it != schrodinger_curves.end())
-          it->second.style = make_curve_style(*f->getStyle());
+          it->second.style = make_curve_style(f->style);
     }, p);
 }
 
@@ -171,7 +143,7 @@ void Sampler::refresh_curves_list()
 {
   curves_list.clear();
 
-  for (Plottable p : std::views::reverse(plottables()))
+  for (Plottable p : std::views::reverse(zg::mathWorld->plottables()))
     std::visit([this](auto* f) {
       if (auto it = curves.find(f); it != curves.end())
         curves_list.push_back(it->second);
@@ -213,20 +185,14 @@ void Sampler::update()
   // TODO: this can be multi-threaded
   //       issue: simultaneous plotting according to a global constant to be thought through
 
-  auto eval_handle = [](auto* f) {
-    return f->getZcObject();
-  };
-
   for (auto& [p, data]: curves)
   {
     if (not data.style.visible)
       continue;
 
-    std::visit([&](auto* f) {
-      dispatch(eval_handle(f), data);
-      if (f->isContinuous())
-        update_discontinuities(data);
-    }, p);
+    std::visit([&](auto* f) { dispatch(f->getZcObject(), data); }, p);
+    if (not data.discrete)
+      update_discontinuities(data);
   }
 
   if (schrodinger_constant)
@@ -240,9 +206,9 @@ void Sampler::update()
         std::visit([&](auto* f) {
           if (not data.style.visible)
             return;
-          data.style.color = f->getStyle()->colorLerp(t);
-          dispatch(eval_handle(f), data);
-          if (f->isContinuous())
+          data.style.color = f->style.colorLerp(t);
+          dispatch(f->getZcObject(), data);
+          if (not data.discrete)
             update_discontinuities(data);
         }, p);
     }
@@ -250,7 +216,7 @@ void Sampler::update()
   }
 
   settled_revisions.clear();
-  for (Plottable p: plottables())
+  for (Plottable p: zg::mathWorld->plottables())
     std::visit([&](auto* f) { settled_revisions[p] = f->getRevision(); }, p);
 }
 
