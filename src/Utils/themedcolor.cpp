@@ -58,9 +58,13 @@ std::optional<ThemedColor::POD> ThemedColor::exportPod(ThemedColor defaultColors
 
 void ThemedColor::importPod(POD p)
 {
-  if (p.dark)
-    dark = QColor::fromString(QString::fromStdString(*p.dark));
+  // a name that isn't a color keeps the current one
+  auto read = [](const std::optional<std::string>& name, QColor& color)
+  {
+    if (const QColor c = QColor::fromString(QString::fromStdString(name.value_or(""))); c.isValid())
+      color = c;
+  };
 
-  if (p.light)
-    light = QColor::fromString(QString::fromStdString(*p.light));
+  read(p.dark, dark);
+  read(p.light, light);
 }

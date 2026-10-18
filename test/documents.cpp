@@ -126,6 +126,16 @@ int main(int argc, char* argv[])
   test(not object(0).getConstant()->exportPod().from);
   test(not object(0).getConstant()->exportPod().to);
 
+  // a color that the app can't read keeps its default
+  test(app.load(R"(math_objects:
+  - type: equation
+    equation: f(x) = x
+    style:
+      color: {dark: 'not a color', light: '#ff0000'}
+)"));
+  test(object(0).getStyle()->color.dark == zg::PlotStyle::defaultColor.dark);
+  test(object(0).getStyle()->color.light == QColor(Qt::red));
+
   // keys and values of several words use underscores
   test(app.load(R"(graph:
   min_points_log2: 5
