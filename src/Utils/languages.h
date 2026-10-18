@@ -50,11 +50,17 @@ inline const QList<QLocale::Language>& supportedLangs()
   return langs;
 }
 
-/// @brief the OS language if the app can show it, English otherwise
+/// @brief the first language of the user's list that the app can show,
+///        English otherwise
+/// @note QLocale::system().language() follows the regional format on Windows,
+///       and the app bundle's localizations on macOS
 inline QLocale::Language systemLanguage()
 {
-  const auto lang = QLocale::system().language();
-  return supportedLangs().contains(lang) ? lang : QLocale::English;
+  for (const QString& name: QLocale::system().uiLanguages())
+    if (const auto lang = QLocale(name).language(); supportedLangs().contains(lang))
+      return lang;
+
+  return QLocale::English;
 }
 
 /// @brief a language's name in that language, "Français" for French
