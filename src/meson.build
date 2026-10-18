@@ -1,7 +1,7 @@
 inc = include_directories('.')
 
-# the block between BEGIN and END comments bellow is generated with
-# `update-meson-sources` script in the same directory
+# update-meson-sources, next to this file, writes the block between the BEGIN
+# and END comments below
 
 # BEGIN AUTOGEN SRC-LIST
 
