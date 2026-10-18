@@ -285,7 +285,8 @@ void CsvPreviewModel::loadIntoWorld()
       dataSheet->setNotes(tr("imported from %1").arg(displayPath(csvFile)));
     }
 
-    for (size_t i = 0 ; i != data.size() ; i++)
+    // processEvents() below lets the user delete the sheet
+    for (size_t i = 0 ; i != data.size() and dataSheet ; i++)
     {
       mathobj::Data* column = dataSheet->addColumn();
       column->style.setVisible(false);
