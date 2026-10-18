@@ -22,6 +22,7 @@
 #include "animationconductor.h"
 #include "MathObjects/constant.h"
 
+#include <algorithm>
 #include <cmath>
 
 namespace zg {
@@ -148,10 +149,9 @@ void AnimatedConstant::updateSliderPosFromRange()
     }
     else
     {
-      if (inverted)
-        sliderPos = (max - value) / amplitude;
-      else
-        sliderPos = (value - min) / amplitude;
+      // the value can sit outside [from, to], and animationStep() expects a
+      // phase in [0, 2]
+      sliderPos = std::clamp((inverted ? max - value : value - min) / amplitude, 0., 1.);
     }
   }
 
