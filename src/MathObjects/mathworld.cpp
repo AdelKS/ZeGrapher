@@ -80,7 +80,6 @@ void MathWorld::untrackExprObject(const mathobj::Expr* expr)
     return;
 
   objectUpdated();
-  emit updated();
 }
 
 void MathWorld::moveMathObject(int from, int to)
