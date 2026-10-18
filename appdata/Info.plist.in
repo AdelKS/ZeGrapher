@@ -25,6 +25,16 @@
 	<string>@RELEASE@</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+	<!-- the bundle has no .lproj folder, so this lets the system panels follow
+	     the user's language -->
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<true/>
 	<!--
 	  The '.zg' document, which appdata/ZeGrapher.mime.xml declares to a
 	  freedesktop desktop. macOS hands a document to a running app as a
