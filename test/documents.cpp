@@ -115,6 +115,17 @@ int main(int argc, char* argv[])
   test(not object(0).getConstant()->exportPod().from);
   test(not object(0).getConstant()->exportPod().to);
 
+  // a zero gets bounds around it
+  test(app.load(R"(math_objects:
+  - type: constant
+    name: a
+    value: 0
+)"));
+  test(object(0).getConstant()->getFrom() == -5);
+  test(object(0).getConstant()->getTo() == 5);
+  test(not object(0).getConstant()->exportPod().from);
+  test(not object(0).getConstant()->exportPod().to);
+
   // keys and values of several words use underscores
   test(app.load(R"(graph:
   min_points_log2: 5

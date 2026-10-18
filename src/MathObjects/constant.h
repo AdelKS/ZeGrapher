@@ -144,6 +144,10 @@ protected:
 
   static constexpr double lowerMul = 0.5;
   static constexpr double upperMul = 1.5;
+  static constexpr double zeroBound = 5;
+
+  /// @brief the bounds that set_value() gives a value
+  static std::pair<double, double> defaultBounds(double value);
 
   /// @brief so value can be changed without triggering signals
   ///        used in animations
