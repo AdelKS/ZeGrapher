@@ -175,13 +175,12 @@ void Sampler::update()
             sample<zg::CoordinateSystem::Cartesian, true>(handle, data);
           else sample<zg::CoordinateSystem::Cartesian, false>(handle, data);
         }
-        else if (data.settings.coordinateSystem == zg::CoordinateSystem::Polar)
+        else
         {
           if (data.discrete)
             sample<zg::CoordinateSystem::Polar, true>(handle, data);
           else sample<zg::CoordinateSystem::Polar, false>(handle, data);
         }
-        else qCritical() << "Case not handled, aborting program";
       }
     }, var_handle);
   };
