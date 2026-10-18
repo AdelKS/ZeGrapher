@@ -19,7 +19,8 @@
 ****************************************************************************/
 
 #include "GraphDraw/mathobjectdraw.h"
-#include "information.h"
+
+#include <cmath>
 
 using namespace std;
 

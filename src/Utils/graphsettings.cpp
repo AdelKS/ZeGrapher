@@ -19,11 +19,12 @@
 ****************************************************************************/
 
 #include "graphsettings.h"
-#include "information.h"
 
 #include <QPalette>
 #include <QGuiApplication>
 #include <QScreen>
+
+#include <cmath>
 
 namespace {
 

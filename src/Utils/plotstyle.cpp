@@ -19,7 +19,8 @@
 ****************************************************************************/
 
 #include "Utils/plotstyle.h"
-#include "information.h"
+
+#include <cmath>
 
 namespace zg {
 

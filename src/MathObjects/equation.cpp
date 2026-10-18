@@ -20,7 +20,6 @@
 
 #include "MathObjects/equation.h"
 #include "Utils/yaml.h"
-#include "information.h"
 
 namespace zg {
 namespace mathobj {

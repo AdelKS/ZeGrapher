@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 #include "Utils/graphrange.h"
-#include "information.h"
 
 #include <QLocale>
 

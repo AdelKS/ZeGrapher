@@ -19,7 +19,9 @@
 ****************************************************************************/
 
 #include "GraphDraw/interactivegraph.h"
-#include "information.h"
+
+#include <cmath>
+#include <utility>
 
 InteractiveGraph::InteractiveGraph(QQuickItem *parent) : Graph(parent)
 {
