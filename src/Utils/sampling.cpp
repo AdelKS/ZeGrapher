@@ -20,6 +20,7 @@
 
 #include "Utils/sampling.h"
 #include "information.h"
+#include "Utils/zc-utils.h"
 
 #include <cmath>
 #include <format>
@@ -71,6 +72,16 @@ QString Sampling::apply()
     return tr("The step is wider than the range.");
   else if (span / by > maxPoints)
     return tr("Too many points: the limit is %1.").arg(maxPoints);
+
+  // an object that doesn't take one input fails at every point
+  if (const auto res = (*zcObj)({from}, &zg::mathWorld->cache);
+      not res and res.error().type == zc::Error::CPP_INCORRECT_ARGNUM)
+  {
+    const zc::parsing::tokens::Text name{.substr = source.getName().toStdString()};
+    const bool function = zcObj->holds(zc::ObjectType::FUNCTION) or zcObj->holds(zc::ObjectType::CPP_FUNCTION);
+    return zcErrorToStr(function ? zc::Error::mismatched_fun_args(name, {})
+                                 : zc::Error::wrong_object_type(name, {}));
+  }
 
   const size_t pointCount = size_t(span / by) + 1;
 

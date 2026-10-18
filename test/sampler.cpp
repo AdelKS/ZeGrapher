@@ -19,6 +19,7 @@
 ****************************************************************************/
 
 #include "Calculus/sampler.h"
+#include "Utils/sampling.h"
 #include "app.h"
 #include "utils.h"
 
@@ -175,6 +176,26 @@ int main()
 
     const zg::SampledCurve& curve = sampler.getCurves().front();
     test(std::ranges::equal(curve.input, curve.curve, {}, {}, [](const zg::real_pt& pt) { return pt.x; }));
+  }
+
+  // a column filled from an object that doesn't take one input reports it,
+  // and keeps its values
+  {
+    test(app.load("math_objects:\n"
+                  "  - {type: equation, equation: 'g(x, y) = x + y'}\n"
+                  "  - {type: constant, name: c, value: 2}\n"
+                  "  - {type: datasheet, columns: [{name: d, values: ['7']}]}\n"));
+
+    zg::mathobj::Data* column = zg::mathWorld->getMathObjects().back()->getDataSheet()->getColumns().front();
+    zg::mathobj::Sampling sampling;
+    sampling.setColumn(column);
+
+    for (const char* source: {"g", "c"})
+    {
+      sampling.getSourcePtr()->setName(source);
+      test(not sampling.apply().isEmpty());
+      test(column->getData() == std::vector<std::string>{"7"});
+    }
   }
 
   return 0;
