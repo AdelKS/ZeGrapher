@@ -23,10 +23,14 @@
 import QtQuick
 import QtQuick.Layouts
 
+import ZeGrapher as ZG
+
 Item {
   id: root
 
   required property Parametric backend
+
+  readonly property bool polar: root.backend.coordinateSystem === ZG.Base.Polar
 
   implicitHeight: layout.implicitHeight
   implicitWidth:  layout.implicitWidth + 2 * layout.spacing
@@ -45,7 +49,10 @@ Item {
       Layout.alignment: Qt.AlignTop
 
       backend: root.backend.obj1
-      label: qsTr("x object name")
+      label: root.polar
+        //: in polar coordinates, the name of the object that gives each point's angle
+        ? qsTr("θ object name")
+        : qsTr("x object name")
     }
 
     NameEdit {
@@ -53,7 +60,10 @@ Item {
       Layout.alignment: Qt.AlignTop
 
       backend: root.backend.obj2
-      label: qsTr("y object name")
+      label: root.polar
+        //: in polar coordinates, the name of the object that gives each point's radius
+        ? qsTr("r object name")
+        : qsTr("y object name")
     }
   }
 }
