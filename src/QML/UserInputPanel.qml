@@ -28,7 +28,7 @@ Item {
   id: userInputPanel
   clip: true
 
-  signal exportGraph(file: string)
+  signal exportGraph(file: url)
 
   required property ZeGraphSettings graphSettings
 
