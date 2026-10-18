@@ -9,6 +9,28 @@ Installation Instructions
 3. Eject this disk image
 4. Open ZeGrapher from your Applications folder
 
+First start
+-----------
+
+Apple has not notarized ZeGrapher, so macOS blocks it the first time it opens.
+
+On macOS 15 and later:
+
+1. Open ZeGrapher, and click "Done" in the warning
+2. Open System Settings > Privacy & Security
+3. Under "Security", click "Open Anyway" next to the ZeGrapher message, and
+   confirm
+
+On macOS 14 and earlier, Control-click ZeGrapher in Applications, choose
+"Open", then click "Open" in the warning.
+
+If macOS says that the app is damaged, run this command in Terminal, then open
+ZeGrapher again:
+
+    xattr -dr com.apple.quarantine /Applications/ZeGrapher.app
+
+macOS remembers the choice, so later starts open normally.
+
 For more information, visit: https://zegrapher.com
 
 License
