@@ -114,6 +114,30 @@ ObjectCard {
         onSelectedColorModified: root.backend.style.color = selectedColor
       }
 
+      ColorButton {
+        radius: 12
+
+        Layout.alignment: Qt.AlignVCenter
+        visible: root.backend.schrodinger
+
+        ToolTip.text: qsTr("End color of the gradient over the family of Schrödinger curves")
+
+        selectedColor: root.backend.style.secondColor
+
+        onSelectedColorModified: root.backend.style.secondColor = selectedColor
+      }
+
+      Image {
+        Layout.alignment: Qt.AlignVCenter
+        Layout.preferredWidth: 30
+        Layout.preferredHeight: 30
+        visible: root.backend.schrodinger
+
+        source: ZeStyle.icon("schrodinger-cat")
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
+      }
+
       DragHandle {
         id: dragHandle
         Layout.alignment: Qt.AlignVCenter

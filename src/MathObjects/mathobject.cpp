@@ -165,44 +165,11 @@ mathobj::DataSheet* MathObject::getDataSheet()
   return getBackend<mathobj::DataSheet>();
 }
 
-EvalHandle MathObject::getZcObject() const
-{
-  using Ret = EvalHandle;
-  return std::visit(
-    zc::utils::overloaded{
-      [&](const auto* c) -> Ret {
-        return &c->zcMathObj;
-      },
-      [](const mathobj::Parametric* p) -> Ret {
-        return std::make_pair(p->obj1.getZcObject(), p->obj2.getZcObject());
-      },
-      // a sheet is a bag of Data objects, it has nothing of its own to evaluate
-      [](const mathobj::DataSheet*) -> Ret {
-        return static_cast<const zc::DynMathObject<zc_t>*>(nullptr);
-      }
-    },
-    backend
-  );
-
-}
-
 void MathObject::sync()
 {
   std::visit(zc::utils::overloaded{
     [](auto* e) { e->sync(); },
   }, backend);
-}
-
-void MathObject::setSchrodinger(bool s)
-{
-  std::visit(
-    zc::utils::overloaded{
-      [](mathobj::Constant*) {},
-      [](mathobj::DataSheet*) {},
-      [s](auto* v) { v->setSchrodinger(s); }
-    },
-    backend
-  );
 }
 
 bool MathObject::isSchrodinger() const

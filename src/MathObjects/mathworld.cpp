@@ -204,8 +204,8 @@ void MathWorld::updateSchrodingerStatus()
     );
   };
 
-  for (auto* r: mathObjects)
-    r->setSchrodinger(inSet(r->getZcObject()));
+  for (Plottable p: plottables())
+    std::visit([&](auto* o) { o->setSchrodinger(inSet(o->getZcObject())); }, p);
 
   for (mathobj::Expr* r: exprObjects)
     r->setSchrodinger(schrodingerBackends.contains(&r->zcMathObj));

@@ -63,10 +63,6 @@ public:
   Q_INVOKABLE void setType(Type);
   Q_INVOKABLE Type getType() const;
 
-  EvalHandle getZcObject() const;
-
-  void setSchrodinger(bool);
-
   Q_INVOKABLE mathobj::Equation* getEquation();
   Q_INVOKABLE mathobj::Constant* getConstant();
   Q_INVOKABLE mathobj::Parametric* getParametric();

@@ -113,6 +113,10 @@ void Sampler::refresh_valid_objects()
       std::visit([&](auto* f) { update(f, schrodinger_curves, f->isValid() and f->isSchrodinger(), true); }, p);
   }
 
+  // the other curves sample while the constant has no value
+  if (not schrodinger_curves_map.empty())
+    schrodinger_constant->zcMathObj = std::nan("");
+
   auto clearDeletedObjects = [&](CurveMap& c) {
     auto it = c.begin();
     while(it != c.end())

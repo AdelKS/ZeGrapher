@@ -18,6 +18,7 @@
 **
 ****************************************************************************/
 
+#include "Calculus/sampler.h"
 #include "app.h"
 #include "utils.h"
 
@@ -61,6 +62,28 @@ int main()
   zg::mathWorld->removeMathObject(objectA);
   QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
   test(zg::mathWorld->getSchrodingerConstant() == nullptr);
+
+  // a column draws one curve per value of the constant it uses
+  test(app.load(R"(math_objects:
+  - type: constant
+    name: a
+    from: 1
+    to: 2
+    steps: 2
+    schrodinger: true
+  - type: datasheet
+    columns:
+      - name: c
+        values: ['a', '2*a']
+)"));
+  test(zg::mathWorld->getMathObjects()[1]->getDataSheet()->getColumns()[0]->isSchrodinger());
+
+  zg::ZeViewMapper mapper;
+  mapper.setGraphRect(QRectF(0, 0, 100, 100));
+  mapper.setGraphRange(information->graphSettings.range.getLatestValidSnapshot());
+  Sampler sampler(mapper);
+  sampler.update();
+  test(sampler.getCurves().size() == 3);
 
   return 0;
 }
