@@ -2,8 +2,8 @@
 
 set -e
 
-if [[ -z "$MESON_PROJECT_SOURCE_ROOT" ]]; then
-  MESON_PROJECT_SOURCE_ROOT=$(readlink -f $(dirname "$BASH_SOURCE"))
+if [ -z "$MESON_PROJECT_SOURCE_ROOT" ]; then
+  MESON_PROJECT_SOURCE_ROOT=$(readlink -f $(dirname "$0"))
 fi
 
 if [ "$1" = "get-vcs" ]; then
