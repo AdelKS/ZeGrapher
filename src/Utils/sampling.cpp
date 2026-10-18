@@ -58,7 +58,7 @@ QString Sampling::apply()
 
   const double from = start.getValue(), to = end.getValue(), by = step.getValue();
 
-  if (std::isnan(from) or std::isnan(to) or std::isnan(by))
+  if (not std::isfinite(from) or not std::isfinite(to) or not std::isfinite(by))
     return tr("The range has no value.");
 
   const double span = to - from;
