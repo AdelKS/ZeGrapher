@@ -212,22 +212,11 @@ void MathWorld::updateSchrodingerStatus()
 }
 
 std::unordered_set<const zc::DynMathObject<zc_t>*>
-MathWorld::direct_revdeps(EvalHandle handle)
+MathWorld::direct_revdeps(const zc::DynMathObject<zc_t>* o)
 {
   std::unordered_set<std::string> names;
-
-  std::visit(
-    zc::utils::overloaded{
-      [&](const zc::DynMathObject<zc_t>* p){
-        for (auto&& [name, t]: backend.direct_revdeps(p->get_name())) names.insert(name);
-      },
-      [&](std::pair<const zc::DynMathObject<zc_t>*, const zc::DynMathObject<zc_t>*> p) {
-        for (auto&& [name, _]: backend.direct_revdeps(p.first->get_name())) names.insert(name);
-        for (auto&& [name, _]: backend.direct_revdeps(p.second->get_name())) names.insert(name);
-      }
-    },
-    handle
-  );
+  for (auto&& [name, _]: backend.direct_revdeps(o->get_name()))
+    names.insert(name);
 
   std::unordered_set<const zc::DynMathObject<zc_t>*> res;
   for (const zc::DynMathObject<zc_t>& b: backend)
@@ -237,9 +226,9 @@ MathWorld::direct_revdeps(EvalHandle handle)
 }
 
 std::unordered_set<const zc::DynMathObject<zc_t>*>
-MathWorld::revdeps(EvalHandle handle)
+MathWorld::revdeps(const zc::DynMathObject<zc_t>* o)
 {
-  auto to_explore = direct_revdeps(handle);
+  auto to_explore = direct_revdeps(o);
   std::unordered_set<const zc::DynMathObject<zc_t>*> res, explored;
 
   while (not to_explore.empty())
@@ -249,7 +238,7 @@ MathWorld::revdeps(EvalHandle handle)
 
     explored.insert(d);
     res.insert(d);
-    auto new_to_explore = direct_revdeps(EvalHandle(d));
+    auto new_to_explore = direct_revdeps(d);
     for (auto* e: new_to_explore)
       if (not explored.contains(e))
         to_explore.insert(e);

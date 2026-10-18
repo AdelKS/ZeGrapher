@@ -78,9 +78,6 @@ public:
   void trackExprObject(mathobj::Expr*);
   void untrackExprObject(const mathobj::Expr*);
 
-  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdeps(EvalHandle);
-  std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(EvalHandle);
-
   QHash<int, QByteArray> roleNames() const override;
 
   using POD = std::vector<MathObject::POD>;
@@ -100,6 +97,10 @@ protected slots:
   void updateSchrodingerStatus();
 
 protected:
+  /// @brief the objects whose expressions use 'o', directly or not
+  std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(const zc::DynMathObject<zc_t>* o);
+  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdeps(const zc::DynMathObject<zc_t>* o);
+
   zc::MathWorld<zc_t> backend;
 
   std::vector<zg::MathObject*> mathObjects;
