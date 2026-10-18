@@ -37,7 +37,7 @@ License
 -------
 ZeGrapher is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0)
 
-Copyright (c) 2015-2026 The ZeGrapher Authors
+Copyright (c) 2011-2026 Adel Kara Slimane
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
