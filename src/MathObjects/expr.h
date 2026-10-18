@@ -26,7 +26,8 @@
 namespace zg {
 namespace mathobj {
 
-/// @brief Contains the information needed to compute the math object and how to plot it
+/// @brief an expression that gives one number, such as a range bound, defined
+///        in ZeCalculator under its implicit name
 struct Expr : QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT

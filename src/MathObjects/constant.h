@@ -32,8 +32,8 @@ class MathWorld;
 
 namespace mathobj {
 
-/// @brief ZeGrapher math objects that are entirely defined by a single math expression
-///        which also fits in a single zc::DynMathObject
+/// @brief a named number that the user sets by hand, slides between two
+///        bounds or animates
 struct Constant: QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT

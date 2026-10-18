@@ -28,7 +28,7 @@
 
 namespace zg {
 
-/// @brief Contains the information needed to compute the math object and how to plot it
+/// @brief how a curve is drawn: its colors, line and points
 struct PlotStyle: QObject {
   Q_OBJECT
   QML_ELEMENT

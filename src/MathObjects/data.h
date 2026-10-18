@@ -31,8 +31,7 @@ namespace zg {
 
 namespace mathobj {
 
-/// @brief ZeGrapher math objects that are entirely defined by a single math expression
-///        which also fits in a single zc::DynMathObject
+/// @brief a DataSheet column: one expression per row, read at the row number
 struct Data: Base, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
