@@ -56,9 +56,9 @@ struct Base: QObject {
 
   Q_PROPERTY(zg::mathobj::Expr* start READ getStartPtr CONSTANT)
   Q_PROPERTY(zg::mathobj::Expr* end READ getEndPtr CONSTANT)
-  Q_PROPERTY(bool discrete WRITE setDiscrete MEMBER discrete NOTIFY discreteChanged)
+  Q_PROPERTY(bool discrete READ isDiscrete NOTIFY discreteChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
-  Q_PROPERTY(bool schrodinger WRITE setSchrodinger MEMBER schrodinger NOTIFY schrodingerChanged)
+  Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
   Q_PROPERTY(zg::PlotStyle* style READ getStylePtr CONSTANT)
 
 public:
@@ -74,7 +74,6 @@ public:
   PlotStyle* getStylePtr() { return &style; }
 
   void setCoordinateSystem(CoordinateSystem);
-  void setDiscrete(bool);
   void setSchrodinger(bool);
 
   void setStart(QString s) { start.setExpression(s); }
@@ -124,6 +123,7 @@ signals:
   void schrodingerChanged();
 
 protected:
+  void setDiscrete(bool);
 
   mathobj::Expr start;
   mathobj::Expr end;
