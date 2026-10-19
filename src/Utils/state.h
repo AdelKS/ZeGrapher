@@ -34,8 +34,9 @@ struct State {
   Q_GADGET
   QML_VALUE_TYPE(zgState)
 
-  Q_PROPERTY(QString errorMsg READ getErrorMsg)
-  Q_PROPERTY(Status status READ getStatus)
+  // a State changes as a whole, through the property that holds it
+  Q_PROPERTY(QString errorMsg READ getErrorMsg CONSTANT)
+  Q_PROPERTY(Status status READ getStatus CONSTANT)
 
 public:
   explicit State() = default;
