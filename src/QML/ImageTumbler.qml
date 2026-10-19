@@ -35,7 +35,7 @@ RowLayout {
 
   Image {
     id: selector1
-    Layout.alignment: Layout.Center
+    Layout.alignment: Qt.AlignVCenter
     source: ZeStyle.icon("selector")
     sourceSize.width: 8
     fillMode: Image.PreserveAspectFit
@@ -64,7 +64,7 @@ RowLayout {
 
   Image {
     id: selector2
-    Layout.alignment: Layout.Center
+    Layout.alignment: Qt.AlignVCenter
     source: ZeStyle.icon("selector-flipped")
     sourceSize.width: 8
     fillMode: Image.PreserveAspectFit
