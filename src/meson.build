@@ -249,6 +249,9 @@ qml_mods = qt6.qml_module(
   'ZeGrapher',
   qml_sources: qml_files,
   qml_singletons: qml_singleton_files,
+  # the C++ types have properties of QtQuick types, such as QFont and
+  # QQuickTextDocument
+  depends_imports: ['QtQuick'],
   moc_headers: qmlcpp_files,
   include_directories: qmlcpp_inc_dirs + [buildconfig_inc],
   dependencies: [qt6_dep],
