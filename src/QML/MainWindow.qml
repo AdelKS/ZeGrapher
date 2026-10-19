@@ -324,14 +324,10 @@ ApplicationWindow {
     contentHeight: interactiveGraph.implicitHeight
     contentWidth: interactiveGraph.implicitWidth
 
-    onAvailableHeightChanged: {
-      interactiveGraph.settings.setAvailableSizePx( Qt.size(availableWidth, availableHeight));
-      interactiveGraph.updateImplicitSize();
-    }
-
-    onAvailableWidthChanged: {
-      interactiveGraph.settings.setAvailableSizePx( Qt.size(availableWidth, availableHeight));
-      interactiveGraph.updateImplicitSize();
+    Binding {
+      target: interactiveGraph.settings
+      property: "availableSizePx"
+      value: Qt.size(graphScrollView.availableWidth, graphScrollView.availableHeight)
     }
 
     Behavior on x {
@@ -346,6 +342,13 @@ ApplicationWindow {
       id: interactiveGraph
       anchors.centerIn: parent
 
+      readonly property bool fitsView: settings.size.sheetFillsWindow
+                                       || settings.zoom.zoomingType === ZoomingType.FITSHEET
+      readonly property real pxPerCm: settings.pixelDensity * settings.zoom.zoom
+
+      implicitWidth: fitsView ? graphScrollView.availableWidth : settings.size.cmSheetSize.width * pxPerCm
+      implicitHeight: fitsView ? graphScrollView.availableHeight : settings.size.cmSheetSize.height * pxPerCm
+
       width: implicitWidth
       height: implicitHeight
 
@@ -353,33 +356,6 @@ ApplicationWindow {
       PinchHandler {
         target: null
         onScaleChanged: (delta) => interactiveGraph.zoomAt(centroid.position, delta)
-      }
-
-      Connections {
-        target: interactiveGraph.settings
-
-        function onZoomSettingsChanged() {
-          interactiveGraph.updateImplicitSize();
-        }
-
-        function onSizeSettingsChanged() {
-          interactiveGraph.updateImplicitSize();
-        }
-
-        function onPixelDensityChanged() {
-          interactiveGraph.updateImplicitSize();
-        }
-      }
-
-      function updateImplicitSize() {
-        if (interactiveGraph.settings.size.sheetFillsWindow || interactiveGraph.settings.zoom.zoomingType === ZoomingType.FITSHEET ) {
-          implicitWidth = graphScrollView.availableWidth;
-          implicitHeight = graphScrollView.availableHeight;
-        } else {
-          const pxPerCm = interactiveGraph.settings.pixelDensity * interactiveGraph.settings.zoom.zoom;
-          implicitWidth = interactiveGraph.settings.size.cmSheetSize.width * pxPerCm;
-          implicitHeight = interactiveGraph.settings.size.cmSheetSize.height * pxPerCm;
-        }
       }
     }
   }
