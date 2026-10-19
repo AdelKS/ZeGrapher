@@ -141,7 +141,6 @@ qmlcpp_files = [
   'Utils/appsettings.h',
   'Utils/axissettings.h',
   'Utils/buildinfo.h',
-  'Utils/curvestyle.h',
   'Utils/documentation.h',
   'Utils/donation.h',
   'Utils/graphrange.h',

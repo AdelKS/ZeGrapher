@@ -22,26 +22,13 @@
 
 #include "Utils/plotstyle.h"
 
-#include <QMetaType>
-#include <QPen>
-#include <QtQmlIntegration/qqmlintegration.h>
+#include <QColor>
+#include <QList>
 
 namespace zg {
 
 /// @brief Style info relevant to drawing a sampled curve
 struct CurveStyle {
-  Q_GADGET
-  QML_VALUE_TYPE(curveStyle)
-
-  Q_PROPERTY(bool visible MEMBER visible)
-  Q_PROPERTY(QColor color MEMBER color)
-  Q_PROPERTY(double lineWidth MEMBER lineWidth)
-  Q_PROPERTY(QList<qreal> dashPattern MEMBER dashPattern)
-  Q_PROPERTY(bool drawLine MEMBER drawLine)
-  Q_PROPERTY(double pointWidth MEMBER pointWidth)
-  Q_PROPERTY(zg::PlotStyle::PointStyle pointStyle MEMBER pointStyle)
-
-public:
   bool visible = true;
   QColor color = Qt::black;
   double lineWidth = 1.0;
