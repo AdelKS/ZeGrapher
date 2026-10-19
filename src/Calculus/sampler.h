@@ -42,28 +42,32 @@ public:
 
   const auto& getCurves() const { return curves_list; }
 
-  /// @brief refreshes 'curves' for the currently valid objects
-  void refresh_valid_objects();
-
-  /// @brief refreshes the style of the currently valid objects
-  void refresh_curve_styles();
-
-  /// @brief makes sure the full [start, step, end] range of values of the schrodinger constant
-  ///        is in the keys of the schrodinger_curves_map, no more no less
-  void refresh_schrodinger_keys();
-
-  void refresh_curves_list();
-
   double sq_dist_to_ray_limit = 0.125;
   size_t min_points = 128;
   size_t max_points = 16384;
 
 protected:
+  /// @brief refreshes 'curves' for the currently valid objects
+  void refresh_valid_objects(const std::vector<Plottable>& objects);
+
+  /// @brief refreshes the style of the currently valid objects
+  void refresh_curve_styles(const std::vector<Plottable>& objects);
+
+  /// @brief makes sure the full [start, step, end] range of values of the schrodinger constant
+  ///        is in the keys of the schrodinger_curves_map, no more no less
+  void refresh_schrodinger_keys();
+
+  void refresh_curves_list(const std::vector<Plottable>& objects);
 
   /// @brief samples an object given the current range and graph size
   /// @tparam continuous: whether the object is continuous or discrete
   template <zg::CoordinateSystem coordinates, bool discrete>
   void sample(auto, zg::SampledCurve&);
+
+  /// @brief calls f(value, curves) with the Schrödinger constant set to each
+  ///        of its values, then leaves the constant without a value
+  template <class F>
+  void for_each_schrodinger_value(F&& f);
 
   /// @brief detects and records discontinuities in a fully sampled continuous curve
   void update_discontinuities(zg::SampledCurve& data);
