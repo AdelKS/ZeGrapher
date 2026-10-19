@@ -53,7 +53,7 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
       .x = zg::pixel_unit{-dr.x() / totalScaleFactor},
       .y = zg::pixel_unit{-dr.y() / totalScaleFactor},
     });
-    settings.range.interactiveUpdate(viewMapper.getRange<zg::real>(), frame.source.layout.graph.size());
+    viewChanged();
   }
 
   lastMousePos = event->position();
@@ -63,6 +63,12 @@ void InteractiveGraph::mouseMoveEvent(QMouseEvent *event)
 void InteractiveGraph::mouseReleaseEvent(QMouseEvent *event)
 {
   Q_UNUSED(event);
+  dragging = false;
+}
+
+void InteractiveGraph::mouseUngrabEvent()
+{
+  // a pinch takes the grab from the drag that its first finger started
   dragging = false;
 }
 
@@ -88,10 +94,7 @@ void InteractiveGraph::wheelEvent(QWheelEvent *event)
   // if CTRL is pressed, handle x and y separately
   const bool xy_separate = event->modifiers() & Qt::ControlModifier;
 
-  // the view mapper counts pixels from the graph's top left corner, inside the
-  // label margins
-  const zg::pixel_pt center = zg::pixel_pt::from(event->position() / totalScaleFactor
-                                                 - frame.source.layout.graph.topLeft());
+  const zg::pixel_pt center = toGraphPixels(event->position());
 
   if (xy_separate)
   {
@@ -104,6 +107,27 @@ void InteractiveGraph::wheelEvent(QWheelEvent *event)
   else
     viewMapper.zoomView(center, y_delta != 0 ? y_factor : x_factor);
 
-  settings.range.interactiveUpdate(viewMapper.getRange<zg::real>(), frame.source.layout.graph.size());
+  viewChanged();
   event->accept();
+}
+
+void InteractiveGraph::zoomAt(QPointF position, double factor)
+{
+  if (not (factor > 0) or not std::isfinite(factor))
+    return;
+
+  viewMapper.zoomView(toGraphPixels(position), 1. / factor);
+  viewChanged();
+}
+
+zg::pixel_pt InteractiveGraph::toGraphPixels(QPointF position) const
+{
+  // the view mapper counts pixels from the graph's top left corner, inside the
+  // label margins
+  return zg::pixel_pt::from(position / totalScaleFactor - frame.source.layout.graph.topLeft());
+}
+
+void InteractiveGraph::viewChanged()
+{
+  settings.range.interactiveUpdate(viewMapper.getRange<zg::real>(), frame.source.layout.graph.size());
 }

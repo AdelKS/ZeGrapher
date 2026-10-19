@@ -30,11 +30,22 @@ class InteractiveGraph : public Graph
 public:
   explicit InteractiveGraph(QQuickItem *parent = nullptr);
 
+  /// @brief zooms in by 'factor' around 'position', in item coordinates. A
+  ///        factor below 1 zooms out
+  Q_INVOKABLE void zoomAt(QPointF position, double factor);
+
 protected:
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
+  void mouseUngrabEvent() override;
   void wheelEvent(QWheelEvent *event) override;
+
+  /// @brief 'position', in item coordinates, as the view mapper counts pixels
+  zg::pixel_pt toGraphPixels(QPointF position) const;
+
+  /// @brief writes the view mapper's range to the graph settings
+  void viewChanged();
 
   QPointF lastMousePos;
   bool dragging = false;

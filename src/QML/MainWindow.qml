@@ -356,6 +356,12 @@ ApplicationWindow {
       width: implicitWidth
       height: implicitHeight
 
+      // a pinch on a touchscreen or a touchpad zooms the view
+      PinchHandler {
+        target: null
+        onScaleChanged: (delta) => interactiveGraph.zoomAt(centroid.position, delta)
+      }
+
       Connections {
         target: interactiveGraph.settings
 

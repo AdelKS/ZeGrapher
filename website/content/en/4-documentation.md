@@ -46,6 +46,8 @@ You drive the graph with the mouse:
 
 The zoom keeps the point under the cursor in place.
 
+On a touchpad or a touchscreen, a pinch zooms both axes too.
+
 ## 2. The user input panel
 
 ![The panel, and the two buttons on its edge](images/panel.png)
