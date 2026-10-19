@@ -165,13 +165,13 @@ public:
   zg::mathobj::Expr xMultiplier, yMultiplier;
 
 protected:
-  // log2 for adaptive sampling
-  int minPointsLg2 = 7;
-  int maxPointsLg2 = 14;
-
   static constexpr int defaultMinPoints = 7;
   static constexpr int defaultMaxPoints = 14;
   static constexpr int lowestPointsLg2 = 2, highestPointsLg2 = 16;
+
+  // log2 for adaptive sampling
+  int minPointsLg2 = defaultMinPoints;
+  int maxPointsLg2 = defaultMaxPoints;
 
   QFont font = zg::mathFont();
 

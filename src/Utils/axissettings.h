@@ -56,7 +56,9 @@ struct ZeLinAxisSettings
   Q_PROPERTY(int maxDigitsNum MEMBER maxDigitsNum)
 
 public:
-  int maxDigitsNum = 3;
+  static constexpr int defaultDigits = 3;
+
+  int maxDigitsNum = defaultDigits;
 
   bool operator == (const ZeLinAxisSettings &other) const = default;
 };

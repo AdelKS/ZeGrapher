@@ -26,7 +26,7 @@ std::optional<ZeAxisSettings::POD> ZeAxisSettings::exportPod(const QString& mult
   POD p {
     .title = zg::yml::not_default(title),
     .tick_spacing = zg::yml::not_default(tickRelSpacing, 0),
-    .max_digits = zg::yml::not_default(linSettings.maxDigitsNum, 3),
+    .max_digits = zg::yml::not_default(linSettings.maxDigitsNum, ZeLinAxisSettings::defaultDigits),
     .multiplier = zg::yml::not_default(multiplier),
   };
 
