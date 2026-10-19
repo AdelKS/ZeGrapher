@@ -30,9 +30,14 @@ Shape {
 
   signal selectedColorModified()
 
-  // a disk has no text, so call sites set the hint with ToolTip.text
+  // a disk has no text, so call sites set the hint with ToolTip.text, which
+  // screen readers read too
   ToolTip.delay: ZeStyle.tooltipDelay
   ToolTip.visible: shape_path.hovered && ToolTip.text.length !== 0
+
+  Accessible.role: Accessible.Button
+  Accessible.name: ToolTip.text
+  Accessible.onPressAction: colorDialog.open()
 
   /// @brief selectedColor in the app's current theme
   readonly property color shownColor: ZeStyle.themed(selectedColor)

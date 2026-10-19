@@ -57,9 +57,15 @@ Rectangle {
     color: ZeStyle.palette.shadow
   }
 
-  // call sites set the hint with ToolTip.text
+  // call sites set the hint with ToolTip.text, which screen readers read too
   ToolTip.delay: ZeStyle.tooltipDelay
   ToolTip.visible: mouseArea.containsMouse && ToolTip.text.length !== 0
+
+  Accessible.role: Accessible.Button
+  Accessible.name: ToolTip.text
+  Accessible.checkable: true
+  Accessible.checked: root.checked
+  Accessible.onPressAction: root.checked = !root.checked
 
   MouseArea {
     id: mouseArea

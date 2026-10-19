@@ -34,9 +34,11 @@ RoundButton {
   topPadding: 0
   bottomPadding: 0
 
-  // an icon has no text, so call sites set the hint with ToolTip.text
+  // an icon has no text, so call sites set the hint with ToolTip.text, which
+  // screen readers read too
   ToolTip.delay: ZeStyle.tooltipDelay
   ToolTip.visible: hovered && ToolTip.text.length !== 0
+  Accessible.name: ToolTip.text
 
   contentItem: Image {
     source: ZeStyle.icon(root.iconName)
