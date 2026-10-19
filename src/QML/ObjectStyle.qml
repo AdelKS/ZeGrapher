@@ -226,8 +226,6 @@ Foldable {
 
           ToolTip.text: startLabel.tooltipText
 
-          Behavior on width { SmoothedAnimation { duration: 500 } }
-
           id: startEdit
         }
 
@@ -254,8 +252,6 @@ Foldable {
           backend: root.base.end
 
           ToolTip.text: endLabel.tooltipText
-
-          Behavior on width { SmoothedAnimation { duration: 500 } }
 
           id: endEdit
         }
