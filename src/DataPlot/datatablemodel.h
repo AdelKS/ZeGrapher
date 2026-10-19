@@ -54,7 +54,8 @@ public:
 
   bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-  Q_INVOKABLE void clearCells(QModelIndexList list);
+  /// @brief empties the cells, one edit per column
+  Q_INVOKABLE void clearCells(const QModelIndexList& cells);
 
   /// @brief deletes the selected columns, rows and cells
   /// @param cells  every selected cell, the ones in 'rows' and 'columns' included

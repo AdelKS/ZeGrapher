@@ -88,6 +88,11 @@ int main()
   app.settle();
   test(updates == 1);
 
+  // clearing a cell past the end of its column leaves the column as it is
+  b->setData({"1", "2"});
+  model.clearCells({model.index(model.rowCount() - 1, 1)});
+  test(b->getData().size() == 2);
+
   // removing a row past the end of a column doesn't change its length
   b->setData({"1", "2"});
   model.deleteSelection({}, {model.index(model.rowCount() - 1, 0)}, {});

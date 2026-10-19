@@ -83,6 +83,26 @@ void Data::insertValues(size_t row, size_t count)
   valuesEdited();
 }
 
+void Data::clearValues(const std::vector<size_t>& rows)
+{
+  std::vector<std::string> values = getData();
+
+  bool cleared = false;
+  for (size_t row: rows)
+    if (row < values.size() and not values[row].empty())
+    {
+      values[row].clear();
+      cleared = true;
+    }
+
+  if (not cleared)
+    return;
+
+  // ZeCalculator rebinds the column's dependents on each edit, so edit once
+  zcMathObj.set_data(std::move(values));
+  valuesEdited();
+}
+
 void Data::removeValues(std::vector<size_t> rows)
 {
   std::ranges::sort(rows);

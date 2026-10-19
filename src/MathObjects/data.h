@@ -59,6 +59,10 @@ public:
   void setValue(size_t row, std::string value);
   void insertValues(size_t row, size_t count);
 
+  /// @brief empties the given rows in one ZeCalculator update, and ignores
+  ///        rows past the end
+  void clearValues(const std::vector<size_t>& rows);
+
   /// @brief removes the given rows in one ZeCalculator update, and ignores
   ///        rows past the end
   void removeValues(std::vector<size_t> rows);

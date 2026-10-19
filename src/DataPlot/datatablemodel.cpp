@@ -20,6 +20,8 @@
 
 #include "datatablemodel.h"
 
+#include <algorithm>
+
 namespace zg {
 
 DataTableModel::DataTableModel(QObject *parent)
@@ -109,10 +111,23 @@ bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
   return true;
 }
 
-void DataTableModel::clearCells(QModelIndexList list)
+void DataTableModel::clearCells(const QModelIndexList& cells)
 {
-  for (auto index: list)
-    setData(index, QString());
+  for (size_t column = 0; column != tableColumns.size(); column++)
+  {
+    std::vector<size_t> rows;
+    for (const QModelIndex& cell: cells)
+      if (size_t(cell.column()) == column)
+        rows.push_back(cell.row());
+
+    if (rows.empty())
+      continue;
+
+    tableColumns[column]->clearValues(rows);
+
+    const auto [top, bottom] = std::ranges::minmax(rows);
+    emit dataChanged(index(int(top), int(column)), index(int(bottom), int(column)), {Qt::DisplayRole});
+  }
 }
 
 void DataTableModel::deleteSelection(const QModelIndexList& cells, const QModelIndexList& rows,

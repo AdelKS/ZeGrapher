@@ -216,20 +216,21 @@ Item {
         model: tableView.model
       }
 
-      function clearSelection() {
-        const currentIndex = selectionModel.currentIndex;
-        if (selectionModel.hasSelection)
-          root.model.clearCells(selectionModel.selectedIndexes);
-        if (currentIndex.valid)
-          root.model.clearCells([currentIndex]);
-      }
-
-      function deleteSelection() {
+      /// @brief the selected cells and the current one
+      function selectedCells(): list<var> {
         const cells = Array.from(selectionModel.selectedIndexes);
         if (selectionModel.currentIndex.valid)
           cells.push(selectionModel.currentIndex);
+        return cells;
+      }
 
-        root.model.deleteSelection(cells, selectionModel.selectedRows(), selectionModel.selectedColumns());
+      function clearSelection() {
+        root.model.clearCells(selectedCells());
+      }
+
+      function deleteSelection() {
+        root.model.deleteSelection(selectedCells(), selectionModel.selectedRows(),
+                                   selectionModel.selectedColumns());
       }
 
       Keys.onPressed: (event)=> {
