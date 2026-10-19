@@ -48,12 +48,12 @@ math_objects:
 
   Graph graph;
 
-  graph.exportPDF(QUrl::fromLocalFile(app.path("graph.pdf")));
+  graph.exportTo(QUrl::fromLocalFile(app.path("graph.pdf")));
   test(information->getIoErrorCount() == 0);
   const QByteArray pdf = readFile(app.path("graph.pdf"));
   test(pdf.startsWith("%PDF") and pdf.trimmed().endsWith("%%EOF"));
 
-  graph.exportSVG(QUrl::fromLocalFile(app.path("graph.svg")));
+  graph.exportTo(QUrl::fromLocalFile(app.path("graph.svg")));
   test(information->getIoErrorCount() == 0);
   test(readFile(app.path("graph.svg")).trimmed().endsWith("</svg>"));
 
@@ -61,22 +61,22 @@ math_objects:
   QQuickWindow window;
   graph.setParentItem(window.contentItem());
 
-  graph.exportImage(QUrl::fromLocalFile(app.path("graph.png")));
+  graph.exportTo(QUrl::fromLocalFile(app.path("graph.png")));
   test(information->getIoErrorCount() == 0);
   test(readFile(app.path("graph.png")).startsWith("\x89PNG"));
 
   // an extension without an image format reports an error, and writes nothing
-  graph.exportImage(QUrl::fromLocalFile(app.path("graph.unknown")));
+  graph.exportTo(QUrl::fromLocalFile(app.path("graph.unknown")));
   test(information->getIoErrorCount() == 1);
   test(not QFile::exists(app.path("graph.unknown")));
   information->popIoError();
 
   // exporting to a missing folder reports an error
-  graph.exportPDF(QUrl::fromLocalFile(app.path("missing-folder/graph.pdf")));
+  graph.exportTo(QUrl::fromLocalFile(app.path("missing-folder/graph.pdf")));
   test(information->getIoErrorCount() == 1);
   test(not QFile::exists(app.path("missing-folder/graph.pdf")));
 
-  graph.exportImage(QUrl::fromLocalFile(app.path("missing-folder/graph.png")));
+  graph.exportTo(QUrl::fromLocalFile(app.path("missing-folder/graph.png")));
   test(information->getIoErrorCount() == 2);
   test(not QFile::exists(app.path("missing-folder/graph.png")));
 

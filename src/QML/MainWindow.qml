@@ -184,14 +184,7 @@ ApplicationWindow {
           }
         }
 
-        onExportGraph: function (file: url)
-        {
-          if (file.toString().toLowerCase().endsWith(".pdf"))
-            interactiveGraph.exportPDF(file);
-          else if (file.toString().toLowerCase().endsWith(".svg"))
-            interactiveGraph.exportSVG(file);
-          else interactiveGraph.exportImage(file);
-        }
+        onExportGraph: (file) => interactiveGraph.exportTo(file)
       }
 
       Item {

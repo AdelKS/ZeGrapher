@@ -110,6 +110,17 @@ void Graph::paint(QPainter* p, Export target)
   polish();
 }
 
+void Graph::exportTo(QUrl file)
+{
+  const QString suffix = QFileInfo(file.toLocalFile()).suffix().toLower();
+
+  if (suffix == "pdf")
+    exportPDF(file);
+  else if (suffix == "svg")
+    exportSVG(file);
+  else exportImage(file);
+}
+
 void Graph::exportImage(QUrl fileName)
 {
   const QString path = fileName.toLocalFile();

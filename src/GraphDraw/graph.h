@@ -68,10 +68,9 @@ public:
     bool layoutDirty = true, curvesDirty = true;
   };
 
-public slots:
-  void exportPDF(QUrl fileName);
-  void exportSVG(QUrl fileName);
-  void exportImage(QUrl fileName);
+  /// @brief writes the graph to a PDF, SVG or image file, picked from the
+  ///        file suffix
+  Q_INVOKABLE void exportTo(QUrl file);
 
 protected slots:
   void minMaxPointsChanged();
@@ -81,6 +80,10 @@ protected:
   QSGNode* updatePaintNode(QSGNode* oldNode, UpdatePaintNodeData*) override;
   void geometryChange(const QRectF& newGeometry, const QRectF& oldGeometry) override;
   void itemChange(ItemChange change, const ItemChangeData& value) override;
+
+  void exportPDF(QUrl fileName);
+  void exportSVG(QUrl fileName);
+  void exportImage(QUrl fileName);
 
   enum class Export { Image, Pdf, Svg };
 
