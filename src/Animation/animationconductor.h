@@ -35,8 +35,7 @@ namespace zg {
 using time_point = std::chrono::time_point<std::chrono::steady_clock>;
 
 
-/// @brief singleton class that handles incrementing every animated variable altogether
-///        before triggering a graph redraw.
+/// @brief steps every playing constant at once, once per frame
 class AnimationConductor: public QObject
 {
   Q_OBJECT
@@ -62,10 +61,6 @@ protected slots:
 
 signals:
   void animatingChanged();
-
-  /// @brief the animation made one step forward
-  /// @note only is triggered when a constant is actually animating
-  void tick();
 
 protected:
   std::vector<zg::AnimatedConstant*> constants;

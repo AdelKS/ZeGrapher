@@ -55,8 +55,6 @@ void AnimationConductor::animationStep()
         constant->animationStep(now - *last_step_timestamp);
 
     last_step_timestamp = now;
-
-    emit tick();
   }
 }
 

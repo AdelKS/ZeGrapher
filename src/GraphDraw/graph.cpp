@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 #include "GraphDraw/graph.h"
-#include "Animation/animationconductor.h"
 #include "information.h"
 #include "buildconfig.h"
 
@@ -68,9 +67,9 @@ Graph::Graph(QQuickItem *parent)
                        &ZeGraphSettings::pixelDensityChanged})
     connect(&settings, changed, this, &QQuickItem::polish);
 
+  // an animation step changes a constant, which updates the math world
   connect(zg::mathWorld, &zg::MathWorld::updated, this, &QQuickItem::polish);
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, &QQuickItem::polish);
-  connect(zg::animationConductor, &zg::AnimationConductor::tick, this, &QQuickItem::polish);
 }
 
 void Graph::setPainterFont(QFont font)
