@@ -215,6 +215,14 @@ QString Information::getDocumentName() const
   return documentFile.fileName();
 }
 
+QUrl Information::getFolder() const
+{
+  if (not documentFile.isEmpty())
+    return documentFile.adjusted(QUrl::RemoveFilename);
+
+  return QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+}
+
 template <class Pod>
 bool Information::writeYaml(QUrl filename, const Pod& pod)
 {

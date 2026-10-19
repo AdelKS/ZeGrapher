@@ -65,6 +65,10 @@ class Information: public QObject
   ///        the first saveAs(): loading a document adds to the open one
   Q_PROPERTY(QString documentName READ getDocumentName NOTIFY documentFileChanged)
 
+  /// @brief where the file dialogs open: the folder of the last saveAs(), or
+  ///        the Documents folder before it
+  Q_PROPERTY(QUrl folder READ getFolder NOTIFY documentFileChanged)
+
   /// @brief the ZeGrapher version that wrote the settings file, empty if no
   ///        run wrote one
   Q_PROPERTY(QString lastRunVersion MEMBER lastRunVersion CONSTANT)
@@ -80,6 +84,7 @@ public:
   ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
   int getIoErrorCount() const { return ioErrors.size(); }
   QString getDocumentName() const;
+  QUrl getFolder() const;
 
   Q_INVOKABLE IOError popIoError();
 

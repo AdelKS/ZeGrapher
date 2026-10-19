@@ -22,7 +22,6 @@ import QtQuick
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Layouts
 import QtQuick.Dialogs
-import QtCore
 
 Item {
   id: userInputPanel
@@ -37,7 +36,7 @@ Item {
   FileDialog {
     id: exportDialog
     title: qsTr("Export the graph")
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    currentFolder: Information.folder
     fileMode: FileDialog.SaveFile
     nameFilters: [
       qsTr("Portable Document Format (%1)").arg("*.pdf"),
@@ -90,7 +89,7 @@ Item {
   FileDialog {
     id: saveDialog
     title: qsTr("Save as a ZeGrapher document")
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    currentFolder: Information.folder
     fileMode: FileDialog.SaveFile
     defaultSuffix: ".zg"
     nameFilters: [
@@ -139,7 +138,7 @@ Item {
   FileDialog {
     id: loadDialog
     title: qsTr("Load a ZeGrapher document")
-    currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+    currentFolder: Information.folder
     fileMode: FileDialog.OpenFile
     defaultSuffix: ".zg"
     nameFilters: [
