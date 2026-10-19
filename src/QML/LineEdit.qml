@@ -81,7 +81,15 @@ Rectangle {
       text: ""
       onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
-      onTextEdited: rec.textEdited()
+      onTextEdited: {
+        // Keys.onPressed below filters Enter, but not a pasted line break
+        if (/[\r\n\u2029]/.test(text)) {
+          const position = cursorPosition;
+          text = text.replace(/\r\n|[\r\n\u2029]/g, " ");
+          cursorPosition = Math.min(position, length);
+        }
+        rec.textEdited();
+      }
 
       Keys.onPressed: (event)=> {
         if ([Qt.Key_Enter, Qt.Key_Return].includes(event.key)) {
