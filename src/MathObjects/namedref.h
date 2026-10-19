@@ -33,14 +33,13 @@ struct NamedRef: QObject {
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
-  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState NOTIFY stateChanged)
 
 public:
 
   explicit NamedRef(QObject *parent = nullptr);
 
   Q_INVOKABLE State setName(QString name);
-  void setState(State s);
 
   QString getName() const { return input_name; }
   const State& getState() const { return state; }
@@ -59,6 +58,8 @@ signals:
   void nameChanged();
 
 protected:
+  void setState(State s);
+
   QString input_name;
   State state;
 };

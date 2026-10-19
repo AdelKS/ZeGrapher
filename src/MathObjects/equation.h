@@ -34,7 +34,7 @@ struct Equation: Base, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation NOTIFY equationChanged)
-  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState NOTIFY stateChanged)
 
 public:
 
@@ -42,7 +42,6 @@ public:
 
   Q_INVOKABLE void setEquation(QString eq);
   State sync();
-  void setState(State s);
 
   bool isValid() const { return state.isValid(); }
   const State& getState() const { return state; }
@@ -67,6 +66,8 @@ signals:
   void stateChanged();
 
 protected:
+  void setState(State s);
+
   QString equation;
   State state;
 };

@@ -46,7 +46,7 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   Q_PROPERTY(LoopType loopType WRITE setLoopType MEMBER loopType NOTIFY loopTypeChanged)
   Q_PROPERTY(bool deadAndAlive WRITE setDeadAndAlive READ isDeadAndAlive NOTIFY deadAndAliveChanged)
   Q_PROPERTY(double duration WRITE setDuration READ getDuration NOTIFY durationChanged)
-  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState NOTIFY stateChanged)
   Q_PROPERTY(zg::AnimatedConstant* animation MEMBER animation CONSTANT)
 
 public:
@@ -77,7 +77,6 @@ public:
   void setDuration(double);
   void setLoopType(LoopType);
   void setDeadAndAlive(bool);
-  void setState(State s);
 
   double getFrom() const { return from; }
   double getTo() const { return to; }
@@ -121,6 +120,8 @@ signals:
   void stateChanged();
 
 protected:
+  void setState(State s);
+
   /// @brief follows MathWorld::setSchrodingerConstant()
   void schrodingerSwitched();
 
