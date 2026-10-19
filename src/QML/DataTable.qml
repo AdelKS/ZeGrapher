@@ -32,10 +32,8 @@ Item {
   required property var model
   property bool interactive: false
 
-  // Only contribute an implicit size when the table actually has laid-out
-  // content. Otherwise we'd report just the header padding, which causes
-  // widthWhenVisible (in MainWindow) to settle to a nonsensical value while
-  // the model is empty / mid-relayout.
+  // without laid-out cells, report zero instead of the header padding:
+  // DataPane takes its width from this table
   implicitWidth: scrollView.implicitWidth > 0
     ? verticalHeader.implicitWidth + scrollView.implicitWidth
     : 0
