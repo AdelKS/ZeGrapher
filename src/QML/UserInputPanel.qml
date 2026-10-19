@@ -59,7 +59,8 @@ Item {
     property ioError currentError
 
     title: currentError.title
-    text: currentError.file + "\n\n" + currentError.text
+    // an internal error has no file
+    text: [currentError.file, currentError.text].filter((part) => part.length !== 0).join("\n\n")
     detailedText: currentError.details
     buttons: MessageDialog.Ok
 
