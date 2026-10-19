@@ -29,7 +29,7 @@ import ZeGrapher as ZG
 Item {
   id: root
 
-  property zgState state
+  property zgState exprState
   property string customErrorMsg: ''
   property bool nanValue: false
 
@@ -51,17 +51,17 @@ Item {
   readonly property string errorMsg: {
     if (root.customErrorMsg.length !== 0)
       return root.customErrorMsg;
-    if (root.state.errorMsg.length === 0 && root.state.status !== ZG.State.NEUTRAL && root.nanValue)
+    if (root.exprState.errorMsg.length === 0 && root.exprState.status !== ZG.State.NEUTRAL && root.nanValue)
       return "NaN";
-    return root.state.errorMsg;
+    return root.exprState.errorMsg;
   }
 
   LineEdit {
     id: lineEdit
     border.color: {
-      if (root.customErrorMsg.length !== 0 || root.state.status === ZG.State.INVALID)
+      if (root.customErrorMsg.length !== 0 || root.exprState.status === ZG.State.INVALID)
         return ZeStyle.themed(Information.appSettings.invalidSyntax);
-      if (root.state.status === ZG.State.VALID)
+      if (root.exprState.status === ZG.State.VALID)
         return ZeStyle.themed(root.nanValue ? Information.appSettings.warningSyntax
                                             : Information.appSettings.validSyntax);
       return "grey";
@@ -78,7 +78,7 @@ Item {
 
   Highlighter {
     id: mhighlighter
-    state: root.state
+    state: root.exprState
     textDocument: lineEdit.textEdit.textDocument
   }
 

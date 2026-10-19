@@ -32,7 +32,7 @@ Item {
   ZcExprEdit {
     id: zcExprEdit
 
-    state: root.backend.state
+    exprState: root.backend.state
 
     expression: root.backend.equation
     onTextEdited: (expression) => root.backend.setEquation(expression)

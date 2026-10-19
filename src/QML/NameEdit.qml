@@ -52,7 +52,7 @@ ColumnLayout {
     id: zcExprEdit
 
     hint: root.ToolTip.text
-    state: root.backend.state
+    exprState: root.backend.state
 
     expression: root.backend.name
     onTextEdited: (expression) => root.backend.setName(expression)
