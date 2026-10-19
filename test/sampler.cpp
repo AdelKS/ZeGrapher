@@ -213,7 +213,7 @@ int main()
     sampling.getStepPtr()->setExpression("0.1");
 
     test(sampling.apply().isEmpty());
-    test(column->getData().size() == 4);
+    test(column->getData() == std::vector<std::string>{"0", "0.3", "0.6", "0.9"});
   }
 
   return 0;
