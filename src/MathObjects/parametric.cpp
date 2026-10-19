@@ -34,19 +34,13 @@ Parametric::Parametric(QObject *parent)
   connect(&style, &PlotStyle::updated, this, &Parametric::updated);
 }
 
-State Parametric::sync()
+void Parametric::sync()
 {
   obj1.sync();
   obj2.sync();
 
-  if (obj1.getState().getStatus() == State::INVALID)
-    return obj1.getState();
-  if (obj2.getState().getStatus() == State::INVALID or obj2.getState().getStatus() == State::NEUTRAL)
-    return obj2.getState();
-
-  Base::setDiscrete(obj1.isDiscrete() or obj2.isDiscrete());
-
-  return obj1.getState();
+  if (isValid())
+    Base::setDiscrete(obj1.isDiscrete() or obj2.isDiscrete());
 }
 
 bool Parametric::isValid() const

@@ -40,7 +40,7 @@ public:
 
   explicit Parametric(QObject *parent = nullptr);
 
-  State sync();
+  void sync();
 
   bool isValid() const;
 
