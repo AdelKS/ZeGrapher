@@ -21,7 +21,6 @@
 #pragma once
 
 #include "Utils/unit.h"
-#include "information.h"
 #include "sampler.h"
 
 template <zg::CoordinateSystem coordinates, bool discrete>

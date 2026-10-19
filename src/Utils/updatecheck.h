@@ -23,7 +23,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QTimer>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 class UpdateCheck : public QObject

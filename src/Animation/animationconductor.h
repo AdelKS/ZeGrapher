@@ -22,13 +22,14 @@
 
 #include "animatedconstant.h"
 
-#include <QAbstractListModel>
+#include <QObject>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "Utils/qmlsingleton.h"
 
-#include <vector>
 #include <chrono>
+#include <optional>
+#include <vector>
 
 namespace zg {
 

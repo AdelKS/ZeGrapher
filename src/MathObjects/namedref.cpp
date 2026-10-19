@@ -20,7 +20,7 @@
 
 #include "namedref.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
-#include "information.h"
+#include "MathObjects/mathworld.h"
 #include "Utils/zc-utils.h"
 
 namespace zg {

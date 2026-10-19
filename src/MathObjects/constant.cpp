@@ -19,8 +19,8 @@
 ****************************************************************************/
 
 #include "MathObjects/constant.h"
+#include "MathObjects/mathworld.h"
 #include "Utils/yaml.h"
-#include "information.h"
 
 #include <QSignalBlocker>
 

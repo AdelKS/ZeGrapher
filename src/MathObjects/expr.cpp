@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "expr.h"
-#include "information.h"
+#include "MathObjects/mathworld.h"
 
 namespace zg {
 namespace mathobj {

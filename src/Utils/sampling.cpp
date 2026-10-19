@@ -19,7 +19,7 @@
 ****************************************************************************/
 
 #include "Utils/sampling.h"
-#include "information.h"
+#include "MathObjects/mathworld.h"
 #include "Utils/zc-utils.h"
 
 #include <cmath>

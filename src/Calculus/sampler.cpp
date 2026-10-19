@@ -19,7 +19,6 @@
 ****************************************************************************/
 
 #include "Calculus/sampler.h"
-#include "information.h"
 #include "sampler.impl.h"
 
 #include <cmath>
