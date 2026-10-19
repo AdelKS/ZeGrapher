@@ -324,10 +324,10 @@ Item {
 
           FontDialog {
             id: fontDialog
-            currentFont: Information.graphSettings.axes.titleFont
+            currentFont: root.graphSettings.axes.titleFont
 
             onAccepted: {
-              Information.graphSettings.axes.titleFont = selectedFont;
+              root.graphSettings.axes.titleFont = selectedFont;
             }
           }
 
@@ -338,8 +338,8 @@ Item {
           LineEdit {
             Layout.fillWidth: true
             border.color: "grey"
-            text: Information.graphSettings.axes.x.title
-            onTextEdited: Information.graphSettings.axes.x.title = text
+            text: root.graphSettings.axes.x.title
+            onTextEdited: root.graphSettings.axes.x.title = text
           }
 
          ZeLabel {
@@ -349,8 +349,8 @@ Item {
           LineEdit {
             Layout.fillWidth: true
             border.color: "grey"
-            text: Information.graphSettings.axes.y.title
-            onTextEdited: Information.graphSettings.axes.y.title = text
+            text: root.graphSettings.axes.y.title
+            onTextEdited: root.graphSettings.axes.y.title = text
           }
 
           ZeLabel {
