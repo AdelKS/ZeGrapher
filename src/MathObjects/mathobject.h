@@ -106,6 +106,16 @@ protected:
                                  mathobj::Parametric*,
                                  mathobj::DataSheet*>;
 
+  /// @brief true when 'Backend' sits at index 't' of variant_t and POD
+  template <Type t, class Backend>
+  static constexpr bool atIndex
+    = std::is_same_v<std::variant_alternative_t<t, variant_t>, Backend*>
+      and std::is_same_v<std::variant_alternative_t<t, POD>, typename Backend::POD>;
+
+  // getType() and MathWorld::importPod() read a Type from a variant index
+  static_assert(atIndex<EQUATION, mathobj::Equation> and atIndex<CONSTANT, mathobj::Constant>
+                and atIndex<PARAMETRIC, mathobj::Parametric> and atIndex<DATASHEET, mathobj::DataSheet>);
+
   variant_t createBackend(Type);
 
   variant_t backend;

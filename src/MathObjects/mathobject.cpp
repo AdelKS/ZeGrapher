@@ -100,23 +100,7 @@ void MathObject::setType(Type t)
 
 MathObject::Type MathObject::getType() const
 {
-  return std::visit(
-    zc::utils::overloaded{
-      [](const mathobj::Equation*) {
-        return EQUATION;
-      },
-      [](const mathobj::Constant*) {
-        return CONSTANT;
-      },
-      [](const mathobj::Parametric*) {
-        return PARAMETRIC;
-      },
-      [](const mathobj::DataSheet*) {
-        return DATASHEET;
-      },
-    },
-    backend
-  );
+  return Type(backend.index());
 }
 
 mathobj::Equation* MathObject::getEquation()
