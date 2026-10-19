@@ -144,9 +144,11 @@ Item {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Preview rows:")
           }
-          SpinBox {
+          ZeSpinBox {
             Layout.alignment: Qt.AlignLeft
             id: maxRows
+            from: 1
+            to: 1000
             value: 10
           }
 
@@ -154,9 +156,10 @@ Item {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Skip rows:")
           }
-          SpinBox {
+          ZeSpinBox {
             Layout.alignment: Qt.AlignLeft
             id: skipRows
+            to: 100000
             value: 0
           }
         }
