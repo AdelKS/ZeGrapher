@@ -89,6 +89,7 @@ Item {
       required property var display
       required property int column
 
+      implicitWidth: horizontalHeaderLabel.implicitWidth + 10
       implicitHeight: 25
       color: ZeStyle.palette.base
       topLeftRadius: 5
