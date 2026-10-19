@@ -21,6 +21,8 @@
 // The manual in the interface language, in a pane that unfolds over the graph.
 // Documentation (C++) reads it from ':/website/<lang>/'.
 
+pragma ComponentBehavior: Bound
+
 import QtQml.Models
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
@@ -129,7 +131,7 @@ Rectangle {
               required property var modelData
 
               readonly property bool heading: modelData.anchor.length !== 0
-              readonly property real sideMargin: heading ? root.headingMargin : root.contentMargin
+              readonly property real sideMargin: textBlock.heading ? root.headingMargin : root.contentMargin
 
               width: column.width
               implicitHeight: label.y + label.implicitHeight + (heading ? 8 : 0)

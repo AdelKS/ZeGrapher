@@ -18,6 +18,8 @@
 **
 ****************************************************************************/
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
@@ -37,6 +39,7 @@ Foldable {
   active: available && (open || shownHeight > 0)
 
   sourceComponent: Item {
+    id: styles
     implicitHeight: mainLayout.implicitHeight
 
     readonly property var coordinateSystems: [
@@ -84,9 +87,9 @@ Foldable {
           valueRole: "type"
           background.implicitWidth: implicitContentWidth
 
-          model: coordinateSystems
+          model: styles.coordinateSystems
 
-          currentIndex: model.findIndex((entry) => entry.type === root.base.coordinateSystem)
+          currentIndex: styles.coordinateSystems.findIndex((entry) => entry.type === root.base.coordinateSystem)
 
           onActivated: root.base.coordinateSystem = currentValue
         }
@@ -100,11 +103,11 @@ Foldable {
           Layout.alignment: Qt.AlignHCenter
           Layout.maximumWidth: 100
           Layout.preferredHeight: 50
-          model: lineStyles
+          model: styles.lineStyles
 
-          currentIndex: model.findIndex((entry) => entry.type === root.style.lineStyle)
+          currentIndex: styles.lineStyles.findIndex((entry) => entry.type === root.style.lineStyle)
 
-          onCurrentIndexChanged: root.style.lineStyle = model[currentIndex].type
+          onCurrentIndexChanged: root.style.lineStyle = styles.lineStyles[dashPatternTumbler.currentIndex].type
         }
 
         ZeSpinBox {
@@ -133,12 +136,12 @@ Foldable {
           Layout.alignment: Qt.AlignHCenter
           Layout.maximumWidth: 60
           Layout.preferredHeight: 50
-          model: pointStyles
+          model: styles.pointStyles
           fillMode: Image.PreserveAspectFit
 
-          currentIndex: model.findIndex((entry) => entry.type === root.style.pointStyle)
+          currentIndex: styles.pointStyles.findIndex((entry) => entry.type === root.style.pointStyle)
 
-          onCurrentIndexChanged: root.style.pointStyle = model[currentIndex].type
+          onCurrentIndexChanged: root.style.pointStyle = styles.pointStyles[pointStyleTumbler.currentIndex].type
         }
         ZeSpinBox {
           id: pointWidthSpinBox

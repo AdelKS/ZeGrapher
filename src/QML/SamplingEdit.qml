@@ -20,6 +20,8 @@
 
 // Fills the given column with the values of a math object, unfolds and folds back on demand
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3

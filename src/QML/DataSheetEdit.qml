@@ -20,6 +20,8 @@
 
 // The columns of a DataSheet, listed as editable rows
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.FluentWinUI3
@@ -125,8 +127,8 @@ Item {
 
           onDeleteRequested: dragWrapper.collapseAndRemove()
 
-          Component.onCompleted: root.columnsImplicitWidth = Math.max(root.columnsImplicitWidth, implicitWidth)
-          onImplicitWidthChanged: root.columnsImplicitWidth = Math.max(root.columnsImplicitWidth, implicitWidth)
+          Component.onCompleted: root.columnsImplicitWidth = Math.max(root.columnsImplicitWidth, input.implicitWidth)
+          onImplicitWidthChanged: root.columnsImplicitWidth = Math.max(root.columnsImplicitWidth, input.implicitWidth)
         }
       }
     }

@@ -23,6 +23,8 @@
 // appdata/releases.yaml gives one item, for its whole span.
 // It doesn't scroll: the view that holds it does.
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
 import QtQuick.Layouts
