@@ -72,11 +72,13 @@ RowLayout {
     }
 
     delegate: ZeLabel {
+      required property string txt
+
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
       height: contentHeight
       id: txtDelegate
-      text: txt
+      text: txtDelegate.txt
       opacity: 0.4 + Math.max(0, 1 - Math.abs(Tumbler.displacement)) * (0.1 + 0.5 * enabled)
     }
   }

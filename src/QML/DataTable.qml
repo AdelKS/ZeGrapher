@@ -19,6 +19,8 @@
 ****************************************************************************/
 
 // A table of data, with a header per column and per row
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
 
@@ -82,6 +84,10 @@ Item {
     clip: true
 
     delegate: Rectangle {
+      id: columnHeader
+
+      required property var display
+      required property int column
 
       implicitHeight: 25
       color: ZeStyle.palette.base
@@ -92,7 +98,7 @@ Item {
         acceptedModifiers: Qt.NoModifier
         onTapped: {
           tableView.selectionModel.select(
-            tableView.index(0, column),
+            tableView.index(0, columnHeader.column),
             ItemSelectionModel.Columns | ItemSelectionModel.ClearAndSelect
           );
         }
@@ -103,7 +109,7 @@ Item {
         acceptedModifiers: Qt.ShiftModifier
         onTapped: {
           tableView.selectionModel.select(
-            tableView.index(0, column),
+            tableView.index(0, columnHeader.column),
             ItemSelectionModel.Columns | ItemSelectionModel.Select
           );
         }
@@ -113,7 +119,7 @@ Item {
       ZeLabel {
         id: horizontalHeaderLabel
         anchors.fill: parent
-        text: display
+        text: columnHeader.display
         tooltipText: root.interactive ? qsTr("Click to select the whole column. Hold Shift to add to the selection.") : ""
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
@@ -131,6 +137,10 @@ Item {
     clip: true
 
     delegate: Rectangle {
+      id: rowHeader
+
+      required property var display
+      required property int row
 
       color: ZeStyle.palette.base
       topLeftRadius: 5
@@ -142,7 +152,7 @@ Item {
         acceptedModifiers: Qt.NoModifier
         onTapped: {
           tableView.selectionModel.select(
-            tableView.index(row, 0),
+            tableView.index(rowHeader.row, 0),
             ItemSelectionModel.Rows | ItemSelectionModel.ClearAndSelect
           );
         }
@@ -153,7 +163,7 @@ Item {
         acceptedModifiers: Qt.ShiftModifier
         onTapped: {
           tableView.selectionModel.select(
-            tableView.index(row, 0),
+            tableView.index(rowHeader.row, 0),
             ItemSelectionModel.Rows | ItemSelectionModel.Select
           );
         }
@@ -163,7 +173,7 @@ Item {
       ZeLabel {
         id: verticalHeaderLabel
         anchors.fill: parent
-        text: display
+        text: rowHeader.display
         tooltipText: root.interactive ? qsTr("Click to select the whole row. Hold Shift to add to the selection.") : ""
         verticalAlignment: Qt.AlignVCenter
         horizontalAlignment: Qt.AlignHCenter
@@ -281,10 +291,9 @@ Item {
         required property bool editing
         required property bool selected
         required property bool current
-        // row/column are required so they're real `item` properties, reachable
-        // as `item.row`/`item.column` from the sibling editDelegate Component.
         required property int row
         required property int column
+        required property var display
 
         implicitWidth: 100
         implicitHeight: displayWidget.implicitHeight
@@ -297,7 +306,7 @@ Item {
         Expr {
           id: cellBackend
           implicitName: "zg_internal_table_cell"
-          expression: display
+          expression: item.display
         }
 
         ValueEdit {
@@ -315,7 +324,7 @@ Item {
             ? item.palette.base
             : item.palette.alternateBase
 
-          visible: !root.interactive || !editing
+          visible: !root.interactive || !item.editing
           enabled: false
         }
 
@@ -326,7 +335,7 @@ Item {
           Expr {
             id: editCellBackend
             implicitName: "zg_internal_edit_cell"
-            expression: display
+            expression: item.display
           }
 
           ValueEdit {
@@ -338,9 +347,8 @@ Item {
             backend: editCellBackend
           }
 
-          TableView.onCommit: {
-            display = valueEdit.expression;
-          }
+          TableView.onCommit: root.model.setData(root.model.index(item.row, item.column),
+                                                 valueEdit.expression)
 
           Component.onCompleted: {
             valueEdit.exprEdit.lineEditBackend.textEdit.selectAll();
