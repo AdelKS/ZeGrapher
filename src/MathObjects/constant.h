@@ -91,6 +91,9 @@ public:
 
   double get_value() const { return value; }
 
+  static constexpr int minSteps = 1, maxSteps = 100;
+  static constexpr double minDuration = 0.1, maxDuration = 500;
+
  struct POD {
     std::optional<std::string> name;
     std::optional<double> value;
@@ -132,8 +135,6 @@ protected:
   static constexpr int defaultSteps = 5;
   static constexpr LoopType defaultLoopType = ONESHOT;
   static constexpr seconds defaultDuration = seconds(2.);
-  static constexpr int maxSteps = 100;
-  static constexpr double minDuration = 0.1, maxDuration = 500;
 
   QString input_name;
   State state;

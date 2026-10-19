@@ -149,6 +149,7 @@ qmlcpp_files = [
   'Utils/highlighter.h',
   'Utils/plotstyle.h',
   'Utils/sampling.h',
+  'Utils/settinglimits.h',
   'Utils/state.h',
   'Utils/textdocumenttools.h',
   'Utils/themedcolor.h',

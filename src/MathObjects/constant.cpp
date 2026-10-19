@@ -221,7 +221,7 @@ void Constant::importPod(Constant::POD p)
     setTo(*p.to);
 
   if (p.steps)
-    setSteps(yml::clamped(*p.steps, 1, maxSteps));
+    setSteps(yml::clamped(*p.steps, minSteps, maxSteps));
 
   if (p.loop_type)
     setLoopType(*p.loop_type);

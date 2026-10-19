@@ -64,8 +64,8 @@ Rectangle {
       Layout.maximumHeight: root.iconSize
 
       suffix: " %"
-      from: 5
-      to: 1000
+      from: Limits.minZoom * 100
+      to: Limits.maxZoom * 100
       step: 10
       decimals: 2
 

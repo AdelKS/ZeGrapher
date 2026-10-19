@@ -28,10 +28,6 @@ import QtQuick.Controls.FluentWinUI3
 Item {
   id: root
 
-  readonly property double cm_increment: 1.0;
-  readonly property double min_cm_size: 1
-  readonly property double max_cm_size: 1000
-
   required property ZeGraphSettings graphSettings
   required property size globalMenuSize
 
@@ -78,9 +74,9 @@ Item {
 
             ToolTip.text: scalingLabel.tooltipText
 
-            from: 0.1
+            from: Limits.minScaling
             step: 0.1
-            to: 5.0
+            to: Limits.maxScaling
 
             value: root.graphSettings.size.scalingFactor
             onValueModified: (value) => root.graphSettings.size.scalingFactor = value
@@ -142,9 +138,9 @@ Item {
                 id: sheetHeight
                 //: shorthand for centimeters, the size of the graph
                 suffix: qsTr(" cm")
-                from: root.min_cm_size
-                to: root.max_cm_size
-                step: root.cm_increment
+                from: Limits.minSheetCm
+                to: Limits.maxSheetCm
+                step: 1
 
                 value: root.graphSettings.size.cmSheetSize.height
                 onValueModified: (value) => root.graphSettings.size.cmSheetSize.height = value
@@ -161,9 +157,9 @@ Item {
                 id: sheetWidth
                 //: shorthand for centimeters, the size of the graph
                 suffix: qsTr(" cm")
-                from: root.min_cm_size
-                to: root.max_cm_size
-                step: root.cm_increment
+                from: Limits.minSheetCm
+                to: Limits.maxSheetCm
+                step: 1
 
                 value: root.graphSettings.size.cmSheetSize.width
                 onValueModified: (value) => root.graphSettings.size.cmSheetSize.width = value
@@ -255,7 +251,7 @@ Item {
 
             ToolTip.text: minPointsLabel.tooltipText
 
-            from: 2
+            from: Limits.lowestPointsLg2
             stepSize: 1
             value: root.graphSettings.minPointsLg2
             to: maxPointsLg2.value
@@ -279,7 +275,7 @@ Item {
             from: minPointsLg2.value
             value: root.graphSettings.maxPointsLg2
             stepSize: 1
-            to: 16
+            to: Limits.highestPointsLg2
 
             onValueModified: root.graphSettings.maxPointsLg2 = value
           }
@@ -301,9 +297,9 @@ Item {
           ZeDoubleSpinBox {
             Layout.fillWidth: true
 
-            from: 0.1
+            from: Limits.minAxisLineWidth
             step: 0.5
-            to: 5.0
+            to: Limits.maxAxisLineWidth
 
             value: root.graphSettings.axes.lineWidth
             onValueModified: (value) => root.graphSettings.axes.lineWidth = value

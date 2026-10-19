@@ -100,6 +100,9 @@ public:
   static constexpr double minPixelDensity = 25 / cmPerInch;
   static constexpr double maxPixelDensity = 400 / cmPerInch;
 
+  /// @brief the bounds of minPointsLg2 and maxPointsLg2
+  static constexpr int lowestPointsLg2 = 2, highestPointsLg2 = 16;
+
   struct POD {
     std::optional<zg::GraphRange::POD> range;
     std::optional<double> zoom;
@@ -165,7 +168,6 @@ public:
 protected:
   static constexpr int defaultMinPoints = 7;
   static constexpr int defaultMaxPoints = 14;
-  static constexpr int lowestPointsLg2 = 2, highestPointsLg2 = 16;
 
   // log2 for adaptive sampling
   int minPointsLg2 = defaultMinPoints;

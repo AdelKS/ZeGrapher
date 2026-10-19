@@ -77,7 +77,7 @@ public:
   int subdivs = defaultSubdivs;
 
   static constexpr int defaultSubdivs = 2;
-  static constexpr int maxSubdivs = 20;
+  static constexpr int minSubdivs = 1, maxSubdivs = 20;
   static constexpr bool defaultShow = true;
   static constexpr double defaultLineWidth = 0.6;
   static const ThemedColor defaultColor;

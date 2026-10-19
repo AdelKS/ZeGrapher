@@ -159,10 +159,10 @@ Item {
           anchors.centerIn: parent
           width: Math.min(implicitWidth, parent.width)
 
-          from: 1
+          from: Limits.minSteps
           value: root.backend.steps
           stepSize: 1
-          to: 100
+          to: Limits.maxSteps
 
           onValueModified: root.backend.steps = value
 
@@ -235,8 +235,8 @@ Item {
         //: unit of time
         suffix: qsTr('s')
         decimals: 2
-        from: 0.1
-        to: 500.
+        from: Limits.minDuration
+        to: Limits.maxDuration
         step: 1.
 
         ToolTip.text: qsTr("Time the constant takes to go from min to max")

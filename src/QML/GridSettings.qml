@@ -113,10 +113,10 @@ Item {
         Layout.minimumWidth: 85
         implicitWidth: 85
 
-        from: 1
+        from: Limits.minSubdivs
         value: box.graphSettings.subgrid[modelData].subdivs
         stepSize: 1
-        to: 20
+        to: Limits.maxSubdivs
 
         onValueModified: box.graphSettings.subgrid[modelData].subdivs = value
       }
@@ -134,9 +134,9 @@ Item {
         Layout.minimumWidth: 95
         implicitWidth: 95
 
-        from: 0.1
+        from: Limits.minGridLineWidth
         step: 0.1
-        to: 2.0
+        to: Limits.maxGridLineWidth
         decimals: 1
 
         value: box.graphSettings[box.lines][modelData].lineWidth
@@ -179,7 +179,7 @@ Item {
             from: 0
             value: root.graphSettings.axes[modelData].tickSpacing
             stepSize: 1
-            to: 5
+            to: Limits.maxTickSpacing
 
             onValueModified: root.graphSettings.axes[modelData].tickSpacing = value
           }
@@ -201,10 +201,10 @@ Item {
 
             ToolTip.text: maxDigitsLabel.tooltipText
 
-            from: 2
+            from: Limits.minDigits
             value: root.graphSettings.axes[modelData].linear.maxDigitsNum
             stepSize: 1
-            to: 10
+            to: Limits.maxDigits
 
             onValueModified: root.graphSettings.axes[modelData].linear.maxDigitsNum = value
           }

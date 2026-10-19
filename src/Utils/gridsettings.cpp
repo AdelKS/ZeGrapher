@@ -43,7 +43,7 @@ void Ze1DSubgridSettings::importPod(POD p)
     color.importPod(std::move(*p.color));
 
   if (p.subdivs)
-    subdivs = zg::yml::clamped(*p.subdivs, 1, maxSubdivs);
+    subdivs = zg::yml::clamped(*p.subdivs, minSubdivs, maxSubdivs);
 }
 
 std::optional<Ze1DGridSettings::POD> Ze1DGridSettings::exportPod() const
