@@ -86,10 +86,7 @@ State Expr::setExpression(QString expr)
   std::string fullExpr = implicitName.toStdString() + "=" + expr.toStdString();
 
   if (fullExpression == fullExpr)
-  {
-    updateValue();
     return sync();
-  }
 
   fullExpression = fullExpr;
 
@@ -97,7 +94,6 @@ State Expr::setExpression(QString expr)
     zcMathObj = fullExpression;
   else zcMathObj = "";
 
-  updateValue();
   sync();
 
   emit updated();
