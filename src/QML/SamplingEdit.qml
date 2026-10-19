@@ -137,61 +137,31 @@ Foldable {
           }
         }
 
-        IconRoundButton {
-          id: applyButton
+        Reveal {
+          shown: frame.fieldsValid
 
-          Layout.preferredHeight: 25
-          Layout.preferredWidth: 25
           Layout.alignment: Qt.AlignTop
 
           // center on the edit line, below the labels
-          Layout.topMargin: sourceEdit.exprY + (sourceEdit.exprHeight - height) / 2
+          Layout.topMargin: sourceEdit.exprY + (sourceEdit.exprHeight - applyButton.height) / 2
 
-          iconName: "check"
+          IconRoundButton {
+            id: applyButton
 
-          //: tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over
-          ToolTip.text: qsTr("Sample")
+            Layout.preferredHeight: 25
+            Layout.preferredWidth: 25
 
-          onReleased: {
-            const issueText = sampling.apply();
-            errorLine.text = issueText;
+            iconName: "check"
 
-            if (issueText.length === 0)
-              root.applied();
-          }
+            //: tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over
+            ToolTip.text: qsTr("Sample")
 
-          states: [
-            State {
-              name: "hidden"; when: !frame.fieldsValid
-              PropertyChanges {
-                applyButton.opacity: 0
-                applyButton.Layout.maximumWidth: 0
-                applyButton.visible: false
-              }
-            },
-            State {
-              name: "shown"; when: frame.fieldsValid
-              PropertyChanges {
-                applyButton.opacity: 1
-                applyButton.Layout.maximumWidth: 25
-                applyButton.visible: true
-              }
-            }
-          ]
+            onReleased: {
+              const issueText = sampling.apply();
+              errorLine.text = issueText;
 
-          transitions: Transition {
-            reversible: true
-            from: "shown"
-            to: "hidden"
-            SequentialAnimation {
-              NumberAnimation {
-                easing.type: Easing.InOutQuad
-                properties: "opacity,maximumWidth"
-                duration: 200
-              }
-              PropertyAction {
-                property: "visible"
-              }
+              if (issueText.length === 0)
+                root.applied();
             }
           }
         }
