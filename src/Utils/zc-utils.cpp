@@ -30,6 +30,7 @@ QString zcErrorToStr(const zc::Error& err)
   // every error below that names it, and leaves it empty for the others
   const QString token = QString::fromStdString(err.token.substr).toHtmlEscaped();
 
+  // no default case, so -Wswitch reports a new zc::Error type
   switch (err.type)
   {
     case zc::Error::CPP_INCORRECT_ARGNUM:
@@ -91,10 +92,9 @@ QString zcErrorToStr(const zc::Error& err)
     case zc::Error::OBJECT_INVALID_STATE:
       //: %1 is the name of an object whose own definition is invalid
       return QObject::tr("Object \"%1\" is in an invalid state").arg(token);
-
-    default:
-      return QObject::tr("Unknown error");
   }
+
+  return QObject::tr("Unknown error");
 }
 
 }
