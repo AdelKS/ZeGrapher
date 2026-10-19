@@ -46,7 +46,6 @@ public:
   const State& getState() const { return state; }
 
   bool isDiscrete() const;
-  bool isContinuous() const;
 
   bool isValid() const { return state.isValid(); }
 

@@ -132,11 +132,6 @@ void DataSheet::sync()
     d->sync();
 }
 
-bool DataSheet::isValid() const
-{
-  return std::ranges::all_of(columns, [](Data* d) { return d->getState().isValid(); });
-}
-
 void DataSheet::exportCSV(QUrl fileName) const
 {
   const QString path = fileName.toLocalFile();

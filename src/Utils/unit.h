@@ -94,11 +94,6 @@ struct point
     return *this;
   }
 
-  double dot(const point& other) const
-  {
-    return x.v * other.x.v + y.v * other.y.v;
-  }
-
   static point from(const QPointF& pt)
   {
     return point{unit<U>{pt.x()}, unit<U>{pt.y()}};

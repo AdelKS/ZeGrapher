@@ -72,12 +72,6 @@ State NamedRef::sync()
   return getState();
 };
 
-bool NamedRef::isContinuous() const
-{
-  const auto* zcMathObj = getZcObject();
-  return zcMathObj and *zcMathObj and not shared::holdsDiscrete(*zcMathObj);
-}
-
 bool NamedRef::isDiscrete() const
 {
   const auto* zcMathObj = getZcObject();

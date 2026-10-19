@@ -38,9 +38,6 @@ public:
   /// @brief zoom view, centered on center
   void zoomView(unit<u<plane::pixel>> center, double ratio);
 
-  /// @brief zoom view, centered on the middle of the range
-  void zoomView(double ratio);
-
   void translateView(unit<u<plane::pixel>> vec);
 
   /// @brief sets the type of mapping
@@ -53,18 +50,6 @@ public:
 
   template <plane p>
   void setRange(const Range1D<u<p>>& range);
-
-  template <plane p>
-  void setMin(unit<u<p>> min);
-
-  template <plane p>
-  unit<u<p>> getMin() const;
-
-  template <plane p>
-  void setMax(unit<u<p>> max);
-
-  template <plane p>
-  unit<u<p>> getMax() const;
 
   template <plane p>
   bool isInView(unit<u<p>> x) const;
@@ -112,20 +97,6 @@ const Range1D<u<p>>& ZeAxisMapper<axis>::getRange() const
 
 template <ZeAxisName axis>
 template <plane p>
-unit<u<p>> ZeAxisMapper<axis>::getMin() const
-{
-  return getRange<p>().min;
-}
-
-template <ZeAxisName axis>
-template <plane p>
-unit<u<p>> ZeAxisMapper<axis>::getMax() const
-{
-  return getRange<p>().max;
-}
-
-template <ZeAxisName axis>
-template <plane p>
 bool ZeAxisMapper<axis>::isInView(unit<u<p>> x) const
 {
   return getRange<p>().min <= x and x <= getRange<p>().max;
@@ -153,26 +124,6 @@ void ZeAxisMapper<axis>::setRange(const Range1D<u<p>>& range)
         break;
     }
   }
-}
-
-template <ZeAxisName axis>
-template <plane p>
-void ZeAxisMapper<axis>::setMin(unit<u<p>> min)
-{
-  auto range = getRange<p>();
-  range.min = min;
-
-  setRange(range);
-}
-
-template <ZeAxisName axis>
-template <plane p>
-void ZeAxisMapper<axis>::setMax(unit<u<p>> max)
-{
-  auto range = getRange<p>();
-  range.max = max;
-
-  setRange(range);
 }
 
 template <ZeAxisName axis>
@@ -245,12 +196,6 @@ void ZeAxisMapper<axis>::zoomView(unit<u<plane::pixel>> center, double ratio)
     setRange(
       Range1D<u<plane::view>>{.min = view_range.min - (1 - ratio) * (view_range.min - view_center),
                               .max = view_range.max - (1 - ratio) * (view_range.max - view_center)});
-}
-
-template <ZeAxisName axis>
-void ZeAxisMapper<axis>::zoomView(double ratio)
-{
-  zoomView(pixel_range.min + pixel_range.amplitude()/2, ratio);
 }
 
 template <ZeAxisName axis>

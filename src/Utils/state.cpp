@@ -59,13 +59,6 @@ void State::setValid()
   errorMsg.clear();
 }
 
-void State::setNeutral()
-{
-  status = State::NEUTRAL;
-  opt_zc_error.reset();
-  errorMsg.clear();
-}
-
 QString State::getErrorMsg() const { return errorMsg; };
 
 void State::setInvalid(QString zgErrorMsg)

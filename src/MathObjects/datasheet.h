@@ -59,8 +59,6 @@ public:
   Q_INVOKABLE void moveColumn(int from, int to);
   int indexOfColumn(const zg::mathobj::Data*) const;
 
-  bool isValid() const;
-
   /// @brief writes the columns as an RFC 4180 CSV file, with the column names as header row
   Q_INVOKABLE void exportCSV(QUrl fileName) const;
 

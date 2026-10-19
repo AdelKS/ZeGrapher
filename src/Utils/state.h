@@ -58,7 +58,6 @@ public:
   bool operator == (const State&) const = default;
 
   void setValid();
-  void setNeutral();
 
   /// @brief set an error message coming from ZG
   void setInvalid(QString zgErrorMsg);
