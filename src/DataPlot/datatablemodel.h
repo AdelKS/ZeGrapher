@@ -54,11 +54,12 @@ public:
 
   bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-  Q_INVOKABLE void removeRow(int row);
-
   Q_INVOKABLE void clearCells(QModelIndexList list);
 
-  Q_INVOKABLE void removeCell(const QModelIndex& cell);
+  /// @brief deletes the selected columns, rows and cells
+  /// @param cells  every selected cell, the ones in 'rows' and 'columns' included
+  Q_INVOKABLE void deleteSelection(const QModelIndexList& cells, const QModelIndexList& rows,
+                                   const QModelIndexList& columns);
 
   QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
@@ -68,9 +69,6 @@ public:
 
   void registerTableColumn(zg::mathobj::Data*);
   void deregisterTableColumn(zg::mathobj::Data*);
-
-public slots:
-  void requestUiInitiatedDelete(size_t column);
 
 signals:
   void columnCountChanged();

@@ -83,13 +83,29 @@ void Data::insertValues(size_t row, size_t count)
   valuesEdited();
 }
 
-void Data::removeValue(size_t row)
+void Data::removeValues(std::vector<size_t> rows)
 {
-  // remove_data_point() grows a column that ends before 'row'
-  if (row >= getData().size())
+  std::ranges::sort(rows);
+
+  const std::vector<std::string>& values = getData();
+  std::vector<std::string> kept;
+  kept.reserve(values.size());
+
+  auto next = rows.begin();
+  for (size_t row = 0; row != values.size(); row++)
+  {
+    while (next != rows.end() and *next < row)
+      next++;
+
+    if (next == rows.end() or *next != row)
+      kept.push_back(values[row]);
+  }
+
+  if (kept.size() == values.size())
     return;
 
-  zcMathObj.remove_data_point(row);
+  // ZeCalculator rebinds the column's dependents on each edit, so edit once
+  zcMathObj.set_data(std::move(kept));
   valuesEdited();
 }
 

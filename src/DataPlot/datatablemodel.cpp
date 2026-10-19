@@ -109,64 +109,48 @@ bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
   return true;
 }
 
-void DataTableModel::removeRow(int row)
-{
-  if (row < 0 or row >= rowCount())
-    return;
-
-  beginRemoveRows(QModelIndex(), row, row);
-
-  for (mathobj::Data* dataObj: tableColumns)
-    dataObj->removeValue(row);
-
-  endRemoveRows();
-
-  // QML TableView binds delegates to a cell position, not to a persistent
-  // model index, so endRemoveRows() only fixes the row count/geometry — the
-  // rows shifted up keep showing their old cached values. Refresh everything
-  // from the removal point down to the new last row so their content re-reads.
-  if (row < rowCount())
-  {
-    QModelIndex topLeft = index(row, 0);
-    QModelIndex bottomRight = index(rowCount() - 1, columnCount() - 1);
-    emit dataChanged(topLeft, bottomRight, {Qt::DisplayRole});
-  }
-}
-
 void DataTableModel::clearCells(QModelIndexList list)
 {
   for (auto index: list)
     setData(index, QString());
 }
 
-void DataTableModel::removeCell(const QModelIndex& cell)
+void DataTableModel::deleteSelection(const QModelIndexList& cells, const QModelIndexList& rows,
+                                     const QModelIndexList& columns)
 {
-  if (size_t(cell.column()) >= tableColumns.size())
+  if (cells.isEmpty() and rows.isEmpty() and columns.isEmpty())
     return;
 
-  mathobj::Data* column = tableColumns[cell.column()];
-  if (size_t(cell.row()) >= column->getData().size())
-    return;
+  std::vector<mathobj::Data*> deletedColumns;
+  for (const QModelIndex& column: columns)
+    deletedColumns.push_back(tableColumns.at(column.column()));
 
-  // rowCount() is the size of the longest column, so it drops when no other
-  // column is as long as this one
-  size_t remaining = 0;
-  for (const zg::mathobj::Data* data: tableColumns)
-    remaining = std::max(remaining, data->getData().size() - (data == column));
+  // the cells below a removed cell move up and the row count can drop, so the
+  // views read the whole table again
+  beginResetModel();
 
-  const int rows = rowCount();
-  const bool shrinks = int(remaining) < rows;
+  for (size_t column = 0; column != tableColumns.size(); column++)
+  {
+    if (std::ranges::find(deletedColumns, tableColumns[column]) != deletedColumns.end())
+      continue;
 
-  if (shrinks)
-    beginRemoveRows(QModelIndex(), rows - 1, rows - 1);
+    std::vector<size_t> removed;
+    for (const QModelIndex& row: rows)
+      removed.push_back(row.row());
 
-  column->removeValue(cell.row());
+    for (const QModelIndex& cell: cells)
+      if (size_t(cell.column()) == column)
+        removed.push_back(cell.row());
 
-  if (shrinks)
-    endRemoveRows();
+    if (not removed.empty())
+      tableColumns[column]->removeValues(std::move(removed));
+  }
 
-  if (cell.row() < rowCount())
-    emit dataChanged(cell, index(rowCount() - 1, cell.column()));
+  endResetModel();
+
+  // a column leaves the table when its Data object is deleted, after this call
+  for (mathobj::Data* column: deletedColumns)
+    column->requestUiInitiatedDelete();
 }
 
 QVariant DataTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -250,12 +234,6 @@ Qt::ItemFlags DataTableModel::flags(const QModelIndex& index) const
 QHash<int, QByteArray> DataTableModel::roleNames() const
 {
   return { {Qt::DisplayRole, "display"} };
-}
-
-void DataTableModel::requestUiInitiatedDelete(size_t column)
-{
-  if (column < tableColumns.size())
-    tableColumns[column]->requestUiInitiatedDelete();
 }
 
 }

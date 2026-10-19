@@ -225,43 +225,11 @@ Item {
       }
 
       function deleteSelection() {
-        const currentIndex = selectionModel.currentIndex;
-        if (!selectionModel.hasSelection && !currentIndex.valid)
-          return;
+        const cells = Array.from(selectionModel.selectedIndexes);
+        if (selectionModel.currentIndex.valid)
+          cells.push(selectionModel.currentIndex);
 
-        // Save selected stuff before we start deleting
-        const fullColumns = selectionModel.selectedColumns().map(index => index.column);
-        const fullRows = selectionModel.selectedRows().map(index => index.row);
-        const looseCells = selectionModel.selectedIndexes
-          .filter(index => !fullColumns.includes(index.column) && !fullRows.includes(index.row));
-
-        if (currentIndex.valid &&
-            !fullColumns.includes(currentIndex.column) &&
-            !fullRows.includes(currentIndex.row) &&
-            !looseCells.some(index => index.row === currentIndex.row && index.column === currentIndex.column))
-          looseCells.push(currentIndex);
-
-        // merge full rows with individual cells in same container, so we can sort it by row
-        // we delete the biggest indices first because they won't affect the following ones
-        const rowRemovals = [];
-        for (const row of fullRows)
-          rowRemovals.push({ row: row });
-        for (const index of looseCells)
-          rowRemovals.push({ row: index.row, column: index.column });
-
-        rowRemovals.sort((a, b) => b.row - a.row);
-
-        for (const item of rowRemovals)
-        {
-          if ('column' in item)
-            root.model.removeCell(index(item.row, item.column));
-          else
-            root.model.removeRow(item.row);
-        }
-
-        // Fully-selected columns: remove the whole Data math object backing each
-        for (const column of fullColumns)
-          root.model.requestUiInitiatedDelete(column);
+        root.model.deleteSelection(cells, selectionModel.selectedRows(), selectionModel.selectedColumns());
       }
 
       Keys.onPressed: (event)=> {

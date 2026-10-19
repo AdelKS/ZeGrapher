@@ -55,11 +55,13 @@ public:
   ///        dataReplaced()
   void setData(std::vector<std::string> values);
 
-  /// @brief single-row edits, which DataTableModel makes and announces to its
-  ///        views itself
+  /// @brief edits that DataTableModel makes and announces to its views itself
   void setValue(size_t row, std::string value);
   void insertValues(size_t row, size_t count);
-  void removeValue(size_t row);
+
+  /// @brief removes the given rows in one ZeCalculator update, and ignores
+  ///        rows past the end
+  void removeValues(std::vector<size_t> rows);
 
   State sync();
   bool isValid() const { return state.isValid(); }
