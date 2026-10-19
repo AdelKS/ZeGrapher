@@ -11,17 +11,17 @@ index f0d57d41..e5a0baaa 100644
              // the spacing, so take the implicit size from the indicator itself
              implicitWidth: implicitIndicatorWidth
 diff --git a/src/QML/DataColumnEdit.qml b/src/QML/DataColumnEdit.qml
-index 55fcabce..02726d23 100644
+index 9ae80a1f..ab53ae82 100644
 --- a/src/QML/DataColumnEdit.qml
 +++ b/src/QML/DataColumnEdit.qml
-@@ -73,7 +73,7 @@ ObjectCard {
-         Layout.alignment: Qt.AlignVCenter
+@@ -60,7 +60,7 @@ ObjectCard {
+           id: sampleButton
  
-         checkable: true
--        checked: false
-+        checked: true // SCREENSHOT PATCH: sampling form unfolded
+           checkable: true
+-          checked: false
++          checked: true // SCREENSHOT PATCH: sampling form unfolded
  
-         iconName: "sample"
+           iconName: "sample"
  
 diff --git a/src/QML/DataPane.qml b/src/QML/DataPane.qml
 index 9fa88300..7adc4cbd 100644
@@ -63,18 +63,17 @@ index 3cd9b18a..7dd9d934 100644
    /// @brief height the user dragged the box to, zero as long as they haven't
    property real userHeight: 0
 diff --git a/src/QML/MathObjectInput.qml b/src/QML/MathObjectInput.qml
-index c8f1d4a5..d07c2a95 100644
+index 67c55b63..fab559bd 100644
 --- a/src/QML/MathObjectInput.qml
 +++ b/src/QML/MathObjectInput.qml
-@@ -112,7 +112,7 @@ ObjectCard {
-         id: styleButton
+@@ -86,6 +86,7 @@ ObjectCard {
  
-         checkable: true
--        checked: false
-+        checked: true // SCREENSHOT PATCH: plot style unfolded
+       PlotControls {
+         id: plotControls
++        styleOpen: true // SCREENSHOT PATCH: plot style unfolded
  
-         iconName: "brush"
- 
+         shown: root.plotted
+         style: root.mathObj.style
 diff --git a/src/QML/SamplingEdit.qml b/src/QML/SamplingEdit.qml
 index 7a1e81f7..0a9177b0 100644
 --- a/src/QML/SamplingEdit.qml

@@ -49,93 +49,40 @@ ObjectCard {
         Layout.alignment: Qt.AlignVCenter
       }
 
-      CardButton {
-        id: displayButton
+      PlotControls {
+        id: plotControls
         Layout.alignment: Qt.AlignVCenter
 
-        checkable: true
-        checked: !root.backend.style.visible
+        style: root.backend.style
+        schrodinger: root.backend.schrodinger
 
-        iconName: checked ? "closed-eye" : "open-eye"
+        CardButton {
+          id: sampleButton
 
-        ToolTip.text: checked ? qsTr("Show the curve of this column")
-                              : qsTr("Hide the curve of this column")
+          checkable: true
+          checked: false
 
-        onToggled: root.backend.style.visible = !checked
+          iconName: "sample"
+
+          ToolTip.text: qsTr("Fill this column by sampling an object")
+        }
+
+        CardButton {
+          id: showInTable
+
+          checkable: true
+          checked: root.backend.showInTable
+          iconName: "table"
+
+          ToolTip.text: qsTr("Show this column in the table")
+
+          onToggled: root.backend.showInTable = checked;
+        }
       }
 
-      CardButton {
-        id: styleButton
+      SchrodingerBadge {
         Layout.alignment: Qt.AlignVCenter
-
-        checkable: true
-        checked: false
-
-        iconName: "brush"
-
-        ToolTip.text: qsTr("Plot style")
-      }
-
-      CardButton {
-        id: sampleButton
-        Layout.alignment: Qt.AlignVCenter
-
-        checkable: true
-        checked: false
-
-        iconName: "sample"
-
-        ToolTip.text: qsTr("Fill this column by sampling an object")
-      }
-
-      CardButton {
-        id: showInTable
-        Layout.alignment: Qt.AlignVCenter
-
-        checkable: true
-        checked: root.backend.showInTable
-        iconName: "table"
-
-        ToolTip.text: qsTr("Show this column in the table")
-
-        onToggled: root.backend.showInTable = checked;
-      }
-
-      ColorButton {
-        id: colorButton
-        radius: 12
-
-        Layout.alignment: Qt.AlignVCenter
-
-        ToolTip.text: qsTr("The color of the curve")
-
-        selectedColor: root.backend.style.color
-
-        onSelectedColorModified: root.backend.style.color = selectedColor
-      }
-
-      ColorButton {
-        radius: 12
-
-        Layout.alignment: Qt.AlignVCenter
-        visible: root.backend.schrodinger
-
-        ToolTip.text: qsTr("End color of the gradient over the family of Schrödinger curves")
-
-        selectedColor: root.backend.style.secondColor
-
-        onSelectedColorModified: root.backend.style.secondColor = selectedColor
-      }
-
-      Image {
-        Layout.alignment: Qt.AlignVCenter
-        Layout.preferredWidth: 30
-        Layout.preferredHeight: 30
-        visible: root.backend.schrodinger
-
-        source: ZeStyle.icon("schrodinger-cat")
-        fillMode: Image.PreserveAspectFit
-        mipmap: true
+        shown: root.backend.schrodinger
       }
 
       DragHandle {
@@ -150,7 +97,7 @@ ObjectCard {
       base: root.backend
       style: root.backend.style
 
-      open: styleButton.checked
+      open: plotControls.styleOpen
     }
 
     SamplingEdit {

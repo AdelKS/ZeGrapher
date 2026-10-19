@@ -41,6 +41,9 @@ ObjectCard {
   /// @brief true for the objects that draw a curve
   readonly property bool plotted: root.mathObj.style !== null
 
+  /// @brief true for a curve that takes the values of the Schrödinger constant
+  readonly property bool schrodingerCurve: root.mathObj.schrodinger && root.mathObj.type !== MathObject.CONSTANT
+
   ColumnLayout {
     id: layout
     anchors.fill: parent
@@ -81,195 +84,38 @@ ObjectCard {
         Layout.fillWidth: true
       }
 
-      CardButton {
-        id: displayButton
+      PlotControls {
+        id: plotControls
 
-        checkable: true
-        checked: !(root.mathObj.style?.visible ?? true)
-
-        iconName: checked ? "closed-eye" : "open-eye"
-
-        ToolTip.text: checked ? qsTr("Show the curve") : qsTr("Hide the curve")
-
-        onToggled: {
-          if (root.mathObj.style)
-            root.mathObj.style.visible = !checked
-        }
-      }
-
-      CardButton {
-        id: styleButton
-
-        checkable: true
-        checked: false
-
-        iconName: "brush"
-
-        ToolTip.text: qsTr("Plot style")
-      }
-
-      ColorButton {
-        id: colorButton
-        radius: 12
-
-        ToolTip.text: qsTr("The color of the curve")
-
-        property themedColor lastGood
-
-        selectedColor: root.mathObj.style?.color ?? lastGood
-
-        onSelectedColorChanged: {
-          if (root.mathObj.style)
-            lastGood = selectedColor;
-        }
-
-        onSelectedColorModified: {
-          if (root.mathObj.style)
-            root.mathObj.style.color = selectedColor;
-        }
-      }
-
-      ColorButton {
-        id: secondColorButton
-        radius: 12
-
-        ToolTip.text: qsTr("End color of the gradient over the family of Schrödinger curves")
-
-        property themedColor lastGood
-
-        selectedColor: root.mathObj.style?.secondColor ?? lastGood
-
-        onSelectedColorChanged: {
-          if (root.mathObj.style)
-            lastGood = selectedColor;
-        }
-
-        onSelectedColorModified: {
-          if (root.mathObj.style)
-            root.mathObj.style.secondColor = selectedColor;
-        }
-
-        states: [
-          State {
-            name: "hidden";
-            when: !root.mathObj.schrodinger || root.mathObj.type === MathObject.CONSTANT
-            PropertyChanges {
-              secondColorButton.opacity: 0.
-              secondColorButton.radius: 0
-              secondColorButton.visible: false
-            }
-          },
-          State {
-            name: "shown";
-            when: root.mathObj.schrodinger && root.mathObj.type !== MathObject.CONSTANT
-            PropertyChanges {
-              secondColorButton.opacity: 1.
-              secondColorButton.radius: 12
-              secondColorButton.visible: true
-            }
-          }
-        ]
-
-        transitions: commonTransition
+        shown: root.plotted
+        style: root.mathObj.style
+        schrodinger: root.schrodingerCurve
       }
 
       Item {
         Layout.fillWidth: true
       }
 
-      Transition {
-        id: commonTransition
+      Reveal {
+        id: constantControls
+        shown: root.mathObj.type === MathObject.CONSTANT
 
-        reversible: true
-        from: "shown"
-        to: "hidden"
-        SequentialAnimation {
-          NumberAnimation {
-            easing.type: Easing.InOutQuad
-            properties: "opacity,maximumWidth,maximumHeight,radius"
-            duration: 200;
-          }
-          PropertyAction {
-            property: "visible"
+        CardButton {
+          checkable: constantControls.shown
+          checked: constantControls.shown && root.mathObj.schrodinger
+
+          iconName: "schrodinger-cat"
+
+          ToolTip.text: qsTr("Schrödinger mode: the constant takes several values at once")
+
+          onToggled: {
+            root.mathObj.getConstant().deadAndAlive = checked;
           }
         }
       }
 
-      CardButton {
-        id: schrodingerCatButton
-
-        readonly property bool isConstant: root.mathObj.type === MathObject.CONSTANT
-
-        checkable: isConstant
-
-        checked: isConstant && root.mathObj.schrodinger
-
-        iconName: "schrodinger-cat"
-
-        ToolTip.text: qsTr("Schrödinger mode: the constant takes several values at once")
-
-        onToggled: {
-          root.mathObj.getConstant().deadAndAlive = checked;
-        }
-
-        states: [
-          State {
-            name: "hidden";
-            when: !schrodingerCatButton.isConstant
-            PropertyChanges {
-              schrodingerCatButton.opacity: 0.
-              schrodingerCatButton.Layout.maximumWidth: 0
-              schrodingerCatButton.visible: false
-            }
-          },
-          State {
-            name: "shown";
-            when: schrodingerCatButton.isConstant
-            PropertyChanges {
-              schrodingerCatButton.opacity: 1.
-              schrodingerCatButton.Layout.maximumWidth: 30
-              schrodingerCatButton.visible: true
-            }
-          }
-        ]
-
-        transitions: commonTransition
-      }
-
-      Image {
-        Layout.minimumWidth: 20
-        Layout.maximumWidth: 30
-        Layout.preferredHeight: Layout.preferredWidth
-        Layout.preferredWidth: 30
-
-        source: ZeStyle.icon("schrodinger-cat")
-        fillMode: Image.PreserveAspectFit
-        mipmap: true
-
-        id: schrodingerObject
-
-        states: [
-          State {
-            name: "hidden";
-            when: !root.mathObj.schrodinger || root.mathObj.type === MathObject.CONSTANT
-            PropertyChanges {
-              schrodingerObject.Layout.maximumWidth: 0
-              schrodingerObject.Layout.maximumHeight: 0
-              schrodingerObject.visible: false
-            }
-          },
-          State {
-            name: "shown";
-            when: root.mathObj.schrodinger && root.mathObj.type !== MathObject.CONSTANT
-            PropertyChanges {
-              schrodingerObject.Layout.maximumWidth: 30
-              schrodingerObject.Layout.maximumHeight: 30
-              schrodingerObject.visible: true
-            }
-          }
-        ]
-
-        transitions: commonTransition
+      SchrodingerBadge {
+        shown: root.schrodingerCurve
       }
 
       DragHandle {
@@ -277,56 +123,13 @@ ObjectCard {
 
         ToolTip.text: qsTr("Drag to change the order of the objects")
       }
-
-      states: [
-        State {
-          name: "hidden";
-          when: !root.plotted
-          PropertyChanges {
-            colorButton.opacity: 0.
-            colorButton.radius: 0
-            colorButton.visible: false
-
-            styleButton.opacity: 0.
-            styleButton.Layout.maximumWidth: 0
-            styleButton.Layout.maximumHeight: 0
-            styleButton.visible: false
-
-            displayButton.opacity: 0.
-            displayButton.Layout.maximumWidth: 0
-            displayButton.Layout.maximumHeight: 0
-            displayButton.visible: false
-          }
-        },
-        State {
-          name: "shown";
-          when: root.plotted
-          PropertyChanges {
-            colorButton.opacity: 1.
-            colorButton.radius: 12
-            colorButton.visible: true
-
-            styleButton.opacity: 1.
-            styleButton.Layout.maximumWidth: 30
-            styleButton.Layout.maximumHeight: 30
-            styleButton.visible: true
-
-            displayButton.opacity: 1.
-            displayButton.Layout.maximumWidth: 30
-            displayButton.Layout.maximumHeight: 30
-            displayButton.visible: true
-          }
-        }
-      ]
-
-      transitions: commonTransition
     }
 
     ObjectStyle {
       base: root.mathObj.base
       style: root.mathObj.style
 
-      open: styleButton.checked && styleButton.visible
+      open: plotControls.styleOpen && plotControls.shown
     }
 
     // getEquation() and the other getters have no notify signal, so each type
