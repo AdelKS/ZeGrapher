@@ -38,6 +38,9 @@ Sampling::Sampling(QObject *parent)
   start.setExpression("0");
   end.setExpression("10");
   step.setExpression("1");
+
+  // MathWorld::objectUpdated() only syncs the NamedRefs of math objects
+  connect(mathWorld, &MathWorld::updated, &source, &NamedRef::sync);
 }
 
 void Sampling::setColumn(Data* c)

@@ -20,6 +20,7 @@ if get_option('test')
     'sparse_insert',
     'graphrange',
     'curveupdates',
+    'sampling',
     'export',
     'render',
   ]
