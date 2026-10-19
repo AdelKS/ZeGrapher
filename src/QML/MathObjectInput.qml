@@ -34,7 +34,6 @@ ObjectCard {
   signal importCSV(file: url, dataSheet: DataSheet)
 
   deleteHint: qsTr("Delete this object")
-  onDeleteRequested: root.mathObj.requestUiInitiatedDelete()
 
   frame.bottomPadding: 10
 

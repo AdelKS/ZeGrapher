@@ -70,16 +70,11 @@ Item {
       onMoveRequested: (from, to) => MathWorld.moveMathObject(from, to)
       onRemoveRequested: MathWorld.removeMathObject(dragWrapper.modelData)
 
-      Connections {
-        target: dragWrapper.modelData
-        function onInitiateUiDelete() {
-          dragWrapper.collapseAndRemove();
-        }
-      }
-
       MathObjectInput {
         id: input
         mathObj: dragWrapper.modelData
+
+        onDeleteRequested: dragWrapper.collapseAndRemove()
 
         onImportCSV: (file, dataSheet) => { root.importCSV(file, dataSheet); }
       }

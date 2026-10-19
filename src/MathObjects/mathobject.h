@@ -92,7 +92,6 @@ public:
 public slots:
   /// @brief forwards the refresh() call to the current active backend
   void sync();
-  void requestUiInitiatedDelete() { emit initiateUiDelete(); }
 
 signals:
   void updated();
@@ -100,7 +99,6 @@ signals:
   void schrodingerChanged();
   void baseChanged();
   void styleChanged();
-  void initiateUiDelete();
 
 protected:
   using variant_t = std::variant<mathobj::Equation*,
