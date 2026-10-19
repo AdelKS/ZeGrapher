@@ -20,29 +20,20 @@
 
 #include "gridcalculator.h"
 
-QString GridCalculator::get_coordinate_string(const ZeLinAxisSettings &axisSettings,
-                                              const QString& multiplierStr,
-                                              double multiplier)
+MathText GridCalculator::coordinateText(const ZeLinAxisSettings &axisSettings,
+                                        const QString& multiplierStr,
+                                        double multiplier)
 {
-  QString posStr;
+  if (multiplierStr.isEmpty() or multiplier == 0)
+    return formatNumber(multiplier, axisSettings.maxDigitsNum + 1);
 
-  if (not multiplierStr.isEmpty() and multiplier != 0)
-  {
-    const QString& expr = multiplierStr;
-    if (fabs(multiplier + 1.0) <= unitTolerance)
-      posStr = "-" + expr;
-    else if (fabs(multiplier - 1.0) <= unitTolerance)
-      posStr = expr;
-    else
-    {
-      posStr.setNum(multiplier, 'g', axisSettings.maxDigitsNum + 1);
-      if (expr[0].isDigit())
-        posStr += "×";
-      posStr += expr;
-    }
-  }
-  else
-    posStr.setNum(multiplier, 'g', axisSettings.maxDigitsNum + 1);
+  if (fabs(multiplier + 1.0) <= unitTolerance)
+    return MathText{.base = minusSign + multiplierStr};
 
-  return posStr;
+  if (fabs(multiplier - 1.0) <= unitTolerance)
+    return MathText{.base = multiplierStr};
+
+  MathText text = formatNumber(multiplier, axisSettings.maxDigitsNum + 1);
+  text.tail += (multiplierStr[0].isDigit() ? "×" : "") + multiplierStr;
+  return text;
 }

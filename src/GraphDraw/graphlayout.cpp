@@ -22,7 +22,9 @@
 
 #include <QPaintDevice>
 
+#include <algorithm>
 #include <cmath>
+#include <iterator>
 #include <utility>
 
 namespace {
@@ -79,6 +81,9 @@ const QPaintDevice* GraphLayoutEngine::referenceDevice()
 
 QFont GraphLayoutEngine::font(TextRole role) const
 {
+  if (role == TextRole::Exponent)
+    return MathTextMetrics::exponentFont(font(TextRole::Tick));
+
   QFont f = role == TextRole::Title ? settings.getAxes().titleFont : settings.getFont();
   f.setPointSizeF(f.pointSizeF() * ZeGraphSettings::targetPixelDensity * cmPerInch / 72.);
   f.setHintingPreference(QFont::PreferNoHinting);
@@ -101,18 +106,18 @@ void GraphLayoutEngine::computeTicksAndMargins()
   // addOffsets() writes both x axis offsets to the right of the graph, one
   // above the other
   double xOffsetWidth = 0;
-  for (const QString& text : {xAxisTicks.offset.sumOffsetStr(), xAxisTicks.offset.basePowerOffsetStr()})
-    if (not text.isEmpty())
+  for (const MathText& text : {xAxisTicks.offset.sumOffsetText(), xAxisTicks.offset.basePowerOffsetText()})
+    if (text != MathText())
       xOffsetWidth = std::max(xOffsetWidth, metrics.boundingRect(text).width() + 5);
   margins.setRight(10 + xOffsetWidth);
 
   double offsetMargin = 0;
   if (yAxisTicks.offset.basePowerOffset != 0)
-    offsetMargin = metrics.boundingRect(yAxisTicks.offset.basePowerOffsetStr()).height();
+    offsetMargin = metrics.boundingRect(yAxisTicks.offset.basePowerOffsetText()).height();
 
   if (yAxisTicks.offset.sumOffset != 0)
     offsetMargin = std::max(offsetMargin,
-                            metrics.boundingRect(yAxisTicks.offset.sumOffsetStr()).height());
+                            metrics.boundingRect(yAxisTicks.offset.sumOffsetText()).height());
 
   const double gap = settings.getAxes().spacing.v;
 
@@ -135,6 +140,7 @@ GraphLayout GraphLayoutEngine::compute(const QRectF& figure)
 {
   layout.figure = figure;
   layout.tickFont = font(TextRole::Tick);
+  layout.exponentFont = font(TextRole::Exponent);
   layout.titleFont = font(TextRole::Title);
   metrics.setFont(layout.tickFont);
   titleMetrics.setFont(layout.titleFont);
@@ -289,21 +295,20 @@ void GraphLayoutEngine::addCoordinates()
   for (const ZeLinAxisTick& tick : data.visibleTicks())
   {
     const double pos = data.toPixel(tick.pos).v;
-    const QString& txt = tick.posStr;
-    const double width = metrics.horizontalAdvance(txt);
+    const MathText& text = tick.text;
+    const double width = metrics.horizontalAdvance(text);
 
     QPointF origin;
     if constexpr (axis == ZeAxisName::X)
     {
       // a negative number is centered on its digits, its minus sign hangs left
-      const double space = txt.startsWith('-')
-                             ? metrics.horizontalAdvance(txt.mid(1)) / 2. + metrics.horizontalAdvance('-')
-                             : width / 2.;
-      origin = QPointF(pos - space, layout.graph.height() + gap + xAxisTicks.maxPxAscent);
+      const double sign = text.base.startsWith(minusSign) ? metrics.horizontalAdvance(minusSign) : 0.;
+      origin = QPointF(pos - (width - sign) / 2. - sign,
+                       layout.graph.height() + gap + xAxisTicks.maxPxAscent);
     }
-    else origin = QPointF(- width - gap, pos - metrics.tightBoundingRect(txt).top() / 2.);
+    else origin = QPointF(- width - gap, pos - metrics.tightBoundingRect(text).top() / 2.);
 
-    layout.labels.push_back(Label{.text = txt, .origin = origin});
+    std::ranges::move(metrics.labels(text, origin), std::back_inserter(layout.labels));
   }
 }
 void GraphLayoutEngine::addOffsets()
@@ -311,28 +316,31 @@ void GraphLayoutEngine::addOffsets()
   const ZeOffset& x = xAxisTicks.offset;
   const double w = layout.graph.width(), h = layout.graph.height();
 
+  auto add = [&](const MathText& text, QPointF origin) {
+    std::ranges::move(metrics.labels(text, origin), std::back_inserter(layout.labels));
+  };
+
   if (x.sumOffset != 0)
   {
-    const QString text = x.sumOffsetStr();
-    layout.labels.push_back(Label{.text = text,
-                                  .origin = QPointF(w + 5, h - metrics.boundingRect(text).height() - 10)});
+    const MathText text = x.sumOffsetText();
+    add(text, QPointF(w + 5, h - metrics.boundingRect(text).height() - 10));
   }
 
   if (x.basePowerOffset != 0)
-    layout.labels.push_back(Label{.text = x.basePowerOffsetStr(), .origin = QPointF(w + 5, h)});
+    add(x.basePowerOffsetText(), QPointF(w + 5, h));
 
   const ZeOffset& y = yAxisTicks.offset;
   double powerOffsetWidth = 0;
 
   if (y.basePowerOffset != 0)
   {
-    const QString text = y.basePowerOffsetStr();
-    layout.labels.push_back(Label{.text = text, .origin = QPointF(0, -4)});
+    const MathText text = y.basePowerOffsetText();
+    add(text, QPointF(0, -4));
     powerOffsetWidth = metrics.boundingRect(text).width() + 5;
   }
 
   if (y.sumOffset != 0)
-    layout.labels.push_back(Label{.text = y.sumOffsetStr(), .origin = QPointF(powerOffsetWidth + 5, -4)});
+    add(y.sumOffsetText(), QPointF(powerOffsetWidth + 5, -4));
 }
 
 void GraphLayoutEngine::addTitles()

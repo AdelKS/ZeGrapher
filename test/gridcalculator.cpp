@@ -27,7 +27,7 @@ int main()
   TestApp app;
   ZeGraphSettings& settings = information->graphSettings;
   GridCalculator calculator(settings);
-  TextMetrics metrics(settings.getFont(), GraphLayoutEngine::referenceDevice());
+  MathTextMetrics metrics(settings.getFont(), GraphLayoutEngine::referenceDevice());
 
   // the x axis ticks of a 1000 pixel view over [min, max]
   auto ticksOver = [&](double min, double max)
@@ -63,7 +63,7 @@ int main()
   }
 
   // the offset is a multiple of the multiplier, like the ticks
-  test(ticksOver(1e6, 1e6 + 1e-6).offset.sumOffsetStr().endsWith("math::pi"));
+  test(ticksOver(1e6, 1e6 + 1e-6).offset.sumOffsetText().tail.endsWith("math::pi"));
 
   // a multiplier that doesn't leave a valid range gives plain numbers
   for (const char* multiplier: {"0", "-1", "-math::pi", "1/0", "1e-310"})
@@ -75,7 +75,12 @@ int main()
   }
 
   settings.multiplier<ZeAxisName::X>().setExpression("");
-  test(ticksOver(-1e9 - 1, -1e9).offset.sumOffsetStr() == " - 1000000000");
+  test(ticksOver(-1e9 - 1, -1e9).offset.sumOffsetText() == MathText{.base = " − 1000000000"});
+
+  // a number has a minus sign, and a raised exponent instead of an 'e'
+  test(formatNumber(-2.5, 3) == MathText{.base = "−2.5"});
+  test(formatNumber(-1e-9, 11) == MathText{.base = "−1×10", .exponent = "−9"});
+  test(formatNumber(1.5e20, 3) == MathText{.base = "1.5×10", .exponent = "20"});
 
   // a figure smaller than its margins gives the graph a negative size
   zg::ZeViewMapper mapper;

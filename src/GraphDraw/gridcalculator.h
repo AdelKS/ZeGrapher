@@ -23,7 +23,7 @@
 #include <QRectF>
 
 #include "axismapper.h"
-#include "textmetrics.h"
+#include "mathtext.h"
 #include "structures.h"
 #include "Utils/graphsettings.h"
 
@@ -38,36 +38,43 @@ struct ZeLogAxisTick
 struct ZeLinAxisTick
 {
   zg::real_unit pos;
-  QString posStr;
+  MathText text;
 };
 
 struct ZeOffset
 {
-  QString sumOffsetStr() const
+  MathText sumOffsetText() const
   {
     if (sumOffset == 0)
-      return QString();
+      return {};
 
-    const QString sign = sumOffset < 0 ? " - " : " + ";
     const double offset = std::abs(sumOffset);
 
-    QString str = sumPowerOffset == 0
-                    ? QString::number(offset, 'g', 11)
-                    : QString::number(offset * int_pow(10.0, -sumPowerOffset), 'g', 11) + "×10^"
-                        + QString::number(sumPowerOffset);
+    MathText text = sumPowerOffset == 0
+                      ? formatNumber(offset, 11)
+                      : power(formatNumber(offset * int_pow(10.0, -sumPowerOffset), 11).base + "×10",
+                              sumPowerOffset);
+
+    text.base.prepend(sumOffset < 0 ? QString(" ") + minusSign + ' ' : " + ");
 
     if (not multiplierStr.isEmpty())
-      str += (multiplierStr[0].isDigit() ? "×" : "") + multiplierStr;
+      text.tail += (multiplierStr[0].isDigit() ? "×" : "") + multiplierStr;
 
-    return sign + str;
+    return text;
   }
 
-  QString basePowerOffsetStr() const
+  MathText basePowerOffsetText() const
   {
     if (basePowerOffset == 0)
-      return QString();
+      return {};
 
-    return "×10^" + QString::number(basePowerOffset);
+    return power("×10", basePowerOffset);
+  }
+
+  /// @brief 'base' followed by 'exponent' as a raised number
+  static MathText power(const QString& base, int exponent)
+  {
+    return MathText{.base = base, .exponent = QString::number(exponent).replace('-', minusSign)};
   }
 
   /// @brief in multiples of 'multiplierStr' when it is not empty
@@ -100,17 +107,17 @@ public:
 
   template <ZeAxisName axis>
   ZeLinAxisTicks getLinearAxisTicks(const zg::ZeAxisMapper<axis> &mapper,
-                                    const TextMetrics &metrics);
+                                    const MathTextMetrics &metrics);
 
 protected:
   template <ZeAxisName axis>
   double getMaxStrPxSize(const zg::real_range1d &range, double realStep,
-                         const QString& multiplierStr, const TextMetrics &metrics);
+                         const QString& multiplierStr, const MathTextMetrics &metrics);
 
   /// @param multiplierStr  the expression that the ticks are multiples of, empty
   ///                       when they are plain numbers
-  static QString get_coordinate_string(const ZeLinAxisSettings &axisSettings,
-                                       const QString& multiplierStr, double multiplier);
+  static MathText coordinateText(const ZeLinAxisSettings &axisSettings,
+                                 const QString& multiplierStr, double multiplier);
 
   /// @brief how close to 1 a multiple must be to show as the multiplier alone
   static constexpr double unitTolerance = 1e-8;
@@ -124,26 +131,26 @@ template <ZeAxisName axis>
 double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
                                        double realStep,
                                        const QString& multiplierStr,
-                                       const TextMetrics &metrics)
+                                       const MathTextMetrics &metrics)
 {
   const ZeAxesSettings& axesSettings = settings.getAxes();
 
   // get the next tick value _within_ the range
   double multiplier = std::ceil(scaled_range.min.v / realStep) * realStep;
   double maxStrPxSize = 0, currentStrPxSize = 0;
-  QString posStr;
+  MathText text;
 
   while (multiplier < scaled_range.max.v)
   {
     if constexpr (axis == ZeAxisName::X)
     {
-      posStr = get_coordinate_string(axesSettings.x.linSettings, multiplierStr, multiplier);
-      currentStrPxSize = metrics.boundingRect(posStr).width();
+      text = coordinateText(axesSettings.x.linSettings, multiplierStr, multiplier);
+      currentStrPxSize = metrics.boundingRect(text).width();
     }
     else
     {
-      posStr = get_coordinate_string(axesSettings.y.linSettings, multiplierStr, multiplier);
-      currentStrPxSize = metrics.boundingRect(posStr).height();
+      text = coordinateText(axesSettings.y.linSettings, multiplierStr, multiplier);
+      currentStrPxSize = metrics.boundingRect(text).height();
     }
 
     if (currentStrPxSize > maxStrPxSize)
@@ -157,7 +164,7 @@ double GridCalculator::getMaxStrPxSize(const zg::real_range1d &scaled_range,
 
 template <ZeAxisName axis>
 ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &axis_mapper,
-                                                  const TextMetrics &metrics)
+                                                  const MathTextMetrics &metrics)
 {
   auto previousMultiplier = [](double baseMultiplier)
   {
@@ -317,15 +324,15 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     if (fabs(px_pos.v - zero_pt.v) <= 1.)
       multiplier = 0;
     tick.pos = getPos();
-    tick.posStr = get_coordinate_string(axisSettings, multiplierStr, multiplier);
+    tick.text = coordinateText(axisSettings, multiplierStr, multiplier);
 
     // only ticks within the range get drawn, take only those into consideration
     if (scaledOffsetRange.min.v < multiplier and multiplier < scaledOffsetRange.max.v)
     {
-      const QRectF ink = metrics.tightBoundingRect(tick.posStr);
+      const QRectF ink = metrics.tightBoundingRect(tick.text);
       axisTicks.maxPxAscent = std::max(axisTicks.maxPxAscent, -ink.top());
       axisTicks.maxPxDescent = std::max(axisTicks.maxPxDescent, ink.bottom());
-      axisTicks.maxPxWidth = std::max(axisTicks.maxPxWidth, metrics.horizontalAdvance(tick.posStr));
+      axisTicks.maxPxWidth = std::max(axisTicks.maxPxWidth, metrics.horizontalAdvance(tick.text));
     }
 
     axisTicks.ticks.push_back(tick);

@@ -43,20 +43,6 @@ struct LineBatch
   bool operator==(const LineBatch&) const = default;
 };
 
-enum class TextRole { Tick, Title };
-
-/// @brief a text whose baseline starts at 'origin', turned by 'angle' degrees
-///        around it
-struct Label
-{
-  QString text;
-  TextRole role = TextRole::Tick;
-  QPointF origin;
-  double angle = 0;
-
-  bool operator==(const Label&) const = default;
-};
-
 /// @brief everything around a graph's curves: the grid, axes, ticks, border
 ///        and texts
 ///
@@ -77,10 +63,19 @@ struct GraphLayout
   std::vector<Label> labels;
 
   /// @brief for a 72 dpi device
-  QFont tickFont, titleFont;
+  QFont tickFont, exponentFont, titleFont;
   QColor textColor;
 
-  const QFont& font(TextRole role) const { return role == TextRole::Title ? titleFont : tickFont; }
+  const QFont& font(TextRole role) const
+  {
+    switch (role)
+    {
+      case TextRole::Title: return titleFont;
+      case TextRole::Exponent: return exponentFont;
+      case TextRole::Tick: break;
+    }
+    return tickFont;
+  }
 
   bool operator==(const GraphLayout&) const = default;
 };
@@ -154,7 +149,8 @@ protected:
   zg::ZeViewMapper& viewMapper;
   GridCalculator gridCalculator;
 
-  TextMetrics metrics, titleMetrics;
+  MathTextMetrics metrics;
+  TextMetrics titleMetrics;
   ZeLinAxisTicks xAxisTicks, yAxisTicks;
   /// @brief the margins that every compute() starts from, so the layout does
   ///        not depend on the one before

@@ -66,6 +66,8 @@ public:
 
   qreal horizontalAdvance(QChar c) const { return metrics.horizontalAdvance(c); }
 
+  const QFont& getFont() const { return font; }
+
 protected:
   struct Entry
   {
