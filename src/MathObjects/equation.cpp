@@ -72,15 +72,12 @@ State Equation::sync()
   return getState();
 };
 
-Equation::POD Equation::exportPod() const {
-
-  return POD {
-    .equation = yml::not_default(getEquation()),
-    .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
-    .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
-    .coordinates = yml::not_default(coordinateSystem, Cartesian),
-    .style = style.exportPod()
-  };
+Equation::POD Equation::exportPod() const
+{
+  POD p;
+  p.equation = yml::not_default(getEquation());
+  exportCurve(p);
+  return p;
 }
 
 void Equation::importPod(Equation::POD p)
@@ -88,17 +85,7 @@ void Equation::importPod(Equation::POD p)
   if (p.equation)
     setEquation(QString::fromStdString(*p.equation));
 
-  if (p.coordinates)
-    setCoordinateSystem(*p.coordinates);
-
-  if (p.start)
-    setStart(QString::fromStdString(*p.start));
-
-  if (p.end)
-    setEnd(QString::fromStdString(*p.end));
-
-  if (p.style)
-    style.importPod(std::move(*p.style));
+  importCurve(p);
 }
 
 }

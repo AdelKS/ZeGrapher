@@ -119,15 +119,12 @@ State Data::sync() {
 
 Data::POD Data::exportPod() const
 {
-  return POD {
-    .name = yml::not_default(getName()),
-    .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
-    .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
-    .coordinates = yml::not_default(coordinateSystem, Cartesian),
-    .values = yml::not_default(getData()),
-    .style = style.exportPod(),
-    .show_in_table = yml::not_default(showInTable, false)
-  };
+  POD p;
+  p.name = yml::not_default(getName());
+  p.values = yml::not_default(getData());
+  p.show_in_table = yml::not_default(showInTable, false);
+  exportCurve(p);
+  return p;
 }
 
 void Data::importPod(Data::POD p)
@@ -138,17 +135,7 @@ void Data::importPod(Data::POD p)
   if (p.values)
     setData(std::move(*p.values));
 
-  if (p.coordinates)
-    setCoordinateSystem(*p.coordinates);
-
-  if (p.start)
-    setStart(QString::fromStdString(*p.start));
-
-  if (p.end)
-    setEnd(QString::fromStdString(*p.end));
-
-  if (p.style)
-    style.importPod(std::move(*p.style));
+  importCurve(p);
 
   if (p.show_in_table)
     setShowInTable(*p.show_in_table);

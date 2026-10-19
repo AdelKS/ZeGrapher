@@ -61,16 +61,13 @@ Revision Parametric::getRevision() const
   return {of(obj1.getZcObject()), of(obj2.getZcObject())};
 }
 
-Parametric::POD Parametric::exportPod() const {
-
-  return POD {
-    .first = yml::not_default(getFirst()),
-    .second = yml::not_default(getSecond()),
-    .start = yml::not_default(getStartStr(), getDefaultStringRange().start),
-    .end = yml::not_default(getEndStr(), getDefaultStringRange().end),
-    .coordinates = yml::not_default(coordinateSystem, Cartesian),
-    .style = style.exportPod()
-  };
+Parametric::POD Parametric::exportPod() const
+{
+  POD p;
+  p.first = yml::not_default(getFirst());
+  p.second = yml::not_default(getSecond());
+  exportCurve(p);
+  return p;
 }
 
 void Parametric::importPod(Parametric::POD p)
@@ -81,17 +78,7 @@ void Parametric::importPod(Parametric::POD p)
   if (p.second)
     setSecond(QString::fromStdString(*p.second));
 
-  if (p.coordinates)
-    setCoordinateSystem(*p.coordinates);
-
-  if (p.start)
-    setStart(QString::fromStdString(*p.start));
-
-  if (p.end)
-    setEnd(QString::fromStdString(*p.end));
-
-  if (p.style)
-    style.importPod(std::move(*p.style));
+  importCurve(p);
 }
 
 } // namespace mathobj

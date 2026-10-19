@@ -105,6 +105,15 @@ public:
 
   StringRange getDefaultStringRange() const;
 
+  /// @brief writes the bounds, coordinate system and plot style to the POD of
+  ///        an equation, parametric equation or data column
+  template <class Pod>
+  void exportCurve(Pod& pod) const;
+
+  /// @brief reads the fields that exportCurve() writes
+  template <class Pod>
+  void importCurve(Pod& pod);
+
   PlotStyle style;
 
 signals:
@@ -125,6 +134,32 @@ protected:
 };
 
 using CoordinateSystem = Base::CoordinateSystem;
+
+template <class Pod>
+void Base::exportCurve(Pod& pod) const
+{
+  pod.start = yml::not_default(getStartStr(), getDefaultStringRange().start);
+  pod.end = yml::not_default(getEndStr(), getDefaultStringRange().end);
+  pod.coordinates = yml::not_default(coordinateSystem, Cartesian);
+  pod.style = style.exportPod();
+}
+
+template <class Pod>
+void Base::importCurve(Pod& pod)
+{
+  // setCoordinateSystem() resets default bounds, so the bounds come after
+  if (pod.coordinates)
+    setCoordinateSystem(*pod.coordinates);
+
+  if (pod.start)
+    setStart(QString::fromStdString(*pod.start));
+
+  if (pod.end)
+    setEnd(QString::fromStdString(*pod.end));
+
+  if (pod.style)
+    style.importPod(std::move(*pod.style));
+}
 
 struct SamplingSettings {
   zg::real_range1d range = {.min = {0.}, .max = {0.}};
