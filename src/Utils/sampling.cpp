@@ -83,7 +83,8 @@ QString Sampling::apply()
                                  : zc::Error::wrong_object_type(name, {}));
   }
 
-  const size_t pointCount = size_t(span / by) + 1;
+  // 'span / by' can fall just short of a whole number: 0.3 / 0.1 gives 2.9999999999999996
+  const size_t pointCount = size_t(span / by * (1 + 1e-12)) + 1;
 
   std::vector<std::string> values;
   values.reserve(pointCount);

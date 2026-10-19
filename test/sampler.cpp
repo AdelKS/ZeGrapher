@@ -198,5 +198,23 @@ int main()
     }
   }
 
+  // a range that the step divides holds its end
+  {
+    test(app.load("math_objects:\n"
+                  "  - {type: equation, equation: 'f(x) = 3 * x'}\n"
+                  "  - {type: datasheet, columns: [{name: d}]}\n"));
+
+    zg::mathobj::Data* column = zg::mathWorld->getMathObjects().back()->getDataSheet()->getColumns().front();
+    zg::mathobj::Sampling sampling;
+    sampling.setColumn(column);
+    sampling.getSourcePtr()->setName("f");
+    sampling.getStartPtr()->setExpression("0");
+    sampling.getEndPtr()->setExpression("0.3");
+    sampling.getStepPtr()->setExpression("0.1");
+
+    test(sampling.apply().isEmpty());
+    test(column->getData().size() == 4);
+  }
+
   return 0;
 }
