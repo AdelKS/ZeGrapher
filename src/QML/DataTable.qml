@@ -314,6 +314,7 @@ Item {
           id: displayWidget
 
           backend: cellBackend
+          allowSchrodinger: true
 
           anchors.fill: parent
 
@@ -346,6 +347,7 @@ Item {
             visible: root.interactive && item.editing
             exprEdit.lineEditBackend.textEdit.focus: true
             backend: editCellBackend
+            allowSchrodinger: true
           }
 
           TableView.onCommit: root.model.setData(root.model.index(item.row, item.column),

@@ -33,6 +33,9 @@ Item {
   property alias customErrorMsg: zcExprEdit.customErrorMsg
   readonly property alias exprHeight: zcExprEdit.exprHeight
 
+  // fields that need a single number keep the NaN warning of a Schrödinger expression
+  property bool allowSchrodinger: false
+
   implicitHeight: zcExprEdit.implicitHeight
 
   ZcExprEdit {
@@ -42,6 +45,7 @@ Item {
     hint: root.ToolTip.text
 
     nanValue: isNaN(root.backend.value)
+    schrodinger: root.allowSchrodinger && root.backend.schrodinger
 
     expression: root.backend.expression
     onTextEdited: (expression) => root.backend.setExpression(expression)

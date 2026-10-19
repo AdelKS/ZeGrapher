@@ -27,6 +27,7 @@ Rectangle {
   id: rec
   property alias text: edit.text
   property alias textEdit: edit
+  property alias iconSource: icon.source
 
   signal textEdited()
 
@@ -51,7 +52,7 @@ Rectangle {
 
     anchors.fill: parent
     anchors.leftMargin: 6
-    anchors.rightMargin: 6
+    anchors.rightMargin: icon.visible ? icon.width + 10 : 6
     // a wrapped text takes the width it is given, and its contentWidth follows
     // that width
     contentWidth: edit.wrapMode === TextEdit.NoWrap ? Math.max(edit.contentWidth, width) : width
@@ -102,5 +103,19 @@ Rectangle {
         }
       }
     }
+  }
+
+  Image {
+    id: icon
+    visible: source.toString().length !== 0
+
+    anchors.right: parent.right
+    anchors.rightMargin: 6
+    anchors.verticalCenter: parent.verticalCenter
+    height: parent.height - 8
+    width: height
+
+    fillMode: Image.PreserveAspectFit
+    mipmap: true
   }
 }

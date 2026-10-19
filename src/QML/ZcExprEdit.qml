@@ -32,6 +32,8 @@ Item {
   property zgState exprState
   property string customErrorMsg: ''
   property bool nanValue: false
+  property bool schrodinger: false
+  readonly property bool nanWarning: nanValue && !schrodinger
 
   /// @brief the line edit's hint
   property string hint
@@ -51,7 +53,7 @@ Item {
   readonly property string errorMsg: {
     if (root.customErrorMsg.length !== 0)
       return root.customErrorMsg;
-    if (root.exprState.errorMsg.length === 0 && root.exprState.status !== ZG.State.NEUTRAL && root.nanValue)
+    if (root.exprState.errorMsg.length === 0 && root.exprState.status !== ZG.State.NEUTRAL && root.nanWarning)
       return "NaN";
     return root.exprState.errorMsg;
   }
@@ -62,10 +64,12 @@ Item {
       if (root.customErrorMsg.length !== 0 || root.exprState.status === ZG.State.INVALID)
         return ZeStyle.themed(Information.appSettings.invalidSyntax);
       if (root.exprState.status === ZG.State.VALID)
-        return ZeStyle.themed(root.nanValue ? Information.appSettings.warningSyntax
-                                            : Information.appSettings.validSyntax);
+        return ZeStyle.themed(root.nanWarning ? Information.appSettings.warningSyntax
+                                              : Information.appSettings.validSyntax);
       return "grey";
     }
+
+    iconSource: root.schrodinger ? ZeStyle.icon("schrodinger-cat") : ""
 
     ToolTip.text: root.hint
 
