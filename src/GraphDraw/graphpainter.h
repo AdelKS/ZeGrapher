@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2026, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,35 +18,32 @@
 **
 ****************************************************************************/
 
+
 #pragma once
 
-#include <QBrush>
 #include <QPainter>
-#include <QPen>
-#include <QPolygonF>
 
-#include "Calculus/sampler.h"
-#include "GraphDraw/viewmapper.h"
-#include "Utils/curvestyle.h"
+#include "graphlayout.h"
+#include "Utils/sampledcurve.h"
 
-QList<QPolygonF> buildFinalCurve(const zg::SampledCurve& sampledCurve);
-
-class MathObjectDraw
+/// @brief draws a graph with QPainter, for the exports
+///
+/// The screen draws the same layout and curves with scene graph nodes.
+class GraphPainter
 {
 public:
-  explicit MathObjectDraw();
+  /// @param textAsPaths: draw text as glyph outlines, because an SVG names its
+  ///        font without embedding it
+  GraphPainter(QPainter& painter, bool textAsPaths);
+
+  void fill(const QRectF& rect, const QColor& color);
+  void draw(const LineBatch& batch);
+  void draw(const zg::SampledCurve& curve);
+  void drawLabels(const GraphLayout& layout);
 
 protected:
-  void drawDataPoint(const QPointF& pt, const zg::CurveStyle& style);
+  void drawPoint(QPointF center, const zg::CurveStyle& style);
 
-  void drawObjects();
-
-  void drawSampledCurve(const zg::SampledCurve&);
-
-  QPainter* painter = nullptr;
-
-  QPen pen;
-  QBrush brush;
-  zg::ZeViewMapper viewMapper;
-  Sampler sampler;
+  QPainter& painter;
+  bool textAsPaths;
 };

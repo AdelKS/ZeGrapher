@@ -20,6 +20,9 @@
 
 #include "sampledcurve.h"
 
+#include <cmath>
+#include <utility>
+
 namespace zg {
 
 void SampledCurve::clear()
@@ -177,6 +180,38 @@ void SampledCurve::sparse_delete(const std::vector<size_t>& indices)
   input = std::move(new_input);
   curve = std::move(new_curve);
   px_curve = std::move(new_px_curve);
+}
+
+QList<QPolygonF> SampledCurve::polylines() const
+{
+  QList<QPolygonF> pieces;
+  QPolygonF piece;
+
+  auto flush = [&]
+  {
+    if (not piece.empty())
+      pieces.append(std::exchange(piece, {}));
+  };
+
+  for (size_t i = 0; i != px_curve.size(); i++)
+  {
+    const QPointF& pt = px_curve[i];
+
+    if (std::isnan(pt.x()) or std::isnan(pt.y()))
+    {
+      flush();
+      continue;
+    }
+
+    if (discontinuities.contains(i))
+      flush();
+
+    piece.append(pt);
+  }
+
+  flush();
+
+  return pieces;
 }
 
 } // namespace zg

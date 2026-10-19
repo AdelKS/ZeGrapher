@@ -23,15 +23,16 @@
 #include <QQuickItem>
 #include <QImage>
 
+#include "Calculus/sampler.h"
 #include "graphlayout.h"
 #include "linenode.h"
 #include "markernode.h"
-#include "mathobjectdraw.h"
+#include "viewmapper.h"
 #include "Utils/graphsettings.h"
 
 /// @brief the graph on screen, drawn with scene graph nodes, and its exports,
 ///        drawn with QPainter, both from the same GraphLayout
-class Graph : public QQuickItem, public MathObjectDraw
+class Graph : public QQuickItem
 {
   Q_OBJECT
   QML_ELEMENT
@@ -70,7 +71,7 @@ public:
 public slots:
   void exportPDF(QUrl fileName);
   void exportSVG(QUrl fileName);
-  void exportImage(QUrl filename);
+  void exportImage(QUrl fileName);
 
 protected slots:
   void minMaxPointsChanged();
@@ -85,26 +86,18 @@ protected:
 
   /// @brief draws the graph with QPainter, the sheet filling p's window
   void paint(QPainter* p, Export target);
-  void setPainterFont(QFont font);
-  void drawSupport();
-  void computeSupportRect();
-  void drawLines(const LineBatch& batch);
-  /// @param asPaths: draw text as glyph outlines, because an SVG names its
-  ///        font without embedding it
-  void drawLabels(bool asPaths);
+
+  /// @brief the sheet on screen, in drawing units
+  /// @param available: the item's size, in drawing units
+  QRectF sheetRect(QSizeF available) const;
 
   ZeGraphSettings& settings;
+  zg::ZeViewMapper viewMapper;
+  Sampler sampler;
   GraphLayoutEngine layoutEngine;
-
-  /// @brief the layout of the export being painted
-  GraphLayout layout;
 
   /// @brief the on-screen view scale, which InteractiveGraph maps the mouse with
   double totalScaleFactor = 1;
-
-  QRectF supportRect;
-
-  QSizeF scaledSize;
 
   Frame frame;
 };

@@ -24,7 +24,9 @@
 #include <unordered_set>
 #include <vector>
 
+#include <QList>
 #include <QPointF>
+#include <QPolygonF>
 
 #include "MathObjects/mathobject.h"
 #include "Utils/unit.h"
@@ -69,6 +71,9 @@ struct SampledCurve {
   void pop_back(size_t pop_num);
 
   void pop_front(size_t pop_num);
+
+  /// @brief the pieces of 'px_curve' between NaN points and discontinuities
+  QList<QPolygonF> polylines() const;
 
   CurveStyle style = {};
 

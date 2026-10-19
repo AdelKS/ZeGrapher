@@ -19,11 +19,11 @@
 ****************************************************************************/
 
 #include "GraphDraw/graph.h"
+#include "GraphDraw/graphpainter.h"
 #include "information.h"
 #include "buildconfig.h"
 
 #include <QPageLayout>
-#include <QPainterPath>
 #include <QPdfWriter>
 #include <QStyleHints>
 #include <QQuickWindow>
@@ -43,12 +43,11 @@
 
 Graph::Graph(QQuickItem *parent)
   : QQuickItem(parent),
-    MathObjectDraw(),
     settings(information->graphSettings),
+    sampler(viewMapper),
     layoutEngine(settings, viewMapper)
 {
   setFlag(ItemHasContents);
-  pen.setCapStyle(Qt::RoundCap);
 
   viewMapper.setGraphRange(settings.range.getLatestValidSnapshot());
 
@@ -72,18 +71,8 @@ Graph::Graph(QQuickItem *parent)
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, &QQuickItem::polish);
 }
 
-void Graph::setPainterFont(QFont font)
-{
-  // QPainter converts points to pixels with its device's logicalDpiY, and the
-  // layout sizes its fonts for 72 dpi
-  font.setPointSizeF(font.pointSizeF() * 72. / painter->device()->logicalDpiY());
-  painter->setFont(font);
-}
-
 void Graph::paint(QPainter* p, Export target)
 {
-  painter = p;
-
   const bool vector = target != Export::Image;
   const double dpr = vector ? 1. : window()->effectiveDevicePixelRatio();
 
@@ -91,73 +80,39 @@ void Graph::paint(QPainter* p, Export target)
   const double pxPerCm = vector ? p->device()->logicalDpiX() / cmPerInch : settings.pixelDensity;
   const double scale = settings.getSize().scalingFactor * pxPerCm / ZeGraphSettings::targetPixelDensity;
 
-  painter->scale(scale * dpr, scale * dpr);
-  scaledSize = p->window().size().toSizeF() / dpr / scale;
-  supportRect = QRectF(QPointF(), scaledSize);
-  drawSupport();
+  p->scale(scale * dpr, scale * dpr);
+  const QRectF sheet(QPointF(), p->window().size().toSizeF() / dpr / scale);
 
-  layout = layoutEngine.compute(supportRect);
+  GraphPainter painter(*p, target == Export::Svg);
+  painter.fill(sheet, settings.getBackgroundColor().getCurrent());
 
-  painter->translate(layout.graph.topLeft());
-  painter->setClipRect(QRectF(QPointF(), layout.graph.size()));
+  const GraphLayout layout = layoutEngine.compute(sheet);
+
+  p->translate(layout.graph.topLeft());
+  p->setClipRect(QRectF(QPointF(), layout.graph.size()));
 
   for (const LineBatch& batch : layout.belowCurves)
-    drawLines(batch);
+    painter.draw(batch);
 
   sampler.update();
-
-  drawObjects();
+  for (const zg::SampledCurve& curve : sampler.getCurves())
+    painter.draw(curve);
 
   for (const LineBatch& batch : layout.aboveCurves)
-    drawLines(batch);
+    painter.draw(batch);
 
-  painter->setClipping(false);
+  p->setClipping(false);
 
-  drawLabels(target == Export::Svg);
-  drawLines(layout.border);
-
-  painter = nullptr;
+  painter.drawLabels(layout);
+  painter.draw(layout.border);
 
   // the export moved the view mapper and samples to its own sheet
   polish();
 }
 
-void Graph::drawLines(const LineBatch& batch)
+void Graph::exportImage(QUrl fileName)
 {
-  pen.setColor(batch.color);
-  pen.setWidthF(batch.width);
-  pen.setStyle(Qt::SolidLine);
-  pen.setCapStyle(batch.cap);
-  pen.setJoinStyle(Qt::RoundJoin);
-  painter->setPen(pen);
-  painter->setRenderHint(QPainter::Antialiasing, true);
-  painter->drawLines(batch.lines.data(), int(batch.lines.size()));
-}
-
-void Graph::drawLabels(bool asPaths)
-{
-  painter->setPen(layout.textColor);
-
-  for (const Label& label : layout.labels)
-  {
-    setPainterFont(layout.font(label.role));
-    painter->save();
-    painter->translate(label.origin);
-    painter->rotate(label.angle);
-    if (asPaths)
-    {
-      QPainterPath path;
-      path.addText(QPointF(), painter->font(), label.text);
-      painter->fillPath(path, layout.textColor);
-    }
-    else painter->drawText(QPointF(), label.text);
-    painter->restore();
-  }
-}
-
-void Graph::exportImage(QUrl filename)
-{
-  const QString path = filename.toLocalFile();
+  const QString path = fileName.toLocalFile();
 
   // QImageWriter picks the format from the file suffix
   const QString suffix = QFileInfo(path).suffix();
@@ -216,46 +171,17 @@ void Graph::exportImage(QUrl filename)
     information->exportFailed(path, file.errorString());
 }
 
-void Graph::drawSupport()
-{ // draws the sheet on an untransformed view
-  painter->setBrush(QBrush(settings.getBackgroundColor().getCurrent()));
-
-  pen.setStyle(Qt::NoPen);
-  painter->setPen(pen);
-
-  painter->drawRect(supportRect);
-}
-
-void Graph::computeSupportRect()
+QRectF Graph::sheetRect(QSizeF available) const
 {
-  QRectF rect;
+  const ZeSizeSettings& size = settings.getSize();
+  if (size.sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
+    return QRectF(QPointF(), available);
 
-  if (settings.getSize().sheetFillsWindow or settings.getZoom().zoomingType == ZoomingType::CUSTOM)
-  {
-    rect.setSize(scaledSize);
-  }
-  else if (settings.getZoom().zoomingType == ZoomingType::FITSHEET)
-  {
-    const double ratio = scaledSize.height() / scaledSize.width();
-    const double targetRatio = settings.getSize().cmSheetSize.height() / settings.getSize().cmSheetSize.width();
-
-    if (ratio <= targetRatio)
-    {
-      rect.setHeight(scaledSize.height());
-      rect.setWidth(scaledSize.height() / targetRatio);
-
-      rect.moveTopLeft(QPointF((scaledSize.width() - rect.width()) / 2, 0));
-    }
-    else
-    {
-      rect.setHeight(scaledSize.width() * targetRatio);
-      rect.setWidth(scaledSize.width());
-
-      rect.moveTopLeft(QPointF(0, (scaledSize.height() - rect.height()) / 2));
-    }
-  }
-
-  supportRect = rect;
+  // the sheet fits in the item, centered
+  const QSizeF sheet = size.cmSheetSize.scaled(available, Qt::KeepAspectRatio);
+  return QRectF(QPointF((available.width() - sheet.width()) / 2,
+                        (available.height() - sheet.height()) / 2),
+                sheet);
 }
 
 void Graph::exportPDF(QUrl fileName)
@@ -375,14 +301,12 @@ void Graph::updatePolish()
     return;
 
   totalScaleFactor = settings.getTotalScaleFactor();
-  scaledSize = size() / totalScaleFactor;
-  computeSupportRect();
 
   Frame::Source source{
     .scale = float(totalScaleFactor),
     .pxPerUnit = float(totalScaleFactor * window()->effectiveDevicePixelRatio()),
     .background = settings.getBackgroundColor().getCurrent(),
-    .layout = layoutEngine.compute(supportRect),
+    .layout = layoutEngine.compute(sheetRect(size() / totalScaleFactor)),
   };
   const float pxPerUnit = source.pxPerUnit;
 
@@ -415,7 +339,7 @@ void Graph::updatePolish()
     if (style.drawLine)
     {
       LineGeometry g(style.color, style.lineWidth, style.dashPattern, pxPerUnit);
-      for (const QPolygonF& polyline : buildFinalCurve(curve))
+      for (const QPolygonF& polyline : curve.polylines())
         g.addPolyline(polyline);
       frame.curves.push_back(std::move(g));
     }
