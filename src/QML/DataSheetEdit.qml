@@ -44,6 +44,18 @@ Item {
 
   property real columnsImplicitWidth: 0
 
+  /// @brief sets columnsImplicitWidth to the widest row the list holds
+  function updateColumnsWidth() {
+    let widest = 0;
+    for (const child of listView.contentItem.children) {
+      // ListView hides the delegates it pools for reuse
+      const row = child as ListViewItem;
+      if (row && row.visible)
+        widest = Math.max(widest, row.content.implicitWidth);
+    }
+    columnsImplicitWidth = widest;
+  }
+
   readonly property real scrollBarWidth: scrollView.ScrollBar.vertical.visible
     ? scrollView.ScrollBar.vertical.width
     : 0
@@ -120,6 +132,7 @@ Item {
 
         onMoveRequested: (from, to) => root.sheet.moveColumn(from, to)
         onRemoveRequested: root.sheet.deleteColumn(dragWrapper.modelData)
+        onVisibleChanged: Qt.callLater(root.updateColumnsWidth)
 
         DataColumnEdit {
           id: input
@@ -127,8 +140,8 @@ Item {
 
           onDeleteRequested: dragWrapper.collapseAndRemove()
 
-          Component.onCompleted: root.columnsImplicitWidth = Math.max(root.columnsImplicitWidth, input.implicitWidth)
-          onImplicitWidthChanged: root.columnsImplicitWidth = Math.max(root.columnsImplicitWidth, input.implicitWidth)
+          Component.onCompleted: Qt.callLater(root.updateColumnsWidth)
+          onImplicitWidthChanged: Qt.callLater(root.updateColumnsWidth)
         }
       }
     }
