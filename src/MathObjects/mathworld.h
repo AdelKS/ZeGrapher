@@ -74,6 +74,10 @@ public:
   Q_INVOKABLE void setSchrodingerConstant(zg::mathobj::Constant* c);
   zg::mathobj::Constant* getSchrodingerConstant() { return schrodingerConstant; }
 
+  /// @brief syncs every object again: their error messages follow the app
+  ///        language
+  void retranslate();
+
   /// @brief add Expr object that is not part of the model because its widget is elsewhere
   void trackExprObject(mathobj::Expr*);
   void untrackExprObject(const mathobj::Expr*);

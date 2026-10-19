@@ -125,6 +125,7 @@ int main(int argc, char *argv[])
       a.installTranslator(&translator);
 
     engine.retranslate();
+    zg::mathWorld->retranslate();
   };
 
   // QCommandLineParser::process() prints the help and exits, so the translator

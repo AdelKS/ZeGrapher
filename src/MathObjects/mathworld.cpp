@@ -131,6 +131,11 @@ MathObject* MathWorld::addMathObject(MathObject::Type type)
   return mathObjects.back();
 }
 
+void MathWorld::retranslate()
+{
+  objectUpdated();
+}
+
 void MathWorld::trackExprObject(mathobj::Expr* o)
 {
   exprObjects.push_back(o);
