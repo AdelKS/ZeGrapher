@@ -66,7 +66,7 @@ std::optional<U> not_default(T s, T d = T())
    if constexpr (std::is_same_v<T, QString>)
       return s != d ? s.toStdString() : std::optional<U>();
    else return s != d ? s : std::optional<U>();
-};
+}
 
 inline std::optional<double> not_nan(double v)
 {

@@ -71,7 +71,7 @@ State NamedRef::sync()
   setState(newState);
 
   return getState();
-};
+}
 
 bool NamedRef::isDiscrete() const
 {

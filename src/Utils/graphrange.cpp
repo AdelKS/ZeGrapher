@@ -74,7 +74,7 @@ GraphRange::GraphRange(QObject* parent)
 
   y.max.setImplicitName("ymax");
   y.max.setExpression("10");
-};
+}
 
 void GraphRange::interactiveUpdate(const real_range2d& range, QSizeF pixels)
 {

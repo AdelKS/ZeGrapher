@@ -70,7 +70,7 @@ State Equation::sync()
     Base::setDiscrete(*discrete);
 
   return getState();
-};
+}
 
 Equation::POD Equation::exportPod() const
 {

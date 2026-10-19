@@ -59,7 +59,7 @@ void State::setValid()
   errorMsg.clear();
 }
 
-QString State::getErrorMsg() const { return errorMsg; };
+QString State::getErrorMsg() const { return errorMsg; }
 
 void State::setInvalid(QString zgErrorMsg)
 {

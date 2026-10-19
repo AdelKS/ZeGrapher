@@ -44,10 +44,10 @@ struct PlotStyle: QObject {
 public:
 
   enum PointStyle { None, Rhombus, Disc, Square, Triangle, Cross };
-  Q_ENUM(PointStyle);
+  Q_ENUM(PointStyle)
 
   enum LineStyle { NoLine, Solid, Dash, DashDot, Dot };
-  Q_ENUM(LineStyle);
+  Q_ENUM(LineStyle)
 
   explicit PlotStyle(QObject *parent = nullptr);
 

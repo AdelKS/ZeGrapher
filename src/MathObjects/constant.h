@@ -57,7 +57,7 @@ public:
     PING_PONG
   };
 
-  Q_ENUM(LoopType);
+  Q_ENUM(LoopType)
 
   explicit Constant(QObject *parent = nullptr);
   ~Constant();

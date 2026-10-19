@@ -115,7 +115,7 @@ State Data::sync() {
     Base::setDiscrete(*discrete);
 
   return getState();
-};
+}
 
 Data::POD Data::exportPod() const
 {

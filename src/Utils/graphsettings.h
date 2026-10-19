@@ -62,11 +62,11 @@ struct ZeGraphSettings: QObject
 public:
   explicit ZeGraphSettings(QObject* parent = nullptr);
 
-  const ZeZoomSettings& getZoom() const { return zoom; };
-  const ZeSizeSettings& getSize() const { return size; };
-  const ZeAxesSettings& getAxes() const { return axes; };
-  const ZeGridSettings& getGrid() const { return grid; };
-  const ZeSubgridSettings& getSubgrid() const { return subgrid; };
+  const ZeZoomSettings& getZoom() const { return zoom; }
+  const ZeSizeSettings& getSize() const { return size; }
+  const ZeAxesSettings& getAxes() const { return axes; }
+  const ZeGridSettings& getGrid() const { return grid; }
+  const ZeSubgridSettings& getSubgrid() const { return subgrid; }
   zg::GraphRange* getRangePtr() { return &range; }
   zg::mathobj::Expr* getXMultiplierPtr() { return &xMultiplier; }
   zg::mathobj::Expr* getYMultiplierPtr() { return &yMultiplier; }
@@ -80,8 +80,8 @@ public:
       return xMultiplier;
     else return yMultiplier;
   }
-  QFont getFont() const { return font; };
-  const ThemedColor& getBackgroundColor() const { return backgroundColor; };
+  QFont getFont() const { return font; }
+  const ThemedColor& getBackgroundColor() const { return backgroundColor; }
   QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor * pixelDensity / targetPixelDensity; }
 

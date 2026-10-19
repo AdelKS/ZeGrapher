@@ -55,7 +55,7 @@ public:
     DATASHEET
   };
 
-  Q_ENUM(Type);
+  Q_ENUM(Type)
 
   explicit MathObject(QObject *parent = nullptr, Type type = EQUATION);
 

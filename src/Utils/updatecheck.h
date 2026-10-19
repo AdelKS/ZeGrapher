@@ -38,7 +38,7 @@ public:
   explicit UpdateCheck(QObject *parent = nullptr);
 
   enum Status {IDLE, CHECKING, ERROR, UPDATE_MAYBE_AVAILABLE, UPDATE_AVAILABLE, UP_TO_DATE};
-  Q_ENUM(Status);
+  Q_ENUM(Status)
 
   Status getStatus() const { return status; }
   QString getLatestVersion() const { return latestVersion; }

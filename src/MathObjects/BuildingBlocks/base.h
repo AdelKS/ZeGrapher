@@ -63,7 +63,7 @@ struct Base: QObject {
 
 public:
   enum CoordinateSystem {Cartesian, Polar};
-  Q_ENUM(CoordinateSystem);
+  Q_ENUM(CoordinateSystem)
 
   /// @returns stringRange given a coordinate system and is_discrete boolean
   using DefaultStringRangeProvider = std::function<StringRange(CoordinateSystem, bool)>;

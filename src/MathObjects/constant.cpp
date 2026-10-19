@@ -148,7 +148,7 @@ State Constant::sync() {
   setState(State::from(zcMathObj.name_status()));
 
   return getState();
-};
+}
 
 void Constant::set_value(double val)
 {

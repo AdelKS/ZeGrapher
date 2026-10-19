@@ -83,7 +83,7 @@ void ZeGraphSettings::setZoomSettings(ZeZoomSettings s)
   zoom = s;
   emit zoomSettingsChanged();
   emit totalScaleFactorChanged();
-};
+}
 
 void ZeGraphSettings::screenChanged(QWindow* win)
 {
@@ -137,7 +137,7 @@ void ZeGraphSettings::setSizeSettings(ZeSizeSettings s)
 
   if (scaleChanged)
     emit totalScaleFactorChanged();
-};
+}
 
 void ZeGraphSettings::setAxesSettings(ZeAxesSettings s)
 {
@@ -146,7 +146,7 @@ void ZeGraphSettings::setAxesSettings(ZeAxesSettings s)
 
   axes = s;
   emit axesSettingsChanged();
-};
+}
 
 void ZeGraphSettings::setGridSettings(ZeGridSettings s)
 {
@@ -155,7 +155,7 @@ void ZeGraphSettings::setGridSettings(ZeGridSettings s)
 
   grid = s;
   emit gridSettingsChanged();
-};
+}
 
 void ZeGraphSettings::setSubgridSettings(ZeSubgridSettings s)
 {
@@ -164,7 +164,7 @@ void ZeGraphSettings::setSubgridSettings(ZeSubgridSettings s)
 
   subgrid = s;
   emit subgridSettingsChanged();
-};
+}
 
 void ZeGraphSettings::setFont(QFont f)
 {
@@ -173,7 +173,7 @@ void ZeGraphSettings::setFont(QFont f)
 
   font = f;
   emit fontChanged();
-};
+}
 
 void ZeGraphSettings::setBackgroundColor(ThemedColor c)
 {

@@ -69,7 +69,7 @@ public:
 
   enum LoadingState {FREE, READING_CSV_FILE, ADDING_TO_WORLD};
 
-  Q_ENUM(LoadingState);
+  Q_ENUM(LoadingState)
 
   LoadingState getLoadingState() const { return loadingState; }
   int getProgressPercentage() const { return progressPercentage; }
