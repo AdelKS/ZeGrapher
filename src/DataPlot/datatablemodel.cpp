@@ -249,7 +249,7 @@ Qt::ItemFlags DataTableModel::flags(const QModelIndex& index) const
 
 QHash<int, QByteArray> DataTableModel::roleNames() const
 {
-  return { {Qt::DisplayRole, "display"}, {Qt::EditRole, "display"} };
+  return { {Qt::DisplayRole, "display"} };
 }
 
 void DataTableModel::requestUiInitiatedDelete(size_t column)
