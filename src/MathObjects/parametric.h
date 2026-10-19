@@ -33,8 +33,8 @@ struct Parametric: Base {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(NamedRef* obj1 READ getObj1Ptr CONSTANT)
-  Q_PROPERTY(NamedRef* obj2 READ getObj2Ptr CONSTANT)
+  Q_PROPERTY(zg::mathobj::NamedRef* obj1 READ getObj1Ptr CONSTANT)
+  Q_PROPERTY(zg::mathobj::NamedRef* obj2 READ getObj2Ptr CONSTANT)
 
 public:
 

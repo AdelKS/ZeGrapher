@@ -46,7 +46,7 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   Q_PROPERTY(LoopType loopType WRITE setLoopType MEMBER loopType NOTIFY loopTypeChanged)
   Q_PROPERTY(bool deadAndAlive WRITE setDeadAndAlive READ isDeadAndAlive NOTIFY deadAndAliveChanged)
   Q_PROPERTY(double duration WRITE setDuration READ getDuration NOTIFY durationChanged)
-  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
   Q_PROPERTY(zg::AnimatedConstant* animation MEMBER animation CONSTANT)
 
 public:

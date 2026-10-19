@@ -31,8 +31,8 @@ struct ZeAxisRange: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(mathobj::Expr* min READ getMinPtr CONSTANT)
-  Q_PROPERTY(mathobj::Expr* max READ getMaxPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* min READ getMinPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* max READ getMaxPtr CONSTANT)
 
 public:
 
@@ -66,8 +66,8 @@ struct GraphRange: QObject
 {
   Q_OBJECT
   QML_ELEMENT
-  Q_PROPERTY(ZeAxisRange* x READ getXPtr CONSTANT)
-  Q_PROPERTY(ZeAxisRange* y READ getYPtr CONSTANT)
+  Q_PROPERTY(zg::ZeAxisRange* x READ getXPtr CONSTANT)
+  Q_PROPERTY(zg::ZeAxisRange* y READ getYPtr CONSTANT)
 
 public:
   GraphRange(QObject* parent = nullptr);

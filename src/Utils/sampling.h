@@ -32,11 +32,11 @@ struct Sampling: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(Data* column READ getColumnPtr WRITE setColumn REQUIRED)
-  Q_PROPERTY(NamedRef* source READ getSourcePtr CONSTANT)
-  Q_PROPERTY(Expr* start READ getStartPtr CONSTANT)
-  Q_PROPERTY(Expr* end READ getEndPtr CONSTANT)
-  Q_PROPERTY(Expr* step READ getStepPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Data* column READ getColumnPtr WRITE setColumn REQUIRED)
+  Q_PROPERTY(zg::mathobj::NamedRef* source READ getSourcePtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* start READ getStartPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* end READ getEndPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* step READ getStepPtr CONSTANT)
 
 public:
 

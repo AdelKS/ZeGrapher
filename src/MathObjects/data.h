@@ -37,7 +37,7 @@ struct Data: Base, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
-  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
   Q_PROPERTY(bool showInTable WRITE setShowInTable MEMBER showInTable NOTIFY showInTableChanged )
 
 public:

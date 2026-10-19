@@ -34,7 +34,7 @@ struct Equation: Base, shared::ZcMathObjectBB {
   QML_ELEMENT
 
   Q_PROPERTY(QString equation WRITE setEquation MEMBER equation NOTIFY equationChanged)
-  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 

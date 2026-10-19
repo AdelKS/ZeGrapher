@@ -36,7 +36,7 @@ struct Expr : QObject, shared::ZcMathObjectBB {
   Q_PROPERTY(QString expression WRITE setExpression READ getExpression NOTIFY expressionChanged)
   Q_PROPERTY(QString implicitName WRITE setImplicitName MEMBER implicitName NOTIFY implicitNameChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
-  Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
+  Q_PROPERTY(zg::State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
 

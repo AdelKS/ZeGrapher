@@ -54,12 +54,12 @@ struct Base: QObject {
   QML_ELEMENT
   QML_UNCREATABLE("abstract base of math object backends, only exposed for enum and property access")
 
-  Q_PROPERTY(mathobj::Expr* start READ getStartPtr CONSTANT)
-  Q_PROPERTY(mathobj::Expr* end READ getEndPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* start READ getStartPtr CONSTANT)
+  Q_PROPERTY(zg::mathobj::Expr* end READ getEndPtr CONSTANT)
   Q_PROPERTY(bool discrete WRITE setDiscrete MEMBER discrete NOTIFY discreteChanged)
   Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem MEMBER coordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(bool schrodinger WRITE setSchrodinger MEMBER schrodinger NOTIFY schrodingerChanged)
-  Q_PROPERTY(PlotStyle* style READ getStylePtr CONSTANT)
+  Q_PROPERTY(zg::PlotStyle* style READ getStylePtr CONSTANT)
 
 public:
   enum CoordinateSystem {Cartesian, Polar};

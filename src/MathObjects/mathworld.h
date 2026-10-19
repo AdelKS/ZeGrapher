@@ -66,8 +66,8 @@ public:
   ///        replaced by its columns
   std::vector<Plottable> plottables() const;
 
-  Q_INVOKABLE void removeMathObject(MathObject*);
-  Q_INVOKABLE MathObject* addMathObject(MathObject::Type type = MathObject::EQUATION);
+  Q_INVOKABLE void removeMathObject(zg::MathObject*);
+  Q_INVOKABLE zg::MathObject* addMathObject(zg::MathObject::Type type = MathObject::EQUATION);
   Q_INVOKABLE void moveMathObject(int from, int to);
 
   /// @brief the constant that takes all its values at once, nullptr for none

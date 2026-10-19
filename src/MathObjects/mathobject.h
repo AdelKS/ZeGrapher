@@ -42,9 +42,9 @@ struct MathObject: QObject {
 
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
-  Q_PROPERTY(CoordinateSystem coordinateSystem WRITE setCoordinateSystem READ getCoordinateSystem NOTIFY coordinateSystemChanged)
+  Q_PROPERTY(zg::Base::CoordinateSystem coordinateSystem WRITE setCoordinateSystem READ getCoordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(zg::Base* base READ getBase NOTIFY baseChanged)
-  Q_PROPERTY(PlotStyle* style READ getStyle NOTIFY styleChanged)
+  Q_PROPERTY(zg::PlotStyle* style READ getStyle NOTIFY styleChanged)
 
 public:
 
@@ -63,10 +63,10 @@ public:
   Q_INVOKABLE void setType(Type);
   Q_INVOKABLE Type getType() const;
 
-  Q_INVOKABLE mathobj::Equation* getEquation();
-  Q_INVOKABLE mathobj::Constant* getConstant();
-  Q_INVOKABLE mathobj::Parametric* getParametric();
-  Q_INVOKABLE mathobj::DataSheet* getDataSheet();
+  Q_INVOKABLE zg::mathobj::Equation* getEquation();
+  Q_INVOKABLE zg::mathobj::Constant* getConstant();
+  Q_INVOKABLE zg::mathobj::Parametric* getParametric();
+  Q_INVOKABLE zg::mathobj::DataSheet* getDataSheet();
 
   Q_INVOKABLE bool isSchrodinger() const;
 

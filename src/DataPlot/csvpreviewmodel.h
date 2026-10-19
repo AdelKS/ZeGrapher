@@ -41,7 +41,7 @@ class CsvPreviewModel: public QAbstractTableModel
   Q_PROPERTY(QUrl csvFile WRITE setCsvFile MEMBER csvFile)
   Q_PROPERTY(LoadingState loadingState READ getLoadingState NOTIFY loadingStateChanged)
   Q_PROPERTY(int progressPercentage READ getProgressPercentage NOTIFY progressPercentageChanged)
-  Q_PROPERTY(mathobj::DataSheet* dataSheet READ getDataSheet WRITE setDataSheet)
+  Q_PROPERTY(zg::mathobj::DataSheet* dataSheet READ getDataSheet WRITE setDataSheet)
 
 public:
   CsvPreviewModel(QObject *parent = nullptr);
