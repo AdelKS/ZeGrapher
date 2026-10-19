@@ -25,31 +25,6 @@ namespace zg {
 MathObject::MathObject(QObject *parent, Type type)
   : QObject(parent), backend(createBackend(type))
 {
-  connect(this, &MathObject::coordinateSystemChanged, this, &MathObject::updated);
-}
-
-void MathObject::setCoordinateSystem(CoordinateSystem s)
-{
-  std::visit(zc::utils::overloaded{
-      [](mathobj::Constant*) {},
-      [](mathobj::DataSheet*) {},
-      [s](auto* v) { v->setCoordinateSystem(s); }
-    },
-    backend
-  );
-}
-
-
-CoordinateSystem MathObject::getCoordinateSystem() const
-{
-  return std::visit(
-    zc::utils::overloaded{
-      [](const mathobj::Constant*) { return CoordinateSystem::Cartesian; },
-      [](const mathobj::DataSheet*) { return CoordinateSystem::Cartesian; },
-      [](const auto* v) { return v->getCoordinateSystem(); }
-    },
-    backend
-  );
 }
 
 Base* MathObject::getBase() const
@@ -92,7 +67,6 @@ MathObject::variant_t MathObject::createBackend(Type t)
         if constexpr (std::derived_from<T, Base>)
         {
           connect(n, &Base::schrodingerChanged, this, &MathObject::schrodingerChanged);
-          connect(n, &Base::coordinateSystemChanged, this, &MathObject::coordinateSystemChanged);
         }
         else if constexpr (std::same_as<T, mathobj::Constant>)
           connect(n, &mathobj::Constant::deadAndAliveChanged, this, &MathObject::schrodingerChanged);

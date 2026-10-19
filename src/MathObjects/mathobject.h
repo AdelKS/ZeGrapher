@@ -42,7 +42,6 @@ struct MathObject: QObject {
 
   Q_PROPERTY(Type type WRITE setType READ getType NOTIFY typeChanged)
   Q_PROPERTY(bool schrodinger READ isSchrodinger NOTIFY schrodingerChanged)
-  Q_PROPERTY(zg::Base::CoordinateSystem coordinateSystem WRITE setCoordinateSystem READ getCoordinateSystem NOTIFY coordinateSystemChanged)
   Q_PROPERTY(zg::Base* base READ getBase NOTIFY baseChanged)
   Q_PROPERTY(zg::PlotStyle* style READ getStyle NOTIFY styleChanged)
 
@@ -69,9 +68,6 @@ public:
   Q_INVOKABLE zg::mathobj::DataSheet* getDataSheet();
 
   bool isSchrodinger() const;
-
-  void setCoordinateSystem(CoordinateSystem);
-  CoordinateSystem getCoordinateSystem() const;
 
   /// @brief the backend that draws a curve, nullptr for a constant or a sheet
   Base* getBase() const;
@@ -102,7 +98,6 @@ signals:
   void updated();
   void typeChanged();
   void schrodingerChanged();
-  void coordinateSystemChanged();
   void baseChanged();
   void styleChanged();
   void initiateUiDelete();

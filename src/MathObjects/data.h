@@ -92,7 +92,6 @@ public slots:
   void requestUiInitiatedDelete();
 
 signals:
-  void updated();
   void dataAboutToBeReplaced();
   void dataReplaced();
   void nameChanged();

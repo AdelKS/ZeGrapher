@@ -19,6 +19,7 @@ if get_option('test')
     'schrodinger',
     'sparse_insert',
     'graphrange',
+    'curveupdates',
     'export',
     'render',
   ]

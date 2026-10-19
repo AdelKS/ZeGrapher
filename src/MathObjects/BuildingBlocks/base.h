@@ -108,6 +108,8 @@ public:
   PlotStyle style;
 
 signals:
+  /// @brief the curve changed, its plot style included
+  void updated();
   void coordinateSystemChanged();
   void discreteChanged();
   void schrodingerChanged();

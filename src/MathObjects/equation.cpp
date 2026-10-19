@@ -34,7 +34,6 @@ Equation::Equation(QObject *parent)
                      ? StringRange{"0",    "xmax"}
                      : StringRange{"xmin", "xmax"}; }, parent), shared::ZcMathObjectBB()
 {
-  connect(&style, &PlotStyle::updated, this, &Equation::updated);
 }
 
 void Equation::setEquation(QString eq)

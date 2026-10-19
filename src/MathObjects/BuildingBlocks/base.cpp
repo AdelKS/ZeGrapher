@@ -29,6 +29,8 @@ Base::Base(DefaultStringRangeProvider p, QObject* parent)
   end.setImplicitName("zg_internal_end");
   resetStart();
   resetEnd();
+
+  connect(&style, &PlotStyle::updated, this, &Base::updated);
 }
 
 StringRange Base::getDefaultStringRange() const
@@ -69,7 +71,7 @@ void Base::setCoordinateSystem(CoordinateSystem s)
   if (defEnd) resetEnd();
 
   emit coordinateSystemChanged();
-
+  emit updated();
 }
 
 void Base::setDiscrete(bool b)

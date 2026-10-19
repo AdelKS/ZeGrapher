@@ -65,7 +65,6 @@ public:
   void importPod(POD);
 
 signals:
-  void updated();
   void equationChanged();
   void stateChanged();
 
