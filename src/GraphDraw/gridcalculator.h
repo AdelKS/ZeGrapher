@@ -230,9 +230,6 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
   axisTicks.offset.sumPowerOffset = 0;
   axisTicks.offset.basePowerOffset = 0;
 
-  // TODO: start from biggest step, which is lround(log10(scaledRange.amplitude())) then go down and down till
-  // there's no more space for writing numbers
-
   int amplitudePower = lround(log10(scaledOffsetRange.amplitude().v)) + 1;
   int rangeEdgePower = lround(
     log10(std::max(fabs(scaledOffsetRange.min.v), fabs(scaledOffsetRange.max.v))));

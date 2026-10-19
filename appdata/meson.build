@@ -39,10 +39,9 @@ if host_machine.system() == 'darwin' # macos
         ),
         install_dir : 'Contents',
     )
-elif host_machine.system() == 'windows'
-    # TODO: can we actually properly install stuff on windows ?
-else
-    # Treat everything else the same
+elif host_machine.system() != 'windows'
+    # deploy/windows-bundle-7z.sh makes the Windows bundle from the build
+    # folder, and every other system installs the freedesktop files
     zg_dest_icons = []
     foreach size : app_icon_sizes
         zg_dest_icons += '@0@x@0@/apps/ZeGrapher.png'.format(size)

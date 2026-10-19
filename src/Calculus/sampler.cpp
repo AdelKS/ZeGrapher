@@ -185,9 +185,6 @@ void Sampler::update()
     }, var_handle);
   };
 
-  // TODO: this can be multi-threaded
-  //       issue: simultaneous plotting according to a global constant to be thought through
-
   for (auto& [p, data]: curves)
   {
     if (not data.style.visible)
