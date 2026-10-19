@@ -30,6 +30,7 @@
 struct Ze1DGridSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(ze1DGridSettings)
 
   Q_PROPERTY(bool show MEMBER show)
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
@@ -64,6 +65,7 @@ inline const ThemedColor Ze1DGridSettings::defaultColor = {.dark = "#6f6f6f", .l
 struct Ze1DSubgridSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(ze1DSubgridSettings)
 
   Q_PROPERTY(bool show MEMBER show)
   Q_PROPERTY(double lineWidth MEMBER lineWidth)
@@ -105,6 +107,7 @@ inline const ThemedColor Ze1DSubgridSettings::defaultColor = {.dark = "#434343",
 struct ZeGridSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeGridSettings)
 
   Q_PROPERTY(Ze1DGridSettings x MEMBER x)
   Q_PROPERTY(Ze1DGridSettings y MEMBER y)
@@ -126,6 +129,7 @@ public:
 struct ZeSubgridSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeSubgridSettings)
 
   Q_PROPERTY(Ze1DSubgridSettings x MEMBER x)
   Q_PROPERTY(Ze1DSubgridSettings y MEMBER y)

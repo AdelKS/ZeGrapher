@@ -35,6 +35,7 @@
 struct ZeLogAxisSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeLogAxisSettings)
 
   Q_PROPERTY(double base MEMBER base)
   Q_PROPERTY(QString baseStr MEMBER baseStr)
@@ -50,6 +51,7 @@ public:
 struct ZeLinAxisSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeLinAxisSettings)
 
   Q_PROPERTY(int maxDigitsNum MEMBER maxDigitsNum)
 
@@ -62,6 +64,7 @@ public:
 struct ZeAxisSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeAxisSettings)
 
   Q_PROPERTY(ZeLinAxisSettings linear MEMBER linSettings)
   Q_PROPERTY(ZeLogAxisSettings log MEMBER logSettings)
@@ -105,6 +108,7 @@ public:
 struct ZeAxesSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeAxesSettings)
 
   Q_PROPERTY(ZeAxisSettings x MEMBER x)
   Q_PROPERTY(ZeAxisSettings y MEMBER y)

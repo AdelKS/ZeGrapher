@@ -40,6 +40,7 @@ enum struct ZeAxisName {X, Y};
 struct ZeSizeSettings
 {
   Q_GADGET
+  QML_VALUE_TYPE(zeSizeSettings)
 
   Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
   Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
