@@ -58,17 +58,19 @@ Graph::Graph(QQuickItem *parent)
   // main() loads the documents before QML creates the graph
   minMaxPointsChanged();
 
-  connect(&settings, &ZeGraphSettings::sizeSettingsChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::zoomSettingsChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::axesSettingsChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::gridSettingsChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::subgridSettingsChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::backgroundColorChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::fontChanged, this, [this]{ polish(); });
-  connect(&settings, &ZeGraphSettings::pixelDensityChanged, this, [this]{ polish(); });
-  connect(zg::mathWorld, &zg::MathWorld::updated, this, [this]{ polish(); });
-  connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, [this]{ polish(); });
-  connect(zg::animationConductor, &zg::AnimationConductor::tick, this, [this]{ polish(); });
+  for (auto changed : {&ZeGraphSettings::sizeSettingsChanged,
+                       &ZeGraphSettings::zoomSettingsChanged,
+                       &ZeGraphSettings::axesSettingsChanged,
+                       &ZeGraphSettings::gridSettingsChanged,
+                       &ZeGraphSettings::subgridSettingsChanged,
+                       &ZeGraphSettings::backgroundColorChanged,
+                       &ZeGraphSettings::fontChanged,
+                       &ZeGraphSettings::pixelDensityChanged})
+    connect(&settings, changed, this, &QQuickItem::polish);
+
+  connect(zg::mathWorld, &zg::MathWorld::updated, this, &QQuickItem::polish);
+  connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, &QQuickItem::polish);
+  connect(zg::animationConductor, &zg::AnimationConductor::tick, this, &QQuickItem::polish);
 }
 
 void Graph::setPainterFont(QFont font)
