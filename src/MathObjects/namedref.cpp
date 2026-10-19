@@ -21,6 +21,7 @@
 #include "namedref.h"
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "information.h"
+#include "Utils/zc-utils.h"
 
 namespace zg {
 namespace mathobj {
@@ -62,9 +63,9 @@ State NamedRef::sync()
     {
       if (*zcObj)
         newState.setValid();
-      else newState.setInvalid(QObject::tr("Object \"%1\" is in an invalid state").arg(input_name.toHtmlEscaped()));
+      else newState.setInvalid(zcErrorToStr(zc::Error::object_in_invalid_state({.substr = input_name.toStdString()}, {})));
     }
-    else newState.setInvalid(QObject::tr("Object not defined"));
+    else newState.setInvalid(zcErrorToStr(zc::Error::object_not_in_world()));
   }
 
   setState(newState);
