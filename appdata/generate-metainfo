@@ -22,7 +22,9 @@ of it come from elsewhere:
   {{ screenshots }}  one <screenshot> per picture that the 'gallery' list of
                      website/build-config/build.yaml names, and one <image> per
                      language whose own website/content/<lang>/images/ holds
-                     that picture.
+                     that picture. The 'gallery' mapping of each
+                     website/content/<lang>/strings.yaml gives the <caption>
+                     of each picture in that language.
   {{ urls }}         the <url> of the homepage, the 'homepage' of
                      website/build-config/build.yaml, the <url> of the issue
                      tracker and of the source code, out of the 'repository'
@@ -205,6 +207,7 @@ def screenshots():
     ref = image_ref()
     names = gallery_names()
     others = sorted(lang for lang in languages() if lang != content.SOURCE)
+    captions = {lang: content.captions(lang) for lang in [content.SOURCE] + others}
 
     lines = ["  <screenshots>"]
 
@@ -215,6 +218,16 @@ def screenshots():
 
         default = ' type="default"' if i == 0 else ""
         lines.append(f"    <screenshot{default}>")
+
+        if name not in captions[content.SOURCE]:
+            sys.exit(f"website/content/{content.SOURCE}/{content.STRINGS} holds no "
+                     f"caption for {name} under 'gallery'")
+        for lang in [content.SOURCE] + others:
+            if name in captions[lang]:
+                tag = "" if lang == content.SOURCE else f' xml:lang="{lang}"'
+                caption = html.escape(captions[lang][name], quote=False)
+                lines.append(f"      <caption{tag}>{caption}</caption>")
+
         for lang in others + [content.SOURCE]:
             if not (content.CONTENT / lang / content.PICTURES / name).is_file():
                 continue
@@ -285,7 +298,8 @@ def dependencies():
              Path(content.__file__).resolve(), TEMPLATE, releases.MESON_BUILD,
              releases.RELEASES, content.CONF_FILE,
              *languages().values(),
-             *(content.CONTENT / lang / content.PICTURES for lang in content.languages())]
+             *(content.CONTENT / lang / content.PICTURES for lang in content.languages()),
+             *(content.CONTENT / lang / content.STRINGS for lang in content.languages())]
 
     return [path for path in found if path.exists()]
 

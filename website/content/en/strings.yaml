@@ -37,6 +37,14 @@ downloads:
   releases: Releases
   issues: Issues
 
+# the caption of each gallery picture, by file name. The site gives it to the
+# picture as alt text, and software centers show it under the screenshot
+gallery:
+  vitrine.png: "A polar curve, drawn for several values of a constant at once"
+  functions.png: "A function and a sequence on the same graph"
+  schrodinger.png: "Schrödinger mode: one curve per value of the constant"
+  data.png: "Measured data, in a table and on the graph"
+
 # the markdown that asks for a donation. The site shows it in the download
 # panel, and the app shows it above its Donate button
 donation: If ZeGrapher is useful to you, please consider a donation to support it.

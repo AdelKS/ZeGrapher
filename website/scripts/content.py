@@ -77,6 +77,21 @@ def pictures(lang: str) -> dict[str, Path]:
     return found
 
 
+def captions(lang: str) -> dict[str, str]:
+    """The captions of the gallery pictures that one language writes, by file name.
+
+    They are the 'gallery' mapping of content/<lang>/strings.yaml. The site
+    writes them as the pictures' alt text, and the metainfo file as screenshot
+    captions.
+    """
+    import yaml
+
+    path = CONTENT / lang / STRINGS
+    strings = yaml.safe_load(path.read_text(encoding="utf-8")) if path.is_file() else None
+    found = strings.get("gallery") if isinstance(strings, dict) else None
+    return found if isinstance(found, dict) else {}
+
+
 def read_conf() -> dict:
     """website/build-config/build.yaml, as a mapping."""
     import yaml

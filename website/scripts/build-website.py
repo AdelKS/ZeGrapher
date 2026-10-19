@@ -24,7 +24,8 @@ scripts/.
                            the title and the tagline of the page, the words of
                            the footer, the labels of the buttons, the line over
                            the download tiles, the words of the tile of the
-                           source code, and the words that ask for a donation
+                           source code, the captions of the gallery pictures,
+                           and the words that ask for a donation
   content/<lang>/images/   the pictures those panels show
   ../deploy/               the bundles that the scripts of deploy/ write, and
                            that the download tiles link to
@@ -88,7 +89,9 @@ Generated blocks
 A markdown body can hold a placeholder on a line of its own. The build replaces
 that line with markup that markdown cannot write:
 
-  {{ gallery }}    the pictures that build.yaml names, in a lightbox grid
+  {{ gallery }}    the pictures that build.yaml names, in a lightbox grid. The
+                   'gallery' mapping of content/<lang>/strings.yaml gives each
+                   picture its caption, which becomes its alt text
   {{ downloads }}  one tile per platform and one for the source code, under
                    the 'release' line of content/<lang>/strings.yaml. The
                    'downloads' mapping of that file holds the words of the
@@ -400,12 +403,13 @@ def gallery_html(names: list, lang: str, panel_id: str) -> str:
     figures = []
     for name in names:
         src = picture_path(name, lang)
+        alt = escape(translated(lang, "gallery", name)[0])
         shot = f"{panel_id}-{Path(name).stem}"
         figures.append(
             f'<figure>\n'
             f'<input type="checkbox" id="{shot}" class="lightbox-toggle" />\n'
-            f'<label for="{shot}" class="thumb"><img src="{src}" alt="" /></label>\n'
-            f'<label for="{shot}" class="lightbox"><img src="{src}" alt="" /></label>\n'
+            f'<label for="{shot}" class="thumb"><img src="{src}" alt="{alt}" /></label>\n'
+            f'<label for="{shot}" class="lightbox"><img src="{src}" alt="{alt}" /></label>\n'
             f'</figure>')
     return '<div class="gallery">\n' + "\n".join(figures) + "\n</div>"
 
