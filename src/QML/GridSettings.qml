@@ -220,10 +220,18 @@ Item {
         Repeater {
           model: ["x", "y"]
           ValueEdit {
+            id: multiplierEdit
             required property string modelData
             Layout.fillWidth: true
             backend: root.graphSettings[modelData + "Multiplier"]
             ToolTip.text: multiplierLabel.tooltipText
+
+            // GridCalculator ignores such a multiplier
+            customErrorMsg: {
+              const value = multiplierEdit.backend.value;
+              return isNaN(value) || (value > 0 && isFinite(value))
+                ? "" : qsTr("The multiplier must be a positive number");
+            }
           }
         }
       }
