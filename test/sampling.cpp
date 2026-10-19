@@ -22,8 +22,6 @@
 #include "app.h"
 #include "utils.h"
 
-#include <QCoreApplication>
-
 int main()
 {
   TestApp app;
@@ -42,13 +40,14 @@ int main()
 
   auto* g = zg::mathWorld->addMathObject(zg::MathObject::EQUATION);
   g->getEquation()->setEquation("g(x) = 2*x");
+  app.settle();
   test(sampling.getSourcePtr()->isValid());
 
   test(sampling.apply().isEmpty());
   test(column->getData() == std::vector<std::string>{"0", "2", "4"});
 
   zg::mathWorld->removeMathObject(g);
-  QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+  app.settle();
   test(not sampling.getSourcePtr()->isValid());
 
   return 0;

@@ -78,8 +78,15 @@ int main()
   int updates = 0;
   QObject::connect(zg::mathWorld, &zg::MathWorld::updated, [&] { updates++; });
   test(model.setData(model.index(0, 0), "5"));
+  app.settle();
   test(updates == 1);
   test(a->getData().front() == "5");
+
+  // a bulk edit syncs the math world once
+  updates = 0;
+  model.clearCells({model.index(0, 0), model.index(1, 0), model.index(0, 1)});
+  app.settle();
+  test(updates == 1);
 
   // removing a row past the end of a column doesn't change its length
   b->setData({"1", "2"});

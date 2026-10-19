@@ -44,12 +44,33 @@ int main()
   {
     updates = 0;
     curve->setCoordinateSystem(zg::CoordinateSystem::Polar);
+    app.settle();
     test(updates > 0);
 
     updates = 0;
     curve->style.setLineWidth(5);
+    app.settle();
     test(updates > 0);
   }
+
+  // a pan moves four bounds, and syncs once
+  updates = 0;
+  information->graphSettings.range.interactiveUpdate(
+    {.x = {.min = {-3.}, .max = {4.}}, .y = {.min = {-5.}, .max = {6.}}}, QSizeF(800, 600));
+  app.settle();
+  test(updates == 1);
+
+  // the objects that use a deleted constant see it leave
+  auto* constant = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT);
+  constant->getConstant()->setName("a");
+  constant->getConstant()->set_value(2);
+  equation->setEquation("f(x) = a * x");
+  app.settle();
+  test(equation->isValid());
+
+  zg::mathWorld->removeMathObject(constant);
+  app.settle();
+  test(not equation->isValid());
 
   return 0;
 }

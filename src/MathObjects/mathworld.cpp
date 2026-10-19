@@ -144,20 +144,25 @@ void MathWorld::trackExprObject(mathobj::Expr* o)
 
 void MathWorld::objectUpdated()
 {
-  if (destroying or syncing)
-    return;
+  // QObject emits destroyed() before it deletes its children, and so before a
+  // deleted object's backend leaves ZeCalculator: sync from the event loop
+  if (not destroying and not std::exchange(syncPending, true))
+    QMetaObject::invokeMethod(this, &MathWorld::sync, Qt::QueuedConnection);
+}
 
-  syncing = true;
-
+void MathWorld::sync()
+{
   for (auto* f: mathObjects)
     f->sync();
 
   for (auto* f: exprObjects)
     f->sync();
 
-  syncing = false;
-
   updateSchrodingerStatus();
+
+  // an objectUpdated() call from inside the sync queues nothing: this sync
+  // covers it
+  syncPending = false;
 
   emit updated();
 }

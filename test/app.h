@@ -67,6 +67,16 @@ public:
     globals.emplace();
   }
 
+  /// @brief runs the deferred deletes, then the MathWorld sync that they and
+  ///        the edits queue, as the event loop does
+  /// @note sendPostedEvents() only runs deferred deletes when asked for them
+  ///       alone
+  static void settle()
+  {
+    QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+    QCoreApplication::sendPostedEvents();
+  }
+
   /// @brief a path in the temporary folder
   QString path(const QString& name) const { return folder.filePath(name); }
 
@@ -81,6 +91,7 @@ public:
 
     restart();
     information->importYaml(QUrl::fromLocalFile(file.fileName()));
+    settle();
     return information->getIoErrorCount() == 0;
   }
 

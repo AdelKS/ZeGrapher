@@ -97,7 +97,9 @@ signals:
   void schrodingerConstantChanged();
 
 protected slots:
+  /// @brief syncs every object once control returns to the event loop
   void objectUpdated();
+  void sync();
   void updateSchrodingerStatus();
 
 protected:
@@ -114,8 +116,8 @@ protected:
 
   /// @brief math objects that aren't part of the model (that the view represents)
   std::vector<zg::mathobj::Expr*> exprObjects;
-  bool syncing = false;
   bool destroying = false;
+  bool syncPending = false;
 
   friend struct mathobj::shared::ZcMathObjectBB;
   friend struct mathobj::NamedRef;
