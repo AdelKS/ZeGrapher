@@ -117,6 +117,6 @@ Shape {
     anchors.fill: parent
     hoverEnabled: true
 
-    onReleased: colorDialog.open()
+    onClicked: colorDialog.open()
   }
 }

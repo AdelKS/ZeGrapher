@@ -199,12 +199,12 @@ Item {
 
       Button {
         text: qsTr("Cancel")
-        onReleased: root.done()
+        onClicked: root.done()
       }
 
       Button {
         text: qsTr("Load")
-        onReleased: {
+        onClicked: {
           csvPreviewModel.loadIntoWorld();
           root.done();
         }

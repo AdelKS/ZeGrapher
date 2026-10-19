@@ -156,7 +156,7 @@ Foldable {
             //: tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over
             ToolTip.text: qsTr("Sample")
 
-            onReleased: {
+            onClicked: {
               const issueText = sampling.apply();
               errorLine.text = issueText;
 

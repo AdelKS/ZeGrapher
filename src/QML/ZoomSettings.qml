@@ -50,7 +50,7 @@ Rectangle {
       Layout.maximumHeight: root.iconSize
       Layout.maximumWidth: root.iconSize
 
-      onReleased: {
+      onClicked: {
         zoom.increase();
       }
 
@@ -83,7 +83,7 @@ Rectangle {
       Layout.maximumHeight: root.iconSize
       Layout.maximumWidth: root.iconSize
 
-      onReleased: {
+      onClicked: {
         zoom.decrease();
       }
 

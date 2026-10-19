@@ -268,7 +268,7 @@ Item {
           ToolTip.text: userInputPanel.withKeys(
             qsTr("Export the graph: vector graphics (PDF, SVG) or images (PNG, JPG)"), exportShortcut)
 
-          onReleased: exportDialog.open()
+          onClicked: exportDialog.open()
         }
 
         IconRoundButton {
@@ -289,7 +289,7 @@ Item {
               : qsTr("Save as a ZeGrapher document"),
             saveShortcut)
 
-          onReleased: userInputPanel.save()
+          onClicked: userInputPanel.save()
         }
 
         IconRoundButton {
@@ -305,7 +305,7 @@ Item {
 
           ToolTip.text: userInputPanel.withKeys(qsTr("Load a ZeGrapher document"), loadShortcut)
 
-          onReleased: loadDialog.open()
+          onClicked: loadDialog.open()
         }
       }
     }

@@ -125,7 +125,7 @@ Item {
 
           ToolTip.text: qsTr("Load a CSV file into a new data sheet")
 
-          onReleased: fileDialog.visible = true;
+          onClicked: fileDialog.visible = true;
         }
 
         IconRoundButton {
@@ -137,7 +137,7 @@ Item {
 
           ToolTip.text: qsTr("Add a math object")
 
-          onReleased: MathWorld.addMathObject();
+          onClicked: MathWorld.addMathObject();
         }
       }
     }

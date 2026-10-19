@@ -171,7 +171,7 @@ Item {
 
         ToolTip.text: qsTr("Load a CSV file into this sheet")
 
-        onReleased: importDialog.visible = true;
+        onClicked: importDialog.visible = true;
       }
 
       IconRoundButton {
@@ -183,7 +183,7 @@ Item {
 
         ToolTip.text: qsTr("Write the columns of this sheet to a CSV file")
 
-        onReleased: exportDialog.visible = true;
+        onClicked: exportDialog.visible = true;
       }
 
       IconRoundButton {
@@ -195,7 +195,7 @@ Item {
 
         ToolTip.text: qsTr("Add a column")
 
-        onReleased: root.sheet.addColumn();
+        onClicked: root.sheet.addColumn();
       }
     }
   }

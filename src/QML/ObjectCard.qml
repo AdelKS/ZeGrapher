@@ -67,6 +67,6 @@ Item {
 
     ToolTip.text: root.deleteHint
 
-    onReleased: root.deleteRequested()
+    onClicked: root.deleteRequested()
   }
 }

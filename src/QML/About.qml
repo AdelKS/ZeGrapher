@@ -149,7 +149,7 @@ Item {
 
           ToolTip.text: qsTr('Check for updates')
 
-          onReleased: checker.refresh()
+          onClicked: checker.refresh()
         }
       }
 
