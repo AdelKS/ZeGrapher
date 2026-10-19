@@ -63,8 +63,6 @@ public:
     std::optional<double> scaling;
     std::optional<double> width;
     std::optional<double> height;
-
-    operator bool () const { return scaling or width or height; }
   };
 
   std::optional<POD> exportPod() const;

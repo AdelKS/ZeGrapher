@@ -201,7 +201,7 @@ DataSheet::POD DataSheet::exportPod() const
 
   return POD {
     .notes = yml::not_default(notes),
-    .columns = yml::not_default(columnPods)
+    .columns = columnPods.empty() ? std::nullopt : std::optional(std::move(columnPods))
   };
 }
 

@@ -100,11 +100,6 @@ public:
     std::optional<LineStyle> line_style;
     std::optional<double> point_width;
     std::optional<PointStyle> point_style;
-
-    operator bool() const
-    {
-      return visible or color or second_color or line_width or line_style or point_width or point_style;
-    }
   };
 
   std::optional<POD> exportPod() const;

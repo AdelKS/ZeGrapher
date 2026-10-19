@@ -81,8 +81,6 @@ public:
     std::optional<std::vector<std::string>> values;
     std::optional<PlotStyle::POD> style;
     std::optional<bool> show_in_table;
-
-    auto operator<=>(const POD&) const = default;
   };
 
   POD exportPod() const;

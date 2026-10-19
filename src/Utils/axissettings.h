@@ -93,8 +93,6 @@ public:
     /// @brief the expression of ZeGraphSettings::xMultiplier or yMultiplier,
     ///        which ZeGraphSettings reads
     std::optional<std::string> multiplier;
-
-    operator bool () const { return title or tick_spacing or max_digits or multiplier; }
   };
 
   static constexpr int maxTickSpacing = 5;
@@ -142,8 +140,6 @@ public:
     std::optional<double> line_width;
     std::optional<ZeAxisSettings::POD> x, y;
     std::optional<zg::yml::QFontPOD> title_font;
-
-    operator bool () const { return color or line_width or x or y or title_font; }
   };
 
   std::optional<POD> exportPod(const QString& xMultiplier, const QString& yMultiplier) const;

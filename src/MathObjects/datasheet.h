@@ -67,8 +67,6 @@ public:
   struct POD {
     std::optional<std::string> notes;
     std::optional<std::vector<Data::POD>> columns;
-
-    auto operator<=>(const POD&) const = default;
   };
 
   POD exportPod() const;

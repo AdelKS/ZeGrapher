@@ -23,16 +23,12 @@
 
 std::optional<ZeAxisSettings::POD> ZeAxisSettings::exportPod(const QString& multiplier) const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .title = zg::yml::not_default(title),
     .tick_spacing = zg::yml::not_default(tickRelSpacing, 0),
     .max_digits = zg::yml::not_default(linSettings.maxDigitsNum, ZeLinAxisSettings::defaultDigits),
     .multiplier = zg::yml::not_default(multiplier),
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void ZeAxisSettings::importPod(ZeAxisSettings::POD p)
@@ -50,17 +46,13 @@ void ZeAxisSettings::importPod(ZeAxisSettings::POD p)
 std::optional<ZeAxesSettings::POD> ZeAxesSettings::exportPod(const QString& xMultiplier,
                                                             const QString& yMultiplier) const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .color = color.exportPod(defaultColor),
     .line_width = zg::yml::not_default(lineWidth, defaultLineWidth),
     .x = x.exportPod(xMultiplier),
     .y = y.exportPod(yMultiplier),
     .title_font = zg::yml::QFontPOD::from(titleFont, zg::mathFont())
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void ZeAxesSettings::importPod(ZeAxesSettings::POD p)

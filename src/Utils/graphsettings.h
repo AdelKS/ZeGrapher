@@ -111,8 +111,6 @@ public:
     std::optional<ThemedColor::POD> background;
     std::optional<int> min_points_log2;
     std::optional<int> max_points_log2;
-
-    operator bool () const { return range or zoom or size or axes or grid or subgrid or font or background or min_points_log2 or max_points_log2; }
   };
 
   std::optional<POD> exportPod() const;

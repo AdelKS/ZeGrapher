@@ -50,8 +50,6 @@ public:
     std::optional<bool> show;
     std::optional<double> line_width;
     std::optional<ThemedColor::POD> color;
-
-    operator bool () const { return show or line_width or color; }
   };
 
   std::optional<POD> exportPod() const;
@@ -91,8 +89,6 @@ public:
     std::optional<double> line_width;
     std::optional<ThemedColor::POD> color;
     std::optional<int> subdivs;
-
-    operator bool () const { return show or line_width or color or subdivs; }
   };
 
   std::optional<POD> exportPod() const;
@@ -117,7 +113,6 @@ public:
 
   struct POD {
     std::optional<Ze1DGridSettings::POD> x, y;
-    operator bool () const { return x or y; }
   };
 
   std::optional<POD> exportPod() const;
@@ -139,7 +134,6 @@ public:
 
   struct POD {
     std::optional<Ze1DSubgridSettings::POD> x, y;
-    operator bool () const { return x or y; }
   };
 
   std::optional<POD> exportPod() const;

@@ -52,7 +52,6 @@ public:
 
   struct POD {
     std::optional<std::string> min, max;
-    operator bool () const { return min or max; }
   };
 
   void importPod(POD);
@@ -86,7 +85,6 @@ public:
 
   struct POD {
     std::optional<ZeAxisRange::POD> x, y;
-    operator bool () const { return x or y; }
   };
 
   void importPod(POD);

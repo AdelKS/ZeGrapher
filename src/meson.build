@@ -267,7 +267,7 @@ if compiler.get_id() == 'clang'
 endif
 
 zecalculator_dep = dependency('zecalculator', version: '>=0.13.6')
-glaze_dep = dependency('glaze', version: '>=7.7')
+glaze_dep = dependency('glaze', version: '>=8.3')
 
 # the app without main(), which the tests link too
 zegrapher_lib = static_library('zegrapher',

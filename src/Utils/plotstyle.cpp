@@ -128,7 +128,7 @@ void PlotStyle::setPointWidth(double s)
 
 std::optional<PlotStyle::POD> PlotStyle::exportPod() const
 {
-  auto pod = POD {
+  return yml::if_any(POD {
     .visible = yml::not_default(visible, true),
     .color = color.exportPod(defaultColor),
     .second_color = secondColor.exportPod(defaultSecondColor),
@@ -136,11 +136,7 @@ std::optional<PlotStyle::POD> PlotStyle::exportPod() const
     .line_style = lineStyle,
     .point_width = yml::not_default(pointWidth, defaultPointWidth),
     .point_style = pointStyle,
-  };
-
-  if (pod)
-    return pod;
-  else return {};
+  });
 }
 
 void PlotStyle::importPod(POD p)

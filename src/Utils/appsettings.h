@@ -84,12 +84,6 @@ public:
     std::optional<ThemedColor::POD> valid_syntax;
     std::optional<ThemedColor::POD> invalid_syntax;
     std::optional<ThemedColor::POD> warning_syntax;
-
-    operator bool () const
-    {
-      return language or font or window_size or maximized or pane_width
-             or valid_syntax or invalid_syntax or warning_syntax;
-    }
   };
 
   std::optional<POD> exportPod() const;

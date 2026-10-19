@@ -54,7 +54,7 @@ To compile from sources, ZeGrapher needs the following tools and libraries:
 - [Qt](https://www.qt.io) 6.10 or newer
 - [meson](https://mesonbuild.com) 1.7 or newer
 - [Python](https://www.python.org/) 3.10 or newer, with [PyYAML](https://pyyaml.org/)
-- [glaze](https://github.com/stephenberry/glaze) 7.7 or newer
+- [glaze](https://github.com/stephenberry/glaze) 8.3 or newer
 - [ZeCalculator](https://github.com/AdelKS/ZeCalculator) 0.13.6 or newer
 
 If the system does not have glaze or ZeCalculator, meson downloads the missing

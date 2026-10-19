@@ -43,9 +43,7 @@ std::optional<ZeSizeSettings::POD> ZeSizeSettings::exportPod() const
     p.height = cmSheetSize.height();
   }
 
-  if (p)
-    return p;
-  else return {};
+  return zg::yml::if_any(p);
 }
 
 void ZeSizeSettings::importPod(POD p)

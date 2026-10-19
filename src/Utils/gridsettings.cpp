@@ -23,16 +23,12 @@
 
 std::optional<Ze1DSubgridSettings::POD> Ze1DSubgridSettings::exportPod() const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .show = zg::yml::not_default(show, defaultShow),
     .line_width = zg::yml::not_default(lineWidth, defaultLineWidth),
     .color = color.exportPod(defaultColor),
     .subdivs = zg::yml::not_default(subdivs, defaultSubdivs)
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void Ze1DSubgridSettings::importPod(POD p)
@@ -52,15 +48,11 @@ void Ze1DSubgridSettings::importPod(POD p)
 
 std::optional<Ze1DGridSettings::POD> Ze1DGridSettings::exportPod() const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .show = zg::yml::not_default(show, defaultShow),
     .line_width = zg::yml::not_default(lineWidth, defaultLineWidth),
     .color = color.exportPod(defaultColor),
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void Ze1DGridSettings::importPod(POD p)
@@ -77,14 +69,10 @@ void Ze1DGridSettings::importPod(POD p)
 
 std::optional<ZeGridSettings::POD> ZeGridSettings::exportPod() const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .x = x.exportPod(),
     .y = y.exportPod()
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void ZeGridSettings::importPod(POD p)
@@ -99,14 +87,10 @@ void ZeGridSettings::importPod(POD p)
 
 std::optional<ZeSubgridSettings::POD> ZeSubgridSettings::exportPod() const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .x = x.exportPod(),
     .y = y.exportPod()
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void ZeSubgridSettings::importPod(POD p)

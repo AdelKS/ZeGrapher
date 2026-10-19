@@ -24,6 +24,7 @@
 #include <QFont>
 #include <QSize>
 #include <glaze/core/common.hpp>
+#include <glaze/core/reflect.hpp>
 #include <glaze/core/wrappers.hpp>
 #include <glaze/yaml/opts.hpp>
 
@@ -82,6 +83,16 @@ T clamped(T v, T lo, T hi)
   return std::clamp(v, lo, hi);
 }
 
+/// @brief 'pod', or nothing when all its fields are empty, so the document
+///        leaves it out
+template <class Pod>
+std::optional<Pod> if_any(Pod pod)
+{
+  bool any = false;
+  glz::for_each_field(pod, [&](const auto& field) { any = any or field.has_value(); });
+  return any ? std::optional(std::move(pod)) : std::nullopt;
+}
+
 /// @brief read options that skip unknown keys, such as the ones a newer
 ///        ZeGrapher writes
 inline constexpr glz::yaml::yaml_opts skip_unknown_keys{.error_on_unknown_keys = false};
@@ -90,19 +101,13 @@ struct QSizePOD {
   std::optional<int> width;
   std::optional<int> height;
 
-  operator bool () const { return width or height; }
-
   /// @brief creates an instance from a size and a default (to tell which fields to leave empty)
   static std::optional<QSizePOD> from(QSize s, QSize def)
   {
-    QSizePOD p {
+    return if_any(QSizePOD {
       .width = not_default(s.width(), def.width()),
       .height = not_default(s.height(), def.height())
-    };
-
-    if (p)
-      return p;
-    else return {};
+    });
   }
 };
 
@@ -110,8 +115,6 @@ struct QFontPOD {
   std::optional<std::string> name;
   std::optional<int> size;
   std::optional<QFont::Weight> weight;
-
-  operator bool () const { return name or size or weight; }
 
   /// @brief sets the fields that the document holds on 'font'
   void applyTo(QFont& font) const
@@ -127,15 +130,11 @@ struct QFontPOD {
   /// @brief creates an instance from a font and a default (to tell which fields to leave empty)
   static std::optional<QFontPOD> from(QFont c, QFont def)
   {
-    QFontPOD p {
+    return if_any(QFontPOD {
       .name = not_default(c.family().toStdString(), def.family().toStdString()),
       .size = not_default(c.pointSize(), def.pointSize()),
       .weight = not_default(c.weight(), def.weight())
-    };
-
-    if (p)
-      return p;
-    else return {};
+    });
   }
 };
 

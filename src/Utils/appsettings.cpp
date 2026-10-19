@@ -46,7 +46,7 @@ QVariantList ZeAppSettings::languages() const
 std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
 {
   using zg::yml::not_default;
-  POD p {
+  return zg::yml::if_any(POD {
     .language = not_default(QLocale::languageToCode(QLocale::Language(language)),
                             QLocale::languageToCode(systemLanguage())),
     .font = zg::yml::QFontPOD::from(font, defaultFont),
@@ -56,11 +56,7 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
     .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
     .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
     .warning_syntax = warningSyntax.exportPod(defaultWarningSyntax),
-  };
-
-  if (p)
-    return p;
-  else return {};
+  });
 }
 
 void ZeAppSettings::importPod(POD p)

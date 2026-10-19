@@ -233,7 +233,7 @@ void ZeGraphSettings::setAvailableSizePx(QSize s)
 
 std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
 {
-  POD p {
+  return zg::yml::if_any(POD {
     .range = range.exportPod(),
     .zoom = zoom.zoomingType == ZoomingType::CUSTOM ? zoom.zoom : std::optional<double>{},
     .size = size.exportPod(),
@@ -244,10 +244,7 @@ std::optional<ZeGraphSettings::POD> ZeGraphSettings::exportPod() const
     .background = backgroundColor.exportPod(defaultBgColor),
     .min_points_log2 = zg::yml::not_default(minPointsLg2, defaultMinPoints),
     .max_points_log2 = zg::yml::not_default(maxPointsLg2, defaultMaxPoints)
-  };
-
-  if (p) return p;
-  else return {};
+  });
 }
 
 void ZeGraphSettings::importPod(POD p)

@@ -46,14 +46,10 @@ void ThemedColor::setCurrent(QColor c)
 
 std::optional<ThemedColor::POD> ThemedColor::exportPod(ThemedColor defaultColors) const
 {
-  auto pod = POD {
+  return zg::yml::if_any(POD {
     .dark = zg::yml::not_default(dark, defaultColors.dark).transform([](QColor c){ return c.name().toStdString(); }),
     .light = zg::yml::not_default(light, defaultColors.light).transform([](QColor c){ return c.name().toStdString(); }),
-  };
-
-  if (pod)
-    return pod;
-  else return {};
+  });
 }
 
 void ThemedColor::importPod(POD p)
