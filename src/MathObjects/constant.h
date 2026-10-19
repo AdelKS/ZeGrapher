@@ -24,7 +24,7 @@
 #include "BuildingBlocks/zcmathobjectbb.h"
 #include "Utils/state.h"
 
-#include <glaze/yaml.hpp>
+#include <glaze/core/common.hpp>
 
 namespace zg {
 

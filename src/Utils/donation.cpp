@@ -24,6 +24,7 @@
 #include "Utils/yaml.h"
 
 #include <QLocale>
+#include <glaze/yaml.hpp>
 
 namespace zg {
 

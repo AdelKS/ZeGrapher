@@ -21,13 +21,14 @@
 #pragma once
 
 #include "zecalculator/parsing/types.h"
-#include <glaze/yaml.hpp>
 
 #include <QMetaType>
 #include <QObject>
 #include <QPointF>
 #include <QSizeF>
 #include <QtQmlIntegration/qqmlintegration.h>
+
+#include <optional>
 
 inline constexpr double cmPerInch = 2.54;
 

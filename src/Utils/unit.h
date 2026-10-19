@@ -22,7 +22,6 @@
 
 #include <zecalculator/utils/utils.h>
 #include <QPointF>
-#include "structures.h"
 
 namespace zg {
 

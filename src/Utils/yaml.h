@@ -23,7 +23,9 @@
 #include <QString>
 #include <QFont>
 #include <QSize>
-#include <glaze/yaml.hpp>
+#include <glaze/core/common.hpp>
+#include <glaze/core/wrappers.hpp>
+#include <glaze/yaml/opts.hpp>
 
 #include <algorithm>
 #include <cmath>
