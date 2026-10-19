@@ -27,8 +27,9 @@ import QtQuick.Layouts
 ColumnLayout {
   id: root
 
-  // any backend with a 'name', a 'state' and setName(): NamedRef, Constant, Data
-  required property QtObject backend
+  // any backend with a 'name', a 'state' and setName(): NamedRef, Constant, Data.
+  // These classes share no base that declares them
+  required property var backend
 
   property alias label: label.text
 

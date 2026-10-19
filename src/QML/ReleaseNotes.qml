@@ -27,7 +27,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
-import QtQuick.Layouts
 
 Column {
   id: root

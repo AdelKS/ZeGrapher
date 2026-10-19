@@ -52,7 +52,7 @@ Rectangle {
   /// @brief the manual in the interface language, one map per block
   readonly property var manual: Documentation.blocks(Information.appSettings.language)
 
-  onManualChanged: scroll.contentItem.contentY = 0
+  onManualChanged: (scroll.contentItem as Flickable).contentY = 0
 
   // the panel's button shows an arrow pointing where it folds. This one shows a
   // book, because it opens the manual
@@ -91,7 +91,7 @@ Rectangle {
       return;
     }
 
-    const flickable = scroll.contentItem;
+    const flickable = scroll.contentItem as Flickable;
     flickable.contentY = Math.min(block.y, Math.max(flickable.contentHeight - flickable.height, 0));
   }
 
@@ -190,7 +190,7 @@ Rectangle {
     WheelHandler {
       acceptedDevices: PointerDevice.Mouse
       onWheel: (event) => {
-        const flickable = scroll.contentItem;
+        const flickable = scroll.contentItem as Flickable;
         const step = 3 * Information.appSettings.font.pixelSize * 1.6;
 
         flickable.contentY = Math.max(0,
