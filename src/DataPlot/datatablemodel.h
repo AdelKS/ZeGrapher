@@ -66,8 +66,8 @@ public:
 
   QHash<int, QByteArray> roleNames() const override;
 
-  Q_INVOKABLE void registerTableColumn(zg::mathobj::Data*);
-  Q_INVOKABLE void deregisterTableColumn(zg::mathobj::Data*);
+  void registerTableColumn(zg::mathobj::Data*);
+  void deregisterTableColumn(zg::mathobj::Data*);
 
 public slots:
   void requestUiInitiatedDelete(size_t column);

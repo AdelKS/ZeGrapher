@@ -41,8 +41,8 @@ public:
 
   void highlightBlock(const QString &text) override final;
 
-  Q_INVOKABLE void setDocument(QQuickTextDocument* doc);
-  Q_INVOKABLE void setState(zg::State state);
+  void setDocument(QQuickTextDocument* doc);
+  void setState(zg::State state);
 
 protected:
   QQuickTextDocument* textDocument = nullptr;

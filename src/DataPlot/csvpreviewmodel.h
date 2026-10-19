@@ -71,8 +71,8 @@ public:
 
   Q_ENUM(LoadingState);
 
-  Q_INVOKABLE LoadingState getLoadingState() const { return loadingState; }
-  Q_INVOKABLE int getProgressPercentage() const { return progressPercentage; }
+  LoadingState getLoadingState() const { return loadingState; }
+  int getProgressPercentage() const { return progressPercentage; }
 
   mathobj::DataSheet* getDataSheet() const { return dataSheet; }
   void setDataSheet(mathobj::DataSheet* sheet) { dataSheet = sheet; }

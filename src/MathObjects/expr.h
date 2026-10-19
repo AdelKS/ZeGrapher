@@ -48,7 +48,7 @@ public:
   static inline const QString internalPrefix = "zg_internal_";
 
   Q_INVOKABLE State setExpression(QString);
-  Q_INVOKABLE State setImplicitName(QString name);
+  State setImplicitName(QString name);
   void setState(State s);
 
   State sync();
@@ -59,14 +59,14 @@ public:
   ///       syncs
   double evaluate() const;
 
-  Q_INVOKABLE QString getExpression() const { return expression; }
+  QString getExpression() const { return expression; }
   bool isValid() const { return state.isValid(); }
   const State& getState() const { return state; }
 
   void updateValue();
 
   void setSchrodinger(bool);
-  Q_INVOKABLE bool isSchrodinger() const { return schrodinger; }
+  bool isSchrodinger() const { return schrodinger; }
 
 signals:
   void valueChanged();

@@ -82,8 +82,7 @@ public:
   }
   QFont getFont() const { return font; };
   const ThemedColor& getBackgroundColor() const { return backgroundColor; };
-  Q_INVOKABLE QSizeF getAvailableSizeCm() const { return availableSizeCm; }
-  Q_INVOKABLE QSize getAvailableSizePx() const { return availableSizePx; }
+  QSizeF getAvailableSizeCm() const { return availableSizeCm; }
   double getTotalScaleFactor() const { return zoom.zoom * size.scalingFactor * pixelDensity / targetPixelDensity; }
 
   int getMinPointsLg2() const { return minPointsLg2; }

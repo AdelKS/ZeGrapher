@@ -71,7 +71,7 @@ public:
   Q_INVOKABLE void moveMathObject(int from, int to);
 
   /// @brief the constant that takes all its values at once, nullptr for none
-  Q_INVOKABLE void setSchrodingerConstant(zg::mathobj::Constant* c);
+  void setSchrodingerConstant(zg::mathobj::Constant* c);
   zg::mathobj::Constant* getSchrodingerConstant() { return schrodingerConstant; }
 
   /// @brief syncs every object again: their error messages follow the app

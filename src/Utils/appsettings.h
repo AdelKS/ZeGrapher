@@ -72,7 +72,7 @@ public:
   const static ThemedColor defaultInvalidSyntax;
   const static ThemedColor defaultWarningSyntax;
 
-  Q_INVOKABLE void setFont(QFont);
+  void setFont(QFont);
 
   struct POD {
     /// @brief two letter code of a language, "fr" for French

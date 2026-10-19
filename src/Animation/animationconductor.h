@@ -55,7 +55,7 @@ public:
   void untrack(zg::AnimatedConstant*);
   Q_INVOKABLE void animationStep();
 
-  Q_INVOKABLE bool isAnimating() const {return animating; }
+  bool isAnimating() const {return animating; }
 
 protected slots:
   void updateIsAnimating();

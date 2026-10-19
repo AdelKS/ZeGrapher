@@ -50,20 +50,20 @@ public:
 
   static State from(const std::optional<zc::Error>& err);
 
-  Q_INVOKABLE Status getStatus() const;
-  Q_INVOKABLE QString getErrorMsg() const;
+  Status getStatus() const;
+  QString getErrorMsg() const;
 
   std::optional<zc::parsing::tokens::Text> getErrToken() const { if (opt_zc_error) return opt_zc_error->token; else return {}; }
 
   bool operator == (const State&) const = default;
 
-  Q_INVOKABLE void setValid();
-  Q_INVOKABLE void setNeutral();
+  void setValid();
+  void setNeutral();
 
   /// @brief set an error message coming from ZG
-  Q_INVOKABLE void setInvalid(QString zgErrorMsg);
+  void setInvalid(QString zgErrorMsg);
 
-  Q_INVOKABLE bool isValid() const;
+  bool isValid() const;
 
 protected:
   QString errorMsg;

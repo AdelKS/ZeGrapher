@@ -57,9 +57,9 @@ public:
 
   Q_INVOKABLE void deleteColumn(zg::mathobj::Data*);
   Q_INVOKABLE void moveColumn(int from, int to);
-  Q_INVOKABLE int indexOfColumn(const zg::mathobj::Data*) const;
+  int indexOfColumn(const zg::mathobj::Data*) const;
 
-  Q_INVOKABLE bool isValid() const;
+  bool isValid() const;
 
   /// @brief writes the columns as an RFC 4180 CSV file, with the column names as header row
   Q_INVOKABLE void exportCSV(QUrl fileName) const;

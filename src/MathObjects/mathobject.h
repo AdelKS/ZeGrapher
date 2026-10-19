@@ -60,17 +60,17 @@ public:
 
   explicit MathObject(QObject *parent = nullptr, Type type = EQUATION);
 
-  Q_INVOKABLE void setType(Type);
-  Q_INVOKABLE Type getType() const;
+  void setType(Type);
+  Type getType() const;
 
   Q_INVOKABLE zg::mathobj::Equation* getEquation();
   Q_INVOKABLE zg::mathobj::Constant* getConstant();
   Q_INVOKABLE zg::mathobj::Parametric* getParametric();
   Q_INVOKABLE zg::mathobj::DataSheet* getDataSheet();
 
-  Q_INVOKABLE bool isSchrodinger() const;
+  bool isSchrodinger() const;
 
-  Q_INVOKABLE void setCoordinateSystem(CoordinateSystem);
+  void setCoordinateSystem(CoordinateSystem);
   CoordinateSystem getCoordinateSystem() const;
 
   /// @brief the backend that draws a curve, nullptr for a constant or a sheet

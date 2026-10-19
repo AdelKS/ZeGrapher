@@ -71,7 +71,7 @@ public:
   Revision getRevision() const { return {std::pair(&zcMathObj, zcMathObj.get_revision())}; }
   EvalHandle getZcObject() const { return &zcMathObj; }
 
-  Q_INVOKABLE void setShowInTable(bool);
+  void setShowInTable(bool);
 
   struct POD {
     std::optional<std::string> name;
