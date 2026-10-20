@@ -28,7 +28,7 @@
 #include <QPointF>
 #include <QPolygonF>
 
-#include "MathObjects/mathobject.h"
+#include "MathObjects/BuildingBlocks/base.h"
 #include "Utils/unit.h"
 #include "curvestyle.h"
 
