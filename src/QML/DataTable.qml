@@ -73,6 +73,14 @@ Item {
 
   ContextMenu.menu: root.interactive ? menu : null
 
+  /// @brief selects the row or column of 'cell', and adds it to the selection
+  ///        when Shift is down
+  function selectHeader(cell: var, whole: int, modifiers: int) {
+    tableView.selectionModel.select(cell, whole | (modifiers & Qt.ShiftModifier
+                                                   ? ItemSelectionModel.Select
+                                                   : ItemSelectionModel.ClearAndSelect));
+  }
+
   HorizontalHeaderView {
     id: horizontalHeader
     anchors.right: parent.right
@@ -94,24 +102,9 @@ Item {
       topRightRadius: 5
 
       TapHandler {
-        acceptedModifiers: Qt.NoModifier
-        onTapped: {
-          tableView.selectionModel.select(
-            tableView.index(0, columnHeader.column),
-            ItemSelectionModel.Columns | ItemSelectionModel.ClearAndSelect
-          );
-        }
-        enabled: root.interactive
-      }
-
-      TapHandler {
-        acceptedModifiers: Qt.ShiftModifier
-        onTapped: {
-          tableView.selectionModel.select(
-            tableView.index(0, columnHeader.column),
-            ItemSelectionModel.Columns | ItemSelectionModel.Select
-          );
-        }
+        id: columnTap
+        onTapped: root.selectHeader(tableView.index(0, columnHeader.column),
+                                    ItemSelectionModel.Columns, columnTap.point.modifiers)
         enabled: root.interactive
       }
 
@@ -148,24 +141,9 @@ Item {
       implicitWidth: verticalHeaderLabel.implicitWidth + 10
 
       TapHandler {
-        acceptedModifiers: Qt.NoModifier
-        onTapped: {
-          tableView.selectionModel.select(
-            tableView.index(rowHeader.row, 0),
-            ItemSelectionModel.Rows | ItemSelectionModel.ClearAndSelect
-          );
-        }
-        enabled: root.interactive
-      }
-
-      TapHandler {
-        acceptedModifiers: Qt.ShiftModifier
-        onTapped: {
-          tableView.selectionModel.select(
-            tableView.index(rowHeader.row, 0),
-            ItemSelectionModel.Rows | ItemSelectionModel.Select
-          );
-        }
+        id: rowTap
+        onTapped: root.selectHeader(tableView.index(rowHeader.row, 0),
+                                    ItemSelectionModel.Rows, rowTap.point.modifiers)
         enabled: root.interactive
       }
 
