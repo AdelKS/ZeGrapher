@@ -182,7 +182,6 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   }
   else
   {
-    const auto min = get_acceptable_input(range.min);
     if (input_vals.front() - min >= max_step)
     {
       auto&& [x, f_x, px_f_x] = uniform_sample(min - margin, input_vals.front() - max_step);
@@ -190,7 +189,6 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
       assert(std::ranges::is_sorted(input_vals));
     }
 
-    const auto max = get_acceptable_input(range.max);
     if (max - input_vals.back() >= max_step)
     {
       auto&& [x, f_x, px_f_x] = uniform_sample(input_vals.back() + max_step, max + margin);

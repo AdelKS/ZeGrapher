@@ -60,7 +60,7 @@ protected:
   void refresh_curves_list(const std::vector<Plottable>& objects);
 
   /// @brief samples an object given the current range and graph size
-  /// @tparam continuous: whether the object is continuous or discrete
+  /// @tparam discrete: whether the object takes integer inputs
   template <zg::CoordinateSystem coordinates, bool discrete>
   void sample(auto, zg::SampledCurve&);
 
