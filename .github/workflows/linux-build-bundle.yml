@@ -23,6 +23,12 @@ jobs:
           version: '6.11.*'
           modules: 'qtshadertools'
 
+      # aqtinstall rewrites the .pc prefixes for the 'linux' host only, and meson
+      # finds moc and rcc through them
+      - name: Patch the Qt pkg-config files
+        if: runner.arch == 'ARM64'
+        run: sed -i "s|prefix=/home/qt/work/install|prefix=$QT_ROOT_DIR|" "$QT_ROOT_DIR"/lib/pkgconfig/*.pc
+
       - name: Install Dependencies
         run: |
           sudo apt-get update
