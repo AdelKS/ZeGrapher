@@ -33,6 +33,9 @@ Item {
 
   property alias mathObjectsTab: mathObjectsTab
 
+  /// @brief the size of the button tray that floats over the tabs
+  readonly property size menuSize: Qt.size(globalMenu.width, globalMenu.height)
+
   FileDialog {
     id: exportDialog
     title: qsTr("Export the graph")
@@ -201,29 +204,29 @@ Item {
 
       MathObjects {
         id: mathObjectsTab
-        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+        globalMenuSize: userInputPanel.menuSize
       }
 
       GridSettings {
         id: gridSettings
         graphSettings: userInputPanel.graphSettings
-        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+        globalMenuSize: userInputPanel.menuSize
       }
 
       GraphSettings {
         id: graphSettingsTab
         graphSettings: userInputPanel.graphSettings
-        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+        globalMenuSize: userInputPanel.menuSize
       }
 
       AppSettings {
         id: appSettings
-        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+        globalMenuSize: userInputPanel.menuSize
       }
 
       About {
         id: aboutTab
-        globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+        globalMenuSize: userInputPanel.menuSize
       }
     }
   }

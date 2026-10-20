@@ -87,10 +87,10 @@ index 7a1e81f7..0a9177b0 100644
  
  
 diff --git a/src/QML/UserInputPanel.qml b/src/QML/UserInputPanel.qml
-index 72709d73..80e6ff18 100644
+index 822efad4..919ebc7e 100644
 --- a/src/QML/UserInputPanel.qml
 +++ b/src/QML/UserInputPanel.qml
-@@ -141,6 +141,13 @@ Item {
+@@ -202,6 +202,13 @@ Item {
  
        onCurrentIndexChanged: bar.setCurrentIndex(currentIndex)
  
@@ -103,4 +103,4 @@ index 72709d73..80e6ff18 100644
 +
        MathObjects {
          id: mathObjectsTab
-         globalMenuSize: Qt.size(globalMenu.width, globalMenu.height)
+         globalMenuSize: userInputPanel.menuSize
