@@ -78,8 +78,8 @@ public:
   void setDataSheet(mathobj::DataSheet* sheet) { dataSheet = sheet; }
 
 public slots:
-  void setMaxRowCount(size_t);
-  void setRowSkipCount(size_t);
+  void setMaxRowCount(int);
+  void setRowSkipCount(int);
   void setCsvHasHeaderRow(bool);
   void setCsvFile(QUrl);
   void setSeparator(QString);

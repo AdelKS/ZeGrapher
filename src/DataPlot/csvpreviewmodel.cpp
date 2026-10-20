@@ -83,13 +83,13 @@ QHash<int, QByteArray> CsvPreviewModel::roleNames() const
   return { {Qt::DisplayRole, "display"} };
 }
 
-void CsvPreviewModel::setMaxRowCount(size_t count)
+void CsvPreviewModel::setMaxRowCount(int count)
 {
   maxRowCount = count;
   readCsvFile();
 }
 
-void CsvPreviewModel::setRowSkipCount(size_t count)
+void CsvPreviewModel::setRowSkipCount(int count)
 {
   rowSkipCount = count;
   readCsvFile();
