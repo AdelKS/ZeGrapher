@@ -169,7 +169,7 @@ IOError Information::popIoError()
 void Information::appendIoErr(IOError err)
 {
   ioErrors.push_back(std::move(err));
-  emit ioErrorCountChanged();
+  emit ioErrorAdded();
 }
 
 void Information::exportFailed(const QString& file, const QString& details)

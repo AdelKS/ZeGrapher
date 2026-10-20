@@ -59,7 +59,6 @@ class Information: public QObject
 
   Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
-  Q_PROPERTY(int ioErrorCount READ getIoErrorCount NOTIFY ioErrorCountChanged)
 
   /// @brief the file of the last saveAs(), which save() writes to. Empty until
   ///        the first saveAs(): loading a document adds to the open one
@@ -83,13 +82,14 @@ public:
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
   int getIoErrorCount() const { return ioErrors.size(); }
+  Q_INVOKABLE bool hasIoError() const { return not ioErrors.isEmpty(); }
   QString getDocumentName() const;
   QUrl getFolder() const;
 
   Q_INVOKABLE IOError popIoError();
 
 signals:
-  void ioErrorCountChanged();
+  void ioErrorAdded();
   void documentFileChanged();
 
 public slots:
