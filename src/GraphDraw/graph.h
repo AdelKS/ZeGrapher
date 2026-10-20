@@ -88,7 +88,7 @@ protected:
   enum class Export { Image, Pdf, Svg };
 
   /// @brief draws the graph with QPainter, the sheet filling p's window
-  void paint(QPainter* p, Export target);
+  void paint(QPainter* p, Export target) const;
 
   /// @brief the sheet on screen, in drawing units
   /// @param available: the item's size, in drawing units

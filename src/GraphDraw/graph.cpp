@@ -71,7 +71,7 @@ Graph::Graph(QQuickItem *parent)
   connect(qGuiApp->styleHints(), &QStyleHints::colorSchemeChanged, this, &QQuickItem::polish);
 }
 
-void Graph::paint(QPainter* p, Export target)
+void Graph::paint(QPainter* p, Export target) const
 {
   const bool vector = target != Export::Image;
   const double dpr = vector ? 1. : window()->effectiveDevicePixelRatio();
@@ -86,7 +86,16 @@ void Graph::paint(QPainter* p, Export target)
   GraphPainter painter(*p, target == Export::Svg);
   painter.fill(sheet, settings.getBackgroundColor().getCurrent());
 
-  const GraphLayout layout = layoutEngine.compute(sheet);
+  // the export lays out and samples its own sheet, and leaves the screen's
+  // view and samples alone
+  zg::ZeViewMapper mapper;
+  GraphLayoutEngine engine(settings, mapper);
+  const GraphLayout layout = engine.compute(sheet);
+
+  Sampler exportSampler(mapper);
+  exportSampler.min_points = sampler.min_points;
+  exportSampler.max_points = sampler.max_points;
+  exportSampler.update();
 
   p->translate(layout.graph.topLeft());
   p->setClipRect(QRectF(QPointF(), layout.graph.size()));
@@ -94,8 +103,7 @@ void Graph::paint(QPainter* p, Export target)
   for (const LineBatch& batch : layout.belowCurves)
     painter.draw(batch);
 
-  sampler.update();
-  for (const zg::SampledCurve& curve : sampler.getCurves())
+  for (const zg::SampledCurve& curve : exportSampler.getCurves())
     painter.draw(curve);
 
   for (const LineBatch& batch : layout.aboveCurves)
@@ -105,9 +113,6 @@ void Graph::paint(QPainter* p, Export target)
 
   painter.drawLabels(layout);
   painter.draw(layout.border);
-
-  // the export moved the view mapper and samples to its own sheet
-  polish();
 }
 
 void Graph::exportTo(QUrl file)
