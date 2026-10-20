@@ -99,6 +99,7 @@ qml_files = [
   'QML/RangeAdjust.qml',
   'QML/ReleaseNotes.qml',
   'QML/ReleaseNotesDialog.qml',
+  'QML/ReorderList.qml',
   'QML/Reveal.qml',
   'QML/SamplingEdit.qml',
   'QML/SchrodingerBadge.qml',

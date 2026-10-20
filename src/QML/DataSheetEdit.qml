@@ -103,7 +103,7 @@ Item {
     // render as a stray collapsed handle
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-    ListView {
+    ReorderList {
       id: listView
 
       model: root.sheet
@@ -112,26 +112,17 @@ Item {
 
       bottomMargin: buttonsFrame.height + 15
 
-      move: Transition {
-        NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
-      }
-      moveDisplaced: Transition {
-        NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
-      }
+      onMoveRequested: (from, to) => root.sheet.moveColumn(from, to)
+      onRemoveRequested: (column) => root.sheet.deleteColumn(column)
 
       delegate: ListViewItem {
         id: dragWrapper
 
-        required property var modelData
-
-        view: listView
         content: input
         dragHandle: input.dragHandle
 
         width: listView.width - root.scrollBarWidth
 
-        onMoveRequested: (from, to) => root.sheet.moveColumn(from, to)
-        onRemoveRequested: root.sheet.deleteColumn(dragWrapper.modelData)
         onVisibleChanged: Qt.callLater(root.updateColumnsWidth)
 
         DataColumnEdit {

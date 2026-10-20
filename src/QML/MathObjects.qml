@@ -32,7 +32,7 @@ Item {
 
   signal importCSV(file: url, dataSheet: DataSheet)
 
-  ListView {
+  ReorderList {
     id: listView
     anchors.fill: parent
     anchors.margins: 5
@@ -49,26 +49,16 @@ Item {
       policy: listView.contentHeight > listView.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 
-    move: Transition {
-      NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
-    }
-    moveDisplaced: Transition {
-      NumberAnimation { properties: "y"; duration: 400; easing.type: Easing.OutCubic }
-    }
+    onMoveRequested: (from, to) => MathWorld.moveMathObject(from, to)
+    onRemoveRequested: (mathObj) => MathWorld.removeMathObject(mathObj)
 
     delegate: ListViewItem {
       id: dragWrapper
 
-      required property var modelData
-
-      view: listView
       content: input
       dragHandle: input.dragHandle
 
       width: listView.width - verticalScrollBar.width * verticalScrollBar.visible
-
-      onMoveRequested: (from, to) => MathWorld.moveMathObject(from, to)
-      onRemoveRequested: MathWorld.removeMathObject(dragWrapper.modelData)
 
       MathObjectInput {
         id: input
