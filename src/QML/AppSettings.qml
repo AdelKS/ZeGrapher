@@ -20,6 +20,8 @@
 
 // The app settings, in the panel's App tab
 
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Dialogs
@@ -29,6 +31,14 @@ Item {
   id: root
 
   required property size globalMenuSize
+
+  /// @brief one row per syntax color: the ZeAppSettings property, its label
+  ///        and its hint
+  readonly property var syntaxColors: [
+    { setting: "validSyntax", text: qsTr("Valid"), hint: qsTr("Border color of a valid expression.") },
+    { setting: "warningSyntax", text: qsTr("Warning"), hint: qsTr("Border color of an expression that is valid but has no value.") },
+    { setting: "invalidSyntax", text: qsTr("Invalid"), hint: qsTr("Border color of an invalid expression.") },
+  ]
 
   FontDialog {
     id: fontDialog
@@ -100,62 +110,41 @@ Item {
         GridLayout {
           columns: 2
 
-          ZeLabel {
-            id: validSyntaxLabel
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("Valid")
-            tooltipText: qsTr("Border color of a valid expression.")
-          }
-          ColorButton {
-            id: validSyntaxColorButton
-            Layout.alignment: Qt.AlignLeft
+          Repeater {
+            model: root.syntaxColors
 
-            ToolTip.text: validSyntaxLabel.tooltipText
+            ZeLabel {
+              required property var modelData
+              required property int index
 
-            selectedColor: Information.appSettings.validSyntax
-
-            onSelectedColorModified: Information.appSettings.validSyntax = selectedColor;
+              Layout.row: index
+              Layout.column: 0
+              Layout.alignment: Qt.AlignRight
+              text: modelData.text
+              tooltipText: modelData.hint
+            }
           }
 
-          ZeLabel {
-            id: warningSyntaxLabel
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("Warning")
-            tooltipText: qsTr("Border color of an expression that is valid but has no value.")
-          }
-          ColorButton {
-            id: warningSyntaxColorButton
-            Layout.alignment: Qt.AlignLeft
+          Repeater {
+            model: root.syntaxColors
 
-            ToolTip.text: warningSyntaxLabel.tooltipText
+            ColorButton {
+              required property var modelData
+              required property int index
 
-            selectedColor: Information.appSettings.warningSyntax
+              Layout.row: index
+              Layout.column: 1
+              Layout.alignment: Qt.AlignLeft
 
-            onSelectedColorModified: Information.appSettings.warningSyntax = selectedColor;
-          }
+              ToolTip.text: modelData.hint
 
-          ZeLabel {
-            id: invalidSyntaxLabel
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("Invalid")
-            tooltipText: qsTr("Border color of an invalid expression.")
-          }
-          ColorButton {
-            id: invalidSyntaxColorButton
-            Layout.alignment: Qt.AlignLeft
+              selectedColor: Information.appSettings[modelData.setting]
 
-            ToolTip.text: invalidSyntaxLabel.tooltipText
-
-            selectedColor: Information.appSettings.invalidSyntax
-
-            onSelectedColorModified: Information.appSettings.invalidSyntax = selectedColor;
+              onSelectedColorModified: Information.appSettings[modelData.setting] = selectedColor;
+            }
           }
         }
       }
     }
-
   }
-
-
-
 }
