@@ -48,6 +48,13 @@ jobs:
         env:
           ZG_RENDER_TEST: 1
 
+      # linuxdeploy exits 0 when it misses a QML module, and the app then
+      # aborts at startup. A timeout (124) means the app is still running
+      - name: Check that the AppImage starts
+        run: xvfb-run -a timeout -k 5 10 deploy/ZeGrapher*AppImage || [[ $? == 124 ]]
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: 1
+
       - name: Upload binary artifact
         uses: actions/upload-artifact@v7
         with:
