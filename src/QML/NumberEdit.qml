@@ -61,7 +61,7 @@ Rectangle {
 
   implicitHeight: Math.max(textMetrics.height, edit.font.pixelSize) + 10 + 2*border.width
 
-  color: ZeStyle.palette.base
+  color: palette.base
 
   TextInput {
     id: edit
@@ -69,7 +69,7 @@ Rectangle {
     anchors.fill: parent
     anchors.leftMargin: 6
     anchors.rightMargin: 6
-    color: ZeStyle.palette.text
+    color: palette.text
     focus: true
     activeFocusOnTab: true
     font: Information.appSettings.font
