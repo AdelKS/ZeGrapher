@@ -45,7 +45,7 @@ AnimatedConstant::~AnimatedConstant()
 
 void AnimatedConstant::animationStep(seconds T)
 {
-  phase = (phase * backend->duration.count() + T.count() ) / backend->duration.count();
+  phase += T / backend->duration;
 
   if (backend->loopType == mathobj::Constant::ONESHOT and (phase > 1.0 or phase < 0.))
   {
@@ -80,17 +80,22 @@ void AnimatedConstant::setPlaying(bool p)
 
 void AnimatedConstant::setSliderPos(double v)
 {
-  if (sliderPos == v)
+  if (sliderPos == v or backend->isDeadAndAlive())
     return;
 
-  if (backend->isDeadAndAlive())
+  phase = v;
+  applySliderPos(v);
+}
+
+void AnimatedConstant::applySliderPos(double v)
+{
+  if (sliderPos == v or backend->isDeadAndAlive())
     return;
 
   assert(0. <= v);
   assert(v <= 1.0);
 
   sliderPos = v;
-  phase = sliderPos;
 
   ignoreSliderPosRecompute = true;
   backend->setLerpValue(sliderPos);
@@ -109,20 +114,8 @@ void AnimatedConstant::backendUpdate()
 
 void AnimatedConstant::updateSliderPosFromPhase()
 {
-  const double oldPhase = phase;
-
-  switch (backend->loopType)
-  {
-    case mathobj::Constant::REPEAT:
-    case mathobj::Constant::ONESHOT:
-      setSliderPos(phase);
-      break;
-    case mathobj::Constant::PING_PONG:
-      setSliderPos(phase <= 1. ? phase : 2 - phase);
-      break;
-  }
-
-  phase = oldPhase;
+  // only a ping-pong phase goes past 1
+  applySliderPos(phase <= 1. ? phase : 2 - phase);
 }
 
 void AnimatedConstant::updateSliderPosFromRange()

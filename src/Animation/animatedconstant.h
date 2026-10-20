@@ -69,6 +69,9 @@ protected:
   void updateSliderPosFromRange();
   void updateSliderPosFromPhase();
 
+  /// @brief sets the slider and the constant's value, and keeps 'phase'
+  void applySliderPos(double);
+
   mathobj::Constant* backend;
   bool playing = false;
   double sliderPos = 0.5;
