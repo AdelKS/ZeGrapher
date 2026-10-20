@@ -240,7 +240,7 @@ Item {
       width: 40
       height: 3
       radius: height / 2
-      color: resizeHandle.pressed || resizeHandle.containsMouse ? root.palette.highlight : root.palette.mid
+      color: resizeHandle.pressed || resizeHandle.containsMouse ? ZeStyle.palette.highlight : ZeStyle.palette.mid
     }
   }
 }
