@@ -75,7 +75,7 @@ ObjectCard {
 
           root.mathObj.type = currentValue;
           if (currentValue === MathObject.DATASHEET)
-            root.mathObj.getDataSheet().addColumn();
+            root.mathObj.dataSheet.addColumn();
         }
       }
 
@@ -108,7 +108,7 @@ ObjectCard {
           ToolTip.text: qsTr("Schrödinger mode: the constant takes several values at once")
 
           onToggled: {
-            root.mathObj.getConstant().deadAndAlive = checked;
+            root.mathObj.constant.deadAndAlive = checked;
           }
         }
       }
@@ -131,8 +131,6 @@ ObjectCard {
       open: plotControls.styleOpen && plotControls.shown
     }
 
-    // getEquation() and the other getters have no notify signal, so each type
-    // gets a new item
     Loader {
       Layout.fillWidth: true
 
@@ -147,23 +145,23 @@ ObjectCard {
 
       Component {
         id: equationEdit
-        EquationEdit { backend: root.mathObj.getEquation() }
+        EquationEdit { backend: root.mathObj.equation }
       }
 
       Component {
         id: constantEdit
-        ConstantEdit { backend: root.mathObj.getConstant() }
+        ConstantEdit { backend: root.mathObj.constant }
       }
 
       Component {
         id: parametricEdit
-        ParametricEdit { backend: root.mathObj.getParametric() }
+        ParametricEdit { backend: root.mathObj.parametric }
       }
 
       Component {
         id: dataSheetEdit
         DataSheetEdit {
-          sheet: root.mathObj.getDataSheet()
+          sheet: root.mathObj.dataSheet
           onImportCSV: (file, dataSheet) => root.importCSV(file, dataSheet)
         }
       }

@@ -45,6 +45,12 @@ struct MathObject: QObject {
   Q_PROPERTY(zg::Base* base READ getBase NOTIFY baseChanged)
   Q_PROPERTY(zg::PlotStyle* style READ getStyle NOTIFY styleChanged)
 
+  /// @brief the backend of each type, null when the object has another type
+  Q_PROPERTY(zg::mathobj::Equation* equation READ getEquation NOTIFY typeChanged)
+  Q_PROPERTY(zg::mathobj::Constant* constant READ getConstant NOTIFY typeChanged)
+  Q_PROPERTY(zg::mathobj::Parametric* parametric READ getParametric NOTIFY typeChanged)
+  Q_PROPERTY(zg::mathobj::DataSheet* dataSheet READ getDataSheet NOTIFY typeChanged)
+
 public:
 
   enum Type
@@ -62,10 +68,10 @@ public:
   void setType(Type);
   Type getType() const;
 
-  Q_INVOKABLE zg::mathobj::Equation* getEquation();
-  Q_INVOKABLE zg::mathobj::Constant* getConstant();
-  Q_INVOKABLE zg::mathobj::Parametric* getParametric();
-  Q_INVOKABLE zg::mathobj::DataSheet* getDataSheet();
+  zg::mathobj::Equation* getEquation();
+  zg::mathobj::Constant* getConstant();
+  zg::mathobj::Parametric* getParametric();
+  zg::mathobj::DataSheet* getDataSheet();
 
   bool isSchrodinger() const;
 
