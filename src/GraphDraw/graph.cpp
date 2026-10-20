@@ -77,7 +77,7 @@ void Graph::paint(QPainter* p, Export target)
   const double dpr = vector ? 1. : window()->effectiveDevicePixelRatio();
 
   // exports draw at 100% zoom
-  const double pxPerCm = vector ? p->device()->logicalDpiX() / cmPerInch : settings.pixelDensity;
+  const double pxPerCm = vector ? p->device()->logicalDpiX() / cmPerInch : settings.getPixelDensity();
   const double scale = settings.getSize().scalingFactor * pxPerCm / ZeGraphSettings::targetPixelDensity;
 
   p->scale(scale * dpr, scale * dpr);
@@ -139,7 +139,7 @@ void Graph::exportImage(QUrl fileName)
     return;
   }
 
-  const double pxPerCm = settings.pixelDensity * window()->effectiveDevicePixelRatio();
+  const double pxPerCm = settings.getPixelDensity() * window()->effectiveDevicePixelRatio();
   const QSize pixels = (settings.getSize().cmSheetSize * pxPerCm).toSize();
   QImage image(pixels, QImage::Format_RGB32);
 

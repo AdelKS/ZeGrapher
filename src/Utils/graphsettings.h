@@ -88,10 +88,8 @@ public:
   int getMinPointsLg2() const { return minPointsLg2; }
   int getMaxPointsLg2() const { return maxPointsLg2; }
 
-  double getPixelDensity() const { return pixelDensity; }
-
   /// @note in pixels per centimeter
-  double pixelDensity = 35;
+  double getPixelDensity() const { return pixelDensity; }
 
   /// @brief baseline pixel density that 1.0x scaling should achieve
   static constexpr double targetPixelDensity = 35;
@@ -168,6 +166,8 @@ public:
 protected:
   static constexpr int defaultMinPoints = 7;
   static constexpr int defaultMaxPoints = 14;
+
+  double pixelDensity = targetPixelDensity;
 
   // log2 for adaptive sampling
   int minPointsLg2 = defaultMinPoints;
