@@ -35,6 +35,29 @@ Foldable {
 
   signal applied()
 
+  /// @brief a sampling bound or step, under its label
+  component Field: ColumnLayout {
+    id: field
+
+    required property string label
+    required property Expr backend
+
+    spacing: 0
+    Layout.fillWidth: true
+    Layout.alignment: Qt.AlignTop
+
+    ZeLabel {
+      text: field.label
+      Layout.alignment: Qt.AlignHCenter
+    }
+
+    ValueEdit {
+      backend: field.backend
+      Layout.fillWidth: true
+      Layout.preferredHeight: implicitHeight
+    }
+  }
+
   sourceComponent: Frame {
     id: frame
 
@@ -76,65 +99,23 @@ Foldable {
           Layout.alignment: Qt.AlignTop
         }
 
-        ColumnLayout {
-          spacing: 0
-          Layout.fillWidth: true
-
+        Field {
+          label: qsTr("Start")
+          backend: sampling.start
           Layout.preferredWidth: 50
-
-          Layout.alignment: Qt.AlignTop
-
-          ZeLabel {
-            text: qsTr("Start")
-            Layout.alignment: Qt.AlignHCenter
-          }
-
-          ValueEdit {
-            backend: sampling.start
-            Layout.fillWidth: true
-            Layout.preferredHeight: implicitHeight
-          }
         }
 
-        ColumnLayout {
-          spacing: 0
-          Layout.fillWidth: true
-
+        Field {
+          label: qsTr("End")
+          backend: sampling.end
           Layout.preferredWidth: 50
-
-          Layout.alignment: Qt.AlignTop
-
-          ZeLabel {
-            text: qsTr("End")
-            Layout.alignment: Qt.AlignHCenter
-          }
-
-          ValueEdit {
-            backend: sampling.end
-            Layout.fillWidth: true
-            Layout.preferredHeight: implicitHeight
-          }
         }
 
-        ColumnLayout {
-          spacing: 0
-          Layout.fillWidth: true
-
+        Field {
+          //: the distance x_{i+1} - x_i between two samples f(x_i) and f(x_{i+1}) of the sampled object f
+          label: qsTr("Step")
+          backend: sampling.step
           Layout.preferredWidth: 30
-
-          Layout.alignment: Qt.AlignTop
-
-          ZeLabel {
-            //: the distance x_{i+1} - x_i between two samples f(x_i) and f(x_{i+1}) of the sampled object f
-            text: qsTr("Step")
-            Layout.alignment: Qt.AlignHCenter
-          }
-
-          ValueEdit {
-            backend: sampling.step
-            Layout.fillWidth: true
-            Layout.preferredHeight: implicitHeight
-          }
         }
 
         Reveal {
