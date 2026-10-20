@@ -20,7 +20,6 @@
 
 #include "globals.h"
 #include "initresources.h"
-#include "structures.h"
 #include "buildconfig.h"
 
 #include <QCommandLineParser>

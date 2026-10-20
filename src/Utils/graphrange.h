@@ -20,6 +20,7 @@
 **
 ****************************************************************************/
 
+#include <QSizeF>
 #include <QtQmlIntegration/qqmlintegration.h>
 
 #include "MathObjects/expr.h"

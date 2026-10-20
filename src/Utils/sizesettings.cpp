@@ -1,5 +1,5 @@
 /****************************************************************************
-**  Copyright (c) 2022, Adel Kara Slimane <adel.ks@zegrapher.com>
+**  Copyright (c) 2024, Adel Kara Slimane <adel.ks@zegrapher.com>
 **
 **  This file is part of ZeGrapher's source code.
 **
@@ -18,18 +18,8 @@
 **
 ****************************************************************************/
 
-#include "structures.h"
+#include "Utils/sizesettings.h"
 #include "Utils/yaml.h"
-
-bool ptCompY(const Point &pt1, const Point &pt2)
-{
-  return pt1.y < pt2.y;
-}
-
-Point operator * (const Point &pt1, const Point &pt2)
-{
-  return Point {.x = pt1.x * pt2.x, .y = pt1.y * pt2.y };
-}
 
 std::optional<ZeSizeSettings::POD> ZeSizeSettings::exportPod() const
 {

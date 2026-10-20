@@ -27,8 +27,9 @@
 
 #include <QString>
 #include <QColor>
+#include <QObject>
 
-#include "structures.h"
+#include "point.h"
 
 // Remove dependence on Qt, to be usable as a standalone library
 

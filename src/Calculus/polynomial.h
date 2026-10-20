@@ -27,7 +27,8 @@
 
 #include <QList>
 #include <algorithm>
-#include "structures.h"
+#include <vector>
+#include "point.h"
 
 
 class Polynomial

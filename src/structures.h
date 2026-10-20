@@ -22,107 +22,12 @@
 
 #include "zecalculator/parsing/types.h"
 
-#include <QMetaType>
-#include <QObject>
-#include <QPointF>
-#include <QSizeF>
-#include <QtQmlIntegration/qqmlintegration.h>
-
-#include <optional>
-
 inline constexpr double cmPerInch = 2.54;
 
 /// @brief type of math objects to use in ZeCalculator
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 
 enum struct ZeAxisName {X, Y};
-
-
-struct ZeSizeSettings
-{
-  Q_GADGET
-  QML_VALUE_TYPE(zeSizeSettings)
-
-  Q_PROPERTY(bool sheetFillsWindow MEMBER sheetFillsWindow)
-  Q_PROPERTY(double scalingFactor MEMBER scalingFactor)
-  Q_PROPERTY(QSizeF cmSheetSize MEMBER cmSheetSize)
-
-
-public:
-
-  bool sheetFillsWindow = true;
-
-  double scalingFactor = 1.0;
-
-  QSizeF cmSheetSize;
-
-  bool operator == (const ZeSizeSettings &other) const = default;
-
-  struct POD
-  {
-    std::optional<double> scaling;
-    std::optional<double> width;
-    std::optional<double> height;
-  };
-
-  std::optional<POD> exportPod() const;
-  void importPod(POD);
-
-  static constexpr double minScaling = 0.1, maxScaling = 5;
-  static constexpr double minCm = 1, maxCm = 1000;
-};
-
-struct ZoomingType: QObject
-{
-  Q_OBJECT
-  QML_ELEMENT
-
-public:
-  ZoomingType(QObject *parent = nullptr): QObject(parent) {}
-
-  enum Type {FITSHEET, CUSTOM};
-  Q_ENUM(Type)
-};
-
-struct ZeZoomSettings
-{
-  Q_GADGET
-  Q_PROPERTY(ZoomingType::Type zoomingType MEMBER zoomingType)
-  Q_PROPERTY(double zoom MEMBER zoom)
-  QML_VALUE_TYPE(zeZoomSettings)
-
-public:
-
-  ZoomingType::Type zoomingType = ZoomingType::FITSHEET;
-  double zoom = 1.0;
-
-  static constexpr double minZoom = 0.05, maxZoom = 10;
-
-  bool operator == (const ZeZoomSettings &other) const = default;
-};
-
-struct Range
-{
-    Range() : start(0), end(0), step(1) {}
-    double start, end, step;
-};
-
-struct Point
-{
-    double x, y;
-
-    bool operator<(const Point &b) const
-    {
-        return x < b.x;
-    }
-
-    operator QPointF() const
-    {
-        return QPointF(x, y);
-    }
-};
-
-bool ptCompY(const Point &pt1, const Point &pt2);
 
 template<class Number>
 Number int_pow(Number a, int b)
@@ -141,5 +46,3 @@ Number int_pow(Number a, int b)
 
     return res;
 }
-
-Point operator * (const Point &pt1, const Point &pt2);

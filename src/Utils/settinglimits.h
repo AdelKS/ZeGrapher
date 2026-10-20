@@ -29,7 +29,7 @@
 #include "Utils/graphsettings.h"
 #include "Utils/gridsettings.h"
 #include "Utils/plotstyle.h"
-#include "structures.h"
+#include "Utils/sizesettings.h"
 
 namespace zg {
 

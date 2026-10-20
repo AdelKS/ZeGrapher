@@ -31,6 +31,7 @@
 #include "Utils/fonts.h"
 #include "Utils/graphrange.h"
 #include "Utils/gridsettings.h"
+#include "Utils/sizesettings.h"
 #include "Utils/themedcolor.h"
 #include "Utils/yaml.h"
 #include "structures.h"
