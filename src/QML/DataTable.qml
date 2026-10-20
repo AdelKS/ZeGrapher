@@ -218,7 +218,7 @@ Item {
         } else if (event.key === Qt.Key_Backspace) {
           clearSelection();
           event.accepted = true;
-        } else if (event.key == Qt.Key_Return) {
+        } else if ([Qt.Key_Return, Qt.Key_Enter].includes(event.key)) {
           if (selectionModel.currentIndex.valid)
             edit(selectionModel.currentIndex);
           event.accepted = true;
