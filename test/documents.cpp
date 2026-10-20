@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
   test(equation->style.getLineStyle() == zg::PlotStyle::Dash);
   test(equation->style.getPointStyle() == zg::PlotStyle::None);
 
-  // the bounds that set_value() gives a constant aren't saved
+  // the bounds that setValue() gives a constant aren't saved
   test(app.load(R"(math_objects:
   - type: constant
     name: a

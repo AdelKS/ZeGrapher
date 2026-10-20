@@ -36,7 +36,7 @@ struct Data: Base, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
+  Q_PROPERTY(QString name WRITE setName MEMBER inputName NOTIFY nameChanged)
   Q_PROPERTY(zg::State state READ getState NOTIFY stateChanged)
   Q_PROPERTY(bool showInTable WRITE setShowInTable MEMBER showInTable NOTIFY showInTableChanged )
 
@@ -46,7 +46,7 @@ public:
   ~Data();
 
   Q_INVOKABLE void setName(QString name);
-  QString getName() const { return input_name; }
+  QString getName() const { return inputName; }
 
   /// @brief the expression of each row, empty for an empty cell
   const std::vector<std::string>& getData() const;
@@ -105,7 +105,7 @@ protected:
 
   void valuesEdited();
 
-  QString input_name;
+  QString inputName;
   State state;
   bool showInTable = false;
 

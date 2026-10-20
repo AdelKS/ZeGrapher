@@ -41,9 +41,9 @@ void AnimationConductor::untrack(zg::AnimatedConstant* c)
 
 void AnimationConductor::animationStep()
 {
-  if (not last_step_timestamp)
+  if (not lastStepTimestamp)
   {
-    last_step_timestamp = std::chrono::steady_clock::now();
+    lastStepTimestamp = std::chrono::steady_clock::now();
     return;
   }
   else
@@ -52,9 +52,9 @@ void AnimationConductor::animationStep()
 
     for (auto* constant: constants)
       if (constant->isPlaying())
-        constant->animationStep(now - *last_step_timestamp);
+        constant->animationStep(now - *lastStepTimestamp);
 
-    last_step_timestamp = now;
+    lastStepTimestamp = now;
   }
 }
 
@@ -65,7 +65,7 @@ void AnimationConductor::updateIsAnimating()
 
   if (oldAnimating != animating)
   {
-    last_step_timestamp.reset();
+    lastStepTimestamp.reset();
     emit animatingChanged();
   }
 }

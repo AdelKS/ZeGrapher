@@ -38,9 +38,9 @@ struct Constant: QObject, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
+  Q_PROPERTY(QString name WRITE setName MEMBER inputName NOTIFY nameChanged)
   Q_PROPERTY(double from WRITE setFrom MEMBER from NOTIFY fromChanged)
-  Q_PROPERTY(double value WRITE set_value MEMBER value NOTIFY valueChanged)
+  Q_PROPERTY(double value WRITE setValue MEMBER value NOTIFY valueChanged)
   Q_PROPERTY(double to WRITE setTo MEMBER to NOTIFY toChanged)
   Q_PROPERTY(int steps WRITE setSteps MEMBER steps NOTIFY stepsChanged)
   Q_PROPERTY(LoopType loopType WRITE setLoopType MEMBER loopType NOTIFY loopTypeChanged)
@@ -63,10 +63,10 @@ public:
   ~Constant();
 
   Q_INVOKABLE void setName(QString name);
-  QString getName() const { return input_name; }
+  QString getName() const { return inputName; }
   State sync();
 
-  Q_INVOKABLE void set_value(double val);
+  Q_INVOKABLE void setValue(double val);
 
   ///@brief sets the value as lerp between 'from' and 'to', with a in [0, 1]
   void setLerpValue(double a);
@@ -88,7 +88,7 @@ public:
 
   bool isValid() const { return state.isValid(); }
 
-  double get_value() const { return value; }
+  double getValue() const { return value; }
 
   static constexpr int minSteps = 1, maxSteps = 100;
   static constexpr double minDuration = 0.1, maxDuration = 500;
@@ -137,7 +137,7 @@ protected:
   static constexpr LoopType defaultLoopType = ONESHOT;
   static constexpr seconds defaultDuration = seconds(2.);
 
-  QString input_name;
+  QString inputName;
   State state;
 
   AnimatedConstant* animation;
@@ -146,7 +146,7 @@ protected:
   static constexpr double upperMul = 1.5;
   static constexpr double zeroBound = 5;
 
-  /// @brief the bounds that set_value() gives a value
+  /// @brief the bounds that setValue() gives a value
   static std::pair<double, double> defaultBounds(double value);
 
   /// @brief so value can be changed without triggering signals

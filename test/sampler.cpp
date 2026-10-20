@@ -103,7 +103,7 @@ int main()
     app.restart();
     auto* a = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT)->getConstant();
     a->setName("a");
-    a->set_value(1);
+    a->setValue(1);
     auto* f = zg::mathWorld->addMathObject()->getEquation();
     f->setEquation("f(x) = a * sin(x)");
     a->setDeadAndAlive(true);

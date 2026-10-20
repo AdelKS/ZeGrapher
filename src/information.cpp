@@ -149,7 +149,7 @@ bool Information::restoreLastDocument()
 void Information::loadExampleDocument()
 {
   auto* cst = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT)->getConstant();
-  cst->set_value(2);
+  cst->setValue(2);
   cst->setName("a");
 
   auto* cos = zg::mathWorld->addMathObject(zg::MathObject::EQUATION)->getEquation();

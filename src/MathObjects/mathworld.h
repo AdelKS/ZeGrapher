@@ -104,8 +104,8 @@ protected slots:
 
 protected:
   /// @brief the objects whose expressions use 'o', directly or not
-  std::unordered_set<const zc::DynMathObject<zc_t>*> revdeps(const zc::DynMathObject<zc_t>* o);
-  std::unordered_set<const zc::DynMathObject<zc_t>*> direct_revdeps(const zc::DynMathObject<zc_t>* o);
+  std::unordered_set<const zc::DynMathObject<zc_t>*> revDeps(const zc::DynMathObject<zc_t>* o);
+  std::unordered_set<const zc::DynMathObject<zc_t>*> directRevDeps(const zc::DynMathObject<zc_t>* o);
 
   zc::MathWorld<zc_t> backend;
 

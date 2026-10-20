@@ -32,7 +32,7 @@ struct NamedRef: QObject {
   Q_OBJECT
   QML_ELEMENT
 
-  Q_PROPERTY(QString name WRITE setName MEMBER input_name NOTIFY nameChanged)
+  Q_PROPERTY(QString name WRITE setName MEMBER inputName NOTIFY nameChanged)
   Q_PROPERTY(zg::State state READ getState NOTIFY stateChanged)
 
 public:
@@ -41,7 +41,7 @@ public:
 
   Q_INVOKABLE State setName(QString name);
 
-  QString getName() const { return input_name; }
+  QString getName() const { return inputName; }
   const State& getState() const { return state; }
 
   bool isDiscrete() const;
@@ -60,7 +60,7 @@ signals:
 protected:
   void setState(State s);
 
-  QString input_name;
+  QString inputName;
   State state;
 };
 

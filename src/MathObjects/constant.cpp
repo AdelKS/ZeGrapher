@@ -48,16 +48,16 @@ void Constant::setState(State s)
   emit stateChanged();
 }
 
-void Constant::setName(QString new_input_name)
+void Constant::setName(QString newInputName)
 {
-  if (input_name == new_input_name)
+  if (inputName == newInputName)
   {
     sync();
     return;
   }
 
-  input_name = new_input_name;
-  zcMathObj.set_name(input_name.toStdString());
+  inputName = newInputName;
+  zcMathObj.set_name(inputName.toStdString());
 
   emit nameChanged();
   emit updated();
@@ -150,7 +150,7 @@ State Constant::sync() {
   return getState();
 }
 
-void Constant::set_value(double val)
+void Constant::setValue(double val)
 {
   if (value == val)
     return;
@@ -212,7 +212,7 @@ void Constant::importPod(Constant::POD p)
     setName(QString::fromStdString(*p.name));
 
   if (p.value)
-    set_value(*p.value);
+    setValue(*p.value);
 
   if (p.from)
     setFrom(*p.from);

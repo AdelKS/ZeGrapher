@@ -69,7 +69,7 @@ protected:
   /// @brief whether any constant is being animated
   bool animating = false;
 
-  std::optional<time_point> last_step_timestamp;
+  std::optional<time_point> lastStepTimestamp;
 };
 
 /// @brief set by Globals

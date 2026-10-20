@@ -37,16 +37,16 @@ Data::Data(QObject *parent)
   zcMathObj.set_data(std::vector<std::string>(10));
 }
 
-void Data::setName(QString new_input_name)
+void Data::setName(QString newInputName)
 {
-  if (input_name == new_input_name)
+  if (inputName == newInputName)
   {
     sync();
     return;
   }
 
-  input_name = new_input_name;
-  zcMathObj.set_name(input_name.toStdString());
+  inputName = newInputName;
+  zcMathObj.set_name(inputName.toStdString());
 
   sync();
 

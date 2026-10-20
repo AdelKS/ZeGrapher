@@ -30,12 +30,12 @@ NamedRef::NamedRef(QObject *parent): QObject(parent)
 {
 }
 
-State NamedRef::setName(QString new_input_name)
+State NamedRef::setName(QString newInputName)
 {
-  if (new_input_name == input_name)
+  if (newInputName == inputName)
     return sync();
 
-  input_name = new_input_name;
+  inputName = newInputName;
 
   sync();
 
@@ -56,14 +56,14 @@ void NamedRef::setState(State s)
 State NamedRef::sync()
 {
   State newState;
-  if (not input_name.isEmpty())
+  if (not inputName.isEmpty())
   {
     const auto* zcObj = getZcObject();
     if (zcObj)
     {
       if (*zcObj)
         newState.setValid();
-      else newState.setInvalid(zcErrorToStr(zc::Error::object_in_invalid_state({.substr = input_name.toStdString()}, {})));
+      else newState.setInvalid(zcErrorToStr(zc::Error::object_in_invalid_state({.substr = inputName.toStdString()}, {})));
     }
     else newState.setInvalid(zcErrorToStr(zc::Error::object_not_in_world()));
   }
@@ -81,7 +81,7 @@ bool NamedRef::isDiscrete() const
 
 const zc::DynMathObject<zc_t>* NamedRef::getZcObject() const
 {
-  return zg::mathWorld->backend.get(input_name.toStdString());
+  return zg::mathWorld->backend.get(inputName.toStdString());
 }
 
 } // namespace mathobj

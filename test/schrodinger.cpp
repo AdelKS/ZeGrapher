@@ -34,8 +34,8 @@ int main()
   auto* objectB = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT);
   zg::mathobj::Constant* a = objectA->getConstant();
   zg::mathobj::Constant* b = objectB->getConstant();
-  a->set_value(2);
-  b->set_value(4);
+  a->setValue(2);
+  b->setValue(4);
 
   int changesA = 0, changesB = 0;
   QObject::connect(objectA, &zg::MathObject::schrodingerChanged, [&] { changesA++; });
@@ -43,19 +43,19 @@ int main()
 
   a->setDeadAndAlive(true);
   test(objectA->isSchrodinger());
-  test(std::isnan(a->get_value()));
+  test(std::isnan(a->getValue()));
   test(changesA == 1);
 
   // B takes over: A gets its value back, and each object notifies once
   b->setDeadAndAlive(true);
   test(zg::mathWorld->getSchrodingerConstant() == b);
   test(not objectA->isSchrodinger() and objectB->isSchrodinger());
-  test(a->get_value() == 2);
+  test(a->getValue() == 2);
   test(changesA == 2 and changesB == 1);
 
   b->setDeadAndAlive(false);
   test(zg::mathWorld->getSchrodingerConstant() == nullptr);
-  test(b->get_value() == 4);
+  test(b->getValue() == 4);
 
   // a deleted Schrödinger constant leaves MathWorld
   a->setDeadAndAlive(true);

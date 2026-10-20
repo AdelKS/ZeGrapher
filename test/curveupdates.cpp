@@ -63,7 +63,7 @@ int main()
   // the objects that use a deleted constant see it leave
   auto* constant = zg::mathWorld->addMathObject(zg::MathObject::CONSTANT);
   constant->getConstant()->setName("a");
-  constant->getConstant()->set_value(2);
+  constant->getConstant()->setValue(2);
   equation->setEquation("f(x) = a * x");
   app.settle();
   test(equation->isValid());
