@@ -6,6 +6,9 @@ pragma Singleton
 import QtQuick
 
 QtObject {
+  /// @brief the width of one level of indent in a markdown list, in pixels
+  readonly property real listIndent: 14
+
   /// @brief the link color, the same as a valid expression's
   readonly property color linkColor: themed(Information.appSettings.validSyntax)
 

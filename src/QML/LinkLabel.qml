@@ -76,6 +76,9 @@ TextArea {
       Qt.openUrlExternally(link);
   }
 
+  Component.onCompleted: TextDocumentTools.setIndentWidth(root.textDocument,
+                                                          ZeStyle.listIndent)
+
   HoverHandler {
     id: pointer
 

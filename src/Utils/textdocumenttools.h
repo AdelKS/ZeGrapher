@@ -41,6 +41,16 @@ class TextDocumentTools : public QObject
 public:
   explicit TextDocumentTools(QObject* parent = nullptr): QObject(parent) {}
 
+  /// @brief sets the width of one list indent level, in pixels
+  /// @note QTextDocument::indentWidth is 40 pixels by default. A list item's
+  ///       mark is drawn left of its text, so a width narrower than the mark
+  ///       plus one space clips it
+  Q_INVOKABLE void setIndentWidth(QQuickTextDocument* doc, qreal pixels)
+  {
+    if (doc and doc->textDocument())
+      doc->textDocument()->setIndentWidth(pixels);
+  }
+
   /// @brief colors every link with `color`, and the links to `hoveredUrl`
   ///        with `hoveredColor`
   /// @note TextEdit.linkColor doesn't apply to markdown: QTextMarkdownImporter
