@@ -226,7 +226,7 @@ Item {
             onClicked: graphFontDialog.open()
           }
 
-          Label {
+          ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Background")
           }
@@ -305,7 +305,7 @@ Item {
             onValueModified: (value) => root.graphSettings.axes.lineWidth = value
           }
 
-          Label {
+          ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Color")
           }
@@ -333,18 +333,16 @@ Item {
           }
           LineEdit {
             Layout.fillWidth: true
-            border.color: "grey"
             text: root.graphSettings.axes.x.title
             onTextEdited: root.graphSettings.axes.x.title = text
           }
 
-         ZeLabel {
+          ZeLabel {
             Layout.alignment: Qt.AlignRight
             text: qsTr('Y title')
           }
           LineEdit {
             Layout.fillWidth: true
-            border.color: "grey"
             text: root.graphSettings.axes.y.title
             onTextEdited: root.graphSettings.axes.y.title = text
           }

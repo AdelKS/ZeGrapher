@@ -115,7 +115,6 @@ Item {
             ToolTip.text: separatorLabel.tooltipText
             Layout.preferredWidth: 30
             text: ","
-            border.color: "grey"
           }
           ZeLabel {
             Layout.alignment: Qt.AlignRight
