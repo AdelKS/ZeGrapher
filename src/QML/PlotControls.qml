@@ -39,6 +39,32 @@ Reveal {
   /// @brief buttons between the style button and the colors
   default property alias extraButtons: extras.data
 
+  /// @brief a color of 'style', which stays while the controls fade out
+  component StyleColorButton: ColorButton {
+    id: button
+
+    required property PlotStyle style
+
+    /// @brief 'color' or 'secondColor'
+    required property string role
+
+    property themedColor lastGood
+
+    radius: 12
+
+    selectedColor: button.style?.[button.role] ?? lastGood
+
+    onSelectedColorChanged: {
+      if (button.style)
+        lastGood = selectedColor;
+    }
+
+    onSelectedColorModified: {
+      if (button.style)
+        button.style[button.role] = selectedColor;
+    }
+  }
+
   CardButton {
     id: displayButton
 
@@ -71,48 +97,21 @@ Reveal {
     visible: children.length !== 0
   }
 
-  ColorButton {
-    radius: 12
+  StyleColorButton {
+    style: root.style
+    role: "color"
 
     ToolTip.text: qsTr("The color of the curve")
-
-    // the color stays while the controls fade out
-    property themedColor lastGood
-
-    selectedColor: root.style?.color ?? lastGood
-
-    onSelectedColorChanged: {
-      if (root.style)
-        lastGood = selectedColor;
-    }
-
-    onSelectedColorModified: {
-      if (root.style)
-        root.style.color = selectedColor;
-    }
   }
 
   Reveal {
     shown: root.schrodinger
 
-    ColorButton {
-      radius: 12
+    StyleColorButton {
+      style: root.style
+      role: "secondColor"
 
       ToolTip.text: qsTr("End color of the gradient over the family of Schrödinger curves")
-
-      property themedColor lastGood
-
-      selectedColor: root.style?.secondColor ?? lastGood
-
-      onSelectedColorChanged: {
-        if (root.style)
-          lastGood = selectedColor;
-      }
-
-      onSelectedColorModified: {
-        if (root.style)
-          root.style.secondColor = selectedColor;
-      }
     }
   }
 }
