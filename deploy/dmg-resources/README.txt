@@ -12,17 +12,14 @@ Installation Instructions
 First start
 -----------
 
-Apple has not notarized ZeGrapher, so macOS blocks it the first time it opens.
+ZeGrapher needs macOS 26 or later.
 
-On macOS 15 and later:
+Apple has not notarized ZeGrapher, so macOS blocks it the first time it opens:
 
 1. Open ZeGrapher, and click "Done" in the warning
 2. Open System Settings > Privacy & Security
 3. Under "Security", click "Open Anyway" next to the ZeGrapher message, and
    confirm
-
-On macOS 14 and earlier, Control-click ZeGrapher in Applications, choose
-"Open", then click "Open" in the warning.
 
 If macOS says that the app is damaged, run this command in Terminal, then open
 ZeGrapher again:

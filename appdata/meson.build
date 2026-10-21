@@ -35,6 +35,7 @@ if host_machine.system() == 'darwin' # macos
             configuration : {
                 'VERSION' : meson.project_version(),
                 'RELEASE' : zg_release,
+                'MACOS_MIN' : macos_min,
             },
         ),
         install_dir : 'Contents',
