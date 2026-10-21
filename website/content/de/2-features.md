@@ -1,34 +1,40 @@
-# Möglichkeiten
+# Funktionsumfang
 
-ZeGrapher zeichnet mathematische Objekte in der Ebene — Funktionen, Folgen,
-Parameterdarstellungen und Daten — und exportiert genau das, was du siehst.
+ZeGrapher stellt mathematische Objekte wie Funktionen, Folgen,
+Parameterdarstellungen und Daten in der Ebene grafisch dar. Das Ergebnis kannst
+du genau so exportieren, wie du es siehst.
 
-- **Funktionen** schreibst du wie auf Papier, `f(x) = 2 + cos(x)`. Die üblichen
-  mathematischen Funktionen sind da, und jedes Objekt, das du selbst festlegst.
-- **Folgen** aus ihrer Rekursion, die ersten Glieder gleich mit:
+- **Funktionen** gibst du wie auf Papier ein, zum Beispiel `f(x) = 2 + cos(x)`.
+  Neben den üblichen mathematischen Funktionen kannst du auch selbst definierte
+  Objekte verwenden.
+- **Folgen** definierst du mit Rekursionsformeln und Anfangswerten, zum Beispiel
   `u(n) = 0 ; 1 ; u(n-2) + u(n-1)`.
-- **Parameterdarstellungen**, gezeichnet über den Bereich, den du wählst.
-- **Konstanten und Variablen**, die allen Objekten gemeinsam sind: ein einziger
-  Wert steuert dann eine ganze Kurvenschar. Eine Konstante kann:
-    - am Regler zwischen zwei Grenzen wandern, von Hand oder als Animation
-    - mehrere Werte auf einmal annehmen, und jede Kurve, die sie benutzt, wird
-      einmal je Wert gezeichnet
-- **Daten** aus CSV, und in einer Tabelle zu bearbeiten wie in einer
-  Tabellenkalkulation. Erprobt an Dateien mit mehreren Millionen Zellen.
-- **Objekte, die aufeinander aufbauen**: jedes Objekt mit Namen darf im Ausdruck
-  eines anderen Objekts stehen, und in den Zellen einer Datenspalte.
-- **Ein Graph, den du bewegst**: ziehen verschiebt, scrollen zoomt, und jede
-  Achse lässt sich einzeln zoomen.
-- **Einstellbar bis aufs Gitter**: Teilstriche als Vielfache eines Ausdrucks wie
-  `π`, und eigene Teilungen und Farben für x und für y.
-- **Exporte, die der Vorschau genau entsprechen**, als Vektor (`svg`, `pdf`)
-  oder als Bild (`png`, `jpeg`, `bmp`, `ppm`). Die Größe gibst du in echten
-  Zentimetern an.
-- **Mach da weiter, wo du aufgehört hast**: das Programm speichert deine Arbeit,
-  wenn du es schließt, und holt sie beim nächsten Start zurück. Du kannst sie
-  auch in einer eigenen Datei speichern und jederzeit wieder öffnen.
-- **Ein eingebautes Handbuch**, das sich neben dem Graphen öffnet, in der
-  Sprache des Programms.
-- **In 9 Sprachen**: das Programm und sein Handbuch gibt es auf Englisch,
+- **Parameterdarstellungen** lassen sich über ein frei wählbares Intervall
+  zeichnen.
+- **Konstanten und Variablen** stehen allen Objekten zur Verfügung. So kannst du
+  mit einem einzigen Wert eine ganze Kurvenschar steuern. Eine Konstante kann:
+    - über einen Schieberegler zwischen zwei Grenzen manuell verändert oder
+      animiert werden
+    - mehrere Werte gleichzeitig annehmen, sodass für jeden Wert die
+      entsprechenden Kurven gezeichnet werden
+- **CSV-Daten** importieren und direkt in einer Tabelle wie in einer
+  Tabellenkalkulation bearbeiten. Auch mit Dateien mit mehreren Millionen Zellen
+  getestet.
+- **Objekte miteinander verknüpfen**: Benannte Objekte lassen sich in den
+  Ausdrücken anderer Objekte und in den Zellen von Datenspalten verwenden.
+- **Graphen interaktiv erkunden**: Mit der Maus verschieben, per Mausrad zoomen
+  und bei Bedarf jede Achse einzeln skalieren.
+- **Gitter individuell anpassen**: Teilstriche als Vielfache mathematischer
+  Ausdrücke wie `π` festlegen sowie Unterteilungen und Farben für beide Achsen
+  getrennt einstellen.
+- **Originalgetreuer Export**: Graphen lassen sich genau wie in der Vorschau als
+  Vektorgrafik (`svg`, `pdf`) oder Bild (`png`, `jpeg`, `bmp`, `ppm`)
+  exportieren. Die Ausgabegröße kannst du in realen Zentimetern festlegen.
+- **Dort weitermachen, wo du aufgehört hast**: ZeGrapher speichert deine Arbeit
+  beim Beenden automatisch und stellt sie beim nächsten Start wieder her. Du
+  kannst sie auch in einer eigenen Datei speichern und später erneut öffnen.
+- **Integriertes Handbuch**, das sich direkt neben dem Graphen in der gewählten
+  Sprache öffnen lässt.
+- **9 unterstützte Sprachen**: ZeGrapher und sein Handbuch sind auf Englisch,
   Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Russisch,
-  Japanisch und Chinesisch.
+  Japanisch und Chinesisch verfügbar.

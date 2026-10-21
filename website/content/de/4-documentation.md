@@ -1,6 +1,6 @@
 # Handbuch
 
-![Das Fenster von ZeGrapher](images/overview.png)
+![Das ZeGrapher-Fenster](images/overview.png)
 
 - [1. Der Graph](#1-der-graph)
   - [1.1. Verschieben und zoomen](#11-verschieben-und-zoomen)
@@ -26,12 +26,12 @@
 
 ## 1. Der Graph
 
-![Der Graph, gezeichnet aus den Objekten des Reiters Mathe](images/graph.png)
+![Der Graph aus den Objekten des Reiters Mathe](images/graph.png)
 
-Der Graph ist, was du rechts siehst, und was du ausgibst. Die Reiter
+Der Graph ist das, was du rechts siehst und exportierst. Die Reiter
 [Gitter](#4-der-reiter-gitter--teilstriche-und-gitter) und
-[Graph](#5-der-reiter-graph--aussehen-und-genauigkeit) legen sein Aussehen, seine
-Genauigkeit und seine Größe fest.
+[Graph](#5-der-reiter-graph--aussehen-und-genauigkeit) bestimmen sein Aussehen,
+seine Genauigkeit und seine Größe.
 
 ### 1.1. Verschieben und zoomen
 
@@ -39,42 +39,44 @@ Den Graphen steuerst du mit der Maus:
 
 | Aktion | Maus |
 |--------|------|
-| Ansicht verschieben | Mit der linken Taste ziehen |
-| Beide Achsen zugleich zoomen | Mausrad |
-| Nur die y-Achse zoomen | `Strg` + senkrecht scrollen |
-| Nur die x-Achse zoomen | `Strg` + waagerecht scrollen, oder <br/> `Strg` + `Umschalt` + senkrecht scrollen |
+| Ansicht verschieben | Mit gedrückter linker Maustaste ziehen |
+| Beide Achsen gleichzeitig zoomen | Mausrad |
+| Nur die y-Achse zoomen | `Strg` + vertikal scrollen |
+| Nur die x-Achse zoomen | `Strg` + horizontal scrollen oder <br/> `Strg` + `Umschalt` + vertikal scrollen |
 
-Beim Zoomen bleibt der Punkt unter dem Zeiger, wo er ist.
+Beim Zoomen bleibt der Punkt unter dem Mauszeiger an seiner Position.
 
-Auf einem Touchpad oder Touchscreen zoomst du beide Achsen auch mit zwei Fingern.
+Auf einem Touchpad oder Touchscreen kannst du beide Achsen auch mit einer
+Zwei-Finger-Geste zoomen.
 
 ## 2. Die Eingabeleiste
 
-![Die Leiste und die zwei Knöpfe an ihrem Rand](images/panel.png)
+![Die Eingabeleiste und die beiden Knöpfe an ihrem Rand](images/panel.png)
 
-Die vier Felder oben in der Leiste sind die Grenzen der Ansicht. Darunter liegen
-fünf Reiter:
+Die vier Felder oben in der Leiste legen die Grenzen der Ansicht fest. Darunter
+befinden sich fünf Reiter:
 
-| Reiter | Was darin steht |
-|--------|-----------------|
-| **Mathe** | was du zeichnest: Gleichungen, Konstanten, Parameterdarstellungen, Daten |
+| Reiter | Inhalt |
+|--------|--------|
+| **Mathe** | Die gezeichneten Objekte: Gleichungen, Konstanten, Parameterdarstellungen und Daten |
 | **Gitter** | Teilstriche, Gitter und Untergitter |
-| **Graph** | Größe, Schrift, Hintergrund, Achsen |
-| **App** | Sprache, Schrift, Syntaxfarben |
-| **Über** | Version, Updates, Lizenzen, Versionshinweise |
+| **Graph** | Größe, Schrift, Hintergrund und Achsen |
+| **App** | Sprache, Schrift und Syntaxfarben |
+| **Über** | Version, Updates, Lizenzen und Versionshinweise |
 
-Die drei Knöpfe unten links sind für [Dateien](#22-dateien).
+Die drei Knöpfe unten links dienen zur Arbeit mit [Dateien](#22-dateien).
 
-Am Rand der Leiste:
+Am Rand der Leiste kannst du:
 
-- der Pfeil-Knopf klappt die Leiste ein und wieder aus
-- der Lesezeichen-Knopf darunter öffnet und schließt dieses Handbuch
-- zieh die Linie am rechten Rand, um die Breite der Leiste zu ändern
+- mit dem Pfeilknopf die Leiste ein- und ausklappen
+- mit dem Lesezeichenknopf darunter dieses Handbuch öffnen und schließen
+- die Linie am rechten Rand ziehen, um die Breite der Leiste anzupassen
 
 ### 2.1. Grenzen der Ansicht
 
-Die vier Felder oben in der Leiste nehmen Ausdrücke an, nicht nur Zahlen. Jedes
-Minimum muss unter seinem Maximum bleiben, sonst wird das Feld ungültig.
+Die vier Felder oben in der Leiste akzeptieren nicht nur Zahlen, sondern auch
+mathematische Ausdrücke. Ein Minimum muss kleiner als das zugehörige Maximum
+bleiben. Andernfalls wird das Feld als ungültig markiert.
 
 ![Die Grenzen der Ansicht](images/range.png)
 
@@ -82,90 +84,92 @@ Minimum muss unter seinem Maximum bleiben, sonst wird das Feld ungültig.
 
 ![Die Knöpfe zum Exportieren, Speichern und Laden](images/files.png)
 
-Die drei Knöpfe unten links in der Leiste sind der Reihe nach:
+Die drei Knöpfe unten links in der Leiste haben der Reihe nach diese Funktionen:
 
-1. Den Graphen, den du siehst, **exportieren**, als Vektor (`svg`, `pdf`) oder
-   als Bild (`png`, `jpeg`, `bmp`, `ppm`). Die Datei sieht genauso aus wie der
-   Graph auf dem Bildschirm. Tastenkürzel: `Strg` + `E`.
-2. Die Objekte, die Daten, die Ansicht und die Einstellungen der Reiter Gitter
-   und Graph in einem ZeGrapher-Dokument (`.zg`) **speichern**. Das erste
-   Speichern fragt nach einer Datei, die weiteren schreiben in sie. Die
-   Einstellungen des Reiters App kommen nicht ins Dokument. Tastenkürzel:
-   `Strg` + `S`, und `Strg` + `Umschalt` + `S`, um in eine andere Datei zu
-   speichern.
-3. So ein Dokument **laden**. Das Programm fügt seine Objekte zu den schon
-   offenen hinzu und übernimmt Ansicht und Einstellungen aus dem Dokument.
-   Tastenkürzel: `Strg` + `O`.
+1. Den sichtbaren Graphen **exportieren**, als Vektorgrafik (`svg`, `pdf`) oder
+   als Bild (`png`, `jpeg`, `bmp`, `ppm`). Der Export entspricht genau dem
+   Graphen auf dem Bildschirm. Tastenkürzel: `Strg` + `E`.
+2. Die Objekte, Daten, Ansicht und Einstellungen der Reiter Gitter und Graph
+   als ZeGrapher-Dokument (`.zg`) **speichern**. Beim ersten Speichern wirst du
+   nach einer Datei gefragt. Danach wird in dieselbe Datei gespeichert. Die
+   Einstellungen des Reiters App werden nicht im Dokument gespeichert.
+   Tastenkürzel: `Strg` + `S` und `Strg` + `Umschalt` + `S`, um in einer anderen
+   Datei zu speichern.
+3. Ein solches Dokument **laden**. Das Programm fügt dessen Objekte zu den
+   bereits geöffneten hinzu und übernimmt die Ansicht und Einstellungen aus
+   dem Dokument. Tastenkürzel: `Strg` + `O`.
 
-Unter macOS nehmen die Tastenkürzel `Cmd` statt `Strg`.
+Unter macOS verwendest du bei den Tastenkürzeln `Cmd` statt `Strg`.
 
-Ein `.zg`-Dokument, das du auf das Fenster ziehst, lädt wie mit **Laden**, und
-eine CSV-Datei öffnet dort den [CSV-Import](#353-eine-csv-datei-laden) in ein
-neues Blatt.
+Ziehst du ein `.zg`-Dokument auf das Fenster, wird es wie über **Laden**
+geöffnet. Ziehst du eine CSV-Datei darauf, öffnet sich der
+[CSV-Import](#353-eine-csv-datei-laden) für ein neues Datenblatt.
 
-Beim nächsten Start öffnet ZeGrapher deine letzte Arbeit wieder. Gibst du auf der
-Kommandozeile eine `.zg`-Datei an, öffnet das Programm stattdessen diese Datei.
+Beim nächsten Start stellt ZeGrapher deine letzte Arbeit wieder her. Übergibst
+du beim Programmstart eine `.zg`-Datei über die Kommandozeile, wird stattdessen
+diese Datei geöffnet.
 
 ## 3. Der Reiter Mathe
 
-![Der Reiter Mathe, mit einer Konstante und zwei Gleichungen](images/math-tab.png)
+![Der Reiter Mathe mit einer Konstante und zwei Gleichungen](images/math-tab.png)
 
-Dieser Reiter legt die Objekte fest, die gezeichnet werden oder in anderen
-Objekten stecken: Funktionen, Folgen, Konstanten (die nie gezeichnet werden),
-Parameterdarstellungen und Datenspalten.
+Hier legst du die Objekte fest, die gezeichnet oder in anderen Objekten
+verwendet werden: Funktionen, Folgen, Konstanten (die selbst nie gezeichnet
+werden), Parameterdarstellungen und Datenspalten.
 
 ### 3.1. Ein Objekt hinzufügen
 
-Dieser Knopf unten im Reiter fügt ein Objekt hinzu.
+Mit diesem Knopf unten im Reiter Mathe fügst du ein Objekt hinzu.
 
-![Der Knopf, der ein Objekt hinzufügt](images/add-object.png)
+![Der Knopf zum Hinzufügen eines Objekts](images/add-object.png)
 
-Die Liste oben auf der neuen Karte wählt die Art des Objekts.
+Im Dropdown-Menü oben auf der neuen Objektkarte wählst du die Art des Objekts.
 
 ![Ein Objekt und seine Karte](images/object-card.png)
 
-Jede Karte trägt dieselben Knöpfe:
+Jede Objektkarte hat dieselben Bedienelemente:
 
-- Das Auge zeigt die Kurve oder verbirgt sie.
-- Der Pinsel öffnet den [Kurvenstil](#36-kurvenstil).
-- Die Scheibe ist die Farbe der Kurve.
-- Zieh den Griff rechts, um die Objekte umzusortieren.
-- Das **×** in der Ecke löscht das Objekt.
+- Mit dem Augenknopf blendest du die Kurve ein oder aus.
+- Der Pinselknopf öffnet den [Kurvenstil](#36-kurvenstil).
+- Die Farbscheibe zeigt die Farbe der Kurve.
+- Zieh den Griff rechts, um die Reihenfolge der Objekte zu ändern.
+- Mit dem **×** in der Ecke löschst du das Objekt.
 
 ### 3.2. Funktionen und Folgen
 
-Eine Funktion schreibst du als ihre natürliche Gleichung:
+Eine Funktion definierst du durch ihre Gleichung, wie auf Papier:
 
 ```
 f(x) = 2 + cos(x)
 ```
 
-Diese Funktionen sind eingebaut und stehen in jedem Ausdruck zur Verfügung:
+Die folgenden Funktionen sind bereits eingebaut und können in jedem Ausdruck
+verwendet werden:
 
 | Art | Funktionen |
 |-----|------------|
 | Trigonometrie | `cos`, `sin`, `tan`, `acos`, `asin`, `atan` |
-| Hyperbolisch | `cosh`, `sinh`, `tanh`, `acosh`, `asinh`, `atanh` |
-| Hyperbolisch, kurze Namen | `ch`, `sh`, `th`, `ach`, `ash`, `ath` |
+| Hyperbolische Funktionen | `cosh`, `sinh`, `tanh`, `acosh`, `asinh`, `atanh` |
+| Hyperbolische Funktionen, Kurzformen | `ch`, `sh`, `th`, `ach`, `ash`, `ath` |
 | Potenzen und Logarithmen | `sqrt`, `exp`, `ln` (Basis e), `log` (Basis 10), `lg` (Basis 2) |
-| Runden | `floor`, `ceil` |
-| Mit zwei Argumenten | `max`, `min` |
-| Weitere | `abs`, `erf`, `erfc`, `gamma` (auch `Γ` geschrieben) |
+| Rundung | `floor`, `ceil` |
+| Zwei Argumente | `max`, `min` |
+| Weitere | `abs`, `erf`, `erfc`, `gamma` (auch `Γ`) |
 
-Diese Konstanten sind eingebaut:
+Diese Konstanten sind bereits eingebaut:
 
 | Name | Wert |
 |------|------|
 | `math::pi`, `math::π` | 3.141592653589793 |
 | `physics::kB` | die Boltzmann-Konstante, 1.380649e-23 |
-| `physics::h` | das plancksche Wirkungsquantum, 6.62607015e-34 |
+| `physics::h` | die Planck-Konstante, 6.62607015e-34 |
 | `physics::c` | die Lichtgeschwindigkeit im Vakuum, 299792458 |
 
-Die drei Konstanten aus der Physik stehen in SI-Einheiten.
+Die drei physikalischen Konstanten verwenden SI-Einheiten.
 
-Eine Folge ist eine Liste von Ausdrücken, getrennt durch `,` oder `;`. Die
-vorderen Ausdrücke sind die ersten Glieder. Der **letzte** ist das allgemeine
-Glied, und es gilt für alle weiteren Indizes.
+Eine Folge besteht aus Ausdrücken, die durch `,` oder `;` getrennt sind. Die
+ersten Ausdrücke geben die Anfangsglieder an. Der **letzte** Ausdruck ist das
+allgemeine Glied, das für alle nachfolgenden Indizes verwendet wird.
 
 ```
 u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
@@ -173,204 +177,217 @@ u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
 
 ![Eine Funktion und eine Folge](images/functions.png)
 
-Der Rahmen eines Feldes nimmt eine Farbe an, die zeigt, ob der Ausdruck gültig
-ist. Ist er es nicht, steht der Grund darunter.
+Die Rahmenfarbe einer Eingabezeile zeigt an, ob der Ausdruck gültig ist. Bei
+einem ungültigen Ausdruck erscheint darunter zusätzlich eine Fehlermeldung
+mit dem Grund.
 
-![Ein leeres Feld, ein gültiges und ein ungültiges](images/input-states.png)
+![Eine leere, eine gültige und eine ungültige Eingabezeile](images/input-states.png)
 
-Ein Feld, das einen Wert erwartet, etwa eine Grenze der Ansicht, kann stattdessen
-die Warnfarbe tragen: der Ausdruck ist gültig, liefert aber keine Zahl.
+Ein Feld, das einen Wert erwartet, etwa eine Grenze der Ansicht, kann auch die
+Warnfarbe annehmen: Der Ausdruck ist dann gültig, liefert aber keine Zahl.
 
-![Eine Grenze, deren Ausdruck keinen Wert hat](images/input-warning.png)
+![Eine Grenze, deren Ausdruck keinen Zahlenwert liefert](images/input-warning.png)
 
-Diese drei Farben wählst du im [Reiter App](#6-der-reiter-app).
+Diese drei Farben kannst du im [Reiter App](#6-der-reiter-app) einstellen.
 
 ### 3.3. Konstanten
 
-Eine **Konstante** ist ein Name mit einem Zahlenwert. Jedes andere Objekt, außer
-einer weiteren Konstante, darf sie dann in seinem Ausdruck verwenden.
+Eine **Konstante** besteht aus einem Namen und einem Zahlenwert. Alle anderen
+Objekte außer weiteren Konstanten können sie in ihren Ausdrücken verwenden.
 
-![Eine Konstante, ihr Regler und ihre Animation](images/constant.png)
+![Eine Konstante mit Schieberegler und Animation](images/constant.png)
 
 #### 3.3.1. Animation
 
-Der Regler darunter führt den Wert von **min** nach **max**, und alle Kurven, die
-die Konstante benutzen, gehen mit. Zieh den Regler von Hand, oder lass ihn
-laufen. Die Reihe unter dem Regler steuert die Animation: abspielen, Schleife,
-hin und zurück, und die Dauer eines Durchgangs.
+Mit dem Schieberegler darunter veränderst du den Wert zwischen **min** und
+**max**. Alle Kurven, die diese Konstante verwenden, passen sich entsprechend
+an. Du kannst den Regler von Hand bewegen oder animieren. Unter dem Regler
+befinden sich die Steuerelemente für die Animation: Wiedergabe, Schleife,
+Hin-und-her-Bewegung und Dauer eines Durchlaufs.
 
 #### 3.3.2. Mehrere Werte auf einmal
 
-Dieser Knopf auf einer Konstantenkarte macht sie zu einer
+Mit diesem Knopf auf einer Konstantenkarte machst du die Konstante zu einer
 **Schrödinger-Konstante**.
 
-![Der Knopf mit der Katze, eingeschaltet](images/cat-button.png)
+![Der aktivierte Katzenknopf](images/cat-button.png)
 
-Die Konstante nimmt dann `Schritte + 1` Werte an, in gleichen Abständen von min
-bis max. Jedes Objekt, das sie benutzt, wird einmal je Wert gezeichnet.
+Die Konstante nimmt dann `Schritte + 1` gleichmäßig zwischen min und max verteilte
+Werte an. Das Programm zeichnet jedes Objekt, das diese Konstante verwendet,
+einmal für jeden Wert.
 
-![Eine Konstante mit sechs Werten auf einmal](images/schrodinger.png)
+![Eine Konstante mit sechs Werten gleichzeitig](images/schrodinger.png)
 
-Diese Objekte bekommen eine zweite Farbscheibe. Die Kurvenschar wird als Verlauf
-von der ersten Farbe zur zweiten gezeichnet.
+Diese Objekte erhalten eine zweite Farbscheibe. Das Programm zeichnet die
+Kurvenschar mit einem Farbverlauf von der ersten zur zweiten Farbe.
 
 ### 3.4. Parameterdarstellungen
 
-Eine Parameterdarstellung ist ein Paar von Objekten, das die Koordinaten jedes
-Punktes der Kurve angibt. Ihre Namen schreibst du in die zwei Felder:
+Eine Parameterdarstellung besteht aus zwei Objekten, die die Koordinaten jedes
+Punktes einer Kurve angeben. Ihre Namen trägst du in die beiden Felder ein:
 
 ![Eine Parameterdarstellung aus zwei Funktionen](images/parametric.png)
 
-Das Paar wird zwischen **Anfang** und **Ende** gezeichnet, die im
-[Kurvenstil](#36-kurvenstil) der Parameterdarstellung stehen.
+Das Programm zeichnet die Parameterkurve von **Anfang** bis **Ende**. Diese
+Werte legst du im [Kurvenstil](#36-kurvenstil) der Parameterdarstellung fest.
 
 ### 3.5. Daten
 
-![Ein Datenblatt, seine Tabelle und seine Kurve](images/data.png)
+![Ein Datenblatt mit Tabelle und Graph](images/data.png)
 
-Ein Datenobjekt ist ein Blatt aus Spalten mit Namen. Jede Spalte ist selbst ein
-mathematisches Objekt, mit einem Namen und denselben Knöpfen wie jedes andere
-Objekt.
+Ein Datenobjekt ist ein Blatt mit benannten Spalten. Jede Spalte ist selbst ein
+mathematisches Objekt mit einem Namen und denselben Knöpfen wie andere Objekte.
 
-![Eine Spalte eines Blatts](images/column-card.png)
+![Eine Spalte eines Datenblatts](images/column-card.png)
 
-Die Werte einer Spalte werden über ihren Index gezeichnet: der erste Wert bei
-x = 0, der zweite bei x = 1, und so weiter. Um eine Spalte über eine andere zu
-zeichnen, nimm eine [Parameterdarstellung](#34-parameterdarstellungen).
+Das Programm zeichnet die Werte einer Spalte gegen ihre Indizes: den ersten
+Wert bei x = 0, den zweiten bei x = 1 und so weiter. Um die Werte einer Spalte
+gegen die einer anderen darzustellen, verwendest du eine
+[Parameterdarstellung](#34-parameterdarstellungen).
 
-![Die Knöpfe unter einem Blatt](images/sheet-buttons.png)
+![Die Knöpfe unter einem Datenblatt](images/sheet-buttons.png)
 
-Die Knöpfe unten rechts am Blatt laden eine CSV-Datei, schreiben die Spalten in
-eine CSV-Datei, und fügen eine Spalte hinzu. Zieh den Balken darunter, um die
-Höhe des Blatts zu ändern, und ein Doppelklick darauf gibt ihm seine
-Standardhöhe zurück.
+Mit den Knöpfen unten rechts am Datenblatt kannst du eine CSV-Datei importieren,
+die Spalten in eine CSV-Datei exportieren oder eine neue Spalte hinzufügen.
+Zieh den Balken darunter, um die Höhe des Datenblatts zu ändern. Mit einem
+Doppelklick auf den Balken stellst du die Standardhöhe wieder her.
 
 #### 3.5.1. Die Datentabelle
 
 ![Zwei Spalten in der Tabelle](images/data-table.png)
 
-Der **Tabellen**-Knopf einer Spalte zeigt sie in der Tabelle neben der Leiste. In
-der Tabelle:
+Der **Tabellenknopf** einer Spalte zeigt diese in der Tabelle neben der
+Eingabeleiste an. In der Tabelle kannst du:
 
-- Klicke eine Zelle an und tippe, um sie zu ändern, oder drücke `Eingabe`, um
-  den Editor zu öffnen.
-- Klicke einen Kopf an, um eine ganze Zeile oder eine ganze Spalte zu wählen.
-- Zieh, um ein Rechteck aus Zellen zu wählen.
-- Drücke `Rücktaste`, um den Inhalt der gewählten Zellen zu löschen.
-- Drücke `Entf`, um die gewählten Zellen zu entfernen. Die Werte darunter rücken
-  auf.
-- Das Menü der rechten Maustaste hat dieselben zwei Aktionen unter *Leeren* und
-  *Löschen*, dazu *Zeile darüber einfügen* und *Zeile darunter einfügen*. Beide
-  Einfügungen gehen von der aktiven Zelle aus.
+- eine Zelle anklicken und direkt bearbeiten oder mit `Eingabe` den Editor öffnen
+- eine Zeilen- oder Spaltenüberschrift anklicken, um die ganze Zeile oder Spalte
+  auszuwählen
+- mit gedrückter Maustaste einen rechteckigen Zellbereich auswählen
+- mit `Rücktaste` den Inhalt der ausgewählten Zellen leeren
+- mit `Entf` die ausgewählten Zellen entfernen; die Werte darunter rücken nach
+  oben
+- über das Kontextmenü mit der rechten Maustaste dieselben Aktionen unter
+  *Leeren* und *Löschen* ausführen oder mit *Zeile darüber einfügen* und
+  *Zeile darunter einfügen* neue Zeilen hinzufügen; beide Einfügeaktionen
+  beziehen sich auf die aktive Zelle
 
-Wählst du eine ganze Spalte und drückst `Entf`, verschwindet auch das
-Spaltenobjekt im Reiter Mathe.
+Wenn du eine ganze Spalte auswählst und `Entf` drückst, wird auch das
+entsprechende Spaltenobjekt im Reiter Mathe gelöscht.
 
 #### 3.5.2. Eine Spalte aus einem Objekt füllen
 
-Der Knopf mit dem Balkendiagramm öffnet ein kleines Formular: nenne ein Objekt, und
-gib **Anfang**, **Ende** und **Schritt** an. Der Haken nimmt die Werte des
-Objekts und schreibt sie in die Spalte.
+Der Knopf mit dem Balkendiagramm öffnet ein kleines Formular. Dort gibst du
+den Namen eines Objekts sowie **Anfang**, **Ende** und **Schritt** an. Mit dem
+Häkchenknopf werden die Werte des Objekts berechnet und in die Spalte geladen.
 
 ![Eine Spalte mit den Werten von f füllen](images/sampling.png)
 
 #### 3.5.3. Eine CSV-Datei laden
 
-Der CSV-Knopf sitzt auf einem Blatt, oder unten im Reiter Mathe für ein neues
-Blatt.
+Den CSV-Knopf findest du auf einem Datenblatt oder unten im Reiter Mathe, wenn
+du ein neues Blatt anlegen möchtest.
 
-![Die Leiste für den CSV-Import](images/csv-import.png)
+![Der CSV-Import](images/csv-import.png)
 
-Er öffnet einen Dateidialog. Danach zeigt eine Leiste an der Seite die
-Einstellungen für den Import, darunter eine Vorschau der Datei. Die Vorschau
-folgt jeder Einstellung, die du änderst:
+Er öffnet einen Dateidialog. Anschließend erscheint seitlich ein Bereich mit
+den Importeinstellungen und darunter eine Vorschau der Datei. Die Vorschau
+aktualisiert sich, sobald du eine Einstellung änderst:
 
-- **Trennzeichen** — das Zeichen zwischen zwei Werten. Für einen Tabulator `\t`
-  schreiben.
-- **Kopfzeile** — setz das Häkchen, wenn die erste Zeile die Namen der Spalten
-  trägt.
-- **Zeilen zeigen** — wie viele Zeilen die Vorschau zeigt.
-- **Zeilen weglassen** — wie viele Zeilen am Anfang der Datei wegfallen, zum
-  Beispiel Kommentare oder Parameter.
+- **Trennzeichen** — das Zeichen zwischen zwei Werten. Für einen Tabulator
+  gibst du `\t` ein.
+- **Kopfzeile** — aktiviere diese Option, wenn die erste Zeile die Spaltennamen
+  enthält.
+- **Vorschauzeilen** — legt fest, wie viele Zeilen in der Vorschau erscheinen.
+- **Zeilen überspringen** — legt fest, wie viele Zeilen am Anfang der Datei
+  ignoriert werden, zum Beispiel Kommentare oder zusätzliche Parameter.
 
-**Laden** macht aus der Datei Spalten, und **Abbrechen** lässt alles, wie es
-war.
+Mit **Laden** werden die Daten aus der Datei in Spalten übernommen. Mit
+**Abbrechen** bleibt alles unverändert.
 
-Wir haben ZeGrapher an CSV-Dateien mit mehreren Millionen Zellen erprobt.
+Wir haben ZeGrapher mit CSV-Dateien getestet, die mehrere Millionen Zellen
+enthalten.
 
 ### 3.6. Kurvenstil
 
-Der Pinselknopf öffnet die Einstellungen dafür, wie ein Objekt gezeichnet wird:
+Der Pinselknopf öffnet die Einstellungen, die bestimmen, wie ein Objekt
+gezeichnet wird:
 
 ![Der Kurvenstil eines Objekts](images/style.png)
 
-- Koordinaten **kartesisch** oder **polar**.
-- Die Art der Linie — durchgezogen, gestrichelt, Strich-Punkt, gepunktet, oder
-  keine Linie — und ihre Stärke.
-- Bei Objekten aus Punkten (Folgen und Daten) die Form und die Größe der Punkte.
+- **Kartesische** oder **polare** Koordinaten.
+- Linienart — durchgezogen, gestrichelt, Strich-Punkt, gepunktet oder ohne
+  Linie — und Linienstärke.
+- Bei Objekten, die als Punkte gezeichnet werden (Folgen und Daten), die Form
+  und Größe der Punkte.
 - **Anfang** und **Ende**: der Bereich, über den das Objekt gezeichnet wird.
-  Voreingestellt sind `xmin` und `xmax`, die Grenzen der Ansicht. Beide Felder
-  nehmen jeden Ausdruck an, zum Beispiel `-math::pi` und `4*math::pi`.
+  Standardmäßig sind `xmin` und `xmax` eingestellt, also die Grenzen der
+  Ansicht. Beide Felder akzeptieren beliebige Ausdrücke, zum Beispiel
+  `-math::pi` und `4*math::pi`.
 
 ## 4. Der Reiter Gitter — Teilstriche und Gitter
 
 ![Der Reiter Gitter](images/grid-tab.png)
 
-**Koordinaten** stellt die Zahlen entlang der Achsen ein: ihren Abstand, wie
-viele Ziffern sie nutzen dürfen, und einen **Faktor**. Der Faktor ist ein
-Ausdruck, die Teilstriche können also Vielfache von `math::pi` sein, und die
-Beschriftungen stehen dann als Vielfache davon.
+Unter **Koordinaten** legst du die Zahlen entlang der Achsen fest: ihren
+Abstand, die maximal verwendete Anzahl an Ziffern und einen **Faktor**. Der
+Faktor ist ein mathematischer Ausdruck. So können Teilstriche Vielfache von
+`math::pi` sein, und die Beschriftungen werden ebenfalls als Vielfache davon
+angezeigt.
 
-**Gitter** und **Untergitter** stellst du für x und y getrennt ein. Jedes hat
-eine Farbe, eine Strichstärke, und einen Schalter, der es zeigt oder verbirgt.
-Beim Untergitter gibst du außerdem an, in wie viele Teile es jede Zelle
-schneidet.
+**Gitter** und **Untergitter** stellst du für die x- und y-Achse getrennt ein.
+Für beide lassen sich Farbe, Linienstärke und Sichtbarkeit festlegen. Beim
+Untergitter bestimmst du zusätzlich, in wie viele Teile jede Gitterzelle
+unterteilt wird.
 
 ## 5. Der Reiter Graph — Aussehen und Genauigkeit
 
 ![Der Reiter Graph](images/graph-tab.png)
 
-Voreingestellt füllt der Graph das Fenster. Stell **Größe des Graphen** auf
-*Eigene*, im Kasten **Größe** oben, und der Graph wird ein Blatt in der Größe,
-die du angibst. Diese Größe geht in **echten Zentimetern**. Ein
-Zentimeter ist ein echter Zentimeter auf dem Bildschirm, und bleibt es in einem
-exportierten `pdf` oder `svg`.
+Standardmäßig füllt der Graph das Fenster. Stellst du im oberen Bereich
+**Größe** die Option **Größe des Graphen** auf *Eigene*, wird der Graph als
+Blatt in der von dir festgelegten Größe dargestellt. Diese Größe wird in
+**realen Zentimetern** angegeben. Ein Zentimeter entspricht auf dem
+Bildschirm einem realen Zentimeter und behält diese Größe auch in einer
+exportierten `pdf`- oder `svg`-Datei.
 
-**Skalierung**, im selben Kasten, ändert die Größe von allem Gezeichneten auf
-einmal: Linien, Text und Teilstriche.
+Mit **Skalierung** im selben Bereich kannst du alles, was das Programm
+zeichnet, gleichzeitig vergrößern oder verkleinern: Linien, Text und
+Teilstriche.
 
-Dieses Blatt wird als Seite im Fenster gezeichnet, mit einer Zoomleiste darüber:
+Das Programm zeigt das Blatt als Seite im Fenster an, mit einer Zoomleiste
+darüber:
 
 ![Die Zoomleiste](images/zoom-bar.png)
 
-Die Leiste zoomt das Blatt auf dem Bildschirm, und der letzte Knopf passt das
-ganze Blatt ins Fenster. Dieser Zoom rührt den Graphen nicht an: die Grenzen der
-Ansicht bleiben, wie sie sind. Größen in Zentimetern stimmen bei 100 % Zoom.
+Mit der Leiste zoomst du das Blatt auf dem Bildschirm. Der letzte Knopf passt
+das gesamte Blatt an die Fenstergröße an. Dieser Zoom verändert den Graphen
+selbst nicht: Die Grenzen der Ansicht bleiben unverändert. Die Größen in
+Zentimetern stimmen bei 100 % Zoom.
 
-Die zwei Kästen unter **Größe**:
+Unter **Größe** befinden sich zwei weitere Bereiche:
 
-- **Zeichnung**: die Schrift und die Hintergrundfarbe des Graphen. **Min.
-  Punkte** und **Max. Punkte** legen fest, wie viele Punkte für jede stetige Kurve
-  berechnet werden, in Zweierpotenzen. Mehr Punkte geben eine feinere Kurve,
-  aber ein langsameres Zeichnen.
-- **Achsen**: Strichstärke, Farbe, die Titel entlang x und y, und die Schrift
-  dieser Titel.
+- **Zeichnung**: Schriftart und Hintergrundfarbe des Graphen. **Min. Punkte**
+  und **Max. Punkte** legen fest, wie viele Punkte das Programm für jede
+  kontinuierliche Kurve berechnet, jeweils als Zweierpotenz. Mehr Punkte
+  ergeben eine feinere Kurve, verlangsamen aber das Neuzeichnen.
+- **Achsen**: Linienstärke, Farbe, Beschriftungen entlang der x- und y-Achse
+  und die dafür verwendete Schriftart.
 
 ## 6. Der Reiter App
 
 ![Der Reiter App](images/app-tab.png)
 
-In diesem Reiter stellst du die Sprache und die Schrift der Oberfläche ein, dazu
-die drei Farben der Eingabefelder: gültig, Warnung und ungültig.
+Hier stellst du die Sprache und Schriftart der Benutzeroberfläche sowie die
+drei Farben der Eingabezeilen ein: gültig, Warnung und ungültig.
 
 ## 7. Der Reiter Über
 
-Dieser Reiter sagt, was ZeGrapher ist. Er enthält:
+Dieser Reiter enthält Informationen über ZeGrapher:
 
-- die Version, die du benutzt, und einen Knopf, der zegrapher.com nach einer
-  neueren fragt
-- Links zur Website, zum Quelltext und zum Autor
-- die Lizenzen von ZeGrapher, von Qt und der mitgelieferten Mathe-Schrift
-- einen Knopf **Spenden**, der die Spendenseite öffnet
-- die Versionshinweise: was jede Version gebracht hat, mit einem Link auf ihre
-  Seite bei GitHub
+- die verwendete Version und einen Knopf, der auf zegrapher.com nach einer
+  neueren Version sucht
+- Links zur Website, zum Quellcode und zum Autor
+- die Lizenzen von ZeGrapher, Qt und der mitgelieferten Mathematikschrift
+- einen **Spenden**-Knopf, der die Spendenseite öffnet
+- die Versionshinweise mit den Änderungen jeder Version und einem Link zur
+  entsprechenden GitHub-Seite
