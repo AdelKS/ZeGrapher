@@ -5,14 +5,22 @@ set -e
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
 echo "Checking and installing dependencies..."
-brew install python coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools pkg-config create-dmg glaze
+brew install python coreutils pkg-config create-dmg glaze
 
 # meson imports PyYAML from its own Python, and Homebrew has no PyYAML formula,
 # so meson, ninja and PyYAML go in a venv
 python_env="${deploy_dir}/python-env"
 "$(brew --prefix python)/bin/python3" -m venv "$python_env"
 source "$python_env/bin/activate"
-pip3 install meson ninja pyyaml
+pip3 install meson ninja pyyaml aqtinstall
+
+# Homebrew builds Qt for the macOS it runs on. The official Qt runs on older
+# ones, so the oldest macOS that runs the bundle is the one meson.build sets
+qt_version=$(aqt list-qt mac desktop --spec 6.11 --latest-version)
+aqt install-qt mac desktop "$qt_version" clang_64 -m qtshadertools -O "${deploy_dir}/qt"
+qt_dir="${deploy_dir}/qt/$qt_version/macos"
+export PATH="$qt_dir/bin:$PATH"
+export PKG_CONFIG_PATH="$qt_dir/lib/pkgconfig"
 
 version=$(python3 "${deploy_dir}"/../appdata/releases.py --version)
 arch=`uname -m`
@@ -36,7 +44,8 @@ meson setup \
 
 cd "${deploy_dir}/build-macos"
 meson compile
-meson test --print-errorlogs
+# the official Qt's frameworks load through @rpath, which the tests don't have
+DYLD_FRAMEWORK_PATH="$qt_dir/lib" meson test --print-errorlogs
 meson install --skip-subprojects
 cd ..
 
