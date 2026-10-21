@@ -48,6 +48,8 @@ Al acercar, el punto que está bajo el cursor se queda donde estaba.
 
 En un panel táctil o una pantalla táctil, pellizcar también acerca los dos ejes.
 
+En macOS, `Cmd` sustituye a `Ctrl`.
+
 ## 2. El panel de entrada
 
 ![El panel, y los dos botones de su borde](images/panel.png)

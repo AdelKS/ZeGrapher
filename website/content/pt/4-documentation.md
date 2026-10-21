@@ -48,6 +48,8 @@ Ao dar zoom, o ponto sob o cursor fica onde está.
 
 Num touchpad ou numa tela sensível ao toque, o gesto de pinça também dá zoom nos dois eixos.
 
+No macOS, o `Cmd` substitui o `Ctrl`.
+
 ## 2. O painel de entrada
 
 ![O painel, e os dois botões na borda dele](images/panel.png)

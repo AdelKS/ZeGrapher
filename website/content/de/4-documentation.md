@@ -48,6 +48,8 @@ Beim Zoomen bleibt der Punkt unter dem Zeiger, wo er ist.
 
 Auf einem Touchpad oder Touchscreen zoomst du beide Achsen auch mit zwei Fingern.
 
+Unter macOS nimmst du `Cmd` statt `Strg`.
+
 ## 2. Die Eingabeleiste
 
 ![Die Leiste und die zwei Knöpfe an ihrem Rand](images/panel.png)

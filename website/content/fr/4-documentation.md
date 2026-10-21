@@ -48,6 +48,8 @@ Le zoom conserve en place le point situé sous le curseur.
 
 Sur un pavé tactile ou un écran tactile, un pincement zoome aussi les deux axes.
 
+Sur macOS, `Cmd` remplace `Ctrl`.
+
 ## 2. Le panneau de saisie
 
 ![Le panneau, et les deux boutons sur son bord](images/panel.png)
