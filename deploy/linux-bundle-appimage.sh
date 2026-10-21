@@ -44,6 +44,9 @@ export EXTRA_QT_PLUGINS="waylandcompositor"
 export EXTRA_PLATFORM_PLUGINS="libqwayland.so"
 export QML_SOURCES_PATHS="${deploy_dir}/../src/"
 export NO_STRIP=1
+# don't bundle glib, libdbus and their dependencies. The AppImage then loads the
+# host's versions. The Ubuntu 26.04 versions need glibc 2.43, which older distros lack.
+export LINUXDEPLOY_EXCLUDED_LIBRARIES="libglib-2.0.so*;libgio-2.0.so*;libgobject-2.0.so*;libgmodule-2.0.so*;libgthread-2.0.so*;libmount.so*;libblkid.so*;libselinux.so*;libffi.so*;libpcre2-8.so*;libdbus-1.so*;libsystemd.so*"
 # the AppImages of linuxdeploy run without FUSE, which CI runners lack
 export APPIMAGE_EXTRACT_AND_RUN=1
 
