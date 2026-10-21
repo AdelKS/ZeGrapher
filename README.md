@@ -51,7 +51,12 @@ and [zegrapher.com](https://zegrapher.com/) both carry an
 To compile from sources, ZeGrapher needs the following tools and libraries:
 
 - a C++ compiler that takes C++23: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
-- [Qt](https://www.qt.io) 6.10 or newer
+- [Qt](https://www.qt.io) 6.10 or newer, with these modules
+  - Svg
+  - Declarative
+  - ShaderTools
+  - the Linguist tools for `lrelease`.
+  - The app uses the `FluentWinUI3` style of `Qt Quick Controls`: Debian and Ubuntu Qt packages currently don't package it.
 - [meson](https://mesonbuild.com) 1.7 or newer
 - [Python](https://www.python.org/) 3.10 or newer, with [PyYAML](https://pyyaml.org/)
 - [glaze](https://github.com/stephenberry/glaze) 8.3 or newer
