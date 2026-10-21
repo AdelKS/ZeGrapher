@@ -4,6 +4,12 @@ set -e
 
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
 
+# meson imports PyYAML from its own Python, so meson, ninja and PyYAML go in a venv
+python_env="${deploy_dir}/python-env"
+python3 -m venv "$python_env"
+source "$python_env/bin/activate"
+pip3 install meson ninja pyyaml
+
 version=$(python3 "${deploy_dir}"/../appdata/releases.py --version)
 
 [[ -d "${deploy_dir}/appdir-linux" ]] && rm -rf "${deploy_dir}/appdir-linux"
