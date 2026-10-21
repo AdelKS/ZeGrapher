@@ -76,4 +76,37 @@ void TextDocumentTools::colorLinks(QQuickTextDocument* doc, const QColor& color,
   document->setUndoRedoEnabled(undo);
 }
 
+void TextDocumentTools::keepOnOneLine(QQuickTextDocument* doc)
+{
+  if (not doc or not doc->textDocument())
+    return;
+
+  QTextDocument* document = doc->textDocument();
+
+  connect(document, &QTextDocument::contentsChange, document, [document](int pos, int, int added) {
+    // the document ends with a block separator that is not part of the text
+    const int end = std::min(pos + added, document->characterCount() - 1);
+
+    QTextCursor cursor;
+    for (int i = pos; i < end; i++)
+    {
+      const QChar c = document->characterAt(i);
+      if (c != QChar::ParagraphSeparator and c != QChar::LineSeparator)
+        continue;
+
+      if (cursor.isNull())
+      {
+        cursor = QTextCursor(document);
+        cursor.joinPreviousEditBlock();
+      }
+      cursor.setPosition(i);
+      cursor.setPosition(i + 1, QTextCursor::KeepAnchor);
+      cursor.insertText(" ");
+    }
+
+    if (not cursor.isNull())
+      cursor.endEditBlock();
+  });
+}
+
 }
