@@ -20,17 +20,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # meson imports PyYAML from its own Python, Homebrew has no PyYAML formula,
-      # and Homebrew's Python refuses 'pip install' (PEP 668). So meson, ninja
-      # and PyYAML go in setup-python's Python
-      - name: Install Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
-
-      - name: Install meson
-        run: pip3 install meson ninja pyyaml
-
       # the render test draws with Metal
       - name: Build, test & bundle
         run: ./deploy/macos-bundle-dmg.sh

@@ -2,13 +2,18 @@
 
 set -e
 
-# Install dependencies if not already present. meson, ninja and PyYAML come from
-# pip, because Homebrew has no PyYAML formula: see
-# .github/workflows/macos-build-bundle.yml
-echo "Checking and installing dependencies..."
-brew install coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools pkg-config create-dmg glaze
-
 deploy_dir=$(readlink -f $(dirname "$BASH_SOURCE"))
+
+echo "Checking and installing dependencies..."
+brew install python coreutils qtbase qtsvg qtdeclarative qttools qttranslations qtshadertools pkg-config create-dmg glaze
+
+# meson imports PyYAML from its own Python, and Homebrew has no PyYAML formula,
+# so meson, ninja and PyYAML go in a venv
+python_env="${deploy_dir}/python-env"
+"$(brew --prefix python)/bin/python3" -m venv "$python_env"
+source "$python_env/bin/activate"
+pip3 install meson ninja pyyaml
+
 version=$(python3 "${deploy_dir}"/../appdata/releases.py --version)
 arch=`uname -m`
 app_name="ZeGrapher-macOS-$arch-$version"
