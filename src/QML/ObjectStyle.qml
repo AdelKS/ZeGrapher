@@ -115,7 +115,6 @@ Foldable {
           Layout.alignment: Qt.AlignHCenter
           from: Limits.minCurveLineWidth * 10
           to: Limits.maxCurveLineWidth * 10
-          live: true
           value: root.style.lineWidth * 10.
           stepSize: 10
           Layout.maximumWidth: 100
@@ -149,7 +148,6 @@ Foldable {
           Layout.maximumWidth: 100
           from: Limits.minPointWidth * 4
           to: Limits.maxPointWidth * 4
-          live: true
           value: root.style.pointWidth * 4.0
           stepSize: 10
 
