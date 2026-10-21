@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
-  appdata/meson.build fills in the version and installs the result. Apple takes
-  only digits and dots in a version, so a pre-release such as '4.0.0_rc0' gives
-  the release it leads to, and CFBundleGetInfoString carries the whole version.
+  appdata/meson.build fills in the version and the oldest macOS that runs the
+  app, which meson.build sets, and installs the result. Apple takes only digits
+  and dots in a version, so a pre-release such as '4.0.0_rc0' gives the release
+  it leads to, and CFBundleGetInfoString carries the whole version.
 -->
 <plist version="1.0">
 <dict>
@@ -23,6 +24,8 @@
 	<string>@RELEASE@</string>
 	<key>CFBundleVersion</key>
 	<string>@RELEASE@</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>@MACOS_MIN@</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>NSPrincipalClass</key>

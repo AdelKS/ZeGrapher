@@ -12,6 +12,14 @@ project('ZeGrapher', 'cpp',
     meson_version: '>=1.7'
 )
 
+if host_machine.system() == 'darwin'
+    # ZeCalculator parses numbers with std::from_chars, which Apple's libc++
+    # has for floating point since macOS 26
+    macos_min = '26.0'
+    add_project_arguments('-mmacosx-version-min=' + macos_min, language : 'cpp')
+    add_project_link_arguments('-mmacosx-version-min=' + macos_min, language : 'cpp')
+endif
+
 if get_option('debug')
     add_project_arguments('-D QT_QML_DEBUG', language: 'cpp')
 endif
