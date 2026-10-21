@@ -28,6 +28,8 @@ Rectangle {
   property alias text: edit.text
   property alias textEdit: edit
   property alias iconSource: icon.source
+  /// @brief turns pasted line breaks into spaces and ignores Enter, read at creation
+  property bool singleLine: true
 
   signal textEdited()
 
@@ -82,18 +84,11 @@ Rectangle {
       text: ""
       onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
-      onTextEdited: {
-        // Keys.onPressed below filters Enter, but not a pasted line break
-        if (/[\r\n\u2029]/.test(text)) {
-          const position = cursorPosition;
-          text = text.replace(/\r\n|[\r\n\u2029]/g, " ");
-          cursorPosition = Math.min(position, length);
-        }
-        rec.textEdited();
-      }
+      Component.onCompleted: if (rec.singleLine) TextDocumentTools.keepOnOneLine(edit.textDocument)
+      onTextEdited: rec.textEdited()
 
       Keys.onPressed: (event)=> {
-        if ([Qt.Key_Enter, Qt.Key_Return].includes(event.key)) {
+        if (rec.singleLine && [Qt.Key_Enter, Qt.Key_Return].includes(event.key)) {
           // filter linebreaks events
           event.accepted = true;
         } else if ([Qt.Key_Tab, Qt.Key_Backtab].includes(event.key)) {

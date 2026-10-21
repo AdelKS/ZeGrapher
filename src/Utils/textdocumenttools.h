@@ -58,6 +58,11 @@ public:
   ///       QQuickTextNodeEngine prefers the character color over the item color
   Q_INVOKABLE void colorLinks(QQuickTextDocument* doc, const QColor& color,
                               const QColor& hoveredColor, const QString& hoveredUrl);
+
+  /// @brief from now on, replaces each line break that enters `doc` with a space
+  /// @note the replacement joins the undo step of the edit that brought the
+  ///       line break, so one undo restores the text from before that edit
+  Q_INVOKABLE void keepOnOneLine(QQuickTextDocument* doc);
 };
 
 }

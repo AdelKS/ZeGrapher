@@ -88,6 +88,7 @@ Item {
 
   LineEdit {
     id: errorLbl
+    singleLine: false
     height: textEdit.length > 0 ? implicitHeight + 4 : 0
 
     text: root.errorMsg
