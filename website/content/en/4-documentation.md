@@ -48,6 +48,8 @@ The zoom keeps the point under the cursor in place.
 
 On a touchpad or a touchscreen, a pinch zooms both axes too.
 
+On macOS, use `Cmd` instead of `Ctrl`.
+
 ## 2. The user input panel
 
 ![The panel, and the two buttons on its edge](images/panel.png)

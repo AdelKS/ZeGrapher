@@ -48,6 +48,8 @@ Con lo zoom, il punto sotto il cursore resta dov'è.
 
 Su un touchpad o un touchscreen, anche il gesto di pizzico zooma i due assi.
 
+Su macOS, `Cmd` sostituisce `Ctrl`.
+
 ## 2. Il pannello di inserimento
 
 ![Il pannello, e i due pulsanti sul suo bordo](images/panel.png)
