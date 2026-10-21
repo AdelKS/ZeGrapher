@@ -37,10 +37,6 @@ jobs:
           sudo apt-get install -y xvfb libgl1-mesa-dri libxkbcommon-x11-0 libxcb-icccm4 \
             libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
             libxcb-xkb1
-          # install-qt-action puts its own Python first on PATH, and pip3 installs
-          # meson for that Python. meson imports PyYAML from the Python it runs
-          # on, so PyYAML comes from pip3 too
-          pip3 install --user meson ninja pyyaml
 
       # the render test draws in an xvfb-run window, with Mesa's OpenGL
       - name: Build, test & bundle
