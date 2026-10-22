@@ -41,17 +41,17 @@
     <message>
         <source>Distributed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html) license.</source>
         <extracomment>the link opens the text of the license</extracomment>
-        <translation>Verteilt unter der Lizenz [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html).</translation>
+        <translation>Veröffentlicht unter der [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html)-Lizenz.</translation>
     </message>
     <message>
         <source>Built with [Qt](https://www.qt.io/) %1, under the [LGPL version 3](https://www.qt.io/licensing/) license.</source>
         <extracomment>%1 is the version of Qt, and the link opens the licensing page of Qt</extracomment>
-        <translation>Erstellt mit [Qt](https://www.qt.io/) %1, unter der Lizenz [LGPL Version 3](https://www.qt.io/licensing/).</translation>
+        <translation>Erstellt mit [Qt](https://www.qt.io/) %1 unter der [LGPL Version 3](https://www.qt.io/licensing/)-Lizenz.</translation>
     </message>
     <message>
         <source>The embedded &quot;Latin Modern Math&quot; font is distributed under the [GUST Font License](#font-license).</source>
         <extracomment>the link opens the license of the math font that the app carries</extracomment>
-        <translation>Die eingebettete Schrift „Latin Modern Math“ wird unter der [GUST Font License](#font-license) verteilt.</translation>
+        <translation>Die eingebettete Schrift „Latin Modern Math“ steht unter der [GUST Font License](#font-license).</translation>
     </message>
     <message>
         <source>What&apos;s new</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Border color of an expression, one color per state.</source>
-        <translation>Rahmenfarbe eines Ausdrucks, eine je Zustand.</translation>
+        <translation>Rahmenfarbe eines Ausdrucks, je nach Zustand.</translation>
     </message>
     <message>
         <source>Valid</source>
@@ -118,7 +118,7 @@
     </message>
     <message>
         <source>Every expression can use this name.</source>
-        <translation>Jeder Ausdruck darf diesen Namen verwenden.</translation>
+        <translation>Jeder Ausdruck kann diesen Namen verwenden.</translation>
     </message>
     <message>
         <source>value</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Number of steps to go from min to max: the constant takes steps+1 values.</source>
-        <translation>Wie viele Schritte von min bis max: die Konstante nimmt Schritte+1 Werte an.</translation>
+        <translation>Anzahl der Schritte von min bis max. Die Konstante nimmt Schritte+1 Werte an.</translation>
     </message>
     <message>
         <source>max</source>
@@ -151,11 +151,11 @@
     </message>
     <message>
         <source>Loop: at max, the constant jumps back to min and starts again</source>
-        <translation>Schleife: bei max springt die Konstante zurück auf min und fängt neu an</translation>
+        <translation>Schleife: Bei max springt die Konstante zu min zurück und beginnt von vorn</translation>
     </message>
     <message>
         <source>Ping pong: at max, the constant moves back to min, then to max again</source>
-        <translation>Hin und zurück: bei max läuft die Konstante zurück auf min und wieder hinauf</translation>
+        <translation>Hin und zurück: Bei max läuft die Konstante zurück zu min und dann wieder zu max</translation>
     </message>
     <message>
         <source>s</source>
@@ -202,7 +202,7 @@
     </message>
     <message>
         <source>The string that separates two cells of a row. Write %1 for a TAB separator.</source>
-        <translation>Die Zeichen zwischen zwei Zellen einer Zeile. Schreibe %1 für einen Tabulator.</translation>
+        <translation>Zeichenfolge zwischen zwei Zellen einer Zeile. Für einen Tabulator %1 eingeben.</translation>
     </message>
     <message>
         <source>Header row:</source>
@@ -210,11 +210,11 @@
     </message>
     <message>
         <source>Preview rows:</source>
-        <translation>Zeilen zeigen:</translation>
+        <translation>Vorschauzeilen:</translation>
     </message>
     <message>
         <source>Skip rows:</source>
-        <translation>Zeilen weglassen:</translation>
+        <translation>Zeilen überspringen:</translation>
     </message>
     <message>
         <source>Preview</source>
@@ -237,11 +237,11 @@
     </message>
     <message>
         <source>Show this column in the table</source>
-        <translation>Diese Spalte in der Tabelle zeigen</translation>
+        <translation>Diese Spalte in der Tabelle anzeigen</translation>
     </message>
     <message>
         <source>Drag to change the order of the columns (in the exported CSV and in the plot)</source>
-        <translation>Ziehen ändert die Reihenfolge der Spalten (im CSV und im Graphen)</translation>
+        <translation>Spalten durch Ziehen umsortieren (im CSV-Export und im Graphen)</translation>
     </message>
     <message>
         <source>Delete this column</source>
@@ -272,7 +272,7 @@
     </message>
     <message>
         <source>Drag to resize the box of the sheet. Double-click for its default height.</source>
-        <translation>Ziehen ändert die Höhe des Blatts. Doppelklick setzt sie zurück.</translation>
+        <translation>Ziehen ändert die Blatthöhe. Doppelklick stellt die Standardhöhe wieder her.</translation>
     </message>
 </context>
 <context>
@@ -328,7 +328,7 @@
     </message>
     <message>
         <source>The file name has no extension, so no image format matches it.</source>
-        <translation>Der Dateiname hat keine Endung, daher passt kein Bildformat zu ihm.</translation>
+        <translation>Ohne Dateiendung lässt sich kein Bildformat zuordnen.</translation>
     </message>
     <message>
         <source>No image format matches the extension &apos;%1&apos;.</source>
@@ -340,7 +340,7 @@
     </message>
     <message>
         <source>A page of %1×%2 cm is not a valid page size.</source>
-        <translation>Eine Seite von %1×%2 cm ist keine gültige Seitengröße.</translation>
+        <translation>Die Seitengröße %1×%2 cm ist ungültig.</translation>
     </message>
     <message>
         <source>Created with ZeGrapher %1</source>
@@ -361,7 +361,7 @@
     </message>
     <message>
         <source>Draw everything on the graph bigger or smaller.</source>
-        <translation>Zeichnet alles im Graphen größer oder kleiner.</translation>
+        <translation>Vergrößert oder verkleinert alles im Graphen.</translation>
     </message>
     <message>
         <source>Graph size</source>
@@ -431,11 +431,11 @@
     </message>
     <message>
         <source>X title</source>
-        <translation>Titel X</translation>
+        <translation>Titel der X-Achse</translation>
     </message>
     <message>
         <source>Y title</source>
-        <translation>Titel Y</translation>
+        <translation>Titel der Y-Achse</translation>
     </message>
     <message>
         <source>Title font</source>
@@ -450,11 +450,11 @@
     </message>
     <message>
         <source>Spreads the ticks further apart. Zero is the tightest spacing the app draws.</source>
-        <translation>Rückt die Striche weiter auseinander. Null ist der engste Abstand, den die App zeichnet.</translation>
+        <translation>Vergrößert den Abstand zwischen den Teilstrichen. Bei 0 ist er am kleinsten.</translation>
     </message>
     <message>
         <source>The number of digits a tick label can use before the app writes a power of ten.</source>
-        <translation>Wie viele Ziffern eine Beschriftung nutzen darf, bevor die App eine Zehnerpotenz schreibt.</translation>
+        <translation>Maximale Ziffernzahl einer Beschriftung, bevor die App eine Zehnerpotenz verwendet.</translation>
     </message>
     <message>
         <source>Spacing</source>
@@ -471,7 +471,7 @@
     </message>
     <message>
         <source>Ticks and their labels become multiples of this expression, for example math::pi.</source>
-        <translation>Striche und Beschriftungen werden Vielfache dieses Ausdrucks, zum Beispiel math::pi.</translation>
+        <translation>Teilstriche und Beschriftungen als Vielfache dieses Ausdrucks, z. B. math::pi.</translation>
     </message>
     <message>
         <source>The multiplier must be a positive number</source>
@@ -499,7 +499,7 @@
     </message>
     <message>
         <source>Subdivisions</source>
-        <translation>Teilungen</translation>
+        <translation>Unterteilungen</translation>
     </message>
 </context>
 <context>
@@ -555,7 +555,7 @@
     </message>
     <message>
         <source>The path to the file has the wrong format.</source>
-        <translation>Der Pfad der Datei hat das falsche Format.</translation>
+        <translation>Der Dateipfad hat ein ungültiges Format.</translation>
     </message>
     <message>
         <source>The file does not exist.</source>
@@ -568,7 +568,7 @@
     <message>
         <source>ZeGrapher %1 wrote this document, and this is version %2. Get the latest version from %3 to open all of it.</source>
         <extracomment>%1 and %2 are versions of ZeGrapher, %3 the address of its website</extracomment>
-        <translation>ZeGrapher %1 hat dieses Dokument geschrieben, und dies ist Version %2. Die neueste Version von %3 öffnet es vollständig.</translation>
+        <translation>Dieses Dokument wurde mit ZeGrapher %1 erstellt. Du nutzt Version %2. Lade die neueste Version von %3 herunter, um es vollständig zu öffnen.</translation>
     </message>
     <message>
         <source>Could not open the file for reading.</source>
@@ -585,7 +585,7 @@
     <message>
         <source>ZeGrapher %1 wrote this document, and this is version %2. Get the latest version from %3 to open it.</source>
         <extracomment>%1 and %2 are versions of ZeGrapher, %3 the address of its website</extracomment>
-        <translation>ZeGrapher %1 hat dieses Dokument geschrieben, und dies ist Version %2. Die neueste Version von %3 öffnet es.</translation>
+        <translation>Dieses Dokument wurde mit ZeGrapher %1 erstellt. Du nutzt Version %2. Lade die neueste Version von %3 herunter, um es zu öffnen.</translation>
     </message>
     <message>
         <source>The file is not a valid ZeGrapher document.</source>
@@ -596,7 +596,7 @@
     <name>MainWindow</name>
     <message>
         <source>Drag to move the border</source>
-        <translation>Ziehen verschiebt die Grenze</translation>
+        <translation>Trennlinie durch Ziehen verschieben</translation>
     </message>
     <message>
         <source>Fold the panel away</source>
@@ -627,11 +627,11 @@
     </message>
     <message>
         <source>Schrödinger mode: the constant takes several values at once</source>
-        <translation>Schrödinger-Modus: die Konstante nimmt mehrere Werte auf einmal an</translation>
+        <translation>Schrödinger-Modus: Die Konstante nimmt mehrere Werte gleichzeitig an</translation>
     </message>
     <message>
         <source>Drag to change the order of the objects</source>
-        <translation>Ziehen ändert die Reihenfolge der Objekte</translation>
+        <translation>Objekte durch Ziehen umsortieren</translation>
     </message>
     <message>
         <source>Delete this object</source>
@@ -711,11 +711,11 @@
     <name>PlotControls</name>
     <message>
         <source>Show the curve</source>
-        <translation>Kurve zeigen</translation>
+        <translation>Kurve anzeigen</translation>
     </message>
     <message>
         <source>Hide the curve</source>
-        <translation>Kurve verbergen</translation>
+        <translation>Kurve ausblenden</translation>
     </message>
     <message>
         <source>Plot style</source>
@@ -727,7 +727,7 @@
     </message>
     <message>
         <source>End color of the gradient over the family of Schrödinger curves</source>
-        <translation>Endfarbe des Verlaufs über die Schar der Schrödinger-Kurven</translation>
+        <translation>Endfarbe des Farbverlaufs der Schrödinger-Kurvenschar</translation>
     </message>
 </context>
 <context>
@@ -742,7 +742,7 @@
     </message>
     <message>
         <source>ZeGrapher (.zg) document(s) to open on startup</source>
-        <translation>ZeGrapher-Dokument(e) (.zg), die beim Start geöffnet werden</translation>
+        <translation>ZeGrapher-Dokumente (.zg), die beim Start geöffnet werden</translation>
     </message>
     <message>
         <source>Internal error: C++ math function called with the wrong number of arguments</source>
@@ -750,7 +750,7 @@
     </message>
     <message>
         <source>Not a math object definition, write it as &quot;name = expression&quot;</source>
-        <translation>Das ist keine Objektdefinition, schreibe sie als „Name = Ausdruck“</translation>
+        <translation>Keine mathematische Objektdefinition. Verwende „Name = Ausdruck“</translation>
     </message>
     <message>
         <source>Object not defined</source>
@@ -777,11 +777,11 @@
     </message>
     <message>
         <source>Unexpected end of expression</source>
-        <translation>Der Ausdruck hört zu früh auf</translation>
+        <translation>Der Ausdruck endet unerwartet</translation>
     </message>
     <message>
         <source>Missing &quot;)&quot;</source>
-        <translation>Es fehlt eine „)“</translation>
+        <translation>Schließende Klammer „)“ fehlt</translation>
     </message>
     <message>
         <source>Undefined variable &quot;%1&quot;</source>
@@ -810,7 +810,7 @@
     <message>
         <source>Object &quot;%1&quot; used as the wrong type</source>
         <extracomment>%1 is the name the user wrote, used as a variable when it is a function or the other way around</extracomment>
-        <translation>Objekt „%1“ als falscher Typ verwendet</translation>
+        <translation>Objekt „%1“ hat hier den falschen Typ</translation>
     </message>
     <message>
         <source>Object &quot;%1&quot; is in an invalid state</source>
@@ -935,7 +935,7 @@
     </message>
     <message>
         <source>Export the graph: vector graphics (PDF, SVG) or images (PNG, JPG)</source>
-        <translation>Graph exportieren: Vektor (PDF, SVG) oder Bild (PNG, JPG)</translation>
+        <translation>Graph exportieren: Vektorgrafik (PDF, SVG) oder Bild (PNG, JPG)</translation>
     </message>
     <message>
         <source>Save to %1</source>
@@ -1001,7 +1001,7 @@
     </message>
     <message>
         <source>Too many points: the limit is %1.</source>
-        <translation>Zu viele Punkte: die Grenze liegt bei %1.</translation>
+        <translation>Zu viele Punkte: maximal %1 erlaubt.</translation>
     </message>
 </context>
 </TS>
