@@ -1,0 +1,11 @@
+math_objects:
+  - notes: سقوط حر لكرة من 110 م، قياس كل نصف ثانية
+    columns:
+      - name: الزمن
+      - name: الارتفاع
+graph:
+  axes:
+    x:
+      title: الزمن (ث)
+    y:
+      title: الارتفاع (م)
