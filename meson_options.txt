@@ -1,2 +1,3 @@
 option('loglevel', type: 'combo', choices : ['debug', 'info', 'warn', 'off'], value : 'off', description: 'Max log level in non-debug build')
 option('test', type: 'boolean', value: false, description: 'Build tests')
+option('update_check', type: 'combo', choices : ['startup', 'manual', 'removed'], value : 'startup', description: 'Update check: on by default at startup, off by default but available, or not built in')

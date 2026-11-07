@@ -33,6 +33,8 @@ class UpdateCheck : public QObject
 
   Q_PROPERTY(Status status READ getStatus NOTIFY statusChanged)
   Q_PROPERTY(QString latestVersion READ getLatestVersion NOTIFY statusChanged)
+  /// @brief false when the build leaves the check out (meson -Dupdate_check=removed)
+  Q_PROPERTY(bool available READ isAvailable CONSTANT)
 
 public:
   explicit UpdateCheck(QObject *parent = nullptr);
@@ -42,6 +44,7 @@ public:
 
   Status getStatus() const { return status; }
   QString getLatestVersion() const { return latestVersion; }
+  static bool isAvailable() { return available; }
 
 public slots:
   void refresh();
@@ -55,6 +58,7 @@ signals:
 protected:
   QString latestVersion;
   Status status = IDLE;
+  static constexpr bool available = ZG_UPDATE_CHECK;
   QNetworkAccessManager manager;
 
 };

@@ -102,12 +102,14 @@ Item {
 
       ZeLabel {
         Layout.alignment: Qt.AlignRight
+        visible: Information.updateCheck.available
         text: qsTr('Updates')
         //: %1 is the site name, zegrapher.com
         tooltipText: qsTr("Ask %1 for the latest release when the app starts.").arg(new URL(BuildInfo.homepage).host)
       }
       RowLayout {
         Layout.alignment: Qt.AlignLeft
+        visible: Information.updateCheck.available
         spacing: 0
 
         ZeCheckBox {

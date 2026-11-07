@@ -60,7 +60,7 @@ public:
   QSize windowSize = defaultWindowSize;
   bool maximized = false;
   int paneWidth = defaultPaneWidth;
-  bool checkUpdates = true;
+  bool checkUpdates = defaultCheckUpdates;
 
   ThemedColor validSyntax = defaultValidSyntax;
   ThemedColor invalidSyntax = defaultInvalidSyntax;
@@ -70,6 +70,7 @@ public:
 
   static constexpr QSize defaultWindowSize = {1000, 700};
   static constexpr int defaultPaneWidth = 330;
+  static constexpr bool defaultCheckUpdates = ZG_STARTUP_UPDATE_CHECK;
 
   const static ThemedColor defaultValidSyntax;
   const static ThemedColor defaultInvalidSyntax;

@@ -79,6 +79,10 @@ This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can di
 
 #### Packaging
 
+A distribution package updates through the package manager, so build it with
+`meson setup -D update_check=removed build`. The app then leaves out the update
+check, its setting and its button.
+
 - Linux
   - `meson install` follows the XDG directory specification. Open an issue or a pull request if something is missing.
   - Use [deploy/linux-bundle-appimage.sh](./deploy/linux-bundle-appimage.sh) to create an [AppImage](https://appimage.org/).

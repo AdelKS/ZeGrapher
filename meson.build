@@ -36,6 +36,12 @@ if get_option('loglevel') == 'off'
     add_project_arguments('-D QT_NO_WARNING_OUTPUT', language : 'cpp')
 endif
 
+add_project_arguments(
+    '-D ZG_UPDATE_CHECK=' + (get_option('update_check') != 'removed').to_string(),
+    '-D ZG_STARTUP_UPDATE_CHECK=' + (get_option('update_check') == 'startup').to_string(),
+    language : 'cpp',
+)
+
 if (get_option('b_ndebug') == 'if-release' and get_option('buildtype') == 'release') or get_option('b_ndebug') == 'true'
     add_project_arguments('-D QT_NO_DEBUG', language : 'cpp')
 endif

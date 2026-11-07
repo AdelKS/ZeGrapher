@@ -146,6 +146,7 @@ Item {
           Layout.maximumWidth: 25
           Layout.alignment: Qt.AlignCenter
 
+          visible: root.checker.available
           iconName: "loop"
 
           ToolTip.text: qsTr('Check for updates')
