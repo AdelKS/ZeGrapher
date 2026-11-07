@@ -28,5 +28,5 @@ parametric equations and data — and exports exactly what you see.
   brings it back at the next start. You can also save it to a file of your own,
   and open it whenever you want.
 - **A built-in manual**, opened next to the graph, in the language of the app.
-- **In 9 languages**: the app and its manual are in English, French, German,
-  Spanish, Italian, Portuguese, Russian, Japanese and Chinese.
+- **In 10 languages**: the app and its manual are in English, French, German,
+  Spanish, Italian, Portuguese, Russian, Japanese, Chinese and Arabic.

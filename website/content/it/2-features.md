@@ -29,5 +29,5 @@ equazioni parametriche e dati — ed esporta esattamente quello che vedi.
   quando vuoi.
 - **Un manuale integrato**, che si apre accanto al grafico, nella lingua
   dell'app.
-- **In 9 lingue**: l'app e il suo manuale sono in inglese, francese, tedesco,
-  spagnolo, italiano, portoghese, russo, giapponese e cinese.
+- **In 10 lingue**: l'app e il suo manuale sono in inglese, francese, tedesco,
+  spagnolo, italiano, portoghese, russo, giapponese, cinese e arabo.

@@ -29,5 +29,5 @@ ecuaciones paramétricas y datos— y exporta exactamente lo que ves.
   archivo tuyo, y abrirlo cuando quieras.
 - **Un manual integrado**, que se abre junto a la gráfica, en el idioma de la
   aplicación.
-- **En 9 idiomas**: la aplicación y su manual están en inglés, francés, alemán,
-  español, italiano, portugués, ruso, japonés y chino.
+- **En 10 idiomas**: la aplicación y su manual están en inglés, francés, alemán,
+  español, italiano, portugués, ruso, japonés, chino y árabe.

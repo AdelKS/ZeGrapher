@@ -32,5 +32,5 @@ données, puis exporte exactement ce que vous voyez.
   l'enregistrer dans un fichier à vous, et l'ouvrir quand vous le voulez.
 - **Un manuel intégré**, qui s'ouvre à côté du graphe, dans la langue de
   l'application.
-- **En 9 langues** : l'application et son manuel existent en anglais, français,
-  allemand, espagnol, italien, portugais, russe, japonais et chinois.
+- **En 10 langues** : l'application et son manuel existent en anglais, français,
+  allemand, espagnol, italien, portugais, russe, japonais, chinois et arabe.

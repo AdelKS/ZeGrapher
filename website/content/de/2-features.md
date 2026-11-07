@@ -35,6 +35,6 @@ du genau so exportieren, wie du es siehst.
   kannst sie auch in einer eigenen Datei speichern und später erneut öffnen.
 - **Integriertes Handbuch**, das sich direkt neben dem Graphen in der gewählten
   Sprache öffnen lässt.
-- **9 unterstützte Sprachen**: ZeGrapher und sein Handbuch sind auf Englisch,
+- **10 unterstützte Sprachen**: ZeGrapher und sein Handbuch sind auf Englisch,
   Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Russisch,
-  Japanisch und Chinesisch verfügbar.
+  Japanisch, Chinesisch und Arabisch verfügbar.

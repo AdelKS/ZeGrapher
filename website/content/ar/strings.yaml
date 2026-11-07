@@ -1,0 +1,50 @@
+# The short strings of the site that no panel holds. Translate the values,
+# and keep the keys.
+
+# the name of this language, written in that language. The menu at the top of
+# every page lists each language under this name. This key does not fall back
+# to English, so every language must write it
+language: العربية
+
+# the title of the page, which the browser shows in its tab
+page_title: ZeGrapher، برنامج رسم بياني مفتوح المصدر
+
+# the line under the title of the landing panel. A search engine also shows it
+# as the description of the page
+tagline: برنامج رسم بياني رياضي حر ومفتوح المصدر، سهل التعلّم. يرسم الدوال والمتتاليات والمعادلات الوسيطية والبيانات في المستوي.
+
+# the words of each entry of the footer
+footer:
+  donate: تبرّع
+  contact: اتصل بنا
+  theme-based-on: مبني على
+
+# the labels of the buttons of the page. A screen reader reads them, and the
+# label of the theme switch also shows when the pointer rests on it
+buttons:
+  theme: التبديل بين المظهر الفاتح والداكن
+  previous: السابق
+  next: التالي
+
+# the line over the download tiles. The build writes the version in place of
+# {version}, and the day of the release in place of {date}
+release: "الإصدار {version}، صدر في {date}"
+
+# the words of the tile that links the repository on GitHub: its name, and
+# the two smaller links under it
+downloads:
+  source: الشيفرة المصدرية
+  releases: الإصدارات
+  issues: المشاكل
+
+# the caption of each gallery picture, by file name. The site gives it to the
+# picture as alt text, and software centers show it under the screenshot
+gallery:
+  vitrine.png: "منحنى قطبي مرسوم لعدة قيم لثابت في آن واحد"
+  functions.png: "دالة ومتتالية على الرسم نفسه"
+  schrodinger.png: "وضع شرودنغر: منحنى لكل قيمة من قيم الثابت"
+  data.png: "بيانات مقيسة، في جدول وعلى الرسم"
+
+# the markdown that asks for a donation. The site shows it in the download
+# panel, and the app shows it above its Donate button
+donation: إن كان ZeGrapher مفيدًا لك، فكّر في التبرّع لدعمه.

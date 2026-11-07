@@ -27,5 +27,5 @@ paramétricas e dados — e exporta exatamente o que você vê.
   fecha, e o traz de volta no início seguinte. Você também pode salvá-lo num
   arquivo seu, e abri-lo quando quiser.
 - **Um manual embutido**, que abre ao lado do gráfico, no idioma do programa.
-- **Em 9 idiomas**: o programa e o seu manual estão em inglês, francês, alemão,
-  espanhol, italiano, português, russo, japonês e chinês.
+- **Em 10 idiomas**: o programa e o seu manual estão em inglês, francês, alemão,
+  espanhol, italiano, português, russo, japonês, chinês e árabe.
