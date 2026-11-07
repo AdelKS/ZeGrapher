@@ -18,9 +18,9 @@
 **
 ****************************************************************************/
 
-// A square button across the right edge of a pane, which toggles 'checked' on
-// click. The pane covers its inner third. Users of the button declare the icon
-// as a child.
+// A square button across the right edge of a pane, the left edge when mirrored,
+// which toggles 'checked' on click. The pane covers its inner third. Users of
+// the button declare the icon as a child.
 
 import QtQuick
 import QtQuick.Controls.FluentWinUI3

@@ -35,6 +35,23 @@ ApplicationWindow {
 
   color: ZeStyle.themed(Information.graphSettings.backgroundColor)
 
+  // a right-to-left language mirrors the window, popups included, and puts the
+  // panels on the right. The graph is not mirrored
+  readonly property bool rtl: Application.layoutDirection === Qt.RightToLeft
+  LayoutMirroring.enabled: rtl
+  LayoutMirroring.childrenInherit: true
+
+  /// @brief the x that puts an item at distance 'x' from the reading start:
+  ///        from the left edge in left-to-right, from the right edge in
+  ///        right-to-left
+  /// @note LayoutMirroring does not change the coordinate system: still left
+  ///       to right, with the zero on the left. So the panes set their x
+  ///       through this. It also works the other way: given an item's x, it
+  ///       returns its distance from the reading start.
+  function flipX(x: real, width: real): real {
+    return rtl ? win.width - x - width : x;
+  }
+
   component ResizeHandle: Item {
     width: 5
     anchors.top: parent.top
@@ -43,7 +60,8 @@ ApplicationWindow {
 
     signal dragStarted()
 
-    /// @brief horizontal distance dragged since the press, in window coordinates
+    /// @brief horizontal distance dragged since the press, towards the end of the
+    ///        reading direction
     signal dragged(real diff)
 
     MouseArea {
@@ -68,7 +86,8 @@ ApplicationWindow {
 
       onPositionChanged: function (mouse) {
         if (pressed)
-          parent.dragged(mapToItem(null, mouse.x, 0).x - sceneXonPress);
+          parent.dragged((Application.layoutDirection === Qt.RightToLeft ? -1 : 1)
+                         * (mapToItem(null, mouse.x, 0).x - sceneXonPress));
       }
 
       Rectangle {
@@ -125,7 +144,7 @@ ApplicationWindow {
     spread: 0
     offset.x: 0
     color: ZeStyle.palette.shadow
-    opacity: drawer.width > 0 ? Math.max(0, 1 + drawer.x / drawer.width) : 1
+    opacity: drawer.width > 0 ? Math.max(0, 1 + win.flipX(drawer.x, drawer.width) / drawer.width) : 1
   }
 
   Rectangle {
@@ -141,15 +160,18 @@ ApplicationWindow {
     states: [
       State {
         name: "hidden"; when: !drawer_button.checked
-        PropertyChanges { drawer.x: -drawer.width }
+        PropertyChanges { drawer.x: win.flipX(-drawer.width, drawer.width) }
       },
       State {
         name: "shown"; when: drawer_button.checked
-        PropertyChanges { drawer.x: 0 }
+        PropertyChanges { drawer.x: win.flipX(0, drawer.width) }
       }
     ]
 
     transitions: Transition {
+      reversible: true
+      from: "hidden"
+      to: "shown"
       NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad }
     }
 
@@ -298,6 +320,7 @@ ApplicationWindow {
         width: 10
 
         rotation: drawer_button.checked ? 180 : 0
+        mirror: win.rtl
 
         Behavior on rotation {
           NumberAnimation { duration: 1000; easing.type: Easing.InOutQuad }
@@ -316,7 +339,10 @@ ApplicationWindow {
     property bool anchorToDrawer: drawer_button.checked && win.width - drawer.width >= 400
     id: graphScrollView
 
-    x: drawer_button.apparentWidth + (anchorToDrawer ? drawer.width : 0)
+    LayoutMirroring.enabled: false
+    LayoutMirroring.childrenInherit: true
+
+    x: win.flipX(drawer_button.apparentWidth + (anchorToDrawer ? drawer.width : 0), width)
     y: 0
     height: win.height
     width: (anchorToDrawer ? win.width - drawer.width : win.width) - drawer_button.apparentWidth
@@ -369,12 +395,12 @@ ApplicationWindow {
     spread: 0
     offset.x: 0
     color: ZeStyle.palette.shadow
-    opacity: docPane.width > 0 ? Math.max(0, 1 + (docPane.x - win.docsEdge) / docPane.width) : 1
+    opacity: docPane.width > 0 ? Math.max(0, 1 + (win.flipX(docPane.x, docPane.width) - win.docsEdge) / docPane.width) : 1
   }
 
-  /// @brief the x of the panel's right edge, folded or not. The documentation
-  ///        pane unfolds from there
-  readonly property real docsEdge: drawer.x + drawer.width
+  /// @brief the panel's inner edge, folded or not, from the reading start. The
+  ///        documentation pane unfolds from there
+  readonly property real docsEdge: win.flipX(drawer.x, drawer.width) + drawer.width
 
   DocPane {
     id: docPane
@@ -392,15 +418,18 @@ ApplicationWindow {
     states: [
       State {
         name: "hidden"; when: !docPane.open
-        PropertyChanges { docPane.x: win.docsEdge - docPane.width }
+        PropertyChanges { docPane.x: win.flipX(win.docsEdge - docPane.width, docPane.width) }
       },
       State {
         name: "shown"; when: docPane.open
-        PropertyChanges { docPane.x: win.docsEdge }
+        PropertyChanges { docPane.x: win.flipX(win.docsEdge, docPane.width) }
       }
     ]
 
     transitions: Transition {
+      reversible: true
+      from: "hidden"
+      to: "shown"
       NumberAnimation { properties: "x"; easing.type: Easing.InOutQuad }
     }
   }

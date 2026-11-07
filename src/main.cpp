@@ -123,6 +123,9 @@ int main(int argc, char *argv[])
         and translator.load(":/translations/ZeGrapher_" + QLocale::languageToCode(lang) + ".qm"))
       a.installTranslator(&translator);
 
+    // Qt reads the direction from a QT_LAYOUT_DIRECTION string, which our .ts files don't hold
+    a.setLayoutDirection(QLocale(lang).textDirection());
+
     engine.retranslate();
     zg::mathWorld->retranslate();
   };

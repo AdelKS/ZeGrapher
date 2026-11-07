@@ -85,8 +85,11 @@ Dialog {
       Layout.minimumHeight: Math.min(120, notes.implicitHeight)
 
       clip: true
-      // the scrollbar sits at the right edge of the view, over the padding
-      rightPadding: notesView.ScrollBar.vertical.width + ZeStyle.scrollBarGap
+      // the scrollbar sits at the right edge of the view, the left edge when
+      // mirrored, over the padding
+      readonly property real scrollBarSpace: notesView.ScrollBar.vertical.width + ZeStyle.scrollBarGap
+      leftPadding: mirrored ? scrollBarSpace : 0
+      rightPadding: mirrored ? 0 : scrollBarSpace
 
       ScrollBar.vertical.policy: ScrollBar.AsNeeded
 

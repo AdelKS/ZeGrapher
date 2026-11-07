@@ -80,9 +80,12 @@ Item {
     contentWidth: view.availableWidth
     // the panel menu floats over the bottom of every tab
     contentHeight: layout.implicitHeight + root.globalMenuSize.height + 10
-    // the scrollbar sits at the right edge of the view, over the padding. With
-    // nothing to scroll, the content takes the whole width
-    rightPadding: scrolls ? view.ScrollBar.vertical.width + ZeStyle.scrollBarGap : 0
+    // the scrollbar sits at the right edge of the view, the left edge when
+    // mirrored, over the padding. With nothing to scroll, the content takes the
+    // whole width
+    readonly property real scrollBarSpace: scrolls ? view.ScrollBar.vertical.width + ZeStyle.scrollBarGap : 0
+    leftPadding: mirrored ? scrollBarSpace : 0
+    rightPadding: mirrored ? 0 : scrollBarSpace
 
     ScrollBar.vertical.policy: scrolls ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
 

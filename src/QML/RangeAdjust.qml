@@ -28,6 +28,11 @@ Item {
 
   required property GraphRange range
 
+  // xmin and xmax sit on the same sides as on the graph's x axis. The graph is
+  // not mirrored in right-to-left languages, so this widget is not either.
+  LayoutMirroring.enabled: false
+  LayoutMirroring.childrenInherit: true
+
   property int spacing: 5
   implicitHeight: yminEdit.y + yminEdit.height
 

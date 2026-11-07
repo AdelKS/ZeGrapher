@@ -29,6 +29,10 @@ Item {
   id: root
   clip: true
 
+  // TableView doesn't mirror its columns, so the headers don't mirror either
+  LayoutMirroring.enabled: false
+  LayoutMirroring.childrenInherit: true
+
   required property var model
   property bool interactive: false
 
