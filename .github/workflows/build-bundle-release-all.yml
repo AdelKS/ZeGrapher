@@ -38,6 +38,8 @@ jobs:
     uses: ./.github/workflows/macos-build-bundle.yml
     with:
       runner: macos-26-intel
+      # macOS 26 runs only on 2019+ Intel Macs, which all support x86-64-v3
+      cxxflags: -march=x86-64-v3
       # Metal setup hangs in this runner's VM, before Qt reports a backend
       render-test: false
 
