@@ -80,6 +80,9 @@ public:
 
   real_range2d getLatestValidSnapshot();
 
+  /// @brief sets both axes back to -10 .. 10
+  Q_INVOKABLE void reset();
+
   /// @brief writes the range of a view that the user moved
   /// @param pixels  the size of the view, in pixels
   void interactiveUpdate(const real_range2d& range, QSizeF pixels);

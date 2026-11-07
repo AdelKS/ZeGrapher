@@ -22,6 +22,7 @@
 // ymin below
 
 import QtQuick
+import QtQuick.Controls.FluentWinUI3
 
 Item {
   id: root
@@ -69,6 +70,20 @@ Item {
     color: ZeStyle.palette.text
   }
 
+  IconRoundButton {
+    id: resetButton
+    anchors.top: root.top
+    anchors.right: root.right
+    width: 25
+    height: 25
+
+    iconName: "reset-view"
+
+    ToolTip.text: qsTr("Reset the view to -10 .. 10")
+
+    onClicked: root.range.reset()
+  }
+
   BoundLabel {
     id: ymaxLbl
     text: root.boundName("y", "max")
@@ -97,14 +112,17 @@ Item {
   ValueEdit {
     id: xminEdit
     anchors.left: root.left
-    anchors.top: ymaxEdit.bottom
     anchors.margins: root.spacing
+    // the xmax label sits above xmaxEdit, under resetButton
+    y: Math.max(ymaxEdit.y + ymaxEdit.height,
+                resetButton.height + xmaxLbl.height + xmaxLbl.anchors.bottomMargin) + root.spacing
     width: parent.width/3 - 2*anchors.margins
     backend: root.range.x.min
     customErrorMsg: root.inversionError(root.range.x, "x", true)
   }
 
   BoundLabel {
+    id: xmaxLbl
     text: root.boundName("x", "max")
     anchors.horizontalCenter: xmaxEdit.horizontalCenter
     anchors.bottomMargin: 5
@@ -114,8 +132,9 @@ Item {
   ValueEdit {
     id: xmaxEdit
     anchors.right: root.right
-    anchors.top: ymaxEdit.bottom
+    anchors.top: xminEdit.top
     anchors.margins: root.spacing
+    anchors.topMargin: 0
     width: parent.width/3 - 2*anchors.margins
     backend: root.range.x.max
     customErrorMsg: root.inversionError(root.range.x, "x", false)

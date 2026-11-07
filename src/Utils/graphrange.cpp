@@ -64,15 +64,18 @@ GraphRange::GraphRange(QObject* parent)
   : QObject(parent), x(this), y(this)
 {
   x.min.setImplicitName("xmin");
-  x.min.setExpression("-10");
-
   x.max.setImplicitName("xmax");
-  x.max.setExpression("10");
-
   y.min.setImplicitName("ymin");
-  y.min.setExpression("-10");
-
   y.max.setImplicitName("ymax");
+
+  reset();
+}
+
+void GraphRange::reset()
+{
+  x.min.setExpression("-10");
+  x.max.setExpression("10");
+  y.min.setExpression("-10");
   y.max.setExpression("10");
 }
 
