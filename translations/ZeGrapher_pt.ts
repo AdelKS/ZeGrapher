@@ -78,6 +78,19 @@
         <translation>Fonte</translation>
     </message>
     <message>
+        <source>Updates</source>
+        <translation>Atualizações</translation>
+    </message>
+    <message>
+        <source>Ask %1 for the latest release when the app starts.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>Consultar a última versão em %1 ao iniciar o app.</translation>
+    </message>
+    <message>
+        <source>Check at startup</source>
+        <translation>Procurar ao iniciar</translation>
+    </message>
+    <message>
         <source>Syntax coloring</source>
         <translation>Cores da sintaxe</translation>
     </message>
@@ -108,6 +121,23 @@
     <message>
         <source>Border color of an invalid expression.</source>
         <translation>Cor da borda de uma expressão inválida.</translation>
+    </message>
+    <message>
+        <source>The check sends to %1:
+• the app version and its language
+• the OS
+• the CPU architecture (x86_64 or arm64)
+• the IP address, used only to find the country
+And nothing else. These anonymous statistics show
+where ZeGrapher is used, and on what kind of computers.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>A procura envia para %1:
+• a versão do app e o idioma dele
+• o sistema operacional
+• a arquitetura da CPU (x86_64 ou arm64)
+• o endereço IP, usado só para saber o país
+E mais nada. Essas estatísticas anônimas mostram
+onde o ZeGrapher é usado e em que tipo de computador.</translation>
     </message>
 </context>
 <context>
@@ -882,6 +912,18 @@
         <source>Sample</source>
         <extracomment>tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over</extracomment>
         <translation>Amostrar</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateBanner</name>
+    <message>
+        <source>ZeGrapher %1 is available on %2.</source>
+        <extracomment>%1 is a version, such as 4.1.0, and %2 is a link to the site, zegrapher.com</extracomment>
+        <translation>O ZeGrapher %1 está disponível em %2.</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Fechar</translation>
     </message>
 </context>
 <context>

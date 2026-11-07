@@ -78,6 +78,19 @@
         <translation>字体</translation>
     </message>
     <message>
+        <source>Updates</source>
+        <translation>更新</translation>
+    </message>
+    <message>
+        <source>Ask %1 for the latest release when the app starts.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>启动时向 %1 查询最新版本。</translation>
+    </message>
+    <message>
+        <source>Check at startup</source>
+        <translation>启动时检查</translation>
+    </message>
+    <message>
         <source>Syntax coloring</source>
         <translation>语法着色</translation>
     </message>
@@ -108,6 +121,23 @@
     <message>
         <source>Border color of an invalid expression.</source>
         <translation>无效表达式的边框颜色。</translation>
+    </message>
+    <message>
+        <source>The check sends to %1:
+• the app version and its language
+• the OS
+• the CPU architecture (x86_64 or arm64)
+• the IP address, used only to find the country
+And nothing else. These anonymous statistics show
+where ZeGrapher is used, and on what kind of computers.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>检查时会向 %1 发送：
+• 应用版本及其语言
+• 操作系统
+• CPU 架构（x86_64 或 arm64）
+• IP 地址，仅用于确定国家
+不发送其他任何信息。这些匿名统计数据显示
+ZeGrapher 在哪些地区、哪类电脑上使用。</translation>
     </message>
 </context>
 <context>
@@ -882,6 +912,18 @@
         <source>Sample</source>
         <extracomment>tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over</extracomment>
         <translation>采样</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateBanner</name>
+    <message>
+        <source>ZeGrapher %1 is available on %2.</source>
+        <extracomment>%1 is a version, such as 4.1.0, and %2 is a link to the site, zegrapher.com</extracomment>
+        <translation>%2 上已发布 ZeGrapher %1。</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>

@@ -78,6 +78,19 @@
         <translation>フォント</translation>
     </message>
     <message>
+        <source>Updates</source>
+        <translation>更新</translation>
+    </message>
+    <message>
+        <source>Ask %1 for the latest release when the app starts.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>起動時に %1 で最新版を確認します。</translation>
+    </message>
+    <message>
+        <source>Check at startup</source>
+        <translation>起動時に確認</translation>
+    </message>
+    <message>
         <source>Syntax coloring</source>
         <translation>構文の色分け</translation>
     </message>
@@ -108,6 +121,23 @@
     <message>
         <source>Border color of an invalid expression.</source>
         <translation>無効な数式の枠線の色。</translation>
+    </message>
+    <message>
+        <source>The check sends to %1:
+• the app version and its language
+• the OS
+• the CPU architecture (x86_64 or arm64)
+• the IP address, used only to find the country
+And nothing else. These anonymous statistics show
+where ZeGrapher is used, and on what kind of computers.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>確認時に %1 へ送信する情報：
+• アプリのバージョンと言語
+• OS
+• CPU アーキテクチャ（x86_64 または arm64）
+• IP アドレス（国の判定にのみ使用）
+それ以外は送信しません。この匿名の統計から、
+ZeGrapher がどこで、どんなコンピューターで使われているかがわかります。</translation>
     </message>
 </context>
 <context>
@@ -882,6 +912,18 @@
         <source>Sample</source>
         <extracomment>tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over</extracomment>
         <translation>埋める</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateBanner</name>
+    <message>
+        <source>ZeGrapher %1 is available on %2.</source>
+        <extracomment>%1 is a version, such as 4.1.0, and %2 is a link to the site, zegrapher.com</extracomment>
+        <translation>%2 で ZeGrapher %1 を公開中です。</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>閉じる</translation>
     </message>
 </context>
 <context>

@@ -102,6 +102,36 @@
         <translation>الخط</translation>
     </message>
     <message>
+        <source>Updates</source>
+        <translation>التحديثات</translation>
+    </message>
+    <message>
+        <source>Ask %1 for the latest release when the app starts.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>سؤال %1 عن آخر إصدار عند بدء التطبيق.</translation>
+    </message>
+    <message>
+        <source>Check at startup</source>
+        <translation>التحقق عند البدء</translation>
+    </message>
+    <message>
+        <source>The check sends to %1:
+• the app version and its language
+• the OS
+• the CPU architecture (x86_64 or arm64)
+• the IP address, used only to find the country
+And nothing else. These anonymous statistics show
+where ZeGrapher is used, and on what kind of computers.</source>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
+        <translation>يرسل التحقق إلى %1:
+• إصدار التطبيق ولغته
+• نظام التشغيل
+• بنية المعالج (x86_64 أو arm64)
+• عنوان IP، ويُستخدم فقط لمعرفة البلد
+ولا شيء غير ذلك. تُظهر هذه الإحصاءات المجهولة
+أين يُستخدم ZeGrapher، وعلى أي نوع من الحواسيب.</translation>
+    </message>
+    <message>
         <source>Syntax coloring</source>
         <translation>تلوين العبارات</translation>
     </message>
@@ -882,6 +912,18 @@
         <source>Sample</source>
         <extracomment>tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over</extracomment>
         <translation>أخذ العينات</translation>
+    </message>
+</context>
+<context>
+    <name>UpdateBanner</name>
+    <message>
+        <source>ZeGrapher %1 is available on %2.</source>
+        <extracomment>%1 is a version, such as 4.1.0, and %2 is a link to the site, zegrapher.com</extracomment>
+        <translation>يتوفّر ZeGrapher %1 على %2.</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>إغلاق</translation>
     </message>
 </context>
 <context>
