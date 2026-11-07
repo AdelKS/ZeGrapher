@@ -21,6 +21,10 @@
 #include "Utils/updatecheck.h"
 #include "Utils/versionparser.h"
 #include "buildconfig.h"
+#include "information.h"
+
+#include <QSysInfo>
+#include <QUrlQuery>
 
 UpdateCheck::UpdateCheck(QObject *parent) : QObject(parent)
 {
@@ -29,10 +33,27 @@ UpdateCheck::UpdateCheck(QObject *parent) : QObject(parent)
 
 void UpdateCheck::refresh()
 {
-  // website/scripts/build-website.py writes this file at the site root
-  QNetworkRequest request(QUrl(HOMEPAGE_URL "/latest_tag"));
+  // 'windows', 'macos', or the Linux distro, such as 'ubuntu'
+  // Qt 6.11 strips only double quotes from the os-release ID, and Gentoo
+  // writes ID='gentoo'. An ID holds no quotes, so remove them all
+  const QString os = QSysInfo::productType().remove(u'\'');
+  const QString arch = QSysInfo::currentCpuArchitecture();
+  // the language the app shows, which can differ from the system's
+  const QString lang = QLocale::languageToCode(QLocale::Language(information->appSettings.language));
+
+  // website/scripts/build-website.py writes this file at the site root. The
+  // server ignores the query: Matomo custom dimensions read it from the access
+  // log. Nothing in the request tells one install from another
+  QUrl url(HOMEPAGE_URL "/latest_tag");
+  url.setQuery(QUrlQuery({{"version", SOFTWARE_VERSION}, {"lang", lang}, {"os", os}, {"arch", arch}}));
+
+  QNetworkRequest request(url);
   // without a timeout, a missing reply would keep the status at CHECKING
   request.setTransferTimeout();
+  // Qt fills an empty Accept-Language with the system languages
+  request.setRawHeader("Accept-Language", "*");
+  request.setHeader(QNetworkRequest::UserAgentHeader,
+                    QString("ZeGrapher/%1 (%2; %3)").arg(SOFTWARE_VERSION, os, arch));
   manager.get(request);
   status = CHECKING;
   emit statusChanged();
