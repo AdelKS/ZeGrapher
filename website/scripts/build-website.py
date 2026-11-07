@@ -448,7 +448,7 @@ def download_tile(icon: str, name: str, href: str, subs: list) -> str:
     """One tile: a big icon that links a file, its name, and the smaller links."""
     parts = ['<div class="download">',
              f'<a class="icon" href="{href}">{read_icon(icon)}</a>',
-             f'<span class="name">{name}</span>']
+             f'<span class="name" dir="auto">{name}</span>']
     parts += [f'<a class="sub" href="{href}">{text}</a>' for text, href in subs]
     parts.append("</div>")
     return "\n".join(parts)
@@ -477,7 +477,7 @@ def downloads_html(repo: str, release: dict | None, lang: str) -> str:
         download_tile("windows", "Windows", links["Windows", "x86_64"],
                       [("x64", links["Windows", "x86_64"]),
                        ("arm64", links["Windows", "arm64"])]),
-        download_tile("apple", "macOS", links["macOS", "arm64"],
+        download_tile("apple", "macOS 26+", links["macOS", "arm64"],
                       [("Apple Silicon", links["macOS", "arm64"]),
                        ("Intel", links["macOS", "x86_64"])]),
         download_tile("github", source["source"], repo,
