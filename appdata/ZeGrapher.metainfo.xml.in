@@ -9,6 +9,7 @@
   <project_license>AGPL-3.0-or-later</project_license>
   <name>ZeGrapher</name>
   <summary>Math plotting software</summary>
+  <summary xml:lang="ar">برنامج رسم بياني للرياضيات</summary>
   <summary xml:lang="de">Programm zum Zeichnen mathematischer Graphen</summary>
   <summary xml:lang="es">Programa para trazar gráficas matemáticas</summary>
   <summary xml:lang="fr">Logiciel de tracé de courbes</summary>

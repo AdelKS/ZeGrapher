@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=ZeGrapher
 Comment=Math plotting software
+Comment[ar]=برنامج رسم بياني للرياضيات
 Comment[fr]=Logiciel de tracé de courbes
 Comment[de]=Programm zum Zeichnen mathematischer Graphen
 Comment[es]=Programa para trazar gráficas matemáticas
@@ -10,6 +11,7 @@ Comment[pt]=Programa para traçar gráficos matemáticos
 Comment[ru]=Программа для построения математических графиков
 Comment[zh]=数学绘图软件
 Keywords=graph;plot;curve;function;sequence;parametric;math;
+Keywords[ar]=رسم بياني;منحنى;دالة;متتالية;متتابعة;وسيطي;رياضيات;
 Keywords[de]=Graph;Kurve;zeichnen;Funktion;Folge;Parameter;Mathematik;
 Keywords[es]=gráfica;curva;trazar;función;sucesión;paramétrica;matemáticas;
 Keywords[fr]=graphe;courbe;tracé;fonction;suite;paramétrique;maths;
