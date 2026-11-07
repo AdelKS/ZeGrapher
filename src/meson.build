@@ -81,6 +81,7 @@ qml_files = [
   'QML/Foldable.qml',
   'QML/GraphSettings.qml',
   'QML/GridSettings.qml',
+  'QML/HelpMark.qml',
   'QML/IconButton.qml',
   'QML/IconRoundButton.qml',
   'QML/ImageTumbler.qml',
