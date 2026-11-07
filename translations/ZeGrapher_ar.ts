@@ -864,6 +864,10 @@ where ZeGrapher is used, and on what kind of computers.</source>
         <extracomment>%1 and %2 are the names of two bounds, for example ymax and ymin</extracomment>
         <translation>يجب أن يكون %1 أكبر من %2</translation>
     </message>
+    <message>
+        <source>Reset the view to -10 .. 10</source>
+        <translation>إعادة نطاق العرض إلى ‎-10 .. 10</translation>
+    </message>
 </context>
 <context>
     <name>ReleaseNotes</name>

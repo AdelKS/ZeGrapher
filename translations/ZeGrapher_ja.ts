@@ -864,6 +864,10 @@ ZeGrapher がどこで、どんなコンピューターで使われているか�
         <extracomment>%1 and %2 are the names of two bounds, for example ymax and ymin</extracomment>
         <translation>%1 は %2 より大きくしてください</translation>
     </message>
+    <message>
+        <source>Reset the view to -10 .. 10</source>
+        <translation>表示を -10 .. 10 に戻す</translation>
+    </message>
 </context>
 <context>
     <name>ReleaseNotes</name>
