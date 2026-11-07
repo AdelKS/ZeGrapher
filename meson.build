@@ -5,8 +5,6 @@ project('ZeGrapher', 'cpp',
         'buildtype=release',
         'optimization=3',
         'b_ndebug=if-release',
-        'c_args=-pipe',
-        'cpp_args=-pipe',
         'warning_level=3',
     ],
     meson_version: '>=1.7'
