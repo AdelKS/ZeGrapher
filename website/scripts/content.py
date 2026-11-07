@@ -31,6 +31,9 @@ SOURCE = "en"
 # The pictures folder inside a language folder, and the path panels use
 PICTURES = "images"
 
+# The right-to-left languages. Their pages and app windows are mirrored
+RIGHT_TO_LEFT = {"ar", "fa", "he", "ur"}
+
 # A language's short strings that no panel holds, such as the footer text. The
 # app embeds the same file, and reads the donation appeal from it.
 STRINGS = "strings.yaml"

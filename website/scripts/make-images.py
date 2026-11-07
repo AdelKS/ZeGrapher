@@ -63,6 +63,8 @@ from pathlib import Path
 import yaml
 from PIL import Image, ImageChops, ImageMath, ImageStat
 
+from content import RIGHT_TO_LEFT
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 # the list, the documents it names, the patches, and the rectangle picker page
@@ -575,14 +577,20 @@ def corner_mask(size, radius):
     return mask
 
 
-def box_of(rect, size, output):
-    """The corners of a WxH+X+Y rectangle, as Image.crop takes them."""
+def box_of(rect, size, output, mirrored):
+    """The corners of a WxH+X+Y rectangle, as Image.crop takes them.
+
+    A right-to-left language mirrors the window, which is centered in the
+    capture, so the rectangle is mirrored too.
+    """
     try:
         extent, x, y = rect.split("+")
         width, height = (int(n) for n in extent.split("x"))
         x, y = int(x), int(y)
     except ValueError:
         fail(f"{output}: {rect} is not a rectangle of the form WxH+X+Y")
+    if mirrored:
+        x = size[0] - x - width
     if x < 0 or y < 0 or x + width > size[0] or y + height > size[1]:
         fail(f"{output}: the rectangle {rect} runs past the capture, which is "
              f"{size[0]}x{size[1]}. Draw it again with --reprompt-crops")
@@ -637,7 +645,7 @@ def reduce_colors(picture):
     return reduced
 
 
-def cut(shot, rect, output, full_color):
+def cut(shot, rect, output, full_color, mirrored):
     """Writes one picture out of a capture.
 
     A 'whole' picture is the capture encoded again, with the corners and the
@@ -649,7 +657,7 @@ def cut(shot, rect, output, full_color):
         if rect == "whole":
             picture = capture.copy()
         else:
-            picture = capture.crop(box_of(rect, capture.size, output)).convert("RGBA")
+            picture = capture.crop(box_of(rect, capture.size, output, mirrored)).convert("RGBA")
             mask = corner_mask(picture.size, RADIUS)
             picture.putalpha(ImageChops.multiply(picture.getchannel("A"), mask))
     if not full_color:
@@ -669,7 +677,7 @@ def crop_all(captures, langs):
                 fail(f"{shot} is not there. Take the captures again without --crop-only")
             for image in capture["images"]:
                 cut(shot, image["rect"], near(image["output"].replace("{lang}", lang)),
-                    image.get("full-color", False))
+                    image.get("full-color", False), lang in RIGHT_TO_LEFT)
                 count += 1
     print(f"{count} pictures written")
 
@@ -699,6 +707,9 @@ def main():
         if code not in every:
             fail(f"the app has no translation for {code}. It has: " + ", ".join(every))
     langs = [lang for lang in every if not wanted or lang in wanted]
+    if args.reprompt_crops and langs[0] in RIGHT_TO_LEFT:
+        fail(f"{langs[0]} mirrors the window. Draw the rectangles in a "
+             "left-to-right language")
 
     if not args.crop_only:
         if os.environ.get(SEALED):

@@ -144,7 +144,7 @@ sys.path[:0] = [str(SITE / "scripts"), str(ROOT / "appdata")]
 
 import content  # noqa: E402
 import releases  # noqa: E402
-from content import CONF_FILE, CONTENT, PICTURES, SOURCE, STRINGS  # noqa: E402
+from content import CONF_FILE, CONTENT, PICTURES, RIGHT_TO_LEFT, SOURCE, STRINGS  # noqa: E402
 
 TEMPLATES = SITE / "templates"
 ASSETS = SITE / "assets"
@@ -800,6 +800,7 @@ def build_language(lang: str, site: Site) -> Path:
 
     page = fill(site.templates["layout"], {
         "lang": lang,
+        "dir": "rtl" if lang in RIGHT_TO_LEFT else "ltr",
         "title": page_title,
         "description": escape(tagline),
         "css_version": site.css_version,

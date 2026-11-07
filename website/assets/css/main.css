@@ -415,8 +415,9 @@ input::-moz-focus-inner {
 	}
 
 	blockquote {
-		border-left: solid 0.5em var(--line);
-		padding: 1em 0 1em 2em;
+		border-inline-start: solid 0.5em var(--line);
+		padding-block: 1em;
+		padding-inline: 2em 0;
 		font-style: italic;
 	}
 
@@ -451,6 +452,12 @@ input::-moz-focus-inner {
 		background: var(--wash);
 		padding: 0.15em 0.4em;
 		border-radius: 0.25em;
+	}
+
+	/* Code reads left to right, also on a right-to-left page. */
+	code, pre {
+		direction: ltr;
+		unicode-bidi: isolate;
 	}
 
 	pre {
@@ -490,7 +497,7 @@ input::-moz-focus-inner {
 		}
 
 		table th {
-			text-align: left;
+			text-align: start;
 			font-weight: 600;
 			padding: 0.5em 1em 0.5em 1em;
 		}
@@ -530,11 +537,11 @@ input::-moz-focus-inner {
 
 	ul {
 		list-style: disc;
-		padding-left: 1em;
+		padding-inline-start: 1em;
 	}
 
 		ul li {
-			padding-left: 0.5em;
+			padding-inline-start: 0.5em;
 		}
 
 	/* A nested list belongs to its item, so it must not get the block
@@ -545,11 +552,11 @@ input::-moz-focus-inner {
 
 	ol {
 		list-style: decimal;
-		padding-left: 1.25em;
+		padding-inline-start: 1.25em;
 	}
 
 		ol li {
-			padding-left: 0.25em;
+			padding-inline-start: 0.25em;
 		}
 
 /* Icons */
@@ -725,7 +732,7 @@ input::-moz-focus-inner {
 		#langs ul {
 			position: absolute;
 			top: 100%;
-			right: 0;
+			inset-inline-end: 0;
 			z-index: 10;
 			margin: 0.25em 0 0 0;
 			padding: 0.25em 0;
@@ -733,7 +740,7 @@ input::-moz-focus-inner {
 			max-height: 60vh;
 			overflow-y: auto;
 			list-style: none;
-			text-align: left;
+			text-align: start;
 			background-color: var(--page);
 			border-radius: 0.25em;
 			box-shadow: 0 0.25em 0.75em var(--shadow);
@@ -1063,25 +1070,25 @@ input::-moz-focus-inner {
 				height: auto;
 			}
 
-			/* Every panel heading hangs left of the text, which then reads as
+			/* Every panel heading hangs out of the text, which then reads as
 			   indented. Each margin is 1em of body text, written in the heading's own
 			   em, so they all hang by the same width. */
 			#main > .panel:not(.intro) > h1 {
-				margin-left: -0.42em;
+				margin-inline-start: -0.42em;
 			}
 
 			#main > .panel:not(.intro) > h2 {
-				margin-left: -0.55em;
+				margin-inline-start: -0.55em;
 			}
 
 			#main > .panel:not(.intro) > h3 {
-				margin-left: -0.8em;
+				margin-inline-start: -0.8em;
 			}
 
 			#main > .panel:not(.intro) > h4,
 			#main > .panel:not(.intro) > h5,
 			#main > .panel:not(.intro) > h6 {
-				margin-left: -0.91em;
+				margin-inline-start: -0.91em;
 			}
 
 			/* A phone keeps 1.5em of padding, so only half the hang fits. At this
@@ -1089,18 +1096,18 @@ input::-moz-focus-inner {
 			@media screen and (max-width: 736px) {
 
 				#main > .panel:not(.intro) > h1 {
-					margin-left: -0.29em;
+					margin-inline-start: -0.29em;
 				}
 
 				#main > .panel:not(.intro) > h2 {
-					margin-left: -0.36em;
+					margin-inline-start: -0.36em;
 				}
 
 				#main > .panel:not(.intro) > h3,
 				#main > .panel:not(.intro) > h4,
 				#main > .panel:not(.intro) > h5,
 				#main > .panel:not(.intro) > h6 {
-					margin-left: -0.5em;
+					margin-inline-start: -0.5em;
 				}
 
 			}
@@ -1139,14 +1146,18 @@ input::-moz-focus-inner {
 			   column: gap center = (100% - 45em)/4, minus 1.3rem (half the circle).
 			   100% (not vw) excludes the scrollbar, so it matches the centered wrapper
 			   identically across browsers; max() keeps it on-screen on phones. */
-			.tab-arrow.prev { left:  max(0.5rem, calc((100% - 45em) / 4 - 1.3rem)); }
-			.tab-arrow.next { right: max(0.5rem, calc((100% - 45em) / 4 - 1.3rem)); }
+			.tab-arrow.prev { inset-inline-start: max(0.5rem, calc((100% - 45em) / 4 - 1.3rem)); }
+			.tab-arrow.next { inset-inline-end:   max(0.5rem, calc((100% - 45em) / 4 - 1.3rem)); }
 
 			.tab-arrow svg { width: 1.3rem; height: 1.3rem; fill: currentColor; }
 
 			/* Optically center the chevron glyph inside the circle. */
 			.tab-arrow.prev svg { transform: translateX(-10%); }
 			.tab-arrow.next svg { transform: translateX(10%); }
+
+			/* A right-to-left page puts the previous panel on the right, so the
+			   chevrons point the other way. */
+			[dir="rtl"] .tab-arrow svg { scale: -1 1; }
 
 			@media screen and (max-width: 736px) {
 
@@ -1171,13 +1182,17 @@ input::-moz-focus-inner {
 				}
 
 				.tab-arrow.prev {
-					left: 0;
-					border-radius: 1.5rem 0 0 1.5rem;
+					inset-inline-start: 0;
+					border-radius: 0;
+					border-start-start-radius: 1.5rem;
+					border-end-start-radius: 1.5rem;
 				}
 
 				.tab-arrow.next {
-					right: 0;
-					border-radius: 0 1.5rem 1.5rem 0;
+					inset-inline-end: 0;
+					border-radius: 0;
+					border-start-end-radius: 1.5rem;
+					border-end-end-radius: 1.5rem;
 				}
 
 				/* The chevron sits over the edge of the page, in the middle of the drop. */
@@ -1403,23 +1418,23 @@ input::-moz-focus-inner {
 
 			#footer li {
 				display: inline-block;
-				padding-left: 1em;
-				margin-left: 1em;
-				border-left: solid 1px rgba(255, 255, 255, 0.25);
+				padding-inline-start: 1em;
+				margin-inline-start: 1em;
+				border-inline-start: solid 1px rgba(255, 255, 255, 0.25);
 				line-height: 1;
 			}
 
 				#footer li:first-child {
-					padding-left: 0;
-					margin-left: 0;
-					border-left: 0;
+					padding-inline-start: 0;
+					margin-inline-start: 0;
+					border-inline-start: 0;
 				}
 
 		@media screen and (max-width: 736px) {
 
 			#footer li {
-				padding-left: 0.5em;
-				margin-left: 0.5em;
+				padding-inline-start: 0.5em;
+				margin-inline-start: 0.5em;
 			}
 
 		}
