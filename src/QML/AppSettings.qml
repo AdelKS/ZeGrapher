@@ -102,6 +102,36 @@ Item {
 
       ZeLabel {
         Layout.alignment: Qt.AlignRight
+        text: qsTr('Updates')
+        //: %1 is the site name, zegrapher.com
+        tooltipText: qsTr("Ask %1 for the latest release when the app starts.").arg(new URL(BuildInfo.homepage).host)
+      }
+      RowLayout {
+        Layout.alignment: Qt.AlignLeft
+        spacing: 0
+
+        ZeCheckBox {
+          text: qsTr('Check at startup')
+
+          checked: Information.appSettings.checkUpdates
+          onToggled: Information.appSettings.checkUpdates = checked
+        }
+
+        HelpMark {
+          //: %1 is the site name, zegrapher.com
+          text: qsTr("The check sends to %1:\n"
+                     + "• the app version and its language\n"
+                     + "• the OS\n"
+                     + "• the CPU architecture (x86_64 or arm64)\n"
+                     + "• the IP address, used only to find the country\n"
+                     + "And nothing else. These anonymous statistics show\n"
+                     + "where ZeGrapher is used, and on what kind of computers.")
+                  .arg(new URL(BuildInfo.homepage).host)
+        }
+      }
+
+      ZeLabel {
+        Layout.alignment: Qt.AlignRight
         text: qsTr('Syntax coloring')
         tooltipText: qsTr("Border color of an expression, one color per state.")
       }

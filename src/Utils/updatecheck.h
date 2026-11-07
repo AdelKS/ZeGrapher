@@ -29,6 +29,7 @@ class UpdateCheck : public QObject
 {
   Q_OBJECT
   QML_ELEMENT
+  QML_UNCREATABLE("Information.updateCheck is the app's one checker")
 
   Q_PROPERTY(Status status READ getStatus NOTIFY statusChanged)
   Q_PROPERTY(QString latestVersion READ getLatestVersion NOTIFY statusChanged)

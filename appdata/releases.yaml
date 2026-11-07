@@ -54,6 +54,7 @@ announcements:
       - Export to SVG, PDF and image formats, exactly as it looks on the screen
       - Save your work. Your latest work is also automatically saved and restored on the next start
       - The manual of the website, inside the app
+      - Checks for updates at startup. The App tab has a setting to turn it off
       - Support for new languages (AI translated): French, German, Spanish, Italian, Portuguese,
         Russian, Japanese, Chinese and Arabic
       - Near-complete rewrite of the code base

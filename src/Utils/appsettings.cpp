@@ -53,6 +53,7 @@ std::optional<ZeAppSettings::POD> ZeAppSettings::exportPod() const
     .window_size = zg::yml::QSizePOD::from(windowSize, defaultWindowSize),
     .maximized = not_default(maximized, false),
     .pane_width = not_default(paneWidth, defaultPaneWidth),
+    .check_updates = checkUpdates,
     .valid_syntax = validSyntax.exportPod(defaultValidSyntax),
     .invalid_syntax = invalidSyntax.exportPod(defaultInvalidSyntax),
     .warning_syntax = warningSyntax.exportPod(defaultWarningSyntax),
@@ -99,6 +100,12 @@ void ZeAppSettings::importPod(POD p)
   {
     paneWidth = *p.pane_width;
     emit paneWidthChanged();
+  }
+
+  if (p.check_updates and checkUpdates != *p.check_updates)
+  {
+    checkUpdates = *p.check_updates;
+    emit checkUpdatesChanged();
   }
 
   if (p.valid_syntax)

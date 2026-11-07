@@ -106,6 +106,7 @@ qml_files = [
   'QML/SchrodingerBadge.qml',
   'QML/Separator.qml',
   'QML/TextTumbler.qml',
+  'QML/UpdateBanner.qml',
   'QML/UserInputPanel.qml',
   'QML/ValueEdit.qml',
   'QML/ZcExprEdit.qml',

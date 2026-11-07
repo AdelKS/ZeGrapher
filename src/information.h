@@ -29,6 +29,7 @@
 #include "MathObjects/mathworld.h"
 #include "Utils/appsettings.h"
 #include "Utils/graphsettings.h"
+#include "Utils/updatecheck.h"
 
 namespace zg {
   struct PlotStyle;
@@ -59,6 +60,7 @@ class Information: public QObject
 
   Q_PROPERTY(ZeAppSettings* appSettings READ getAppSettingsPtr CONSTANT)
   Q_PROPERTY(ZeGraphSettings* graphSettings READ getGraphSettingsPtr CONSTANT)
+  Q_PROPERTY(UpdateCheck* updateCheck READ getUpdateCheckPtr CONSTANT)
 
   /// @brief the file of the last saveAs(), which save() writes to. Empty until
   ///        the first saveAs(): loading a document adds to the open one
@@ -81,6 +83,7 @@ public:
 
   ZeAppSettings* getAppSettingsPtr() { return &appSettings; }
   ZeGraphSettings* getGraphSettingsPtr() { return &graphSettings; }
+  UpdateCheck* getUpdateCheckPtr() { return &updateCheck; }
   int getIoErrorCount() const { return ioErrors.size(); }
   Q_INVOKABLE bool hasIoError() const { return not ioErrors.isEmpty(); }
   QString getDocumentName() const;
@@ -132,6 +135,10 @@ public:
 public:
   ZeAppSettings appSettings;
   ZeGraphSettings graphSettings;
+
+  /// @brief one checker for the whole app: the startup check and the About
+  ///        tab's button share its result
+  UpdateCheck updateCheck;
 
   /// @brief read from the settings file when Information is built
   QString lastRunVersion;

@@ -30,9 +30,7 @@ Item {
 
   required property size globalMenuSize
 
-  UpdateCheck {
-    id: checker
-  }
+  readonly property UpdateCheck checker: Information.updateCheck
 
   /// @brief the name of the site, 'zegrapher.com'
   readonly property string siteName: new URL(BuildInfo.homepage).host
@@ -40,11 +38,11 @@ Item {
   /// @brief what the line under the version says about the update check
   function updateStatus() : string {
     //: %1 is the version of the newest release, such as v4.0.0
-    const latest = qsTr("Latest release: %1").arg(checker.latestVersion);
+    const latest = qsTr("Latest release: %1").arg(root.checker.latestVersion);
 
     // a line break between two translated sentences, not a space: Chinese and
     // Japanese don't put a space after a full stop
-    switch (checker.status) {
+    switch (root.checker.status) {
       case UpdateCheck.CHECKING:
         return qsTr("Checking...");
       case UpdateCheck.ERROR:
@@ -152,7 +150,7 @@ Item {
 
           ToolTip.text: qsTr('Check for updates')
 
-          onClicked: checker.refresh()
+          onClicked: root.checker.refresh()
         }
       }
 

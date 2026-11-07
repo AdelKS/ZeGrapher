@@ -41,6 +41,8 @@ struct ZeAppSettings: QObject
   Q_PROPERTY(QSize windowSize MEMBER windowSize NOTIFY windowSizeChanged)
   Q_PROPERTY(bool maximized MEMBER maximized NOTIFY maximizedChanged)
   Q_PROPERTY(int paneWidth MEMBER paneWidth NOTIFY paneWidthChanged)
+  /// @brief whether the app asks the site for the latest release at startup
+  Q_PROPERTY(bool checkUpdates MEMBER checkUpdates NOTIFY checkUpdatesChanged)
   Q_PROPERTY(ThemedColor validSyntax MEMBER validSyntax NOTIFY validSyntaxChanged)
   Q_PROPERTY(ThemedColor invalidSyntax MEMBER invalidSyntax NOTIFY invalidSyntaxChanged)
   Q_PROPERTY(ThemedColor warningSyntax MEMBER warningSyntax NOTIFY warningSyntaxChanged)
@@ -58,6 +60,7 @@ public:
   QSize windowSize = defaultWindowSize;
   bool maximized = false;
   int paneWidth = defaultPaneWidth;
+  bool checkUpdates = true;
 
   ThemedColor validSyntax = defaultValidSyntax;
   ThemedColor invalidSyntax = defaultInvalidSyntax;
@@ -81,6 +84,7 @@ public:
     std::optional<zg::yml::QSizePOD> window_size;
     std::optional<bool> maximized;
     std::optional<int> pane_width;
+    std::optional<bool> check_updates;
     std::optional<ThemedColor::POD> valid_syntax;
     std::optional<ThemedColor::POD> invalid_syntax;
     std::optional<ThemedColor::POD> warning_syntax;
@@ -98,6 +102,7 @@ signals:
   void windowSizeChanged();
   void maximizedChanged();
   void paneWidthChanged();
+  void checkUpdatesChanged();
 
 };
 

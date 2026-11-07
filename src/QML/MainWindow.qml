@@ -477,6 +477,36 @@ ApplicationWindow {
     }
   }
 
+  UpdateBanner {
+    id: updateBanner
+
+    // over the graph, under the panes
+    z: 30
+    width: Math.min(implicitWidth, graphScrollView.width - 20)
+    anchors.horizontalCenter: graphScrollView.horizontalCenter
+
+    states: [
+      State {
+        name: "hidden"; when: !updateBanner.shown
+        PropertyChanges { updateBanner.y: win.height; updateBanner.visible: false }
+      },
+      State {
+        name: "shown"; when: updateBanner.shown
+        PropertyChanges { updateBanner.y: win.height - updateBanner.height - 16; updateBanner.visible: true }
+      }
+    ]
+
+    transitions: Transition {
+      reversible: true
+      from: "hidden"
+      to: "shown"
+      SequentialAnimation {
+        PropertyAction { property: "visible" }
+        NumberAnimation { property: "y"; duration: 250; easing.type: Easing.InOutQuad }
+      }
+    }
+  }
+
   ReleaseNotesDialog {
     id: releaseNotesDialog
   }
@@ -509,6 +539,9 @@ ApplicationWindow {
 
   Component.onCompleted: {
     Information.graphSettings.screenChanged(win);
+
+    if (Information.appSettings.checkUpdates)
+      Information.updateCheck.refresh();
 
     // the settings file holds the version that ran last, and the app writes
     // it on close, so the dialog opens once per update

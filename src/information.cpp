@@ -73,7 +73,7 @@ std::optional<QString> newerWriter(std::string_view content)
 }
 
 Information::Information(QObject* parent):
-  QObject(parent), appSettings(this), graphSettings(this)
+  QObject(parent), appSettings(this), graphSettings(this), updateCheck(this)
 {
   // the settings file can name another language
   appSettings.language = systemLanguage();
