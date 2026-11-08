@@ -80,6 +80,9 @@ I quattro campi in cima al pannello accettano espressioni, non solo numeri. Ogni
 minimo deve restare sotto il suo massimo, altrimenti il campo diventa non
 valido.
 
+Il pulsante rotondo nell'angolo in alto a destra riporta entrambi gli assi a -10
+.. 10.
+
 ![Gli estremi della vista](images/range.png)
 
 ### 2.2. File

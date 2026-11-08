@@ -80,6 +80,9 @@ Los cuatro campos de arriba del panel aceptan expresiones, no solo números. Cad
 mínimo debe quedar por debajo de su máximo, y si no lo hace el campo pasa a no
 válido.
 
+El botón redondo de la esquina superior derecha devuelve los dos ejes a -10 ..
+10.
+
 ![Los límites de la vista](images/range.png)
 
 ### 2.2. Archivos

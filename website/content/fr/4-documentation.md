@@ -80,6 +80,8 @@ Les quatre champs en haut du panneau acceptent des expressions, et pas seulement
 des nombres. Chaque minimum doit rester inférieur à son maximum, sinon le champ
 devient invalide.
 
+Le bouton rond dans le coin en haut à droite remet les deux axes à -10 .. 10.
+
 ![Les bornes de la vue](images/range.png)
 
 ### 2.2. Fichiers

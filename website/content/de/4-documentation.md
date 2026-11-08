@@ -80,6 +80,8 @@ Die vier Felder oben in der Leiste akzeptieren nicht nur Zahlen, sondern auch
 mathematische Ausdrücke. Ein Minimum muss kleiner als das zugehörige Maximum
 bleiben. Andernfalls wird das Feld als ungültig markiert.
 
+Der runde Knopf oben rechts setzt beide Achsen auf -10 .. 10 zurück.
+
 ![Die Grenzen der Ansicht](images/range.png)
 
 ### 2.2. Dateien

@@ -78,6 +78,8 @@ Na borda do painel:
 Os quatro campos no alto do painel aceitam expressões, não só números. Cada
 mínimo precisa ficar abaixo do seu máximo, senão o campo fica inválido.
 
+O botão redondo no canto superior direito volta os dois eixos para -10 .. 10.
+
 ![Os limites da vista](images/range.png)
 
 ### 2.2. Arquivos

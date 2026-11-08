@@ -79,6 +79,8 @@ The four fields at the top of the panel accept expressions, not just numbers. A
 minimum must stay below its maximum, and the field turns invalid if it does
 not.
 
+The round button in the top right corner sets both axes back to -10 .. 10.
+
 ![The bounds of the view](images/range.png)
 
 ### 2.2. Files
