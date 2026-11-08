@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Ubuntu's Qt packages leave out the FluentWinUI3 style
+      # Ubuntu Qt packages currently don't have the FluentWinUI3 style
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y g++ libxcb-cursor0
-          # the xcb platform of Qt, under xvfb, for the render test
+          # Qt's xcb platform plugin dependencies, for the render test under xvfb
           sudo apt-get install -y xvfb libgl1-mesa-dri libxkbcommon-x11-0 libxcb-icccm4 \
             libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
             libxcb-xkb1

@@ -6,7 +6,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   # On the default branch, a run deploys the site and creates the release.
-  # Cancelling it during the upload would leave the site without public_html,
+  # Canceling it during the upload would leave the site without public_html,
   # so runs there wait for the previous one instead
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
@@ -172,14 +172,14 @@ jobs:
             prerelease="--prerelease"
           fi
 
-          # gh release create makes the tag below, so releases.yaml still
-          # holds this version as the upcoming release
+          # the tag doesn't exist until gh release create below, so releases.py
+          # still sees this version as the upcoming release
           notes=$(python3 appdata/releases.py --summary)
 
           # GitHub appends the list of changes since the previous release. An
-          # announcement covers a span of releases, and the list of a full
-          # release must cover the whole span: without this, it only lists the
-          # changes since its last release candidate
+          # announcement covers a span of releases, so a full release's list must
+          # cover the whole span. Otherwise, it only lists the changes since the
+          # last release candidate
           start_tag=$(python3 appdata/releases.py --start-tag)
           notes_start=""
           if [[ -n "$start_tag" ]]; then

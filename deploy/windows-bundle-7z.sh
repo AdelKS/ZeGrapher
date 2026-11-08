@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script needs to be run inside an msys2 bash terminal
+# Run this script in an msys2 bash shell
 
 set -e
 
@@ -35,15 +35,15 @@ mkdir "${deploy_dir}"
 cd "${deploy_dir}"
 cp "${deploy_script_dir}"/build-windows/src/ZeGrapher.exe .
 
-# Copy extra DLLs over
+# copy the non-system DLLs that ZeGrapher.exe links to
 ldd ZeGrapher.exe | awk '{print $3}' | grep -v -i WINDOWS/SYSTEM32 | xargs -I{} cp -u {} .
 
-# fix upstream bug, see https://github.com/msys2/MINGW-packages/pull/26127
+# windeployqt looks for qmlimportscanner in bin/: https://github.com/msys2/MINGW-packages/pull/26127
 ln -sf $MINGW_PREFIX/share/qt6/bin/qmlimportscanner.exe $MINGW_PREFIX/bin/qmlimportscanner.exe
 
 windeployqt6.exe --qmldir "${deploy_script_dir}"/../src/QML/ --compiler-runtime ZeGrapher.exe
 
-# move qml modules out of the 'qml' folder
+# move the QML modules out of qml/, next to the executable
 mv qml qml-temp
 mv qml-temp/* .
 rm -d qml-temp

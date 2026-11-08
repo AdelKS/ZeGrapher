@@ -48,7 +48,7 @@ export NO_STRIP=1
 # ship, so leave them and their dependencies out: the AppImage uses the host's
 # copies
 export LINUXDEPLOY_EXCLUDED_LIBRARIES="libglib-2.0.so*;libgio-2.0.so*;libgobject-2.0.so*;libgmodule-2.0.so*;libgthread-2.0.so*;libmount.so*;libblkid.so*;libselinux.so*;libffi.so*;libpcre2-8.so*;libdbus-1.so*;libsystemd.so*"
-# the AppImages of linuxdeploy run without FUSE, which CI runners lack
+# CI runners don't have FUSE, so run the linuxdeploy AppImages without it
 export APPIMAGE_EXTRACT_AND_RUN=1
 
 # ./linuxdeploy-$arch.AppImage --list-plugins

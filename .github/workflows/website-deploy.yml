@@ -2,8 +2,8 @@
 #
 # The secrets, all set in the Website-Deploy environment:
 #   SFTP_HOST         the host that serves the site
-#   SFTP_USER         the user of the SFTP account
-#   SFTP_KEY          the full private SSH key of that user
+#   SFTP_USER         the SFTP account user
+#   SFTP_KEY          that user's full private SSH key
 #   SFTP_KNOWN_HOSTS  the host's known_hosts line, which pins its key
 
 name: website deploy
