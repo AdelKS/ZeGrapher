@@ -62,7 +62,7 @@ cinque schede:
 | **Oggetti** | gli oggetti che tracci: equazioni, costanti, equazioni parametriche, dati |
 | **Griglia** | tacche, griglia e sottogriglia |
 | **Grafico** | dimensioni, carattere, sfondo, assi |
-| **App** | lingua, carattere, colori della sintassi |
+| **App** | lingua, carattere, colori della sintassi, aggiornamenti |
 | **Info** | versione, aggiornamenti, licenze, note di rilascio |
 
 I tre pulsanti in basso a sinistra riguardano i [file](#22-file).
@@ -362,6 +362,14 @@ I due riquadri sotto **Dimensioni**:
 
 Questa scheda imposta la lingua e il carattere dell'interfaccia, e i tre colori
 dei campi di inserimento: valida, avviso e non valida.
+
+**Cerca all'avvio**, sotto **Aggiornamenti**, chiede a zegrapher.com l'ultima
+versione a ogni avvio. Se è uscita una versione più recente, un banner sopra il
+grafico rimanda al sito. Il controllo invia la versione e la lingua dell'app, il
+sistema operativo e l'architettura del processore. Il sito vede anche
+l'indirizzo IP, e lo usa solo per ricavare il paese. I pacchetti delle
+distribuzioni Linux possono omettere questa impostazione, perché gli
+aggiornamenti passano dal gestore di pacchetti.
 
 ## 7. La scheda Info
 

@@ -62,7 +62,7 @@ trouvent cinq onglets :
 | **Maths** | les objets que vous tracez : équations, constantes, équations paramétriques, données |
 | **Grille** | graduations, grille et sous-grille |
 | **Graphe** | taille, police, arrière-plan, axes |
-| **Appli** | langue, police, coloration syntaxique |
+| **Appli** | langue, police, coloration syntaxique, mises à jour |
 | **À propos** | version, mises à jour, licences, notes de version |
 
 Les trois boutons en bas à gauche concernent les [fichiers](#22-fichiers).
@@ -374,6 +374,14 @@ Les deux cadres sous **Taille** :
 
 Cet onglet règle la langue et la police de l'interface, ainsi que les trois
 couleurs des champs de saisie : valide, avertissement et invalide.
+
+**Vérifier au démarrage**, sous **Mises à jour**, demande à zegrapher.com la
+dernière version à chaque démarrage. Si une version plus récente est sortie, un
+bandeau au-dessus du graphe renvoie vers le site. La vérification envoie la
+version et la langue de l'appli, le système d'exploitation et l'architecture du
+processeur. Le site voit aussi l'adresse IP, et ne s'en sert que pour trouver le
+pays. Les paquets des distributions Linux peuvent omettre ce réglage, car le
+gestionnaire de paquets s'occupe des mises à jour.
 
 ## 7. L'onglet À propos
 

@@ -62,7 +62,7 @@ are five tabs:
 | **Math** | the objects you plot: equations, constants, parametric equations, data |
 | **Grid** | ticks, grid and sub-grid |
 | **Graph** | size, font, background, axes |
-| **App** | language, font, syntax colors |
+| **App** | language, font, syntax colors, update check |
 | **About** | version, updates, licenses, release notes |
 
 The three buttons at the bottom left are for [files](#22-files).
@@ -353,6 +353,13 @@ The two boxes under **Size**:
 
 This tab sets the language and the font of the interface, and the three colors
 of the input lines: valid, warning and invalid.
+
+**Check at startup**, under **Updates**, asks zegrapher.com for the latest
+release when the app starts. If a newer release is out, a banner over the graph
+links to the site. The check sends the app version and language, the OS and the
+CPU architecture. The site also sees the IP address, and uses it only to find
+the country. Linux distribution packages can leave this setting out, since the
+package manager handles updates.
 
 ## 7. The About tab
 

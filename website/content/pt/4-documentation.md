@@ -62,7 +62,7 @@ cinco abas:
 | **Objetos** | o que você traça: equações, constantes, equações paramétricas, dados |
 | **Grade** | marcas, grade e subgrade |
 | **Gráfico** | tamanho, fonte, fundo, eixos |
-| **App** | idioma, fonte, cores da sintaxe |
+| **App** | idioma, fonte, cores da sintaxe, atualizações |
 | **Sobre** | versão, atualizações, licenças, notas de versão |
 
 Os três botões no canto inferior esquerdo são para os [arquivos](#22-arquivos).
@@ -361,6 +361,14 @@ As duas caixas abaixo de **Tamanho**:
 
 Esta aba define o idioma e a fonte da interface, e as três cores dos campos de
 entrada: válida, aviso e inválida.
+
+**Procurar ao iniciar**, em **Atualizações**, pergunta ao zegrapher.com qual é a
+versão mais recente toda vez que o programa abre. Se houver uma versão mais
+nova, um aviso sobre o gráfico leva ao site. A verificação envia a versão e o
+idioma do programa, o sistema operacional e a arquitetura do processador. O site
+também vê o endereço IP, e só o usa para saber o país. Os pacotes das
+distribuições Linux podem deixar essa opção de fora, porque o gerenciador de
+pacotes cuida das atualizações.
 
 ## 7. A aba Sobre
 

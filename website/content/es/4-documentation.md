@@ -62,7 +62,7 @@ cinco pestañas:
 | **Mates** | los objetos que trazas: ecuaciones, constantes, ecuaciones paramétricas, datos |
 | **Cuadrícula** | marcas, cuadrícula y subcuadrícula |
 | **Gráfica** | tamaño, fuente, fondo, ejes |
-| **App** | idioma, fuente, colores de sintaxis |
+| **App** | idioma, fuente, colores de sintaxis, actualizaciones |
 | **Acerca de** | versión, actualizaciones, licencias, notas de versión |
 
 Los tres botones de abajo a la izquierda son para los [archivos](#22-archivos).
@@ -367,6 +367,14 @@ Los dos recuadros bajo **Tamaño**:
 
 Esta pestaña ajusta el idioma y la fuente de la interfaz, y los tres colores de
 los campos de entrada: válida, aviso y no válida.
+
+**Buscar al iniciar**, en **Actualizaciones**, pregunta a zegrapher.com por la
+última versión cada vez que se abre la aplicación. Si hay una versión más
+reciente, un aviso sobre la gráfica enlaza con el sitio. La consulta envía la
+versión y el idioma de la aplicación, el sistema operativo y la arquitectura del
+procesador. El sitio también ve la dirección IP, y solo la usa para saber el
+país. Los paquetes de las distribuciones Linux pueden omitir este ajuste, porque
+el gestor de paquetes se encarga de las actualizaciones.
 
 ## 7. La pestaña Acerca de
 

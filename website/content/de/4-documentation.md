@@ -63,7 +63,7 @@ befinden sich fünf Reiter:
 | **Mathe** | Die gezeichneten Objekte: Gleichungen, Konstanten, Parameterdarstellungen und Daten |
 | **Gitter** | Teilstriche, Gitter und Untergitter |
 | **Graph** | Größe, Schrift, Hintergrund und Achsen |
-| **App** | Sprache, Schrift und Syntaxfarben |
+| **App** | Sprache, Schrift, Syntaxfarben und Updates |
 | **Über** | Version, Updates, Lizenzen und Versionshinweise |
 
 Die drei Knöpfe unten links dienen zur Arbeit mit [Dateien](#22-dateien).
@@ -381,6 +381,14 @@ Unter **Größe** befinden sich zwei weitere Bereiche:
 
 Hier stellst du die Sprache und Schriftart der Benutzeroberfläche sowie die
 drei Farben der Eingabezeilen ein: gültig, Warnung und ungültig.
+
+**Beim Start prüfen** unter **Updates** fragt bei jedem Start zegrapher.com nach
+der neuesten Version. Ist eine neuere Version erschienen, weist ein Banner über
+dem Graphen mit einem Link zur Website darauf hin. Die Prüfung sendet die Version und Sprache der
+App, das Betriebssystem und die CPU-Architektur. Die Website sieht außerdem die
+IP-Adresse und nutzt sie nur, um das Land zu bestimmen. Pakete von
+Linux-Distributionen können diese Einstellung weglassen, da der Paketmanager die
+Updates übernimmt.
 
 ## 7. Der Reiter Über
 
