@@ -45,11 +45,16 @@ jobs:
           ZG_RENDER_TEST: 1
 
       # linuxdeploy exits 0 when it misses a QML module, and the app then
-      # aborts at startup. A timeout (124) means the app is still running
+      # aborts at startup. A timeout (124) means the app is still running.
+      # The settings turn off the update check, so CI doesn't count as a user
       - name: Check that the AppImage starts
-        run: xvfb-run -a timeout -k 5 10 deploy/ZeGrapher*AppImage || [[ $? == 124 ]]
+        run: |
+          mkdir -p "$XDG_CONFIG_HOME/ZeGrapher"
+          printf 'app:\n  check_updates: false\n' > "$XDG_CONFIG_HOME/ZeGrapher/settings.yaml"
+          xvfb-run -a timeout -k 5 10 deploy/ZeGrapher*AppImage || [[ $? == 124 ]]
         env:
           APPIMAGE_EXTRACT_AND_RUN: 1
+          XDG_CONFIG_HOME: ${{ runner.temp }}/config
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v7
