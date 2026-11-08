@@ -21,7 +21,7 @@
 
 releases:
   - tag: v4.0.0
-    date: 2026-10-20
+    date: 2026-11-08
   - tag: v4.0.0_rc0
     date: 2026-10-20
   - tag: v3.1.1
