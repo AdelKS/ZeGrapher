@@ -1,44 +1,33 @@
 #!/usr/bin/env python3
-"""Write the metainfo file of ZeGrapher, which a software centre reads.
+"""Write the ZeGrapher metainfo file, which software centers read.
 
     generate-metainfo [--output PATH [--depfile PATH]]
 
-Without --output the file goes to the standard output. appdata/meson.build runs
-the script during the build, and installs what it writes. --depfile writes the
-files that the script read, so that ninja runs it again when one of them
-changes. Nothing generated lives in the repository, and the script reads no git
-history, so a build from a release tarball writes the same file as a build from
-a clone.
+Without --output, the file goes to stdout. appdata/meson.build runs the script
+during the build and installs the output. --depfile lists the files the script
+read, so ninja reruns it when one of them changes. The script doesn't read git
+history, so a release tarball and a clone give the same file.
 
-appdata/ZeGrapher.metainfo.xml.in holds the identity of the app, and four blocks
-of it come from elsewhere:
+appdata/ZeGrapher.metainfo.xml.in is the template. The script fills in four
+blocks:
 
-  {{ description }}  website/content/en/2-features.md, and the translation of
-                     that file that every other language folder of
-                     website/content/ holds. AppStream takes one element per
-                     paragraph and per list item, and the translations follow
-                     each element, so a translation that holds another number
-                     of them stops this script.
-  {{ screenshots }}  one <screenshot> per picture that the 'gallery' list of
-                     website/build-config/build.yaml names, and one <image> per
-                     language whose own website/content/<lang>/images/ holds
-                     that picture. The 'gallery' mapping of each
-                     website/content/<lang>/strings.yaml gives the <caption>
-                     of each picture in that language.
-  {{ urls }}         the <url> of the homepage, the 'homepage' of
-                     website/build-config/build.yaml, the <url> of the issue
-                     tracker and of the source code, out of the 'repository'
-                     of that file, and the <url> of the donation page, the
-                     'donate' link of its footer.
-  {{ releases }}     one <release> per full release in the 'releases' list of
-                     appdata/releases.yaml, the newest first, with the text of
-                     the announcement that ends on it, or else of the changes
-                     entry. A release that is newer than the version in
-                     meson.build stays out.
+  {{ description }}  website/content/<lang>/2-features.md, in every language.
+                     AppStream pairs paragraphs and list items one by one, so
+                     the script stops if a translation has a different number
+                     of them.
+  {{ screenshots }}  one <screenshot> per picture in the build.yaml 'gallery'
+                     list, with one <image> per language that has its own
+                     copy of the picture. Each strings.yaml 'gallery' mapping
+                     gives the captions.
+  {{ urls }}         the homepage, issue tracker, source code and donation
+                     page, from website/build-config/build.yaml.
+  {{ releases }}     one <release> per full release in appdata/releases.yaml,
+                     newest first, up to the meson.build version. Each release
+                     takes the text of the announcement that ends on it, or
+                     else of the changes entry.
 
-Every URL of a picture names the GitHub repository, and the tag of the release
-under work. A tree between two releases carries a '-dev' version, and its URLs
-name the branch instead.
+Picture URLs point at the GitHub repository at the release tag. A '-dev'
+version has no tag yet, so its URLs point at the branch.
 """
 
 import argparse
@@ -61,11 +50,10 @@ BRANCH = "master"
 
 
 def languages():
-    """The features panel of every language that translates it, English first."""
+    """The features panel in each language that has one, English first."""
     english = content.CONTENT / content.SOURCE / FEATURES_NAME
     if not english.is_file():
-        sys.exit(f"{english} does not exist, and it holds the English text "
-                 f"that every other language follows")
+        sys.exit(f"{english} is missing, and every translation follows it")
 
     found = {lang: content.CONTENT / lang / FEATURES_NAME
              for lang in content.languages()}
@@ -74,8 +62,8 @@ def languages():
 
 
 def inline(text):
-    """The markup that AppStream takes inside an element, out of markdown."""
-    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)  # a link keeps its words
+    """Markdown converted to the inline markup that AppStream accepts."""
+    text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)  # keep the link text, drop the URL
     text = html.escape(text, quote=False)
     text = re.sub(r"\*\*(.+?)\*\*", r"<em>\1</em>", text)
     text = re.sub(r"`(.+?)`", r"<code>\1</code>", text)
@@ -83,11 +71,10 @@ def inline(text):
 
 
 def blocks_of(markdown):
-    """The paragraphs and the list items of one markdown text, in order.
+    """The paragraphs and list items of a markdown text, in order.
 
-    A list holds no list of its own in AppStream, so an indented item becomes an
-    item of the list around it. The '# ' heading names the panel of the site and
-    says nothing here, so it goes.
+    AppStream has no nested lists, so an indented item joins the outer list.
+    The '# ' heading is the site panel title, so it is dropped.
     """
     blocks, kind, buffer = [], None, []
 
@@ -119,11 +106,11 @@ def blocks_of(markdown):
 
 
 def markup(blocks, indent, translations=None):
-    """The AppStream markup of those blocks, one element per line.
+    """The blocks as AppStream markup, one element per line.
 
-    A run of list items opens a <ul>, which AppStream asks for and markdown does
-    not write. translations pairs a language with the blocks of that language,
-    and each element carries the ones of every language under it.
+    Each run of list items gets a <ul>: AppStream requires it, and markdown has
+    no such tag. 'translations' maps a language to its blocks. Each element is
+    followed by its translations.
     """
     lines, in_list = [], False
 
@@ -148,17 +135,17 @@ def markup(blocks, indent, translations=None):
 
 
 def description():
-    """<description>, one element per block, every language under each element."""
+    """<description>, one element per block, each followed by its translations."""
     per_lang = {lang: blocks_of(path.read_text(encoding="utf-8"))
                 for lang, path in languages().items()}
     english = per_lang.pop(content.SOURCE)
 
     for lang, blocks in per_lang.items():
         if [kind for kind, _ in blocks] != [kind for kind, _ in english]:
-            sys.exit(f"website/content/{lang}/{FEATURES_NAME} holds "
-                     f"{len(blocks)} paragraphs and items, and the English file "
-                     f"holds {len(english)}. AppStream pairs them one by one, so "
-                     f"a translation follows the shape of the English text.")
+            sys.exit(f"website/content/{lang}/{FEATURES_NAME} has "
+                     f"{len(blocks)} paragraphs and list items, and the English "
+                     f"file has {len(english)}. AppStream pairs them one by one, "
+                     f"so a translation must keep the English structure.")
 
     return "\n".join(["  <description>"]
                      + markup(english, "    ", per_lang)
@@ -166,20 +153,19 @@ def description():
 
 
 def gallery_names():
-    """The pictures that the 'gallery' list of build.yaml shows, in that order."""
+    """The pictures in the build.yaml 'gallery' list, in order."""
     names = content.read_conf().get("gallery")
     if not names:
-        sys.exit(f"{content.CONF_FILE}: 'gallery' holds no picture")
+        sys.exit(f"{content.CONF_FILE}: 'gallery' is empty")
 
     return names
 
 
 def image_ref():
-    """The revision that every URL of a picture names.
+    """The git revision in the picture URLs.
 
-    A build of a release names the tag of that release, so each URL keeps
-    showing the picture as the release shipped it. A tree between two releases
-    has no tag of its own, and it names the branch.
+    A release build uses its tag, so the URLs keep showing the pictures the
+    release shipped with. A '-dev' version has no tag, so it uses the branch.
     """
     version = releases.project_version()
 
@@ -187,21 +173,18 @@ def image_ref():
 
 
 def screenshots():
-    """<screenshots>, every translation of a picture and the English one last.
+    """<screenshots>, with each picture's translations first and English last.
 
-    The pictures are the ones build.yaml lists for the gallery, in that order.
-    The languages are the ones languages() finds, and a language whose own
-    website/content/<lang>/images/ does not hold one of them drops out of that
-    picture.
+    The pictures follow the build.yaml gallery order. A language without its own
+    copy of a picture doesn't get an <image> for it.
 
-    The DEP-11 catalog of a distribution holds one image per screenshot, and it
-    keeps the last one, so the last one is the image that carries no language.
+    A distribution's DEP-11 catalog keeps only the last image of each
+    screenshot, so the English image, which has no language tag, comes last.
     """
     english_images = content.CONTENT / content.SOURCE / content.PICTURES
     if not english_images.is_dir():
-        sys.exit(f"{english_images} does not exist, so the file shows no picture")
+        sys.exit(f"{english_images} is missing")
 
-    # raw.githubusercontent.com serves the raw files of GitHub repositories
     raw = content.repository_url(content.read_conf()).replace(
         "https://github.com/", "https://raw.githubusercontent.com/", 1)
     ref = image_ref()
@@ -213,15 +196,15 @@ def screenshots():
 
     for i, name in enumerate(names):
         if not (english_images / name).is_file():
-            sys.exit(f"{english_images / name} does not exist, and build.yaml "
-                     f"names it in the gallery")
+            sys.exit(f"{english_images / name} is missing, and the build.yaml "
+                     f"gallery lists it")
 
         default = ' type="default"' if i == 0 else ""
         lines.append(f"    <screenshot{default}>")
 
         if name not in captions[content.SOURCE]:
-            sys.exit(f"website/content/{content.SOURCE}/{content.STRINGS} holds no "
-                     f"caption for {name} under 'gallery'")
+            sys.exit(f"website/content/{content.SOURCE}/{content.STRINGS} has no "
+                     f"'gallery' caption for {name}")
         for lang in [content.SOURCE] + others:
             if name in captions[lang]:
                 tag = "" if lang == content.SOURCE else f' xml:lang="{lang}"'
@@ -241,8 +224,7 @@ def screenshots():
 
 
 def urls():
-    """The <url> of the homepage, of the issue tracker, of the source code and
-    of the donation page."""
+    """The homepage, issue tracker, source code and donation page <url>s."""
     conf = content.read_conf()
     repository = content.repository_url(conf)
 
@@ -254,7 +236,7 @@ def urls():
 
 
 def releases_xml():
-    """One <release> per full release of the release file, the newest one first."""
+    """One <release> per full release in releases.yaml, newest first."""
     lines = []
 
     for release in releases.announced():
@@ -276,7 +258,7 @@ def releases_xml():
 
 
 def metainfo():
-    """The whole metainfo file, the four blocks of the template filled in."""
+    """The template with its four blocks filled in."""
     blocks = {"description": description(),
               "screenshots": screenshots(),
               "urls": urls(),
@@ -288,11 +270,11 @@ def metainfo():
 
 
 def dependencies():
-    """Every file and folder that the metainfo file is written out of.
+    """Every file and folder the metainfo file comes from.
 
-    A picture folder is listed as a folder: adding a picture to it changes its
-    date. A path that does not exist would make ninja run the script at every
-    build, so it stays out.
+    Picture folders are listed as folders: adding a picture changes the folder
+    mtime. Missing paths are left out, because ninja would rerun the script on
+    every build.
     """
     found = [Path(__file__).resolve(), Path(releases.__file__).resolve(),
              Path(content.__file__).resolve(), TEMPLATE, releases.MESON_BUILD,
@@ -320,8 +302,8 @@ def main():
         return 0
 
     path = Path(args.output)
-    # skip identical writes: they still update the file's mtime, which reruns
-    # every step that reads it
+    # an identical write still updates the file's mtime and reruns every step
+    # that reads the file, so skip it
     if not path.is_file() or path.read_text(encoding="utf-8") != text:
         path.write_text(text, encoding="utf-8")
 

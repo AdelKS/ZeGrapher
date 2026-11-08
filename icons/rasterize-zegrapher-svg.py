@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """rasterize-zegrapher-svg.py
 
-Write every raster of the app icon out of ZeGrapher.svg, the one file that
-holds the drawing. Run this command from this folder after each change of that
-file:
+Rasterize the app icon from ZeGrapher.svg, its only source. Run this command
+from this folder after each change to ZeGrapher.svg:
 
     ./rasterize-zegrapher-svg.py
 
 The command writes, in this folder:
 
 - ZeGrapher_16.png up to ZeGrapher_512.png, the sizes that meson installs
-- ZeGrapher.ico, the icon of the Windows build
-- ZeGrapher.icns, the icon of the macOS bundle
+- ZeGrapher.ico, the Windows build icon
+- ZeGrapher.icns, the macOS bundle icon
 
 Requires: rsvg-convert (librsvg) on PATH. Python 3.12+, Pillow.
 """
@@ -28,11 +27,11 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 SOURCE = HERE / "ZeGrapher.svg"
 
-# the sizes that icons/hicolor holds
+# the icons/hicolor sizes
 PNG_SIZES = (16, 24, 32, 48, 64, 128, 256, 512)
 
-# the sizes Windows reads from an .ico, and the members iconutil writes into an
-# .icns: the type, then the image size in pixels
+# the sizes Windows reads from an .ico, and the members that iconutil writes
+# to an .icns: the type, then the image size in pixels
 ICO_SIZES = (16, 24, 32, 48, 64, 128, 256)
 ICNS_MEMBERS = (
     ("icp4", 16), ("icp5", 32), ("ic11", 32), ("ic12", 64), ("ic07", 128),
@@ -41,7 +40,7 @@ ICNS_MEMBERS = (
 
 
 def render(size: int) -> bytes:
-    """The drawing, rasterized at 'size' by 'size' pixels."""
+    """The icon, rasterized at 'size' x 'size' pixels."""
     done = subprocess.run(
         ["rsvg-convert", "--width", str(size), "--height", str(size), str(SOURCE)],
         capture_output=True,
@@ -52,7 +51,7 @@ def render(size: int) -> bytes:
 
 
 def icns(rasters: dict[int, bytes]) -> bytes:
-    """The rasters, in the container that macOS reads."""
+    """The rasters in an .icns container."""
     members = b"".join(
         kind.encode("ascii") + struct.pack(">I", len(rasters[size]) + 8) + rasters[size]
         for kind, size in ICNS_MEMBERS

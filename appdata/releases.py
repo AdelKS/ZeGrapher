@@ -1,33 +1,32 @@
 #!/usr/bin/env python3
-"""The releases of ZeGrapher, out of appdata/releases.yaml.
+"""Read ZeGrapher releases from appdata/releases.yaml.
 
     releases.py (--version | --release | --summary | --start-tag | --date
                  | --release-type | --yaml OUTPUT)
 
 --version prints the version in meson.build, such as '4.0.0_rc0-dev'.
 
---release prints the release that this version leads to, in digits and dots
-only, such as '4.0.0'.
+--release prints the release this version leads to, digits and dots only, such
+as '4.0.0'.
 
---summary prints what the release file writes about the release under work: the
-announcement, then the changes entry. It is the body that the workflow gives to
-'gh release create'. GitHub writes the list of changes under it.
+--summary prints the upcoming release notes: the announcement, then the changes
+entry. The workflow passes it to 'gh release create' as the body, and GitHub
+appends its list of changes.
 
---start-tag prints the release that those changes are counted from, and nothing
-when GitHub can count from the release before.
+--start-tag prints the release GitHub must count those changes from, or nothing
+when the previous release is right.
 
---date prints the day of the release under work, such as '2026-09-01'. It
-prints nothing when the release file doesn't date that release.
+--date prints the upcoming release date, such as '2026-09-01', or nothing if
+releases.yaml has no date for it.
 
---release-type prints what the version in meson.build is: 'dev' between two
-releases, 'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
+--release-type prints the meson.build version type: 'dev' between two releases,
+'alpha', 'beta' or 'rc' for a pre-release, and 'full' for a release.
 
---yaml checks the release file and copies it to OUTPUT, which the app embeds.
+--yaml checks releases.yaml and copies it to OUTPUT, which the app embeds.
 
-The grammar of a tag and the check of the release file live here, and every
-script that reads a version or a release goes through this file. The top of
-appdata/releases.yaml says what the file holds. Between two releases the tree
-carries the version written in meson.build, and pending_tag() reads it.
+This file holds the tag grammar and the releases.yaml checks. Every script that
+reads a version or a release goes through it. The releases.yaml header
+describes the file format.
 """
 
 import argparse
@@ -42,12 +41,12 @@ ROOT = Path(__file__).resolve().parent.parent
 RELEASES = ROOT / "appdata" / "releases.yaml"
 MESON_BUILD = ROOT / "meson.build"
 
-# 'v4.0.0' names a release, 'v4.0.0_beta2' a pre-release of it, and 'v3.1' a
-# release written without its patch number
+# 'v4.0.0' is a release, 'v4.0.0_beta2' one of its pre-releases, and 'v3.1' a
+# release without a patch number
 TAG = re.compile(r"^v(?P<major>[0-9]+)\.(?P<minor>[0-9]+)(?:\.(?P<patch>[0-9]+))?"
                  r"(?:_(?P<stage>alpha|beta|rc)(?P<number>[0-9]+))?$")
 
-# the stages in order. A final release comes after all three
+# the stages in order. A full release comes after all three
 STAGES = {"alpha": 0, "beta": 1, "rc": 2}
 FINAL_STAGE = 3
 
@@ -56,35 +55,34 @@ DATE = re.compile(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 # the project version, from the project() call in meson.build
 MESON_VERSION = re.compile(r"^\s*version\s*:\s*'([^']+)'", re.M)
 
-# '4.0.0_rc0-dev' is a tree between the release before it and '4.0.0_rc0'
+# '4.0.0_rc0-dev' is a tree between the previous release and '4.0.0_rc0'
 DEV = re.compile(r"-dev$")
 
 
 @dataclass
 class Entry:
-    """One announcement or changes entry of appdata/releases.yaml."""
+    """One announcement or changes entry in appdata/releases.yaml."""
 
     after: tuple
-    """the key of 'from', the release that the entry counts its changes from.
-    It is the key of 'to' for an entry without 'from'"""
+    """the 'from' key: the entry counts its changes from that release. Without
+    'from', it is the 'to' key"""
 
     after_tag: str
-    """'from' the way the file writes it, empty for an entry without 'from'"""
+    """'from' as written in the file, empty without 'from'"""
 
     newest: tuple
-    """the key of 'to', the newest release that the entry holds"""
+    """the 'to' key: the newest release in the entry"""
 
     newest_tag: str
-    """'to' the way the file writes it"""
+    """'to' as written in the file"""
 
     text: str
-    """the markdown of the entry"""
+    """the entry's markdown"""
 
     def covers(self, key: tuple) -> bool:
-        """Whether the entry holds the release of that key.
+        """Whether the entry covers the release with that key.
 
-        'from' stays out of the span, and an entry without 'from' holds 'to'
-        alone.
+        The span excludes 'from'. Without 'from', the entry covers 'to' alone.
         """
         return key == self.newest or self.after < key < self.newest
 
@@ -95,10 +93,10 @@ class Entry:
 
 @dataclass
 class Releases:
-    """appdata/releases.yaml, after the check."""
+    """appdata/releases.yaml, checked."""
 
     dates: dict[str, str]
-    """the day of each release in 'releases', as 2026-09-01, newest first"""
+    """each release date in 'releases', as 2026-09-01, newest first"""
 
     announcements: list[Entry]
     changes: list[Entry]
@@ -106,7 +104,7 @@ class Releases:
 
 @dataclass
 class Release:
-    """One <release> of the metainfo file."""
+    """One <release> in the metainfo file."""
 
     tag: str
     date: str
@@ -114,11 +112,11 @@ class Release:
 
 
 def version_key(tag: str) -> tuple[int, ...] | None:
-    """The parts of a tag, in the order that compares two of them.
+    """A tag's parts, ordered so that comparing two keys compares the tags.
 
-    src/Utils/versionparser.h orders a version the same way, and it also reads
-    two forms that no tag carries: the '-r<n>' of a continuous build, and the
-    '-dev' of a tree between two releases.
+    src/Utils/versionparser.h orders versions the same way. It also reads two
+    suffixes that tags never have: '-r<n>' for a continuous build, and '-dev'
+    for a tree between two releases.
     """
     match = TAG.match(tag)
     if match is None:
@@ -142,21 +140,21 @@ def dates_of(items: list) -> dict[str, str]:
 
     for item in items:
         if not isinstance(item, dict) or set(item) != {"tag", "date"}:
-            sys.exit(f"{RELEASES}: each item of 'releases' holds a 'tag' and a "
-                     f"'date', and {item!r} doesn't")
+            sys.exit(f"{RELEASES}: each 'releases' item must have a 'tag' and "
+                     f"a 'date', and {item!r} doesn't")
 
         tag = check_tag(item["tag"], "releases")
 
         # PyYAML reads an unquoted 2026-09-01 as a datetime.date
         date = str(item["date"])
         if DATE.match(date) is None:
-            sys.exit(f"{RELEASES}: the date of {tag} is '{date}', and it must be "
+            sys.exit(f"{RELEASES}: the {tag} date is '{date}', and it must be "
                      f"written as 2026-09-01")
 
         previous = next(reversed(found), None)
         if previous and version_key(tag) >= version_key(previous):
             sys.exit(f"{RELEASES}: in 'releases', {tag} comes after {previous}. The "
-                     f"list runs newest first, and holds each tag once")
+                     f"list must run newest first, with each tag once")
 
         found[tag] = date
 
@@ -164,16 +162,16 @@ def dates_of(items: list) -> dict[str, str]:
 
 
 def entries_of(name: str, items: list) -> list[Entry]:
-    """The '<name>' list, after checking that it runs newest first and that no
-    two of its spans overlap."""
+    """The '<name>' list, checked to run newest first with no overlapping
+    spans."""
     found = []
 
     for item in items:
         if (not isinstance(item, dict) or "to" not in item
                 or set(item) - {"from", "to", "text"}
                 or not isinstance(item.get("text", ""), str)):
-            sys.exit(f"{RELEASES}: each item of '{name}' holds a 'to' tag, a "
-                     f"'text', and can hold a 'from' tag, and {item!r} doesn't")
+            sys.exit(f"{RELEASES}: each '{name}' item must have a 'to' tag and "
+                     f"a 'text', and can have a 'from' tag. {item!r} doesn't fit")
 
         newest_tag = check_tag(item["to"], name)
         after_tag = item.get("from", "")
@@ -190,11 +188,11 @@ def entries_of(name: str, items: list) -> list[Entry]:
 
         if found and entry.newest >= found[-1].newest:
             sys.exit(f"{RELEASES}: in '{name}', '{entry.span()}' comes after "
-                     f"'{found[-1].span()}'. The list runs newest first")
+                     f"'{found[-1].span()}'. The list must run newest first")
 
         if found and found[-1].covers(entry.newest):
             sys.exit(f"{RELEASES}: in '{name}', '{entry.span()}' overlaps "
-                     f"'{found[-1].span()}'. Two spans of the same list can't overlap")
+                     f"'{found[-1].span()}'. Spans in one list can't overlap")
 
         found.append(entry)
 
@@ -202,7 +200,7 @@ def entries_of(name: str, items: list) -> list[Entry]:
 
 
 def load() -> Releases:
-    """appdata/releases.yaml, after the check."""
+    """appdata/releases.yaml, checked."""
     try:
         data = yaml.safe_load(RELEASES.read_text(encoding="utf-8"))
     except yaml.YAMLError as error:
@@ -210,8 +208,8 @@ def load() -> Releases:
 
     keys = ["releases", "announcements", "changes"]
 
-    # src/Utils/releasenotes.h reads the file with glaze, which rejects an
-    # unknown key and a null list
+    # src/Utils/releasenotes.h reads the file with glaze, which rejects unknown
+    # keys and null lists
     if not isinstance(data, dict) or set(data) - set(keys):
         sys.exit(f"{RELEASES} must hold only the lists 'releases', "
                  f"'announcements' and 'changes'")
@@ -226,14 +224,14 @@ def load() -> Releases:
 
 
 def covering(entries: list[Entry], tag: str) -> Entry | None:
-    """The entry that holds the release of that tag, None when no entry does."""
+    """The entry that covers the tag, or None."""
     key = version_key(tag)
 
     return next((entry for entry in entries if entry.covers(key)), None)
 
 
 def summary_of(announcement: Entry | None, changes: Entry | None) -> str:
-    """The announcement, then the changes entry under a heading that names its
+    """The announcement, then the changes entry under a heading with its
     span."""
     if announcement is None or not announcement.text:
         return changes.text if changes else ""
@@ -245,13 +243,13 @@ def summary_of(announcement: Entry | None, changes: Entry | None) -> str:
 
 
 def start_tag_of(tag: str, announcement: Entry | None, changes: Entry | None) -> str:
-    """The release that GitHub counts the changes of that release from.
+    """The release GitHub must count this release's changes from.
 
-    GitHub counts from the release before, which for a full release is its last
-    release candidate. A full release counts from the 'from' of its
-    announcement instead, and a pre-release from the 'from' of its changes
-    entry. Each one takes the other entry when its own is missing. An entry
-    without 'from' gives nothing, and GitHub counts from the release before.
+    GitHub counts from the previous release, which for a full release is its
+    last release candidate. So a full release counts from its announcement's
+    'from', and a pre-release from its changes entry's 'from'. Each falls back
+    to the other entry. If the entry has no 'from', this returns nothing and
+    GitHub counts from the previous release.
     """
     if TAG.match(tag)["stage"] is None:
         entry = announcement or changes
@@ -262,12 +260,11 @@ def start_tag_of(tag: str, announcement: Entry | None, changes: Entry | None) ->
 
 
 def announced() -> list[Release]:
-    """The releases that a software center shows, the newest one first.
+    """The releases that software centers show, newest first.
 
-    A pre-release tells a software center nothing, so it stays out. A release
-    that is newer than the version in meson.build stays out too: a build of
-    4.0.0_rc0 is not 4.0.0. A release takes the text of the announcement that
-    ends on it, or else the text of the changes entry that ends on it.
+    Pre-releases are left out, and so are releases newer than the meson.build
+    version: a 4.0.0_rc0 build is not 4.0.0. Each release takes the text of the
+    announcement that ends on it, or else of the changes entry that ends on it.
     """
     built = version_key(pending_tag())
     found = load()
@@ -283,59 +280,58 @@ def announced() -> list[Release]:
 
 
 def project_version() -> str:
-    """The version that meson.build names, such as '4.0.0_rc0-dev'."""
+    """The meson.build version, such as '4.0.0_rc0-dev'."""
     match = MESON_VERSION.search(MESON_BUILD.read_text(encoding="utf-8"))
     if match is None:
-        sys.exit(f"{MESON_BUILD} names no version, and the release under work "
-                 f"follows it until it has a tag")
+        sys.exit(f"{MESON_BUILD} has no project version")
 
     return match.group(1)
 
 
 def pending_tag() -> str:
-    """The tag that the release under work takes, out of meson.build."""
+    """The upcoming release tag, from the meson.build version."""
     version = project_version()
     tag = f"v{DEV.sub('', version)}"
 
     if not TAG.match(tag):
-        sys.exit(f"meson.build names the version '{version}', and '{tag}' is no "
-                 f"tag of a release")
+        sys.exit(f"the meson.build version '{version}' gives '{tag}', which is "
+                 f"not a release tag")
 
     return tag
 
 
 def release_numbers() -> str:
-    """The release that the version in meson.build leads to, '4.0.0' for
+    """The release the meson.build version leads to: '4.0.0' for
     '4.0.0_rc0-dev'."""
     match = TAG.match(pending_tag())
     return f"{match['major']}.{match['minor']}.{match['patch'] or 0}"
 
 
 def release_type(version: str) -> str:
-    """What a version is: 'dev', 'alpha', 'beta', 'rc' or 'full'.
+    """The version type: 'dev', 'alpha', 'beta', 'rc' or 'full'.
 
-    'dev' is a tree between two releases, and 'full' a release that is not a
-    pre-release. The version is written without the 'v' of a tag, as meson.build
-    and the name of a bundle write it.
+    'dev' is a tree between two releases, and 'full' is a release that is not a
+    pre-release. The version has no leading 'v', as in meson.build and in bundle
+    names.
     """
     if DEV.search(version):
         return "dev"
 
     match = TAG.match(f"v{version}")
     if match is None:
-        sys.exit(f"'{version}' is not the version of a release, such as '4.0.0' "
+        sys.exit(f"'{version}' is not a release version, such as '4.0.0' "
                  f"or '4.0.0_rc1'")
 
     return match["stage"] or "full"
 
 
 def write_app_file(path: Path) -> None:
-    """Check the release file, and copy it to the path that the app embeds."""
+    """Check releases.yaml, and copy it to the path the app embeds."""
     load()
     text = RELEASES.read_text(encoding="utf-8")
 
-    # skip identical writes: they still update the file's mtime, which reruns
-    # every step that reads it
+    # an identical write still updates the file's mtime and reruns every step
+    # that reads the file, so skip it
     if not path.is_file() or path.read_text(encoding="utf-8") != text:
         path.write_text(text, encoding="utf-8")
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Write one icon file per Font Awesome glyph, fetched from Font Awesome.
+Download Font Awesome glyphs, one icon file each.
 
-Font Awesome publishes one SVG per icon. This script reads those files and
-writes them to assets/icons/ in the form that folder holds: a viewBox, a path,
-and no fill. The upstream file also carries attributes for the JavaScript of
-Font Awesome and a long license comment, and both are dropped.
+Font Awesome publishes one SVG per icon. This script downloads those files and
+writes them to assets/icons/ in the folder's format: a viewBox, a path, and no
+fill. It drops the upstream attributes for the Font Awesome JavaScript, and the
+long license comment.
 
 Usage:    ./fetch_icon.py home list images
 Requires: network access. Python 3.10+, standard library only.
@@ -32,21 +32,21 @@ def fetch(url: str, name: str) -> str:
             return answer.read().decode("utf-8")
     except urllib.error.HTTPError as error:
         if error.code == 404:
-            sys.exit(f"'{name}' is not an icon of this style: {url}")
+            sys.exit(f"'{name}' is not an icon in this style: {url}")
         sys.exit(f"{url}: HTTP {error.code}")
     except urllib.error.URLError as error:
         sys.exit(f"{url}: {error.reason}")
 
 
 def house_form(svg: str, name: str, notice: str) -> str:
-    """The upstream file, cut down to what an icon of assets/icons/ holds."""
+    """The upstream file, trimmed to the assets/icons/ format."""
     open_tag = SVG_OPEN.search(svg)
     box = VIEWBOX.search(open_tag.group(0)) if open_tag else None
     if box is None:
-        sys.exit(f"'{name}': what came back is not an <svg> with a viewBox")
+        sys.exit(f"'{name}': the response is not an <svg> with a viewBox")
     inner = svg[open_tag.end():svg.rindex("</svg>")]
-    # main.css paints an icon with 'fill: currentColor', and a fill written here
-    # would win over it.
+    # main.css sets 'fill: currentColor' on icons, and a fill attribute here
+    # would override it.
     inner = FILL_ATTR.sub("", XML_COMMENT.sub("", inner)).strip()
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{box.group(1)}">'
             f"{notice}{inner}</svg>\n")
@@ -55,7 +55,7 @@ def house_form(svg: str, name: str, notice: str) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--version", default="5.15.4",
-                    help="tag of the Font Awesome repository (default: 5.15.4)")
+                    help="Font Awesome repository tag (default: 5.15.4)")
     ap.add_argument("--style", default="solid",
                     choices=("solid", "regular", "brands"))
     ap.add_argument("--out", type=Path, default=Path(__file__).resolve().parents[1] / "assets" / "icons")

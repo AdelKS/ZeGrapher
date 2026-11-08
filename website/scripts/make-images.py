@@ -1,34 +1,35 @@
 #!/usr/bin/env python3
 """make-images.py [--reprompt-crops] [--crop-only] [--lang <code>[,<code>...]] [capture...]
 
-Takes every picture the documentation, the README and the website show, and
-writes each one to the path make-images/pictures.yaml gives it. With no name,
-it takes every capture of the list. Name captures, and it redoes those only:
+Takes the pictures that the manual, the README and the website show, and
+writes each one to its path in make-images/pictures.yaml. Without arguments, it
+takes every capture in the list. To redo some captures only, name them:
 
     make-images.py input-states tab-graph
     make-images.py --reprompt-crops tab-graph
     make-images.py --lang fr tab-csv
 
-The captures are taken in a compositor of their own, on a screen no monitor
-shows. They come out the same on every machine, and the desktop is left alone.
-Keep working while the command runs.
+The captures run in a separate compositor, on a virtual screen. They come out
+the same on every machine, and the desktop is left alone. You can keep working
+while the command runs.
 
---reprompt-crops opens each picture in pick.html before the cut, to draw its
-rectangle with the mouse. The same rectangle is used in every language, so you
-draw it on the captures of the first language of the run.
+--reprompt-crops opens each picture in pick.html before cropping, so you can
+draw its rectangle with the mouse. All languages share the rectangle, so you
+draw it on the captures of the first language in the run.
 
---crop-only cuts the captures that are already there. It takes no new capture,
-and it builds nothing.
+--crop-only crops the existing captures. It doesn't take captures or build
+anything.
 
---lang takes those languages only. Without it, the run takes every language the
-app is translated into. A code the app has no translation for is an error.
+--lang limits the run to those languages. Without it, the run takes every
+language the app has a translation for. A code without a translation is an
+error.
 
---settle is how long a window is given to draw, in milliseconds, before its
-capture is taken. Raise it if a capture holds a window that is still opening.
+--settle is how long a window gets to draw before its capture, in
+milliseconds. Raise it if a capture shows a window that is still opening.
 
-CAPTURES says where the captures land, PICTURES which list to read, BUILD_DIR
-which build directory to compile in and take the app from, SETTLE what --settle
-defaults to.
+Environment variables: CAPTURES sets the captures folder, PICTURES the list to
+read, BUILD_DIR the build directory to compile and run the app from, and SETTLE
+the --settle default.
 
 The run needs:
 
@@ -37,11 +38,11 @@ The run needs:
 - a C++ compiler and pkg-config, for physical-size.cpp
 - PyYAML and Pillow
 
-One document serves every language, and make-images/documents/overrides/<code>/
-holds what changes in a language.
+All languages share each document, and make-images/documents/overrides/<code>/
+holds the per-language changes.
 
-README.md, next to this script, documents the list, the documents, the patches
-and the rectangles.
+The README.md next to this script documents the list, the documents, the
+patches and the rectangles.
 """
 
 import argparse
@@ -82,34 +83,33 @@ BUILD = Path(os.environ.get("BUILD_DIR") or ROOT / "build-zg-debug-clang")
 LIST = Path(os.environ.get("PICTURES") or DATA / "pictures.yaml")
 CAPTURES = Path(os.environ.get("CAPTURES") or ROOT / "captures")
 
-# the radius of KWin's rounded corners, measured on a capture's alpha. It is in
-# capture pixels, so it follows SCALE
+# the KWin window corner radius, measured on a capture's alpha channel. It is
+# in capture pixels, so it depends on SCALE
 RADIUS = 10
 
 # the palette entries for non-opaque pixels in a 256-color picture: the rounded
 # corners and the window shadow
 ALPHA_LEVELS = 64
 
-# the thresholds of an ordered dither: a 4x4 Bayer matrix of 0 to 15, one row
-# per bytes object
+# the ordered dither thresholds: a 4x4 Bayer matrix of 0 to 15, one row per
+# bytes object
 BAYER = (b"\x00\x08\x02\x0a", b"\x0c\x04\x0e\x06", b"\x03\x0b\x01\x09", b"\x0f\x07\x0d\x05")
 
-# the capture screen, a copy of the monitor the pictures are measured on. Every
-# rectangle in the list is in SCALE pixels, so a new SCALE needs every rectangle
-# redrawn, and a new pictureScale in src/QML/DocPane.qml, which draws the
-# pictures at this scale. SCREEN is in the same pixels, and must fit the list's
-# biggest window with its frame and drop shadow. SCREEN_MM is the monitor's
-# physical size, which sets how big the app draws the graph: see
-# physical-size.cpp
+# the capture screen, a copy of the monitor that the pictures are measured on.
+# The list rectangles are in SCALE pixels, so a new SCALE needs every rectangle
+# redrawn, and a new pictureScale in src/QML/DocPane.qml. SCREEN is in the same
+# pixels, and must fit the largest window in the list with its frame and drop
+# shadow. SCREEN_MM is the monitor's physical size, which sets the graph size
+# in the app: see physical-size.cpp
 SCALE = 1.6
 SCREEN = (3840, 2160)
 SCREEN_MM = (699, 395)
-# the socket KWin listens on, and the name of its only screen. Every run uses
-# the same name, so a second run stops on the socket instead of re-patching
-# sources that a run already patched
+# the KWin socket, and the name of its only screen. Every run uses the same
+# socket, so a second concurrent run fails on it instead of patching the
+# already patched sources again
 SOCKET = "zg-shot"
 SCREEN_NAME = "Virtual-0"
-# set in the run that KWin starts, so that run only takes the captures
+# set in the run that KWin starts, which only takes the captures
 SEALED = "MAKE_IMAGES_SEALED"
 
 # how long a window gets to draw before the capture, in milliseconds
@@ -121,7 +121,7 @@ def fail(message):
 
 
 def run(argv):
-    """Runs a command, quietly. A command that fails prints its log and stops the run."""
+    """Runs a command quietly. If it fails, prints its log and stops the run."""
     done = subprocess.run(argv, capture_output=True, text=True)
     if done.returncode != 0:
         sys.stderr.write(done.stdout + done.stderr)
@@ -139,7 +139,7 @@ def build():
 
 
 def near(path):
-    """The absolute form of a path. The list gives every path from the repository root."""
+    """The absolute path. The list paths start at the repository root."""
     return Path(os.path.normpath(ROOT / path))
 
 
@@ -147,16 +147,16 @@ def near(path):
 
 
 def sealed(argv):
-    """Runs this script again, in a compositor of its own, and returns its status.
+    """Runs this script again in a separate compositor, and returns its status.
 
-    kwin_wayland draws to a screen no monitor shows, and it starts this script
-    on the socket of that screen. dbus-run-session gives that KWin a bus of its
-    own, so it owns org.kde.KWin there. The spectacle started inside then talks
-    to that KWin, and not to the compositor of the desktop.
+    kwin_wayland draws to a virtual screen, and starts this script on that
+    screen's socket. dbus-run-session gives that KWin its own bus, so it owns
+    org.kde.KWin there. The spectacle started inside then talks to that KWin,
+    not to the desktop compositor.
 
-    The screen has a known size and scale, and it holds one window, so every
-    capture comes out the same on any machine and nothing can take the focus
-    from the window. The desktop of the machine is untouched.
+    The screen has a fixed size and scale and shows one window, so captures
+    come out the same on any machine, and nothing can steal the focus. The
+    desktop is left alone.
     """
     # --exit-with-session takes one command line, and KWin stops when it ends.
     # Programs given after -- start without arguments, and KWin keeps running
@@ -198,20 +198,19 @@ def sealed(argv):
 
 
 def rescale():
-    """Sets the scale of the screen the captures are taken on.
+    """Sets the capture screen scale.
 
-    kwin_wayland takes a --scale, but it multiplies the size of the screen by
-    it and leaves the scale at 1. The scale is set here instead, on the KWin
-    that is already up.
+    kwin_wayland's --scale multiplies the screen size and leaves the scale at
+    1. So this sets the scale on the running KWin instead.
     """
     run(["kscreen-doctor", f"output.{SCREEN_NAME}.scale.{SCALE}"])
 
 
 def physical_size_library():
-    """Compiles physical-size.cpp into the build directory, and returns the library.
+    """Compiles physical-size.cpp in the build directory, and returns the library.
 
-    The app is started with this library preloaded, so it reads SCREEN_MM as
-    the physical size of the screen.
+    The app starts with this library preloaded, so it sees SCREEN_MM as the
+    screen's physical size.
     """
     library = BUILD / "make-images-physical-size.so"
     flags = run(["pkg-config", "--cflags", "--libs", "Qt6Gui"]).split()
@@ -225,35 +224,34 @@ def physical_size_library():
 
 
 def languages():
-    """Every language the app has a translation for, English first.
+    """Every language the app is translated into, English first.
 
-    Read from the .ts files of translations/, so a language the app already
-    supports needs no edit in the list. English has no .ts file, so it is added
-    here.
+    The list comes from the .ts files in translations/, so a new translation
+    needs no edit here. English has no .ts file, so it is added by hand.
     """
     return ["en"] + [ts.stem.removeprefix("ZeGrapher_")
                      for ts in sorted((ROOT / "translations").glob("ZeGrapher_*.ts"))]
 
 
 def chosen(captures, names):
-    """The captures named on the command line, all of them when there is no name.
+    """The captures named on the command line, or all of them.
 
-    An unknown name is an error, so a typo stops the run instead of doing
-    nothing.
+    An unknown name is an error, so a typo stops the run instead of silently
+    doing nothing.
     """
     known = [c["name"] for c in captures]
     for name in names:
         if name not in known:
-            fail(f"no capture is named {name}. The file holds: " + ", ".join(known))
+            fail(f"no capture is named {name}. The list has: " + ", ".join(known))
     return [c for c in captures if not names or c["name"] in names]
 
 
 def write_rect(path, capture, index, rect):
-    """Writes one rectangle back into the list, and leaves the rest of the file as it is.
+    """Writes one rectangle back into the list, and leaves the rest of the file unchanged.
 
-    A parsed YAML tree holds no position, so it cannot say where to write.
-    yaml.compose keeps the line and the columns of every value, and the rewrite
-    below uses those to replace the characters of the rectangle alone.
+    A parsed YAML tree has no positions. yaml.compose keeps the line and
+    column of every value, which the rewrite below uses to replace only the
+    rectangle.
     """
     text = path.read_text()
 
@@ -274,15 +272,15 @@ def write_rect(path, capture, index, rect):
 
 
 def read_yaml(path):
-    """The tree a YAML file holds, an empty mapping when the file is not there."""
+    """A YAML file's content, or an empty dict if the file is missing."""
     return (yaml.safe_load(path.read_text()) or {}) if path.is_file() else {}
 
 
 def merge(base, over):
-    """'over' laid over 'base', mapping into mapping and item into item.
+    """'over' merged into 'base', key by key and item by item.
 
-    Two lists are merged item by item. An item that only one list holds is kept
-    as it is. Every other value replaces the value under it.
+    Two lists merge item by item, and items in only one list are kept as is.
+    Any other value in 'over' replaces the one in 'base'.
     """
     if isinstance(base, dict) and isinstance(over, dict):
         merged = dict(base)
@@ -296,23 +294,22 @@ def merge(base, over):
 
 
 class Documents:
-    """The documents of one language, written over the folder they come from.
+    """A language's documents, written over the base documents in their folder.
 
-    It is a context manager: the base documents are written back when the block
-    ends, whatever ends it.
+    It is a context manager: the base documents are restored when the block
+    exits, however it exits.
 
-    The documents of that folder are the base ones. overrides/<code>/ holds what
-    changes in a language: all.yaml applies to every document, and a file named
-    after a document applies to that one. all.yaml is applied last, so it sets
-    the language of the run.
+    The files in the documents folder are the base documents. overrides/<code>/
+    holds the per-language changes: all.yaml applies to every document, and a
+    file named after a document applies to that document. all.yaml is applied
+    last, so it sets the run language.
 
-    A document that holds no YAML, such as the CSV that states.patch imports, is
-    replaced by the override of the same name.
+    A non-YAML document, such as the CSV that states.patch imports, is replaced
+    by the override with the same name.
 
-    The documents are written in the folder itself, and not in a copy under
-    /tmp, because states.patch opens the CSV from the directory of the document.
-    A copy under /tmp would show a /tmp path in the CSV import panel, and would
-    load nothing.
+    The documents are written in place, not to a copy in /tmp, because
+    states.patch opens the CSV from the document folder. A copy in /tmp would
+    show a /tmp path in the CSV import panel, and wouldn't load anything.
     """
 
     def __init__(self):
@@ -327,7 +324,7 @@ class Documents:
             path.write_bytes(base)
 
     def content(self, lang):
-        """What every document of the folder holds in that language."""
+        """Each document's content in that language."""
         folder = OVERRIDES / lang
         every = read_yaml(folder / "all.yaml")
         held = {}
@@ -343,10 +340,10 @@ class Documents:
         return held
 
     def check(self, langs):
-        """Stops the run when a language leaves a document in another language.
+        """Stops the run if a document doesn't open in the run's language.
 
-        A language with no all.yaml of its own stops the run here, instead of
-        taking a whole set of captures in the language of the base documents.
+        This catches a language without an all.yaml before it takes a whole set
+        of captures in the base document language.
         """
         for lang in langs:
             for path, held in self.content(lang).items():
@@ -359,7 +356,7 @@ class Documents:
                          f"{(OVERRIDES / lang / 'all.yaml').relative_to(ROOT)}")
 
     def use(self, lang):
-        """Writes every document of that language over the folder it comes from."""
+        """Writes the language's documents over the base documents."""
         for path, held in self.content(lang).items():
             path.write_bytes(held)
 
@@ -369,9 +366,9 @@ class Documents:
 
 @contextlib.contextmanager
 def patched(patch):
-    """The sources with that patch applied, for the time of the block.
+    """Applies the patch to the sources for the duration of the block.
 
-    The patch comes off when the block ends, whatever ends it. None applies
+    The patch is reverted when the block exits, however it exits. None applies
     nothing.
     """
     if patch is None:
@@ -385,13 +382,12 @@ def patched(patch):
 
 
 def write_settings(document, config, version):
-    """Writes the settings file that the app reads for one document.
+    """Writes the app settings file for one document.
 
-    The app reads its settings from settings.yaml in its config folder, and
-    never from a document. A document of the list holds the settings of its
-    capture under 'app:', and this writes them to settings.yaml under 'config',
-    with the version of the build first, as the app writes the file when it
-    closes.
+    The app reads its settings from settings.yaml in its config folder, never
+    from a document. Each document in the list holds its capture's settings
+    under 'app:'. This writes them to settings.yaml under 'config', with the
+    build version first, as the app does on close.
     """
     held = yaml.safe_load(document.read_text(encoding="utf-8")) or {}
     settings = config / "ZeGrapher" / "settings.yaml"
@@ -404,11 +400,11 @@ def write_settings(document, config, version):
 def shoot(document, output, settle, preload, config):
     """Opens a document in ZeGrapher and captures its window, drop shadow included.
 
-    The app reads its settings from 'config', which is XDG_CONFIG_HOME for the
-    app, and they give the window size. Spectacle waits 'settle' milliseconds,
-    then captures the window that is active. That wait is what the app has to
-    draw its window in, and it must also outlast the animation KWin opens a
-    window with, or the capture holds a window that is still fading in.
+    The app reads its settings, window size included, from 'config', which is
+    its XDG_CONFIG_HOME. Spectacle waits 'settle' milliseconds, then captures
+    the active window. The app must draw its window within that time, and KWin
+    must finish its window opening animation, or the capture shows a window
+    that is still fading in.
     """
     output.parent.mkdir(parents=True, exist_ok=True)
     # spectacle doesn't write a file when no window is active, so a capture from
@@ -425,17 +421,17 @@ def shoot(document, output, settle, preload, config):
         app.kill()
         app.wait()
     if not output.is_file():
-        fail(f"{document.name} drew no window in {settle} ms. Raise --settle")
+        fail(f"{document.name} didn't show a window within {settle} ms. Raise --settle")
     with Image.open(output) as shot:
         print(f"{output}: {shot.width}x{shot.height}")
 
 
 def capture_all(captures, langs, settle):
-    """Takes one capture per document and per language, patch group by patch group.
+    """Takes one capture per document and language, one patch group at a time.
 
-    The group without a patch comes last, even when it holds no capture. Its
-    build is then the last one, and it leaves the build directory on the
-    sources as they are.
+    The group without a patch comes last, even when it is empty. Its build is
+    then the last one, so the build directory ends up matching the unpatched
+    sources.
     """
     if git("status", "--porcelain", "--", "src/QML").strip():
         fail("src/QML has uncommitted changes. Commit or stash them, then run this again")
@@ -444,8 +440,8 @@ def capture_all(captures, langs, settle):
     preload = physical_size_library()
     version = json.loads(run(["meson", "introspect", "--projectinfo", str(BUILD)]))["version"]
     patches = sorted({c["patch"] for c in captures if c.get("patch")})
-    # the app's config folder during the run, so the captures neither read nor
-    # write the settings in ~/.config
+    # the app config folder during the run, so the captures don't read or write
+    # the settings in ~/.config
     with Documents() as documents, tempfile.TemporaryDirectory() as config:
         documents.check(langs)
         for patch in patches + [None]:
@@ -453,8 +449,8 @@ def capture_all(captures, langs, settle):
             with patched(near(patch) if patch else None):
                 build()
                 group = [c for c in captures if c.get("patch") == patch]
-                # one document serves every language. It opens once per language,
-                # with that language's overrides on top
+                # all languages share the document. It opens once per language,
+                # with that language's overrides applied
                 for capture, lang in itertools.product(group, langs):
                     documents.use(lang)
                     document = near(capture["document"])
@@ -467,11 +463,11 @@ def capture_all(captures, langs, settle):
 
 
 def pick_rect(capture, name, current, frame):
-    """Serves pick.html for one picture and waits for the rectangle drawn in it.
+    """Serves pick.html for one picture, and waits for the rectangle drawn in it.
 
-    Opens the page in a browser, with that capture loaded and the frame above
-    it. The rectangle the list holds today is drawn on the capture. Returns the
-    rectangle the page sends back, or None when the page closes without one.
+    Opens the page in a browser, with the capture and its 'frame' prompt. The
+    current list rectangle is drawn on the capture. Returns the rectangle that
+    the page sends back, or None if the page closes without one.
     """
     picked = None
     done = threading.Event()
@@ -499,8 +495,8 @@ def pick_rect(capture, name, current, frame):
     try:
         served = capture.resolve().relative_to(ROOT)
     except ValueError:
-        fail(f"{capture} is outside {ROOT}, so the page cannot load it. Set "
-             "CAPTURES to a directory of the repository")
+        fail(f"{capture} is outside {ROOT}, so the page can't load it. Set "
+             "CAPTURES to a directory inside the repository")
 
     query = urllib.parse.urlencode({
         "img": "/" + str(served),
@@ -522,7 +518,7 @@ def pick_rect(capture, name, current, frame):
 
 
 def reprompt_all(captures, first):
-    """Asks for one rectangle per picture, on the captures of the first language."""
+    """Asks for one rectangle per picture, on the first language's captures."""
     print("== rectangles")
     for capture in captures:
         for index, image in enumerate(capture["images"]):
@@ -544,11 +540,10 @@ def reprompt_all(captures, first):
 
 @functools.cache
 def corner_tile(radius, samples=16):
-    """One rounded corner, as an opacity tile of radius by radius pixels.
+    """One rounded corner, as a radius x radius opacity tile.
 
-    Each pixel holds how much of its area the disc of that radius covers,
-    measured over a grid of sub-pixels. That coverage is the antialiasing of the
-    arc.
+    Each pixel holds the share of its area inside the disc, measured over a
+    grid of sub-pixels. That coverage antialiases the arc.
     """
     step = 1 / samples
     data = bytearray()
@@ -566,7 +561,7 @@ def corner_tile(radius, samples=16):
 
 
 def corner_mask(size, radius):
-    """An opacity mask of that size, with its four corners cut to that radius."""
+    """An opacity mask of that size, with its four corners rounded to that radius."""
     corner = corner_tile(radius)
     width, height = size
     mask = Image.new("L", size, 255)
@@ -588,22 +583,22 @@ def box_of(rect, size, output, mirrored):
         width, height = (int(n) for n in extent.split("x"))
         x, y = int(x), int(y)
     except ValueError:
-        fail(f"{output}: {rect} is not a rectangle of the form WxH+X+Y")
+        fail(f"{output}: {rect} is not a WxH+X+Y rectangle")
     if mirrored:
         x = size[0] - x - width
     if x < 0 or y < 0 or x + width > size[0] or y + height > size[1]:
-        fail(f"{output}: the rectangle {rect} runs past the capture, which is "
-             f"{size[0]}x{size[1]}. Draw it again with --reprompt-crops")
+        fail(f"{output}: the rectangle {rect} goes past the {size[0]}x{size[1]} "
+             f"capture. Draw it again with --reprompt-crops")
     return x, y, x + width, y + height
 
 
 def reduce_colors(picture):
-    """The picture in a palette of 256 colors.
+    """The picture with a 256-color palette.
 
-    Pillow dithers only an RGB picture. So the opaque pixels take a median cut
-    of the RGB picture, with Floyd-Steinberg dithering. The other pixels take
-    ALPHA_LEVELS even levels of alpha with an ordered dither, each level in the
-    mean color of its pixels.
+    Pillow dithers only RGB pictures. So the opaque pixels get a median cut
+    palette of the RGB picture, with Floyd-Steinberg dithering. The other
+    pixels get ALPHA_LEVELS evenly spaced alpha levels with an ordered dither,
+    each level in the mean color of its pixels.
     """
     rgba = picture.convert("RGBA")
     rgb = rgba.convert("RGB")
@@ -646,11 +641,11 @@ def reduce_colors(picture):
 
 
 def cut(shot, rect, output, full_color, mirrored):
-    """Writes one picture out of a capture.
+    """Writes one picture from a capture.
 
-    A 'whole' picture is the capture encoded again, with the corners and the
-    shadow the compositor drew. Every other picture is cut by its rectangle, and
-    its corners are rounded the same way.
+    A 'whole' picture is the capture encoded again, with the compositor's
+    corners and shadow. Other pictures are cropped to their rectangle, and get
+    the same rounded corners.
     """
     output.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(shot) as capture:
@@ -674,7 +669,7 @@ def crop_all(captures, langs):
         for capture in captures:
             shot = CAPTURES / lang / f"{capture['name']}.png"
             if not shot.is_file():
-                fail(f"{shot} is not there. Take the captures again without --crop-only")
+                fail(f"{shot} is missing. Take the captures again without --crop-only")
             for image in capture["images"]:
                 cut(shot, image["rect"], near(image["output"].replace("{lang}", lang)),
                     image.get("full-color", False), lang in RIGHT_TO_LEFT)
@@ -699,13 +694,13 @@ def main():
     captures = chosen(doc["captures"], args.captures)
     for capture in captures:
         if not near(capture["document"]).is_file():
-            fail(f"{near(capture['document'])} is not there")
+            fail(f"{near(capture['document'])} is missing")
 
     every = languages()
     wanted = args.lang.replace(",", " ").split()
     for code in wanted:
         if code not in every:
-            fail(f"the app has no translation for {code}. It has: " + ", ".join(every))
+            fail(f"the app has no {code} translation. It has: " + ", ".join(every))
     langs = [lang for lang in every if not wanted or lang in wanted]
     if args.reprompt_crops and langs[0] in RIGHT_TO_LEFT:
         fail(f"{langs[0]} mirrors the window. Draw the rectangles in a "
@@ -715,7 +710,7 @@ def main():
         if os.environ.get(SEALED):
             # KWin started this run, which only takes the captures. The run
             # that started KWin draws the rectangles and crops the pictures on
-            # the desktop, where a browser can open
+            # the desktop, where a browser can open the picker page
             capture_all(captures, langs, args.settle)
             return
         status = sealed(sys.argv[1:])

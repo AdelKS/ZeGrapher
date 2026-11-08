@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""The content of the site, which the app shares part of.
+"""Find the site content files, some of which the app also embeds.
 
-    content.py qrc          prints the <file> entries of the website.qrc that
+    content.py qrc          prints the <file> entries for the website.qrc that
                             website/meson.build writes
     content.py header VERSION
-                            prints buildconfig.h, the C++ header of the
-                            version of the app, of the site, of the GitHub
-                            repository, of the email address of the author and
-                            of the donation page
+                            prints buildconfig.h, the C++ header with the app
+                            version, site address, GitHub repository, author
+                            email address and donation page
 
 website/content/ holds one folder per language. English is the source: a
-language that leaves out a file or a picture takes the English one. The build
-of the app and every script that reads the content find the files through this
-module, so each one falls back to English the same way.
+language without a given file or picture uses the English one. The app build
+and every script that reads the content use this module, so they all fall back
+to English the same way.
 
-website/build-config/build.yaml is read here too, with PyYAML.
+This module also reads website/build-config/build.yaml, with PyYAML.
 """
 
 import re
@@ -25,33 +24,33 @@ SITE = Path(__file__).resolve().parents[1]
 CONTENT = SITE / "content"
 CONF_FILE = SITE / "build-config" / "build.yaml"
 
-# The language that every other one falls back to
+# The fallback language
 SOURCE = "en"
 
-# The pictures folder inside a language folder, and the path panels use
+# The pictures folder in each language folder, and the path that panels use
 PICTURES = "images"
 
 # The right-to-left languages. Their pages and app windows are mirrored
 RIGHT_TO_LEFT = {"ar", "fa", "he", "ur"}
 
-# A language's short strings that no panel holds, such as the footer text. The
-# app embeds the same file, and reads the donation appeal from it.
+# A language's short strings outside the panels, such as the footer text. The
+# app embeds the same file for the donation appeal.
 STRINGS = "strings.yaml"
 
-# The site's documentation panel is the app manual. The app reads it as
-# 'documentation.md', without the panel's position prefix
+# The site documentation panel is the app manual. The app embeds it as
+# 'documentation.md', without the panel number prefix
 MANUAL = "4-documentation.md"
 APP_MANUAL = "documentation.md"
 
-# A picture that a panel shows, '![...](images/overview.png)', and its file name
+# A picture in a panel, '![...](images/overview.png)', capturing its file name
 SHOWN_PICTURE = re.compile(rf"\]\({PICTURES}/([^)\s]+)\)")
 
 
 def languages() -> list[str]:
-    """Every language of the site, English first.
+    """Every site language, English first.
 
-    A folder of content/ counts as a language when it holds a markdown file, so
-    a new language is a folder and the files in it.
+    Any content/ folder with a markdown file counts as a language, so adding a
+    language only takes a new folder.
     """
     folders = sorted(folder.name for folder in CONTENT.iterdir()
                      if folder.is_dir() and any(folder.glob("*.md")))
@@ -59,17 +58,16 @@ def languages() -> list[str]:
 
 
 def file_of(lang: str, name: str) -> Path:
-    """content/<lang>/<name>, or the English file when that language has none."""
+    """content/<lang>/<name>, or the English file if the language has none."""
     translated = CONTENT / lang / name
     return translated if translated.is_file() else CONTENT / SOURCE / name
 
 
 def pictures(lang: str) -> dict[str, Path]:
-    """Every picture that a page of one language shows, by file name.
+    """A language's pictures, by file name.
 
-    The English pictures come first, and the pictures of the language replace
-    them. A language that translates one screenshot keeps the English picture
-    of every other panel.
+    The language's own pictures replace the English ones with the same name,
+    so a language can translate one screenshot and keep English for the rest.
     """
     found = {}
     for folder in dict.fromkeys((SOURCE, lang)):
@@ -81,11 +79,10 @@ def pictures(lang: str) -> dict[str, Path]:
 
 
 def captions(lang: str) -> dict[str, str]:
-    """The captions of the gallery pictures that one language writes, by file name.
+    """A language's gallery captions, by file name.
 
-    They are the 'gallery' mapping of content/<lang>/strings.yaml. The site
-    writes them as the pictures' alt text, and the metainfo file as screenshot
-    captions.
+    They come from the 'gallery' mapping in content/<lang>/strings.yaml. The
+    site uses them as alt text, and the metainfo file as screenshot captions.
     """
     import yaml
 
@@ -96,68 +93,67 @@ def captions(lang: str) -> dict[str, str]:
 
 
 def read_conf() -> dict:
-    """website/build-config/build.yaml, as a mapping."""
+    """website/build-config/build.yaml, as a dict."""
     import yaml
 
     if not CONF_FILE.is_file():
-        sys.exit(f"{CONF_FILE} does not exist, and it holds the configuration of the site")
+        sys.exit(f"{CONF_FILE} is missing: it holds the site configuration")
 
     conf = yaml.safe_load(CONF_FILE.read_text(encoding="utf-8")) or {}
     if not isinstance(conf, dict):
-        sys.exit(f"{CONF_FILE}: the file holds no mapping of names to settings")
+        sys.exit(f"{CONF_FILE}: the file must be a YAML mapping")
     return conf
 
 
 def link_url(link) -> str:
-    """The address of an entry of 'footer: links' in build.yaml.
+    """The URL of a 'footer: links' entry in build.yaml.
 
-    An entry is an address, or a mapping that holds it under 'url'.
+    An entry is a URL, or a mapping with a 'url' key.
     """
     return link["url"] if isinstance(link, dict) else link
 
 
 def donate_url(conf: dict) -> str:
-    """The donation page, which is the 'donate' entry of 'footer: links'."""
+    """The donation page: the 'donate' entry in 'footer: links'."""
     link = (conf.get("footer") or {}).get("links", {}).get("donate")
     if not link:
-        sys.exit(f"{CONF_FILE}: 'footer: links' names no 'donate', the entry "
-                 f"that links the donation page")
+        sys.exit(f"{CONF_FILE}: 'footer: links' has no 'donate' entry for the "
+                 f"donation page")
     return link_url(link)
 
 
 def homepage_url(conf: dict) -> str:
-    """The address of the site, the 'homepage' of build.yaml."""
+    """The site address: 'homepage' in build.yaml."""
     url = conf.get("homepage")
     if not url:
-        sys.exit(f"{CONF_FILE}: 'homepage' names no address")
+        sys.exit(f"{CONF_FILE}: 'homepage' is empty")
     return url
 
 
 def repository_url(conf: dict) -> str:
-    """The GitHub repository of ZeGrapher, the 'repository' of build.yaml."""
+    """The ZeGrapher GitHub repository: 'repository' in build.yaml."""
     url = conf.get("repository")
     if not url:
-        sys.exit(f"{CONF_FILE}: 'repository' names no address")
+        sys.exit(f"{CONF_FILE}: 'repository' is empty")
     return url
 
 
 def contact_address(conf: dict) -> str:
-    """The email address of the author, out of the 'contact' entry of 'footer: links'."""
+    """The author's email address, from the 'contact' entry in 'footer: links'."""
     link = (conf.get("footer") or {}).get("links", {}).get("contact")
     url = link_url(link) if link else ""
     if not url.startswith("mailto:"):
-        sys.exit(f"{CONF_FILE}: 'footer: links' names no 'contact' that starts "
-                 f"with 'mailto:', the entry that gives the email address")
+        sys.exit(f"{CONF_FILE}: 'footer: links' needs a 'contact' entry that "
+                 f"starts with 'mailto:'")
     return url.removeprefix("mailto:")
 
 
 def qrc_entries() -> list[str]:
-    """The files of the site that the app embeds, under ':/website/<lang>/'.
+    """The site files that the app embeds, under ':/website/<lang>/'.
 
-    Every language gets the manual, the strings file and the pictures that the
-    manual shows, the English file standing in for one that the language leaves
-    out. A picture that only the site shows, such as the one of the landing
-    panel, stays out of the app.
+    Each language gets the manual, the strings file and the manual pictures,
+    with English files for the missing ones. Site-only pictures, such as the
+    landing panel picture, stay out of the app.
     """
     def entry(alias: str, path: Path) -> str:
         return f'<file alias="{alias}">{path}</file>'
@@ -174,20 +170,20 @@ def qrc_entries() -> list[str]:
 
 
 def cpp_string(value: str) -> str:
-    """The C++ string literal that holds the value."""
+    """The value as a C++ string literal."""
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
 def header(conf: dict, version: str) -> str:
-    """buildconfig.h, the version of the app and the addresses of build.yaml as
-    C++ macros."""
+    """buildconfig.h: the app version and the build.yaml addresses as C++
+    macros."""
     macros = {"SOFTWARE_VERSION": version,
               "HOMEPAGE_URL": homepage_url(conf),
               "REPOSITORY_URL": repository_url(conf),
               "CONTACT_ADDRESS": contact_address(conf),
               "DONATE_URL": donate_url(conf)}
-    lines = ["// website/scripts/content.py writes this file out of the version "
-             "of meson.build and website/build-config/build.yaml",
+    lines = ["// website/scripts/content.py writes this file from the meson.build "
+             "version and website/build-config/build.yaml",
              "#pragma once"]
     lines += [f"#define {name} {cpp_string(value)}" for name, value in macros.items()]
     return "\n".join(lines)
