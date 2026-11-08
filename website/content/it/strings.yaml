@@ -1,50 +1,49 @@
-# The short strings of the site that no panel holds. Translate the values,
-# and keep the keys.
+# The site's short strings, outside the panels. Translate the values, and keep
+# the keys.
 
-# the name of this language, written in that language. The menu at the top of
-# every page lists each language under this name. This key does not fall back
-# to English, so every language must write it
+# the language name, in that language. The language menu at the top of each
+# page lists the languages by this name. This key has no English fallback, so
+# every language must set it
 language: Italiano
 
-# the title of the page, which the browser shows in its tab
+# the page title, which the browser shows in the tab
 page_title: ZeGrapher, software libero per tracciare grafici
 
-# the line under the title of the landing panel. A search engine also shows it
-# as the description of the page
+# the line under the landing panel title. Search engines also show it as the
+# page description
 tagline: Un software di grafici matematici libero, gratuito e semplice da usare. Traccia nel piano funzioni, successioni, equazioni parametriche e dati sperimentali.
 
-# the words of each entry of the footer
+# the footer entries
 footer:
   donate: Fai una donazione
   contact: Contatti
   theme-based-on: Basato su
 
-# the labels of the buttons of the page. A screen reader reads them, and the
-# label of the theme switch also shows when the pointer rests on it
+# the page button labels. Screen readers read them, and the theme switch label
+# also shows as a tooltip
 buttons:
   theme: Passa dal tema chiaro al tema scuro e viceversa
   previous: Precedente
   next: Successivo
 
-# the line over the download tiles. The build writes the version in place of
-# {version}, and the day of the release in place of {date}
+# the line above the download tiles. The build replaces {version} with the
+# version, and {date} with the release date
 release: "Versione {version}, rilasciata il {date}"
 
-# the words of the tile that links the repository on GitHub: its name, and
-# the two smaller links under it
+# the GitHub repository tile: its name, and the two smaller links below it
 downloads:
   source: Codice sorgente
   releases: Versioni
   issues: Segnalazioni
 
-# the caption of each gallery picture, by file name. The site gives it to the
-# picture as alt text, and software centers show it under the screenshot
+# the gallery captions, by file name. The site uses them as alt text, and
+# software centers show them under the screenshots
 gallery:
   vitrine.png: "Una curva in coordinate polari, tracciata per più valori di una costante insieme"
   functions.png: "Una funzione e una successione sullo stesso grafico"
   schrodinger.png: "Modo Schrödinger: una curva per ogni valore della costante"
   data.png: "Dati misurati, in una tabella e sul grafico"
 
-# the markdown that asks for a donation. The site shows it in the download
-# panel, and the app shows it above its Donate button
+# the donation appeal, in markdown. The site shows it in the download panel,
+# and the app shows it above its Donate button
 donation: Se ZeGrapher ti è utile, sostienilo con una donazione!
