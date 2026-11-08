@@ -5,7 +5,7 @@ ZeGrapher è libero e gratuito, con licenza
 
 {{ downloads }}
 
-Debian, Fedora, Ubuntu, Arch Linux e FreeBSD tengono ZeGrapher nei loro archivi
-ufficiali. La versione che trovi lì può essere più vecchia di quella qui sopra.
+Debian, Fedora, Ubuntu, Arch Linux e FreeBSD includono ZeGrapher nei loro
+repository ufficiali. La versione che trovi lì può essere più vecchia di quella qui sopra.
 
 {{ donation }}
