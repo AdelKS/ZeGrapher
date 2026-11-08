@@ -44,7 +44,7 @@ Le graphe se pilote à la souris :
 | Zoomer l'axe y seul | `Ctrl` + molette verticale |
 | Zoomer l'axe x seul | `Ctrl` + molette horizontale ou <br/> `Ctrl` + `Maj` + molette verticale |
 
-Le zoom conserve en place le point situé sous le curseur.
+Le zoom garde fixe le point situé sous le curseur.
 
 Sur un pavé tactile ou un écran tactile, un pincement zoome aussi les deux axes.
 
@@ -69,7 +69,7 @@ Les trois boutons en bas à gauche concernent les [fichiers](#22-fichiers).
 
 Sur le bord du panneau :
 
-- le bouton flèche replie le panneau, et le ramène
+- le bouton flèche replie et déplie le panneau
 - le bouton marque-page, juste en dessous, ouvre et ferme cette documentation
 - faites glisser la ligne qui longe le bord droit pour changer la largeur du
   panneau
@@ -95,8 +95,8 @@ Les trois boutons en bas à gauche du panneau sont, dans l'ordre :
    identique au graphe affiché à l'écran. Raccourci : `Ctrl` + `E`.
 2. **Enregistrer** les objets, les données, la vue et les réglages des onglets
    Grille et Graphe dans un document ZeGrapher (`.zg`). Le premier
-   enregistrement demande un fichier, et les suivants écrivent dans celui-ci.
-   Les réglages de l'onglet Appli restent hors des documents. Raccourcis :
+   enregistrement demande un fichier, et les suivants écrivent dans ce fichier.
+   Les documents ne contiennent pas les réglages de l'onglet Appli. Raccourcis :
    `Ctrl` + `S`, et `Ctrl` + `Maj` + `S` pour enregistrer dans un autre fichier.
 3. **Charger** un tel document. L'application ajoute ses objets à ceux déjà
    ouverts, et reprend la vue et les réglages du document. Raccourci : `Ctrl` +
@@ -108,7 +108,7 @@ Un document `.zg` déposé sur la fenêtre se charge comme avec **Charger**, et 
 fichier CSV déposé dessus ouvre l'[import CSV](#353-importer-un-fichier-csv)
 dans une nouvelle feuille.
 
-Au démarrage suivant, ZeGrapher rouvre votre dernier travail. Si vous donnez un
+Au démarrage suivant, ZeGrapher rouvre votre dernier travail. Si vous passez un
 fichier `.zg` en ligne de commande, l'application ouvre ce fichier à la place.
 
 ## 3. L'onglet Maths
@@ -125,27 +125,28 @@ Ce bouton, en bas de l'onglet Maths, ajoute un objet.
 
 ![Le bouton qui ajoute un objet](images/add-object.png)
 
-La liste déroulante en haut de la nouvelle carte choisit le type d'objet.
+La liste déroulante en haut de la nouvelle carte permet de choisir le type
+d'objet.
 
 ![Un objet et sa carte](images/object-card.png)
 
-Toutes les cartes portent les mêmes boutons :
+Toutes les cartes ont les mêmes boutons :
 
 - Le bouton œil affiche ou masque la courbe.
 - Le bouton pinceau ouvre le [style de tracé](#36-style-de-tracé).
-- Le disque est la couleur de la courbe.
+- Le disque indique la couleur de la courbe.
 - Faites glisser la poignée à droite pour réordonner les objets.
 - Le **×** dans le coin supprime l'objet.
 
 ### 3.2. Fonctions et suites
 
-Une fonction se définit par son équation naturelle :
+Une fonction se définit par son équation, comme sur le papier :
 
 ```
 f(x) = 2 + cos(x)
 ```
 
-Ces fonctions sont prédéfinies, et s'utilisent dans toute expression :
+Ces fonctions sont prédéfinies et utilisables dans toute expression :
 
 | Catégorie | Fonctions |
 |-----------|-----------|
@@ -166,7 +167,7 @@ Ces constantes sont prédéfinies :
 | `physics::h` | la constante de Planck, 6.62607015e-34 |
 | `physics::c` | la vitesse de la lumière dans le vide, 299792458 |
 
-Les trois constantes physiques sont exprimées en unités SI.
+Les constantes physiques sont exprimées en unités SI.
 
 Une suite est une liste d'expressions séparées par `,` ou `;`. Les premières
 expressions sont les premiers termes de la suite. La **dernière** est le terme
@@ -178,9 +179,8 @@ u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
 
 ![Une fonction et une suite](images/functions.png)
 
-Le contour d'un champ de saisie prend une couleur qui dit si l'expression est
-valide. Une expression invalide reçoit en plus un message, en dessous, qui en
-donne la raison.
+La couleur du contour d'un champ de saisie indique si l'expression est valide.
+Une expression invalide affiche aussi un message d'erreur en dessous.
 
 ![Un champ vide, un champ valide et un champ invalide](images/input-states.png)
 
@@ -194,7 +194,7 @@ Vous choisissez ces trois couleurs dans l'[onglet Appli](#6-longlet-appli).
 
 ### 3.3. Constantes
 
-Une **constante** est un nom porteur d'une valeur numérique. Tout autre objet,
+Une **constante** est un nom associé à une valeur numérique. Tout autre objet,
 sauf une autre constante, peut ensuite l'utiliser dans son expression.
 
 ![Une constante, son curseur et son animation](images/constant.png)
@@ -203,7 +203,7 @@ sauf une autre constante, peut ensuite l'utiliser dans son expression.
 
 Le curseur en dessous fait varier la valeur entre **min** et **max**, et toutes
 les courbes qui utilisent la constante suivent. Faites glisser le curseur à la
-main, ou animez-le. La rangée sous le curseur donne les commandes d'animation :
+main, ou animez-le. La rangée sous le curseur contient les commandes d'animation :
 lecture, boucle, aller-retour, et la durée d'un passage.
 
 #### 3.3.2. Plusieurs valeurs à la fois
@@ -312,7 +312,7 @@ cellules.
 
 ### 3.6. Style de tracé
 
-Le bouton pinceau ouvre les réglages qui décident du dessin d'un objet :
+Le bouton pinceau ouvre le style de tracé de l'objet :
 
 ![Le style de tracé d'un objet](images/style.png)
 
@@ -336,8 +336,7 @@ est une expression : les graduations peuvent donc être des multiples de
 
 Vous réglez **Grille** et **Sous-grille** séparément pour x et pour y. Chacune a
 une couleur, une épaisseur de trait, et un interrupteur qui l'affiche ou la
-masque. Vous donnez aussi à la sous-grille le nombre de subdivisions de chaque
-cellule.
+masque. La sous-grille règle aussi le nombre de subdivisions de chaque cellule.
 
 ## 5. L'onglet Graphe — allure et précision
 
@@ -366,7 +365,7 @@ Les deux cadres sous **Taille** :
 - **Dessin** : la police et la couleur d'arrière-plan du graphe. **Points min**
   et **Points max** fixent le nombre de points que l'application calcule pour
   chaque courbe continue, en puissance de deux. Plus il y a de points, plus le
-  tracé est fin et plus le dessin est lent.
+  tracé est fin et plus le rendu est lent.
 - **Axes** : épaisseur de trait, couleur, les titres écrits le long de x et de
   y, et la police de ces titres.
 
@@ -387,11 +386,11 @@ gestionnaire de paquets s'occupe des mises à jour.
 
 ## 7. L'onglet À propos
 
-Cet onglet dit ce qu'est ZeGrapher. On y trouve :
+Cet onglet présente ZeGrapher. On y trouve :
 
 - la version que vous utilisez, et un bouton qui demande à zegrapher.com s'il en
   existe une plus récente
-- des liens vers le site, vers le code source et vers l'auteur
+- des liens vers le site, le code source et l'auteur
 - les licences de ZeGrapher, de Qt et de la police mathématique embarquée
 - un bouton **Faire un don**, qui ouvre la page des dons
 - les notes de version : ce qu'apporte chaque version, avec un lien vers sa page

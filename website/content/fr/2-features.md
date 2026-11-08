@@ -10,26 +10,26 @@ données, puis exporte exactement ce que vous voyez.
   `u(n) = 0 ; 1 ; u(n-2) + u(n-1)`.
 - **Équations paramétriques**, tracées sur l'intervalle de votre choix.
 - **Constantes et variables** partagées par tous les objets : une seule valeur
-  commande alors toute une famille de courbes. Une constante peut :
+  pilote toute une famille de courbes. Une constante peut :
     - glisser entre deux bornes, à la main ou en animation
     - prendre plusieurs valeurs à la fois, et chaque courbe qui l'utilise est
       tracée une fois par valeur
-- **Données** importées depuis un CSV, et modifiables dans un tableau, comme
-  dans un tableur. Testées sur des fichiers de plusieurs millions de cellules.
+- **Données** importées depuis un fichier CSV et modifiables dans un tableau,
+  comme dans un tableur. Testées sur des fichiers de plusieurs millions de cellules.
 - **Des objets qui s'appuient les uns sur les autres** : tout objet nommé peut
   entrer dans l'expression d'un autre, et dans les cellules d'une colonne de
   données.
 - **Un graphe interactif** : déplacez la vue à la souris, zoomez à la molette,
   sur un seul axe si vous le souhaitez.
-- **Personnalisation jusqu'à la grille** : des graduations en multiples d'une
+- **Une grille sur mesure** : des graduations en multiples d'une
   expression comme `π`, et des subdivisions et des couleurs distinctes pour x et
   pour y.
 - **Des exports identiques à l'aperçu**, au format vectoriel (`svg`, `pdf`) ou
-  en image (`png`, `jpeg`, `bmp`, `ppm`). Vous donnez la taille en centimètres
-  réels.
+  en image (`png`, `jpeg`, `bmp`, `ppm`). Vous choisissez la taille en
+  centimètres réels.
 - **Reprenez où vous en étiez** : l'application enregistre votre travail quand
   vous la fermez, et le rouvre au démarrage suivant. Vous pouvez aussi
-  l'enregistrer dans un fichier à vous, et l'ouvrir quand vous le voulez.
+  l'enregistrer dans votre propre fichier, et le rouvrir quand vous voulez.
 - **Un manuel intégré**, qui s'ouvre à côté du graphe, dans la langue de
   l'application.
 - **En 10 langues** : l'application et son manuel existent en anglais, français,
