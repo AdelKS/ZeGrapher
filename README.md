@@ -7,7 +7,7 @@
 
 ![ZeGrapher example](./website/content/en/images/vitrine.png)
 
-ZeGrapher is free, open source and easy-to-use software for plotting mathematical objects.
+ZeGrapher is a free, open source and easy-to-use math plotter.
 
 **Official website:** [https://zegrapher.com/](https://zegrapher.com/)
 
@@ -15,8 +15,8 @@ ZeGrapher is free, open source and easy-to-use software for plotting mathematica
 
 ZeGrapher plots functions, sequences, parametric equations and data in the
 plane. Objects can share constants and variables. It imports and exports CSV,
-and it exports the graph as an image or a vector file, identical to what you
-see on screen.
+and exports the graph as an image or a vector file, exactly as it looks on
+screen.
 
 For more information, see [the feature list](./website/content/en/2-features.md) and
 [the user documentation](./website/content/en/4-documentation.md).
@@ -37,18 +37,16 @@ Corrections and new languages are welcome.
 
 ### Download
 
-Debian, Fedora, Ubuntu, Arch Linux and FreeBSD carry ZeGrapher in their
-official repositories.
-A distribution takes a while to pick up a new release, so its package can be
-older than the newest one.
+Debian, Fedora, Ubuntu, Arch Linux and FreeBSD ship ZeGrapher in their
+official repositories. Their packages can lag behind the latest release.
 
-The [releases page on GitHub](https://github.com/AdelKS/ZeGrapher/releases)
-and [zegrapher.com](https://zegrapher.com/) both carry an
+The [GitHub releases page](https://github.com/AdelKS/ZeGrapher/releases)
+and [zegrapher.com](https://zegrapher.com/) both offer an
 [AppImage](https://appimage.org/) for Linux, and bundles for Windows and macOS.
 
-### Compile from sources
+### Build from source
 
-To compile from sources, ZeGrapher needs the following tools and libraries:
+Building ZeGrapher needs:
 
 - a C++ compiler that takes C++23: [clang](https://clang.llvm.org/) or [gcc](https://gcc.gnu.org/)
 - [Qt](https://www.qt.io) 6.10 or newer, with these modules
@@ -62,11 +60,10 @@ To compile from sources, ZeGrapher needs the following tools and libraries:
 - [glaze](https://github.com/stephenberry/glaze) 8.3 or newer
 - [ZeCalculator](https://github.com/AdelKS/ZeCalculator) 0.13.6 or newer
 
-If the system does not have glaze or ZeCalculator, meson downloads the missing
-library while it sets up the build. So a build needs only the first four, and a
-build without network access needs all six.
+If the system lacks glaze or ZeCalculator, meson downloads them during setup.
+So a build needs only the first four, and an offline build needs all six.
 
-To build
+To build:
 
 ```shell
 meson setup build
@@ -75,7 +72,7 @@ meson compile
 cd ..
 ```
 
-This creates the `ZeGrapher` executable in `build/src/ZeGrapher` that you can directly run.
+This builds the `build/src/ZeGrapher` executable, which you can run from there.
 
 #### Packaging
 
@@ -97,4 +94,4 @@ check, its setting and its button.
 
 ZeGrapher is licensed under the [GNU Affero General Public License v3](./LICENSE) or later.
 
-The unmodified bundled [Latin Modern Math font](./fonts/latinmodern-math.otf) is redistributed under the [GUST font license](./fonts/latinmodern-math-license.txt).
+ZeGrapher bundles the [Latin Modern Math font](./fonts/latinmodern-math.otf), unmodified, under the [GUST font license](./fonts/latinmodern-math-license.txt).

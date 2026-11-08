@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  appdata/generate-metainfo writes the metainfo file out of this template, and
-  appdata/meson.build installs what it writes.
+  appdata/generate-metainfo fills in this template, and appdata/meson.build
+  installs the result.
 -->
 <component type="desktop-application">
   <id>com.zegrapher.ZeGrapher</id>

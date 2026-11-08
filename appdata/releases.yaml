@@ -1,23 +1,23 @@
-# The releases of ZeGrapher, and what the author writes about them.
+# ZeGrapher releases and their notes.
 #
-# 'releases' lists each release tag with the day it went out, newest first. For
-# the release under work, the date is the day the release is due. Before CI
-# makes a full release, it checks that this date is the day of the release
-# commit. A pre-release can be left out, since nothing reads its date.
+# 'releases' lists each release tag with its date, newest first. For the
+# upcoming release, the date is the planned release day. Before a full
+# release, CI checks that this date matches the release commit date.
+# Pre-releases can be left out, since nothing reads their dates.
 #
 # 'announcements' and 'changes' hold markdown 'text' about a span of releases:
-# every release after 'from', up to 'to'. 'from' stays out of the span, since
-# the changes count from it. An entry without 'from' is about 'to' alone. An
+# every release after 'from', up to 'to'. The span excludes 'from', since the
+# changes count from it. An entry without 'from' covers 'to' alone. An
 # announcement presents a release, and a changes entry lists what changed, for
-# example between two release candidates. Each list runs newest first, and no
-# two spans in the same list overlap. A tag can be one that doesn't exist yet.
+# example between two release candidates. Each list runs newest first, and
+# spans in the same list can't overlap. A tag can name a future release.
 #
-# appdata/generate-metainfo gives the metainfo file, which software centers
-# show, one <release> per full release in 'releases'. It takes the text of the
-# announcement that ends on that release, or else the text of the changes
-# entry. The app shows every entry that holds a release up to its own version,
-# with an announcement above the changes entries of its span. The GitHub
-# release of a tag shows the announcement and the changes entry that hold it.
+# appdata/generate-metainfo writes one <release> per full release to the
+# metainfo file, which software centers show. Each release takes the text of
+# the announcement that ends on it, or else of the changes entry. The app shows
+# every entry that covers a release up to its own version, with each
+# announcement above the changes entries in its span. A tag's GitHub release
+# shows the announcement and changes entry that cover it.
 
 releases:
   - tag: v4.0.0

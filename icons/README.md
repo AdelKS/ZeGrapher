@@ -1,22 +1,19 @@
-# The icons of ZeGrapher
+# ZeGrapher icons
 
-Most of this folder is the artwork of the interface. `resources.qrc` lists
-those files, and the app loads them from its resources.
+Most of this folder is interface artwork. `resources.qrc` lists those files,
+and the app loads them from its resources.
 
-Do not edit the `ZeGrapher_*.png`, `ZeGrapher.ico` and `ZeGrapher.icns` files.
-They are generated from `ZeGrapher.svg`. To re-generate them, run:
+Don't edit `ZeGrapher_*.png`, `ZeGrapher.ico` or `ZeGrapher.icns`:
+`rasterize-zegrapher-svg.py` generates them from `ZeGrapher.svg`. To generate
+them again, run:
 
 ```sh
 ./rasterize-zegrapher-svg.py
 ```
 
-The docstring at the top of
-[rasterize-zegrapher-svg.py](./rasterize-zegrapher-svg.py) lists the files it
-writes.
+On Windows, `meson.build` compiles `ZeGrapher.rc`, which embeds
+`ZeGrapher.ico` in `ZeGrapher.exe`.
 
-On Windows, `meson.build` compiles `ZeGrapher.rc`, which puts `ZeGrapher.ico`
-into `ZeGrapher.exe`.
-
-The website shows `ZeGrapher.svg` as its logo and its favicon.
-`website/scripts/build-website.py` copies this file into the site when it
-builds, so the drawing is not duplicated.
+The website uses `ZeGrapher.svg` as its logo and favicon.
+`website/scripts/build-website.py` copies the file into the site at build time,
+so the repository has a single copy.
