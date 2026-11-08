@@ -1,12 +1,12 @@
 # Загрузка
 
-ZeGrapher бесплатна и свободна, под лицензией
+ZeGrapher — свободная и бесплатная программа под лицензией
 [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.ru.html).
 
 {{ downloads }}
 
-Debian, Fedora, Ubuntu, Arch Linux и FreeBSD держат ZeGrapher в своих
-официальных репозиториях. Версия там может быть старее, чем выше на этой
-странице.
+Debian, Fedora, Ubuntu, Arch Linux и FreeBSD включают ZeGrapher в свои
+официальные репозитории. Версия там может быть старше той, что предложена
+выше.
 
 {{ donation }}
