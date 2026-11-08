@@ -169,7 +169,7 @@ Diese Konstanten sind bereits eingebaut:
 | `physics::h` | die Planck-Konstante, 6.62607015e-34 |
 | `physics::c` | die Lichtgeschwindigkeit im Vakuum, 299792458 |
 
-Die drei physikalischen Konstanten verwenden SI-Einheiten.
+Die physikalischen Konstanten sind in SI-Einheiten angegeben.
 
 Eine Folge besteht aus Ausdrücken, die durch `,` oder `;` getrennt sind. Die
 ersten Ausdrücke geben die Anfangsglieder an. Der **letzte** Ausdruck ist das

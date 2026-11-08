@@ -18,8 +18,8 @@ du genau so exportieren, wie du es siehst.
     - mehrere Werte gleichzeitig annehmen, sodass für jeden Wert die
       entsprechenden Kurven gezeichnet werden
 - **CSV-Daten** importieren und direkt in einer Tabelle wie in einer
-  Tabellenkalkulation bearbeiten. Auch mit Dateien mit mehreren Millionen Zellen
-  getestet.
+  Tabellenkalkulation bearbeiten. Getestet mit Dateien aus mehreren Millionen
+  Zellen.
 - **Objekte miteinander verknüpfen**: Benannte Objekte lassen sich in den
   Ausdrücken anderer Objekte und in den Zellen von Datenspalten verwenden.
 - **Graphen interaktiv erkunden**: Mit der Maus verschieben, per Mausrad zoomen
