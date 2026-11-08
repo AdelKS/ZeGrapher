@@ -22,7 +22,7 @@ footer:
 # the page button labels. Screen readers read them, and the theme switch label
 # also shows as a tooltip
 buttons:
-  theme: Switch between the light and the dark theme
+  theme: Switch between light and dark themes
   previous: Previous
   next: Next
 

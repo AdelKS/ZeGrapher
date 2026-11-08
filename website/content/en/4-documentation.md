@@ -30,8 +30,8 @@
 
 The graph is what you see on the right, and what you export. The
 [Grid](#4-the-grid-tab--ticks-and-grid) and
-[Graph](#5-the-graph-tab--look-and-precision) tabs set its look, its precision and
-its size.
+[Graph](#5-the-graph-tab--look-and-precision) tabs set its look, precision and
+size.
 
 ### 1.1. Moving and zooming
 
@@ -76,8 +76,7 @@ On the edge of the panel:
 ### 2.1. View range
 
 The four fields at the top of the panel accept expressions, not just numbers. A
-minimum must stay below its maximum, and the field turns invalid if it does
-not.
+minimum must be below its maximum, or the field turns invalid.
 
 The round button in the top right corner sets both axes back to -10 .. 10.
 
@@ -92,11 +91,10 @@ The three buttons at the bottom left of the panel are, in order:
 1. **Export the graph** you see, in a vector format (`svg`, `pdf`) or as an
    image (`png`, `jpeg`, `bmp`, `ppm`). The export looks exactly like the graph
    on the screen. Shortcut: `Ctrl` + `E`.
-2. **Save** the objects, the data, the view and the settings of the Grid and
-   Graph tabs as a ZeGrapher document (`.zg`). The first save asks for a file,
-   and the next ones write to it. The settings of the App tab stay out of
-   documents. Shortcuts: `Ctrl` + `S`, and `Ctrl` + `Shift` + `S` to save to
-   another file.
+2. **Save** the objects, data, view, and Grid and Graph tab settings as a
+   ZeGrapher document (`.zg`). The first save asks for a file, and later saves
+   write to it. Documents don't include the App tab settings. Shortcuts:
+   `Ctrl` + `S`, and `Ctrl` + `Shift` + `S` to save to another file.
 3. **Load** such a document. The app adds its objects to the ones already open,
    and takes the view and the settings from the document. Shortcut: `Ctrl` +
    `O`.
@@ -128,7 +126,7 @@ The dropdown at the top of the new card sets the kind of object.
 
 ![One object and its card](images/object-card.png)
 
-Every card carries the same buttons:
+Every card has the same buttons:
 
 - The eye button shows or hides the curve.
 - The brush button opens the [plot style](#36-plot-style).
@@ -165,7 +163,7 @@ These constants are built in:
 | `physics::h` | the Planck constant, 6.62607015e-34 |
 | `physics::c` | the speed of light in vacuum, 299792458 |
 
-The three physics constants hold their value in SI units.
+The physics constants are in SI units.
 
 A sequence is a list of expressions separated by `,` or `;`. The first
 expressions are the first terms of the sequence. The **last** one is the
@@ -177,13 +175,13 @@ u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
 
 ![A function and a sequence](images/functions.png)
 
-The border of an input line takes a color that tells you whether the expression
-is valid. An invalid one also gets a message underneath, with the reason.
+The border color of an input line shows whether the expression is valid. An
+invalid expression also gets an error message below it.
 
 ![An empty line, a valid one, and an invalid one](images/input-states.png)
 
 A field that expects a value, such as a bound of the view, can take the warning
-color instead: the expression is valid, but it yields no number.
+color instead: the expression is valid, but doesn't give a number.
 
 ![A bound whose expression has no value](images/input-warning.png)
 
@@ -295,15 +293,14 @@ We tested ZeGrapher on CSV files of several million cells.
 
 ### 3.6. Plot style
 
-The brush button opens the settings that decide how an object is drawn:
+The brush button opens the object's plot style settings:
 
 ![The plot style of an object](images/style.png)
 
 - **Cartesian** or **Polar** coordinates.
 - The line pattern — solid, dashed, dash-dotted, dotted, or no line — and its
   width.
-- For the objects drawn as points (sequences and data), the shape and the size
-  of the point.
+- For objects drawn as points (sequences and data), the point shape and size.
 - **Start** and **End**: the interval the app plots the object over. The default
   values are `xmin` and `xmax`, the bounds of the view. Both fields accept any
   expression, for example `-math::pi` and `4*math::pi`.
@@ -317,9 +314,9 @@ digits they can use, and a **multiplier**. The multiplier is an expression, so
 ticks can be multiples of `math::pi`, and the labels are written as multiples of
 it.
 
-You set **Grid** and **Sub-grid** separately for x and y. Each one takes a
-color, a line width, and a switch that shows it or hides it. The sub-grid also
-takes the number of parts it cuts each cell into.
+You set **Grid** and **Sub-grid** separately for x and y. Each has a color, a
+line width, and a switch to show or hide it. The sub-grid also sets how many
+parts it divides each cell into.
 
 ## 5. The Graph tab — look and precision
 
@@ -338,8 +335,8 @@ The app draws that sheet as a page in the window, with a zoom bar above it:
 ![The zoom bar](images/zoom-bar.png)
 
 The bar zooms the sheet on the screen, and the last button fits the whole sheet
-in the window. This zoom does not touch the graph: the bounds of the view stay
-as they are. Centimeter sizes are correct at 100% zoom.
+in the window. This zoom doesn't change the graph: the view bounds stay as they
+are. Centimeter sizes are correct at 100% zoom.
 
 The two boxes under **Size**:
 
@@ -365,12 +362,12 @@ package manager handles updates.
 
 ## 7. The About tab
 
-This tab tells what ZeGrapher is. It holds:
+This tab is about ZeGrapher itself. It has:
 
 - the version you run, and a button that asks zegrapher.com whether a newer one
   is out
-- links to the website, to the source code and to the author
-- the licenses of ZeGrapher, of Qt and of the bundled math font
+- links to the website, the source code and the author
+- the ZeGrapher, Qt and bundled math font licenses
 - a **Donate** button, which opens the donation page
 - the release notes: what each release brought, with a link to its page on
   GitHub

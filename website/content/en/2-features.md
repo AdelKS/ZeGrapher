@@ -4,8 +4,8 @@ ZeGrapher draws mathematical objects in the plane — functions, sequences,
 parametric equations and data — and exports exactly what you see.
 
 - **Functions** written the way you write them on paper, `f(x) = 2 + cos(x)`.
-  You get the usual mathematical functions, plus every object you define
-  yourself.
+  The usual math functions are built in, and you can call any object you
+  define.
 - **Sequences** from their recurrence relation, first terms included:
   `u(n) = 0 ; 1 ; u(n-2) + u(n-1)`.
 - **Parametric equations**, drawn over the interval you choose.
@@ -16,17 +16,17 @@ parametric equations and data — and exports exactly what you see.
       per value
 - **Data** imported from CSV, and edited in a table like a spreadsheet. Tested
   on files of several million cells.
-- **Objects that build on each other**: any named object can be used in the
-  expression of another, and in the cells of a data column.
+- **Objects that build on each other**: any named object can be used in another
+  object's expression, and in data column cells.
 - **A graph you can navigate**: drag to move, scroll to zoom, one axis at a time
   if you want.
 - **Customization down to the grid**: ticks as multiples of an expression such
   as `π`, and separate subdivisions and colors for x and y.
 - **Exports identical to the preview**, vector (`svg`, `pdf`) or image (`png`,
-  `jpeg`, `bmp`, `ppm`). You give the size in real centimeters.
+  `jpeg`, `bmp`, `ppm`). You set the size in real centimeters.
 - **Pick up where you left off**: the app saves your work when you close it, and
   brings it back at the next start. You can also save it to a file of your own,
   and open it whenever you want.
-- **A built-in manual**, opened next to the graph, in the language of the app.
+- **A built-in manual**, next to the graph, in the app language.
 - **In 10 languages**: the app and its manual are in English, French, German,
   Spanish, Italian, Portuguese, Russian, Japanese, Chinese and Arabic.

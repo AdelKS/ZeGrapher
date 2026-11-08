@@ -6,6 +6,6 @@ ZeGrapher is free and open source, under the
 {{ downloads }}
 
 Debian, Fedora, Ubuntu, Arch Linux and FreeBSD ship ZeGrapher in their official
-repositories. Their version can be older than the one above.
+repositories. Their packages can lag behind the version above.
 
 {{ donation }}
