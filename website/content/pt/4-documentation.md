@@ -35,7 +35,7 @@ precisão e o tamanho dele.
 
 ### 1.1. Mover e dar zoom
 
-O gráfico se comanda pelo mouse:
+O gráfico é controlado pelo mouse:
 
 | Ação | Mouse |
 |------|-------|
@@ -44,7 +44,7 @@ O gráfico se comanda pelo mouse:
 | Dar zoom só no eixo y | `Ctrl` + rolagem vertical |
 | Dar zoom só no eixo x | `Ctrl` + rolagem horizontal ou <br/> `Ctrl` + `Shift` + rolagem vertical |
 
-Ao dar zoom, o ponto sob o cursor fica onde está.
+Ao dar zoom, o ponto sob o cursor fica parado.
 
 Num touchpad ou numa tela sensível ao toque, o gesto de pinça também dá zoom nos dois eixos.
 
@@ -57,7 +57,7 @@ No macOS, o `Cmd` substitui o `Ctrl`.
 Os quatro campos no alto do painel são os limites da vista. Abaixo deles ficam
 cinco abas:
 
-| Aba | O que traz |
+| Aba | O que contém |
 |-----|------------|
 | **Objetos** | o que você traça: equações, constantes, equações paramétricas, dados |
 | **Grade** | marcas, grade e subgrade |
@@ -69,14 +69,14 @@ Os três botões no canto inferior esquerdo são para os [arquivos](#22-arquivos
 
 Na borda do painel:
 
-- o botão de seta recolhe o painel, e o traz de volta
+- o botão de seta recolhe e expande o painel
 - o botão de marcador, logo abaixo, abre e fecha esta documentação
 - arraste a linha que corre pela borda direita para mudar a largura do painel
 
 ### 2.1. Limites da vista
 
 Os quatro campos no alto do painel aceitam expressões, não só números. Cada
-mínimo precisa ficar abaixo do seu máximo, senão o campo fica inválido.
+mínimo precisa ser menor que o seu máximo, senão o campo fica inválido.
 
 O botão redondo no canto superior direito volta os dois eixos para -10 .. 10.
 
@@ -89,12 +89,12 @@ O botão redondo no canto superior direito volta os dois eixos para -10 .. 10.
 Os três botões no canto inferior esquerdo do painel são, em ordem:
 
 1. **Exportar o gráfico** que você vê, em formato vetorial (`svg`, `pdf`) ou
-   como imagem (`png`, `jpeg`, `bmp`, `ppm`). O arquivo sai idêntico ao gráfico
-   da tela. Atalho: `Ctrl` + `E`.
+   como imagem (`png`, `jpeg`, `bmp`, `ppm`). O arquivo exportado é idêntico ao
+   gráfico na tela. Atalho: `Ctrl` + `E`.
 2. **Salvar** os objetos, os dados, a vista e os ajustes das abas Grade e
-   Gráfico em um documento do ZeGrapher (`.zg`). A primeira vez pede um
-   arquivo, e as seguintes gravam nele. Os ajustes da aba App ficam fora dos
-   documentos. Atalhos: `Ctrl` + `S`, e `Ctrl` + `Shift` + `S` para salvar em
+   Gráfico em um documento do ZeGrapher (`.zg`). Na primeira vez, o
+   programa pede um arquivo, e nas seguintes grava nele. Os documentos não
+   incluem os ajustes da aba App. Atalhos: `Ctrl` + `S`, e `Ctrl` + `Shift` + `S` para salvar em
    outro arquivo.
 3. **Carregar** um documento desses. O programa adiciona os objetos dele aos que
    já estão abertos, e adota a vista e os ajustes do documento. Atalho: `Ctrl` +
@@ -102,12 +102,12 @@ Os três botões no canto inferior esquerdo do painel são, em ordem:
 
 No macOS, os atalhos usam `Cmd` no lugar de `Ctrl`.
 
-Um documento `.zg` solto na janela carrega como com **Carregar**, e um arquivo
-CSV abre a [importação de CSV](#353-importar-um-arquivo-csv) numa planilha nova.
+Um documento `.zg` arrastado para a janela é carregado como com **Carregar**, e
+um arquivo CSV abre a [importação de CSV](#353-importar-um-arquivo-csv) numa planilha nova.
 
-Na próxima vez que abrir, o ZeGrapher volta ao seu último trabalho. Se você
-passar um arquivo `.zg` na linha de comando, o programa abre esse arquivo no
-lugar.
+Na próxima vez que você abrir o ZeGrapher, ele restaura o seu último trabalho.
+Se você passar um arquivo `.zg` na linha de comando, o programa abre esse
+arquivo em vez disso.
 
 ## 3. A aba Objetos
 
@@ -123,27 +123,27 @@ Este botão, no rodapé da aba Objetos, adiciona um objeto.
 
 ![O botão que adiciona um objeto](images/add-object.png)
 
-A lista no alto do novo cartão escolhe o tipo de objeto.
+Na lista suspensa no alto do novo cartão, você escolhe o tipo de objeto.
 
 ![Um objeto e o cartão dele](images/object-card.png)
 
-Todo cartão traz os mesmos botões:
+Todo cartão tem os mesmos botões:
 
 - O botão do olho mostra ou oculta a curva.
 - O botão do pincel abre o [estilo do traço](#36-estilo-do-traço).
-- O disco é a cor da curva.
+- O disco mostra a cor da curva.
 - Arraste a alça à direita para reordenar os objetos.
 - O **×** no canto exclui o objeto.
 
 ### 3.2. Funções e sequências
 
-Uma função se define pela equação natural dela:
+Uma função se define pela sua equação, como no papel:
 
 ```
 f(x) = 2 + cos(x)
 ```
 
-Estas funções já vêm prontas, e valem em qualquer expressão:
+Estas funções são predefinidas e podem ser usadas em qualquer expressão:
 
 | Tipo | Funções |
 |------|---------|
@@ -155,7 +155,7 @@ Estas funções já vêm prontas, e valem em qualquer expressão:
 | De dois argumentos | `max`, `min` |
 | Outras | `abs`, `erf`, `erfc`, `gamma` (também escrita `Γ`) |
 
-Estas constantes já vêm prontas:
+Estas constantes são predefinidas:
 
 | Nome | Valor |
 |------|-------|
@@ -164,7 +164,7 @@ Estas constantes já vêm prontas:
 | `physics::h` | a constante de Planck, 6.62607015e-34 |
 | `physics::c` | a velocidade da luz no vácuo, 299792458 |
 
-As três constantes da física estão em unidades do SI.
+As constantes físicas estão em unidades do SI.
 
 Uma sequência é uma lista de expressões separadas por `,` ou `;`. As primeiras
 expressões são os primeiros termos. A **última** é o termo geral, e o programa a
@@ -176,8 +176,8 @@ u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
 
 ![Uma função e uma sequência](images/functions.png)
 
-A borda de um campo ganha uma cor que diz se a expressão é válida. Quando não é,
-uma mensagem abaixo dá o motivo.
+A cor da borda de um campo indica se a expressão é válida. Quando não é, uma
+mensagem abaixo explica o motivo.
 
 ![Um campo vazio, um válido e um inválido](images/input-states.png)
 
@@ -190,24 +190,24 @@ Estas três cores você escolhe na [aba App](#6-a-aba-app).
 
 ### 3.3. Constantes
 
-Uma **constante** é um nome com um valor numérico. Qualquer outro objeto, fora
-outra constante, pode então usá-la na expressão dele.
+Uma **constante** é um nome com um valor numérico. Qualquer outro objeto, exceto
+outra constante, pode usá-la na sua expressão.
 
 ![Uma constante, o controle deslizante e a animação dela](images/constant.png)
 
 #### 3.3.1. Animação
 
-O controle deslizante abaixo leva o valor de **mín** a **máx**, e todas as
-curvas que usam a constante acompanham. Arraste o controle à mão, ou deixe a
-animação correr. A fileira abaixo dele traz os comandos da animação: tocar,
-ciclo, vaivém, e o tempo de uma passagem.
+O controle deslizante abaixo faz o valor variar entre **mín** e **máx**, e todas
+as curvas que usam a constante acompanham. Arraste o controle manualmente ou
+anime-o. A fileira abaixo dele contém os controles da animação: reproduzir,
+repetir, vaivém e a duração de uma passagem.
 
 #### 3.3.2. Vários valores de uma vez
 
 Este botão, num cartão de constante, a torna uma **constante de
 Schrödinger**.
 
-![O botão do gato, ligado](images/cat-button.png)
+![O botão do gato, ativado](images/cat-button.png)
 
 A constante passa a ter `passos + 1` valores, igualmente espaçados de mín a máx.
 O programa traça cada objeto que usa a constante uma vez por valor.
@@ -220,7 +220,7 @@ degradê, da primeira cor para a segunda.
 ### 3.4. Equações paramétricas
 
 Uma equação paramétrica é um par de objetos que dão as coordenadas de cada ponto
-da curva. Você os nomeia nos dois campos:
+da curva. Escreva os nomes deles nos dois campos:
 
 ![Uma equação paramétrica sobre duas funções](images/parametric.png)
 
@@ -236,15 +236,15 @@ matemático por si só, com nome e os mesmos botões de qualquer outro objeto.
 
 ![Uma coluna de uma planilha](images/column-card.png)
 
-Os valores de uma coluna são traçados contra o índice deles: o primeiro valor em
-x = 0, o segundo em x = 1, e assim por diante. Para traçar uma coluna contra
-outra, use uma [equação paramétrica](#34-equações-paramétricas).
+Os valores de uma coluna são traçados em função do índice: o primeiro valor em
+x = 0, o segundo em x = 1, e assim por diante. Para traçar uma coluna em função
+de outra, use uma [equação paramétrica](#34-equações-paramétricas).
 
 ![Os botões sob uma planilha](images/sheet-buttons.png)
 
 Os botões no canto inferior direito da planilha importam um arquivo CSV,
 exportam as colunas para um arquivo CSV, e adicionam uma coluna. Arraste a barra
-abaixo para mudar a altura da planilha, e clique duas vezes nela para devolver a
+abaixo para mudar a altura da planilha, e clique duas vezes nela para restaurar a
 altura padrão.
 
 #### 3.5.1. A tabela de dados
@@ -262,8 +262,8 @@ painel. Na tabela:
 - Aperte `Delete` para remover as células selecionadas. Os valores abaixo delas
   sobem.
 - O menu do botão direito traz essas mesmas duas ações, em *Limpar* e *Excluir*,
-  e ainda *Inserir linha acima* e *Inserir linha abaixo*. As duas inserções agem
-  sobre a célula ativa.
+  e ainda *Inserir linha acima* e *Inserir linha abaixo*. As duas opções de
+  inserção agem sobre a célula ativa.
 
 Selecionar uma coluna inteira e apertar `Delete` exclui também o objeto coluna
 na aba Objetos.
@@ -271,8 +271,8 @@ na aba Objetos.
 #### 3.5.2. Preencher uma coluna com um objeto
 
 O botão de barras de uma coluna abre um pequeno formulário: dê o nome de um
-objeto, e um **Início**, um **Fim** e um **Passo**. O botão de confirmação tira
-os valores do objeto e os escreve na coluna.
+objeto, e um **Início**, um **Fim** e um **Passo**. O botão de confirmação amostra
+o objeto e grava os valores na coluna.
 
 ![Preencher uma coluna com os valores de f](images/sampling.png)
 
@@ -288,7 +288,7 @@ importação, com uma prévia do arquivo abaixo. A prévia se atualiza a cada op
 que você muda:
 
 - **Separador** — o caractere entre dois valores. Escreva `\t` para tabulação.
-- **Cabeçalho** — marque quando a primeira linha traz os nomes das colunas.
+- **Cabeçalho** — marque quando a primeira linha contém os nomes das colunas.
 - **Mostrar linhas** — quantas linhas a prévia mostra.
 - **Pular linhas** — quantas linhas ignorar no começo do arquivo, comentários ou
   parâmetros por exemplo.
@@ -300,7 +300,7 @@ Testamos o ZeGrapher com arquivos CSV de vários milhões de células.
 
 ### 3.6. Estilo do traço
 
-O botão do pincel abre os ajustes que decidem como um objeto é desenhado:
+O botão do pincel abre o estilo do traço do objeto:
 
 ![O estilo do traço de um objeto](images/style.png)
 
@@ -323,8 +323,8 @@ expressão, então as marcas podem ser múltiplos de `math::pi`, e os rótulos s
 escritos em múltiplos desse valor.
 
 **Grade** e **Subgrade** se ajustam em separado para x e para y. Cada uma tem
-cor, espessura de linha, e uma chave que a mostra ou a oculta. À subgrade você
-diz ainda em quantas partes ela corta cada célula.
+cor, espessura de linha, e uma chave que a mostra ou a oculta. Na subgrade, você
+também define em quantas partes cada célula é dividida.
 
 ## 5. A aba Gráfico — aparência e precisão
 
@@ -332,7 +332,7 @@ diz ainda em quantas partes ela corta cada célula.
 
 Por padrão o gráfico preenche a janela. Ponha **Tamanho do gráfico** em
 *Personalizado*, na caixa **Tamanho** lá em cima, e o gráfico vira uma folha do
-tamanho que você disser. Esse tamanho vai em **centímetros
+tamanho que você definir. Esse tamanho é dado em **centímetros
 reais**. Um centímetro é um centímetro de verdade na tela, e continua sendo num
 `pdf` ou num `svg` exportado.
 
@@ -345,15 +345,15 @@ acima:
 ![A barra de zoom](images/zoom-bar.png)
 
 A barra dá zoom na folha na tela, e o último botão encaixa a folha inteira na
-janela. Este zoom não mexe no gráfico: os limites da vista ficam como estão. Os
-tamanhos em centímetros ficam certos em 100% de zoom.
+janela. Este zoom não altera o gráfico: os limites da vista não mudam. Os tamanhos em
+centímetros são exatos com zoom de 100%.
 
 As duas caixas abaixo de **Tamanho**:
 
 - **Desenho**: a fonte e a cor de fundo do gráfico. **Pontos mín** e **Pontos
   máx** definem quantos pontos são calculados para cada curva contínua, em
   potências de dois. Quanto mais pontos, mais fino o traço e mais lento o
-  desenho.
+  redesenho.
 - **Eixos**: espessura de linha, cor, os títulos escritos ao longo de x e de y, e
   a fonte desses títulos.
 
@@ -374,12 +374,12 @@ pacotes cuida das atualizações.
 
 ## 7. A aba Sobre
 
-Esta aba conta o que é o ZeGrapher. Ela traz:
+Esta aba apresenta o ZeGrapher. Ela contém:
 
 - a versão que você usa, e um botão que pergunta ao zegrapher.com se saiu uma
   mais nova
 - links para o site, para o código-fonte e para o autor
 - as licenças do ZeGrapher, do Qt e da fonte matemática embutida
 - um botão **Doar**, que abre a página de doações
-- as notas de versão: o que cada versão trouxe, com um link para a página dela no
+- as notas de versão: as novidades de cada versão, com um link para a página dela no
   GitHub
