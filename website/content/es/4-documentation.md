@@ -44,7 +44,7 @@ La gráfica se maneja con el ratón:
 | Acercar solo el eje y | `Ctrl` + rueda vertical |
 | Acercar solo el eje x | `Ctrl` + rueda horizontal, o <br/> `Ctrl` + `Mayús` + rueda vertical |
 
-Al acercar, el punto que está bajo el cursor se queda donde estaba.
+Al hacer zoom, el punto bajo el cursor se queda fijo.
 
 En un panel táctil o una pantalla táctil, pellizcar también acerca los dos ejes.
 
@@ -69,7 +69,7 @@ Los tres botones de abajo a la izquierda son para los [archivos](#22-archivos).
 
 En el borde del panel:
 
-- el botón de la flecha pliega el panel, y lo vuelve a traer
+- el botón de la flecha pliega y despliega el panel
 - el botón del marcapáginas, justo debajo, abre y cierra esta documentación
 - arrastra la línea que recorre el borde derecho para cambiar el ancho del
   panel
@@ -77,8 +77,7 @@ En el borde del panel:
 ### 2.1. Límites de la vista
 
 Los cuatro campos de arriba del panel aceptan expresiones, no solo números. Cada
-mínimo debe quedar por debajo de su máximo, y si no lo hace el campo pasa a no
-válido.
+mínimo debe ser menor que su máximo. Si no, el campo se marca como no válido.
 
 El botón redondo de la esquina superior derecha devuelve los dos ejes a -10 ..
 10.
@@ -96,7 +95,7 @@ Los tres botones de abajo a la izquierda del panel son, por orden:
    gráfica de la pantalla. Atajo: `Ctrl` + `E`.
 2. **Guardar** los objetos, los datos, la vista y los ajustes de las pestañas
    Cuadrícula y Gráfica en un documento de ZeGrapher (`.zg`). La primera vez
-   pide un archivo, y las siguientes escriben en él. Los ajustes de la pestaña
+   pide un archivo, y las siguientes guardan en él. Los ajustes de la pestaña
    App no se guardan en los documentos. Atajos: `Ctrl` + `S`, y `Ctrl` +
    `Mayús` + `S` para guardar en otro archivo.
 3. **Cargar** un documento de ese tipo. ZeGrapher añade sus objetos a los que ya
@@ -126,27 +125,27 @@ Este botón, al final de la pestaña Mates, añade un objeto.
 
 ![El botón que añade un objeto](images/add-object.png)
 
-La lista desplegable de arriba de la nueva tarjeta elige el tipo de objeto.
+Con la lista desplegable de arriba de la nueva tarjeta eliges el tipo de objeto.
 
 ![Un objeto y su tarjeta](images/object-card.png)
 
-Todas las tarjetas llevan los mismos botones:
+Todas las tarjetas tienen los mismos botones:
 
 - El botón del ojo muestra u oculta la curva.
 - El botón del pincel abre el [estilo de trazado](#36-estilo-de-trazado).
-- El disco es el color de la curva.
+- El disco muestra el color de la curva.
 - Arrastra el asa de la derecha para reordenar los objetos.
 - La **×** de la esquina borra el objeto.
 
 ### 3.2. Funciones y sucesiones
 
-Una función se define con su ecuación natural:
+Una función se define con su ecuación, como en el papel:
 
 ```
 f(x) = 2 + cos(x)
 ```
 
-Estas funciones vienen de serie, y sirven en cualquier expresión:
+Estas funciones vienen incluidas y se pueden usar en cualquier expresión:
 
 | Tipo | Funciones |
 |------|-----------|
@@ -158,7 +157,7 @@ Estas funciones vienen de serie, y sirven en cualquier expresión:
 | De dos argumentos | `max`, `min` |
 | Otras | `abs`, `erf`, `erfc`, `gamma` (también `Γ`) |
 
-Estas constantes vienen de serie:
+Estas constantes vienen incluidas:
 
 | Nombre | Valor |
 |--------|-------|
@@ -167,7 +166,7 @@ Estas constantes vienen de serie:
 | `physics::h` | la constante de Planck, 6.62607015e-34 |
 | `physics::c` | la velocidad de la luz en el vacío, 299792458 |
 
-Las tres constantes físicas están en unidades del SI.
+Las constantes físicas están en unidades del SI.
 
 Una sucesión es una lista de expresiones separadas por `,` o `;`. Las primeras
 expresiones son los primeros términos. La **última** es el término general, y la
@@ -179,8 +178,8 @@ u(n) = 0 ; 1 ; 0.5*(u(n-2) + u(n-1))
 
 ![Una función y una sucesión](images/functions.png)
 
-El borde de un campo de entrada toma un color que indica si la expresión es
-válida. Cuando no lo es, un mensaje debajo da el motivo.
+El color del borde de un campo de entrada indica si la expresión es válida. Si
+no lo es, aparece debajo un mensaje con el motivo.
 
 ![Un campo vacío, uno válido y uno no válido](images/input-states.png)
 
@@ -202,7 +201,7 @@ salvo otra constante, puede usarla después en su expresión.
 
 El deslizador de debajo hace variar el valor entre **mín** y **máx**, y todas las
 curvas que usan la constante lo siguen. Arrastra el deslizador a mano, o
-anímalo. La fila de debajo tiene los mandos de la animación: reproducir, bucle,
+anímalo. La fila de debajo tiene los controles de la animación: reproducir, bucle,
 ida y vuelta, y la duración de una pasada.
 
 #### 3.3.2. Varios valores a la vez
@@ -224,7 +223,7 @@ de curvas en degradado, del primer color al segundo.
 ### 3.4. Ecuaciones paramétricas
 
 Una ecuación paramétrica es un par de objetos que dan las coordenadas de cada
-punto de la curva. Los nombras en los dos campos:
+punto de la curva. Escribe sus nombres en los dos campos:
 
 ![Una ecuación paramétrica sobre dos funciones](images/parametric.png)
 
@@ -307,7 +306,7 @@ Hemos probado ZeGrapher con archivos CSV de varios millones de celdas.
 
 ### 3.6. Estilo de trazado
 
-El botón del pincel abre los ajustes que deciden cómo se dibuja un objeto:
+El botón del pincel abre el estilo de trazado del objeto:
 
 ![El estilo de trazado de un objeto](images/style.png)
 
@@ -330,8 +329,8 @@ es una expresión, así que las marcas pueden ser múltiplos de `math::pi`, y la
 etiquetas se escriben entonces como múltiplos de ese valor.
 
 **Cuadrícula** y **Subcuadrícula** se ajustan por separado para x y para y. Cada
-una tiene color, grosor de línea, y un interruptor que la muestra o la oculta. A
-la subcuadrícula le das además en cuántas partes corta cada celda.
+una tiene color, grosor de línea y un interruptor que la muestra o la oculta. En
+la subcuadrícula indicas además en cuántas partes se divide cada celda.
 
 ## 5. La pestaña Gráfica — aspecto y precisión
 
@@ -360,7 +359,7 @@ Los dos recuadros bajo **Tamaño**:
 - **Dibujo**: la fuente y el color de fondo de la gráfica. **Puntos mín** y
   **Puntos máx** fijan cuántos puntos calcula la aplicación para cada curva
   continua, en potencias de dos. Cuantos más puntos, más fino el trazado y más
-  lento el dibujo.
+  lento el redibujado.
 - **Ejes**: grosor de línea, color, los títulos escritos a lo largo de x y de y,
   y la fuente de esos títulos.
 
@@ -381,7 +380,7 @@ el gestor de paquetes se encarga de las actualizaciones.
 
 ## 7. La pestaña Acerca de
 
-Esta pestaña cuenta qué es ZeGrapher. Tiene:
+Esta pestaña presenta ZeGrapher. Contiene:
 
 - la versión que usas, y un botón que le pregunta a zegrapher.com si hay una más
   nueva
