@@ -50,11 +50,11 @@ QString zcErrorToStr(const zc::Error& err)
       return QObject::tr("Unknown error");
 
     case zc::Error::WRONG_FORMAT:
-      //: %1 is the piece of the expression that has the wrong format
+      //: %1 is the part of the expression with the wrong format
       return QObject::tr("Wrong format: \"%1\"").arg(token);
 
     case zc::Error::UNEXPECTED:
-      //: %1 is the piece of the expression that cannot be there
+      //: %1 is the misplaced part of the expression
       return QObject::tr("Unexpected \"%1\"").arg(token);
 
     case zc::Error::UNEXPECTED_END_OF_EXPRESSION:
@@ -76,7 +76,7 @@ QString zcErrorToStr(const zc::Error& err)
       return QObject::tr("Function \"%1\" called with the wrong number of arguments").arg(token);
 
     case zc::Error::NOT_IMPLEMENTED:
-      //: %1 is the piece of the expression that ZeGrapher does not compute yet
+      //: %1 is the part of the expression that ZeGrapher doesn't support yet
       return QObject::tr("Not implemented yet: \"%1\"").arg(token);
 
     case zc::Error::EMPTY_EXPRESSION:
@@ -86,11 +86,11 @@ QString zcErrorToStr(const zc::Error& err)
       return QObject::tr("Maximum recursion depth reached");
 
     case zc::Error::WRONG_OBJECT_TYPE:
-      //: %1 is the name the user wrote, used as a variable when it is a function or the other way around
+      //: %1 is the name the user wrote, used as a variable while it is a function, or the other way around
       return QObject::tr("Object \"%1\" used as the wrong type").arg(token);
 
     case zc::Error::OBJECT_INVALID_STATE:
-      //: %1 is the name of an object whose own definition is invalid
+      //: %1 is the name of an object with an invalid definition
       return QObject::tr("Object \"%1\" is in an invalid state").arg(token);
   }
 

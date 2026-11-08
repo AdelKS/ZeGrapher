@@ -37,7 +37,7 @@ Item {
 
   /// @brief what the line under the version says about the update check
   function updateStatus() : string {
-    //: %1 is the version of the newest release, such as v4.0.0
+    //: %1 is the latest release version, such as v4.0.0
     const latest = qsTr("Latest release: %1").arg(root.checker.latestVersion);
 
     // a line break between two translated sentences, not a space: Chinese and
@@ -46,13 +46,13 @@ Item {
       case UpdateCheck.CHECKING:
         return qsTr("Checking...");
       case UpdateCheck.ERROR:
-        //: %1 is the name of the site, zegrapher.com
+        //: %1 is the site name, zegrapher.com
         return qsTr("Could not check for updates on %1.").arg(root.siteName);
       case UpdateCheck.UPDATE_MAYBE_AVAILABLE:
-        //: %1 is the name of the site, zegrapher.com
+        //: %1 is the site name, zegrapher.com
         return qsTr("Update may be available, see %1.").arg(root.siteName) + "\n" + latest;
       case UpdateCheck.UPDATE_AVAILABLE:
-        //: %1 is the name of the site, zegrapher.com
+        //: %1 is the site name, zegrapher.com
         return qsTr("Update available on %1.").arg(root.siteName) + "\n" + latest;
       case UpdateCheck.UP_TO_DATE:
         return qsTr("You have the latest version.");
@@ -159,13 +159,13 @@ Item {
         Layout.fillWidth: true
 
         opacity: 0.8
-        //: the link opens the text of the license
+        //: the link opens the license text
         markdown: qsTr("Distributed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html) license.")
               + "\n\n"
-              //: %1 is the version of Qt, and the link opens the licensing page of Qt
+              //: %1 is the Qt version, and the second link opens the Qt licensing page
               + qsTr("Built with [Qt](https://www.qt.io/) %1, under the [LGPL version 3](https://www.qt.io/licensing/) license.").arg(BuildInfo.qtVersion)
               + "\n\n"
-              //: the link opens the license of the math font that the app carries
+              //: the link opens the license of the math font that the app embeds
               + qsTr("The embedded \"Latin Modern Math\" font is distributed under the [GUST Font License](#font-license).")
 
         onAnchorActivated: fontLicense.open()

@@ -136,7 +136,7 @@ Item {
               }
               ZeDoubleSpinBox {
                 id: sheetHeight
-                //: shorthand for centimeters, the size of the graph
+                //: abbreviation for centimeters, the unit of the graph size
                 suffix: qsTr(" cm")
                 from: Limits.minSheetCm
                 to: Limits.maxSheetCm
@@ -155,7 +155,7 @@ Item {
               ZeDoubleSpinBox {
 
                 id: sheetWidth
-                //: shorthand for centimeters, the size of the graph
+                //: abbreviation for centimeters, the unit of the graph size
                 suffix: qsTr(" cm")
                 from: Limits.minSheetCm
                 to: Limits.maxSheetCm

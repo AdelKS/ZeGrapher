@@ -135,7 +135,7 @@ Foldable {
 
             iconName: "check"
 
-            //: tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over
+            //: tooltip of the button that starts sampling, after the user enters the object and the range
             ToolTip.text: qsTr("Sample")
 
             onClicked: {

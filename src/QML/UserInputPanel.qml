@@ -169,9 +169,9 @@ Item {
       onCurrentIndexChanged: swipeView.setCurrentIndex(currentIndex)
 
       ZeTabButton {
-        //: title of the tab that holds the math objects. The screenshots of the
-        //: website cut the row of tabs at the same width in every language, so
-        //: keep the title short. A word such as 'Objects' is fine
+        //: title of the tab with the math objects. The website screenshots crop
+        //: the tab row at the same width in every language, so keep the title
+        //: short. A word such as 'Objects' is fine
         text: qsTr("Math")
       }
 
@@ -184,12 +184,12 @@ Item {
       }
 
       ZeTabButton {
-        //: title of the tab that holds the settings of the app, keep it short
+        //: title of the app settings tab. Keep it short
         text: qsTr("App")
       }
 
       ZeTabButton {
-        //: title of the tab that tells what the app is, keep it short
+        //: title of the tab about the app. Keep it short
         text: qsTr("About")
       }
     }
@@ -286,7 +286,7 @@ Item {
 
           ToolTip.text: userInputPanel.withKeys(
             Information.documentName.length !== 0
-              //: %1 is the name of the file of the document
+              //: %1 is the document file name
               ? qsTr("Save to %1").arg(Information.documentName)
               : qsTr("Save as a ZeGrapher document"),
             saveShortcut)

@@ -231,7 +231,7 @@ bool Information::writeYaml(QUrl filename, const Pod& pod)
   {
     appendIoErr(
       {.title = tr("Internal error"),
-       //: %1 is the email address of the author, and %2 the page of the issues on GitHub
+       //: %1 is the author's email address, and %2 the GitHub issues page
        .text = tr("Please report this bug to %1 or %2, with a way to reproduce it.")
                  .arg(CONTACT_ADDRESS, REPOSITORY_URL "/issues"),
        .details = tr("Could not serialize ZeGrapher's state")});
@@ -342,7 +342,7 @@ void Information::importYaml(QUrl filename)
     appendIoErr({.title = tr("Could not load the document"),
                  .file = path,
                  .text = writer
-                   //: %1 and %2 are versions of ZeGrapher, %3 the address of its website
+                   //: %1 and %2 are ZeGrapher versions, and %3 is the website address
                    ? tr("ZeGrapher %1 wrote this document, and this is version %2. Get "
                         "the latest version from %3 to open it.")
                        .arg(*writer, SOFTWARE_VERSION, HOMEPAGE_URL)
@@ -358,7 +358,7 @@ void Information::importYaml(QUrl filename)
   if (writer)
     appendIoErr({.title = tr("Document from a newer version"),
                  .file = path,
-                 //: %1 and %2 are versions of ZeGrapher, %3 the address of its website
+                 //: %1 and %2 are ZeGrapher versions, and %3 is the website address
                  .text = tr("ZeGrapher %1 wrote this document, and this is version %2. Get "
                             "the latest version from %3 to open all of it.")
                            .arg(*writer, SOFTWARE_VERSION, HOMEPAGE_URL)});

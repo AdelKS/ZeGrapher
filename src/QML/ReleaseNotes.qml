@@ -93,7 +93,7 @@ Column {
         // shows the announcement of the release it leads to
         visible: entry.modelData.released
 
-        //: opens the page of a release on GitHub, which lists its commits
+        //: opens the release's GitHub page, which lists its commits
         markdown: "[" + qsTr("See the changes on GitHub") + "](" + root.releaseUrl + entry.modelData.tag + ")"
       }
     }

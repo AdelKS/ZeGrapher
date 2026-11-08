@@ -9,17 +9,17 @@
     </message>
     <message>
         <source>Could not check for updates on %1.</source>
-        <extracomment>%1 is the name of the site, zegrapher.com</extracomment>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
         <translation>Не удалось проверить обновления на %1.</translation>
     </message>
     <message>
         <source>Update may be available, see %1.</source>
-        <extracomment>%1 is the name of the site, zegrapher.com</extracomment>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
         <translation>Возможно, вышло обновление, загляните на %1.</translation>
     </message>
     <message>
         <source>Update available on %1.</source>
-        <extracomment>%1 is the name of the site, zegrapher.com</extracomment>
+        <extracomment>%1 is the site name, zegrapher.com</extracomment>
         <translation>На %1 вышло обновление.</translation>
     </message>
     <message>
@@ -40,17 +40,17 @@
     </message>
     <message>
         <source>Distributed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html) license.</source>
-        <extracomment>the link opens the text of the license</extracomment>
+        <extracomment>the link opens the license text</extracomment>
         <translation>Распространяется на условиях лицензии [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.html).</translation>
     </message>
     <message>
         <source>Built with [Qt](https://www.qt.io/) %1, under the [LGPL version 3](https://www.qt.io/licensing/) license.</source>
-        <extracomment>%1 is the version of Qt, and the link opens the licensing page of Qt</extracomment>
+        <extracomment>%1 is the Qt version, and the second link opens the Qt licensing page</extracomment>
         <translation>Собрано с [Qt](https://www.qt.io/) %1 на условиях лицензии [LGPL версии 3](https://www.qt.io/licensing/).</translation>
     </message>
     <message>
         <source>The embedded &quot;Latin Modern Math&quot; font is distributed under the [GUST Font License](#font-license).</source>
-        <extracomment>the link opens the license of the math font that the app carries</extracomment>
+        <extracomment>the link opens the license of the math font that the app embeds</extracomment>
         <translation>Встроенный шрифт «Latin Modern Math» распространяется на условиях [GUST Font License](#font-license).</translation>
     </message>
     <message>
@@ -63,7 +63,7 @@
     </message>
     <message>
         <source>Latest release: %1</source>
-        <extracomment>%1 is the version of the newest release, such as v4.0.0</extracomment>
+        <extracomment>%1 is the latest release version, such as v4.0.0</extracomment>
         <translation>Последний выпуск: %1</translation>
     </message>
 </context>
@@ -160,7 +160,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>steps</source>
-        <extracomment>a number of steps to make the constant take from min to max</extracomment>
+        <extracomment>the number of steps the constant takes from min to max</extracomment>
         <translation>шаги</translation>
     </message>
     <message>
@@ -412,7 +412,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source> cm</source>
-        <extracomment>shorthand for centimeters, the size of the graph</extracomment>
+        <extracomment>abbreviation for centimeters, the unit of the graph size</extracomment>
         <translation> см</translation>
     </message>
     <message>
@@ -548,7 +548,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Please report this bug to %1 or %2, with a way to reproduce it.</source>
-        <extracomment>%1 is the email address of the author, and %2 the page of the issues on GitHub</extracomment>
+        <extracomment>%1 is the author&apos;s email address, and %2 the GitHub issues page</extracomment>
         <translation>Сообщите об этой ошибке на %1 или %2, описав, как её воспроизвести.</translation>
     </message>
     <message>
@@ -597,7 +597,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>ZeGrapher %1 wrote this document, and this is version %2. Get the latest version from %3 to open all of it.</source>
-        <extracomment>%1 and %2 are versions of ZeGrapher, %3 the address of its website</extracomment>
+        <extracomment>%1 and %2 are ZeGrapher versions, and %3 is the website address</extracomment>
         <translation>Этот документ записан ZeGrapher %1, а у вас версия %2. Скачайте последнюю версию с %3, чтобы открыть его целиком.</translation>
     </message>
     <message>
@@ -614,7 +614,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>ZeGrapher %1 wrote this document, and this is version %2. Get the latest version from %3 to open it.</source>
-        <extracomment>%1 and %2 are versions of ZeGrapher, %3 the address of its website</extracomment>
+        <extracomment>%1 and %2 are ZeGrapher versions, and %3 is the website address</extracomment>
         <translation>Этот документ записан ZeGrapher %1, а у вас версия %2. Скачайте последнюю версию с %3, чтобы открыть его.</translation>
     </message>
     <message>
@@ -797,12 +797,12 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Wrong format: &quot;%1&quot;</source>
-        <extracomment>%1 is the piece of the expression that has the wrong format</extracomment>
+        <extracomment>%1 is the part of the expression with the wrong format</extracomment>
         <translation>Неверный формат: «%1»</translation>
     </message>
     <message>
         <source>Unexpected &quot;%1&quot;</source>
-        <extracomment>%1 is the piece of the expression that cannot be there</extracomment>
+        <extracomment>%1 is the misplaced part of the expression</extracomment>
         <translation>Неожиданное «%1»</translation>
     </message>
     <message>
@@ -830,7 +830,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Not implemented yet: &quot;%1&quot;</source>
-        <extracomment>%1 is the piece of the expression that ZeGrapher does not compute yet</extracomment>
+        <extracomment>%1 is the part of the expression that ZeGrapher doesn&apos;t support yet</extracomment>
         <translation>Пока не реализовано: «%1»</translation>
     </message>
     <message>
@@ -839,12 +839,12 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Object &quot;%1&quot; used as the wrong type</source>
-        <extracomment>%1 is the name the user wrote, used as a variable when it is a function or the other way around</extracomment>
+        <extracomment>%1 is the name the user wrote, used as a variable while it is a function, or the other way around</extracomment>
         <translation>Объект «%1» использован не в своём качестве</translation>
     </message>
     <message>
         <source>Object &quot;%1&quot; is in an invalid state</source>
-        <extracomment>%1 is the name of an object whose own definition is invalid</extracomment>
+        <extracomment>%1 is the name of an object with an invalid definition</extracomment>
         <translation>Объект «%1» в неверном состоянии</translation>
     </message>
     <message>
@@ -873,7 +873,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     <name>ReleaseNotes</name>
     <message>
         <source>See the changes on GitHub</source>
-        <extracomment>opens the page of a release on GitHub, which lists its commits</extracomment>
+        <extracomment>opens the release&apos;s GitHub page, which lists its commits</extracomment>
         <translation>Посмотреть изменения на GitHub</translation>
     </message>
 </context>
@@ -914,7 +914,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Sample</source>
-        <extracomment>tooltip of the button that starts the sampling, once the user has written the object to sample and the range to sample it over</extracomment>
+        <extracomment>tooltip of the button that starts sampling, after the user enters the object and the range</extracomment>
         <translation>Заполнить</translation>
     </message>
 </context>
@@ -958,7 +958,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Math</source>
-        <extracomment>title of the tab that holds the math objects. The screenshots of the website cut the row of tabs at the same width in every language, so keep the title short. A word such as &apos;Objects&apos; is fine</extracomment>
+        <extracomment>title of the tab with the math objects. The website screenshots crop the tab row at the same width in every language, so keep the title short. A word such as &apos;Objects&apos; is fine</extracomment>
         <translation>Объекты</translation>
     </message>
     <message>
@@ -971,12 +971,12 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>App</source>
-        <extracomment>title of the tab that holds the settings of the app, keep it short</extracomment>
+        <extracomment>title of the app settings tab. Keep it short</extracomment>
         <translation>Настройки</translation>
     </message>
     <message>
         <source>About</source>
-        <extracomment>title of the tab that tells what the app is, keep it short</extracomment>
+        <extracomment>title of the tab about the app. Keep it short</extracomment>
         <translation>Инфо</translation>
     </message>
     <message>
@@ -985,7 +985,7 @@ where ZeGrapher is used, and on what kind of computers.</source>
     </message>
     <message>
         <source>Save to %1</source>
-        <extracomment>%1 is the name of the file of the document</extracomment>
+        <extracomment>%1 is the document file name</extracomment>
         <translation>Сохранить в %1</translation>
     </message>
     <message>
