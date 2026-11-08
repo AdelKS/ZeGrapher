@@ -27,8 +27,8 @@ Rectangle {
   property alias textInput: edit
   property double value: NaN
 
-  // Two-way bindable: bind `value` to the source and push edits back via the
-  // signal argument, so the binding survives user edits:
+  // Two-way binding: bind `value` to the source, and write edits back from the
+  // signal, so user edits don't break the binding:
   //   value: backend.foo
   //   onNumberEdited: (value) => backend.foo = value
   signal numberEdited(real value);
@@ -42,9 +42,8 @@ Rectangle {
     return isNaN(number) ? "" : String(Number(number.toPrecision(15)));
   }
 
-  // mirror external/programmatic value changes into the field, but leave the
-  // text alone while the user is mid-edit (for example, "1." parses to 1, and
-  // "-" to NaN)
+  // show value changes that come from outside, but leave the text alone
+  // during an edit: "1." parses to 1, and "-" to NaN
   onValueChanged: {
     const typed = parse(edit.text);
     if (typed !== value && !(isNaN(typed) && isNaN(value)))

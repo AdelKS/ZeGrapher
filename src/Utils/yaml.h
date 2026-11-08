@@ -101,7 +101,7 @@ struct QSizePOD {
   std::optional<int> width;
   std::optional<int> height;
 
-  /// @brief creates an instance from a size and a default (to tell which fields to leave empty)
+  /// @brief a POD for 's', leaving out the fields equal to 'def'
   static std::optional<QSizePOD> from(QSize s, QSize def)
   {
     return if_any(QSizePOD {
@@ -127,7 +127,7 @@ struct QFontPOD {
       font.setWeight(*weight);
   }
 
-  /// @brief creates an instance from a font and a default (to tell which fields to leave empty)
+  /// @brief a POD for 'c', leaving out the fields equal to 'def'
   static std::optional<QFontPOD> from(QFont c, QFont def)
   {
     return if_any(QFontPOD {

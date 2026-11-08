@@ -78,12 +78,12 @@ signals:
   void notesChanged();
 
 protected:
-  /// @brief forgets a column without touching it, it may be halfway through destruction
+  /// @brief forgets a column without accessing it: the column can be halfway through its destructor
   void forgetColumn(const zg::mathobj::Data*);
 
   std::vector<Data*> columns;
 
-  /// @brief free-form comment the user attaches to the sheet, math ignores it
+  /// @brief the user's free-form comment on the sheet, which the math ignores
   QString notes;
 };
 

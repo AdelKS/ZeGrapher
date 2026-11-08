@@ -65,7 +65,7 @@ math_objects:
   test(information->getIoErrorCount() == 0);
   test(readFile(app.path("graph.png")).startsWith("\x89PNG"));
 
-  // an extension without an image format reports an error, and writes nothing
+  // an extension without an image format reports an error, and doesn't write a file
   graph.exportTo(QUrl::fromLocalFile(app.path("graph.unknown")));
   test(information->getIoErrorCount() == 1);
   test(not QFile::exists(app.path("graph.unknown")));

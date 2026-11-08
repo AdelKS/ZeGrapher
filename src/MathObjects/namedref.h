@@ -27,7 +27,7 @@
 namespace zg {
 namespace mathobj {
 
-/// @brief ZeGrapher proxy object that refers to another
+/// @brief a reference to another math object, by name
 struct NamedRef: QObject {
   Q_OBJECT
   QML_ELEMENT

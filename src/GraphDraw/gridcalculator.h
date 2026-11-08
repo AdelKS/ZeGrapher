@@ -326,7 +326,7 @@ ZeLinAxisTicks GridCalculator::getLinearAxisTicks(const zg::ZeAxisMapper<axis> &
     tick.pos = getPos();
     tick.text = coordinateText(axisSettings, multiplierStr, multiplier);
 
-    // only ticks within the range get drawn, take only those into consideration
+    // only the ticks inside the range are drawn, so count only those
     if (scaledOffsetRange.min.v < multiplier and multiplier < scaledOffsetRange.max.v)
     {
       const QRectF ink = metrics.tightBoundingRect(tick.text);

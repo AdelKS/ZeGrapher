@@ -37,7 +37,7 @@ Item {
   /// @brief how tall the box grows on its own before the list starts scrolling
   property real maxAutoHeight: 300
 
-  /// @brief height the user dragged the box to, zero as long as they haven't
+  /// @brief the height the user dragged the box to, zero until they drag it
   property real userHeight: 0
 
   readonly property real minimumHeight: notesRow.height + listView.bottomMargin + resizeHandle.height
@@ -219,14 +219,14 @@ Item {
     ToolTip.text: qsTr("Drag to resize the box of the sheet. Double-click for its default height.")
     ToolTip.visible: containsMouse
 
-    // else the ListView we sit in flicks away with our drag
+    // otherwise the enclosing ListView flicks with the drag
     preventStealing: true
 
     property real pressY: 0
 
     onPressed: (mouse) => pressY = mouse.y
 
-    // we follow the box we resize, so the offset the mouse gained on us is the growth asked for
+    // the handle moves with the box, so the mouse offset since the press is the height change
     onPositionChanged: (mouse) => {
       if (pressed)
         root.userHeight = Math.max(root.minimumHeight, root.height + mouse.y - pressY);

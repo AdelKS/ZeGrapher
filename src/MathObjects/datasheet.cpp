@@ -71,7 +71,7 @@ Data* DataSheet::addColumn()
   columns.push_back(d);
   endInsertRows();
 
-  // a column's edits are the sheet's edits, MathWorld syncs on them
+  // forward a column's edits: MathWorld syncs on the sheet's updated()
   connect(d, &Data::updated, this, &DataSheet::updated);
   connect(d, &QObject::destroyed, this, [this, d] { forgetColumn(d); });
 
@@ -179,7 +179,7 @@ void DataSheet::exportCSV(QUrl fileName) const
   for (const Data* d: columns)
     rows = std::max(rows, d->getData().size());
 
-  // the columns rarely end together, the shorter ones trail empty cells
+  // columns can have different lengths: the shorter ones end with empty cells
   for (size_t row = 0 ; row != rows ; row++)
     write_row([&](const Data* d) -> std::string_view
     {

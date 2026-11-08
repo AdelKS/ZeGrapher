@@ -144,7 +144,7 @@ QString CsvPreviewModel::readCsvFile()
 
 void CsvPreviewModel::setSeparator(QString sep)
 {
-  // support tab separator by looking for the user writing "\t"
+  // the user writes "\t" for a tab separator
   separator = sep.replace("\\t", "\t");
   splitCsvFile();
 }
@@ -203,17 +203,16 @@ void CsvPreviewModel::loadIntoWorld()
   {
     QTextStream in(&file);
 
-    // Get the total size of the file
     qint64 totalBytes = file.size();
-    qint64 processedBytes = 0; // Tracks processed bytes
+    qint64 processedBytes = 0;
 
     std::vector<std::vector<std::string>> data;
     QStringList names;
 
     auto append_values = [&](QStringList values)
     {
-      // make sure that size of values is the same as data size
-      // top up with empty values if needed
+      // pad the shorter side with empty values, so every row has one value per
+      // column
 
       if (data.size() < size_t(values.size()))
         data.resize(size_t(values.size()), std::vector<std::string>(!data.empty() ? data.front().size() : 0));
@@ -243,11 +242,11 @@ void CsvPreviewModel::loadIntoWorld()
     {
       QString line = in.readLine();
 
-      processedBytes += line.size() + 1; // Account for the newline character
+      processedBytes += line.size() + 1; // plus the newline
 
       if (totalBytes > 0)
       {
-        // Cap at 50% since we still need to add to the world
+        // reading the file is the first half of the progress, and adding the columns the second
         progressPercentage = static_cast<int>((processedBytes * 50) / totalBytes);
         progressPercentage = qMin(progressPercentage, 50);
       }

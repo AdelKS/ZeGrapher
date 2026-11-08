@@ -82,8 +82,7 @@ void InteractiveGraph::wheelEvent(QWheelEvent *event)
   int x_delta = event->angleDelta().x();
   int y_delta = event->angleDelta().y();
 
-  // if SHIFT is pressed, swap x angleDelta with y
-  // this is so users without horizontal scroll can still do it
+  // Shift swaps the x and y angleDelta, for mice without horizontal scrolling
   const bool xy_swap = event->modifiers() & Qt::ShiftModifier;
 
   if (xy_swap) std::swap(x_delta, y_delta);
@@ -91,7 +90,7 @@ void InteractiveGraph::wheelEvent(QWheelEvent *event)
   const double y_factor = std::pow(1. + 1./32., inverted * double(y_delta) / 120.);
   const double x_factor = std::pow(1. + 1./32., inverted * double(x_delta) / 120.);
 
-  // if CTRL is pressed, handle x and y separately
+  // Ctrl zooms x and y separately
   const bool xy_separate = event->modifiers() & Qt::ControlModifier;
 
   const zg::pixel_pt center = toGraphPixels(event->position());

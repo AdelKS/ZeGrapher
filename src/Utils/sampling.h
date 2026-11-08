@@ -61,7 +61,7 @@ protected:
   NamedRef source;
   Expr start, end, step;
 
-  /// @brief owned by its DataSheet, we only write to it
+  /// @brief the column to fill. Its DataSheet owns it
   Data* column = nullptr;
 };
 

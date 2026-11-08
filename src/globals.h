@@ -31,7 +31,7 @@
 /// @note a Data column leaves the table model in its destructor, and
 ///       Information's settings hold math world expressions. So the table model
 ///       outlives the math world, which outlives Information
-/// @note must be instanced after QGuiApplication, and before the QML engine
+/// @note create it after QGuiApplication, and before the QML engine
 class Globals
 {
 public:

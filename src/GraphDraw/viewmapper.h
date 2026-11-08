@@ -46,7 +46,7 @@ public:
   template <plane p>
   ZeViewMapper& setRange(const Range2D<u<p>>& range);
 
-  /// @note converts it to the range returned by getRange<plane::pixel>()
+  /// @note sets the range that getRange<plane::pixel>() returns
   ZeViewMapper& setGraphRect(const QRectF& rect);
 
   template <plane q, plane p>

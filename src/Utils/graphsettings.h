@@ -92,7 +92,7 @@ public:
   /// @note in pixels per centimeter
   double getPixelDensity() const { return pixelDensity; }
 
-  /// @brief baseline pixel density that 1.0x scaling should achieve
+  /// @brief the pixel density at the 1x scale
   static constexpr double targetPixelDensity = 35;
 
   /// @brief the pixel densities a screen can have, 25 to 400 dpi
@@ -170,7 +170,7 @@ protected:
 
   double pixelDensity = targetPixelDensity;
 
-  // log2 for adaptive sampling
+  // the log2 of the adaptive sampling point counts
   int minPointsLg2 = defaultMinPoints;
   int maxPointsLg2 = defaultMaxPoints;
 

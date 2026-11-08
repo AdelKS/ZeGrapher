@@ -49,8 +49,8 @@ class BuildInfo : public QObject
   /// @brief the license of the Latin Modern Math font that the app embeds
   Q_PROPERTY(QString fontLicense READ getFontLicense CONSTANT)
 
-  /// @brief every release in appdata/release-notes.md, newest first, each a
-  ///        {tag, span, summary, released} map
+  /// @brief the appdata/releases.yaml entries up to this build, newest first,
+  ///        as {tag, span, summary, released} maps
   Q_PROPERTY(QVariantList releaseNotes READ getReleaseNotes CONSTANT)
 
   /// @brief ZeGrapher's website, 'https://zegrapher.com'

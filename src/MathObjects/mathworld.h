@@ -78,7 +78,8 @@ public:
   ///        language
   void retranslate();
 
-  /// @brief add Expr object that is not part of the model because its widget is elsewhere
+  /// @brief tracks an Expr, such as a range bound, so sync() covers it. The
+  ///        model only lists MathObjects
   void trackExprObject(mathobj::Expr*);
   void untrackExprObject(const mathobj::Expr*);
 
@@ -114,7 +115,7 @@ protected:
   /// @brief the single constant currently driving simultaneous plotting, or nullptr
   zg::mathobj::Constant* schrodingerConstant = nullptr;
 
-  /// @brief math objects that aren't part of the model (that the view represents)
+  /// @brief every Expr, each one tracked by its constructor
   std::vector<zg::mathobj::Expr*> exprObjects;
   bool destroying = false;
   bool syncPending = false;

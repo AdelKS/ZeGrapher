@@ -74,7 +74,7 @@ protected:
 
     Polynomial continuousPol, discretePol;
     ApproxMethod approxMethod;
-    double xmin, xmax, xamp, ymin, ymax, yamp; //integration segment for dot product: integrate between min and max
+    double xmin, xmax, xamp, ymin, ymax, yamp; // the dot product integrates over [min, max]
     std::vector<Polynomial> orthonormalBasisDiscrete, orthonormalBasisContinuous;
     std::vector<Point> normalisedData;
 };

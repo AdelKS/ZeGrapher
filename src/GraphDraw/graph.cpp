@@ -157,7 +157,7 @@ void Graph::exportImage(QUrl fileName)
 
   image.fill(settings.getBackgroundColor().getCurrent().rgb());
 
-  // so the file prints at the size of the sheet
+  // so the file prints at the sheet size
   image.setDotsPerMeterX(qRound(pxPerCm * 100));
   image.setDotsPerMeterY(qRound(pxPerCm * 100));
 
@@ -490,7 +490,7 @@ protected:
     {
       QFont font = layout.font(label.role);
       font.setPointSizeF(font.pointSizeF() * scale);
-      // native glyphs are cached unrotated, so a turned label would get its
+      // native glyphs are cached unrotated, so a rotated label would get its
       // subpixel color fringes along the wrong axis
       if (label.angle != 0)
         font.setStyleStrategy(QFont::NoSubpixelAntialias);

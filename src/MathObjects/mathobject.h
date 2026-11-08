@@ -35,7 +35,7 @@ namespace zg {
 
 class MathWorld;
 
-/// @brief Contains the information needed to compute the math object and how to plot it
+/// @brief a math object: what to compute, and how to plot it
 struct MathObject: QObject {
   Q_OBJECT
   QML_ELEMENT
@@ -80,7 +80,7 @@ public:
 
   PlotStyle* getStyle() const;
 
-  /// @brief returns the asked for backend if it's the current backend, nullptr otherwise
+  /// @brief the 'Backend' backend if the object has that type, nullptr otherwise
   template <class T>
   T* getBackend();
 
@@ -96,7 +96,7 @@ public:
   void importPod(POD);
 
 public slots:
-  /// @brief forwards the refresh() call to the current active backend
+  /// @brief calls refresh() on the current backend
   void sync();
 
 signals:

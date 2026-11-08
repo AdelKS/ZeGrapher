@@ -18,7 +18,8 @@
 **
 ****************************************************************************/
 
-// Fills the given column with the values of a math object, unfolds and folds back on demand
+// The form that fills a column with a math object's values. It unfolds and
+// folds back on demand
 
 pragma ComponentBehavior: Bound
 

@@ -24,7 +24,7 @@
 
 inline constexpr double cmPerInch = 2.54;
 
-/// @brief type of math objects to use in ZeCalculator
+/// @brief the ZeCalculator expression representation that ZeGrapher uses
 inline constexpr zc::parsing::Type zc_t = zc::parsing::Type::RPN;
 
 enum struct ZeAxisName {X, Y};

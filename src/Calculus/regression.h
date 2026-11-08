@@ -31,7 +31,7 @@
 
 #include "point.h"
 
-// Remove dependence on Qt, to be usable as a standalone library
+// TODO: drop the Qt dependency, so the class works as a standalone library
 
 class Regression : public QObject
 {

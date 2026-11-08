@@ -40,27 +40,27 @@ struct SampledCurve {
 
   void clear();
 
-  /// @brief remove curve 'size' points starting from 'from' (included)
+  /// @brief removes 'size' points, starting at index 'from'
   void erase_chunk(size_t from, size_t size);
 
   /// @brief inserts a chunk of points before 'index'
-  /// @param index: at which index to insert before
-  /// @param x: input values to the sampled function
-  /// @param f_x: points to insert, image of 'x' by the function
-  /// @param px_f_x: points to insert in pixel units
-  /// @note old 'index' is moved by x.size() positions
-  /// @note input.size() == pts.size() is required
+  /// @param index: the index to insert before
+  /// @param x: the function inputs
+  /// @param f_x: the points to insert, the function values at 'x'
+  /// @param px_f_x: the same points in pixel units
+  /// @note the point at 'index' moves right by x.size()
+  /// @note x, f_x and px_f_x must have the same size
   void insert_chunk(size_t index,
                     const std::vector<real_unit>& x,
                     const std::vector<real_pt>& f_x,
                     const std::vector<QPointF>& px_f_x);
 
-  /// @brief inserts a set of points into the existing dataset
-  /// @param indices: at what indices to insert before, relative to _current_ curve state before any insertion happens
-  ///                 **MUST** be sorted in a strictly increasing order (can only insert once at a given index)
-  /// @param x: input values to the sampled function
-  /// @param f_x: points to insert, image of 'x' by the function
-  /// @param px_f_x: points to insert in pixel units
+  /// @brief inserts points at several places in the curve
+  /// @param indices: the indices to insert before, in the curve before any
+  ///                 insertion. Must be strictly increasing: one point per index
+  /// @param x: the function inputs
+  /// @param f_x: the points to insert, the function values at 'x'
+  /// @param px_f_x: the same points in pixel units
   void sparse_insert(const std::vector<size_t>& indices,
                      const std::vector<real_unit>& x,
                      const std::vector<real_pt>& f_x,
@@ -86,7 +86,7 @@ struct SampledCurve {
   /// @brief the computed points of this object's curve
   std::vector<real_pt> curve = {};
 
-  /// @brief pixel coordinates of 'curve', updated by the Sampler after each sampling pass
+  /// @brief 'curve' in pixel coordinates. The Sampler updates it after each pass
   std::vector<QPointF> px_curve = {};
 
   SamplingSettings settings = {};

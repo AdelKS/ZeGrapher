@@ -46,7 +46,7 @@ Item {
   /// @param axisRange  root.range.x or root.range.y
   /// @param lower  true for the min of the axis
   function inversionError(axisRange, axis: string, lower: bool): string {
-    // NaN compares false, so a bound without a value gives no error
+    // NaN compares false, so a bound without a value doesn't show an error
     if (!(axisRange.min.value >= axisRange.max.value))
       return "";
 

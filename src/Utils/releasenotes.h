@@ -123,7 +123,7 @@ inline QList<Release> allReleases(const QString& notes,
         continue;
 
       // an entry holds the releases after 'from' up to 'to', or 'to' alone.
-      // Skip an entry that holds no release up to the build
+      // Skip an entry that doesn't cover any release up to the build
       if (build and (from.isEmpty() ? *newest > *build : *after >= *build))
         continue;
 

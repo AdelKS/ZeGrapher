@@ -29,8 +29,8 @@ namespace zg {
 namespace utils {
 
 /// @brief binomial coefficient "n choose k"
-/// @note evaluated through the (exact) gamma identity Γ(m+1) = m!, mirroring boost's
-///       beta-function path: going through lgamma avoids the overflow of multiplying factorials,
+/// @note computed with lgamma, through Γ(m+1) = m!, as boost's beta function
+///       does: multiplying factorials would overflow
 /// @note exact for n <= 47
 inline double binomial_coefficient(unsigned n, unsigned k)
 {
@@ -42,9 +42,9 @@ inline double binomial_coefficient(unsigned n, unsigned k)
   return std::round(std::exp(std::lgamma(n + 1.0) - std::lgamma(k + 1.0) - std::lgamma(n - k + 1.0)));
 }
 
-/// @brief move all values of 'vec' by 'distance' indices/slots
-/// @note the slots on the left whose elements are moved from will have std::move() applied on them
-/// @note if distance > vec.size(), the extra elements are default constructed
+/// @brief moves every element of 'vec' right by 'distance' slots
+/// @note the first 'distance' slots hold moved-from elements
+/// @note if distance > vec.size(), the extra elements are default-constructed
 template <typename T>
 void move_elements_right(std::vector<T>& vec, const int distance)
 {
@@ -79,7 +79,7 @@ void move_element(std::vector<T>& vec, size_t from, size_t to)
     std::rotate(it + to, it + from, it + from + 1);
 }
 
-/// @brief erase elements from a set according the predicate
+/// @brief erases the elements of a set that match 'pred'
 template <typename T, typename Pred>
 void erase(std::unordered_set<T>& s, Pred&& pred)
 {

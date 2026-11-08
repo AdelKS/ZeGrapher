@@ -34,7 +34,7 @@
 namespace zg {
 
 /// @brief the bounds of the settings, for the panel's fields
-/// @note documents are clamped to the same bounds when they load
+/// @note loading a document clamps its values to the same bounds
 class Limits : public QObject
 {
   Q_OBJECT

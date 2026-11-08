@@ -42,7 +42,7 @@ double PolynomialRegression::eval(double x) const
 
 QString PolynomialRegression::getInfo() const
 {
-    return QString(); // need to be implemented
+    return QString(); // TODO: not implemented
 }
 
 void PolynomialRegression::refresh()
@@ -184,7 +184,7 @@ void PolynomialRegression::recalculateOrthonormalBasis()
 
 void PolynomialRegression::updateOrthonormalBasis()
 {
-    //we use Gram-Schmidt orthonormalisation process
+    // Gram-Schmidt orthonormalization
 
     if(regressionDegree > orthonormalBasisContinuous.size() - 1)
     {

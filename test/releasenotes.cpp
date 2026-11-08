@@ -86,7 +86,7 @@ int main()
   // the newest version has nothing to show
   test(zg::releasesSince(notes, "v4.1.0", next).isEmpty());
 
-  // a user who already ran the build, or a newer one, sees nothing. Without
+  // a user who already ran the build, or a newer one, doesn't see any notes. Without
   // this, the announcement that leads to v4.0.0 would come back at every start,
   // because every 4.0.0 pre-release sits under it
   test(zg::releasesSince(notes, "4.0.0_rc0-dev", dev).isEmpty());

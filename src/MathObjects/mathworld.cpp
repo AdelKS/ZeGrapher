@@ -26,9 +26,9 @@ namespace zg {
 
 MathWorld::~MathWorld()
 {
-  // delete tracked MathObjects here so their value-member Expr destructors
-  // can untrack themselves while exprObjects is still alive — otherwise
-  // QObject's deleteChildren would run them after our members are gone.
+  // delete the MathObjects here, while exprObjects still exists: their Expr
+  // members untrack themselves on destruction. ~QObject() deletes children
+  // only after this class's members are gone.
   destroying = true;
   while (not mathObjects.empty())
   {
@@ -160,7 +160,7 @@ void MathWorld::sync()
 
   updateSchrodingerStatus();
 
-  // an objectUpdated() call from inside the sync queues nothing: this sync
+  // an objectUpdated() call from inside the sync doesn't queue another one: this sync
   // covers it
   syncPending = false;
 

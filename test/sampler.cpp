@@ -84,7 +84,7 @@ int main()
       test(inputs[0].size() < 2 * maxPoints);
     }
 
-  // a range of infinite width is invalid, and gives no curve
+  // a range of infinite width is invalid, and doesn't give a curve
   app.restart();
   zg::mathWorld->addMathObject()->getEquation()->setEquation("f(x) = x");
   test(sample("-1e308", "1e308", maxPoints).empty());

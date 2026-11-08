@@ -3,9 +3,9 @@
 #
 #   lupdate6 src -ts translations/ZeGrapher_<code>.ts -no-obsolete -locations none
 #
-# Run that from the root of the repository. '-locations none' leaves out the
-# file and the line of each string. Those change with every edit of the sources,
-# and they tell a translator nothing.
+# Run that from the repository root. '-locations none' leaves out each string's
+# file and line number. Those change with every source edit, and they don't
+# help a translator.
 
 qt6 = import('qt6')
 fs = import('fs')

@@ -84,7 +84,7 @@ public:
   MathTextMetrics(const QFont& font, const QPaintDevice* device)
     : base(font, device), exponent(exponentFont(font), device) {}
 
-  /// @brief the font of an exponent, smaller than the font of its text
+  /// @brief the exponent font, smaller than the text font
   static QFont exponentFont(QFont font)
   {
     font.setPointSizeF(font.pointSizeF() * 0.7);

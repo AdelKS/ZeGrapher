@@ -26,7 +26,7 @@
 
 #include "Utils/state.h"
 
-/// @brief backend that highlights parsing errors in math expressions in LineEdit
+/// @brief highlights the parse errors in a LineEdit expression
 class Highlighter: public QSyntaxHighlighter
 {
   Q_OBJECT

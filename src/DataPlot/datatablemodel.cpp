@@ -97,10 +97,9 @@ bool DataTableModel::insertRows(int row, int count, const QModelIndex& parent)
 
   Q_ASSERT(rowCount() == old_row_count + count);
 
-  // QML TableView binds delegates to a cell position, not to a persistent
-  // model index, so endInsertRows() only fixes the row count/geometry — the
-  // rows shifted down keep showing their old cached values. Refresh the
-  // inserted rows plus everything below them so their content re-reads.
+  // TableView binds delegates to a cell position, not a persistent model index.
+  // endInsertRows() only updates the row count, so the shifted rows keep
+  // showing their old values. Refresh the rows from the insertion down.
   if (old_row_count > 0)
   {
     QModelIndex topLeft = index(row, 0);
@@ -188,7 +187,7 @@ void DataTableModel::registerTableColumn(zg::mathobj::Data* d)
   columnNames.push_back(headerName(d));
   endInsertColumns();
 
-  // a column is named by the Data object, we just follow it
+  // the Data object holds the column name
   connect(d, &mathobj::Data::nameChanged, this, [this, d] { refreshColumnName(d); });
   connect(d, &mathobj::Data::stateChanged, this, [this, d] { refreshColumnName(d); });
 
@@ -219,7 +218,7 @@ void DataTableModel::deregisterTableColumn(zg::mathobj::Data* d)
 
 QString DataTableModel::headerName(const zg::mathobj::Data* d)
 {
-  // a column whose name doesn't hold up has no header to show
+  // a column with an invalid name doesn't show a header
   return d->getState().isValid() ? d->getName() : QString();
 }
 

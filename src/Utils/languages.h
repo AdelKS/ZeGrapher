@@ -34,7 +34,7 @@ inline const QList<QLocale::Language>& supportedLangs()
 {
   static const QList<QLocale::Language> langs = []
   {
-    // English needs no translation file: it's the source language
+    // English doesn't need a translation file: it's the source language
     QList<QLocale::Language> found = {QLocale::English};
 
     for (const QString& file: QDir(":/translations").entryList({"ZeGrapher_*.qm"}, QDir::Files))

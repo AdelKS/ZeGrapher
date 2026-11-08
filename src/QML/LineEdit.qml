@@ -21,7 +21,7 @@
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
 
-// A line edit without borders, that follows its content
+// A borderless line edit that grows with its content
 
 Rectangle {
   id: rec
@@ -89,7 +89,7 @@ Rectangle {
 
       Keys.onPressed: (event)=> {
         if (rec.singleLine && [Qt.Key_Enter, Qt.Key_Return].includes(event.key)) {
-          // filter linebreaks events
+          // a single line ignores Enter
           event.accepted = true;
         } else if ([Qt.Key_Tab, Qt.Key_Backtab].includes(event.key)) {
           // TextEdit writes a tab character instead of moving the focus

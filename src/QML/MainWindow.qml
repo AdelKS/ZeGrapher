@@ -79,7 +79,7 @@ ApplicationWindow {
       property real sceneXonPress
 
       onPressed: function (mouse) {
-        // mapToItem(null) maps to the window, i.e. (0,0) is top left corner of it
+        // mapToItem(null) maps to window coordinates, with (0, 0) at the top left corner
         sceneXonPress = mapToItem(null, mouse.x, 0).x;
         parent.dragStarted();
       }
@@ -123,7 +123,7 @@ ApplicationWindow {
     target: win
     enabled: AnimationConductor.animating
 
-    // naturally follows the refresh rate of the screen
+    // afterAnimating fires once per frame, so the steps follow the screen refresh rate
     function onAfterAnimating() {
       AnimationConductor.animationStep();
     }

@@ -149,8 +149,7 @@ protected:
   /// @brief the bounds that setValue() gives a value
   static std::pair<double, double> defaultBounds(double value);
 
-  /// @brief so value can be changed without triggering signals
-  ///        used in animations
+  /// @brief animations set the value without emitting signals
   friend class zg::AnimatedConstant;
   friend class zg::MathWorld;
 };

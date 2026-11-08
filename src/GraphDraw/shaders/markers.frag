@@ -77,8 +77,8 @@ float sdRoundedCross(vec2 p, float w, in float r)
 }
 
 void main() {
-  // vCorner is in {-1,+1}²; scaling by glSize/2 gives centered offsets in
-  // logical pixels, matching the units of radius / strokeWidth.
+  // vCorner is in {-1,+1}². Scaled by glSize/2, it gives offsets from the
+  // center in logical pixels, the unit of radius and strokeWidth.
   vec2 p = vCorner * (glSize * 0.5);
 
   float sdf;

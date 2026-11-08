@@ -30,8 +30,8 @@ Item {
 
   required property Constant backend
 
-  // the name editor (left) and the value/slider/animation column (right) are
-  // parallel columns; the row is as tall as the taller one.
+  // the name editor (left) and the value, slider and animation column (right)
+  // sit side by side. The row is as tall as the taller one.
   implicitHeight: Math.max(mainLayout.implicitHeight, nameLayout.implicitHeight)
 
   RowLayout {

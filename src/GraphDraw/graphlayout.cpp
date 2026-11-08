@@ -301,7 +301,7 @@ void GraphLayoutEngine::addCoordinates()
     QPointF origin;
     if constexpr (axis == ZeAxisName::X)
     {
-      // a negative number is centered on its digits, its minus sign hangs left
+      // center a negative number on its digits, with the minus sign to their left
       const double sign = text.base.startsWith(minusSign) ? metrics.horizontalAdvance(minusSign) : 0.;
       origin = QPointF(pos - (width - sign) / 2. - sign,
                        layout.graph.height() + gap + xAxisTicks.maxPxAscent);

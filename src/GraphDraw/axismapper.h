@@ -35,7 +35,7 @@ class ZeAxisMapper
 public:
   explicit ZeAxisMapper() = default;
 
-  /// @brief zoom view, centered on center
+  /// @brief zooms the view around 'center'
   void zoomView(unit<u<plane::pixel>> center, double ratio);
 
   void translateView(unit<u<plane::pixel>> vec);
@@ -70,7 +70,7 @@ protected:
   Range1D<u<plane::real>> real_range;
   Range1D<u<plane::view>> view_range;
 
-  /// @brief the actual graph rect
+  /// @brief the graph rect
   Range1D<u<plane::pixel>> pixel_range;
 
   double base = 0;

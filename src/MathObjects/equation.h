@@ -27,8 +27,7 @@
 namespace zg {
 namespace mathobj {
 
-/// @brief ZeGrapher math objects that are entirely defined by a single math expression
-///        which also fits in a single zc::DynMathObject
+/// @brief a math object defined by one expression, in one zc::DynMathObject
 struct Equation: Base, shared::ZcMathObjectBB {
   Q_OBJECT
   QML_ELEMENT

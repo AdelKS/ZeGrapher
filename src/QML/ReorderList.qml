@@ -26,7 +26,7 @@ import QtQuick
 ListView {
   signal moveRequested(int from, int to)
 
-  /// @brief a row folded away, 'modelData' being its entry in the model
+  /// @brief a row finished folding away. 'modelData' is its model entry
   signal removeRequested(var modelData)
 
   move: Transition {

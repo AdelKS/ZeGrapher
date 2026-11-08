@@ -51,7 +51,7 @@ public:
   QString details = {};
 };
 
-///@note must be instanced after QGuiApplication (instanced in main.cpp)
+/// @note create it after QGuiApplication
 class Information: public QObject
 {
   Q_OBJECT

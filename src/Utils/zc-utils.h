@@ -25,7 +25,7 @@
 
 namespace zg {
 
-/// @brief gives a string that describes in a sentence the ZeCalculator Error instance
+/// @brief a sentence that describes a ZeCalculator error
 /// @note ZcExprEdit.qml shows errors as rich text, so the user's text comes HTML-escaped
 QString zcErrorToStr(const zc::Error& err);
 

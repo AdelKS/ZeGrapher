@@ -44,8 +44,8 @@ if (get_option('b_ndebug') == 'if-release' and get_option('buildtype') == 'relea
     add_project_arguments('-D QT_NO_DEBUG', language : 'cpp')
 endif
 
-# a resource file with a single prefix. A meson.build fills it with the files
-# it lists at configure time
+# a resource file template with a single prefix. Each subdir meson.build fills
+# it with its files at configure time
 qrc_template = files('generated.qrc.in')
 
 # translations/ lists its .ts files with Python, and the website/ and appdata/

@@ -53,8 +53,8 @@ protected:
   /// @brief refreshes the style of the currently valid objects
   void refresh_curve_styles(const std::vector<Plottable>& objects);
 
-  /// @brief makes sure the full [start, step, end] range of values of the schrodinger constant
-  ///        is in the keys of the schrodinger_curves_map, no more no less
+  /// @brief makes the schrodinger_curves_map keys exactly the Schrödinger
+  ///        constant's values, from start to end by step
   void refresh_schrodinger_keys();
 
   void refresh_curves_list(const std::vector<Plottable>& objects);
@@ -87,15 +87,9 @@ protected:
 
   std::vector<std::reference_wrapper<zg::SampledCurve>> curves_list;
 
-  ///@brief vector to hold temporary sampling data
+  /// @brief scratch buffers, kept between samplings to reuse their memory
   std::vector<size_t> indices;
-
-  ///@brief vector to hold temporary sampling data
   std::vector<zg::real_unit> x;
-
-  ///@brief vector to hold temporary sampling data
   std::vector<zg::real_pt> f_x;
-
-  ///@brief vector to hold temporary sampling data
   std::vector<QPointF> px_f_x;
 };

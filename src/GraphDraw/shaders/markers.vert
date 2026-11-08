@@ -34,7 +34,7 @@ layout(std140, binding = 0) uniform buf {
 
 layout(location = 0) out vec2 vCorner;
 
-// Two triangles (CCW) tiling a quad; indexed by gl_VertexIndex % 6.
+// two counter-clockwise triangles that cover a quad, indexed by gl_VertexIndex % 6
 const vec2 kCorners[6] = vec2[6](
     vec2(-1., -1.), vec2(+1., -1.), vec2(+1., +1.),
     vec2(-1., -1.), vec2(+1., +1.), vec2(-1., +1.)

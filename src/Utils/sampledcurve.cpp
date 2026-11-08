@@ -85,7 +85,7 @@ void SampledCurve::sparse_insert(const std::vector<size_t>& indices,
 {
   discontinuities.clear();
 
-  assert(indices.size() <= curve.size() + 1); // can only insert as many points as there are originally in  'curve' + 1 (eventually append too)
+  assert(indices.size() <= curve.size() + 1); // at most one insertion per point of 'curve', plus one at the end
   assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
   assert(indices.size() == x.size() and x.size() == f_x.size() and f_x.size() == px_f_x.size());
   assert(indices.empty() or indices.back() <= curve.size());
@@ -142,9 +142,9 @@ void SampledCurve::sparse_delete(const std::vector<size_t>& indices)
 {
   discontinuities.clear();
 
-  assert(indices.size() <= curve.size()); // can only delete as many points as there are originally in  'curve'
+  assert(indices.size() <= curve.size()); // at most every point of 'curve'
   assert(std::ranges::adjacent_find(indices, std::greater_equal{}) == indices.end()); // strictly increasing (implies sorted + unique)
-  assert(indices.empty() or indices.back() < curve.size()); // biggest index to delete should be within the range
+  assert(indices.empty() or indices.back() < curve.size()); // the largest index is inside 'curve'
   assert(input.size() == curve.size() and curve.size() == px_curve.size());
 
   const size_t new_size = curve.size() - indices.size();

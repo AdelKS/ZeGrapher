@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-// One column of a DataSheet: the name it is known by, plus its table toggle
+// One column of a DataSheet: its name and its table toggle
 
 import QtQuick
 import QtQuick.Layouts

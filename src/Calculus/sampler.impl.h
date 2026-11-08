@@ -84,9 +84,8 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   const auto min = get_acceptable_input(range.min);
   const auto max = get_acceptable_input(range.max);
 
-  // increase cache size for sequences to max 1M values so we can
-  // pan anywhere with recursive sequences, but if the cache gets
-  // invalidated we're back to square 1
+  // cache up to 1M sequence values, so a pan over a recursive sequence doesn't
+  // compute it again from the start. An invalidated cache starts over
   auto increase_seq_cache = [&](const zc::DynMathObject<zc_t>* f){
     if (f->holds(zc::ObjectType::SEQUENCE))
     {
@@ -114,7 +113,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
   auto& curve = data.curve;
   auto& px_curve = data.px_curve;
 
-  // cleanup values outside of the range
+  // drop values outside the range
   if (not input_vals.empty())
   {
     size_t vals_to_pop = 0;
@@ -204,7 +203,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
   [[maybe_unused]] const double min_sq_dist_discrete = 16 * data.style.pointWidth * data.style.pointWidth;
 
-  // cleanup points too close to each other
+  // drop points too close to each other
   do
   {
     indices.clear();
@@ -272,7 +271,7 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
     assert(std::ranges::is_sorted(input_vals));
     assert(is_unique(input_vals));
 
-  // if we are dealing with discrete data, we don't care about going under the min_size directive
+  // discrete data can go below min_points
   } while(not indices.empty() and (discrete or data.size() > min_points));
   // ######################################
 
@@ -325,15 +324,15 @@ void Sampler::sample(auto handle, zg::SampledCurve& data)
 
     const auto ab = b - a;
 
-    // if we are above max_step, refine without asking further questions
+    // an interval wider than max_step always gets refined
     if (ab > max_step)
     {
       insert_mid(i_b, a, b);
       return true;
     }
 
-    // we count on min_points to be high enough to catch one potential valid point between
-    // two NaN points, so don't refine further
+    // two NaN points: min_points is assumed high enough to catch any valid
+    // point between them, so don't refine further
     if (is_nan_pt(A) and is_nan_pt(B))
       return false;
 

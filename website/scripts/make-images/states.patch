@@ -60,7 +60,7 @@ index 3cd9b18a..7dd9d934 100644
 -  property real maxAutoHeight: 300
 +  property real maxAutoHeight: 600 // SCREENSHOT PATCH: room for the sampling form
  
-   /// @brief height the user dragged the box to, zero as long as they haven't
+   /// @brief the height the user dragged the box to, zero until they drag it
    property real userHeight: 0
 diff --git a/src/QML/MathObjectInput.qml b/src/QML/MathObjectInput.qml
 index 67c55b63..fab559bd 100644

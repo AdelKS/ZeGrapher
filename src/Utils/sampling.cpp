@@ -97,7 +97,7 @@ QString Sampling::apply()
     const std::expected<double, zc::Error> res
       = (*zcObj)({from + double(i) * by}, &zg::mathWorld->cache);
 
-    // ZeCalculator cannot read 'inf' or 'nan' back, such points stay empty.
+    // ZeCalculator can't read 'inf' or 'nan' back, so such points stay empty.
     // 15 significant digits hide the rounding error of 'from + i * by'
     values.push_back(res and std::isfinite(*res) ? std::format("{:.15g}", *res) : std::string());
   }

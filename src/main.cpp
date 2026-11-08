@@ -82,8 +82,8 @@ int main(int argc, char *argv[])
   if (QFontDatabase::addApplicationFont(":/fonts/latinmodern-math.otf") == -1)
     qWarning("failed to load the bundled Latin Modern Math font");
 
-  // QT_NO_*_OUTPUT only compiles out C++ q(Debug|Info|Warning) calls, QML's
-  // console.* goes through logging categories at runtime
+  // QT_NO_*_OUTPUT only compiles out the C++ q(Debug|Info|Warning) calls. QML
+  // console.* calls go through logging categories at run time
   QString logFilterRules;
 #ifdef QT_NO_DEBUG_OUTPUT
   logFilterRules += "*.debug=false\n";
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
   QCoreApplication::setApplicationName("ZeGrapher");
   QCoreApplication::setApplicationVersion(SOFTWARE_VERSION);
 
-  // define after QGuiApp and QCoreApp::set* because it will use stuff from them
+  // Globals reads QGuiApplication and the QCoreApplication::set*() values, so create it after them
   Globals globals;
   Information& info = *information;
 

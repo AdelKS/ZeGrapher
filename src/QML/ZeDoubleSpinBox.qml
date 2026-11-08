@@ -31,8 +31,8 @@ Item {
   property real to: 1.0
   property real step: 0.1
 
-  // Two-way bindable: bind `value` to the source and push edits back via the
-  // signal argument, so the binding survives user edits:
+  // Two-way binding: bind `value` to the source, and write edits back from the
+  // signal, so user edits don't break the binding:
   //   value: backend.foo
   //   onValueModified: (value) => backend.foo = value
   property real value: 0
@@ -83,8 +83,8 @@ Item {
     stepSize: decimalToInt(root.step)
     editable: true
 
-    // re-assert the value when the range changes, so a widened bound is not
-    // left clamped to a stale one (binding evaluation order is not guaranteed)
+    // set the value again when the range changes: QML doesn't guarantee the
+    // binding order, so the value can stay clamped to the old range
     onFromChanged: set_value(root.value)
     onToChanged: set_value(root.value)
 

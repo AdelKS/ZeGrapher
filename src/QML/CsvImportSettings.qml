@@ -172,9 +172,9 @@ Item {
 
     GroupBox {
       Layout.fillWidth: true
-      // Absorb leftover space (or, when the parent is height-capped, take
-      // the deficit) so the surrounding settings + buttons keep their
-      // natural sizes. The DataTable inside scrolls via its own ScrollView.
+      // take the leftover height, or give up height when the parent caps it,
+      // so the settings and buttons around keep their implicit sizes. The
+      // DataTable inside scrolls in its own ScrollView.
       Layout.fillHeight: true
 
       title: qsTr("Preview")

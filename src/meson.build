@@ -213,9 +213,8 @@ compiled_resources = qt6.compile_resources(
 )
 
 # --- Qt RHI shader compilation -----------------------------------------------
-# qsb cross-compiles GLSL into Qt's serialized shader format consumed by
-# QSGMaterialShader::setShaderFileName(). The .qsb files are bundled into a
-# Qt resource so they can be loaded via qrc:// at runtime.
+# qsb compiles the GLSL shaders to .qsb files for every RHI backend, which
+# QSGMaterialShader::setShaderFileName() loads from a Qt resource.
 qt_libexec = qt6_dep.get_variable(pkgconfig: 'libexecdir')
 qt_bindir  = qt6_dep.get_variable(pkgconfig: 'bindir')
 
@@ -296,6 +295,6 @@ executable('ZeGrapher',
   link_with: zegrapher_lib,
   include_directories: [inc, buildconfig_inc] + qmlcpp_inc_dirs,
   dependencies: [qt6_dep, zecalculator_dep, glaze_dep],
-  win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console', # useful for Windows: displays the app without spawning
-                            # a console alongside it, no-op on other platforms.
+  # 'windows' starts the app without a console window. Other platforms ignore it
+  win_subsystem: get_option('loglevel') == 'off' ? 'windows' : 'console',
   install: true)

@@ -51,7 +51,7 @@ public:
   bool isPlaying() const {return playing;}
 
 public slots:
-  /// @brief make step, knowing that 'T' time has passed since the last step
+  /// @brief advances the animation by 'T', the time since the last step
   void animationStep(seconds T);
 
   void setSliderPos(double);
@@ -77,8 +77,8 @@ protected:
   double sliderPos = 0.5;
 
 
-  /// @brief it's sliderPos but in [0, 2] instead of [0, 1] interval
-  ///        so it accounts for the ping-pong dynamic
+  /// @brief sliderPos over [0, 2] instead of [0, 1]: a ping-pong animation
+  ///        goes back down over [1, 2]
   double phase = 0.5;
 
   bool ignoreSliderPosRecompute = false;

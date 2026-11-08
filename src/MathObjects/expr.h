@@ -82,10 +82,9 @@ protected:
   std::string fullExpression;
   State state;
 
-  /// @brief the implicit variable that gets
-  ///        defined in ZeCalculator for this expression
-  /// @example an expression "2" with 'hidden_var_name' = 'xmin'
-  ///          will be forwarded to ZeCalculator as "xmin = 2"
+  /// @brief the name that ZeCalculator defines this expression under
+  /// @example "2" with 'hidden_var_name' = 'xmin' goes to ZeCalculator as
+  ///          "xmin = 2"
   QString implicitName = {};
   double value = std::nan("");
   bool schrodinger = false;

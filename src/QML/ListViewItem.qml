@@ -38,7 +38,7 @@ Item {
 
   z: dragging ? 2 : 1
 
-  // the widget follows us, and rides above the other delegates while dragged
+  // the widget follows the delegate, and stays above the other delegates while dragged
   Binding { target: root.content; property: "width"; value: root.width }
   Binding { target: root.content; property: "height"; value: root.height }
   Binding { target: root.content; property: "z"; value: root.dragging ? 100 : 0 }
@@ -87,7 +87,7 @@ Item {
     drag.axis: Drag.YAxis
     cursorShape: pressed ? Qt.ClosedHandCursor : Qt.OpenHandCursor
 
-    // else an enclosing ListView flicks away with the reorder drag
+    // otherwise the enclosing ListView flicks with the reorder drag
     preventStealing: true
 
     onPositionChanged: {

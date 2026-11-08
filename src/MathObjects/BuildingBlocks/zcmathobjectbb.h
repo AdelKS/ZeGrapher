@@ -43,8 +43,8 @@ inline std::optional<bool> parsedDiscrete(const zc::DynMathObject<zc_t>& o)
   return holdsDiscrete(o);
 }
 
-/// @brief Shared base class for backends that use zc::DynMathObject
-///        creates a new handle on instantiation, and releases it on destruction
+/// @brief the base of the backends that use a zc::DynMathObject. It creates
+///        the handle on construction, and releases it on destruction
 struct ZcMathObjectBB {
 
 public:

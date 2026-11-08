@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-// A line edit for the name a math object is known by, with an optional label on top
+// A line edit for a math object's name, with an optional label above
 
 import QtQuick
 import QtQuick.Controls.FluentWinUI3
@@ -28,7 +28,7 @@ ColumnLayout {
   id: root
 
   // any backend with a 'name', a 'state' and setName(): NamedRef, Constant, Data.
-  // These classes share no base that declares them
+  // These classes don't share a base class that declares them
   required property var backend
 
   property alias label: label.text

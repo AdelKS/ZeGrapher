@@ -47,7 +47,7 @@ public:
   /// @brief what updatePolish() prepares for updatePaintNode(), in drawing units
   struct Frame
   {
-    /// @brief the inputs of the layout layers, which are only rebuilt when
+    /// @brief the layout layers' inputs: the layers are rebuilt only when
     ///        these change
     struct Source
     {
@@ -64,7 +64,7 @@ public:
     LineGeometry border;
     std::vector<MarkerGeometry> markers;
 
-    /// @brief the layers that updatePaintNode() must hand to the nodes
+    /// @brief which layers updatePaintNode() must pass to the nodes
     bool layoutDirty = true, curvesDirty = true;
   };
 
@@ -99,7 +99,7 @@ protected:
   Sampler sampler;
   GraphLayoutEngine layoutEngine;
 
-  /// @brief the on-screen view scale, which InteractiveGraph maps the mouse with
+  /// @brief the on-screen view scale, which InteractiveGraph uses to map the mouse
   double totalScaleFactor = 1;
 
   Frame frame;

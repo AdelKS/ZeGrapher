@@ -29,7 +29,7 @@
 
 namespace zg {
 
-/// @brief QML-exposed "state" wrapper
+/// @brief an object's status and error message, as a QML value type
 struct State {
   Q_GADGET
   QML_VALUE_TYPE(zgState)
@@ -44,7 +44,7 @@ public:
   enum Status {NEUTRAL, VALID, INVALID};
   Q_ENUM(Status)
 
-  /// @brief update state using this expected
+  /// @brief the state of 'exp': valid, or its error
   template <class T>
   static State from(const std::expected<T, zc::Error>& exp);
 
@@ -59,21 +59,20 @@ public:
 
   void setValid();
 
-  /// @brief set an error message coming from ZG
+  /// @brief sets an error from ZeGrapher, not ZeCalculator
   void setInvalid(QString zgErrorMsg);
 
   bool isValid() const;
 
 protected:
   QString errorMsg;
-  /// @brief error that comes from the ZC backend
-  /// @note errors can come from ZG too, in which case this one will be empty
+  /// @brief the ZeCalculator error, empty for an error from ZeGrapher
   std::optional<zc::Error> opt_zc_error;
   Status status = NEUTRAL;
 };
 
-/// @brief exposes State's enums to QML as uppercase 'State',
-//         the value type itself still needs to have a lowercase name
+/// @brief exposes State's enums to QML as 'State'. A QML value type name must
+///        start with a lowercase letter, so the type itself is 'zgState'
 namespace StateEnums {
   Q_NAMESPACE
   QML_FOREIGN_NAMESPACE(zg::State)

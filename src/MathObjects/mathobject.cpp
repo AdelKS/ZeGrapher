@@ -83,10 +83,9 @@ void MathObject::setType(Type t)
   const Type oldType = getType();
 
   if (oldType == t)
-    return; // backend is already correct
+    return; // the backend already has this type
 
-  // delay delete the old pointer
-  // so QML can properly stop using it
+  // delete the old backend later, so QML can stop using it first
   std::visit(zc::utils::overloaded{
     [](auto* p){ p->deleteLater(); },
   }, backend);

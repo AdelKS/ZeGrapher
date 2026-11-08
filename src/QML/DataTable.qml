@@ -170,8 +170,8 @@ Item {
     anchors.right: parent.right
     anchors.bottom: parent.bottom
 
-    // TableView reports contentWidth/Height = -1 while the model is being
-    // (re)laid out; clamp so we never propagate a bogus negative implicit size.
+    // TableView reports a contentWidth and contentHeight of -1 during a layout.
+    // Clamp them, so the implicit size is never negative.
     implicitWidth: Math.max(0, tableView.contentWidth)
     implicitHeight: Math.max(0, tableView.contentHeight)
 
@@ -188,7 +188,7 @@ Item {
       pointerNavigationEnabled: true
       keyNavigationEnabled: true
 
-      // so selectionRect drag selects properly (according to docs)
+      // SelectionRectangle.Drag needs this, per the Qt docs
       acceptedButtons: Qt.NoButton
       selectionBehavior: TableView.SelectCells
       resizableRows: false
@@ -248,9 +248,9 @@ Item {
         implicitWidth: 100
         implicitHeight: displayWidget.implicitHeight
 
-        // TableView caches delegate implicit sizes at layout time and doesn't
-        // track later changes — without forceLayout, a cell whose ValueEdit
-        // grew (invalid expression error message) keeps its old row height.
+        // TableView reads delegate implicit sizes at layout time only. Without
+        // forceLayout(), a cell whose ValueEdit grows, for example to show an
+        // error message, keeps its old row height.
         onImplicitHeightChanged: Qt.callLater(TableView.view.forceLayout)
 
         Expr {

@@ -65,7 +65,7 @@ public:
   enum CoordinateSystem {Cartesian, Polar};
   Q_ENUM(CoordinateSystem)
 
-  /// @returns stringRange given a coordinate system and is_discrete boolean
+  /// @brief gives the default StringRange for a coordinate system, and whether the object is discrete
   using DefaultStringRangeProvider = std::function<StringRange(CoordinateSystem, bool)>;
   explicit Base(DefaultStringRangeProvider, QObject* parent = nullptr);
 

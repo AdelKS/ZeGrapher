@@ -124,9 +124,8 @@ public:
 
   QFont titleFont = zg::mathFont();
 
-  ///@brief spacing between different things in the graph
-  ///       currently: between the axis and the coordinates
-  ///                  between the coordinates and the axis titles
+  /// @brief the gap between an axis and its tick labels, and between the tick
+  ///        labels and the axis title
   static constexpr zg::pixel_unit spacing = {6};
 
   static const ThemedColor defaultColor;

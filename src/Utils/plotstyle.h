@@ -60,11 +60,11 @@ public:
   bool visible = true;
   ThemedColor color = defaultColor;
 
-  /// @brief used for simultaneous plotting
+  /// @brief the end color of a Schrödinger gradient
   ThemedColor secondColor = defaultSecondColor;
 
-  /// @brief returns a linear interpolation between color and secondColor in the current theme
-  /// @param t: coeff in [0, 1]
+  /// @brief the linear interpolation between color and secondColor, in the current theme
+  /// @param t: in [0, 1]
   QColor colorLerp(double t) const;
 
   double lineWidth = defaultLineWidth;

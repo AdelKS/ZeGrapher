@@ -57,10 +57,9 @@ public:
 
   QHash<int, QByteArray> roleNames() const override;
 
-  /// @brief split a single CSV line, honoring RFC 4180 quoting
-  /// @note a field wrapped in double quotes may contain separators,
-  //        and a doubled quote within it stands for a literal one.
-  //        Quotes spanning several lines are not supported: one line is always one row.
+  /// @brief splits a CSV line, with RFC 4180 quoting
+  /// @note a quoted field can contain separators, and a doubled quote in it is
+  ///       one quote. A quoted field can't span lines: one line is one row.
   static QStringList splitCsvLine(QStringView line, QStringView sep);
 
   /// @brief a file's path as the user writes it: native separators, and '~' for

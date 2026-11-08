@@ -27,7 +27,7 @@
 
 namespace zg {
 
-/// @brief Style info relevant to drawing a sampled curve
+/// @brief the style that a sampled curve is drawn with
 struct CurveStyle {
   bool visible = true;
   QColor color = Qt::black;
