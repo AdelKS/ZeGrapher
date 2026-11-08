@@ -45,18 +45,16 @@ announcements:
       - A new math parsing library, [ZeCalculator](https://github.com/AdelKS/ZeCalculator)
         - Useful error messages that point at what is wrong in the expression
         - An arbitrary number of objects
-        - Every object can be called in the expression of any other
+        - Any object can be used in another object's expression
       - Constants that slide between two bounds, by hand or as an animation, or that
         take several values at once to draw a whole family of curves
       - Data sheets: CSV import and export, a table to edit the values, and columns
         filled from any object
       - Improved parametric plots
-      - Export to SVG, PDF and image formats, exactly as it looks on the screen
-      - Save your work. Your latest work is also automatically saved and restored on the next start
-      - The manual of the website, inside the app
-      - Checks for updates at startup. The App tab has a setting to turn it off
-      - Support for new languages (AI translated): French, German, Spanish, Italian, Portuguese,
-        Russian, Japanese, Chinese and Arabic
-      - Near-complete rewrite of the code base
+      - Export to SVG, PDF and image formats, exactly as the graph looks on screen
+      - Save your work to a file. The app also saves your latest work on close, and restores it at the next start
+      - A manual you can read right in the app, or on the website
+      - Support for new languages, but AI-translated: if you see odd wording, please contribute better translations!
+      - A near-complete rewrite of the codebase
 
 changes: []
